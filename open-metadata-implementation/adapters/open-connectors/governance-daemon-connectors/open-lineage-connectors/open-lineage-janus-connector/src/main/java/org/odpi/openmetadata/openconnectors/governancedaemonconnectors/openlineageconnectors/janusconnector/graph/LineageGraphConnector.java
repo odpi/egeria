@@ -28,8 +28,6 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +41,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.P.eq;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
@@ -161,6 +160,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             guidList.forEach(
                     guid -> findInputColumns(g, guid)
             );
+
+            guidList.forEach(guid -> findMissedOrphanColumns(g, guid));
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
             }
@@ -181,10 +182,35 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public Optional<Long> getAssetLineageUpdateTime() {
         Optional<Long> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
-        if(lastUpdateTime.isPresent()) {
+        if (lastUpdateTime.isPresent()) {
             return lastUpdateTime;
         }
         return Optional.empty();
+    }
+
+    /**
+     * Finds the paths to the output columns that are do not have an input for all the processes in the graph.
+     *
+     * @param g    - Graph traversal object
+     * @param guid - The unique identifier of a Process
+     */
+    private void findMissedOrphanColumns(GraphTraversalSource g, String guid) {
+
+        List<Vertex> outputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
+                .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "OUTPUT_PORT")
+                .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING).where(__.inE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(eq(0)))
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, P.within(DATA_FILE_AND_SUBTYPES)),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
+
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+
+        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+
+        if (!outputPathsForColumns.isEmpty()) {
+            outputPathsForColumns.forEach(columnOut -> addOutNodesAndEdgesForQuerying(columnOut, process));
+        }
     }
 
     /**
@@ -233,8 +259,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 if (vertexToStart != null) {
                     columnOutList.addAll(findPathForOutputAsset(vertexToStart, g, columnIn));
                 }
-                for (Vertex columnOut : columnOutList) {
-                    addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+
+                if (columnOutList.isEmpty()) {
+                    addInputNodesAndEdgesForQuerying(columnIn, process);
+                } else {
+                    for (Vertex columnOut : columnOutList) {
+                        addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+                    }
                 }
             }
         }
@@ -246,7 +277,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param g                   - Graph traversal object
      * @param schemaElementVertex - THe vertex of the column before processing.
      * @param process             - The vertex of the process.
-     *
      * @return Return the vertex of the initial column
      */
     private Vertex isSchemaElementLinkedToProcess(GraphTraversalSource g, Vertex schemaElementVertex, Vertex process) {
@@ -269,15 +299,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Returns true if the vertex is null or doesn't have a valid guid
-     *
-     * @param column - The vertex to of the schema element
-     */
-    private boolean isColumnEmpty(Vertex column) {
-        return (column == null || !StringUtils.isNotEmpty(getGuid(column)));
-    }
-
-    /**
      * Add nodes and edges that are going to be used for lineage UI
      *
      * @param columnIn  - The vertex of the input schema element
@@ -285,52 +306,160 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param process   - The vertex of the process.
      */
     private void addNodesAndEdgesForQuerying(Vertex columnIn, Vertex columnOut, Vertex process) {
-        if (isColumnEmpty(columnIn) || isColumnEmpty(columnOut)) {
-            return;
-        }
 
         final String processGuid = getGuid(process);
         final String columnInGuid = getGuid(columnIn);
         final String columnOutGuid = getGuid(columnOut);
-        final String processName =
-                g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0).get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
 
-        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
-                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
-                .has(PROPERTY_KEY_PROCESS_GUID, processGuid);
+        Iterator<Vertex> existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
 
-        if (!t.hasNext()) {
-            Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
+
+        if (existingSubprocess.hasNext()) {
+            return;
+        }
+
+        existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                .where(__.outE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(eq(0)));
+        Vertex subProcess = null;
+        if (existingSubprocess.hasNext()) {
+            subProcess = existingSubprocess.next();
+        }
+
+        if (subProcess != null && processGuid.equals(subProcess.property(PROPERTY_KEY_PROCESS_GUID).value())) {
+            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(columnOut.id())).next();
+            g.V(subProcess.id()).property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid).next();
+            addOutAssetToProcessEdge(columnOut, process);
+            log.info("OLS has updated output of subProcess node and edges for input column {} and output {} and process {} ",
+                    columnInGuid, columnOutGuid, processGuid);
+
+        } else {
+            Iterator<Vertex> fromOutputExistingSubprocess = g.V(columnOut.id()).inE(EDGE_LABEL_COLUMN_DATA_FLOW).outV()
+                    .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                    .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                    .where(__.inE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(eq(0)));
+
+            Vertex fromOutputSubProcess = null;
+            if (fromOutputExistingSubprocess.hasNext()) {
+                fromOutputSubProcess = fromOutputExistingSubprocess.next();
+            }
+            if (fromOutputSubProcess != null && processGuid.equals(fromOutputSubProcess.property(PROPERTY_KEY_PROCESS_GUID).value())) {
+                g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(fromOutputSubProcess.id())).next();
+                g.V(fromOutputSubProcess.id()).property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid).next();
+                addInAssetToProcessEdge(columnIn, process);
+                log.info("OLS has updated subProcess node and edges for input column {} and output {} and process {} ",
+                        columnInGuid, columnOutGuid, processGuid);
+
+            } else {
+                final String processName =
+                        g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0)
+                                .get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
+
+                GraphTraversal<Vertex, Vertex> subProcessNode = g.addV(NODE_LABEL_SUB_PROCESS)
+                        .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                        .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                        .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                        .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                        .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
+
+                Vertex newSubProcess = subProcessNode.next();
+
+                g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(newSubProcess.id())).next();
+                g.V(newSubProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
+                g.V(newSubProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
+                if (graphFactory.isSupportingTransactions()) {
+                    g.tx().commit();
+                }
+                log.info("OLS has added the corresponding subProcess node and edges for input column {} and output {} and process {} ",
+                        columnInGuid, columnOutGuid, processGuid);
+
+                addInAssetToProcessEdge(columnIn, process);
+                addOutAssetToProcessEdge(columnOut, process);
+            }
+        }
+
+    }
+
+
+    private void addInputNodesAndEdgesForQuerying(Vertex columnIn, Vertex process) {
+
+        final String columnInGuid = getGuid(columnIn);
+        final String processGuid = getGuid(process);
+
+        Iterator<Vertex> existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid);
+
+        if (!existingSubprocess.hasNext()) {
+            final String processName =
+                    g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0)
+                            .get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
+
+            GraphTraversal<Vertex, Vertex> subProcessNode = g.addV(NODE_LABEL_SUB_PROCESS)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
                     .property(PROPERTY_KEY_DISPLAY_NAME, processName)
                     .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
-                    .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
-                    .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
-                    .next();
+                    .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid);
+
+            Vertex subProcess = subProcessNode.next();
 
             g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(subProcess.id())).next();
-            g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
+            addInAssetToProcessEdge(columnIn, process);
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
 
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
             }
+            log.info("OLS has added the corresponding subProcess node and edges for input column {} and process {} ",
+                    columnInGuid, processGuid);
+        }
+    }
 
-            addAssetToProcessEdges(columnIn, columnOut, process);
+    private void addOutNodesAndEdgesForQuerying(Vertex columnOut, Vertex process) {
+        final String columnOutGuid = getGuid(columnOut);
 
-            log.info("OLS has added the corresponding subProcess node and edges for input column {}, output column {} and process {} ",
-                    columnInGuid, columnOutGuid, processGuid);
+        final String processGuid = getGuid(process);
+
+        Iterator<Vertex> existingSubprocess = g.V(columnOut.id()).inE(EDGE_LABEL_COLUMN_DATA_FLOW).outV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
+
+        if (!existingSubprocess.hasNext()) {
+            final String processName =
+                    g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0)
+                            .get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
+
+            GraphTraversal<Vertex, Vertex> subProcessNode = g.addV(NODE_LABEL_SUB_PROCESS)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                    .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                    .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
+
+            Vertex subProcess = subProcessNode.next();
+
+            g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
+            addOutAssetToProcessEdge(columnOut, process);
+            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
+
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
+            log.info("OLS has added the corresponding subProcess node and edges for output column {} and process {} ",
+                    columnOutGuid, processGuid);
         }
     }
 
     /**
      * Connects the tables and the processes with edges
      *
-     * @param columnIn  - The vertex of the input schema element
-     * @param columnOut - The vertex of the output schema element
-     * @param process   - The vertex of the process.
+     * @param columnIn - The vertex of the input schema element
+     * @param process  - The vertex of the process.
      */
-    private void addAssetToProcessEdges(Vertex columnIn, Vertex columnOut, Vertex process) {
+    private void addInAssetToProcessEdge(Vertex columnIn, Vertex process) {
         Optional<Vertex> assetIn = getAsset(columnIn);
         if (assetIn.isPresent()) {
             Iterator<Vertex> tableVertex = g.V(assetIn.get().id()).outE(EDGE_LABEL_TABLE_DATA_FLOW).inV().hasId(process.id());
@@ -338,7 +467,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 g.V(assetIn.get().id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(g.V(process.id())).next();
             }
         }
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+    }
 
+    /**
+     * Connects the tables and the processes with edges
+     *
+     * @param columnOut - The vertex of the output schema element
+     * @param process   - The vertex of the process.
+     */
+    private void addOutAssetToProcessEdge(Vertex columnOut, Vertex process) {
         Optional<Vertex> assetOut = getAsset(columnOut);
         if (assetOut.isPresent()) {
             Iterator<Vertex> tableVertex = g.V(assetOut.get().id()).inE(EDGE_LABEL_TABLE_DATA_FLOW).outV().hasId(process.id());
@@ -346,7 +486,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 g.V(process.id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(g.V(assetOut.get().id())).next();
             }
         }
-
         if (graphFactory.isSupportingTransactions()) {
             g.tx().commit();
         }
@@ -358,6 +497,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param vertex - the queried vertex
      */
     private String getGuid(Vertex vertex) {
+        if (vertex == null) {
+            return null;
+        }
         return g.V(vertex.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
     }
 
@@ -408,11 +550,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     /**
      * Updates the neighbours of a node by removing all the entities that no longer have a relationship with it.
      *
-     * @param nodeGUID - the identifier of the entity that was updated
+     * @param nodeGUID        - the identifier of the entity that was updated
      * @param neighboursGUIDS - the identifiers of the nodes that have a direct relationship to the entity
      */
     @Override
-    public void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS){
+    public void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS) {
         List<String> existingNeighboursGUIDs = getAllNeighbours(nodeGUID);
         if (isDifferentGraphContext(neighboursGUIDS, existingNeighboursGUIDs)) {
             removeObsoleteEdges(nodeGUID, neighboursGUIDS, existingNeighboursGUIDs);
@@ -429,7 +571,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     private boolean isDifferentGraphContext(Set<String> newVertices, List<String> neighboursGUIDs) {
-        return  neighboursGUIDs.size() != newVertices.size() || !neighboursGUIDs.containsAll(newVertices);
+        return neighboursGUIDs.size() != newVertices.size() || !neighboursGUIDs.containsAll(newVertices);
     }
 
     private void removeObsoleteEdges(String entityGUID, Set<String> newVertices, List<String> neighboursGUIDs) {
@@ -454,12 +596,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                final String relationshipLabel, final String relationshipGuid) {
 
         Function<LineageEntity, Vertex> createVertexFunction = (lineageEntity) ->
-             g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
-                    .fold()
-                    .coalesce(unfold(),
-                            addV(lineageEntity.getTypeDefName())
-                                    .property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid()))
-                    .next();
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+                        .fold()
+                        .coalesce(unfold(),
+                                addV(lineageEntity.getTypeDefName())
+                                        .property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid()))
+                        .next();
 
         Vertex from = commit(graphFactory, g, createVertexFunction, fromEntity,
                 "Unable to create vertex with type " + fromEntity.getTypeDefName() + " and guid "
@@ -481,7 +623,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, from, fromEntity,
                 "Unable to add properties on vertex from entity with type " + fromEntity.getTypeDefName() +
-                "and guid " + fromEntity.getGuid());
+                        "and guid " + fromEntity.getGuid());
         commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, to, toEntity,
                 "Unable to add properties on vertex from entity with type " + toEntity.getTypeDefName() +
                         "and guid " + toEntity.getGuid());
@@ -750,7 +892,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param endingVertex   - The vertex that is being checked if it is the output schema element
      * @param g              - Graph traversal object
      * @param startingVertex - The vertex of the input schema element
-     *
      * @return Return a list of vertices of output schema elements
      */
     private List<Vertex> findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
