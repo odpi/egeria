@@ -209,8 +209,7 @@ public class IntegrationServiceRegistration implements Serializable
 
 
     /**
-     * Return the wiki page link for the integration service.  The default value points to a page on the Atlas
-     * confluence wiki.
+     * Return the wiki page link for the integration service.
      *
      * @return String url
      */

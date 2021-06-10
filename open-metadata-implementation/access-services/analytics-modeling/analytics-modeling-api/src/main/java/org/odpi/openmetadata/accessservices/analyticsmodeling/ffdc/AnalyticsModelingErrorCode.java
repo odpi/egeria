@@ -51,7 +51,7 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
 	BAD_CONFIG(
 			"OMAS-ANALYTICS-MODELING-005",
-			"The Information View Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+			"The Analytics Modeling Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
 			"The access service has not been passed valid configuration.",
 			"Correct the configuration and restart the service."),
 	ENTITY_NOT_FOUND_EXCEPTION(404,
@@ -167,6 +167,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 	FAILED_UPDATE_ARTIFACT(
 			"OMAS-ANALYTICS-MODELING-027", 
 			"User {0} failed to update artifact {1}. Cause: {2}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request to fix artifact."),
+	FAILED_DELETE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-028", 
+			"User {0} failed to delete asset {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue and repeat request to fix artifact."),
 	

@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SoftwareServerCapabilityElement;
-import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -156,7 +154,7 @@ public class DataManagerRESTServices
                                                     String                 userId,
                                                     FileManagerRequestBody requestBody)
     {
-        final String methodName = "createFileSystemInCatalog";
+        final String methodName = "createFileManagerInCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -203,14 +201,13 @@ public class DataManagerRESTServices
 
 
     /**
-     * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager proxy.
+     * Create the software server capability for the database manager (DBMS).
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
      * @param requestBody description of the database manager
      *
-     * @return unique identifier of the integration daemon's software server capability or
+     * @return unique identifier of the software server capability or
      * InvalidParameterException  the bean properties are invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
@@ -219,7 +216,7 @@ public class DataManagerRESTServices
                                                        String                     userId,
                                                        DatabaseManagerRequestBody requestBody)
     {
-        final String methodName = "createDataManagerIntegrator";
+        final String methodName = "createDatabaseManagerInCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -238,6 +235,123 @@ public class DataManagerRESTServices
                                                                     requestBody.getExternalSourceName(),
                                                                     OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
+                                                                    null,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getTypeDescription(),
+                                                                    requestBody.getVersion(),
+                                                                    requestBody.getPatchLevel(),
+                                                                    requestBody.getSource(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    requestBody.getVendorProperties(),
+                                                                    methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Create the Software server capability for the API Manager.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the API manager
+     *
+     * @return unique identifier of the software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    public GUIDResponse createAPIManagerInCatalog(String                serverName,
+                                                  String                userId,
+                                                  APIManagerRequestBody requestBody)
+    {
+        final String methodName = "createAPIManagerInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                          serverName,
+                                                                                                                                          methodName);
+            response.setGUID(handler.createSoftwareServerCapability(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    OpenMetadataAPIMapper.API_MANAGER_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.API_MANAGER_TYPE_NAME,
+                                                                    null,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getTypeDescription(),
+                                                                    requestBody.getVersion(),
+                                                                    requestBody.getPatchLevel(),
+                                                                    requestBody.getSource(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    requestBody.getVendorProperties(),
+                                                                    methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create the Software server capability for the API Manager.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the API manager
+     *
+     * @return unique identifier of the software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    public GUIDResponse createEventBrokerInCatalog(String                 serverName,
+                                                   String                 userId,
+                                                   EventBrokerRequestBody requestBody)
+    {
+        final String methodName = "createEventBrokerInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                          serverName,
+                                                                                                                                          methodName);
+            response.setGUID(handler.createSoftwareServerCapability(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    OpenMetadataAPIMapper.EVENT_BROKER_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.EVENT_BROKER_TYPE_NAME,
                                                                     null,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
