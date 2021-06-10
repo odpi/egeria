@@ -1348,7 +1348,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
+    @PostMapping(path = "/is-a-type-ofs")
     public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
                                                                                  @RequestBody IsATypeOf termIsATypeOfRelationship) {
@@ -1369,7 +1369,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @GetMapping(path = "/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(@PathVariable String serverName,
                                                                               @PathVariable String userId,
                                                                               @PathVariable String guid) {
@@ -1393,7 +1393,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @PutMapping(path = "/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
@@ -1418,7 +1418,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @DeleteMapping(path = "/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
                                                                                  @PathVariable String guid,
@@ -1445,7 +1445,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      */
 
 
-    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    @PostMapping(path = "/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                   @PathVariable String userId,
                                                                                   @PathVariable String guid) {
@@ -1471,7 +1471,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @PostMapping(path = "/users/{userId}/relationships/object-inheritances")
+    @PostMapping(path = "/object-inheritances")
     public SubjectAreaOMASAPIResponse<ObjectInheritance> createObjectInheritance(@PathVariable String serverName,
                                                                                              @PathVariable String userId,
                                                                                              @RequestBody ObjectInheritance ObjectInheritance) {
@@ -1493,7 +1493,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
+    @GetMapping(path = "/object-inheritances/{guid}")
     public SubjectAreaOMASAPIResponse<ObjectInheritance> getObjectInheritance(@PathVariable String serverName,
                                                                                           @PathVariable String userId,
                                                                                           @PathVariable String guid) {
@@ -1516,7 +1516,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
+    @PutMapping(path = "/object-inheritances/{guid}")
     public SubjectAreaOMASAPIResponse<ObjectInheritance> updateObjectInheritance(@PathVariable String serverName,
                                                                                              @PathVariable String userId,
                                                                                              @PathVariable String guid,
@@ -1541,7 +1541,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
+    @DeleteMapping(path = "/object-inheritances/{guid}")
     public SubjectAreaOMASAPIResponse<ObjectInheritance> deleteObjectInheritance(@PathVariable String serverName,
                                                                                              @PathVariable String userId,
                                                                                              @PathVariable String guid,
@@ -1568,7 +1568,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      */
 
 
-    @PostMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
+    @PostMapping(path = "/object-inheritances/{guid}")
     public SubjectAreaOMASAPIResponse<ObjectInheritance> restoreObjectInheritance(@PathVariable String serverName,
                                                                                               @PathVariable String userId,
                                                                                               @PathVariable String guid) {
