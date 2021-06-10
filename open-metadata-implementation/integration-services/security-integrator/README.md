@@ -5,22 +5,32 @@
 
 # Security Integrator Open Metadata Integration Service (OMIS)
 
-The Security Integrator integration service supports distribution of security
+The Security Integrator OMIS supports distribution of security
 parameters to access control enforcement engines such as Apache Ranger.
 Its API simplifies the internal models and structures of
 the open metadata type model and related structure for the consumers.
 
+## Module Implementation
+
 The modules are as follows:
 
 * [security-integrator-api](security-integrator-api) - defines the interface for an integration
-connector that is supported by the Security Integrator integration service. This includes the implementation
+connector that is supported by the Security Integrator OMIS. This includes the implementation
 of the context that wraps the Asset Manager OMAS's clients.
 
 * [security-integrator-server](security-integrator-server) - implements the context manager for
-the Security Integrator integration service.
+the Security Integrator OMIS.
 
-This integration service is paired with the [Security Officer](../../access-services/security-officer)
-Open Metadata Access Service (OMAS).
+* [security-integrator-spring](security-integrator-spring) - implements a rest API for validating that a specific
+integration connector is able to run under this service.
+
+* [security-integrator-client](security-integrator-client) - implements a Java client for the REST API.
+
+
+This integration service will ultimately be paired with the [Security Manager](../../access-services/security-manager)
+Open Metadata Access Service (OMAS).  However, it is currently calling the 
+[Asset Manager OMAS](../../access-services/asset-manager) while the Security Manager OMAS is implemented.
+This means it is only monitoring security tags for assets rather than data fields.
 
 ----
 Return to the [Integration Services](..)
