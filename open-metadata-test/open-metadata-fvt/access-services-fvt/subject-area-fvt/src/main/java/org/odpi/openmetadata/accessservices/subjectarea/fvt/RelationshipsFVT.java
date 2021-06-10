@@ -156,6 +156,7 @@ public class RelationshipsFVT {
         typedByFVT(term1, term2);
         isaFVT(term1, term2);
         isatypeofFVT(term1, term2);
+        objectInheritanceFVT(term1, term2);
         termCategorizationFVT(term1, cat1);
         termAnchorFVT(term1);
         categoryAnchorFVT(cat1);
@@ -244,7 +245,7 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createTermTYPEDBYRelationship(term1, term2));
         FVTUtils.validateRelationship(createTranslation(term1, term2));
         FVTUtils.validateRelationship(createUsedInContext(term1, term2));
-        FVTUtils.validateRelationship(createTermISATypeOFRelationship(term1, term2));
+        FVTUtils.validateRelationship(createObjectInheritance(term1, term2));
     }
 
     private void isatypeofFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
@@ -302,6 +303,63 @@ public class RelationshipsFVT {
         subjectAreaRelationship.isaTypeOf().purge(this.userId, guid);
         System.out.println("Hard deleted IsaTypeOf with userId=" + guid);
     }
+    private void objectInheritanceFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        ObjectInheritance createdObjectInheritance = createObjectInheritance(term1, term2);
+        String guid = createdObjectInheritance.getGuid();
+
+        ObjectInheritance gotObjectInheritance = subjectAreaRelationship.objectInheritance().getByGUID(this.userId, guid);
+        FVTUtils.validateRelationship(gotObjectInheritance);
+        System.out.println("Got ObjectInheritance " + createdObjectInheritance);
+
+        ObjectInheritance updateObjectInheritance = new ObjectInheritance();
+        updateObjectInheritance.setDescription("ddd2");
+        ObjectInheritance updatedObjectInheritance = subjectAreaRelationship.objectInheritance().update(this.userId, guid, updateObjectInheritance);
+        FVTUtils.validateRelationship(updatedObjectInheritance);
+        if (!updatedObjectInheritance.getDescription().equals(updateObjectInheritance.getDescription())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance update description not as expected");
+        }
+        if (!updatedObjectInheritance.getSource().equals(createdObjectInheritance.getSource())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance update source not as expected");
+        }
+        if (!updatedObjectInheritance.getSteward().equals(createdObjectInheritance.getSteward())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance update steward not as expected");
+        }
+        FVTUtils.checkEnds(updatedObjectInheritance,createdObjectInheritance,"ObjectInheritance","update");
+        System.out.println("Updated ObjectInheritance " + createdObjectInheritance);
+        ObjectInheritance replaceObjectInheritance = new ObjectInheritance();
+        replaceObjectInheritance.setDescription("ddd3");
+        ObjectInheritance replacedObjectInheritance = subjectAreaRelationship.objectInheritance().replace(this.userId, guid, replaceObjectInheritance);
+        FVTUtils.validateRelationship(replacedObjectInheritance);
+        if (!replacedObjectInheritance.getDescription().equals(replaceObjectInheritance.getDescription())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance replace description not as expected");
+        }
+        if (replacedObjectInheritance.getSource() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance replace source not as expected");
+        }
+        if (replacedObjectInheritance.getSteward() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance replace steward not as expected");
+        }
+        if (!replacedObjectInheritance.getEnd1().getNodeGuid().equals(createdObjectInheritance.getEnd1().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance replace end 1 not as expected");
+        }
+        if (!replacedObjectInheritance.getEnd2().getNodeGuid().equals(createdObjectInheritance.getEnd2().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: ObjectInheritance replace end 2 not as expected");
+        }
+        System.out.println("Replaced ObjectInheritance " + createdObjectInheritance);
+        subjectAreaRelationship.objectInheritance().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotObjectInheritance);
+        System.out.println("Soft deleted ObjectInheritance with userId=" + guid);
+        gotObjectInheritance = subjectAreaRelationship.objectInheritance().restore(this.userId, guid);
+        FVTUtils.validateRelationship(gotObjectInheritance);
+        System.out.println("Restored ObjectInheritance with userId=" + guid);
+        subjectAreaRelationship.objectInheritance().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotObjectInheritance);
+        System.out.println("Soft deleted ObjectInheritance with userId=" + guid);
+        subjectAreaRelationship.objectInheritance().purge(this.userId, guid);
+        System.out.println("Hard deleted ObjectInheritance with userId=" + guid);
+    }
+
+
 
     private void isaFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         IsA createdIsA = createIsaRelationship(term1, term2);
@@ -1154,6 +1212,21 @@ public class RelationshipsFVT {
 
         System.out.println("Created termISATypeOFRelationship " + createdTermIsATypeOFRelationship);
         return createdTermIsATypeOFRelationship;
+    }
+
+    public ObjectInheritance createObjectInheritance(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        ObjectInheritance ObjectInheritance = new ObjectInheritance();
+        ObjectInheritance.setDescription("ddd");
+        ObjectInheritance.setSource("source");
+        ObjectInheritance.setSteward("Stew");
+        ObjectInheritance.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        ObjectInheritance.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
+        ObjectInheritance createdObjectInheritance = subjectAreaRelationship.objectInheritance().create(this.userId, ObjectInheritance);
+        FVTUtils.validateRelationship(createdObjectInheritance);
+        FVTUtils.checkEnds(ObjectInheritance, createdObjectInheritance, "ObjectInheritance", "create");
+
+        System.out.println("Created ObjectInheritance Relationship " + createdObjectInheritance);
+        return createdObjectInheritance;
     }
 
     private void termCategorizationFVT(Term term, Category category) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {

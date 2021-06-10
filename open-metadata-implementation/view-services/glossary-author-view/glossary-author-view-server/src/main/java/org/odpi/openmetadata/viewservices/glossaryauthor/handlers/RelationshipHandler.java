@@ -1341,6 +1341,114 @@ public class RelationshipHandler {
     }
 
     /**
+     * Create a ObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     *
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param objectInheritance the ObjectInheritance relationship
+     * @return the createdObjectInheritance relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public ObjectInheritance createObjectInheritance(String userId, ObjectInheritance objectInheritance) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.objectInheritance().create(userId, objectInheritance);
+    }
+
+    /**
+     * Get a ObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the ObjectInheritance relationship to get
+     * @return ObjectInheritance
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public ObjectInheritance getObjectInheritance(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.objectInheritance().getByGUID(userId, guid);
+    }
+
+    /**
+     * Update a ObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the ObjectInheritance relationship
+     * @param objectInheritance the ObjectInheritance relationship
+     * @return ObjectInheritance updatedObjectInheritance
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public ObjectInheritance updateObjectInheritance(String userId, String guid, ObjectInheritance objectInheritance) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.objectInheritance().update(userId, guid, objectInheritance);
+    }
+
+    /**
+     * Replace anObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the ObjectInheritance relationship
+     * @param objectInheritance the ObjectInheritance relationship
+     * @return ObjectInheritance replacedObjectInheritance
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public ObjectInheritance replaceObjectInheritance(String userId, String guid, ObjectInheritance objectInheritance) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.objectInheritance().replace(userId, guid, objectInheritance);
+    }
+
+    /**
+     * Delete a ObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the ObjectInheritance relationship to delete
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public void deleteObjectInheritance(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.objectInheritance().delete(userId, guid);
+    }
+
+    /**
+     * Purge a ObjectInheritance relationship, which is defines an inheritance relationship between two spine objects.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the ObjectInheritance relationship to delete
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public void purgeObjectInheritance(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.objectInheritance().purge(userId, guid);
+    }
+
+    /**
+     * Restore an is a type of relationship
+     * <p>
+     * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the is a type of relationship to delete
+     * @return the restored is a type of relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public ObjectInheritance restoreObjectInheritance(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.objectInheritance().restore(userId, guid);
+    }
+
+    /**
      * Create a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * <p>

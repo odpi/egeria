@@ -2121,7 +2121,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     /**
      * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param termIsATypeOfRelationship          the termIsATypeOfRelationship relationship
@@ -2157,7 +2157,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
     /**
      * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to get
@@ -2194,7 +2194,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     /**
      * Update a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship
@@ -2236,7 +2236,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
     /**
      * Delete a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
@@ -2275,7 +2275,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
     /**
      * Restore a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2307,7 +2307,195 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    /**
+     * Create a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param objectInheritance    the ObjectInheritance relationship
+     * @return response, when successful contains the created ObjectInheritance
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> createObjectInheritance(String serverName, String userId, ObjectInheritance objectInheritance)
+    {
+        String restAPIName = "createObjectInheritance";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<ObjectInheritance> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
 
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            ObjectInheritance createdObjectInheritance = handler.createObjectInheritance(userId, objectInheritance);
+            response.addResult(createdObjectInheritance);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Get a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship to get
+     * @return response which when successful contains the term has a relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> getObjectInheritance(String serverName, String userId, String guid)
+    {
+
+        String restAPIName = "getObjectInheritance";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<ObjectInheritance> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            ObjectInheritance updatedObjectInheritance = handler.getObjectInheritance(userId, guid);
+            response.addResult(updatedObjectInheritance);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Update a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship
+     * @param objectInheritance the ObjectInheritance relationship
+     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated ObjectInheritance
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> updateObjectInheritance(String serverName, String userId, String guid, ObjectInheritance objectInheritance, boolean isReplace)
+    {
+        String restAPIName = "updateObjectInheritance";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<ObjectInheritance> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            ObjectInheritance updatedObjectInheritance;
+            if (isReplace) {
+                updatedObjectInheritance = handler.replaceObjectInheritance(userId, guid, objectInheritance);
+            } else {
+                updatedObjectInheritance = handler.updateObjectInheritance(userId, guid, objectInheritance);
+            }
+
+            response.addResult(updatedObjectInheritance);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Delete a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the term has a relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> deleteObjectInheritance(String serverName, String userId, String guid, Boolean isPurge)
+    {
+        String restAPIName = "deleteObjectInheritance";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<ObjectInheritance> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            if (isPurge) {
+                handler.purgeObjectInheritance(userId, guid);
+            } else {
+                handler.deleteObjectInheritance(userId, guid);
+            }
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Restore a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     *
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> restoreObjectInheritance(String serverName, String userId, String guid)
+    {
+        String restAPIName = "restoreObjectInheritance";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<ObjectInheritance> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            ObjectInheritance restoredObjectInheritance = handler.restoreObjectInheritance(userId, guid);
+            response.addResult(restoredObjectInheritance);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
     /**
      * Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * <p>

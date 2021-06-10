@@ -25,7 +25,8 @@ public enum RelationshipType {
     Synonym,
     Antonym,
     IsA,
-    IsATypeOf,
+    IsATypeOf,    // deprecated; use ObjectInheritance instead
+    ObjectInheritance,
     RelatedTerm,
     HasA,
     // category category

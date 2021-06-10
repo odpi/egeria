@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * Defines an inheritance relationship between two spine objects.
+ *
+ * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,7 +53,7 @@ public class IsATypeOf extends Relationship {
     private String source;
 
     public IsATypeOf() {
-        super("IsATypeOf", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.IsATypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

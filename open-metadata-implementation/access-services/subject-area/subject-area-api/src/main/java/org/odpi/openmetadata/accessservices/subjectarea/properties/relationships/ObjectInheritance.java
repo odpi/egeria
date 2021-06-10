@@ -16,21 +16,22 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * Link to a glossary term that is replacing an obsolete glossary term.
+ * Defines an inheritance relationship between two spine objects.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplacementTerm extends Relationship {
-    private String description = "Link to a glossary term that is replacing an obsolete glossary term.";
+public class ObjectInheritance extends Relationship {
+    private String description = "Defines an inheritance relationship between two spine objects.";
 
     /*
      * Set up end 1.
      */
      private static final String END_1_NODE_TYPE = "Term";
-     private static final String END_1_ATTRIBUTE_NAME = "replacedTerms";
-     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Replaced glossary terms.";
+     private static final String END_1_ATTRIBUTE_NAME = "inherited";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Inherited (Subtypes) for this object.";
      private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
      private static final RelationshipEnd RELATIONSHIP_END_1 = new RelationshipEnd(END_1_NODE_TYPE,
                                                                            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
@@ -39,19 +40,19 @@ public class ReplacementTerm extends Relationship {
      * Set up end 2.
      */
      private static final String END_2_NODE_TYPE = "Term";
-     private static final String END_2_ATTRIBUTE_NAME = "replacementTerms";
-     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Replacement glossary terms.";
+     private static final String END_2_ATTRIBUTE_NAME = "inheritedFrom";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Inherited from (Supertypes) for this object.";
+
      private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
      private static final RelationshipEnd RELATIONSHIP_END_2 = new RelationshipEnd(END_2_NODE_TYPE,
                                                                            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
-    private String expression;
     private TermRelationshipStatus status;
     private String steward;
     private String source;
 
-    public ReplacementTerm() {
-        super(RelationshipType.ReplacementTerm.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+    public ObjectInheritance() {
+        super(RelationshipType.ObjectInheritance.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**
@@ -65,24 +66,10 @@ public class ReplacementTerm extends Relationship {
 
     /**
      * {@literal Set the description of the relationship. }
-     *
      * @param description {@code String }
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * {@literal An expression that explains the relationship. }
-     *
-     * @return {@code String }
-     */
-    public String getExpression() {
-        return this.expression;
-    }
-
-    public void setExpression(String expression) {
-        this.expression = expression;
     }
 
     /**
@@ -129,11 +116,10 @@ public class ReplacementTerm extends Relationship {
         if (sb == null) {
             sb = new StringBuilder();
         }
-        sb.append(" ReplacementTerm=");
+        sb.append(" ObjectInheritance=");
         sb.append(super.toString(sb));
-        sb.append(" ReplacementTerm Attributes{");
+        sb.append(" ObjectInheritance Attributes{");
         sb.append("description=").append(this.description).append(",");
-        sb.append("expression=").append(this.expression).append(",");
         sb.append("steward=").append(this.steward).append(",");
         sb.append("source=").append(this.source).append(",");
         if (status != null) {

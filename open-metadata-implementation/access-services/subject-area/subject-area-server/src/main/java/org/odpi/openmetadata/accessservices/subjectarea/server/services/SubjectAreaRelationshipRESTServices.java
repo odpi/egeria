@@ -1334,7 +1334,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param termIsATypeOfRelationship the IsaTypeOf relationship
@@ -1357,7 +1357,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termIsATypeOfRelationship relationship to get
@@ -1378,7 +1378,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Update a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param guid                      unique identifier of the relationship
@@ -1403,7 +1403,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
@@ -1430,6 +1430,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the relationship to restore
@@ -1448,6 +1449,125 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermIsATypeOfRelationship";
         return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
+    }
+
+    /**
+     * Create a object Inheritance relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                    userId under which the request is performed
+     * @param ObjectInheritance the object Inheritance relationship
+     * @return response, when successful contains the created ObjectInheritance Relationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> createObjectInheritance(String serverName, String userId, ObjectInheritance ObjectInheritance) {
+        String restAPIName = "createTermIsATypeOfRelationship";
+        return createRelationship(serverName, restAPIName, userId, ObjectInheritanceMapper.class, ObjectInheritance);
+    }
+
+    /**
+     * Get a Object Inheritance relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ObjectInheritance relationship to get
+     * @return response which when successful contains the ObjectInheritance relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> getObjectInheritance(String serverName, String userId, String guid) {
+        String restAPIName = "getObjectInheritance";
+        return getRelationship(serverName, restAPIName, userId, ObjectInheritanceMapper.class, guid);
+    }
+
+    /**
+     * Update a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                    userId under which the request is performed
+     * @param guid                      unique identifier of the relationship
+     * @param ObjectInheritance the ObjectInheritance relationship
+     * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated IsaTypeOf
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> updateObjectInheritance(String serverName, String userId, String guid, ObjectInheritance ObjectInheritance, boolean isReplace) {
+        String restAPIName = "updateObjectInheritance";
+        return updateRelationship(serverName, restAPIName, userId, guid, ObjectInheritanceMapper.class, ObjectInheritance, isReplace);
+    }
+
+    /**
+     * Delete a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ObjectInheritance relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> deleteIObjectInheritance(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteObjectInheritance";
+        return deleteRelationship(serverName, restAPIName, userId, ObjectInheritanceMapper.class, guid, isPurge);
+    }
+
+    /**
+     * Restore a is ObjectInheritance relationship.
+     * <p>
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<ObjectInheritance> restoreObjectInheritance(String serverName, String userId, String guid) {
+        String restAPIName = "restoreObjectInheritance";
+        return restoreRelationship(serverName, restAPIName, userId, ObjectInheritanceMapper.class, guid);
     }
 
     /**
