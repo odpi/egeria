@@ -317,7 +317,7 @@ class DataEngineSchemaTypeHandlerTest {
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND,
                 "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
     }
 

@@ -197,36 +197,35 @@ public class DataEngineSchemaTypeHandler {
     /**
      * Create LineageMapping relationship between two schema attributes
      *
-     * @param userId                             the name of the calling user
-     * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute
-     * @param targetSchemaAttributeQualifiedName the qualified name of the target schema attribute
-     * @param externalSourceName                 the unique name of the external source
+     * @param userId                           the name of the calling user
+     * @param sourceReferenceableQualifiedName the qualified name of the source referenceable
+     * @param targetReferenceableQualifiedName the qualified name of the target referenceable
+     * @param externalSourceName               the unique name of the external source
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addLineageMappingRelationship(String userId, String sourceSchemaAttributeQualifiedName, String targetSchemaAttributeQualifiedName,
-                                              String externalSourceName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException {
+    public void addLineageMappingRelationship(String userId, String sourceReferenceableQualifiedName,
+                                              String targetReferenceableQualifiedName, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "addLineageMappingRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(sourceSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(targetSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(sourceReferenceableQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(targetReferenceableQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> sourceReferenceableEntity = findReferenceableEntity(userId, sourceSchemaAttributeQualifiedName);
-        Optional<EntityDetail> targetReferenceableEntity = findReferenceableEntity(userId, targetSchemaAttributeQualifiedName);
+        Optional<EntityDetail> sourceReferenceableEntity = findReferenceableEntity(userId, sourceReferenceableQualifiedName);
+        Optional<EntityDetail> targetReferenceableEntity = findReferenceableEntity(userId, targetReferenceableQualifiedName);
 
         if (!sourceReferenceableEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
-                    sourceSchemaAttributeQualifiedName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
+                    sourceReferenceableQualifiedName);
             return;
         }
         if (!targetReferenceableEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
-                    targetSchemaAttributeQualifiedName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
+                    targetReferenceableQualifiedName);
             return;
         }
 
