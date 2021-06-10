@@ -142,15 +142,13 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
         File fileStore = getFile(methodName);
 
-        try
+        try (Scanner scanner  = new Scanner(fileStore))
         {
-            Scanner scanner  = new Scanner(fileStore);
             while (scanner.hasNext())
             {
                 scanner.nextLine();
                 rowCount ++;
             }
-            scanner.close();
 
             if ((rowCount > 0) && (columnNames == null))
             {
@@ -237,9 +235,8 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
         File fileStore = super.getFile(methodName);
 
-        try
+        try (Scanner scanner = new Scanner(fileStore))
         {
-            Scanner scanner        = new Scanner(fileStore);
 
             int rowCounter = 0;
             while (scanner.hasNext())
@@ -254,7 +251,6 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
                 }
                 rowCounter ++;
             }
-            scanner.close();
 
             throw new FileReadException(CSVFileConnectorErrorCode.FILE_TOO_SHORT.getMessageDefinition(fileStoreName,
                                                                                                       Integer.toString(recordLocation)),

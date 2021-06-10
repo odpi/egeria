@@ -22,9 +22,6 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String               externalSchemaTypeGUID = null;
-    private SchemaTypeProperties externalSchemaType     = null;
-
     /**
      * Default constructor
      */
@@ -42,56 +39,6 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     public ExternalSchemaTypeProperties(ExternalSchemaTypeProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            externalSchemaTypeGUID = template.getExternalSchemaTypeGUID();
-            externalSchemaType = template.getExternalSchemaType();
-        }
-    }
-
-
-    /**
-     * Return the unique identifier of the external schema type.
-     *
-     * @return string guid
-     */
-    public String getExternalSchemaTypeGUID()
-    {
-        return externalSchemaTypeGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the external schema type.
-     *
-     * @param externalSchemaTypeGUID string guid
-     */
-    public void setExternalSchemaTypeGUID(String externalSchemaTypeGUID)
-    {
-        this.externalSchemaTypeGUID = externalSchemaTypeGUID;
-    }
-
-
-    /**
-     * Return the schema type that is reusable amongst assets.
-     *
-     * @return bean describing external schema
-     */
-    public SchemaTypeProperties getExternalSchemaType()
-    {
-        return externalSchemaType;
-    }
-
-
-    /**
-     * Set up the schema type that is reusable amongst assets.
-     *
-     * @param externalSchemaType bean describing external schema
-     */
-    public void setExternalSchemaType(SchemaTypeProperties externalSchemaType)
-    {
-        this.externalSchemaType = externalSchemaType;
     }
 
 
@@ -104,17 +51,13 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "ExternalSchemaTypeProperties{" +
-                       "externalSchemaTypeGUID='" + externalSchemaTypeGUID + '\'' +
-                       ", externalSchemaType=" + externalSchemaType +
-                       ", dataType='" + getDataType() + '\'' +
+                       " dataType='" + getDataType() + '\'' +
                        ", defaultValue='" + getDefaultValue() + '\'' +
                        ", versionNumber='" + getVersionNumber() + '\'' +
                        ", author='" + getAuthor() + '\'' +
                        ", usage='" + getUsage() + '\'' +
                        ", encodingStandard='" + getEncodingStandard() + '\'' +
                        ", namespace='" + getNamespace() + '\'' +
-                       ", formula='" + getFormula() + '\'' +
-                       ", queries=" + getQueries() +
                        ", isDeprecated=" + getIsDeprecated() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
@@ -124,44 +67,5 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ExternalSchemaTypeProperties that = (ExternalSchemaTypeProperties) objectToCompare;
-        return Objects.equals(externalSchemaTypeGUID, that.externalSchemaTypeGUID) &&
-                       Objects.equals(externalSchemaType, that.externalSchemaType);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), externalSchemaTypeGUID, externalSchemaType);
     }
 }

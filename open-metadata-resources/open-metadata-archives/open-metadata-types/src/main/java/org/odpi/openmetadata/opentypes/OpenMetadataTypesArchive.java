@@ -156,7 +156,10 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0010BaseModel();
+        update0050ApplicationsAndProcesses();
         update04xxGovernanceDefinitions();
+        update0535EventSchemas();
+        update0536APISchemas();
     }
 
     /*
@@ -234,6 +237,76 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Add new data managers
+     */
+    private void update0050ApplicationsAndProcesses()
+    {
+
+        this.archiveBuilder.addEntityDef(addAPIManagerEntity());
+        this.archiveBuilder.addEntityDef(addEventBrokerEntity());
+    }
+
+
+
+    /**
+     * This new subtype of software server capability for API managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addAPIManagerEntity()
+    {
+        final String guid            = "283a127d-3acd-4d64-b558-1fce9db9a35b";
+        final String name            = "APIManager";
+        final String description     = "A capability that manages callable APIs.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+
+    /**
+     * This new subtype of software server capability for Event Brokers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addEventBrokerEntity()
+    {
+        final String guid            = "309dfc3c-663b-4732-957b-e4a084436314";
+        final String name            = "EventBroker";
+        final String description     = "A capability that supports event-based services, typically around topics.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
 
     /**
@@ -330,6 +403,195 @@ public class OpenMetadataTypesArchive
                                                  description,
                                                  descriptionGUID);
 
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * A variety of changes to improve definition of EventType schemas
+     */
+    private void update0535EventSchemas()
+    {
+        this.archiveBuilder.addEntityDef(addEventTypeListEntity());
+        this.archiveBuilder.addEntityDef(addEventSchemaAttributeEntity());
+    }
+
+
+    /**
+     * This new subtype of schema type choice for events to make searching easier.
+     *
+     * @return entity definition
+     */
+    private EntityDef addEventTypeListEntity()
+    {
+        final String guid            = "77ccda3d-c4c6-464c-a424-4b2cb27ac06c";
+        final String name            = "EventTypeList";
+        final String description     = "A list of event types that flow on a topic.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaTypeChoice";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+    /**
+     * This new subtype of schema attribute for events to make searching easier.
+     *
+     * @return entity definition
+     */
+    private EntityDef addEventSchemaAttributeEntity()
+    {
+        final String guid            = "5be4ee8f-4d0c-45cd-a411-22a468950342";
+        final String name            = "EventSchemaAttribute";
+        final String description     = "A data field in an event type.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * A variety of changes to improve definition of API schemas
+     */
+    private void update0536APISchemas()
+    {
+
+        this.archiveBuilder.addEntityDef(addAPIParameterListEntity());
+        this.archiveBuilder.addEntityDef(addAPIParameterEntity());
+
+        this.archiveBuilder.addTypeDefPatch(updateAPIOperation());
+    }
+
+
+
+    /**
+     * This new subtype of schema type that describes a list of parameters for an API.
+     *
+     * @return entity definition
+     */
+    private EntityDef addAPIParameterListEntity()
+    {
+        final String guid            = "ba167b12-969f-49d3-8bea-d04228d9a44b";
+        final String name            = "APIParameterList";
+        final String description     = "A list of parameters for an API.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "ComplexSchemaType";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute2Name            = "required";
+        final String attribute2Description     = "Is this parameter list required when calling the API.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+
+
+    /**
+     * This new subtype of SchemaAttribute is used for describing a data value that is part of a API definition.
+     *
+     * @return entity definition
+     */
+    private EntityDef addAPIParameterEntity()
+    {
+        final String guid            = "10277b13-509c-480e-9829-bc16d0eafc53";
+        final String name            = "APIParameter";
+        final String description     = "A data value that is part of a API definition.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute3Name            = "parameterType";
+        final String attribute3Description     = "What type of parameter is it";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * This change means that APIOperation inherits from ComplexSchemaType rather than SchemaType.
+     *
+     * @return patched type
+     */
+    private TypeDefPatch updateAPIOperation()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "APIOperation";
+
+        final String superTypeName = "ComplexSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
     }
 }
 

@@ -344,6 +344,14 @@ public class OpenMetadataAPIMapper
     public static final String APPLICATION_TYPE_NAME                  = "Application";
     /* SoftwareServerCapability */
 
+    public static final String API_MANAGER_TYPE_GUID                  = "283a127d-3acd-4d64-b558-1fce9db9a35b";
+    public static final String API_MANAGER_TYPE_NAME                  = "APIManager";
+    /* SoftwareServerCapability */
+
+    public static final String EVENT_BROKER_TYPE_GUID                 = "309dfc3c-663b-4732-957b-e4a084436314";
+    public static final String EVENT_BROKER_TYPE_NAME                 = "EventBroker";
+    /* SoftwareServerCapability */
+
     public static final String ENGINE_TYPE_GUID                       = "3566527f-b1bd-4e7a-873e-a3e04d5f2a14";
     public static final String ENGINE_TYPE_NAME                       = "Engine";
     /* SoftwareServerCapability */
@@ -1877,10 +1885,19 @@ public class OpenMetadataAPIMapper
     public static final String FOREIGN_KEY_STEWARD_PROPERTY_NAME        = "steward";       /* from ForeignKey relationship */
     public static final String FOREIGN_KEY_SOURCE_PROPERTY_NAME         = "source";        /* from ForeignKey relationship */
 
-    /* For Event Type */
+    /* For Event Types */
+    public static final String EVENT_TYPE_LIST_TYPE_GUID                = "77ccda3d-c4c6-464c-a424-4b2cb27ac06c";   /* from Area 5 */
+    public static final String EVENT_TYPE_LIST_TYPE_NAME                = "EventTypeList";
+    /* ComplexSchemaType */
+
     public static final String EVENT_TYPE_TYPE_GUID                     = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
     public static final String EVENT_TYPE_TYPE_NAME                     = "EventType";
     /* ComplexSchemaType */
+
+    public static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID         = "5be4ee8f-4d0c-45cd-a411-22a468950342";   /* from Area 5 */
+    public static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME         = "EventSchemaAttribute";
+    /* SchemaAttribute */
+
     public static final String EVENT_SET_TYPE_GUID                      = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
     public static final String EVENT_SET_TYPE_NAME                      = "EventSet";
     /* Collection */
@@ -1892,6 +1909,17 @@ public class OpenMetadataAPIMapper
     public static final String API_OPERATION_TYPE_GUID                  = "f1c0af19-2729-4fac-996e-a7badff3c21c";   /* from Area 5 */
     public static final String API_OPERATION_TYPE_NAME                  = "APIOperation";
     /* SchemaType */
+    public static final String API_PARAMETER_LIST_TYPE_GUID             = "ba167b12-969f-49d3-8bea-d04228d9a44b";   /* from Area 5 */
+    public static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
+    /* ComplexSchemaType */
+
+    public static final String ENCODING_PROPERTY_NAME                   = "encoding";        /* from APIParameter and APIParameterList entities */
+    public static final String REQUIRED_PROPERTY_NAME                   = "required";        /* from APIParameterList entity */
+    public static final String PARAMETER_TYPE_PROPERTY_NAME             = "parameterType";   /* from APIParameter entity */
+
+    public static final String API_PARAMETER_TYPE_GUID                  = "10277b13-509c-480e-9829-bc16d0eafc53";   /* from Area 5 */
+    public static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
+    /* SchemaAttribute */
     public static final String API_OPERATIONS_RELATIONSHIP_TYPE_GUID    = "03737169-ceb5-45f0-84f0-21c5929945af"; /* from Area 5 */
     public static final String API_OPERATIONS_RELATIONSHIP_TYPE_NAME    = "APIOperations";
     /* End1 = APISchemaType; End 2 = APIOperation */

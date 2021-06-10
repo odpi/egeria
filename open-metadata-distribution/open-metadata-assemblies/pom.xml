@@ -136,7 +136,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-metadata-types</artifactId>
+            <artifactId>open-metadata-types-utility</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

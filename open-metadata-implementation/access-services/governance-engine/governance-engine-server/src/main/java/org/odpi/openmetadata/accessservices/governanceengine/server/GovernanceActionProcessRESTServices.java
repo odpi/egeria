@@ -102,7 +102,6 @@ public class GovernanceActionProcessRESTServices
                                                                  processProperties.getTechnicalName(),
                                                                  processProperties.getTechnicalDescription(),
                                                                  processProperties.getAdditionalProperties(),
-                                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                  extendedProperties,
                                                                  this.getProcessStatus(requestBody.getProcessStatus()),

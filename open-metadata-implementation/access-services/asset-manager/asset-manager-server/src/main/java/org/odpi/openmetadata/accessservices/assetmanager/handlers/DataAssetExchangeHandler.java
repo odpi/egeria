@@ -178,12 +178,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             typeName = assetProperties.getTypeName();
         }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
         String assetGUID = assetHandler.createAssetInRepository(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
@@ -191,7 +185,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 assetProperties.getTechnicalName(),
                                                                 assetProperties.getTechnicalDescription(),
                                                                 assetProperties.getAdditionalProperties(),
-                                                                typeGUID,
                                                                 typeName,
                                                                 assetProperties.getExtendedProperties(),
                                                                 InstanceStatus.ACTIVE,
