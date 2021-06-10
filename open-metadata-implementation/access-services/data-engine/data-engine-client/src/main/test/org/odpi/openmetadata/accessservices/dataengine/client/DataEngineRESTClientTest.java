@@ -54,7 +54,7 @@ public class DataEngineRESTClientTest {
     }
 
     @Test
-    public void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException, RESTServerException {
+    public void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RESTServerException {
         GUIDResponse response = mockGUIDResponse();
         Database database = new Database();
 
@@ -67,27 +67,27 @@ public class DataEngineRESTClientTest {
     }
 
     @Test
-    public void upsertRelationalTables() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    public void upsertRelationalTable() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GUIDResponse response = mockGUIDResponse();
         RelationalTable relationalTable = new RelationalTable();
 
         when(connector.callPostRESTCall(eq("upsertRelationalTable"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
 
-        dataEngineRESTClient.upsertRelationalTables(USER_ID, relationalTable);
+        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable);
 
         assertEquals(GUID, response.getGUID());
     }
 
     @Test
-    public void upsertDataFiles() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    public void upsertDataFile() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GUIDResponse response = mockGUIDResponse();
         DataFile dataFile = new DataFile();
 
         when(connector.callPostRESTCall(eq("upsertDataFile"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
 
-        dataEngineRESTClient.upsertDataFiles(USER_ID, dataFile);
+        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile);
 
         assertEquals(GUID, response.getGUID());
     }

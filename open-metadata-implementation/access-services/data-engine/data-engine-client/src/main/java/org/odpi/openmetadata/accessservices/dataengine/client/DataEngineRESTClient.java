@@ -120,6 +120,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callProcessListPostRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
                                                                                                        PropertyServerException {
@@ -153,6 +156,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   PropertyServerException {
@@ -180,6 +186,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, SCHEMA_TYPE_DELETE_METHOD_NAME);
@@ -207,6 +216,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME);
@@ -235,6 +247,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException{
         invalidParameterHandler.validateUserId(userId, PORT_ALIAS_DELETE_METHOD_NAME);
@@ -280,7 +295,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String upsertDatabase(String userId, Database database) throws InvalidParameterException, UserNotAuthorizedException,
                                                                           PropertyServerException {
@@ -295,9 +312,12 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                                                PropertyServerException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                               PropertyServerException {
         final String methodName = RELATIONAL_TABLE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -309,8 +329,11 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATA_FILE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);

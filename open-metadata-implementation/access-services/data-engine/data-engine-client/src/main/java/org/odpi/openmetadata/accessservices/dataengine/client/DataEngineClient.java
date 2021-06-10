@@ -276,10 +276,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException,
-                                                                                         ConnectorCheckedException;
+    String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException,
+                                                                                        ConnectorCheckedException;
 
     /**
      * Create or update the data file entity
@@ -294,8 +294,8 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException,
-                                                                    ConnectorCheckedException;
+    String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
 }

@@ -78,6 +78,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
                                                                                                        ConnectorCheckedException {
@@ -113,6 +116,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   ConnectorCheckedException {
@@ -142,6 +148,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
@@ -173,6 +182,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   ConnectorCheckedException {
@@ -205,6 +217,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
@@ -272,6 +287,9 @@ public class DataEngineEventClient implements DataEngineClient {
         return this.externalSource;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String upsertDatabase(String userId, Database database) throws InvalidParameterException, ConnectorCheckedException {
         DatabaseEvent event = new DatabaseEvent();
@@ -286,8 +304,11 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException, ConnectorCheckedException {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -300,8 +321,11 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, ConnectorCheckedException {
         DataFileEvent event = new DataFileEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);

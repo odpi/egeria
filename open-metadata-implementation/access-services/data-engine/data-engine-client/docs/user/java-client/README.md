@@ -57,14 +57,15 @@ DataEngineClient client = new DataEngineEventClient(dataEngineInTopicClientConne
 
 ## Client operations
 
-Once you have an instance of the client, you can use it to create the open metadata entities for the ETL jobs.
+Once you have an instance of the client, you can use it to create, update or delete the open metadata entities for the ETL jobs.
 
-<!-- TODO  update with user doc about client operations -->
-
-* Create a schema type
-* Create a port implementation, with a schema type and the corresponding PortSchema relationship
-* Create a port alias, with a PortDelegation relationship
-* Create a process, with a list of the port implementations and port aliases involved in a transformation
+* Create/Update/Delete a schema type
+* Create/Update/Delete a port implementation, with a schema type and the corresponding PortSchema relationship
+* Create/Update/Delete a port alias, with a PortDelegation relationship
+* Create/Update/Delete a list of process, with a corresponding port implementations and port aliases involved in a transformation
+* Create/Update a database
+* Create/Update a relational table
+* Create/Update a data file
  
 
 > Note: The equivalent REST interfaces are documented in the

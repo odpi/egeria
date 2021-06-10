@@ -215,6 +215,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a schema type
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteSchemaTypeEvent(String dataEngineEvent) {
         final String methodName = "processDeleteSchemaTypeEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -228,6 +233,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a data engine
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteDataEngineEvent(String dataEngineEvent) {
         final String methodName = "processDeleteDataEngineEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -241,6 +251,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link ProcessesDeleteEvent} for deleting a list of processes
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteProcessesEvent(String dataEngineEvent) {
         final String methodName = "processDeleteProcessesEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -254,6 +269,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a port implementation
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeletePortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processDeletePortImplementationEvent";
         deletePort(dataEngineEvent, methodName, PORT_IMPLEMENTATION_TYPE_NAME);
@@ -265,7 +285,7 @@ public class DataEngineEventProcessor {
     }
 
     /**
-     * Process a {@link DatabaseEvent}
+     * Process a {@link DatabaseEvent} for creating a database
      *
      * @param dataEngineEvent the event to be processed
      */
@@ -276,14 +296,14 @@ public class DataEngineEventProcessor {
             DatabaseEvent databaseEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseEvent.class);
 
             dataEngineRESTServices.upsertDatabase(databaseEvent.getUserId(), serverName, databaseEvent.getDatabase(),
-                    databaseEvent.getExternalSourceName(), methodName);
+                    databaseEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
 
     /**
-     * Process a {@link DatabaseEvent}
+     * Process a {@link RelationalTableEvent} for creating a relational table
      *
      * @param dataEngineEvent the event to be processed
      */
@@ -294,14 +314,14 @@ public class DataEngineEventProcessor {
             RelationalTableEvent relationalTableEvent = OBJECT_MAPPER.readValue(dataEngineEvent, RelationalTableEvent.class);
 
             dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName, relationalTableEvent.getDatabaseQualifiedName(),
-                    relationalTableEvent.getRelationalTable(), relationalTableEvent.getExternalSourceName(), methodName);
+                    relationalTableEvent.getRelationalTable(), relationalTableEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
 
     /**
-     * Process a {@link DatabaseEvent}
+     * Process a {@link DataFileEvent} for creating a data file
      *
      * @param dataEngineEvent the event to be processed
      */
@@ -312,7 +332,7 @@ public class DataEngineEventProcessor {
             DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
 
             dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
-                    dataFileEvent.getExternalSourceName(), methodName);
+                    dataFileEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
