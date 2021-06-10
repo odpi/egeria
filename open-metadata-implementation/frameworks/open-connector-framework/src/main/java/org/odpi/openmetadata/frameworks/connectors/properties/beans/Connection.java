@@ -445,10 +445,7 @@ public class Connection extends Referenceable
                 ", connectorType=" + connectorType +
                 ", endpoint=" + endpoint +
                 ", userId='" + userId + '\'' +
-                ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", clearPassword='" + clearPassword + '\'' +
                 ", configurationProperties=" + configurationProperties +
-                ", securedProperties=" + securedProperties +
                 ", assetSummary='" + assetSummary + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
