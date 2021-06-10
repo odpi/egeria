@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Integration Daemon Services with Spring
+# Database Integrator Services with Spring
 
-The integration daemon services with Spring module uses Spring to implement a REST API
+The database integrator services with Spring module uses Spring to implement a REST API
 for the integration daemon server.
 
 ----

@@ -225,7 +225,8 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
     /**
      * Return the converted bean.  This is a special method used for schema types since they are stored
-     * as a collection of instances.
+     * as a collection of instances.  For external schema types and map elements, both the GUID and the bean are returned to
+     * allow the consuming OMAS to choose whether it is returning GUIDs of the linked to schema or the schema type bean itself.
      *
      * @param beanClass name of the class to create
      * @param schemaRootHeader header of the schema element that holds the root information
@@ -236,9 +237,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
      * @param externalSchemaTypeGUID unique identifier of the external schema type
      * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
+     * @param mapFromSchemaTypeGUID unique identifier of the mapFrom schema type
      * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param mapToSchemaTypeGUID unique identifier of the mapTo schema type
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that could be the type for this attribute
      * @param schemaTypeOptions list of schema types that could be the type for this attribute
+     * @param queryTargets list of relationships to schema types that contain data values used to derive the schema type value(s)
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
@@ -253,9 +258,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                   String               validValueSetGUID,
                                   String               externalSchemaTypeGUID,
                                   B                    externalSchemaType,
+                                  String               mapFromSchemaTypeGUID,
                                   B                    mapFromSchemaType,
+                                  String               mapToSchemaTypeGUID,
                                   B                    mapToSchemaType,
+                                  List<String>         schemaTypeOptionGUIDs,
                                   List<B>              schemaTypeOptions,
+                                  List<Relationship>   queryTargets,
                                   String               methodName) throws PropertyServerException
     {
         return this.getNewSchemaTypeBean(beanClass,
@@ -2507,6 +2516,50 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Extract the query property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getQuery(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "setQuery";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the queryId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getQueryId(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "setQueryId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
 
     /**
      * Extract and delete the version number property from the supplied instance properties.
@@ -2840,12 +2893,34 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      */
     protected boolean removeIsNullable(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeOrderedValues";
+        final String methodName = "removeIsNullable";
 
         if (instanceProperties != null)
         {
             return repositoryHelper.removeBooleanProperty(serviceName,
-                                                          OpenMetadataAPIMapper.ORDERED_VALUES_PROPERTY_NAME,
+                                                          OpenMetadataAPIMapper.IS_NULLABLE_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Retrieve the required flag from the properties from the supplied instance properties.
+     *
+     * @param instanceProperties properties from the classification
+     * @return boolean - default is false
+     */
+    protected boolean removeRequired(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeRequired";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.REQUIRED_PROPERTY_NAME,
                                                           instanceProperties,
                                                           methodName);
         }
@@ -5267,7 +5342,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the encoding standing property from the supplied instance properties.
+     * Extract and delete the encoding property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -5279,7 +5354,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.DS_PHYSICAL_ENCODING_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.ENCODING_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the parameterType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeParameterType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeParameterType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PARAMETER_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
