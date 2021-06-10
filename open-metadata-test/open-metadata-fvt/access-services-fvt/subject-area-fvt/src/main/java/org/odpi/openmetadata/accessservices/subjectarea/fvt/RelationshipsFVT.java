@@ -245,6 +245,7 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createTermTYPEDBYRelationship(term1, term2));
         FVTUtils.validateRelationship(createTranslation(term1, term2));
         FVTUtils.validateRelationship(createUsedInContext(term1, term2));
+        FVTUtils.validateRelationship(createTermISATypeOFRelationship(term1, term2));
         FVTUtils.validateRelationship(createObjectInheritance(term1, term2));
     }
 

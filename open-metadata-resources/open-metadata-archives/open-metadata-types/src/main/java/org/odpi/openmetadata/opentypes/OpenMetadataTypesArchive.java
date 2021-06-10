@@ -439,7 +439,7 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-    
+
     /**
      * A variety of changes to improve consistency and flexibility of the governance definitions
      */
