@@ -38,7 +38,7 @@ There are three parts to this:
 * The type definition for the **Asset** entity is found in model [0010 Basic Model](../open-metadata-types/0010-Base-Model.md).
 
 * Examples of representing different types of assets using the open metadata types are found in
-  [Modelling Assets]().
+  [Modelling Assets](../modelling-technology).
   
 * The [Open Metadata Labs](../../../open-metadata-resources/open-metadata-labs) provide practical
   examples showing all of the techniques to manage an asset catalog, allowing you to try each of
