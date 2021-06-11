@@ -46,7 +46,7 @@ public class RelationalTableEvent extends DataEngineEventHeader {
      * @return String - qualified name of the database
      * -- SETTER --
      * Set up the qualified name of the database
-     * @param qualifiedName of the database
+     * @param databaseQualifiedName of the database
      */
     private String databaseQualifiedName;
 }
