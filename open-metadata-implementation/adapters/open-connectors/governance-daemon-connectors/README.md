@@ -12,24 +12,6 @@ servers](../../../governance-servers) that make active use of open metadata.
 that allow the [Open Lineage Services](../../../governance-servers/open-lineage-services)
 to store lineage information.
 
-## Deprecated connectors
-
-The following connectors were written for governance servers that are now deprecated.
-They will be removed as new versions are created for the
-replacement [Integration Daemon](../../../admin-services/docs/concepts/integration-daemon.md)
-and [Engine Host](../../../admin-services/docs/concepts/engine-host.md) OMAG Servers.
-
-* **[data-platform-connectors](data-platform-connectors)** provide plugins to the
-[Data Platform Server](../../../admin-services/docs/concepts/data-platform-server.md)
-that allow the [Data Platform Services](../../../governance-servers/data-platform-services)
-to connect with database servers and other data platforms in order to retrieve
-information about the data assets they host.
-
-   * These connectors will become Database Integration Connectors for the 
-    [Database Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/database-integrator)
-    running in the Integration Daemon.
-   
-
 ----
 * Return to the [open-connectors](..) module.
 

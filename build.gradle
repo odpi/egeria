@@ -209,7 +209,6 @@ allprojects {
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:1.9.14-atlassian-6")
             runtimeOnly("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
             runtimeOnly("org.janusgraph:janusgraph-cql:${janusVersion}")
-            runtimeOnly("org.janusgraph:janusgraph-cassandra:${janusVersion}")
             runtimeOnly("org.janusgraph:janusgraph-lucene:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")

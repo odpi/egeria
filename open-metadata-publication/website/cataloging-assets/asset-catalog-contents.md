@@ -109,6 +109,10 @@ so acts as a guide to the types of content in the asset and how to navigate arou
 With the schema in place, it is possible to search for assets based on the
 type of data, or type of operations that the asset supports.
 
+#### More information
+
+[Modelling Schema](../modelling-technology/modelling-schemas.md)
+
 ----
 ## Asset Ownership
 
@@ -119,9 +123,10 @@ This covers ensuring the catalog entry is correct,
 the contents of the asset are complete and correct and controlling access
 to the asset.
 
-The owner can be defined as a user identity, a personal profile or a team profile.
+The owner can be defined as a user identity, an actor profile or a person's role.
 These definitions are managed by the
-[Community Profile OMAS](../../../open-metadata-implementation/access-services/community-profile).
+[Community Profile OMAS](../../../open-metadata-implementation/access-services/community-profile) and 
+[Governance Program OMAS](../../../open-metadata-implementation/access-services/governance-program).
 
 #### Usage
 

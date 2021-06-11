@@ -82,6 +82,21 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0401](../open-metadata-publication/website/open-metadata-types/0401-Governance-Definitions.md) and
   [0405](../open-metadata-publication/website/open-metadata-types/0405-Governance-Drivers.md).
 
+* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types.
+
+  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabluar-Schemas.md).
+
+* Deprecated types called **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** because they
+  offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
+  This change makes the document schemas consistent with other types of schema.
+
+  See type descriptions in model [0531](../open-metadata-publication/website/open-metadata-types/0531-Document-Schemas.md).
+
+* Updated supertype of **RelationalTableType** to inherit from **ComplexSchemaType** rather than **TabularColumnType**
+  since TabularColumnType is now deprecated.
+
+  See type descriptions in model [0534](../open-metadata-publication/website/open-metadata-types/0534-Relational-Schemas.md).
+
 * New type called **EventTypeList** to allow a list of event types to be associated with a topic
   and a specific subtype of [SchemaAttribute](../open-metadata-publication/website/open-metadata-types/0505-Schema-Attributes.md)
   for an attribute in an event type to make it easier to search for
@@ -114,6 +129,10 @@ The following capabilities have now been removed (previously  deprecated and/or 
 * Much of the above capability can be implemented via [Integration Services](https://egeria.odpi.org/open-metadata-implementation/integration-services/) .
 * Hadoop specifics may be developed in the future within the [Egeria Hadoop](https://github.com/odpi/egeria-connector-hadoop-ecosystem) GitHub repository.
 * For more details see [#5314](https://github.com/odpi/egeria/pull/5314) .
+* Data Platform Services and Data Platform OMAS. For more details see [#5344](https://github.com/odpi/egeria/pull/5344) .
+* Data Platform capabilities are already available in [Database Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator/) and [Files Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/files-integrator/) already part of Integration Services. 
+* Cassandra connectors: cassandra-data-store-connector and cassandra-metadata-extractor-connector will be introduced back in new GitHub repository. For more information see [#2671](https://github.com/odpi/egeria/issues/2671) .
+
 ## Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
