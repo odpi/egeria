@@ -127,7 +127,7 @@
                             <arguments>
                                 <argument>java</argument>
                                 <!--suppress UnresolvedMavenProperty -->
-                                <argument>${jacoco.argLine}</argument>
+                                <argument>${jacoco.chassisArgLine}</argument>
                                 <argument>-Dserver.port=${server.port}</argument>
                                 <argument>-Dloader.path=${fvt.distdir}/server/lib</argument>
                                 <argument>-Dspringdoc.api-docs.enabled=false</argument>
