@@ -82,6 +82,21 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0401](../open-metadata-publication/website/open-metadata-types/0401-Governance-Definitions.md) and
   [0405](../open-metadata-publication/website/open-metadata-types/0405-Governance-Drivers.md).
 
+* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types.
+
+  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabluar-Schemas.md).
+
+* Deprecated types called **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** because they
+  offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
+  This change makes the document schemas consistent with other types of schema.
+
+  See type descriptions in model [0531](../open-metadata-publication/website/open-metadata-types/0531-Document-Schemas.md).
+
+* Updated supertype of **RelationalTableType** to inherit from **ComplexSchemaType** rather than **TabularColumnType**
+  since TabularColumnType is now deprecated.
+
+  See type descriptions in model [0534](../open-metadata-publication/website/open-metadata-types/0534-Relational-Schemas.md).
+
 * New type called **EventTypeList** to allow a list of event types to be associated with a topic
   and a specific subtype of [SchemaAttribute](../open-metadata-publication/website/open-metadata-types/0505-Schema-Attributes.md)
   for an attribute in an event type to make it easier to search for
