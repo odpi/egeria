@@ -35,6 +35,7 @@ The OMIS to use for different types of technology is shown in the table below.
 | Event Brokers | Apache Kafka | [Topic Integrator OMIS](../../../../open-metadata-implementation/integration-services/topic-integrator) |
 | API Managers | Swagger Site | [API Integrator OMIS](../../../../open-metadata-implementation/integration-services/api-integrator) |
 
+<br>
 
 In Figure 1, integration connector `Database Extractor` is monitoring for schema changes in the Database Server
 and cataloguing them in open metadata through the Database Integrator OMIS.  The Database Integrator OMIS

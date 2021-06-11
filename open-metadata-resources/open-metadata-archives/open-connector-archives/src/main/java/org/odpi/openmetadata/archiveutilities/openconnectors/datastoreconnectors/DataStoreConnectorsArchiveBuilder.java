@@ -6,7 +6,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnector
 import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider;
+//import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.OpenConnectorArchiveBuilder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -70,18 +70,20 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
     {
         ConnectorType              connectorType;
 
-        CassandraDataStoreProvider cassandraDataStoreProvider = new CassandraDataStoreProvider();
-        connectorType = cassandraDataStoreProvider.getConnectorType();
+//TODO: Put Cassandra connector back after it gets migrated to new repository and can be used as external connector.
 
-        super.addConnectorType(connectorType.getGUID(),
-                               connectorType.getQualifiedName(),
-                               connectorType.getDisplayName(),
-                               connectorType.getDescription(),
-                               connectorType.getConnectorProviderClassName(),
-                               connectorType.getRecognizedSecuredProperties(),
-                               connectorType.getRecognizedConfigurationProperties(),
-                               connectorType.getRecognizedAdditionalProperties(),
-                               connectorType.getAdditionalProperties());
+//        CassandraDataStoreProvider cassandraDataStoreProvider = new CassandraDataStoreProvider();
+//        connectorType = cassandraDataStoreProvider.getConnectorType();
+//
+//        super.addConnectorType(connectorType.getGUID(),
+//                               connectorType.getQualifiedName(),
+//                               connectorType.getDisplayName(),
+//                               connectorType.getDescription(),
+//                               connectorType.getConnectorProviderClassName(),
+//                               connectorType.getRecognizedSecuredProperties(),
+//                               connectorType.getRecognizedConfigurationProperties(),
+//                               connectorType.getRecognizedAdditionalProperties(),
+//                               connectorType.getAdditionalProperties());
 
 
 
