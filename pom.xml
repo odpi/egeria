@@ -1201,34 +1201,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-connectors</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-privacy-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2524,13 +2496,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cassandra-data-store-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>cassandra-metadata-extractor-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2554,13 +2519,6 @@
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>server-author-view-spring</artifactId>
                 <scope>runtime</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-services-connector</artifactId>
-                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
