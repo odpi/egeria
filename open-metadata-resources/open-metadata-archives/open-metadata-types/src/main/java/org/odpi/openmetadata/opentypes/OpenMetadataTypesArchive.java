@@ -158,6 +158,9 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0050ApplicationsAndProcesses();
         update04xxGovernanceDefinitions();
+        update0530TabularSchema();
+        update0531DocumentSchema();
+        update0534RelationalSchema();
         update0535EventSchemas();
         update0536APISchemas();
     }
@@ -404,6 +407,123 @@ public class OpenMetadataTypesArchive
                                                  descriptionGUID);
 
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * The TabularColumnType only allows for a column to be primitive - could be a literal.
+     */
+    private void update0530TabularSchema()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateTabularColumnType());
+    }
+
+    private TypeDefPatch deprecateTabularColumnType()
+    {
+        final String typeName = "TabularColumnType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Deprecate the specialist SchemaTypes for documents since the offer little value.
+     */
+    private void update0531DocumentSchema()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateSimpleDocumentType());
+        this.archiveBuilder.addTypeDefPatch(deprecateStructDocumentType());
+        this.archiveBuilder.addTypeDefPatch(deprecateMapDocumentType());
+    }
+
+    private TypeDefPatch deprecateSimpleDocumentType()
+    {
+        final String typeName = "SimpleDocumentType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateStructDocumentType()
+    {
+        final String typeName = "StructDocumentType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateMapDocumentType()
+    {
+        final String typeName = "MapDocumentType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Change superclass of RelationshipTableType to be ComplexSchemaType
+     */
+    private void update0534RelationalSchema()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateRelationalTableTypeEntity());
+    }
+
+
+    private TypeDefPatch updateRelationalTableTypeEntity()
+    {
+        final String typeName = "RelationalTableType";
+
+        final String superTypeName = "ComplexSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
 
 
     /*
