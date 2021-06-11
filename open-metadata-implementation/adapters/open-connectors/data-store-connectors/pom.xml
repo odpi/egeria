@@ -31,7 +31,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>file-connectors</module>
-        <module>cassandra-data-store-connector</module>
     </modules>
 
 
