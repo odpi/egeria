@@ -35,7 +35,6 @@
         <module>integration-daemon-services</module>
         <module>open-lineage-services</module>
         <module>data-engine-proxy-services</module>
-        <module>data-platform-services</module>
     </modules>
 
 </project>

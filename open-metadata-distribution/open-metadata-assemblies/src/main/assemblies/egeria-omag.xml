@@ -58,7 +58,6 @@
                 <include>org.odpi.egeria:audit-log-slf4j-connector:*</include>
                 <include>org.odpi.egeria:avro-file-connector:*</include>
                 <include>org.odpi.egeria:basic-file-connector:*</include>
-                <include>org.odpi.egeria:cassandra-data-store-connector:*</include>
                 <include>org.odpi.egeria:cohort-registry-file-store-connector:*</include>
                 <include>org.odpi.egeria:configuration-encrypted-file-store-connector:*</include>
                 <include>org.odpi.egeria:configuration-file-store-connector:*</include>
