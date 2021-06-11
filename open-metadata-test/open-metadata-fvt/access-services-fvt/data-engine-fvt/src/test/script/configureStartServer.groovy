@@ -17,8 +17,8 @@ import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
 // Maven plugin works best with properties, gradle with system properties, so use either
-user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
-baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
+user=(properties["user"] ?: System.properties["user"]) ?: "admin";
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999";
 serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem";
 serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph";
 maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
