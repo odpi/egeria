@@ -114,6 +114,10 @@ The following capabilities have now been removed (previously  deprecated and/or 
 * Much of the above capability can be implemented via [Integration Services](https://egeria.odpi.org/open-metadata-implementation/integration-services/) .
 * Hadoop specifics may be developed in the future within the [Egeria Hadoop](https://github.com/odpi/egeria-connector-hadoop-ecosystem) GitHub repository.
 * For more details see [#5314](https://github.com/odpi/egeria/pull/5314) .
+* Data Platform Services and Data Platform OMAS. For more details see [#5344](https://github.com/odpi/egeria/pull/5344) .
+* Data Platform capabilities are already available in [Database Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator/) and [Files Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/files-integrator/) already part of Integration Services. 
+* Cassandra connectors: cassandra-data-store-connector and cassandra-metadata-extractor-connector will be introduced back in new GitHub repository. For more information see [#2671](https://github.com/odpi/egeria/issues/2671) .
+
 ## Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
