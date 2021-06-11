@@ -1123,7 +1123,7 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            guid = upsertDataFile(serverName, userId, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
+            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
             response.setGUID(guid);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);

@@ -807,9 +807,9 @@ class DataEngineRESTServicesTest {
 
     @Test
     public void insertDataFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockDataFileHandler("createDataFileAndSchema");
+        mockDataFileHandler("upsertDataFile");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getDataFile());
-        mockRegistrationHandler("createDataFileAndSchema");
+        mockRegistrationHandler("upsertDataFile");
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
@@ -817,14 +817,14 @@ class DataEngineRESTServicesTest {
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME, DATA_FILE_TYPE_GUID,
                 dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 dataFileRequestBody.getDataFile().getColumns(), getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
     @Test
     public void insertCSVFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockDataFileHandler("createDataFileAndSchema");
+        mockDataFileHandler("upsertDataFile");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getCsvFile());
-        mockRegistrationHandler("createDataFileAndSchema");
+        mockRegistrationHandler("upsertDataFile");
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
@@ -832,7 +832,7 @@ class DataEngineRESTServicesTest {
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME,
                 CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 dataFileRequestBody.getDataFile().getColumns(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
     @Test
