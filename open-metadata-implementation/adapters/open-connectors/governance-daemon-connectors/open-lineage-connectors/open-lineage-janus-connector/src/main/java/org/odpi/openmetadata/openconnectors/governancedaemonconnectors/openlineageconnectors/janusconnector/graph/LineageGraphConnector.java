@@ -381,6 +381,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
                 .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
                 .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_OUT_GUID)
                 .where(__.outE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(eq(0)));
         Vertex subProcess = null;
         if (existingSubprocess.hasNext()) {
@@ -401,6 +402,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Vertex> fromOutputExistingSubprocess = g.V(columnOut.id()).inE(EDGE_LABEL_COLUMN_DATA_FLOW).outV()
                 .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
                 .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_IN_GUID)
                 .where(__.inE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(eq(0)));
 
         Vertex fromOutputSubProcess = null;
