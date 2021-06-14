@@ -56,7 +56,6 @@ stages:
               goals: 'sonar:sonar'
               options: >-
                   --batch-mode
-                  --quiet
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -Dsonar
                   -Dsonar.projectKey="$(projectKey)"
@@ -64,6 +63,7 @@ stages:
                   -Dsonar.projectName="$(projectName)"
                   -Dsonar.host.url="https://sonarcloud.io"
                   -Dsonar.login="$(apiKey)"
+                  -DskipFVT
               mavenOptions: '-Xmx5500m'
           - task: SonarCloudPublish@1
             displayName: 'Publish SonarCloud quality gate results'
