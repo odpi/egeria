@@ -1203,7 +1203,7 @@ public class DataEngineRESTServices {
         response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
-    private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
+    public VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
                                              String externalSourceName) {
         final String methodName = "updateProcessStatus";
 

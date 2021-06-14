@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -27,6 +28,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.slf4j.Logger;
@@ -95,10 +97,15 @@ public class DataEngineEventProcessor {
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
-            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portAliasEvent.getUserId(),
+            String userId = portAliasEvent.getUserId();
+            String externalSourceName = portAliasEvent.getExternalSourceName();
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, userId,
                     portAliasEvent.getProcessQualifiedName()).orElse(null);
-            dataEngineRESTServices.upsertPortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
-                    processGUID, portAliasEvent.getExternalSourceName());
+
+            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
+            dataEngineRESTServices.upsertPortAliasWithDelegation(userId, serverName, portAliasEvent.getPortAlias(),
+                    processGUID, externalSourceName);
+            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -137,12 +144,21 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
+            String externalSourceName = portImplementationEvent.getExternalSourceName();
+            String userId = portImplementationEvent.getUserId();
+            PortImplementation portImplementation = portImplementationEvent.getPortImplementation();
 
-            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portImplementationEvent.getUserId(),
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, userId,
                     portImplementationEvent.getProcessQualifiedName()).orElse(null);
-            dataEngineRESTServices.upsertPortImplementation(portImplementationEvent.getUserId(), serverName,
-                    portImplementationEvent.getPortImplementation(), processGUID, portImplementationEvent.getExternalSourceName());
 
+            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
+
+            String portImplementationGUID = dataEngineRESTServices.upsertPortImplementation(userId, serverName, portImplementation, processGUID,
+                    externalSourceName);
+            dataEngineRESTServices.upsertSchemaType(userId, serverName, portImplementationGUID, portImplementation.getSchemaType(),
+                    externalSourceName);
+
+            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException | FunctionNotSupportedException e) {
             logException(dataEngineEvent, methodName, e);
         }

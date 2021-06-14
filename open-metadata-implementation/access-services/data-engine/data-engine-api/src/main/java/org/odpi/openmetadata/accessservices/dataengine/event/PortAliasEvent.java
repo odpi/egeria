@@ -45,7 +45,7 @@ public class PortAliasEvent extends DataEngineEventHeader {
      *
      * @return the port
      */
-    public PortAlias getPort() {
+    public PortAlias getPortAlias() {
         return portAlias;
     }
 
@@ -54,7 +54,7 @@ public class PortAliasEvent extends DataEngineEventHeader {
      *
      * @param portAlias the port alias
      */
-    public void setPort(PortAlias portAlias) {
+    public void setPortAlias(PortAlias portAlias) {
         this.portAlias = portAlias;
     }
 

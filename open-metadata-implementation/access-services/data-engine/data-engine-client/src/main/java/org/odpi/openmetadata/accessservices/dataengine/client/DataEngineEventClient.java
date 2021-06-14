@@ -29,8 +29,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 
@@ -208,7 +206,7 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.PORT_ALIAS_EVENT);
-        event.setPort(portAlias);
+        event.setPortAlias(portAlias);
         event.setProcessQualifiedName(processQualifiedName);
 
         topicConnector.sendEvent(event);

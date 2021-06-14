@@ -26,6 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ProcessListEvent.class, name = "ProcessListEvent"),
         @JsonSubTypes.Type(value = SchemaTypeEvent.class, name = "SchemaTypeEvent"),
         @JsonSubTypes.Type(value = ProcessHierarchyEvent.class, name = "ProcessHierarchyEvent"),
+        @JsonSubTypes.Type(value = DeleteEvent.class, name = "DeleteEvent"),
+        @JsonSubTypes.Type(value = ProcessesDeleteEvent.class, name = "ProcessesDeleteEvent"),
         @JsonSubTypes.Type(value = DatabaseEvent.class, name = "DatabaseEvent"),
         @JsonSubTypes.Type(value = RelationalTableEvent.class, name = "RelationalTableEvent"),
         @JsonSubTypes.Type(value = DataFileEvent.class, name = "DataFileEvent")
