@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
@@ -221,6 +222,65 @@ public class LineageGraphConnectorHelperTest {
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
+    @Test
+    public void ultimateSourceTableLevelViaLineageMapping() {
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "t10";
+        expectedNodeIDs.add("d10");
+        expectedNodeIDs.add("p10");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
+    @Test
+    public void ultimateDestinationTableLevelViaLineageMapping() {
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "t10";
+        expectedNodeIDs.add("p20");
+        expectedNodeIDs.add("t20");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
+    @Test
+    public void sourceAndDestinationTableLevelViaLineageMapping() {
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "t10";
+        expectedNodeIDs.add("d10");
+        expectedNodeIDs.add("p10");
+        expectedNodeIDs.add("p20");
+        expectedNodeIDs.add("t20");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
+    @Test
+    public void endToEndTableLevelViaLineageMapping() {
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "t10";
+        expectedNodeIDs.add("d10");
+        expectedNodeIDs.add("p10");
+        expectedNodeIDs.add("t20");
+        expectedNodeIDs.add("p20");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
     private void validateResponse(HashSet<String> expectedNodeIDs, Set<LineageVertex> lineageVertices) {
         assertEquals(expectedNodeIDs.size(), lineageVertices.size());
         for (LineageVertex returnedVertex : lineageVertices) {
@@ -289,6 +349,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     private static void addTableLineageData(GraphTraversalSource g) {
+        // lineage via data flow
         Vertex d1 = getVertex(g, DATA_FILE, "d1", "d1");
         Vertex t1 = getVertex(g, RELATIONAL_TABLE, "t1", "t1");
         Vertex t2 = getVertex(g, RELATIONAL_TABLE, "t2", "t2");
@@ -302,6 +363,17 @@ public class LineageGraphConnectorHelperTest {
         g.addE(EDGE_LABEL_TABLE_DATA_FLOW).from(t1).to(p2).next();
         g.addE(EDGE_LABEL_TABLE_DATA_FLOW).from(p2).to(t2).next();
 
+        // lineage via lineage mapping
+        Vertex d10 = getVertex(g, DATA_FILE, "d10", "d10");
+        Vertex p10 = getVertex(g, PROCESS, "p10", "p10");
+        Vertex t10 = getVertex(g, RELATIONAL_TABLE, "t10", "t10");
+        Vertex p20 = getVertex(g, PROCESS, "p20", "p20");
+        Vertex t20 = getVertex(g, RELATIONAL_TABLE, "t20", "t20");
+
+        g.addE(LINEAGE_MAPPING).from(d10).to(p10).next();
+        g.addE(LINEAGE_MAPPING).from(p10).to(t10).next();
+        g.addE(LINEAGE_MAPPING).from(t10).to(p20).next();
+        g.addE(LINEAGE_MAPPING).from(p20).to(t20).next();
     }
 
     private static Vertex getVertex(GraphTraversalSource g, String nodeType, String guid, String nodeId) {
