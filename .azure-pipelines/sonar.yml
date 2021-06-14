@@ -63,7 +63,7 @@ stages:
                   -Dsonar.projectName="$(projectName)"
                   -Dsonar.host.url="https://sonarcloud.io"
                   -Dsonar.login="$(apiKey)"
-                  -DskipFVT
+                  -DskipFVT -Drat.skip=true -DskipFVT -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
               mavenOptions: '-Xmx5500m'
           - task: SonarCloudPublish@1
             displayName: 'Publish SonarCloud quality gate results'
