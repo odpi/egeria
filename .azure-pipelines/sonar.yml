@@ -2,11 +2,16 @@
 # Copyright Contributors to the ODPi Egeria project.
 ---
 trigger:
-  batch: true
+  batch: false
   branches:
     include:
       - master
-pr: none
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - master
 
 variables:
   - group: Artifactory
