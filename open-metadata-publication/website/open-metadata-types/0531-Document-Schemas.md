@@ -13,7 +13,16 @@ recall that the [NestedSchemaAttribute](0505-Schema-Attributes.md) relationship 
 ![UML](0531-Document-Schemas.png#pagewidth)
 
 
-Return to [Area 5](Area-5-models.md).
+
+## Deprecated Types
+
+The **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** types have been deprecated because they
+  offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
+  This change makes the document schemas consistent with other types of schema.
+
+----
+
+* Return to [Area 5](Area-5-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
