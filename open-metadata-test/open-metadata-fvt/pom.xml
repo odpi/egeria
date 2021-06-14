@@ -42,21 +42,19 @@
                     <execution>
                         <id>agent</id>
                         <goals>
-                            <goal>prepare-agent-integration</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
                             <propertyName>jacoco.chassisArgLine</propertyName>
                             <destFile>${project.build.directory}/coverage-reports/jacoco-fvt.exec</destFile>
-                            <inclNoLocationClasses>true</inclNoLocationClasses>
-                            <includes>org.odpi.egeria.*</includes>
                         </configuration>
                     </execution>
                     <execution>
                         <id>report</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>report-integration</goal>
+                            <goal>report</goal>
                         </goals>
                         <configuration>
                             <dataFile>${project.build.directory}/coverage-reports/jacoco-fvt.exec</dataFile>
