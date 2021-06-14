@@ -19,10 +19,6 @@ The **[authentication-plugins](authentication-plugins)** support extensions to t
 are used to verify the identity of an individual or service requesting
 access to data/metadata.
 
-The **[governance-engines-plugins](governance-engines-plugins)** support plugins to governance engines
-to enable them to use open metadata settings in their validation
-and enforcement decisions and the resulting actions they take.
-
 ----
 Return to [open-metadata-implementation](..).
 

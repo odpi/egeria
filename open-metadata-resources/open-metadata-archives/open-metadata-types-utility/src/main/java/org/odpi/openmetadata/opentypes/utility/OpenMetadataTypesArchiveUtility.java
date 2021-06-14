@@ -29,17 +29,6 @@ public class OpenMetadataTypesArchiveUtility
      */
     public static void main(String[] args) throws JoranException
     {
-        //if logback.xml is not present and no config in the command line, set default configuration to logback-om.xml
-        if (ClassLoader.getSystemResource("logback.xml") == null
-                &&  System.getProperty(ContextInitializer.CONFIG_FILE_PROPERTY) == null)
-        {
-            LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-            context.reset();
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(context);
-            configurator.doConfigure(OpenMetadataTypesArchiveWriter.class.getResourceAsStream("/logback-om.xml"));
-        }
-
         OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
 
         archiveWriter.writeOpenMetadataTypesArchive();
