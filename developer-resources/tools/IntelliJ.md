@@ -38,7 +38,7 @@ If you find any hits such as:
 
 then either remove those lines WITH INTELLIJ NOT RUNNING, or go into File->Project Structure->Modules, and remove ’target/delombok' from the ‘Source Folders’ list
 
-Explanation - In addition to importing importation on source files from maven, IntelliJ also tries to look for generated source. It finds the delombok directory causing duplicates — in fact we only use this directory for generating javadoc of lombok-enabled modules. Switching the setting/removing these source folders prevents duplicate classes.
+Explanation - In addition to importing module defintions from maven pom.xml, IntelliJ also tries to look for any generated source. It finds the delombok directory causing duplicates — in fact we only use this directory for generating javadoc of lombok-enabled modules. Switching the setting/removing these source folders prevents duplicate classes.
 
 ----
 * Return to [Developer Tools](.)
