@@ -340,8 +340,8 @@ class DataEnginePortHandlerTest {
         mockTypeDef();
 
         EntityDetail entityDetail = mock(EntityDetail.class);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PORT_TYPE_NAME,
-                PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(entityDetail);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, PORT_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME))
+                .thenReturn(Optional.of(entityDetail));
 
         Optional<EntityDetail> result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
 
@@ -357,14 +357,14 @@ class DataEnginePortHandlerTest {
                                                                          InvocationTargetException,
                                                                          NoSuchMethodException,
                                                                          InstantiationException,
-                                                                         IllegalAccessException {
+                                                                         IllegalAccessException,
+                                                                         InvalidParameterException {
         String methodName = "findSchemaTypeForPort";
 
         mockTypeDef();
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PORT_TYPE_NAME,
-                PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenThrow(mockedException);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, PORT_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID));

@@ -242,7 +242,8 @@ public class DataEnginePortHandler {
         invalidParameterHandler.validateGUID(portGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
-        if (!dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID, PORT_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME).isPresent()) {
+        if (!dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID, PORT_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME)
+                .isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName,
                     schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
@@ -264,15 +265,7 @@ public class DataEnginePortHandler {
     public Optional<EntityDetail> findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException {
-        final String methodName = "findSchemaTypeForPort";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(portGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
-
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
-
-        return Optional.ofNullable(repositoryHandler.getEntityForRelationshipType(userId, portGUID, PORT_TYPE_NAME,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
+        return dataEngineCommonHandler.getEntityForRelationship(userId, portGUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME);
     }
 
     /**

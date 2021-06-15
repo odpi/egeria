@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
@@ -167,12 +167,16 @@ public class DataEngineDataFileHandler {
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                                      FunctionNotSupportedException {
         final String methodName = "removeDataFile";
-        EntityDetail schemaType = repositoryHandler.getEntityForRelationshipType(userId, dataFileGUID, DATA_FILE_TYPE_NAME,
-                ASSET_TO_SCHEMA_TYPE_TYPE_GUID, ASSET_TO_SCHEMA_TYPE_TYPE_NAME, methodName);
-        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.getGUID(), externalSourceName, deleteSemantic);
-
-        fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
-                DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
-        repositoryHandler.purgeEntity(userId, dataFileGUID, DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, methodName);
+        Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                DATA_FILE_TYPE_NAME);
+        if(schemaType.isPresent()) {
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
+            fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
+                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
+            repositoryHandler.purgeEntity(userId, dataFileGUID, DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, methodName);
+        }
+        else {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
+        }
     }
 }

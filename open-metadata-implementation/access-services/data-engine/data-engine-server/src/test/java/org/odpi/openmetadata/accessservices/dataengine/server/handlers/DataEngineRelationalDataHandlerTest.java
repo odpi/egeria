@@ -254,15 +254,15 @@ class DataEngineRelationalDataHandlerTest {
                 "upsertRelationalColumns");
     }
 
-    private void mockGetDatabaseSchemaGUID() throws UserNotAuthorizedException, PropertyServerException {
+    private void mockGetDatabaseSchemaGUID() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         TypeDef relationshipTypeDef = mock(TypeDef.class);
         when(relationshipTypeDef.getName()).thenReturn(DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
         when(relationshipTypeDef.getGUID()).thenReturn(DATA_CONTENT_FOR_DATA_SET_TYPE_GUID);
         when(repositoryHelper.getTypeDefByName(USER, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)).thenReturn(relationshipTypeDef);
         EntityDetail mockedEntityDetail = mock(EntityDetail.class);
         when(mockedEntityDetail.getGUID()).thenReturn(SCHEMA_GUID);
-        when(repositoryHandler.getEntityForRelationshipType(USER, GUID, DATABASE_TYPE_NAME, DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                DATA_CONTENT_FOR_DATA_SET_TYPE_NAME, "findSchemaForDatabase")).thenReturn(mockedEntityDetail);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,DATABASE_TYPE_NAME))
+                .thenReturn(Optional.of(mockedEntityDetail));
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,

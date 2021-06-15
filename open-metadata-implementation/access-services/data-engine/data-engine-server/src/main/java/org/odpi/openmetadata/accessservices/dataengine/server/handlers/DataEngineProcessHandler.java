@@ -216,7 +216,7 @@ public class DataEngineProcessHandler {
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException {
 
-        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationshipType(userId, processGUID, PROCESS_PORT_TYPE_NAME,
+        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
                 PROCESS_TYPE_NAME);
         return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).
                 collect(Collectors.toSet());

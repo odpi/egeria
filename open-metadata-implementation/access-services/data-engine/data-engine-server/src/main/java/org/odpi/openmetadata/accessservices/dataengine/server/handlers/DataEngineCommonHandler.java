@@ -31,9 +31,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
-
 /**
  * DataEngineCommonHandler manages objects from the property server. It runs server-side in the DataEngine OMAS
  * and creates port entities with wire relationships through the OMRSRepositoryConnector.
@@ -362,10 +359,10 @@ public class DataEngineCommonHandler {
         throw new EntityNotDeletedException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName);
     }
 
-    protected Set<EntityDetail> getEntitiesForRelationshipType(String userId, String guid, String relationshipTypeName, String entityTypeName) throws
-                                                                                                                                       UserNotAuthorizedException,
-                                                                                                                                       PropertyServerException,
-                                                                                                                                       InvalidParameterException {
+    protected Set<EntityDetail> getEntitiesForRelationship(String userId, String guid, String relationshipTypeName, String entityTypeName) throws
+                                                                                                                                           UserNotAuthorizedException,
+                                                                                                                                           PropertyServerException,
+                                                                                                                                           InvalidParameterException {
         final String methodName = "getEntitiesForRelationshipType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -381,5 +378,34 @@ public class DataEngineCommonHandler {
         }
 
         return entities.parallelStream().collect(Collectors.toSet());
+    }
+
+    /**
+     * Return the entity at the other end of the requested relationship type.
+     *
+     * @param userId               the name of the calling user
+     * @param entityGUID           the unique identifier of the starting entity
+     * @param relationshipTypeName the relationship type name
+     * @param entityTypeName       the entity of the starting end type name
+     *
+     * @return optional with entity details if found, empty optional if not found
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    protected Optional<EntityDetail> getEntityForRelationship(String userId, String entityGUID, String relationshipTypeName,
+                                                              String entityTypeName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException {
+        final String methodName = "findEntityForRelationship";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
+
+        return Optional.ofNullable(repositoryHandler.getEntityForRelationshipType(userId, entityGUID, entityTypeName,
+                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
     }
 }
