@@ -115,8 +115,8 @@ by the subject area expert.
 ## How the Subject Area OMAS deals with finds
 
  The find APIs in the Subject Area do not accept input from the user that will be interpreted as a regex. Instead 2 flags are supplied,
- with the searchCriteria: exactValue and mixedCase. The search criteria is treated as literial and then extended appropriately
- to form a regex expression for implementing the requested exactValue and mixedCase.  
+ with the searchCriteria: exactValue and mixedCase. The search criteria from API is a literal and is then extended appropriately
+ to form a regex expression - implementing the requested exactValue and mixedCase.  
  
 ----
 Return to [access-services](..) module.
