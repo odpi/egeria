@@ -120,6 +120,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Project property values. If not specified then all projects are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime the projects returned as they were at this time. null indicates at the current time.
      * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -138,6 +140,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse<Project> findProject(String serverName,
                                                            String userId,
                                                            String searchCriteria,
+                                                           boolean exactValue,
+                                                           boolean ignoreCase,
                                                            Date asOfTime,
                                                            Integer startingFrom,
                                                            Integer pageSize,
@@ -160,7 +164,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
-            response = handler.findProject(userId,findRequest);
+            response = handler.findProject(userId,findRequest, exactValue,ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

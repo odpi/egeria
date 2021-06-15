@@ -603,8 +603,8 @@ public class TermFVT {
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary("Glossary name for CategorizedTermsWithSearchCriteria");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a aaa");
-        Category category = categoryFVT.createCategoryWithGlossaryGuid("aaa", glossary.getSystemAttributes().getGUID());
+        System.out.println("Create a ttt");
+        Category category = categoryFVT.createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = category.getSystemAttributes().getGUID();
         // create 20 children
         List<CategorySummary> categories = new ArrayList<>();
@@ -615,14 +615,14 @@ public class TermFVT {
 
         for (int i=0;i<10;i++) {
 
-            Term term1 = getTermForInput("aa" + i, glossaryGuid);
+            Term term1 = getTermForInput("tt" + i, glossaryGuid);
             term1.setCategories(categories);
             Term createdTerm1 = issueCreateTerm(term1);
             termGuids.add(createdTerm1.getSystemAttributes().getGUID());
             if (createdTerm1.getCategories().size() != 1) {
                 throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 category created");
             }
-            Term term2 = getTermForInput("bb" + i, glossaryGuid);
+            Term term2 = getTermForInput("ss" + i, glossaryGuid);
             term2.setCategories(categories);
             Term createdTerm2 = issueCreateTerm(term2);
             termGuids.add(createdTerm2.getSystemAttributes().getGUID());
@@ -637,7 +637,7 @@ public class TermFVT {
         if ( glossaryFVT.getTerms(glossaryGuid, findRequest).size() != 20) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 20 terms associated with the category ");
         }
-        findRequest.setSearchCriteria("aa3");
+        findRequest.setSearchCriteria("tt3");
         int count =  categoryFVT.getTerms(parentGuid, findRequest).size();
         if (count !=1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 categorized term, got " + count);
@@ -647,7 +647,7 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary term, got " + count);
         }
 
-        findRequest.setSearchCriteria("aa.*");
+        findRequest.setSearchCriteria("tt.*");
         count =  categoryFVT.getTerms(parentGuid, findRequest).size();
         if (count !=10) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 category terms, got " + count);
@@ -661,39 +661,39 @@ public class TermFVT {
         List<Term> terms = categoryFVT.getTerms(parentGuid, findRequest);
         count = terms.size();
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 terms with aa,got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 terms with tt,got " + count);
         }
         count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms with aa, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms with tt, got " + count);
         }
-        findRequest.setSearchCriteria("bb.*");
+        findRequest.setSearchCriteria("ss.*");
         findRequest.setPageSize(20);
         if ( categoryFVT.getTerms(parentGuid, findRequest).size() !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for bb");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss");
         }
         count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
         if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for bb, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
         }
         findRequest.setPageSize(5);
         count =  categoryFVT.getTerms(parentGuid, findRequest).size();
 
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 terms for bb, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 terms for ss, got " + count);
         }
         count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for bb, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss, got " + count);
         }
         findRequest.setPageSize(10);
         count =  categoryFVT.getTerms(parentGuid, findRequest).size();
         if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for bb, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss, got " + count);
         }
         count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
         if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for bb, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
         }
 
         //cleanup

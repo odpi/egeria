@@ -398,7 +398,6 @@ public class ServerTypeClassifier
      * @param methodName calling method
      * @throws OMAGInvalidParameterException resulting exception if config document is null.
      */
-    @SuppressWarnings(value = "deprecation")
     private void validateConfigurationDocumentNotNull(String            serverName,
                                                       OMAGServerConfig  configurationDocument,
                                                       String            methodName) throws  OMAGInvalidParameterException
@@ -409,40 +408,7 @@ public class ServerTypeClassifier
                                                     this.getClass().getName(),
                                                     methodName);
         }
-
-        if (configurationDocument.getDataPlatformServicesConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getDataPlatformServicesConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
-        if (configurationDocument.getSecurityOfficerConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getSecurityOfficerConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
-        if (configurationDocument.getSecuritySyncConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getSecuritySyncConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
-        if (configurationDocument.getVirtualizationConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getVirtualizationConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
     }
-
 
     /**
      * Checks that a classification has been derived for a configuration document.

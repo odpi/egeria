@@ -84,7 +84,7 @@ public class ValidValuesOnboardingResource
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    @PostMapping(path = "/valid-values/new-definition")
+    @PostMapping(path = "/valid-values/new-definition/{setGUID}")
 
     public GUIDResponse  createValidValueDefinition(@PathVariable String                 serverName,
                                                     @PathVariable String                 userId,
@@ -97,7 +97,7 @@ public class ValidValuesOnboardingResource
 
     /**
      * Update the properties of the valid value.  All properties are updated.
-     * If only changing some if the properties, retrieve the current values from the repository
+     * If only changing some of the properties, retrieve the current values from the repository
      * and pass existing values back on this call if they are not to change.
      *
      * @param serverName name of calling server

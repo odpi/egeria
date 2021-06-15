@@ -37,23 +37,30 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
 
     /**
      * Return the converted bean.  This is a special method used for schema types since they are stored
-     * as a collection of instances.
+     * as a collection of instances.  For external schema types and map elements, both the GUID and the bean are returned to
+     * allow the consuming OMAS to choose whether it is returning GUIDs of the linked to schema or the schema type bean itself.
      *
      * @param beanClass name of the class to create
-     * @param schemaRootHeader unique identifier of the schema element that holds the root information
+     * @param schemaRootHeader header of the schema element that holds the root information
      * @param schemaTypeTypeName name of type of the schema type to create
      * @param instanceProperties properties describing the schema type
+     * @param schemaRootClassifications classifications from the schema root entity
      * @param attributeCount number of attributes (for a complex schema type)
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
      * @param externalSchemaTypeGUID unique identifier of the external schema type
-     * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
+     * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
+     * @param mapFromSchemaTypeGUID unique identifier of the mapFrom schema type
      * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param mapToSchemaTypeGUID unique identifier of the mapTo schema type
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that could be the type for this attribute
      * @param schemaTypeOptions list of schema types that could be the type for this attribute
+     * @param queryTargets list of relationships to schema types that contain data values used to derive the schema type value(s)
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value = "unused")
     @Override
     public B getNewSchemaTypeBean(Class<B>             beanClass,
                                   InstanceHeader       schemaRootHeader,
@@ -64,9 +71,13 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
                                   String               validValueSetGUID,
                                   String               externalSchemaTypeGUID,
                                   B                    externalSchemaType,
+                                  String               mapFromSchemaTypeGUID,
                                   B                    mapFromSchemaType,
+                                  String               mapToSchemaTypeGUID,
                                   B                    mapToSchemaType,
+                                  List<String>         schemaTypeOptionGUIDs,
                                   List<B>              schemaTypeOptions,
+                                  List<Relationship>   queryTargets,
                                   String               methodName) throws PropertyServerException
     {
         try

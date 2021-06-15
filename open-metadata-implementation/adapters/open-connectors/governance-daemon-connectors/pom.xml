@@ -31,10 +31,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>view-generator-connectors</module>
-        <module>security-sync-connectors</module>
         <module>security-officer-connectors</module>
-        <module>data-platform-connectors</module>
         <module>open-lineage-connectors</module>
     </modules>
 

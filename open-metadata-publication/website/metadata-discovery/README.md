@@ -20,9 +20,7 @@ Some metadata discovery may occur when the asset is first cataloged.
 For example, the schema of an asset may be stored through the
 [Data Manager OMAS](../../../open-metadata-implementation/access-services/data-manager) API.
 This schema may have been automatically extracted by a
-[metadata extractor connector](../../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/data-platform-connectors)
-hosted in Egeria's [Data Platform Server](../../../open-metadata-implementation/governance-servers/data-platform-services) which
-then calls the Data Manager OMAS to store the metadata.
+metadata extractor connector hosted in Egeria's Open Metadata Integration Services like [Database Integrator](../../../open-metadata-implementation/integration-services/database-integrator) or [Files Integrator](../../../open-metadata-implementation/integration-services/files-integrator) daemon.
 
 Egeria also supports more advanced metadata discovery.
 

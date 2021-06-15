@@ -31,7 +31,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>open-connectors</module>
-        <module>governance-engines-plugins</module>
         <module>authentication-plugins</module>
     </modules>
 

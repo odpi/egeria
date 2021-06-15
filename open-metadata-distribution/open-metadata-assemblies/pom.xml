@@ -64,10 +64,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-data-store-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>cohort-registry-file-store-connector</artifactId>
         </dependency>
         <dependency>
@@ -85,10 +81,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-folder-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-platform-services-connector</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -136,7 +128,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-metadata-types</artifactId>
+            <artifactId>open-metadata-types-utility</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
