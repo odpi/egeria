@@ -5,10 +5,16 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.c
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -92,7 +98,7 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 
 				bean.setNativeJavaClass(bean.getClass().getName());
 
-				bean.convertAnalyticsMetadataProperties();
+				convertAnalyticsMetadataProperties(bean);
 				
 				return bean;
 			}
@@ -108,4 +114,63 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 				this.getClass().getSimpleName(),
 				methodName);
     }
+    
+	protected void convertAnalyticsMetadataProperties(AnalyticsMetadata bean) 
+	{
+		if (bean.getAdditionalProperties() != null) {
+	        if (bean.getAdditionalProperties().get(IdMap.SOURCE_ID) != null) {
+	        	bean.setSourceId(Arrays.asList(bean.getAdditionalProperties().get(IdMap.SOURCE_ID).split(Constants.SYNC_ID_LIST_DELIMITER)));
+	        }
+
+	        if (bean.getAdditionalProperties().get(IdMap.SOURCE_GUID) != null) {
+	        	bean.setSourceGuid(Arrays.asList(bean.getAdditionalProperties().get(IdMap.SOURCE_GUID).split(Constants.SYNC_ID_LIST_DELIMITER)));
+	        }
+
+	        bean.setType(bean.getAdditionalProperties().get(Constants.TYPE));
+	        bean.setIdentifier(bean.getAdditionalProperties().get(Constants.SYNC_IDENTIFIER));
+
+	        if (bean instanceof MetadataItem) {
+	        	MetadataItem item = (MetadataItem)bean;
+	        	item.setExpression(bean.getAdditionalProperties().get(Constants.SYNC_EXPRESSION));
+	        	item.setDataType(bean.getAdditionalProperties().get(Constants.SYNC_DATA_TYPE));
+	        }
+
+		}
+	}
+	
+	/**
+	 * Helper function to preserve common properties as additional properties.
+	 */
+	public static void prepareAnalyticsMetadataProperties(AnalyticsMetadata bean) {
+		
+		Map<String, String> additionalProperties = bean.getAdditionalProperties();
+		
+		if (additionalProperties == null) {
+			additionalProperties = new HashMap<>();
+			bean.setAdditionalProperties(additionalProperties);
+		}
+		
+        if (bean.getSourceId() != null) {
+            additionalProperties.put(IdMap.SOURCE_ID, String.join(Constants.SYNC_ID_LIST_DELIMITER, bean.getSourceId()));
+        }
+
+        if (bean.getSourceGuid() != null) {
+            additionalProperties.put(IdMap.SOURCE_GUID, String.join(Constants.SYNC_ID_LIST_DELIMITER, bean.getSourceGuid()));
+        }
+
+        additionalProperties.put(Constants.TYPE, bean.getType());
+        additionalProperties.put(Constants.SYNC_IDENTIFIER, bean.getIdentifier());
+        
+    	/**
+    	 * The function to save custom properties as additional properties.
+    	 */
+        if (bean instanceof MetadataItem) {
+        	MetadataItem item = (MetadataItem)bean;
+            additionalProperties.put(Constants.SYNC_EXPRESSION, item.getExpression());
+            additionalProperties.put(Constants.SYNC_DATA_TYPE, item.getDataType());
+    	}
+        
+        bean.setAdditionalProperties(additionalProperties);
+	}
+
 }

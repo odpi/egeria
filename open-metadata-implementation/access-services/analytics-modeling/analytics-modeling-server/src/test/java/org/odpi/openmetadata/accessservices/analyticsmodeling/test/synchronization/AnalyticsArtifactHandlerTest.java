@@ -13,11 +13,11 @@ import java.util.Map.Entry;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.JsonMocks;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.AnalyticsAssetUtils;
 import org.testng.annotations.Test;
 
 

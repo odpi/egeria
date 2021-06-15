@@ -29,10 +29,10 @@
     <artifactId>analytics-modeling</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>analytics-modeling-api</module>
         <module>analytics-modeling-client</module>
         <module>analytics-modeling-server</module>
         <module>analytics-modeling-spring</module>
-        <module>analytics-modeling-api</module>
     </modules>
 
 

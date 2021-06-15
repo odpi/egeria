@@ -24,11 +24,11 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.co
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -472,7 +472,7 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		AnalyticsMetadata containerOld = analyticsMetadataConverter.getNewBean(entity, methodName);
-		container.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(container);
 		
 		if (!container.equals(containerOld)) {
 			metadataHandler.updateSchemaAttribute(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), entity.getGUID(),
@@ -604,7 +604,7 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		AnalyticsMetadata itemOld = analyticsMetadataConverter.getNewBean(entity, methodName);
-		item.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(item);
 		item.setGuid(entity.getGUID());	// after update the item has entity
 
 		if (!item.equals(itemOld)) {
@@ -773,7 +773,7 @@ public class AnalyticsArtifactHandler {
 	{
 		String methodName = "createAnalyticsMetadataBuilder";
 
-		src.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(src);
 
         AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(src, null, ctx);
 		
