@@ -401,7 +401,7 @@ public class AssetCatalogHandler {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
         }
 
-        Set<AssetElements> list = new HashSet<>();
+        Set<AssetElements> searchResults = new HashSet<>();
 
         for (EntityDetail entityDetail : result) {
             try {
@@ -417,17 +417,17 @@ public class AssetCatalogHandler {
                     continue;
                 }
                 AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
-                list.add(assetElements);
+                searchResults.add(assetElements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
                 log.debug("This asset if a different zone: {}", entityDetail.getGUID());
             }
         }
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
         String sequencingProperty = searchParameters.getSequencingProperty();
-        List<AssetElements> resultList = new ArrayList<>(list);
-        resultList.sort((firstAsset, secondAsset) ->
+        List<AssetElements> results = new ArrayList<>(searchResults);
+        results.sort((firstAsset, secondAsset) ->
                 orderElements(firstAsset, secondAsset, sequencingProperty, sequencingOrder));
-        return resultList;
+        return results;
     }
 
     /**
