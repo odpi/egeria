@@ -127,6 +127,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Category property values (this does not include the CategorySummary content). When not specified, all terms are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -144,6 +146,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
     public SubjectAreaOMASAPIResponse<Category> findCategory(String serverName,
                                                              String userId,
                                                              String searchCriteria,
+                                                             boolean exactValue,
+                                                             boolean ignoreCase,
                                                              Date asOfTime,
                                                              Integer startingFrom,
                                                              Integer pageSize,
@@ -160,7 +164,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.findCategory(userId, findRequest);
+            response = handler.findCategory(userId, findRequest, exactValue, ignoreCase );
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -364,6 +368,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
      * @param searchCriteria String expression to match the categorized Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of terms is categorized by this Category
@@ -374,7 +380,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, boolean exactValue, boolean ignoreCase,  Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategorizedTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -384,7 +390,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategorizedTerms(userId, guid, searchCriteria, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
+            response = handler.getCategorizedTerms(userId, guid, searchCriteria, exactValue, ignoreCase, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -402,6 +408,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the parent category
      * @param searchCriteria String expression matching child Category property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of child categories filtered by the search criteria if one is supplied.
@@ -412,7 +420,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -422,7 +430,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategoryChildren(userId, guid, searchCriteria, startingFrom , pageSize);
+            response = handler.getCategoryChildren(userId, guid, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

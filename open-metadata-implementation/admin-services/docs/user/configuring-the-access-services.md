@@ -145,12 +145,6 @@ The result looks something like this:
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"
         },
         {
-            "serviceName": "Information View",
-            "serviceURLMarker": "information-view",
-            "serviceDescription": "Support information virtualization and data set definitions",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/information-view/"
-        },
-        {
             "serviceName": "Digital Architecture",
             "serviceURLMarker": "digital-architecture",
             "serviceDescription": "Design of the digital services for an organization",

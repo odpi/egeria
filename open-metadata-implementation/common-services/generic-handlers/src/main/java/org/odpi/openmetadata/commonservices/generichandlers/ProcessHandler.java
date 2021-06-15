@@ -189,11 +189,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
             typeName = suppliedTypeName;
         }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
+        invalidParameterHandler.validateTypeName(typeName,
+                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 serviceName,
+                                                 methodName,
+                                                 repositoryHelper);
 
         Map<String, Object> extendedProperties = suppliedExtendedProperties;
 
@@ -224,7 +224,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       technicalName,
                                                       technicalDescription,
                                                       additionalProperties,
-                                                      typeGUID,
                                                       typeName,
                                                       extendedProperties,
                                                       initialStatus,

@@ -39,6 +39,7 @@ public class RuntimeExceptionTest
     /**
      * Test that a new exception is properly populated
      */
+    @SuppressWarnings(value = "deprecation")
     @Test public void testNewException()
     {
         OMAGRuntimeException exception = new OMAGRuntimeException(reportedHTTPCode,

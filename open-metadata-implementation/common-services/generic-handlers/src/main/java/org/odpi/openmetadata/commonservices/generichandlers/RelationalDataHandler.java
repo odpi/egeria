@@ -444,11 +444,6 @@ public class RelationalDataHandler<DATABASE,
             assetTypeName = typeName;
         }
 
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
 
         Map<String, Object> assetExtendedProperties = new HashMap<>();
         if (extendedProperties != null)
@@ -474,7 +469,6 @@ public class RelationalDataHandler<DATABASE,
                                                                       displayName,
                                                                       description,
                                                                       additionalProperties,
-                                                                      assetTypeId,
                                                                       assetTypeName,
                                                                       assetExtendedProperties,
                                                                       InstanceStatus.ACTIVE,
@@ -1286,11 +1280,11 @@ public class RelationalDataHandler<DATABASE,
             assetTypeName = typeName;
         }
 
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
+        invalidParameterHandler.validateTypeName(assetTypeName,
+                                                 OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                 serviceName,
+                                                 methodName,
+                                                 repositoryHelper);
 
         /*
          * This call will set up the default zones and give ownership of the asset to the calling user.
@@ -1302,7 +1296,6 @@ public class RelationalDataHandler<DATABASE,
                                                                                   displayName,
                                                                                   description,
                                                                                   additionalProperties,
-                                                                                  assetTypeId,
                                                                                   assetTypeName,
                                                                                   extendedProperties,
                                                                                   InstanceStatus.ACTIVE,
