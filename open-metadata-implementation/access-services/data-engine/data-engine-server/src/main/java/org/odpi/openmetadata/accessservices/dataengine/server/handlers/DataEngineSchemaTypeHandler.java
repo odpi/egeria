@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID;
@@ -176,43 +177,61 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Create LineageMapping relationship between two schema attributes
+     * Find out if the Referenceable object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
-     * @param userId                             the name of the calling user
-     * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute
-     * @param targetSchemaAttributeQualifiedName the qualified name of the target schema attribute
-     * @param externalSourceName                 the unique name of the external source
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return optional with entity details if found, empty optional if not found
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addLineageMappingRelationship(String userId, String sourceSchemaAttributeQualifiedName, String targetSchemaAttributeQualifiedName,
-                                              String externalSourceName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException {
+    public Optional<EntityDetail> findReferenceableEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
+            PropertyServerException,
+            InvalidParameterException {
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
+    }
+
+    /**
+     * Create LineageMapping relationship between two schema attributes
+     *
+     * @param userId                           the name of the calling user
+     * @param sourceReferenceableQualifiedName the qualified name of the source referenceable
+     * @param targetReferenceableQualifiedName the qualified name of the target referenceable
+     * @param externalSourceName               the unique name of the external source
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addLineageMappingRelationship(String userId, String sourceReferenceableQualifiedName,
+                                              String targetReferenceableQualifiedName, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "addLineageMappingRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(sourceSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(targetSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(sourceReferenceableQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(targetReferenceableQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> sourceSchemaAttributeEntity = findSchemaAttributeEntity(userId, sourceSchemaAttributeQualifiedName);
-        Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
+        Optional<EntityDetail> sourceReferenceableEntity = findReferenceableEntity(userId, sourceReferenceableQualifiedName);
+        Optional<EntityDetail> targetReferenceableEntity = findReferenceableEntity(userId, targetReferenceableQualifiedName);
 
-        if (!sourceSchemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
-                    sourceSchemaAttributeQualifiedName);
+        if (!sourceReferenceableEntity.isPresent()) {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
+                    sourceReferenceableQualifiedName);
             return;
         }
-        if (!targetSchemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
-                    targetSchemaAttributeQualifiedName);
+        if (!targetReferenceableEntity.isPresent()) {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
+                    targetReferenceableQualifiedName);
             return;
         }
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
-                targetSchemaAttributeEntity.get().getGUID(), LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, sourceReferenceableEntity.get().getGUID(),
+                targetReferenceableEntity.get().getGUID(), LINEAGE_MAPPING_TYPE_NAME, sourceReferenceableEntity.get().getType().getTypeDefName(),
+                externalSourceName, null);
     }
 
     /**
