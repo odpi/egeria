@@ -43,7 +43,23 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      */
 
     public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-       return getCategories(userId, guid, findRequest, onlyTop, null);
+       return getCategories(userId, guid, findRequest, onlyTop, false, true);
+    }
+    /**
+     * Get the Categories owned by this glossary.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param guid        unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param onlyTop     when only the top categories (those categories without parents) are returned.
+     * @return list of Categories
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+
+    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactMatch, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return getCategories(userId, guid, findRequest, onlyTop, exactMatch, ignoreCase, null);
     }
 
     /**
@@ -60,17 +76,18 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
 
-    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactMatch, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo("getCategories");
         Map<String, String> params = new HashMap<>();
         params.put("onlyTop", onlyTop+"");
+        params.put("exactMatch", exactMatch+"");
+        params.put("ignoreCase", ignoreCase+"");
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
         GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urnTemplate, findRequest, maximumPageSizeOnRestCall, params);
         return response.results();
     }
-
     /**
      * Get the Terms owned by this glossary.
      *
@@ -83,7 +100,21 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-       return getTerms(userId, guid, findRequest, null);
+        return getTerms(userId, guid, findRequest, false, true);
+    }
+    /**
+     * Get the Terms owned by this glossary.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed.
+     * @param guid  unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @return list of Terms
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public List<Term> getTerms(String userId, String guid, FindRequest findRequest,  boolean exactMatch, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+       return getTerms(userId, guid, findRequest, exactMatch, ignoreCase,  null);
     }
 
     /**
@@ -98,12 +129,15 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public List<Term> getTerms(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodInfo = getMethodInfo("getTerms");
         final String urlTemplate = BASE_URL + "/%s/terms";
+        Map<String, String> params = new HashMap<>();
+        params.put("exactValue", exactValue+"");
+        params.put("ignoreCase", ignoreCase+"");
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
         ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, null);
+        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, params);
         return response.results();
     }
 }

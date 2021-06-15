@@ -285,10 +285,12 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String methodName,
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
-                                               FindRequest findRequest) throws InvalidParameterException,
+                                               FindRequest findRequest,
+                                               boolean exactValue,
+                                               boolean ignoreCase) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException {
-        return findRESTCall(userId, methodName, urnTemplate, type, findRequest,null);
+        return findRESTCall(userId, methodName, urnTemplate, type, findRequest, exactValue, ignoreCase, null);
     }
     /**
      * Issue a GET REST call that returns a response found objects using the information described in findRequest,
@@ -313,6 +315,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
+                                               boolean exactValue,
+                                               boolean ignoreCase,
                                                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException {
@@ -532,7 +536,6 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         }
         return response;
     }
-
     /**
      * Method for constructing a query (https://en.wikipedia.org/wiki/Query_string) using the information described in the findRequest
      * page size and startingFrom need to set by the caller.
@@ -544,6 +547,20 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
     public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
+        return createFindQuery(methodName, findRequest, false,true);
+    }
+
+    /**
+     * Method for constructing a query (https://en.wikipedia.org/wiki/Query_string) using the information described in the findRequest
+     * page size and startingFrom need to set by the caller.
+     *
+     * @param methodName  name of the method being called.
+     * @param findRequest {@link FindRequest}
+     *
+     * @return query
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * */
+    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException {
         QueryBuilder queryBuilder = new QueryBuilder();
         SequencingOrder sequencingOrder = findRequest.getSequencingOrder();
         if (sequencingOrder == null) {
@@ -567,8 +584,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
             queryBuilder.addParam("sequencingProperty", property);
         }
-
-
+        queryBuilder.addParam("exactValue", exactValue);
+        queryBuilder.addParam("ignoreCase", ignoreCase);
         return queryBuilder;
     }
 
