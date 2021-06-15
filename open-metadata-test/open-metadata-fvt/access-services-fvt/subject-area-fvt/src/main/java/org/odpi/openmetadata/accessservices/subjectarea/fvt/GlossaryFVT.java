@@ -126,7 +126,7 @@ public class GlossaryFVT {
         FVTUtils.validateNode(glossary);
 
         System.out.println("create glossaries to find");
-        Glossary glossaryForFind1 = getGlossaryForInput("abc");
+        Glossary glossaryForFind1 = getGlossaryForInput("qrs");
         glossaryForFind1.setQualifiedName("yyy");
         glossaryForFind1 = issueCreateGlossary(glossaryForFind1);
         FVTUtils.validateNode(glossaryForFind1);
