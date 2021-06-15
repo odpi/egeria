@@ -78,18 +78,9 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	void testCreateBaseModule() throws Exception {
 
 		String input = "baseModule";
-		AnalyticsAsset baseModule = createBean(input);
+		AnalyticsAsset baseModule = getBaseModuleAsset(input);
 
-		// create entities for columns referenced in base module
-		Map<String, String>guidMap = new HashMap<>();
-		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
-		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
-		// replace GUIDs from input with real GUIDs of created entities
-		for (Entry<String, String> pair : guidMap.entrySet()) {
-			json = json.replace(pair.getKey(), pair.getValue());
-		}
-
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, baseModule);
 		
 		assertEquals(guids.getAssetsList().size(), 1, "Single asset should be created.");
 		
@@ -110,11 +101,9 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateModule() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -134,12 +123,11 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateReport() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -159,11 +147,11 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateDashboard() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
+				createBean("dashboard"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 

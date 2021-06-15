@@ -98,21 +98,19 @@ public class AnalyticsArtifactHandler {
 	 * Create assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
-	 * @param input definition of analytic artifact.
+	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
-	public ResponseContainerAssets createAssets(String user, String serverCapability, String input)
+	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException
 	{
 		String methodName = "createAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
 		
-		ObjectMapper mapper = new ObjectMapper();
 		List<String> guids = new ArrayList<>();
 		
 		try {
-			AnalyticsAsset asset = mapper.readValue(input, AnalyticsAsset.class);
 			
 			if (AnalyticsAssetUtils.hasMetadataModule(asset) || !AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createModuleAsset(asset));
@@ -121,13 +119,6 @@ public class AnalyticsArtifactHandler {
 			if (AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createVisualizationAsset(asset));
 			}
-			
-		} catch (JsonProcessingException ex) {
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.INCORRECT_ARTIFACT_DEFINITION.getMessageDefinition(input),
-					this.getClass().getSimpleName(),
-					methodName,
-					ex);
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_CREATE_ARTIFACT.getMessageDefinition(),
@@ -683,14 +674,14 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		for (int i = 0; i < metadata.size(); ) {
-			String srcGUID = metadata.get(0);
+			String srcGUID = metadata.get(i);
 			try {
 				ctx.getRepositoryHandler().createRelationship(
 						ctx.getUserId(), 
 						IdMap.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
 						ctx.getServerSoftwareCapability().getGUID(), ctx.getServerSoftwareCapability().getSource(),
 						item.getGuid(), srcGUID, null, methodName);
-				metadata.remove(0);	// relationship replaced the GUID
+				metadata.remove(i);	// relationship replaced the GUID
 			} catch (UserNotAuthorizedException | PropertyServerException e) {
 				// log warning in execution context
 				++i;	// leave GUID for relationship which was not created

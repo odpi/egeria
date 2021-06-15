@@ -143,12 +143,12 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 		return null;
 	}
     
-	public AssetsResponse createAssets(String user, String serverCapability, String input)
+	public AssetsResponse createAssets(String user, String serverCapability, AnalyticsAsset asset)
 	{
 		String methodName = "createAssets";
 		try {
 			String url = serverPlatformURLRoot + urlTemplateSynchronization;
-			return callPostRESTCall(methodName, AssetsResponse.class, url, input, serverName, user, serverCapability);
+			return callPostRESTCall(methodName, AssetsResponse.class, url, asset, serverName, user, serverCapability);
 		} catch (PropertyServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

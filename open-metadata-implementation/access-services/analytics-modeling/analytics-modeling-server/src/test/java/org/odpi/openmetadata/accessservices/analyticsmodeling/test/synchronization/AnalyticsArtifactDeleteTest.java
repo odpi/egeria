@@ -45,9 +45,10 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 	void testDeleteBaseModule() throws Exception {
 
 		String methodName = "testDeleteBaseModule";
-		String json = fixBaseModule("baseModule");
+		String baseModule = getBaseModuleJson("baseModule");	// base module definition with fixed GUIDs
+		AnalyticsAsset assetBaseModule = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
 
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -66,23 +67,8 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		// delete should not remove entities referenced by the deleted asset
 		// thus relationships to the entities created outside of the module should be created again 
-		guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
+		guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class));
 		assertSubgraph(guids.getAssetsList().get(0), "baseModuleSubgraph");
-	}
-
-
-	private String fixBaseModule(String input) throws IOException {
-		AnalyticsAsset baseModule = createBean(input);
-
-		// create entities for columns referenced in base module
-		Map<String, String>guidMap = new HashMap<>();
-		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
-		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
-		// replace GUIDs from input with real GUIDs of created entities
-		for (Entry<String, String> pair : guidMap.entrySet()) {
-			json = json.replace(pair.getKey(), pair.getValue());
-		}
-		return json;
 	}
 
 
@@ -115,17 +101,15 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		String methodName = "testDeleteModule";
 
-		String json = fixBaseModule("baseModule");
+		AnalyticsAsset assetBaseModule = getBaseModuleAsset("baseModule");
 
-		ResponseContainerAssets  guidsBModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
+		ResponseContainerAssets  guidsBModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
 
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 
 		assertSubgraph(guidsModule.getAssetsList().get(0), "moduleSubgraph");
 
-		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
+		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("dashboard"));
 		
 		assertSubgraph(guidsDashBoard.getAssetsList().get(0), "dashboardSubgraph");
 
@@ -153,11 +137,9 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		String methodName = "testDeleteVisualizationWithModule";
 		
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("module"));
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
 		
 		assertSubgraph(guidsReport.getAssetsList().get(1), "reportSubgraph");
 		

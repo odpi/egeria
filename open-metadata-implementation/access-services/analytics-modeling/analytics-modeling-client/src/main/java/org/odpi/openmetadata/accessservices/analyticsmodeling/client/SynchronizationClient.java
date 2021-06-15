@@ -137,7 +137,7 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @return response with artifact or error description.
 	 */
     @Override
-	public AnalyticsModelingOMASAPIResponse createArtifact(String userId, String serverCapability, String artifact)
+	public AnalyticsModelingOMASAPIResponse createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
 	{
 		return restClient.createAssets(userId, serverCapability, artifact);
 	}

@@ -16,7 +16,7 @@ public interface AnalyticsModelingSynchronization {
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse createArtifact(String userId, String serverCapability, String artifact);
+	public AnalyticsModelingOMASAPIResponse createArtifact(String userId, String serverCapability, AnalyticsAsset artifact);
 
 	/**
 	 * Update analytics artifact defined as json input.

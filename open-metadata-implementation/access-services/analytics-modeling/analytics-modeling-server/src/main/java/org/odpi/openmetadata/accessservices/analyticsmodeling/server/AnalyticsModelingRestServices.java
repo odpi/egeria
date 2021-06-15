@@ -202,7 +202,7 @@ public class AnalyticsModelingRestServices {
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, String artifact) {
+	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
 
 		String methodName = "createArtifact";
 		AnalyticsModelingOMASAPIResponse ret;

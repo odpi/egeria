@@ -115,6 +115,11 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 				methodName);
     }
     
+    /**
+     * Convert bean properties from additional properties to members.
+     * 
+     * @param bean being processed.
+     */
 	protected void convertAnalyticsMetadataProperties(AnalyticsMetadata bean) 
 	{
 		if (bean.getAdditionalProperties() != null) {
@@ -140,6 +145,8 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 	
 	/**
 	 * Helper function to preserve common properties as additional properties.
+	 * 
+	 * @param bean being prepared.
 	 */
 	public static void prepareAnalyticsMetadataProperties(AnalyticsMetadata bean) {
 		
@@ -161,9 +168,6 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
         additionalProperties.put(Constants.TYPE, bean.getType());
         additionalProperties.put(Constants.SYNC_IDENTIFIER, bean.getIdentifier());
         
-    	/**
-    	 * The function to save custom properties as additional properties.
-    	 */
         if (bean instanceof MetadataItem) {
         	MetadataItem item = (MetadataItem)bean;
             additionalProperties.put(Constants.SYNC_EXPRESSION, item.getExpression());
