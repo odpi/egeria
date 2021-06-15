@@ -37,6 +37,7 @@ public interface AnalyticsModelingImport {
 	 * 
 	 * @param userId       of the request.
 	 * @param databaseGuid of the requested database.
+	 * @param catalog      catalog name of the database.
 	 * @param schema       schema name on the database.
 	 * @return list of tables for the requested schema.
 	 */
