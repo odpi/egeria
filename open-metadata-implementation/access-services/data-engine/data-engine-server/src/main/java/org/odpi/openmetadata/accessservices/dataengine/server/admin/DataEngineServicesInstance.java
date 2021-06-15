@@ -191,8 +191,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
         dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
-                dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
-                dataEngineConnectionAndEndpointHandler);
+                repositoryHandler, dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
+                        dataEngineConnectionAndEndpointHandler);
     }
 
     /**

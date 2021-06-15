@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
@@ -20,16 +21,22 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
 
 /**
@@ -42,7 +49,8 @@ public class DataEngineRelationalDataHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler;
+    private final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType>
+            relationalDataHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
     private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
@@ -61,8 +69,9 @@ public class DataEngineRelationalDataHandler {
      **/
     public DataEngineRelationalDataHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                            RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler,
-                                           DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
+                                                   SchemaType> relationalDataHandler, DataEngineRegistrationHandler registrationHandler,
+                                           DataEngineCommonHandler dataEngineCommonHandler,
                                            DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
 
         this.serviceName = serviceName;
@@ -127,7 +136,7 @@ public class DataEngineRelationalDataHandler {
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
 
-        if(database.getProtocol() != null && database.getNetworkAddress() != null) {
+        if (database.getProtocol() != null && database.getNetworkAddress() != null) {
             this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
                     DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
                     externalSourceGUID, externalSourceName, userId, methodName);
@@ -184,7 +193,7 @@ public class DataEngineRelationalDataHandler {
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
-                    databaseSchema.getAdditionalProperties(),DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, methodName);
+                    databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, methodName);
         } else {
             String databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
@@ -207,9 +216,9 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private Optional<String> findSchemaForDatabase(String userId, String databaseGUID) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException {
+    private Optional<EntityDetail> findSchemaForDatabase(String userId, String databaseGUID) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException {
         final String methodName = "findSchemaForDatabase";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -217,14 +226,8 @@ public class DataEngineRelationalDataHandler {
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
 
-        EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId, databaseGUID, DATABASE_TYPE_NAME,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
-
-        if (entity == null) {
-            return Optional.empty();
-        }
-
-        return Optional.of(entity.getGUID());
+        return Optional.ofNullable(repositoryHandler.getEntityForRelationshipType(userId, databaseGUID, DATABASE_TYPE_NAME,
+                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
     }
 
     /**
@@ -241,10 +244,9 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertRelationalTable(String userId, String databaseQualifiedName, RelationalTable relationalTable, String externalSourceName) throws
-                                                                                                                                                 InvalidParameterException,
-                                                                                                                                                 PropertyServerException,
-                                                                                                                                                 UserNotAuthorizedException {
+    public String upsertRelationalTable(String userId, String databaseQualifiedName, RelationalTable relationalTable,
+                                        String externalSourceName) throws InvalidParameterException, PropertyServerException,
+                                                                          UserNotAuthorizedException {
         final String methodName = "upsertRelationalTable";
 
         validateParameters(userId, methodName, relationalTable.getQualifiedName(), relationalTable.getDisplayName());
@@ -256,7 +258,11 @@ public class DataEngineRelationalDataHandler {
 
         String relationalTableGUID;
         if (!originalRelationalTableEntity.isPresent()) {
-            String databaseSchemaGUID = getDatabaseSchemaGUID(userId, databaseQualifiedName, methodName);
+            Optional<EntityDetail> databaseSchema = getDatabaseSchema(userId, databaseQualifiedName, methodName);
+            if (!databaseSchema.isPresent()) {
+                //throw exception
+            }
+            String databaseSchemaGUID = databaseSchema.get().getGUID();
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
@@ -335,21 +341,21 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String getDatabaseSchemaGUID(String userId, String databaseQualifiedName, String methodName) throws InvalidParameterException,
-                                                                                                                PropertyServerException,
-                                                                                                                UserNotAuthorizedException {
+    private Optional<EntityDetail> getDatabaseSchema(String userId, String databaseQualifiedName, String methodName) throws InvalidParameterException,
+                                                                                                                            PropertyServerException,
+                                                                                                                            UserNotAuthorizedException {
         Optional<EntityDetail> databaseOptional = findDatabaseEntity(userId, databaseQualifiedName);
         if (!databaseOptional.isPresent()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.DATABASE_NOT_FOUND, methodName, databaseQualifiedName);
         } else {
-            Optional<String> databaseSchemaOptional = findSchemaForDatabase(userId, databaseOptional.get().getGUID());
+            Optional<EntityDetail> databaseSchemaOptional = findSchemaForDatabase(userId, databaseOptional.get().getGUID());
             if (!databaseSchemaOptional.isPresent()) {
                 dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.DATABASE_NOT_FOUND, methodName, databaseQualifiedName);
             } else {
-                return databaseSchemaOptional.get();
+                return databaseSchemaOptional;
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -394,5 +400,79 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(displayName, DISPLAY_NAME_PROPERTY_NAME, methodName);
+    }
+
+    public void removeDatabase(String userId, String databaseGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws
+                                                                                                                             FunctionNotSupportedException,
+                                                                                                                             InvalidParameterException,
+                                                                                                                             PropertyServerException,
+                                                                                                                             UserNotAuthorizedException {
+        final String methodName = "removeDatabase";
+
+        validateDeleteSemantic(deleteSemantic, methodName);
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+
+        Optional<EntityDetail> databaseEntity = dataEngineCommonHandler.getEntityDetails(userId, databaseGUID, DATABASE_TYPE_NAME);
+        if (!databaseEntity.isPresent()) {
+            // exception
+        }
+        String databaseQualifiedName = databaseEntity.get().getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
+        Optional<EntityDetail> databaseSchema = getDatabaseSchema(userId, databaseQualifiedName, methodName);
+        if (!databaseSchema.isPresent()) {
+            // exception
+        }
+
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        removeDatabaseSchema(userId, databaseSchema.get(), externalSourceName, externalSourceGUID, deleteSemantic);
+
+        relationalDataHandler.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseQualifiedName, methodName);
+        repositoryHandler.purgeEntity(userId, databaseGUID, DATABASE_TYPE_GUID, DATABASE_TYPE_NAME, methodName);
+    }
+
+    private void removeDatabaseSchema(String userId, EntityDetail databaseSchema, String externalSourceName, String externalSourceGUID,
+                                      DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
+                                                                            UserNotAuthorizedException, FunctionNotSupportedException {
+        final String methodName = "removeDatabaseSchema";
+        validateDeleteSemantic(deleteSemantic, methodName);
+
+        String databaseSchemaGUID = databaseSchema.getGUID();
+        relationalDataHandler.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
+                databaseSchema.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString(), methodName);
+        repositoryHandler.purgeEntity(userId, databaseSchemaGUID, DEPLOYED_DATABASE_SCHEMA_TYPE_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, methodName);
+    }
+
+    public void removeRelationalTable(String userId, String relationalTableGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws
+                                                                                                                                           FunctionNotSupportedException,
+                                                                                                                                           InvalidParameterException,
+                                                                                                                                           PropertyServerException,
+                                                                                                                                           UserNotAuthorizedException {
+
+        final String methodName = "removeRelationalTable";
+
+        validateDeleteSemantic(deleteSemantic, methodName);
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationalTableGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+
+        Optional<EntityDetail> tableEntity = dataEngineCommonHandler.getEntityDetails(userId, relationalTableGUID, RELATIONAL_TABLE_TYPE_NAME);
+        if (!tableEntity.isPresent()) {
+            //entity not found exception
+        }
+        String tableQualifiedName = tableEntity.get().getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
+
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+
+        relationalDataHandler.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID, GUID_PROPERTY_NAME,
+                tableQualifiedName, methodName);
+        repositoryHandler.purgeEntity(userId, relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, methodName);
+    }
+
+    private void validateDeleteSemantic(DeleteSemantic deleteSemantic, String methodName) throws FunctionNotSupportedException {
+        if (deleteSemantic != DeleteSemantic.HARD) {
+            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
+                    serverName), this.getClass().getName(), methodName);
+        }
     }
 }

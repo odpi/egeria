@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
@@ -24,7 +25,14 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedE
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
 
 /**
  * DataEngineCommonHandler manages objects from the property server. It runs server-side in the DataEngine OMAS
@@ -162,9 +170,9 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    protected Optional<EntityDetail> findEntity(String userId, String qualifiedName, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                                   PropertyServerException,
-                                                                                                                   InvalidParameterException {
+    public Optional<EntityDetail> findEntity(String userId, String qualifiedName, String entityTypeName) throws UserNotAuthorizedException,
+                                                                                                                PropertyServerException,
+                                                                                                                InvalidParameterException {
         final String methodName = "findEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -184,6 +192,27 @@ public class DataEngineCommonHandler {
                 retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
 
         return retrievedEntity;
+    }
+
+    /**
+     * Fetch the entity using the identifier and the type name
+     *
+     * @param userId           the user identifier
+     * @param entityDetailGUID the entity identifier
+     * @param entityTypeName   the entity type name
+     *
+     * @return the entity
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the entity.
+     */
+    public Optional<EntityDetail> getEntityDetails(String userId, String entityDetailGUID, String entityTypeName) throws InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException {
+        String methodName = "getEntityDetails";
+        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, entityTypeName,
+                methodName));
     }
 
     /**
@@ -331,5 +360,26 @@ public class DataEngineCommonHandler {
     public void throwEntityNotDeletedException(DataEngineErrorCode errorCode, String methodName, String... params) throws EntityNotDeletedException {
 
         throw new EntityNotDeletedException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName);
+    }
+
+    protected Set<EntityDetail> getEntitiesForRelationshipType(String userId, String guid, String relationshipTypeName, String entityTypeName) throws
+                                                                                                                                       UserNotAuthorizedException,
+                                                                                                                                       PropertyServerException,
+                                                                                                                                       InvalidParameterException {
+        final String methodName = "getEntitiesForRelationshipType";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, CommonMapper.GUID_PROPERTY_NAME, methodName);
+
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
+
+        List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, guid, entityTypeName,
+                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
+
+        if (CollectionUtils.isEmpty(entities)) {
+            return new HashSet<>();
+        }
+
+        return entities.parallelStream().collect(Collectors.toSet());
     }
 }

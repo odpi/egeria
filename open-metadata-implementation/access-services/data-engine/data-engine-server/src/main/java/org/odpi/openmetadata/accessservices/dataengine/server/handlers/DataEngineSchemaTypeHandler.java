@@ -189,8 +189,8 @@ public class DataEngineSchemaTypeHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> findReferenceableEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
-            PropertyServerException,
-            InvalidParameterException {
+                                                                                                      PropertyServerException,
+                                                                                                      InvalidParameterException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
     }
 
@@ -261,11 +261,6 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Set<String> schemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
-        for (String schemaAttributeGUID : schemaAttributeGUIDs) {
-            dataEngineCommonHandler.removeEntity(userId, schemaAttributeGUID, TABULAR_COLUMN_TYPE_NAME, externalSourceName);
-            repositoryHandler.purgeEntity(userId, schemaAttributeGUID, TABULAR_COLUMN_TYPE_GUID, TABULAR_COLUMN_TYPE_NAME, methodName);
-        }
         dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, externalSourceName);
         repositoryHandler.purgeEntity(userId, schemaTypeGUID, TABULAR_SCHEMA_TYPE_TYPE_GUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, methodName);
     }
@@ -348,25 +343,5 @@ public class DataEngineSchemaTypeHandler {
                 schemaType.getEncodingStandard(), null, null,
                 TABULAR_SCHEMA_TYPE_TYPE_GUID, TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);
-    }
-
-    private Set<String> getSchemaAttributesForSchemaType(String userId, String schemaTypeGUID) throws UserNotAuthorizedException,
-                                                                                                      PropertyServerException,
-                                                                                                      InvalidParameterException {
-        final String methodName = "getSchemaAttributesForSchemaType";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
-
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, schemaTypeGUID, SCHEMA_TYPE_TYPE_NAME,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
-
-        if (CollectionUtils.isEmpty(entities)) {
-            return new HashSet<>();
-        }
-
-        return entities.parallelStream().map(InstanceHeader::getGUID).collect(Collectors.toSet());
     }
 }

@@ -10,11 +10,11 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrat
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
@@ -36,6 +36,8 @@ import org.slf4j.LoggerFactory;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 
 /**
  * The Data Engine event processor is processing events from external data engines about
@@ -99,8 +101,9 @@ public class DataEngineEventProcessor {
 
             String userId = portAliasEvent.getUserId();
             String externalSourceName = portAliasEvent.getExternalSourceName();
-            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, userId,
-                    portAliasEvent.getProcessQualifiedName()).orElse(null);
+
+            String processGUID = dataEngineRESTServices.getEntityGUID(serverName, userId, portAliasEvent.getProcessQualifiedName(), PROCESS_TYPE_NAME)
+                    .orElse(null);
 
             dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
             dataEngineRESTServices.upsertPortAliasWithDelegation(userId, serverName, portAliasEvent.getPortAlias(),
@@ -148,8 +151,8 @@ public class DataEngineEventProcessor {
             String userId = portImplementationEvent.getUserId();
             PortImplementation portImplementation = portImplementationEvent.getPortImplementation();
 
-            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, userId,
-                    portImplementationEvent.getProcessQualifiedName()).orElse(null);
+            String processGUID = dataEngineRESTServices.getEntityGUID(serverName, userId, portImplementationEvent.getProcessQualifiedName(),
+                    PROCESS_TYPE_NAME).orElse(null);
 
             dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
 
@@ -222,7 +225,8 @@ public class DataEngineEventProcessor {
 
             String portGUID = null;
             if (StringUtils.isNotEmpty(schemaEvent.getPortQualifiedName())) {
-                portGUID = dataEngineRESTServices.getPortGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName()).orElse(null);
+                portGUID = dataEngineRESTServices.getEntityGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName(),
+                        PORT_TYPE_NAME).orElse(null);
             }
             dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
@@ -329,8 +333,9 @@ public class DataEngineEventProcessor {
         try {
             RelationalTableEvent relationalTableEvent = OBJECT_MAPPER.readValue(dataEngineEvent, RelationalTableEvent.class);
 
-            dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName, relationalTableEvent.getDatabaseQualifiedName(),
-                    relationalTableEvent.getRelationalTable(), relationalTableEvent.getExternalSourceName());
+            dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName,
+                    relationalTableEvent.getDatabaseQualifiedName(), relationalTableEvent.getRelationalTable(),
+                    relationalTableEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }

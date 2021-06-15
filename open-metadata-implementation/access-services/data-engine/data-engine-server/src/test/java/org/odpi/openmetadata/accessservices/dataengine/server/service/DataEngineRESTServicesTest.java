@@ -76,6 +76,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -92,7 +93,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
-import static org.testng.AssertJUnit.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -833,32 +833,6 @@ class DataEngineRESTServicesTest {
                 CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 dataFileRequestBody.getDataFile().getColumns(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
-    }
-
-    @Test
-    void getProcessGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockProcessHandler("getProcessGUID");
-
-        EntityDetail mockedEntity = mock(EntityDetail.class);
-        when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(processHandler.findProcessEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedEntity));
-
-        Optional<String> result = dataEngineRESTServices.getProcessGUID(SERVER_NAME, USER, QUALIFIED_NAME);
-        assertTrue(result.isPresent());
-        assertEquals(GUID, result.get());
-    }
-
-    @Test
-    void getPortGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockPortHandler("getPortGUID");
-
-        EntityDetail mockedEntity = mock(EntityDetail.class);
-        when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEnginePortHandler.findPortEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedEntity));
-
-        Optional<String> result = dataEngineRESTServices.getPortGUID(SERVER_NAME, USER, QUALIFIED_NAME);
-        assertTrue(result.isPresent());
-        assertEquals(GUID, result.get());
     }
 
     @Test
