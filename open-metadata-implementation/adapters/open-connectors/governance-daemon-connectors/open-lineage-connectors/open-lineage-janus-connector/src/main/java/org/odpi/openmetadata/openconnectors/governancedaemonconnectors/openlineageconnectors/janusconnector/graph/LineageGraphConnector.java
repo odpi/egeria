@@ -451,10 +451,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             Vertex subProcess = subProcessNode.next();
 
             g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(subProcess.id())).next();
-            addInAssetToProcessEdge(columnIn, process);
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
-
             commitTransaction(g);
+
+            addInAssetToProcessEdge(columnIn, process);
             log.info("OLS has added the corresponding subProcess node and edges for input column {} and process {} ",
                     columnInGuid, processGuid);
         }
@@ -488,8 +488,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             Vertex subProcess = subProcessNode.next();
 
             g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
-            addOutAssetToProcessEdge(columnOut, process);
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
+            addOutAssetToProcessEdge(columnOut, process);
 
             commitTransaction(g);
             log.info("OLS has added the corresponding subProcess node and edges for output column {} and process {} ",
