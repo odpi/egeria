@@ -253,7 +253,6 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                  FunctionNotSupportedException {
         final String methodName = "removeSchemaType";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 

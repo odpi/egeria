@@ -70,6 +70,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final Connection inTopicConnection;
     private final DataEngineDataFileHandler dataEngineDataFileHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
+    private final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler;
+    private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -163,8 +165,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 new ReferenceableHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
                         Endpoint.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                         localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-        final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler =
-                new DataEngineConnectionAndEndpointHandler(invalidParameterHandler, repositoryHelper, serviceName, serverName,
+        dataEngineConnectionAndEndpointHandler = new DataEngineConnectionAndEndpointHandler(invalidParameterHandler, repositoryHelper, serviceName, serverName,
                         dataEngineCommonHandler, connectionHandler, endpointHandler);
 
         processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
@@ -185,8 +186,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
                 FileFolder.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-        final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler,
-                repositoryHandler, dataEngineCommonHandler, folderHandler);
+        dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler, repositoryHandler, dataEngineCommonHandler,
+                folderHandler);
         final AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
                 DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
@@ -265,5 +266,19 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     public DataEngineCommonHandler getDataEngineCommonHandler() {
         return dataEngineCommonHandler;
+    }
+
+    /**
+     * Returns the folder hierarchy handler
+     */
+    public DataEngineFolderHierarchyHandler getDataEngineFolderHierarchyHandler() {
+        return dataEngineFolderHierarchyHandler;
+    }
+
+    /**
+     * Returns the connection and endpoint handler
+     */
+    public DataEngineConnectionAndEndpointHandler getDataEngineConnectionAndEndpointHandler() {
+        return dataEngineConnectionAndEndpointHandler;
     }
 }

@@ -40,7 +40,9 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBod
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
@@ -74,13 +76,17 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
@@ -342,15 +348,7 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        Optional<String> schemaTypeGUIDOptional = Optional.ofNullable(guid);
-        if (!schemaTypeGUIDOptional.isPresent()) {
-            schemaTypeGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, SCHEMA_TYPE_TYPE_NAME);
-        }
-
-        if (!schemaTypeGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-        String schemaTypeGUID = schemaTypeGUIDOptional.get();
+        String schemaTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, SCHEMA_TYPE_TYPE_NAME, methodName);
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, schemaTypeGUID, SCHEMA_TYPE_TYPE_NAME);
     }
@@ -468,16 +466,7 @@ public class DataEngineRESTServices {
                                                                  FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deletePort";
 
-        Optional<String> portGUIDOptional = Optional.ofNullable(guid);
-        if (!portGUIDOptional.isPresent()) {
-            portGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, PORT_TYPE_NAME);
-        }
-
-        if (!portGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-
-        String portGUID = portGUIDOptional.get();
+        String portGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PORT_TYPE_NAME, methodName);
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         if (PORT_IMPLEMENTATION_TYPE_NAME.equalsIgnoreCase(portType)) {
@@ -593,10 +582,12 @@ public class DataEngineRESTServices {
         if (CollectionUtils.isNotEmpty(qualifiedNames)) {
             for (String qualifiedName : qualifiedNames) {
                 Optional<String> processGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, PROCESS_TYPE_NAME);
-                if (!processGUIDOptional.isPresent()) {
+                if (processGUIDOptional.isPresent()) {
+                    deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
+                }
+                else {
                     throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
                 }
-                deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
             }
         }
 
@@ -1049,16 +1040,7 @@ public class DataEngineRESTServices {
 
         DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-        Optional<String> databaseGUIDOptional = Optional.ofNullable(guid);
-        if (!databaseGUIDOptional.isPresent()) {
-            databaseGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, DATABASE_TYPE_NAME);
-        }
-
-        if (!databaseGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-
-        String databaseGUID = databaseGUIDOptional.get();
+        String databaseGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATABASE_TYPE_NAME, methodName);
         relationalDataHandler.removeDatabase(userId, databaseGUID, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, databaseGUID, DATABASE_TYPE_NAME);
     }
@@ -1146,16 +1128,7 @@ public class DataEngineRESTServices {
 
         DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-        Optional<String> relationalTableGUIDOptional = Optional.ofNullable(guid);
-        if (!relationalTableGUIDOptional.isPresent()) {
-            relationalTableGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, RELATIONAL_TABLE_TYPE_NAME);
-        }
-
-        if (!relationalTableGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-
-        String relationalTableGUID = relationalTableGUIDOptional.get();
+        String relationalTableGUID = getEntityGUID(userId, serverName, guid, qualifiedName, RELATIONAL_TABLE_TYPE_NAME, methodName);
         relationalDataHandler.removeRelationalTable(userId, relationalTableGUID, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, relationalTableGUID, RELATIONAL_TABLE_TYPE_NAME);
     }
@@ -1253,18 +1226,120 @@ public class DataEngineRESTServices {
         DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
         DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        Optional<String> dataFileGUIDOptional = Optional.ofNullable(guid);
-        if (!dataFileGUIDOptional.isPresent()) {
-            dataFileGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, DATA_FILE_TYPE_NAME);
-        }
-        if (!dataFileGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-        String dataFileGUID = dataFileGUIDOptional.get();
+        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATA_FILE_TYPE_NAME, methodName);
 
         String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         dataFileHandler.removeDataFile(userId, dataFileGUID, externalSourceName, externalSourceGuid, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, DATA_FILE_TYPE_NAME);
+    }
+
+    public VoidResponse deleteFolder(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteFolder";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteFolder(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    private void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                              DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                    EntityNotDeletedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteFolder";
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, FILE_FOLDER_TYPE_NAME, methodName);
+
+        DataEngineFolderHierarchyHandler folderHierarchyHandler = instanceHandler.getFolderHierarchyHandler(userId, serverName, methodName);
+        folderHierarchyHandler.removeFolder(userId, folderGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, FILE_FOLDER_TYPE_NAME);
+    }
+
+    public VoidResponse deleteConnection(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteConnection";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteConnection(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    private void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                        UserNotAuthorizedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteConnection";
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
+
+        DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
+                methodName);
+        connectionAndEndpointHandler.removeConnection(userId, folderGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, CONNECTION_TYPE_NAME);
+    }
+
+    public VoidResponse deleteEndpoint(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteEndpoint";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteEndpoint(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    private void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                      UserNotAuthorizedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteEndpoint";
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
+
+        DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
+                methodName);
+        connectionAndEndpointHandler.removeEndpoint(userId, folderGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, ENDPOINT_TYPE_NAME);
+    }
+
+    private String getEntityGUID(String userId, String serverName, String guid, String qualifiedName, String entityTypeName, String methodName) throws
+                                                                                                                                                InvalidParameterException,
+                                                                                                                                                PropertyServerException,
+                                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                                EntityNotDeletedException {
+        Optional<String> entityGUIDOptional = Optional.ofNullable(guid);
+        if (!entityGUIDOptional.isPresent()) {
+            entityGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, entityTypeName);
+        }
+        if (entityGUIDOptional.isPresent()) {
+            return entityGUIDOptional.get();
+        } else {
+            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
+        }
+        return null;
     }
 
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQualifiedName, String oldSchemaTypeQualifiedName,
