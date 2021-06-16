@@ -111,14 +111,12 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public SynchronizationClient(String                serverName,
                                  String                serverPlatformURLRoot,
                                  AnalyticsModelingRestClient restClient,
-                                 int                   maxPageSize,
-                                 AuditLog              auditLog) throws InvalidParameterException
+                                 int                   maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Synchronization Client Constructor";
 

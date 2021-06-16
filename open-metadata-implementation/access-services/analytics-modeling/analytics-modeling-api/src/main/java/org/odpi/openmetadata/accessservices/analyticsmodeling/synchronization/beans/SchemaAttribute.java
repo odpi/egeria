@@ -46,6 +46,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return Clone of subclass.
      */
+	@Override
     public SchemaElement cloneSchemaElement()
     {
         return new SchemaAttribute(this);

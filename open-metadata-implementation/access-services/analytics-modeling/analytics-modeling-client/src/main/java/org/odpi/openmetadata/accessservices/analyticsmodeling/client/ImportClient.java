@@ -43,9 +43,9 @@ public class ImportClient implements AnalyticsModelingImport {
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ImportClient(String serverName, String serverPlatformURLRoot)
-    		throws InvalidParameterException
-    {
+	public ImportClient(String serverName, String serverPlatformURLRoot)
+			throws InvalidParameterException 
+	{
         final String methodName = "Client Constructor";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -67,12 +67,12 @@ public class ImportClient implements AnalyticsModelingImport {
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ImportClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 String   userId,
-                                 String   password,
-                                 AuditLog auditLog) throws InvalidParameterException
-    {
+	public ImportClient(String serverName,
+						String serverPlatformURLRoot,
+						String userId,
+						String password,
+						AuditLog auditLog)
+			throws InvalidParameterException    {
         final String methodName = "Client Constructor";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -92,11 +92,8 @@ public class ImportClient implements AnalyticsModelingImport {
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ImportClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password) throws InvalidParameterException
-    {
+	public ImportClient(String serverName, String serverPlatformURLRoot, String userId, String password)
+			throws InvalidParameterException {
         final String methodName = "Client Constructor";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -112,15 +109,13 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public ImportClient(String                serverName,
-                                 String                serverPlatformURLRoot,
-                                 AnalyticsModelingRestClient restClient,
-                                 int                   maxPageSize,
-                                 AuditLog              auditLog) throws InvalidParameterException
-    {
+	public ImportClient(String serverName,
+						String serverPlatformURLRoot,
+						AnalyticsModelingRestClient restClient,
+						int maxPageSize)
+			throws InvalidParameterException {
         final String methodName = "Client Constructor";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -137,6 +132,7 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param pageSize		maximum number of results to return
 	 * @return list of databases for the requested server/user.
 	 */
+	@Override
 	public AnalyticsModelingOMASAPIResponse getDatabases(String userId, Integer startFrom, Integer pageSize)
 	{
 		return restClient.getDatabases(userId, startFrom, pageSize);
@@ -151,6 +147,7 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
 	 */
+	@Override
 	public AnalyticsModelingOMASAPIResponse getSchemas(String userId, String databaseGuid, Integer startFrom, Integer pageSize)
 	{
 		return restClient.getSchemas(userId, databaseGuid, startFrom, pageSize);
@@ -165,6 +162,7 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param schema       schema name on the database.
 	 * @return list of tables for the requested schema.
 	 */
+	@Override
 	public AnalyticsModelingOMASAPIResponse getTables(String userId, String databaseGuid, String catalog, String schema)
 	{
 		return restClient.getTables(userId, databaseGuid, catalog, schema);
@@ -180,6 +178,7 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param request      table filter 
 	 * @return module for the requested schema.
 	 */
+	@Override
 	public AnalyticsModelingOMASAPIResponse getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
 	{
 		return restClient.getModule(userId, databaseGuid, catalog, schema, request);
