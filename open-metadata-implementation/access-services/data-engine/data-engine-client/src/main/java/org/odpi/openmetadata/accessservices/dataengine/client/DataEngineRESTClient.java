@@ -51,7 +51,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
     private String serverPlatformRootURL;
     private String externalSourceName;
-    private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
+    private DeleteSemantic deleteSemantic = DeleteSemantic.SOFT;
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**

@@ -1276,13 +1276,13 @@ public class DataEngineRESTServices {
             return;
         }
 
-        Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, schemaTypeQualifiedName, SCHEMA_TYPE_TYPE_NAME);
+        Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, oldSchemaTypeQualifiedName, SCHEMA_TYPE_TYPE_NAME);
         if (!schemaTypeGUID.isPresent()) {
             return;
         }
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.HARD);
+        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.SOFT);
     }
 
     private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
@@ -1461,7 +1461,7 @@ public class DataEngineRESTServices {
             try {
                 Optional<String> portGUID = getEntityGUID(serverName, userId, portQualifiedName, PORT_TYPE_NAME);
                 if (portGUID.isPresent()) {
-                    dataEnginePortHandler.removePort(userId, portGUID.get(), externalSourceName, DeleteSemantic.HARD);
+                    dataEnginePortHandler.removePort(userId, portGUID.get(), externalSourceName, DeleteSemantic.SOFT);
                 }
             } catch (Exception error) {
                 restExceptionHandler.captureExceptions(response, error, methodName);

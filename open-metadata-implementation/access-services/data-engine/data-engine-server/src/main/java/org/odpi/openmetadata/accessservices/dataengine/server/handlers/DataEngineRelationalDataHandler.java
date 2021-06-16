@@ -375,7 +375,7 @@ public class DataEngineRelationalDataHandler {
                                                                                                                              PropertyServerException,
                                                                                                                              UserNotAuthorizedException {
         final String methodName = "removeDatabase";
-        validateDeleteSemantic(deleteSemantic, methodName);
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
@@ -390,7 +390,6 @@ public class DataEngineRelationalDataHandler {
                 removeDatabaseSchema(userId, databaseSchemaOptional.get(), externalSourceName, externalSourceGUID, deleteSemantic);
 
                 relationalDataHandler.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseQualifiedName, methodName);
-                repositoryHandler.purgeEntity(userId, databaseGUID, DATABASE_TYPE_GUID, DATABASE_TYPE_NAME, methodName);
             } else {
                 dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, databaseGUID);
             }
@@ -403,12 +402,11 @@ public class DataEngineRelationalDataHandler {
                                       DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
                                                                             UserNotAuthorizedException, FunctionNotSupportedException {
         final String methodName = "removeDatabaseSchema";
-        validateDeleteSemantic(deleteSemantic, methodName);
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String databaseSchemaGUID = databaseSchema.getGUID();
         relationalDataHandler.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                 databaseSchema.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString(), methodName);
-        repositoryHandler.purgeEntity(userId, databaseSchemaGUID, DEPLOYED_DATABASE_SCHEMA_TYPE_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, methodName);
     }
 
     public void removeRelationalTable(String userId, String relationalTableGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws
@@ -419,8 +417,7 @@ public class DataEngineRelationalDataHandler {
 
         final String methodName = "removeRelationalTable";
 
-        validateDeleteSemantic(deleteSemantic, methodName);
-
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationalTableGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
@@ -433,13 +430,5 @@ public class DataEngineRelationalDataHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         relationalDataHandler.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID, GUID_PROPERTY_NAME,
                 tableQualifiedName, methodName);
-        repositoryHandler.purgeEntity(userId, relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, methodName);
-    }
-
-    private void validateDeleteSemantic(DeleteSemantic deleteSemantic, String methodName) throws FunctionNotSupportedException {
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
     }
 }

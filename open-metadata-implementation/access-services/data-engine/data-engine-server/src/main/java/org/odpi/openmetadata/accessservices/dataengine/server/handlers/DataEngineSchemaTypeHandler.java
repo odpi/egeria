@@ -252,17 +252,12 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                  UserNotAuthorizedException,
                                                                                                                                  FunctionNotSupportedException {
         final String methodName = "removeSchemaType";
-
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, externalSourceName);
-        repositoryHandler.purgeEntity(userId, schemaTypeGUID, TABULAR_SCHEMA_TYPE_TYPE_GUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, methodName);
     }
 
 

@@ -41,7 +41,7 @@ public class DataEngineEventClient implements DataEngineClient {
 
     private DataEngineInTopicClientConnector topicConnector;
     private String externalSource;
-    private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
+    private DeleteSemantic deleteSemantic = DeleteSemantic.SOFT;
 
     /**
      * Constructor to create DataEngineEventClient with unauthenticated access to the server

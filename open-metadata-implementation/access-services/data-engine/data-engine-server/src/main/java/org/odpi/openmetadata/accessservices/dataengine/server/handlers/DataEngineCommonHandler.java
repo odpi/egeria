@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -21,7 +22,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -407,5 +410,12 @@ public class DataEngineCommonHandler {
 
         return Optional.ofNullable(repositoryHandler.getEntityForRelationshipType(userId, entityGUID, entityTypeName,
                 relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
+    }
+
+    protected void validateDeleteSemantic(DeleteSemantic deleteSemantic, String methodName) throws FunctionNotSupportedException {
+        if (deleteSemantic != DeleteSemantic.SOFT) {
+            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
+                    serverName), this.getClass().getName(), methodName);
+        }
     }
 }

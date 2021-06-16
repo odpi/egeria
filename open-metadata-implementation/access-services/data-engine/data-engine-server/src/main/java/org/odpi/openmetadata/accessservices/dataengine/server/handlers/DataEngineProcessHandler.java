@@ -299,15 +299,10 @@ public class DataEngineProcessHandler {
                                                                                                                            UserNotAuthorizedException,
                                                                                                                            FunctionNotSupportedException {
         final String methodName = "removeProcess";
-
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
-        repositoryHandler.purgeEntity(userId, processGUID, PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, methodName);
     }
 }

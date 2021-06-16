@@ -45,6 +45,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -91,8 +92,11 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -161,6 +165,9 @@ class DataEngineRESTServicesTest {
     @Mock
     private DataEngineDataFileHandler dataEngineDataFileHandler;
 
+    @Mock
+    private DataEngineCommonHandler dataEngineCommonHandler;
+
     private final PortImplementation portImplementation = getPortImplementation();
 
     private final PortAlias portAlias = getPortAlias();
@@ -185,7 +192,6 @@ class DataEngineRESTServicesTest {
         restExceptionHandlerField.setAccessible(true);
         ReflectionUtils.setField(restExceptionHandlerField, dataEngineRESTServices, restExceptionHandler);
         restExceptionHandlerField.setAccessible(false);
-
     }
 
     @Test
@@ -457,13 +463,14 @@ class DataEngineRESTServicesTest {
         mockSchemaTypeHandler("getSchemaTypeGUID");
         mockPortHandler("upsertSchemaType");
         mockPortHandler("findSchemaTypeForPort");
-        mockGetProcessGUID();
+        mockCommonHandler("getEntityDetails");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         EntityDetail mockedSchemaType = mockEntityDetailWithQualifiedName(OLD_SCHEMA_GUID, OLD_SCHEMA_QUALIFIED_NAME);
         when(dataEngineSchemaTypeHandler.findSchemaTypeEntity(USER, OLD_SCHEMA_QUALIFIED_NAME)).thenReturn(Optional.of(mockedSchemaType));
+        when(dataEngineCommonHandler.findEntity(USER, OLD_SCHEMA_QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedSchemaType));
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(Optional.of(mockedSchemaType));
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
@@ -472,7 +479,7 @@ class DataEngineRESTServicesTest {
         verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, OLD_SCHEMA_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                DeleteSemantic.HARD);
+                DeleteSemantic.SOFT);
         assertEquals(PORT_GUID, response.getGUID());
     }
 
@@ -480,6 +487,8 @@ class DataEngineRESTServicesTest {
     void createPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
+        mockGetProcessGUID();
+
         mockGetProcessGUID();
 
         when(dataEnginePortHandler.createPortAlias(USER, portAlias, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
@@ -651,6 +660,7 @@ class DataEngineRESTServicesTest {
         mockProcessHandler("addProcessPortRelationships");
         mockProcessHandler("deleteObsoletePorts");
         mockCollectionHandler("createCollection");
+        mockCommonHandler("getEntityDetails");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
@@ -839,14 +849,14 @@ class DataEngineRESTServicesTest {
     void deleteSchemaType_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                         FunctionNotSupportedException {
         mockSchemaTypeHandler("deleteSchemaType");
-        mockSchemaTypeHandler("getSchemaTypeGUID");
+        mockCommonHandler("getEntityDetails");
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineSchemaTypeHandler.findSchemaTypeEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteSchemaType(USER, SERVER_NAME, getDeleteRequestBody());
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
@@ -859,7 +869,7 @@ class DataEngineRESTServicesTest {
         deleteRequestBody.setGuid(GUID);
 
         dataEngineRESTServices.deleteSchemaType(USER, SERVER_NAME,deleteRequestBody);
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(0)).findSchemaTypeEntity(USER, QUALIFIED_NAME);
     }
 
@@ -867,18 +877,18 @@ class DataEngineRESTServicesTest {
     void deletePort_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                      FunctionNotSupportedException {
         mockPortHandler("deletePort");
-        mockPortHandler("getPortGUID");
+        mockCommonHandler("getEntityDetails");
         mockSchemaTypeHandler("deleteSchemaType");
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEnginePortHandler.findPortEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PORT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deletePort(USER, SERVER_NAME, getDeleteRequestBody(), PORT_IMPLEMENTATION_TYPE_NAME);
 
-        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
@@ -897,8 +907,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.deletePort(USER, SERVER_NAME, deleteRequestBody, PORT_IMPLEMENTATION_TYPE_NAME);
 
-        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEnginePortHandler, times(0)).findPortEntity(USER, QUALIFIED_NAME);
     }
 
@@ -908,7 +918,7 @@ class DataEngineRESTServicesTest {
         mockPortHandler("deletePort");
         mockSchemaTypeHandler("deleteSchemaType");
         mockProcessHandler("deleteProcess");
-        mockProcessHandler("getProcessGUID");
+        mockCommonHandler("getEntityDetails");
 
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
@@ -925,9 +935,9 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.deleteProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(processHandler, times(1)).removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(processHandler, times(1)).removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     @Test
@@ -948,15 +958,15 @@ class DataEngineRESTServicesTest {
         requestBody.setGuids(Collections.singletonList(PROCESS_GUID));
         dataEngineRESTServices.deleteProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-        verify(processHandler, times(1)).removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(processHandler, times(1)).removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
     }
 
     private ProcessesDeleteRequestBody getProcessesDeleteRequestBody() {
         ProcessesDeleteRequestBody deleteRequestBody = new ProcessesDeleteRequestBody();
         deleteRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        deleteRequestBody.setDeleteSemantic(DeleteSemantic.HARD);
+        deleteRequestBody.setDeleteSemantic(DeleteSemantic.SOFT);
         return deleteRequestBody;
     }
 
@@ -964,7 +974,7 @@ class DataEngineRESTServicesTest {
         DeleteRequestBody deleteRequestBody = new DeleteRequestBody();
         deleteRequestBody.setQualifiedName(QUALIFIED_NAME);
         deleteRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        deleteRequestBody.setDeleteSemantic(DeleteSemantic.HARD);
+        deleteRequestBody.setDeleteSemantic(DeleteSemantic.SOFT);
         return deleteRequestBody;
     }
 
@@ -1003,6 +1013,9 @@ class DataEngineRESTServicesTest {
         when(instanceHandler.getDataFileHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineDataFileHandler);
     }
 
+    private void mockCommonHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        when(instanceHandler.getCommonHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineCommonHandler);
+    }
     private DataEngineRegistrationRequestBody mockDataEngineRegistrationRequestBody() {
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(getSoftwareServerCapability());
@@ -1251,9 +1264,9 @@ class DataEngineRESTServicesTest {
     }
 
     private void mockGetProcessGUID() throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        mockProcessHandler("getProcessGUID");
+        mockCommonHandler("getEntityDetails");
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
-        when(processHandler.findProcessEntity(USER, PROCESS_QUALIFIED_NAME)).thenReturn(Optional.of(mockedProcess));
+        when(dataEngineCommonHandler.findEntity(USER, PROCESS_QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
     }
 }

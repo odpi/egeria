@@ -464,20 +464,19 @@ class DataEnginePortHandlerTest {
     @Test
     void removePort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
 
-        dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
 
         verify(portHandler, times(1)).removePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID, "portGUID",
-                "removePort");
-        verify(repositoryHandler, times(1)).purgeEntity(USER, PORT_GUID, PORT_TYPE_GUID, PORT_TYPE_NAME,
                 "removePort");
     }
 
     @Test
-    void removePort_throwsFunctionNotSupportedException() {
-        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+    void removePort_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+        FunctionNotSupportedException mockedException = mock(FunctionNotSupportedException.class);
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removePort");
 
-        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
+       assertThrows(FunctionNotSupportedException.class, () ->
+               dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
     private void mockDelegatedPortEntity(PortType portType) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {

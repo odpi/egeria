@@ -326,16 +326,10 @@ public class DataEnginePortHandler {
                                                                                                                             UserNotAuthorizedException,
                                                                                                                             FunctionNotSupportedException {
         final String methodName = "removePort";
-
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, methodName);
-
-        repositoryHandler.purgeEntity(userId, portGUID, PORT_TYPE_GUID, PORT_TYPE_NAME, methodName);
     }
 
     /**

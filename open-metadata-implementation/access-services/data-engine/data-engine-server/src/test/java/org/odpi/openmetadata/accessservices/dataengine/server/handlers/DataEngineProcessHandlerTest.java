@@ -35,6 +35,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
@@ -109,15 +110,15 @@ class DataEngineProcessHandlerTest {
     @Mock
     private AssetHandler<Asset> assetHandler;
 
-    @Spy
-    @InjectMocks
-    private DataEngineProcessHandler processHandler;
-
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
     @Mock
     private DataEngineRegistrationHandler registrationHandler;
+
+    @Spy
+    @InjectMocks
+    private DataEngineProcessHandler processHandler;
 
     @Test
     void createProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
@@ -205,7 +206,8 @@ class DataEngineProcessHandlerTest {
 
         EntityDetailDifferences mockedDifferences = mock(EntityDetailDifferences.class);
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.FALSE);
-        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true)).thenReturn(mockedDifferences);
+        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalProcessEntity, mockedUpdatedProcessEntity, true))
+                .thenReturn(mockedDifferences);
 
         Classification classification = new Classification();
         classification.setName("classificationName");
@@ -372,7 +374,7 @@ class DataEngineProcessHandlerTest {
     void removeProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, FunctionNotSupportedException {
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        processHandler.removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        processHandler.removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
 
         verify(assetHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 PROCESS_GUID, "processGUID", PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, "removeProcess");
@@ -380,11 +382,14 @@ class DataEngineProcessHandlerTest {
 
 
     @Test
-    void removeProcess_throwsFunctionNotSupportedException() {
-        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                processHandler.removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+    void removeProcess_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+        FunctionNotSupportedException mockedException = new FunctionNotSupportedException(
+                OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition("removeProcess", this.getClass().getName(),
+                        "server"), this.getClass().getName(), "removeProcess");
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removeProcess");
 
-        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
+        assertThrows(FunctionNotSupportedException.class, () ->
+                processHandler.removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {

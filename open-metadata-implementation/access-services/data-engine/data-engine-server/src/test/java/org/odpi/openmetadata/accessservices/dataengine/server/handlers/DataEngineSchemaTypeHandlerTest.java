@@ -33,6 +33,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
@@ -338,21 +339,20 @@ class DataEngineSchemaTypeHandlerTest {
                 TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
                 "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
 
-        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
-                TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
                 TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
-    void removeSchemaType_throwsFunctionNotSupportedException() {
-        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+    void removeSchemaType_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+       FunctionNotSupportedException mockedException = new FunctionNotSupportedException(
+                OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition("removeSchemaType", this.getClass().getName(),
+                        "server"), this.getClass().getName(), "removeSchemaType");
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removeSchemaType");
 
-        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
+        assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName)
