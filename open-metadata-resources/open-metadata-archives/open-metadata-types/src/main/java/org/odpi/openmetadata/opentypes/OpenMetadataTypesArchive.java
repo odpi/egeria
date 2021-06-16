@@ -318,18 +318,18 @@ public class OpenMetadataTypesArchive
     private void update0380SubjectArea()
 
     {
-        this.archiveBuilder.addRelationshipDef(addObjectInheritance());
-        this.archiveBuilder.addTypeDefPatch(updateIsaTypeOf());
+        this.archiveBuilder.addRelationshipDef(addIsATypeOfRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateTermIsATypeOfRelationship());
     }
 
     /**
      * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
      * @return RelationshipDef
      */
-    private RelationshipDef addObjectInheritance()
+    private RelationshipDef addIsATypeOfRelationship()
     {
         final String guid            = "9b6a91b5-a339-4245-b208-040805f95a75";
-        final String name            = "ObjectInheritance";
+        final String name            = "IsATypeOfRelationship";
         final String description     = "Defines an inheritance relationship between two spine objects.";
         final String descriptionGUID = null;
 
@@ -421,11 +421,11 @@ public class OpenMetadataTypesArchive
 
     }
     /**
-     * Deprecate the TermISATypeOFRelationship - use TermTypeOFRelationship
+     * Deprecate the TermIsATypeOfRelationship - use TermTypeOFRelationship
      *
      * @return patch
      */
-    private TypeDefPatch updateIsaTypeOf()
+    private TypeDefPatch updateTermIsATypeOfRelationship()
     {
         final String typeName = "TermISATypeOFRelationship";
 

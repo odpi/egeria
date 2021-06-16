@@ -31,8 +31,8 @@ public class SubjectAreaRelationship implements SubjectAreaRelationshipClients {
     private static final String REPLACEMENT_TERM = "replacement-terms";
     private static final String TYPED_BY = "typed-bys";
     private static final String IS_A = "is-as";
+    private static final String IS_A_TYPE_OF_DEPRECATED = "is-a-type-of-deprecateds";
     private static final String IS_A_TYPE_OF = "is-a-type-ofs";
-    private static final String OBJECT_INHERITANCES = "object-inheritances";
     private static final String TERM_CATEGORIZATION = "term-categorizations";
     private static final String SEMANTIC_ASSIGNMENT = "semantic-assignments";
     private static final String TERM_ANCHOR = "term-anchor";
@@ -151,13 +151,13 @@ public class SubjectAreaRelationship implements SubjectAreaRelationshipClients {
     }
 
     @Override
-    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient isaTypeOf() {
-        return getClient(IsATypeOf.class);
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient isaTypeOfDeprecated() {
+        return getClient(IsATypeOfDeprecated.class);
     }
 
     @Override
-    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient objectInheritance() {
-        return getClient(ObjectInheritance.class);
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient isATypeOf() {
+        return getClient(IsATypeOf.class);
     }
 
     @Override
@@ -278,15 +278,15 @@ public class SubjectAreaRelationship implements SubjectAreaRelationshipClients {
         }
     }
     @SubjectAreaRelationshipClient
-    static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
+    static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOfDeprecated> {
         protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
-            super(subjectAreaRestClient, IS_A_TYPE_OF);
+            super(subjectAreaRestClient, IS_A_TYPE_OF_DEPRECATED);
         }
     }
     @SubjectAreaRelationshipClient
-    static class ObjectInheritanceClient extends AbstractSubjectAreaRelationship<ObjectInheritance> {
+    static class ObjectInheritanceClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
         protected ObjectInheritanceClient(SubjectAreaRestClient subjectAreaRestClient) {
-            super(subjectAreaRestClient, OBJECT_INHERITANCES);
+            super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
     }
     @SubjectAreaRelationshipClient

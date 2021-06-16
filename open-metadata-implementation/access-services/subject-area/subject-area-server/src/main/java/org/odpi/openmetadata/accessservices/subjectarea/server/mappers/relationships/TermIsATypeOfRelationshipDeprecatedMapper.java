@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOf;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -13,23 +13,25 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 /**
  * Mapping methods to map between the termISATypeOFRelationship and the equivalent omrs Relationship.
+ *
+ * @deprecated use IsATypeOfRelationship not TermISATypeOFRelationship
  */
 @SubjectAreaMapper
-public class TermIsATypeOfRelationshipMapper extends RelationshipMapper<IsATypeOf> {
+public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMapper<IsATypeOfDeprecated> {
     private static final String TERM_ISA_TYPE_OF_RELATIONSHIP = "TermISATypeOFRelationship";
 
-    public TermIsATypeOfRelationshipMapper(OMRSAPIHelper omrsapiHelper) {
+    public TermIsATypeOfRelationshipDeprecatedMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
     }
 
     /**
      * Map the supplied relationship to omrs InstanceProperties.
-     *
+     * @deprecated
      * @param termIsATypeOFRelationship               supplied relationship
      * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapRelationshipToInstanceProperties(IsATypeOf termIsATypeOFRelationship, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(IsATypeOfDeprecated termIsATypeOFRelationship, InstanceProperties instanceProperties) {
         if (termIsATypeOFRelationship.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termIsATypeOFRelationship.getDescription(), "description");
         }
@@ -49,13 +51,14 @@ public class TermIsATypeOfRelationshipMapper extends RelationshipMapper<IsATypeO
     /**
      * Map a primitive omrs property to the termISATypeOFRelationship object.
      *
+     * @deprecated
      * @param termIsATypeOFRelationship         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToRelationship(IsATypeOf termIsATypeOFRelationship, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(IsATypeOfDeprecated termIsATypeOFRelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -74,7 +77,7 @@ public class TermIsATypeOfRelationshipMapper extends RelationshipMapper<IsATypeO
     }
 
     @Override
-    protected boolean mapEnumToRelationship(IsATypeOf termIsATypeOFRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(IsATypeOfDeprecated termIsATypeOFRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -90,8 +93,8 @@ public class TermIsATypeOfRelationshipMapper extends RelationshipMapper<IsATypeO
     }
 
     @Override
-    protected IsATypeOf getRelationshipInstance() {
-        return new IsATypeOf();
+    protected IsATypeOfDeprecated getRelationshipInstance() {
+        return new IsATypeOfDeprecated();
     }
 
 }

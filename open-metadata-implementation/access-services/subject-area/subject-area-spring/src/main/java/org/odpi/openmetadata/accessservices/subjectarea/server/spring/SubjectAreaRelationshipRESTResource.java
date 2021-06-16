@@ -1330,7 +1330,7 @@ public class SubjectAreaRelationshipRESTResource {
      * Create a termIsATypeOfRelationship, which is an inheritance relationship between two spine objects.
      *
      * <p>
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param termIsATypeOfRelationship the TermIsATypeOfRelationship
@@ -1342,16 +1342,16 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @RequestBody IsATypeOf termIsATypeOfRelationship) {
-        return restAPI.createTermIsATypeOfRelationship(serverName, userId, termIsATypeOfRelationship);
+    @PostMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createTermIsATypeOfRelationship(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @RequestBody IsATypeOfDeprecated termIsATypeOfRelationship) {
+        return restAPI.createIsATypeOfDeprecated(serverName, userId, termIsATypeOfRelationship);
     }
 
     /**
      * Get a termIsATypeOfRelationship, which is an inheritance relationship between two spine objects.
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termIsATypeOfRelationship to get
@@ -1363,21 +1363,21 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String guid) {
-        return restAPI.getTermIsATypeOfRelationship(serverName, userId, guid);
+    @GetMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getTermIsATypeOfRelationship(@PathVariable String serverName,
+                                                                                        @PathVariable String userId,
+                                                                                        @PathVariable String guid) {
+        return restAPI.getIsATypeOfDeprecated(serverName, userId, guid);
     }
 
     /**
      * Update a termIsATypeOfRelationship, which is an inheritance relationship between two spine objects.
      * <p>
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead. 
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead. 
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param guid       unique identifier of the relationship
-     * @param isatypeof  the is-a-type-of relationship
+     * @param isatypeof  the is-a-type-of-deprecated relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationship
      * when not successful the following Exception responses can occur
@@ -1387,19 +1387,19 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsARelationship(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid,
-                                                                       @RequestBody IsATypeOf isatypeof,
-                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermIsATypeOfRelationship(serverName, userId, guid, isatypeof, isReplace);
+    @PutMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateIsARelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable String guid,
+                                                                                 @RequestBody IsATypeOfDeprecated isatypeof,
+                                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+        return restAPI.updateIsATypeOfDeprecated(serverName, userId, guid, isatypeof, isReplace);
     }
 
 
     /**
      * Delete a TermIsATypeOf Relationship, which is an inheritance relationship between two spine objects.
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermIsATypeOfRelationship to delete
@@ -1412,20 +1412,21 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @PathVariable String guid,
-                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteIsATypeOfRelationship(serverName, userId, guid, isPurge);
+    @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @PathVariable String guid,
+                                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+        return restAPI.deleteIsATypeOfDeprecatedRelationship(serverName, userId, guid, isPurge);
     }
 
     /**
      * Restore a TermIsATypeOf Relationship, which is an inheritance relationship between two spine objects.
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead. 
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead. 
      * <p>
      * Restore allows the deleted Is a Type Of Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @deprecated 
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Term Is a Type Of Relationship to delete
@@ -1439,21 +1440,21 @@ public class SubjectAreaRelationshipRESTResource {
      */
 
 
-    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid) {
-        return restAPI.restoreTermIsATypeOfRelationship(serverName, userId, guid);
+    @PostMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
+                                                                                            @PathVariable String userId,
+                                                                                            @PathVariable String guid) {
+        return restAPI.restoreIsATypeOfDeprecated(serverName, userId, guid);
     }
 
     /**
-     * Create a ObjectInheritance relationship, which is an inheritance relationship between two spine objects.
+     * Create a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param ObjectInheritance               the ObjectInheritance
-     * @return response, when successful contains the created ObjectInheritance
+     * @param IsATypeOf               the IsATypeOf
+     * @return response, when successful contains the created IsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1465,21 +1466,21 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @PostMapping(path = "/users/{userId}/relationships/object-inheritances")
-    public SubjectAreaOMASAPIResponse<ObjectInheritance> createObjectInheritance(@PathVariable String serverName,
-                                                                                             @PathVariable String userId,
-                                                                                             @RequestBody ObjectInheritance ObjectInheritance) {
-        return restAPI.createObjectInheritance(serverName, userId, ObjectInheritance);
+    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createIsATypeOf(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @RequestBody IsATypeOf IsATypeOf) {
+        return restAPI.createIsATypeOf(serverName, userId, IsATypeOf);
     }
     
 
     /**
-     * Get a ObjectInheritance, which is an inheritance relationship between two spine objects.
+     * Get a IsATypeOf, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ObjectInheritance to get
-     * @return response which when successful contains the ObjectInheritance with the requested guid
+     * @param guid       guid of the IsATypeOf to get
+     * @return response which when successful contains the IsATypeOf with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1487,22 +1488,22 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
-    public SubjectAreaOMASAPIResponse<ObjectInheritance> getObjectInheritance(@PathVariable String serverName,
-                                                                                          @PathVariable String userId,
-                                                                                          @PathVariable String guid) {
-        return restAPI.getObjectInheritance(serverName, userId, guid);
+    @GetMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getIsATypeOf(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
+        return restAPI.getIsATypeOf(serverName, userId, guid);
     }
 
     /**
-     * Update a ObjectInheritance, which is an inheritance relationship between two spine objects.
+     * Update a IsATypeOf, which is an inheritance relationship between two spine objects.
      * <p>
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param guid       unique identifier of the relationship
-     * @param ObjectInheritance  the object-inheritances relationship
+     * @param IsATypeOf  the is-a-type-ofs relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ObjectInheritance
+     * @return response, when successful contains the created IsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1510,22 +1511,22 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
-    public SubjectAreaOMASAPIResponse<ObjectInheritance> updateObjectInheritance(@PathVariable String serverName,
-                                                                                             @PathVariable String userId,
-                                                                                             @PathVariable String guid,
-                                                                                             @RequestBody ObjectInheritance ObjectInheritance,
-                                                                                             @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateObjectInheritance(serverName, userId, guid, ObjectInheritance, isReplace);
+    @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsATypeOf(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestBody IsATypeOf IsATypeOf,
+                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+        return restAPI.updateIsATypeOf(serverName, userId, guid, IsATypeOf, isReplace);
     }
 
 
     /**
-     * Delete a ObjectInheritance, which is an inheritance relationship between two spine objects.
+     * Delete a IsATypeOf, which is an inheritance relationship between two spine objects.
      *  
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ObjectInheritance relationship to delete
+     * @param guid       guid of the IsATypeOf relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1535,12 +1536,12 @@ public class SubjectAreaRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
-    public SubjectAreaOMASAPIResponse<ObjectInheritance> deleteTermObjectInheritance(@PathVariable String serverName,
-                                                                                                 @PathVariable String userId,
-                                                                                                 @PathVariable String guid,
-                                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteIObjectInheritance(serverName, userId, guid, isPurge);
+    @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsATypeOf(@PathVariable String serverName,
+                                                                             @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+        return restAPI.deleteIIsATypeOf(serverName, userId, guid, isPurge);
     }
 
     /**
@@ -1552,7 +1553,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Term Is a Type Of Relationship to delete
-     * @return response which when successful contains the restoredObjectInheritance
+     * @return response which when successful contains the restoredIsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1562,11 +1563,11 @@ public class SubjectAreaRelationshipRESTResource {
      */
 
 
-    @PostMapping(path = "/users/{userId}/relationships/object-inheritances/{guid}")
-    public SubjectAreaOMASAPIResponse<ObjectInheritance> restoreTermObjectInheritance(@PathVariable String serverName,
-                                                                                                  @PathVariable String userId,
-                                                                                                  @PathVariable String guid) {
-        return restAPI.restoreObjectInheritance(serverName, userId, guid);
+    @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOf(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
+        return restAPI.restoreIsATypeOf(serverName, userId, guid);
     }
 
     /**

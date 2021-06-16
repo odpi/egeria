@@ -90,16 +90,16 @@ public interface SubjectAreaRelationshipClients {
     SubjectAreaRelationshipClient<IsA> isA();
 
     /**
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
+     * @deprecated IsATypeOfDeprecated it is deprecated; move your instances to use IsATypeOf instead.
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with IsaTypeOf objects
+     * when working with IsaTypeOfDeprecated objects
      */
-    SubjectAreaRelationshipClient<IsATypeOf> isaTypeOf();
+    SubjectAreaRelationshipClient<IsATypeOfDeprecated> isaTypeOfDeprecated();
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with ObjectInheritance objects
+     * when working with IsATypeOf objects
      */
-    SubjectAreaRelationshipClient<ObjectInheritance> objectInheritance();
+    SubjectAreaRelationshipClient<IsATypeOf> isATypeOf();
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})

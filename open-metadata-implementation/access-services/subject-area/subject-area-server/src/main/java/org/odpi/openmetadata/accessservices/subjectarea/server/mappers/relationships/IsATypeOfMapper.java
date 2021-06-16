@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ObjectInheritance;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOf;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -15,10 +15,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the ObjectInheritance and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class ObjectInheritanceMapper extends RelationshipMapper<ObjectInheritance> {
-    private static final String OBJECT_INHERITANCE_RELATIONSHIP = "ObjectInheritance";
+public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
+    private static final String OBJECT_INHERITANCE_RELATIONSHIP = "IsATypeOfRelationship";
 
-    public ObjectInheritanceMapper(OMRSAPIHelper omrsapiHelper) {
+    public IsATypeOfMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
     }
 
@@ -29,7 +29,7 @@ public class ObjectInheritanceMapper extends RelationshipMapper<ObjectInheritanc
      * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapRelationshipToInstanceProperties(ObjectInheritance ObjectInheritance, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(IsATypeOf ObjectInheritance, InstanceProperties instanceProperties) {
         if (ObjectInheritance.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, ObjectInheritance.getDescription(), "description");
         }
@@ -55,7 +55,7 @@ public class ObjectInheritanceMapper extends RelationshipMapper<ObjectInheritanc
      * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToRelationship(ObjectInheritance ObjectInheritance, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(IsATypeOf ObjectInheritance, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -74,7 +74,7 @@ public class ObjectInheritanceMapper extends RelationshipMapper<ObjectInheritanc
     }
 
     @Override
-    protected boolean mapEnumToRelationship(ObjectInheritance ObjectInheritance, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(IsATypeOf ObjectInheritance, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -90,8 +90,8 @@ public class ObjectInheritanceMapper extends RelationshipMapper<ObjectInheritanc
     }
 
     @Override
-    protected ObjectInheritance getRelationshipInstance() {
-        return new ObjectInheritance();
+    protected IsATypeOf getRelationshipInstance() {
+        return new IsATypeOf();
     }
 
 }
