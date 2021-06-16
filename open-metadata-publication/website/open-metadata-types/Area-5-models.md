@@ -18,7 +18,7 @@ capability around the data assets.
 * **[0512 Derived Schema Elements](0512-Derived-Schema-Elements.md)**
 * **[0520 Process Schemas](0520-Process-Schemas.md)**
 * **[0525 Process Variables](0525-Process-Variables.md)**
-* **[0530 Tabular Schema](0530-Tabluar-Schemas.md)**
+* **[0530 Tabular Schema](0530-Tabular-Schemas.md)**
 * **[0531 Document Schemas](0531-Document-Schemas.md)**
 * **[0532 Object Schemas](0532-Object-Schemas.md)**
 * **[0533 Graph Schema](0533-Graph-Schemas.md)**

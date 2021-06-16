@@ -35,6 +35,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**
@@ -136,12 +137,53 @@ public abstract class SubjectAreaHandler {
 
         return null;
     }
+    protected String sanitiseFindRequest(String searchCriteria, boolean exactValue, boolean ignoreCase) {
 
-    protected <T extends Node>List<T> findEntities(String userId,
-                                                   String typeEntityName,
-                                                   FindRequest findRequest,
-                                                   Class<? extends INodeMapper<T>> mapperClass,
-                                                   String methodName) throws SubjectAreaCheckedException,
+        if (searchCriteria != null && searchCriteria.trim() == "") {
+            // ignore the flags for an empty search criteria string - assume we want everything
+            searchCriteria = ".*";
+        } else {
+            // lose any leading and trailing blanks
+            searchCriteria = searchCriteria.trim();
+            // turn the users supplied search criteria string into a literal, so it cannot do any harm
+            searchCriteria = "\\Q" + searchCriteria + "\\E";
+
+            if (ignoreCase) {
+                searchCriteria = "(?i).*" + searchCriteria;
+            }
+            if (!exactValue) {
+                searchCriteria = searchCriteria + ".*";
+            }
+        }
+
+        return searchCriteria;
+    }
+    /**
+     * Take a FindRequest and sanitise it.
+     *
+     * The FindRequest from the user could contain a regex expression which would cause the regex engine to loop.
+     * to avoid this, we turn what the user has given us into a literal and then use the exactValue and ignoreCase flags
+     * to add to the regular expression in a controlled way.
+     *
+     * @param findRequest supplied find request - that contains the search criteria
+     * @param exactValue flag indicating that exact value mathcing should be done
+     * @param ignoreCase flag indicating that case should be ignored
+     * @return sanitised find request
+     */
+    protected FindRequest sanitiseFindRequest(FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
+        FindRequest sanitisedFindRequest = findRequest;
+        String searchCriteria =sanitiseFindRequest(findRequest.getSearchCriteria(),exactValue, ignoreCase);
+        sanitisedFindRequest.setSearchCriteria(searchCriteria);
+        return sanitisedFindRequest;
+    }
+
+    protected <T extends Node>List<T> findNodes(String userId,
+                                                String typeEntityName,
+                                                FindRequest findRequest,
+                                                boolean exactValue,
+                                                boolean ignoreCase,
+                                                Class<? extends INodeMapper<T>> mapperClass,
+                                                String methodName) throws SubjectAreaCheckedException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         List<EntityDetail> entityDetails = null;
@@ -154,7 +196,8 @@ public abstract class SubjectAreaHandler {
         if (findRequest.getSearchCriteria() == null) {
             entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
         } else {
-            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, findRequest);
+            FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
+            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, sanitisedFindRequest);
         }
         if (entityDetails != null) {
             foundEntities = convertOmrsToOmas(entityDetails, mapperClass);
@@ -418,20 +461,21 @@ public abstract class SubjectAreaHandler {
      * @param searchCriteria criteria to use for match
      * @return boolean indicating whether the category matches the search criteria
      */
-    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria) {
+    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria, boolean exactValue, boolean ignoreCase) {
         boolean isMatch = false;
         if (searchCriteria == null) return true;
         final String name = category.getName();
         final String description = category.getDescription();
         final String qualifiedName = category.getQualifiedName();
+        final String sanitizedSearchCriteria = sanitiseFindRequest(searchCriteria, exactValue, ignoreCase);
 
-        if (name != null && name.matches(searchCriteria)) {
+        if (name != null && name.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (description != null && description.matches(searchCriteria)) {
+        if (description != null && description.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+        if (qualifiedName != null && qualifiedName.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
         return isMatch;

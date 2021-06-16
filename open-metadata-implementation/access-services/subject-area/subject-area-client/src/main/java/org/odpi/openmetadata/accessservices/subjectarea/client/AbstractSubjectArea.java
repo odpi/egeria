@@ -42,17 +42,18 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
         GenericResponse<T> response = client.postRESTCall(userId, getMethodInfo("create"), BASE_URL, getParameterizedType(), supplied);
         return response.head().get();
     }
-
     @Override
     public List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-
-        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest);
-        return response.results();
+        return find(userId, findRequest, false,true);
     }
     @Override
-    public List<T> find(String userId, FindRequest findRequest , Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<T> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return find(userId, findRequest, exactValue, ignoreCase, null);
+    }
+    @Override
+    public List<T> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, maximumPageSizeOnRestCall);
+        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, exactValue, ignoreCase, maximumPageSizeOnRestCall);
         return response.results();
     }
 

@@ -65,7 +65,7 @@ public interface SubjectAreaClient<T> {
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
     {
-       return find(userId, EMPTY_FIND_REQUEST);
+       return find(userId, EMPTY_FIND_REQUEST, false, true);
     }
 
     /**
@@ -84,7 +84,7 @@ public interface SubjectAreaClient<T> {
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
     {
-        return find(userId, EMPTY_FIND_REQUEST, maximumPageSizeOnRestCall);
+        return find(userId, EMPTY_FIND_REQUEST, false, true,  maximumPageSizeOnRestCall);
     }
 
     /**
@@ -99,6 +99,21 @@ public interface SubjectAreaClient<T> {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
     List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException;
+
+    /**
+     * Request to find Glossary Artifacts of the type T.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param findRequest information Glossary Artifact for find calls.
+     * @return list Glossary Artifacts of the T type relevant in the findRequest information.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    List<T> find(String userId, FindRequest findRequest, boolean exactMatch, boolean ignoreCase) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException;
 
@@ -118,7 +133,10 @@ public interface SubjectAreaClient<T> {
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-   List<T> find(String userId, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+   List<T> find(String userId, FindRequest findRequest,
+                boolean exactMatch,
+                boolean ignoreCase,
+                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException;
 
