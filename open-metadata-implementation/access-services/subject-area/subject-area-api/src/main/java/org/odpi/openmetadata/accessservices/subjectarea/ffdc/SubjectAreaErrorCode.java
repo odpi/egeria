@@ -265,6 +265,17 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
                                                                "Cannot continue with the {0} operation with the supplied Relationship {1}, as it is read only",
                                                                "The system is unable to process the request the modification request is not allowed on a read-only Relationship.",
                                                                "Amend the code to not issue modification requests on a read-only Relationship."),
+    INVALID_RELATIONSHIPTYPES_FOR_GRAPH(400, "OMAS-SUBJECT-AREA-400-076",
+                                                               "Cannot continue with the {0} operation because an invalid relationship name {1} was supplied in the filter",
+                                                               "The system is unable to process the request as it cannot identify the requested Relationship type.",
+                                                               "Amend the code to supply only valid Relationship Types for the graph operation."),
+    UNKNOWN_RELATIONSHIPTYPE_REQUESTED_FOR_GRAPH(400, "OMAS-SUBJECT-AREA-400-077",
+                                                 "Cannot continue with the {0} operation because there is the Unknown relationship name {1} was supplied in the filter",
+                                                 "The system is unable to process the request as it cannot identify the requested Unknown Relationship type.",
+                                                 "Amend the code to supply only known Relationship Types for the graph operation."),
+
+
+
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",

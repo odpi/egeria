@@ -77,7 +77,7 @@ public class TermFVT {
         subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
 
         this.userId=userId;
-        existingTermCount = findTerms(".*").size();
+        existingTermCount = findTerms("").size();
         System.out.println("existingTermCount " + existingTermCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

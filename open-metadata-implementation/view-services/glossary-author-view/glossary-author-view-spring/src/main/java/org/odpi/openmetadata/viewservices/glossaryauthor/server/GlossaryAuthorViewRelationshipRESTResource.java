@@ -154,7 +154,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName                          serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                              userId under which the request is performed
-     * @param relatedTermRelationshipRelationship the RelatedTerm relationship
+     * @param relatedTermRelationship the RelatedTerm relationship
      * @return response, when successful contains the created Related Term relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -166,8 +166,8 @@ public class GlossaryAuthorViewRelationshipRESTResource {
     @PostMapping(path = "/related-terms")
     public SubjectAreaOMASAPIResponse<RelatedTerm> createRelatedTerm(@PathVariable String serverName,
                                                                      @PathVariable String userId,
-                                                                     @RequestBody RelatedTerm relatedTermRelationshipRelationship) {
-        return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationshipRelationship);
+                                                                     @RequestBody RelatedTerm relatedTermRelationship) {
+        return restAPI.createRelatedTerm(serverName, userId, relatedTermRelationship);
     }
 
     /**
@@ -1135,7 +1135,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/typed-bys/{guid}")
-    public SubjectAreaOMASAPIResponse<TypedBy> getTYPEDBYRelationshipRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<TypedBy> getTYPEDBYRelationship(@PathVariable String serverName,
                                                                                   @PathVariable String userId,
                                                                                   @PathVariable String guid) {
         return restAPI.getTermTYPEDBYRelationship(serverName, userId, guid);
@@ -1150,7 +1150,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param guid                    unique identifier of the Relationship
      * @param termTYPEDBYRelationship the typed by relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
+     * @return response, when successful contains the created TermTYPEDBYRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1268,7 +1268,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param guid       unique identifier of the Relationship
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created IsARelationshipRelationship
+     * @return response, when successful contains the created IsARelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1333,14 +1333,14 @@ public class GlossaryAuthorViewRelationshipRESTResource {
 
 
     /**
-     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
      *
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termIsATypeOfRelationship the TermIsATypeOfRelationship relationship
-     * @return response, when successful contains the created termIsATypeOfRelationship relationship
+     * @param TermIsATypeOfDeprecated the TermIsATypeOfDeprecated relationship
+     * @return response, when successful contains the created TermIsATypeOfDeprecated relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1348,20 +1348,144 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @RequestBody IsATypeOf termIsATypeOfRelationship) {
-        return restAPI.createTermIsATypeOfRelationship(serverName, userId, termIsATypeOfRelationship);
+    @PostMapping(path = "/is-a-type-of-deprecateds")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createTermIsATypeOfDeprecated(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @RequestBody IsATypeOfDeprecated TermIsATypeOfDeprecated) {
+        return restAPI.createTermIsATypeOfDeprecated(serverName, userId, TermIsATypeOfDeprecated);
     }
 
     /**
-     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Get a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the TermIsATypeOfDeprecated relationship to get
+     * @return response which when successful contains the TermIsATypeOfDeprecated relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getTermIsATypeOfDeprecated(@PathVariable String serverName,
+                                                                                        @PathVariable String userId,
+                                                                                        @PathVariable String guid) {
+        return restAPI.getTermIsATypeOfDeprecated(serverName, userId, guid);
+    }
+
+    /**
+     * Update a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     userId under which the request is performed
+     * @param guid       unique identifier of the relationship
+     * @param isatypeof  the is-a-type-of relationship
+     * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the created IsARelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PutMapping(path = "/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateIsARelationship(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable String guid,
+                                                                                 @RequestBody IsATypeOfDeprecated isatypeof,
+                                                                                 @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+        return restAPI.updateTermIsATypeOfDeprecated(serverName, userId, guid, isatypeof, isReplace);
+    }
+
+
+    /**
+     * Delete a TermIsATypeOf Relationship relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the TermIsATypeOfDeprecated relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @DeleteMapping(path = "/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteTermIsATypeOfDeprecated(@PathVariable String serverName,
+                                                                                           @PathVariable String userId,
+                                                                                           @PathVariable String guid,
+                                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+        return restAPI.deleteTermIsATypeOfDeprecated(serverName, userId, guid, isPurge);
+    }
+
+    /**
+     * Restore a TermIsATypeOf Relationship relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * <p>
+     * Restore allows the deleted Is a Type Of Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termIsATypeOfRelationship relationship to get
-     * @return response which when successful contains the termIsATypeOfRelationship relationship with the requested guid
+     * @param guid       guid of the Term Is a Type Of Relationship to delete
+     * @return response which when successful contains the restored TermIsATypeOfDeprecated
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+
+
+    @PostMapping(path = "/is-a-type-of-deprecateds/{guid}")
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreTermIsATypeOfDeprecated(@PathVariable String serverName,
+                                                                                            @PathVariable String userId,
+                                                                                            @PathVariable String guid) {
+        return restAPI.restoreTermIsATypeOfDeprecated(serverName, userId, guid);
+    }
+
+    /**
+     * Create a IsATypeOf Relationship relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                    userId under which the request is performed
+     * @param IsATypeOf               the IsATypeOf relationship
+     * @return response, when successful contains the created IsATypeOf relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    @PostMapping(path = "/is-a-type-ofs")
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createIsATypeOf(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @RequestBody IsATypeOf IsATypeOf) {
+        return restAPI.createIsATypeOf(serverName, userId, IsATypeOf);
+    }
+
+
+    /**
+     * Get a IsATypeOf Relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsATypeOf Relationship to get
+     * @return response which when successful contains the IsATypeOf Relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1370,22 +1494,21 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String guid) {
-        return restAPI.getTermIsATypeOfRelationship(serverName, userId, guid);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getIsATypeOf(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid) {
+        return restAPI.getIsATypeOf(serverName, userId, guid);
     }
 
     /**
-     * Update a IsARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a IsATypeOf Relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Relationship
-     * @param isatypeof  the is-a-type-of relationship
+     * @param guid       unique identifier of the relationship
+     * @param IsATypeOf  the IsATypeOfs relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created IsARelationshipRelationship
+     * @return response, when successful contains the created IsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1394,21 +1517,21 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsARelationship(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid,
-                                                                       @RequestBody IsATypeOf isatypeof,
-                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermIsATypeOfRelationship(serverName, userId, guid, isatypeof, isReplace);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsATypeOf(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestBody IsATypeOf IsATypeOf,
+                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
+        return restAPI.updateIsATypeOf(serverName, userId, guid, IsATypeOf, isReplace);
     }
 
 
     /**
-     * Delete a TermIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a IsATypeOf, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermIsATypeOfRelationship relationship to delete
+     * @param guid       guid of the IsATypeOf Relationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1419,22 +1542,23 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                 @PathVariable String userId,
-                                                                                 @PathVariable String guid,
-                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTermIsATypeOfRelationship(serverName, userId, guid, isPurge);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIsATypeOf(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String guid,
+                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
+        return restAPI.deleteIsATypeOf(serverName, userId, guid, isPurge);
     }
 
     /**
-     * Restore a Is a Type Of Relationship
+     * Restore a 'IsATypeOf' Relationship
+     *
      * <p>
-     * Restore allows the deleted Is a Type Of Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted 'IsATypeOf' Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the Term Is a Type Of Relationship to delete
-     * @return response which when successful contains the restored TermIsaTypeOfRelationship
+     * @param guid       guid of the Term 'IsATypeOf' Relationship to delete
+     * @return response which when successful contains the restoredIsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1445,12 +1569,11 @@ public class GlossaryAuthorViewRelationshipRESTResource {
 
 
     @PostMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid) {
-        return restAPI.restoreTermIsATypeOfRelationship(serverName, userId, guid);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreIsATypeOf(@PathVariable String serverName,
+                                                                          @PathVariable String userId,
+                                                                          @PathVariable String guid) {
+        return restAPI.restoreIsATypeOf(serverName, userId, guid);
     }
-
 
     /**
      * Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -1459,8 +1582,8 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName                     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                         userId under which the request is performed
-     * @param termCategorizationRelationship the TermCategorizationRelationship relationship
-     * @return response, when successful contains the created termCategorizationRelationship relationship
+     * @param termCategorizationRelationship the TermCategorization Relationship
+     * @return response, when successful contains the created termCategorization Relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1480,8 +1603,8 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termCategorizationRelationship relationship to get
-     * @return response which when successful contains the termCategorizationRelationship relationship with the requested guid
+     * @param guid       guid of the termCategorization Relationship to get
+     * @return response which when successful contains the termCategorization Relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1503,7 +1626,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param guid       unique identifier of the Relationship
-     * @param isatypeof  the is-a-type-of relationship
+     * @param categorization  the categorization relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created termCategorization Relationship
      * when not successful the following Exception responses can occur
@@ -1517,9 +1640,9 @@ public class GlossaryAuthorViewRelationshipRESTResource {
     public SubjectAreaOMASAPIResponse<Categorization> updateTermCategorizationRelationship(@PathVariable String serverName,
                                                                                            @PathVariable String userId,
                                                                                            @PathVariable String guid,
-                                                                                           @RequestBody Categorization isatypeof,
+                                                                                           @RequestBody Categorization categorization,
                                                                                            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermCategorization(serverName, userId, guid, isatypeof, isReplace);
+        return restAPI.updateTermCategorization(serverName, userId, guid, categorization, isReplace);
     }
 
 
@@ -1528,7 +1651,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermCategorizationRelationship relationship to delete
+     * @param guid       guid of the TermCategorization Relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1578,8 +1701,8 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                 userId under which the request is performed
-     * @param termAnchorRelationship the TermAnchorRelationship relationship
-     * @return response, when successful contains the created termAnchorRelationship relationship
+     * @param termAnchorRelationship the TermAnchor Relationship
+     * @return response, when successful contains the created termAnchor Relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1600,7 +1723,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the termAnchor Relationship to get
-     * @return response which when successful contains the termAnchorRelationship relationship with the requested guid
+     * @return response which when successful contains the termAnchor Relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1646,7 +1769,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermAnchorRelationship relationship to delete
+     * @param guid       guid of the TermAnchor Relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1696,8 +1819,8 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName                 serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                     userId under which the request is performed
-     * @param categoryAnchorRelationship the CategoryAnchorRelationship relationship
-     * @return response, when successful contains the created categoryAnchorRelationship relationship
+     * @param categoryAnchorRelationship the CategoryAnchor Relationship
+     * @return response, when successful contains the created categoryAnchor Relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1718,7 +1841,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the categoryAnchor Relationship to get
-     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested guid
+     * @return response which when successful contains the categoryAnchor Relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1738,7 +1861,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the CategoryAnchorRelationship relationship to delete
+     * @param guid       guid of the CategoryAnchor Relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur

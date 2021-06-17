@@ -156,12 +156,13 @@ public class RelationshipsFVT {
         typedByFVT(term1, term2);
         isaFVT(term1, term2);
         isatypeofFVT(term1, term2);
+        isATypeOfFVT(term1, term2);
         termCategorizationFVT(term1, cat1);
         termAnchorFVT(term1);
         categoryAnchorFVT(cat1);
         createSomeTermRelationships(term1, term2, term3);
-        term1relationshipcount = term1relationshipcount + 12;
-        term2relationshipcount = term2relationshipcount + 11;
+        term1relationshipcount = term1relationshipcount + 13;
+        term2relationshipcount = term2relationshipcount + 12;
         term3relationshipcount = term3relationshipcount + 1;
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
@@ -244,64 +245,122 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createTermTYPEDBYRelationship(term1, term2));
         FVTUtils.validateRelationship(createTranslation(term1, term2));
         FVTUtils.validateRelationship(createUsedInContext(term1, term2));
-        FVTUtils.validateRelationship(createTermISATypeOFRelationship(term1, term2));
+        FVTUtils.validateRelationship(createIsATypeOfDeprecated(term1, term2));
+        FVTUtils.validateRelationship(createIsATypeOf(term1, term2));
     }
 
     private void isatypeofFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
-        IsATypeOf createdTermIsATypeOFRelationship = createTermISATypeOFRelationship(term1, term2);
-        String guid = createdTermIsATypeOFRelationship.getGuid();
+        IsATypeOfDeprecated createdisATypeOfDeprecated = createIsATypeOfDeprecated(term1, term2);
+        String guid = createdisATypeOfDeprecated.getGuid();
 
-        IsATypeOf gotTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().getByGUID(this.userId, guid);
-        FVTUtils.validateRelationship(gotTermIsATypeOFRelationship);
-        System.out.println("Got IsaTypeOf " + createdTermIsATypeOFRelationship);
+        IsATypeOfDeprecated gotisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().getByGUID(this.userId, guid);
+        FVTUtils.validateRelationship(gotisATypeOfDeprecated);
+        System.out.println("Got IsaTypeOf " + createdisATypeOfDeprecated);
 
-        IsATypeOf updateTermIsATypeOFRelationship = new IsATypeOf();
-        updateTermIsATypeOFRelationship.setDescription("ddd2");
-        IsATypeOf updatedTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().update(this.userId, guid, updateTermIsATypeOFRelationship);
-        FVTUtils.validateRelationship(updatedTermIsATypeOFRelationship);
-        if (!updatedTermIsATypeOFRelationship.getDescription().equals(updateTermIsATypeOFRelationship.getDescription())) {
+        IsATypeOfDeprecated updateisATypeOfDeprecated = new IsATypeOfDeprecated();
+        updateisATypeOfDeprecated.setDescription("ddd2");
+        IsATypeOfDeprecated updatedisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().update(this.userId, guid, updateisATypeOfDeprecated);
+        FVTUtils.validateRelationship(updatedisATypeOfDeprecated);
+        if (!updatedisATypeOfDeprecated.getDescription().equals(updateisATypeOfDeprecated.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update description not as expected");
         }
-        if (!updatedTermIsATypeOFRelationship.getSource().equals(createdTermIsATypeOFRelationship.getSource())) {
+        if (!updatedisATypeOfDeprecated.getSource().equals(createdisATypeOfDeprecated.getSource())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update source not as expected");
         }
-        if (!updatedTermIsATypeOFRelationship.getSteward().equals(createdTermIsATypeOFRelationship.getSteward())) {
+        if (!updatedisATypeOfDeprecated.getSteward().equals(createdisATypeOfDeprecated.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update steward not as expected");
         }
-        FVTUtils.checkEnds(updatedTermIsATypeOFRelationship,createdTermIsATypeOFRelationship,"IsATypeOf","update");
-        System.out.println("Updated IsaTypeOf " + createdTermIsATypeOFRelationship);
-        IsATypeOf replaceTermIsATypeOFRelationship = new IsATypeOf();
-        replaceTermIsATypeOFRelationship.setDescription("ddd3");
-        IsATypeOf replacedTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().replace(this.userId, guid, replaceTermIsATypeOFRelationship);
-        FVTUtils.validateRelationship(replacedTermIsATypeOFRelationship);
-        if (!replacedTermIsATypeOFRelationship.getDescription().equals(replaceTermIsATypeOFRelationship.getDescription())) {
+        FVTUtils.checkEnds(updatedisATypeOfDeprecated,createdisATypeOfDeprecated,"IsATypeOf","update");
+        System.out.println("Updated IsaTypeOf " + createdisATypeOfDeprecated);
+        IsATypeOfDeprecated replaceisATypeOfDeprecated = new IsATypeOfDeprecated();
+        replaceisATypeOfDeprecated.setDescription("ddd3");
+        IsATypeOfDeprecated replacedisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().replace(this.userId, guid, replaceisATypeOfDeprecated);
+        FVTUtils.validateRelationship(replacedisATypeOfDeprecated);
+        if (!replacedisATypeOfDeprecated.getDescription().equals(replaceisATypeOfDeprecated.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace description not as expected");
         }
-        if (replacedTermIsATypeOFRelationship.getSource() != null) {
+        if (replacedisATypeOfDeprecated.getSource() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace source not as expected");
         }
-        if (replacedTermIsATypeOFRelationship.getSteward() != null) {
+        if (replacedisATypeOfDeprecated.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace steward not as expected");
         }
-        if (!replacedTermIsATypeOFRelationship.getEnd1().getNodeGuid().equals(createdTermIsATypeOFRelationship.getEnd1().getNodeGuid())) {
+        if (!replacedisATypeOfDeprecated.getEnd1().getNodeGuid().equals(createdisATypeOfDeprecated.getEnd1().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace end 1 not as expected");
         }
-        if (!replacedTermIsATypeOFRelationship.getEnd2().getNodeGuid().equals(createdTermIsATypeOFRelationship.getEnd2().getNodeGuid())) {
+        if (!replacedisATypeOfDeprecated.getEnd2().getNodeGuid().equals(createdisATypeOfDeprecated.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace end 2 not as expected");
         }
-        System.out.println("Replaced IsaTypeOf " + createdTermIsATypeOFRelationship);
-        subjectAreaRelationship.isaTypeOf().delete(this.userId, guid);
-        //FVTUtils.validateLine(gotTermISATypeOFRelationship);
+        System.out.println("Replaced IsaTypeOf " + createdisATypeOfDeprecated);
+        subjectAreaRelationship.isaTypeOfDeprecated().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotisATypeOfDeprecated);
         System.out.println("Soft deleted IsaTypeOf with userId=" + guid);
-        gotTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().restore(this.userId, guid);
-        FVTUtils.validateRelationship(gotTermIsATypeOFRelationship);
+        gotisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().restore(this.userId, guid);
+        FVTUtils.validateRelationship(gotisATypeOfDeprecated);
         System.out.println("Restored IsaTypeOf with userId=" + guid);
-        subjectAreaRelationship.isaTypeOf().delete(this.userId, guid);
-        //FVTUtils.validateLine(gotTermISATypeOFRelationship);
+        subjectAreaRelationship.isaTypeOfDeprecated().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotisATypeOfDeprecated);
         System.out.println("Soft deleted IsaTypeOf with userId=" + guid);
-        subjectAreaRelationship.isaTypeOf().purge(this.userId, guid);
+        subjectAreaRelationship.isaTypeOfDeprecated().purge(this.userId, guid);
         System.out.println("Hard deleted IsaTypeOf with userId=" + guid);
     }
+    private void isATypeOfFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        IsATypeOf createdisATypeOf = createIsATypeOf(term1, term2);
+        String guid = createdisATypeOf.getGuid();
+
+        IsATypeOf gotisATypeOf = subjectAreaRelationship.isATypeOf().getByGUID(this.userId, guid);
+        FVTUtils.validateRelationship(gotisATypeOf);
+        System.out.println("Got isATypeOf " + createdisATypeOf);
+
+        IsATypeOf updateisATypeOf = new IsATypeOf();
+        updateisATypeOf.setDescription("ddd2");
+        IsATypeOf updatedisATypeOf = subjectAreaRelationship.isATypeOf().update(this.userId, guid, updateisATypeOf);
+        FVTUtils.validateRelationship(updatedisATypeOf);
+        if (!updatedisATypeOf.getDescription().equals(updateisATypeOf.getDescription())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf update description not as expected");
+        }
+        if (!updatedisATypeOf.getSource().equals(createdisATypeOf.getSource())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf update source not as expected");
+        }
+        if (!updatedisATypeOf.getSteward().equals(createdisATypeOf.getSteward())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf update steward not as expected");
+        }
+        FVTUtils.checkEnds(updatedisATypeOf,createdisATypeOf,"isATypeOf","update");
+        System.out.println("Updated isATypeOf " + createdisATypeOf);
+        IsATypeOf replaceisATypeOf = new IsATypeOf();
+        replaceisATypeOf.setDescription("ddd3");
+        IsATypeOf replacedisATypeOf = subjectAreaRelationship.isATypeOf().replace(this.userId, guid, replaceisATypeOf);
+        FVTUtils.validateRelationship(replacedisATypeOf);
+        if (!replacedisATypeOf.getDescription().equals(replaceisATypeOf.getDescription())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace description not as expected");
+        }
+        if (replacedisATypeOf.getSource() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace source not as expected");
+        }
+        if (replacedisATypeOf.getSteward() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace steward not as expected");
+        }
+        if (!replacedisATypeOf.getEnd1().getNodeGuid().equals(createdisATypeOf.getEnd1().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace end 1 not as expected");
+        }
+        if (!replacedisATypeOf.getEnd2().getNodeGuid().equals(createdisATypeOf.getEnd2().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace end 2 not as expected");
+        }
+        System.out.println("Replaced isATypeOf " + createdisATypeOf);
+        subjectAreaRelationship.isATypeOf().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotisATypeOf);
+        System.out.println("Soft deleted isATypeOf with userId=" + guid);
+        gotisATypeOf = subjectAreaRelationship.isATypeOf().restore(this.userId, guid);
+        FVTUtils.validateRelationship(gotisATypeOf);
+        System.out.println("Restored isATypeOf with userId=" + guid);
+        subjectAreaRelationship.isATypeOf().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotisATypeOf);
+        System.out.println("Soft deleted isATypeOf with userId=" + guid);
+        subjectAreaRelationship.isATypeOf().purge(this.userId, guid);
+        System.out.println("Hard deleted isATypeOf with userId=" + guid);
+    }
+
+
 
     private void isaFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         IsA createdIsA = createIsaRelationship(term1, term2);
@@ -1141,19 +1200,34 @@ public class RelationshipsFVT {
     }
 
 
-    public IsATypeOf createTermISATypeOFRelationship(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        IsATypeOf termIsATypeOFRelationship = new IsATypeOf();
-        termIsATypeOFRelationship.setDescription("ddd");
-        termIsATypeOFRelationship.setSource("source");
-        termIsATypeOFRelationship.setSteward("Stew");
-        termIsATypeOFRelationship.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
-        termIsATypeOFRelationship.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
-        IsATypeOf createdTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().create(this.userId, termIsATypeOFRelationship);
-        FVTUtils.validateRelationship(createdTermIsATypeOFRelationship);
-        FVTUtils.checkEnds(termIsATypeOFRelationship, createdTermIsATypeOFRelationship, "IsaTypeOf", "create");
+    public IsATypeOfDeprecated createIsATypeOfDeprecated(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        IsATypeOfDeprecated isATypeOfDeprecated = new IsATypeOfDeprecated();
+        isATypeOfDeprecated.setDescription("ddd");
+        isATypeOfDeprecated.setSource("source");
+        isATypeOfDeprecated.setSteward("Stew");
+        isATypeOfDeprecated.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        isATypeOfDeprecated.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
+        IsATypeOfDeprecated createdisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().create(this.userId, isATypeOfDeprecated);
+        FVTUtils.validateRelationship(createdisATypeOfDeprecated);
+        FVTUtils.checkEnds(isATypeOfDeprecated, createdisATypeOfDeprecated, "IsaTypeOfDeprecated", "create");
 
-        System.out.println("Created termISATypeOFRelationship " + createdTermIsATypeOFRelationship);
-        return createdTermIsATypeOFRelationship;
+        System.out.println("Created isATypeOfDeprecated " + createdisATypeOfDeprecated);
+        return createdisATypeOfDeprecated;
+    }
+
+    public IsATypeOf createIsATypeOf(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        IsATypeOf isATypeOf = new IsATypeOf();
+        isATypeOf.setDescription("ddd");
+        isATypeOf.setSource("source");
+        isATypeOf.setSteward("Stew");
+        isATypeOf.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        isATypeOf.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
+        IsATypeOf createdisATypeOf = subjectAreaRelationship.isATypeOf().create(this.userId, isATypeOf);
+        FVTUtils.validateRelationship(createdisATypeOf);
+        FVTUtils.checkEnds(isATypeOf, createdisATypeOf, "isATypeOf", "create");
+
+        System.out.println("Created isATypeOf Relationship " + createdisATypeOf);
+        return createdisATypeOf;
     }
 
     private void termCategorizationFVT(Term term, Category category) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {

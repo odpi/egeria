@@ -1332,13 +1332,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termIsATypeOfRelationship the IsaTypeOf relationship
-     * @return response, when successful contains the created termIsATypeOfRelationship relationship
+     * @param IsATypeOfDeprecated the IsaTypeOf relationship
+     * @return response, when successful contains the created IsATypeOfDeprecated relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1350,18 +1350,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(String serverName, String userId, IsATypeOf termIsATypeOfRelationship) {
-        String restAPIName = "createTermIsATypeOfRelationship";
-        return createRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship);
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createIsATypeOfDeprecated(String serverName, String userId, IsATypeOfDeprecated IsATypeOfDeprecated) {
+        String restAPIName = "createIsATypeOfDeprecated";
+        return createRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated);
     }
 
     /**
-     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
-     *
+     * Get a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termIsATypeOfRelationship relationship to get
-     * @return response which when successful contains the termIsATypeOfRelationship relationship with the requested guid
+     * @param guid       guid of the IsATypeOfDeprecated relationship to get
+     * @return response which when successful contains the IsATypeOfDeprecated relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1370,19 +1370,19 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getTermIsATypeOfRelationship";
-        return getRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getIsATypeOfDeprecated(String serverName, String userId, String guid) {
+        String restAPIName = "getIsATypeOfDeprecated";
+        return getRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
     }
 
     /**
      * Update a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param guid                      unique identifier of the relationship
-     * @param termIsATypeOfRelationship the IsaTypeOf relationship
+     * @param IsATypeOfDeprecated the IsaTypeOf relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated IsaTypeOf
      * when not successful the following Exception responses can occur
@@ -1396,14 +1396,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermIsATypeOfRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOfRelationship, boolean isReplace) {
-        String restAPIName = "updateTermIsATypeOfRelationship";
-        return updateRelationship(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship, isReplace);
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateIsATypeOfDeprecated(String serverName, String userId, String guid, IsATypeOfDeprecated IsATypeOfDeprecated, boolean isReplace) {
+        String restAPIName = "updateIsATypeOfDeprecated";
+        return updateRelationship(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated, isReplace);
     }
 
     /**
      * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
@@ -1420,9 +1420,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteIsATypeOfRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid, isPurge);
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteIsATypeOfDeprecatedRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteIsATypeOfDeprecatedRelationship";
+        return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid, isPurge);
     }
 
     /**
@@ -1430,6 +1430,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the relationship to restore
@@ -1445,9 +1446,128 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreTermIsATypeOfRelationship";
-        return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreIsATypeOfDeprecated(String serverName, String userId, String guid) {
+        String restAPIName = "restoreIsATypeOfDeprecated";
+        return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
+    }
+
+    /**
+     * Create a is a type of relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                    userId under which the request is performed
+     * @param IsATypeOf the is a type of relationship
+     * @return response, when successful contains the created IsATypeOf Relationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createIsATypeOf(String serverName, String userId, IsATypeOf IsATypeOf) {
+        String restAPIName = "createIsATypeOf";
+        return createRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, IsATypeOf);
+    }
+
+    /**
+     * Get a is a type of relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsATypeOf relationship to get
+     * @return response which when successful contains the IsATypeOf relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getIsATypeOf(String serverName, String userId, String guid) {
+        String restAPIName = "getIsATypeOf";
+        return getRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, guid);
+    }
+
+    /**
+     * Update a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                    userId under which the request is performed
+     * @param guid                      unique identifier of the relationship
+     * @param IsATypeOf the IsATypeOf relationship
+     * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated IsaTypeOf
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsATypeOf(String serverName, String userId, String guid, IsATypeOf IsATypeOf, boolean isReplace) {
+        String restAPIName = "updateIsATypeOf";
+        return updateRelationship(serverName, restAPIName, userId, guid, IsATypeOfMapper.class, IsATypeOf, isReplace);
+    }
+
+    /**
+     * Delete a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsATypeOf relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIIsATypeOf(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteIsATypeOf";
+        return deleteRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, guid, isPurge);
+    }
+
+    /**
+     * Restore a is IsATypeOf relationship.
+     * <p>
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreIsATypeOf(String serverName, String userId, String guid) {
+        String restAPIName = "restoreIsATypeOf";
+        return restoreRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, guid);
     }
 
     /**

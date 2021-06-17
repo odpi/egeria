@@ -46,7 +46,7 @@ public class GlossaryFVT {
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
-        existingGlossaryCount = findGlossaries(".*").size();
+        existingGlossaryCount = findGlossaries("").size();
         System.out.println("existingGlossaryCount " + existingGlossaryCount);
     }
 

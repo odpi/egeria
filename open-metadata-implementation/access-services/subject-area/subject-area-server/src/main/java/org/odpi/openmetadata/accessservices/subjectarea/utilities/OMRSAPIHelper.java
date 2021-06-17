@@ -813,7 +813,7 @@ public class OMRSAPIHelper {
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        String methodName = "callgetEntityNeighborhood";
+        String methodName = "callGetEntityNeighborhood";
         showMethodNameIfDebugEnabled(methodName);
 
         try {
