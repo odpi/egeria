@@ -161,8 +161,8 @@ public class RelationshipsFVT {
         termAnchorFVT(term1);
         categoryAnchorFVT(cat1);
         createSomeTermRelationships(term1, term2, term3);
-        term1relationshipcount = term1relationshipcount + 12;
-        term2relationshipcount = term2relationshipcount + 11;
+        term1relationshipcount = term1relationshipcount + 13;
+        term2relationshipcount = term2relationshipcount + 12;
         term3relationshipcount = term3relationshipcount + 1;
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);

@@ -259,7 +259,7 @@ public class ProjectFVT
             iter.remove();
             deleteProject(guid);
         }
-        List<Project> projects = findProjects(".*");
+        List<Project> projects = findProjects("");
         if (projects.size() !=existingProjectCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingProjectCount + " Projects to be found, got " + projects.size());
         }
