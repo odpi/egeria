@@ -52,7 +52,7 @@ public class IsATypeOf extends Relationship {
     private String source;
 
     public IsATypeOf() {
-        super(RelationshipType.IsaTypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.IsATypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

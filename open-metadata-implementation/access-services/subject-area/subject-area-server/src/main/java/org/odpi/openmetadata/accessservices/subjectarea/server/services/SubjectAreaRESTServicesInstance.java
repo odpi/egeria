@@ -108,7 +108,7 @@ public class SubjectAreaRESTServicesInstance {
                           // ignore the response -as the repository may not set spine attributes
                           termHandler.updateTerm(userId,end2Guid, end2Term, false);
                       }
-                  } else  if (relationshipName.equals(RelationshipType.IsaTypeOf.name())) {
+                  } else  if (relationshipName.equals(RelationshipType.IsATypeOf.name())) {
                       SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
                       SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
                       Term end1Term = end1TermResponse.results().get(0);
