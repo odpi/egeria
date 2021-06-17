@@ -12,11 +12,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * Mapping methods to map between the ObjectInheritance and the equivalent omrs Relationship.
+ * Mapping methods to map between the isATypeOf and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
 public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
-    private static final String OBJECT_INHERITANCE_RELATIONSHIP = "IsATypeOfRelationship";
+    private static final String IS_A_TYPE_OF_RELATIONSHIP = "IsATypeOfRelationship";
 
     public IsATypeOfMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
@@ -25,60 +25,60 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
     /**
      * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param ObjectInheritance               supplied relationship
+     * @param isATypeOf               supplied relationship
      * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapRelationshipToInstanceProperties(IsATypeOf ObjectInheritance, InstanceProperties instanceProperties) {
-        if (ObjectInheritance.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, ObjectInheritance.getDescription(), "description");
+    protected void mapRelationshipToInstanceProperties(IsATypeOf isATypeOf, InstanceProperties instanceProperties) {
+        if (isATypeOf.getDescription() != null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getDescription(), "description");
         }
-        if (ObjectInheritance.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, ObjectInheritance.getSteward(), "steward");
+        if (isATypeOf.getSteward() != null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSteward(), "steward");
         }
-        if (ObjectInheritance.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, ObjectInheritance.getSource(), "source");
+        if (isATypeOf.getSource() != null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSource(), "source");
         }
-        if (ObjectInheritance.getStatus() != null) {
+        if (isATypeOf.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(ObjectInheritance.getStatus().getOrdinal());
+            enumPropertyValue.setOrdinal(isATypeOf.getStatus().getOrdinal());
             instanceProperties.setProperty("status", enumPropertyValue);
         }
     }
 
     /**
-     * Map a primitive omrs property to the ObjectInheritance object.
+     * Map a primitive omrs property to the IsATypeOf object.
      *
-     * @param ObjectInheritance         the omas relationship to be updated
+     * @param isATypeOf         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToRelationship(IsATypeOf ObjectInheritance, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(IsATypeOf isATypeOf, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
-            ObjectInheritance.setDescription(stringValue);
+            isATypeOf.setDescription(stringValue);
             foundProperty = true;
         }
         if (propertyName.equals("steward")) {
-            ObjectInheritance.setSteward(stringValue);
+            isATypeOf.setSteward(stringValue);
             foundProperty = true;
         }
         if (propertyName.equals("source")) {
-            ObjectInheritance.setSource(stringValue);
+            isATypeOf.setSource(stringValue);
             foundProperty = true;
         }
         return foundProperty;
     }
 
     @Override
-    protected boolean mapEnumToRelationship(IsATypeOf ObjectInheritance, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(IsATypeOf isATypeOf, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
-            ObjectInheritance.setStatus(status);
+            isATypeOf.setStatus(status);
             foundProperty = true;
         }
         return foundProperty;
@@ -86,7 +86,7 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
 
     @Override
     public String getTypeName() {
-        return OBJECT_INHERITANCE_RELATIONSHIP;
+        return IS_A_TYPE_OF_RELATIONSHIP;
     }
 
     @Override

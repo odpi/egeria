@@ -278,14 +278,14 @@ public class SubjectAreaRelationship implements SubjectAreaRelationshipClients {
         }
     }
     @SubjectAreaRelationshipClient
-    static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOfDeprecated> {
-        protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
+    static class SubjectAreaIsaTypeOfDeprecatedClient extends AbstractSubjectAreaRelationship<IsATypeOfDeprecated> {
+        protected SubjectAreaIsaTypeOfDeprecatedClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF_DEPRECATED);
         }
     }
     @SubjectAreaRelationshipClient
-    static class ObjectInheritanceClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
-        protected ObjectInheritanceClient(SubjectAreaRestClient subjectAreaRestClient) {
+    static class SubjectAreaIsATypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
+        protected SubjectAreaIsATypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
     }

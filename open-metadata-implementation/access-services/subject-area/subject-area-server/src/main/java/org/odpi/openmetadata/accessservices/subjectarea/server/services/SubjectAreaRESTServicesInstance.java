@@ -84,8 +84,8 @@ public class SubjectAreaRESTServicesInstance {
                 // if required attempt to create spine objects orientated classifications on the ends
                 // typed by should have spine attribute and spine object
                 // hasa  should have spine attribute and spine object
-                // ObjectInheritance should have spine object and spine object
-                // isatypeof is deprecated
+                // isatypeof should have spine object and spine object
+                // isatypeofdeprecated is deprecated
                 // isa is not to do with spine objects.
                  Relationship createdRelationship = response.results().get(0);
                   final String relationshipName = createdRelationship.getName();
@@ -108,7 +108,7 @@ public class SubjectAreaRESTServicesInstance {
                           // ignore the response -as the repository may not set spine attributes
                           termHandler.updateTerm(userId,end2Guid, end2Term, false);
                       }
-                  } else  if (relationshipName.equals(RelationshipType.ObjectInheritance.name())) {
+                  } else  if (relationshipName.equals(RelationshipType.IsaTypeOf.name())) {
                       SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
                       SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
                       Term end1Term = end1TermResponse.results().get(0);

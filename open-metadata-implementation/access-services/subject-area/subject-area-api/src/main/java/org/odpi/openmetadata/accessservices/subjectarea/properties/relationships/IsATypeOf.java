@@ -52,7 +52,7 @@ public class IsATypeOf extends Relationship {
     private String source;
 
     public IsATypeOf() {
-        super(RelationshipType.ObjectInheritance.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.IsaTypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**
@@ -116,9 +116,9 @@ public class IsATypeOf extends Relationship {
         if (sb == null) {
             sb = new StringBuilder();
         }
-        sb.append(" ObjectInheritance=");
+        sb.append(" isATypeOf=");
         sb.append(super.toString(sb));
-        sb.append(" ObjectInheritance Attributes{");
+        sb.append(" isATypeOf Attributes{");
         sb.append("description=").append(this.description).append(",");
         sb.append("steward=").append(this.steward).append(",");
         sb.append("source=").append(this.source).append(",");

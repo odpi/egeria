@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Defines an inheritance relationship between two spine objects.
  *
- * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use ObjectInheritance instead.
+ * @deprecated IsATypeOfDeprecated it is deprecated; move your instances to use IsATypeOf instead.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,7 +53,7 @@ public class IsATypeOfDeprecated extends Relationship {
     private String source;
 
     public IsATypeOfDeprecated() {
-        super(RelationshipType.IsATypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.IsATypeOfDeprecated.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**
