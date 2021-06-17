@@ -584,8 +584,7 @@ public class DataEngineRESTServices {
                 Optional<String> processGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, PROCESS_TYPE_NAME);
                 if (processGUIDOptional.isPresent()) {
                     deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
-                }
-                else {
+                } else {
                     throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
                 }
             }
@@ -1032,9 +1031,9 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteDatabase(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                      EntityNotDeletedException, FunctionNotSupportedException {
+    public void deleteDatabase(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                     EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteDatabase";
 
@@ -1119,10 +1118,10 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteRelationalTable(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                       DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                             UserNotAuthorizedException, EntityNotDeletedException,
-                                                                             FunctionNotSupportedException {
+    public void deleteRelationalTable(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                      DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
+                                                                            UserNotAuthorizedException, EntityNotDeletedException,
+                                                                            FunctionNotSupportedException {
 
         final String methodName = "deleteRelationalTable";
 
@@ -1218,9 +1217,9 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteDataFile(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                      UserNotAuthorizedException, FunctionNotSupportedException {
+    public void deleteDataFile(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
         final String methodName = "deleteDataFile";
 
         DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
@@ -1250,9 +1249,9 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                              DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                    EntityNotDeletedException, FunctionNotSupportedException {
+    public void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                   EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteFolder";
         String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, FILE_FOLDER_TYPE_NAME, methodName);
@@ -1280,9 +1279,9 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                        UserNotAuthorizedException, FunctionNotSupportedException {
+    public void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                       UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteConnection";
         String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
@@ -1311,7 +1310,7 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+    public void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
                                                                       UserNotAuthorizedException, FunctionNotSupportedException {
 

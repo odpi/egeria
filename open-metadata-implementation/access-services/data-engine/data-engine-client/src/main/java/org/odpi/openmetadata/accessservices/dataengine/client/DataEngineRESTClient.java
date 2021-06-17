@@ -32,6 +32,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
     private static final String RELATIONAL_TABLE_URL_TEMPLATE = DATA_ENGINE_PATH + "relational-tables";
     private static final String DATA_FILE_URL_TEMPLATE = DATA_ENGINE_PATH + "data-files";
+    private static final String FOLDER_URL_TEMPLATE = DATA_ENGINE_PATH + "folders";
+    private static final String CONNECTION_URL_TEMPLATE = DATA_ENGINE_PATH + "connections";
+    private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
     private static final String PROCESSES_DELETE_METHOD_NAME = "deleteProcesses";
@@ -48,6 +51,12 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String DATABASE_METHOD_NAME = "upsertDatabase";
     private static final String RELATIONAL_TABLE_METHOD_NAME = "upsertRelationalTable";
     private static final String DATA_FILE_METHOD_NAME = "upsertDataFile";
+    private static final String DATABASE_DELETE_METHOD_NAME = "deleteDatabase";
+    private static final String RELATIONAL_TABLE_DELETE_METHOD_NAME = "deleteRelationalTable";
+    private static final String DATA_FILE_DELETE_METHOD_NAME = "deleteDataFile";
+    private static final String FOLDER_DELETE_METHOD_NAME = "deleteFolder";
+    private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
+    private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
 
     private String serverPlatformRootURL;
     private String externalSourceName;
@@ -345,6 +354,77 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, DATABASE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, DATABASE_DELETE_METHOD_NAME, DATABASE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, RELATIONAL_TABLE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, RELATIONAL_TABLE_DELETE_METHOD_NAME, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, DATA_FILE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, DATA_FILE_DELETE_METHOD_NAME, DATA_FILE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, FOLDER_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, FOLDER_DELETE_METHOD_NAME, FOLDER_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, CONNECTION_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, CONNECTION_DELETE_METHOD_NAME, CONNECTION_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, ENDPOINT_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, ENDPOINT_DELETE_METHOD_NAME, ENDPOINT_URL_TEMPLATE, requestBody);
+    }
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
                                       Object... params) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         super.callVoidPostRESTCall(methodName, serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);

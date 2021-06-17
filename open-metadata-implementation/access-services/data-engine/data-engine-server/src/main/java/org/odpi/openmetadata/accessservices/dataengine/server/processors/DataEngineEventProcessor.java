@@ -359,6 +359,84 @@ public class DataEngineEventProcessor {
         }
     }
 
+    public void processDeleteDatabaseEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteDatabaseEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteDatabase(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    public void processDeleteRelationalTableEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteRelationalTableEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteRelationalTable(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    public void processDeleteDataFileEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteDataFileEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteDataFile(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    public void processDeleteFolderEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteFolderEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteFolder(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    public void processDeleteConnectionEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteConnectionEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteConnection(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    public void processDeleteEndpointEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteEndpointEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteEndpoint(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
     private void deletePort(String dataEngineEvent, String methodName, String portType) {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {

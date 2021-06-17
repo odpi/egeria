@@ -110,8 +110,8 @@ public interface DataEngineClient {
      * Delete the schema type
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of schema type
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of the schema type
+     * @param guid          the unique identifier of the schema type
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -148,8 +148,8 @@ public interface DataEngineClient {
      * Delete the port implementation
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of port
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of port implementation
+     * @param guid          the unique identifier of the port implementation
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -184,8 +184,8 @@ public interface DataEngineClient {
      * Delete the port alias
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of port
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of the port alias
+     * @param guid          the unique identifier of the port alias
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -298,4 +298,106 @@ public interface DataEngineClient {
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException,
                                                                    ConnectorCheckedException;
+
+    /**
+     * Delete the database
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the database
+     * @param guid          the unique identifier of the database
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
+
+    /**
+     * Delete the relational table
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the relational table
+     * @param guid          the unique identifier of the relational table
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        ConnectorCheckedException;
+
+    /**
+     * Delete the data file
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the data file
+     * @param guid          the unique identifier of the data file
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
+
+    /**
+     * Delete the folder
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the data file
+     * @param guid          the unique identifier of the folder
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException,
+                                                                               ConnectorCheckedException;
+
+    /**
+     * Delete the connection
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the connection
+     * @param guid          the unique identifier of the connection
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   ConnectorCheckedException;
+
+    /**
+     * Delete the endpoint
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the endpoint
+     * @param guid          the unique identifier of the endpoint
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
 }

@@ -8,11 +8,11 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrat
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
@@ -59,6 +59,7 @@ public class DataEngineEventClient implements DataEngineClient {
     public void setDeleteSemantic(DeleteSemantic deleteSemantic) {
         this.deleteSemantic = deleteSemantic;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -334,6 +335,72 @@ public class DataEngineEventClient implements DataEngineClient {
 
         //async interaction
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_DATABASE_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_RELATIONAL_TABLE_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_DATA_FILE_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_FOLDER_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_CONNECTION_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_ENDPOINT_EVENT);
+
+        topicConnector.sendEvent(event);
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

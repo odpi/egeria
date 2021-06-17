@@ -37,7 +37,13 @@ public enum DataEngineEventType implements Serializable
     DELETE_PORT_ALIAS_EVENT                 (13,  "DeletePortAliasesEvent",  "An event that deletes a port alias."),
     DATABASE_EVENT                          (14,  "DatabaseEvent",  "An event that create or update databases."),
     RELATIONAL_TABLE_EVENT                  (15,  "RelationalTableEvent",  "An event that create or update relational tables."),
-    DATA_FILE_EVENT                         (16,  "DataFileEvent",  "An event that create or update data files.");
+    DATA_FILE_EVENT                         (16,  "DataFileEvent",  "An event that create or update data files."),
+    DELETE_DATABASE_EVENT                   (17,  "DeleteDatabaseEvent",  "An event that deletes a database."),
+    DELETE_RELATIONAL_TABLE_EVENT           (18,  "DeleteRelationalTableEvent",  "An event that deletes a relational table."),
+    DELETE_DATA_FILE_EVENT                  (19,  "DeleteDataFileEvent",  "An event that deletes a data file."),
+    DELETE_FOLDER_EVENT                     (20,  "DeleteFolderEvent",  "An event that deletes a folder."),
+    DELETE_CONNECTION_EVENT                 (21,  "DeleteConnectionEvent",  "An event that deletes a connection."),
+    DELETE_ENDPOINT_EVENT                   (22,  "DeleteEndpointEvent",  "An event that deletes an endpoint.");
 
     private static final long     serialVersionUID = 1L;
 
