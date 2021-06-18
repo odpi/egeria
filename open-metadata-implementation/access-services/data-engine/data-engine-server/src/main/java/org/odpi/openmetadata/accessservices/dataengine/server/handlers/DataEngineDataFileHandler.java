@@ -121,6 +121,24 @@ public class DataEngineDataFileHandler {
         return fileGuid;
     }
 
+    public void removeDataFile(String userId, String dataFileGUID, String externalSourceName, String externalSourceGUID,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                     FunctionNotSupportedException {
+        final String methodName = "removeDataFile";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+
+        Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                DATA_FILE_TYPE_NAME);
+        if(schemaType.isPresent()) {
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
+            fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
+                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
+        }
+        else {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
+        }
+    }
+
     private String updateFileInRepository(String userId, String externalSourceGuid, String externalSourceName,
                                           EntityDetail fileAsEntity, DataFile file, Map<String, Object> extendedProperties,
                                           String methodName)

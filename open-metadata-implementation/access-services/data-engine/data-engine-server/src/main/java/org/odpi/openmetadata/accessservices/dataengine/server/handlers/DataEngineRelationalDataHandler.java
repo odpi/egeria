@@ -433,4 +433,15 @@ public class DataEngineRelationalDataHandler {
         relationalDataHandler.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID, GUID_PROPERTY_NAME,
                 tableQualifiedName, methodName);
     }
+
+    private void removeDatabaseSchema(String userId, EntityDetail databaseSchema, String externalSourceName, String externalSourceGUID) throws
+                                                                                                                                        InvalidParameterException,
+                                                                                                                                        PropertyServerException,
+                                                                                                                                        UserNotAuthorizedException {
+        final String methodName = "removeDatabaseSchema";
+
+        String databaseSchemaGUID = databaseSchema.getGUID();
+        relationalDataHandler.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
+                databaseSchema.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString(), methodName);
+    }
 }
