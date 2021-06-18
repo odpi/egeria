@@ -335,18 +335,12 @@ class DataEnginePortHandlerTest {
 
     @Test
     void findSchemaTypeForPort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "findSchemaTypeForPort";
-
-        mockTypeDef();
-
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(dataEngineCommonHandler.getEntityForRelationship(USER, PORT_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME))
                 .thenReturn(Optional.of(entityDetail));
 
         Optional<EntityDetail> result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
 
-        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID, "guid", methodName);
         assertTrue(result.isPresent());
         assertEquals(entityDetail, result.get());
     }

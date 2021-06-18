@@ -211,6 +211,9 @@ public class DataEngineCommonHandler {
                                                                                                                          PropertyServerException,
                                                                                                                          UserNotAuthorizedException {
         String methodName = "getEntityDetails";
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, entityTypeName,
                 methodName));
     }
@@ -366,7 +369,7 @@ public class DataEngineCommonHandler {
                                                                                                                                            UserNotAuthorizedException,
                                                                                                                                            PropertyServerException,
                                                                                                                                            InvalidParameterException {
-        final String methodName = "getEntitiesForRelationshipType";
+        final String methodName = "getEntitiesForRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, CommonMapper.GUID_PROPERTY_NAME, methodName);
@@ -401,7 +404,7 @@ public class DataEngineCommonHandler {
                                                               String entityTypeName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException {
-        final String methodName = "findEntityForRelationship";
+        final String methodName = "getEntityForRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);

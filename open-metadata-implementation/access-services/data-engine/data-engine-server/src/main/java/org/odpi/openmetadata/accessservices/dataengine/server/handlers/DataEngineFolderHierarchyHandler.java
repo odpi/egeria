@@ -26,6 +26,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -110,14 +111,13 @@ public class DataEngineFolderHierarchyHandler {
         String methodName = "removeFolder";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(folderGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(folderGUID, GUID_PROPERTY_NAME, methodName);
 
         dataEngineCommonHandler.removeEntity(userId, folderGUID, FILE_FOLDER_TYPE_NAME, externalSourceName);
     }
 
-    private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName,
-                                                       String userId, String methodName)
-            throws UserNotAuthorizedException, PropertyServerException {
+    private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
+                                                       String methodName) throws UserNotAuthorizedException, PropertyServerException {
         Optional<List<Relationship>> optionalRelationships =
                 Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
                         NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));

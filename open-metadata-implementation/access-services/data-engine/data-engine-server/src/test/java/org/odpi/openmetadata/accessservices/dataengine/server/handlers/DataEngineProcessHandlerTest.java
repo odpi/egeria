@@ -43,7 +43,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -69,7 +69,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.testng.AssertJUnit.assertFalse;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -325,11 +324,9 @@ class DataEngineProcessHandlerTest {
         when(portAlias.getType()).thenReturn(mockedTypeImpl);
         when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
 
-        List<EntityDetail> portEntityGUIDs = Arrays.asList(portAlias, portImplementation);
-        when(repositoryHandler.getEntitiesForRelationshipType(USER, PROCESS_GUID,
-                PROCESS_TYPE_NAME, PROCESS_PORT_TYPE_GUID,
-                PROCESS_PORT_TYPE_NAME, 0, 0, methodName)).thenReturn(portEntityGUIDs);
-
+        Set<EntityDetail> portEntityGUIDs = new HashSet<>(Arrays.asList(portAlias, portImplementation));
+        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, PROCESS_GUID, PROCESS_PORT_TYPE_NAME, PROCESS_TYPE_NAME))
+                .thenReturn(portEntityGUIDs);
 
         Set<EntityDetail> result = processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, result.size());

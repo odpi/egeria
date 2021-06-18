@@ -387,7 +387,7 @@ public class DataEngineRelationalDataHandler {
             Optional<EntityDetail> databaseSchemaOptional = findSchemaForDatabase(userId, databaseEntity.getGUID());
             if (databaseSchemaOptional.isPresent()) {
                 String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-                removeDatabaseSchema(userId, databaseSchemaOptional.get(), externalSourceName, externalSourceGUID, deleteSemantic);
+                removeDatabaseSchema(userId, databaseSchemaOptional.get(), externalSourceName, externalSourceGUID);
 
                 relationalDataHandler.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseQualifiedName, methodName);
             } else {
@@ -398,17 +398,19 @@ public class DataEngineRelationalDataHandler {
         }
     }
 
-    private void removeDatabaseSchema(String userId, EntityDetail databaseSchema, String externalSourceName, String externalSourceGUID,
-                                      DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                            UserNotAuthorizedException, FunctionNotSupportedException {
-        final String methodName = "removeDatabaseSchema";
-        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
-
-        String databaseSchemaGUID = databaseSchema.getGUID();
-        relationalDataHandler.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
-                databaseSchema.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString(), methodName);
-    }
-
+    /**
+     * Remove the relational table
+     *
+     * @param userId              the name of the calling user
+     * @param relationalTableGUID unique identifier of the relational table to be removed
+     * @param externalSourceName  the external data engine name
+     * @param deleteSemantic      the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeRelationalTable(String userId, String relationalTableGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws
                                                                                                                                            FunctionNotSupportedException,
                                                                                                                                            InvalidParameterException,

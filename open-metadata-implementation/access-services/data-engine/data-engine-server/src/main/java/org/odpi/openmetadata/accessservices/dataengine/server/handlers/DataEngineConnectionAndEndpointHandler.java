@@ -24,6 +24,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
@@ -109,7 +110,7 @@ public class DataEngineConnectionAndEndpointHandler {
         String methodName = "removeConnection";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(connectionGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, GUID_PROPERTY_NAME, methodName);
 
         dataEngineCommonHandler.removeEntity(userId, connectionGUID, CONNECTION_TYPE_NAME, externalSourceName);
     }
@@ -119,10 +120,10 @@ public class DataEngineConnectionAndEndpointHandler {
                                                                                                                              InvalidParameterException,
                                                                                                                              PropertyServerException,
                                                                                                                              UserNotAuthorizedException {
-        String methodName = "removeConnection";
+        String methodName = "removeEndpoint";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(endpointGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, GUID_PROPERTY_NAME, methodName);
 
         dataEngineCommonHandler.removeEntity(userId, endpointGUID, ENDPOINT_TYPE_NAME, externalSourceName);
     }
