@@ -332,7 +332,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         int requestedPageSize = findRequest.getPageSize();
         if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
             // Only need to make one call
-             String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+             String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
              String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
              completeResponse = callGetRESTCall(methodName, type, expandedURL);
              exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);

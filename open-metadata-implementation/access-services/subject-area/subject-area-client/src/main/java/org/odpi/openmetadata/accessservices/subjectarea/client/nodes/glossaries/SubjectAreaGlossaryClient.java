@@ -58,8 +58,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
 
-    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactMatch, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return getCategories(userId, guid, findRequest, onlyTop, exactMatch, ignoreCase, null);
+    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return getCategories(userId, guid, findRequest, onlyTop, exactValue, ignoreCase, null);
     }
 
     /**
@@ -76,12 +76,12 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
 
-    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactMatch, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo("getCategories");
         Map<String, String> params = new HashMap<>();
         params.put("onlyTop", onlyTop+"");
-        params.put("exactMatch", exactMatch+"");
+        params.put("exactValue", exactValue+"");
         params.put("ignoreCase", ignoreCase+"");
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
@@ -113,8 +113,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public List<Term> getTerms(String userId, String guid, FindRequest findRequest,  boolean exactMatch, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-       return getTerms(userId, guid, findRequest, exactMatch, ignoreCase,  null);
+    public List<Term> getTerms(String userId, String guid, FindRequest findRequest,  boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+       return getTerms(userId, guid, findRequest, exactValue, ignoreCase,  null);
     }
 
     /**

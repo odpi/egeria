@@ -33,6 +33,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -138,6 +139,7 @@ public abstract class SubjectAreaHandler {
         return null;
     }
     protected String sanitiseFindRequest(String searchCriteria, boolean exactValue, boolean ignoreCase) {
+        OMRSRepositoryHelper omrsRepositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
 
         if (searchCriteria != null && searchCriteria.trim() == "") {
             // ignore the flags for an empty search criteria string - assume we want everything
@@ -145,14 +147,10 @@ public abstract class SubjectAreaHandler {
         } else {
             // lose any leading and trailing blanks
             searchCriteria = searchCriteria.trim();
-            // turn the users supplied search criteria string into a literal, so it cannot do any harm
-            searchCriteria = "\\Q" + searchCriteria + "\\E";
-
-            if (ignoreCase) {
-                searchCriteria = "(?i).*" + searchCriteria;
-            }
-            if (!exactValue) {
-                searchCriteria = searchCriteria + ".*";
+            if (exactValue) {
+                searchCriteria = omrsRepositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
+            } else {
+                searchCriteria = omrsRepositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
             }
         }
 
@@ -172,7 +170,7 @@ public abstract class SubjectAreaHandler {
      */
     protected FindRequest sanitiseFindRequest(FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
         FindRequest sanitisedFindRequest = findRequest;
-        String searchCriteria =sanitiseFindRequest(findRequest.getSearchCriteria(),exactValue, ignoreCase);
+        String searchCriteria = sanitiseFindRequest(findRequest.getSearchCriteria(), exactValue, ignoreCase);
         sanitisedFindRequest.setSearchCriteria(searchCriteria);
         return sanitisedFindRequest;
     }
