@@ -16,7 +16,7 @@ public class TestSubjectAreaHandler {
         SubjectAreaHandlerTestImplementation handler = new SubjectAreaHandlerTestImplementation(omrsapiHelper, 10);
 
         FindRequest findRequest = new FindRequest();
-        final String searchCriteria = "abc";
+        String searchCriteria = "abc";
         findRequest.setSearchCriteria(searchCriteria);
         boolean exactValue = false;
         boolean ignoreCase = true;
@@ -29,7 +29,7 @@ public class TestSubjectAreaHandler {
         assertFalse( matches(sanitised1, "aaa"));
         // try an expression that could be problematic for the regex engine for certain inputs
         assertFalse( matches(sanitised1, "(a+)+"));
-
+        assertFalse( matches(sanitised1, "b"));
         exactValue = false;
         ignoreCase = false;
         findRequest.setSearchCriteria(searchCriteria);
@@ -40,6 +40,7 @@ public class TestSubjectAreaHandler {
         assertTrue( matches(sanitised2, "abcd"));
         assertFalse( matches(sanitised2, "aaa"));
         assertFalse( matches(sanitised2, "(a+)+"));
+        assertFalse( matches(sanitised1, "b"));
 
         exactValue = true;
         ignoreCase = true;
@@ -51,7 +52,7 @@ public class TestSubjectAreaHandler {
         assertFalse( matches(sanitised3, "abcd"));
         assertFalse( matches(sanitised3, "aaa"));
         assertFalse( matches(sanitised3, "(a+)+"));
-
+        assertFalse( matches(sanitised1, "b"));
         exactValue = true;
         ignoreCase = false;
         findRequest.setSearchCriteria(searchCriteria);
@@ -62,7 +63,7 @@ public class TestSubjectAreaHandler {
         assertFalse( matches(sanitised4, "abcd"));
         assertFalse( matches(sanitised4, "aaa"));
         assertFalse( matches(sanitised4, "(a+)+"));
-
+        assertFalse( matches(sanitised1, "b"));
         // check other combinations
 
         findRequest.setSearchCriteria("aaaaaa");
@@ -79,6 +80,14 @@ public class TestSubjectAreaHandler {
         FindRequest sanitised7 =  handler.sanitiseFindRequest(findRequest, exactValue, ignoreCase );
         assertTrue( matches(sanitised7, "(a+)+"));
         assertTrue( matches(sanitised7, "aaaaaa"));
+
+
+        exactValue = false;
+        ignoreCase = true;
+        searchCriteria = "b";
+        findRequest.setSearchCriteria(searchCriteria);
+        FindRequest sanitised8 =  handler.sanitiseFindRequest(findRequest, exactValue, ignoreCase );
+        assertFalse( matches(sanitised7, "abc"));
 
     }
 

@@ -147,13 +147,14 @@ public abstract class SubjectAreaHandler {
             searchCriteria = searchCriteria.trim();
             // turn the users supplied search criteria string into a literal, so it cannot do any harm
             searchCriteria = "\\Q" + searchCriteria + "\\E";
-
-            if (ignoreCase) {
-                searchCriteria = "(?i).*" + searchCriteria;
-            }
             if (!exactValue) {
                 searchCriteria = searchCriteria + ".*";
             }
+            if (ignoreCase) {
+                searchCriteria = "(?i)^" + searchCriteria;
+
+            }
+
         }
 
         return searchCriteria;
