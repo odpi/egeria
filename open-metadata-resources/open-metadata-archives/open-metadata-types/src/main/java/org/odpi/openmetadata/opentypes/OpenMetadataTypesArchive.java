@@ -157,13 +157,17 @@ public class OpenMetadataTypesArchive
          */
         update0010BaseModel();
         update0050ApplicationsAndProcesses();
+        update0380SubjectArea();
         update04xxGovernanceDefinitions();
         update0530TabularSchema();
         update0531DocumentSchema();
         update0534RelationalSchema();
         update0535EventSchemas();
         update0536APISchemas();
+
     }
+
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -311,6 +315,133 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0380SubjectArea()
+
+    {
+        this.archiveBuilder.addRelationshipDef(addIsATypeOfRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateTermIsATypeOfRelationship());
+    }
+
+    /**
+     * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
+     * @return RelationshipDef
+     */
+    private RelationshipDef addIsATypeOfRelationship()
+    {
+        final String guid            = "9b6a91b5-a339-4245-b208-040805f95a75";
+        final String name            = "IsATypeOfRelationship";
+        final String description     = "Defines an inheritance relationship between two spine objects.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "GlossaryTerm";
+        final String                     end1AttributeName            = "Inherited";
+        final String                     end1AttributeDescription     = "Inherited (Subtypes) for this object.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2AttributeName            = "InheritedFrom";
+        final String                     end2AttributeDescription     = "Inherited from type (Supertypes) for this object.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Description of the relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "status";
+        final String attribute2Description     = "The status of or confidence in the relationship.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "steward";
+        final String attribute3Description     = "Person responsible for the relationship.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "source";
+        final String attribute4Description     = "Person, organization or automated process that created the relationship.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+
+    }
+    /**
+     * Deprecate the TermIsATypeOfRelationship - use TermTypeOFRelationship
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateTermIsATypeOfRelationship()
+    {
+        final String typeName = "TermISATypeOFRelationship";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 
     /**
      * A variety of changes to improve consistency and flexibility of the governance definitions
@@ -407,7 +538,6 @@ public class OpenMetadataTypesArchive
                                                  descriptionGUID);
 
     }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -709,6 +839,7 @@ public class OpenMetadataTypesArchive
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
 
         return typeDefPatch;

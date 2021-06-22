@@ -85,13 +85,15 @@ public class SubjectAreaRESTServicesInstance {
                 // typed by should have spine attribute and spine object
                 // hasa  should have spine attribute and spine object
                 // isatypeof should have spine object and spine object
+                // isatypeofdeprecated is deprecated
+                // isa is not to do with spine objects.
                  Relationship createdRelationship = response.results().get(0);
                   final String relationshipName = createdRelationship.getName();
                   SubjectAreaTermHandler termHandler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, restAPIName);
                   String end1Guid = createdRelationship.getEnd1().getNodeGuid();
                   String end2Guid = createdRelationship.getEnd2().getNodeGuid();
 
-                  if (relationshipName.equals(RelationshipType.HasA.name())) {
+                  if (relationshipName.equals(RelationshipType.HasA.name()) || relationshipName.equals(RelationshipType.TypedBy.name())) {
                       SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
                       SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
                       Term end1Term = end1TermResponse.results().get(0);
@@ -106,21 +108,7 @@ public class SubjectAreaRESTServicesInstance {
                           // ignore the response -as the repository may not set spine attributes
                           termHandler.updateTerm(userId,end2Guid, end2Term, false);
                       }
-// TODO change isatypeof once issue https://github.com/odpi/egeria/issues/5305 is addressed
-//                } else  if (relationshipName.equals(RelationshipType.IsATypeOf)) {
-//                      SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
-//                      SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
-//                      Term end1Term = end1TermResponse.results().get(0);
-//                      Term end2Term = end2TermResponse.results().get(0);
-//                      if (!end1Term.isSpineObject()) {
-//                          end1Term.setSpineObject(true);
-//                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
-//                      }
-//                      if (!end2Term.isSpineObject()) {
-//                          end2Term.setSpineObject(true);
-//                          termHandler.updateTerm(userId,end2Guid, end2Term, false);
-//                      }
-                  } else  if (relationshipName.equals(RelationshipType.IsA.name())) {
+                  } else  if (relationshipName.equals(RelationshipType.IsATypeOf.name())) {
                       SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
                       SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
                       Term end1Term = end1TermResponse.results().get(0);
@@ -133,27 +121,11 @@ public class SubjectAreaRESTServicesInstance {
                       if (!end2Term.isSpineObject()) {
                           // ignore the response -as the repository may not set spine objects
                           end2Term.setSpineObject(true);
-                          termHandler.updateTerm(userId,end2Guid, end2Term, false);
-                      }
-                  } else  if (relationshipName.equals(RelationshipType.TypedBy.name())) {
-                      SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
-                      SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
-                      Term end1Term = end1TermResponse.results().get(0);
-                      Term end2Term = end2TermResponse.results().get(0);
-                      if (!end1Term.isSpineObject()) {
-                          end1Term.setSpineObject(true);
-                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
-                      }
-                      if (!end2Term.isSpineAttribute()) {
-                          end2Term.setSpineAttribute(true);
-                          termHandler.updateTerm(userId,end2Guid, end2Term, false);
+                          termHandler.updateTerm(userId, end2Guid, end2Term, false);
                       }
                   }
 
             }
-
-
-//            }
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
