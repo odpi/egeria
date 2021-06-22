@@ -103,6 +103,19 @@ public class DataEngineFolderHierarchyHandler {
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, externalSourceName, null);
     }
 
+    /**
+     * Remove the folder
+     *
+     * @param userId             the name of the calling user
+     * @param folderGUID         unique identifier of the folder to be removed
+     * @param externalSourceName the external data engine name
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeFolder(String userId, String folderGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
                                                                                                                          InvalidParameterException,
                                                                                                                          PropertyServerException,

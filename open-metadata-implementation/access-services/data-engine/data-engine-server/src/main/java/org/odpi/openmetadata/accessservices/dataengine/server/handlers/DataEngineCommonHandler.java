@@ -195,13 +195,13 @@ public class DataEngineCommonHandler {
     }
 
     /**
-     * Fetch the entity using the identifier and the type name
+     * Fetch the entity using the identifier and the type name. It uses the unique identifier to retrieve the entity
      *
      * @param userId           the user identifier
-     * @param entityDetailGUID the entity identifier
+     * @param entityDetailGUID the entity unique identifier
      * @param entityTypeName   the entity type name
      *
-     * @return the entity
+     * @return optional with entity details if found, empty optional if not found
      *
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -365,6 +365,20 @@ public class DataEngineCommonHandler {
         throw new EntityNotDeletedException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName);
     }
 
+    /**
+     * Return the set of entities at the other end of the requested relationship type.
+     *
+     * @param userId               the name of the calling user
+     * @param guid                 starting entity's GUID
+     * @param relationshipTypeName type name for the relationship to follow
+     * @param entityTypeName       starting entity's type name
+     *
+     * @return retrieved entities or empty set
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     protected Set<EntityDetail> getEntitiesForRelationship(String userId, String guid, String relationshipTypeName, String entityTypeName) throws
                                                                                                                                            UserNotAuthorizedException,
                                                                                                                                            PropertyServerException,

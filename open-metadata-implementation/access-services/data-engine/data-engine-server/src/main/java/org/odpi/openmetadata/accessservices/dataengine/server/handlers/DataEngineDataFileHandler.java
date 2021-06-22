@@ -46,13 +46,14 @@ public class DataEngineDataFileHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param invalidParameterHandler          handler for managing parameter errors
-     * @param repositoryHelper                 provides utilities for manipulating the repository services objects
-     * @param repositoryHandler                manages calls to the repository services
-     * @param dataEngineCommonHandler          provides common Data Engine Omas utilities
-     * @param fileHandler                      provides utilities specific for manipulating DataFile and CSVFile
-     * @param dataEngineSchemaTypeHandler      provides utilities specific for manipulating SchemaType
-     * @param dataEngineFolderHierarchyHandler provides utilities specific for manipulating FileFolder
+     * @param invalidParameterHandler                handler for managing parameter errors
+     * @param repositoryHelper                       provides utilities for manipulating the repository services objects
+     * @param repositoryHandler                      manages calls to the repository services
+     * @param dataEngineCommonHandler                provides common Data Engine Omas utilities
+     * @param fileHandler                            provides utilities specific for manipulating DataFile and CSVFile
+     * @param dataEngineSchemaTypeHandler            provides utilities specific for manipulating SchemaType
+     * @param dataEngineFolderHierarchyHandler       provides utilities specific for manipulating FileFolder
+     * @param dataEngineConnectionAndEndpointHandler provides utilities specific for manipulating Connections and Endpoints
      */
     public DataEngineDataFileHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                      RepositoryHandler repositoryHandler, DataEngineCommonHandler dataEngineCommonHandler,
@@ -121,6 +122,20 @@ public class DataEngineDataFileHandler {
         return fileGuid;
     }
 
+    /**
+     * Remove the data file
+     *
+     * @param userId             the name of the calling user
+     * @param dataFileGUID       unique identifier of the file to be removed
+     * @param externalSourceName the external data engine name
+     * @param externalSourceGUID the external data engine unique identifier
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeDataFile(String userId, String dataFileGUID, String externalSourceName, String externalSourceGUID,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                                      FunctionNotSupportedException {
@@ -129,12 +144,12 @@ public class DataEngineDataFileHandler {
 
         Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                 DATA_FILE_TYPE_NAME);
-        if(schemaType.isPresent()) {
+        if (schemaType.isPresent()) {
             dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
+
             fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
                     DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
-        }
-        else {
+        } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
         }
     }

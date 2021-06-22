@@ -18,7 +18,7 @@ More examples with all available properties for a data file can be found in the
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/data-files
 
 {
-    "externalSourceName" : "Company::Project::ExternalDataEngine",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
     "file" :{
         "type" : "DataFile", 
         "qualifiedName" : "(file)=DATAFILE.DAT",

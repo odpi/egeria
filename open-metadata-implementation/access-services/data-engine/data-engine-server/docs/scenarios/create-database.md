@@ -14,16 +14,16 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
 
 {
     "database": {
-        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema",
-        "displayName": "MINIMAL-basic-schema",
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+        "displayName": "MINIMAL-basic",
         "protocol" : "ftp",
         "networkAddress" : "localhost",
         "schema": {
-            "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1",
+            "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1",
             "displayName": "DB2INST1"
         }
     },
-    "externalSourceName": "Company::Project::ExternalDataEngine"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 

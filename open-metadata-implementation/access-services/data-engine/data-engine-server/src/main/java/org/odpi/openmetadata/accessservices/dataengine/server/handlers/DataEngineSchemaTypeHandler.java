@@ -240,6 +240,7 @@ public class DataEngineSchemaTypeHandler {
      * @param userId             the name of the calling user
      * @param schemaTypeGUID     the unique identifier of the schema type
      * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
      *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request

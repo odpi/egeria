@@ -13,32 +13,34 @@ More examples with all available properties for a table can be found in the
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/relational-tables
 
 {
-   {
-       "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema",
-       "table": {
-           "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic",
-           "displayName": "EMPLNAME-basic",
-           "columns": [
-               {
-                   "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=EMPID",
-                   "displayName": "EMPID"
-               },
-               {
-                   "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=FNAME",
-                   "displayName": "FNAME"
-               },
-               {
-                   "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=LOCID",
-                   "displayName": "LOCID"
-               },
-               {
-                   "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=SURNAME",
-                   "displayName": "SURNAME"
-               }
-           ]
-       },
-       "externalSourceName": "Company::Project::ExternalDataEngine"
-   }
+    "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic",
+        "displayName": "EMPLNAME-basic",
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                  "dataType": "STRING"
+            }
+        ]
+    },
+    "externalSourceName": "Company::Project::ExternalDataEngine"
 }
 ```
 

@@ -359,6 +359,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a database
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteDatabaseEvent(String dataEngineEvent) {
         final String methodName = "processDeleteDatabaseEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -372,6 +377,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a relational table
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteRelationalTableEvent(String dataEngineEvent) {
         final String methodName = "processDeleteRelationalTableEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -385,6 +395,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a data file
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteDataFileEvent(String dataEngineEvent) {
         final String methodName = "processDeleteDataFileEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -398,6 +413,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a folder
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteFolderEvent(String dataEngineEvent) {
         final String methodName = "processDeleteFolderEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -411,6 +431,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting a connection
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteConnectionEvent(String dataEngineEvent) {
         final String methodName = "processDeleteConnectionEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
@@ -424,6 +449,11 @@ public class DataEngineEventProcessor {
         }
     }
 
+    /**
+     * Process a {@link DeleteEvent} for deleting an endpoint
+     *
+     * @param dataEngineEvent the event to be processed
+     */
     public void processDeleteEndpointEvent(String dataEngineEvent) {
         final String methodName = "processDeleteEndpointEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);

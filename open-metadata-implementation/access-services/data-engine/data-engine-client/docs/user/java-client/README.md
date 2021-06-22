@@ -63,9 +63,9 @@ Once you have an instance of the client, you can use it to create, update or del
 * Create/Update/Delete a port implementation, with a schema type and the corresponding PortSchema relationship
 * Create/Update/Delete a port alias, with a PortDelegation relationship
 * Create/Update/Delete a list of process, with a corresponding port implementations and port aliases involved in a transformation
-* Create/Update a database
-* Create/Update a relational table
-* Create/Update a data file
+* Create/Update/Delete a database, with a connection, endpoint and corresponding schema type attached
+* Create/Update/Delete a relational table with columns
+* Create/Update/Delete a data file with columns, endpoint, connection and corresponding schema type attached
  
 
 > Note: The equivalent REST interfaces are documented in the

@@ -72,6 +72,7 @@ public class DataEngineConnectionAndEndpointHandler {
      *
      * @param assetQualifiedName asset qualified name
      * @param assetTypeName      asset type name
+     * @param protocol           property of Endpoint
      * @param networkAddress     property of Endpoint
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
@@ -102,6 +103,19 @@ public class DataEngineConnectionAndEndpointHandler {
                 endpointQualifiedName);
     }
 
+    /**
+     * Remove the connection
+     *
+     * @param userId             the name of the calling user
+     * @param connectionGUID     unique identifier of the connection to be removed
+     * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeConnection(String userId, String connectionGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
                                                                                                                                  FunctionNotSupportedException,
                                                                                                                                  InvalidParameterException,
@@ -115,6 +129,19 @@ public class DataEngineConnectionAndEndpointHandler {
         dataEngineCommonHandler.removeEntity(userId, connectionGUID, CONNECTION_TYPE_NAME, externalSourceName);
     }
 
+    /**
+     * Remove the endpoint
+     *
+     * @param userId             the name of the calling user
+     * @param endpointGUID     unique identifier of the endpoint to be removed
+     * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeEndpoint(String userId, String endpointGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
                                                                                                                              FunctionNotSupportedException,
                                                                                                                              InvalidParameterException,

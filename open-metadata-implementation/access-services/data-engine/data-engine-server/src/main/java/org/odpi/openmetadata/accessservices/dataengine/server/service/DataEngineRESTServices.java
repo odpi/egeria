@@ -86,7 +86,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
@@ -110,7 +109,7 @@ public class DataEngineRESTServices {
     public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
-    private static final String DEBUG_DELETE_MESSAGE = "DataEngine OMAS deleted entity with GUID {} and type {}";
+    private static final String DEBUG_DELETE_MESSAGE = "Data Engine OMAS deleted entity with GUID {} and type {}";
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
@@ -228,7 +227,7 @@ public class DataEngineRESTServices {
         }
 
         dataEngineRegistrationHandler.removeExternalDataEngine(userId, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, guid, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
     }
 
     /**
@@ -240,6 +239,10 @@ public class DataEngineRESTServices {
      * @param typeName      the type name of the entity
      *
      * @return the unique identifier of the entity or empty optional
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<String> getEntityGUID(String serverName, String userId, String qualifiedName, String typeName) throws InvalidParameterException,
                                                                                                                           PropertyServerException,
@@ -248,14 +251,18 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Get the unique identifier of an entity
+     * Get the entity details of an entity
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the port
      * @param typeName      the type name of the entity
      *
-     * @return the unique identifier of the entity or empty optional
+     * @return the entity details of the entity or empty optional
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> getEntityDetails(String serverName, String userId, String qualifiedName, String typeName) throws
                                                                                                                             InvalidParameterException,
@@ -339,6 +346,7 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deleteSchemaType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
@@ -460,6 +468,7 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deletePort(String userId, String serverName, String externalSourceName, String guid, String qualifiedName, String portType,
                            DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
@@ -477,7 +486,7 @@ public class DataEngineRESTServices {
         }
 
         dataEnginePortHandler.removePort(userId, portGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, guid, PORT_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, portGUID, PORT_TYPE_NAME);
     }
 
 
@@ -565,6 +574,7 @@ public class DataEngineRESTServices {
      * Delete a list of processes, with the associated port implementations, port aliases and lineage mappings.
      *
      * @param userId             the name of the calling user
+     * @param serverName         the server name
      * @param externalSourceName the unique name of the external source
      * @param guids              the unique identifiers of the processes
      * @param qualifiedNames     the qualified names of the processes
@@ -574,6 +584,7 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deleteProcesses(String userId, String serverName, String externalSourceName, List<String> guids, List<String> qualifiedNames,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
@@ -626,6 +637,7 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param portAlias          the port alias values
+     * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created port alias
@@ -713,13 +725,15 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param portImplementation the port implementation values
+     * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created port alias
      *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public String upsertPortImplementation(String userId, String serverName, PortImplementation portImplementation, String processGUID,
                                            String externalSourceName) throws InvalidParameterException, PropertyServerException,
@@ -1014,6 +1028,15 @@ public class DataEngineRESTServices {
         return databaseGUID;
     }
 
+    /**
+     * Delete the Database with all the associated relational tables
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the database
+     *
+     * @return void response
+     */
     public VoidResponse deleteDatabase(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteDatabase";
 
@@ -1031,6 +1054,22 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the Database with all the associated relational tables
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the database
+     * @param qualifiedName      the qualified name of the database
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteDatabase(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                                      EntityNotDeletedException, FunctionNotSupportedException {
@@ -1101,6 +1140,15 @@ public class DataEngineRESTServices {
         return relationalTableGUID;
     }
 
+    /**
+     * Delete the Relational Table with all the associated Relational Columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the relational table
+     *
+     * @return void response
+     */
     public VoidResponse deleteRelationalTable(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteRelationalTable";
 
@@ -1118,6 +1166,22 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the Relational Table with all the associated Relational Columns
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the relational table
+     * @param qualifiedName      the qualified name of the relational table
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteRelationalTable(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                       DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
                                                                             UserNotAuthorizedException, EntityNotDeletedException,
@@ -1200,6 +1264,15 @@ public class DataEngineRESTServices {
         return guid;
     }
 
+    /**
+     * Delete the Data File with all the associated Tabular Columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the data file
+     *
+     * @return void response
+     */
     public VoidResponse deleteDataFile(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteDataFile";
 
@@ -1217,6 +1290,22 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the Data File with all the associated Tabular Columns
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the data file
+     * @param qualifiedName      the qualified name of the data file
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteDataFile(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
                                                                      UserNotAuthorizedException, FunctionNotSupportedException {
@@ -1232,6 +1321,15 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, DATA_FILE_TYPE_NAME);
     }
 
+    /**
+     * Delete the File Folder
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the folder
+     *
+     * @return void response
+     */
     public VoidResponse deleteFolder(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteFolder";
 
@@ -1249,6 +1347,22 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the File Folder
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the folder
+     * @param qualifiedName      the qualified name of the folder
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                              DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                                    EntityNotDeletedException, FunctionNotSupportedException {
@@ -1262,6 +1376,15 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_DELETE_MESSAGE, folderGUID, FILE_FOLDER_TYPE_NAME);
     }
 
+    /**
+     * Delete the Connection
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the connection
+     *
+     * @return void response
+     */
     public VoidResponse deleteConnection(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteConnection";
 
@@ -1279,20 +1402,45 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the Connection
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the connection
+     * @param qualifiedName      the qualified name of the connection
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
                                                                        UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteConnection";
-        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
+        String connectionGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
-        connectionAndEndpointHandler.removeConnection(userId, folderGUID, deleteSemantic, externalSourceName);
+        connectionAndEndpointHandler.removeConnection(userId, connectionGUID, deleteSemantic, externalSourceName);
 
-        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, CONNECTION_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, connectionGUID, CONNECTION_TYPE_NAME);
     }
 
+    /**
+     * Delete the Endpoint
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the endpoint
+     *
+     * @return void response
+     */
     public VoidResponse deleteEndpoint(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteEndpoint";
 
@@ -1310,18 +1458,34 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete the Endpoint
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the endpoint
+     * @param qualifiedName      the qualified name of the endpoint
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                      UserNotAuthorizedException, FunctionNotSupportedException {
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteEndpoint";
-        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
+        String endpointGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
-        connectionAndEndpointHandler.removeEndpoint(userId, folderGUID, deleteSemantic, externalSourceName);
+        connectionAndEndpointHandler.removeEndpoint(userId, endpointGUID, deleteSemantic, externalSourceName);
 
-        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, ENDPOINT_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, endpointGUID, ENDPOINT_TYPE_NAME);
     }
 
     private String getEntityGUID(String userId, String serverName, String guid, String qualifiedName, String entityTypeName, String methodName) throws

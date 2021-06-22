@@ -64,7 +64,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                                                                                                                            PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        return instance.getDataEngineCollecttionHandler();
+        return instance.getDataEngineCollectionHandler();
     }
 
     /**
@@ -222,7 +222,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the DataFile handler for the access service
+     * Retrieve the folder hierarchy handler for the access service
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
@@ -243,7 +243,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the DataFile handler for the access service
+     * Retrieve the connection and endpoint handler for the access service
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
