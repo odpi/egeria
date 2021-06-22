@@ -174,14 +174,19 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"User {0} failed to delete asset {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue and repeat request to fix artifact."),
-	
+    FAIL_REST_CALL(
+			"OMAS-ANALYTICS-MODELING-029", 
+			"Rest call {0} failed. Cause: {1}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request."),
     UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
             "An unexpected {0} exception was caught by {1}; error message was {2}",
             "The system is unable to process the request and has returned an exception to the caller.",
             "Review the error message.  Also look up its full message definition which includes the system action " +
                     "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
                     "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
-                    "caller is a valid client of this server and is operating correctly."),
+                    "caller is a valid client of this server and is operating correctly."), 
+
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
 			"Server failed to execute request with unknown reason.",

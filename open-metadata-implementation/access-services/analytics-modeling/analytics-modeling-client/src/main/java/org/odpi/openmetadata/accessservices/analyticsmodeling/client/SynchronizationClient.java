@@ -4,13 +4,16 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.client;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.api.AnalyticsModelingSynchronization;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 public class SynchronizationClient implements AnalyticsModelingSynchronization {
+	
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private AnalyticsModelingRestClient   restClient;               /* Initialized in constructor */
 
@@ -128,14 +131,15 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 
     
 	/**
-	 * Create analytics artifact defined as json input.
+	 * Create analytics artifact defined as input.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
     @Override
-	public AnalyticsModelingOMASAPIResponse createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+			throws PropertyServerException, AnalyticsModelingCheckedException
 	{
 		return restClient.createAssets(userId, serverCapability, artifact);
 	}
@@ -148,7 +152,8 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @return response with artifact or error description.
 	 */
     @Override
-	public AnalyticsModelingOMASAPIResponse updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+			throws PropertyServerException, AnalyticsModelingCheckedException
 	{
 		return restClient.updateAssets(userId, serverCapability, artifact);
 	}
@@ -161,7 +166,8 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @return errors or list of created assets.
 	 */
     @Override
-	public AnalyticsModelingOMASAPIResponse deleteArtifact(String userId, String serverCapability, String identifier)
+	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String identifier)
+			throws PropertyServerException, AnalyticsModelingCheckedException
     {
 		return restClient.deleteAssets(userId, serverCapability, identifier);
 	}

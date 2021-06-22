@@ -3,12 +3,19 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.client;
 
+import java.util.List;
+
 import org.odpi.openmetadata.accessservices.analyticsmodeling.api.AnalyticsModelingImport;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 public class ImportClient implements AnalyticsModelingImport {
 	
@@ -131,9 +138,12 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param startFrom		starting element (used in paging through large result sets)
      * @param pageSize		maximum number of results to return
 	 * @return list of databases for the requested server/user.
+     * @throws AnalyticsModelingCheckedException 
+     * @throws PropertyServerException 
 	 */
 	@Override
-	public AnalyticsModelingOMASAPIResponse getDatabases(String userId, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize)
+			throws AnalyticsModelingCheckedException, PropertyServerException
 	{
 		return restClient.getDatabases(userId, startFrom, pageSize);
 	}
@@ -146,9 +156,12 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param startFrom		 starting element (used in paging through large result sets)
      * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
+     * @throws PropertyServerException 
+     * @throws AnalyticsModelingCheckedException 
 	 */
 	@Override
-	public AnalyticsModelingOMASAPIResponse getSchemas(String userId, String databaseGuid, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, Integer startFrom, Integer pageSize)
+			throws PropertyServerException, AnalyticsModelingCheckedException
 	{
 		return restClient.getSchemas(userId, databaseGuid, startFrom, pageSize);
 	}
@@ -161,9 +174,12 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param catalog      name of the database.
 	 * @param schema       schema name on the database.
 	 * @return list of tables for the requested schema.
+	 * @throws PropertyServerException 
+	 * @throws AnalyticsModelingCheckedException 
 	 */
 	@Override
-	public AnalyticsModelingOMASAPIResponse getTables(String userId, String databaseGuid, String catalog, String schema)
+	public ResponseContainerSchemaTables getTables(String userId, String databaseGuid, String catalog, String schema)
+			throws AnalyticsModelingCheckedException, PropertyServerException
 	{
 		return restClient.getTables(userId, databaseGuid, catalog, schema);
 	}
@@ -177,9 +193,12 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param schema       schema name of the database.
 	 * @param request      table filter 
 	 * @return module for the requested schema.
+	 * @throws PropertyServerException 
+	 * @throws AnalyticsModelingCheckedException 
 	 */
 	@Override
-	public AnalyticsModelingOMASAPIResponse getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
+	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
+			throws AnalyticsModelingCheckedException, PropertyServerException
 	{
 		return restClient.getModule(userId, databaseGuid, catalog, schema, request);
 	}
