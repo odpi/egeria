@@ -11,8 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,13 @@ public class AssetLineageClientTest {
     private static final String SERVER_NAME = "TestServer";
     private static final String USER_ID = "zebra91";
     private static final String ENTITY_TYPE = "GlossaryTerm";
-    private static final LocalDateTime UPDATED_AFTER_DATE = LocalDateTime.now().minusDays(1);
+    private static final Date UPDATED_AFTER_DATE ;
+
+    static {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        UPDATED_AFTER_DATE = calendar.getTime();
+    }
 
     private AssetLineage assetLineage;
 

@@ -6,11 +6,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 public class FindEntitiesParameters {
+
     private Long updatedAfter;
     private List<String> entitySubtypeGUIDs;
     private List<InstanceStatus> limitResultsByStatus;
@@ -87,12 +87,8 @@ public class FindEntitiesParameters {
             return this;
         }
 
-        public Builder withUpdatedAfter(LocalDateTime updatedAfterDate) {
-            if (updatedAfterDate != null) {
-                this.updatedAfter = updatedAfterDate.atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
-            } else {
-                this.updatedAfter = 0L;
-            }
+        public Builder withUpdatedAfter(Date updatedAfterDate) {
+            this.updatedAfter = updatedAfterDate.toInstant().toEpochMilli();
             return this;
         }
 

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +57,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public List<String> publishEntities(String serverName, String userId, String entityType, Optional<LocalDateTime> updatedAfterDate)
+    public List<String> publishEntities(String serverName, String userId, String entityType, Optional<Date> updatedAfterDate)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "publishEntities";
 

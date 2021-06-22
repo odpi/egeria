@@ -16,14 +16,12 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
-
-import static java.time.LocalDateTime.*;
 
 @DisallowConcurrentExecution
 public class AssetLineageUpdateJob implements Job {
@@ -40,19 +38,19 @@ public class AssetLineageUpdateJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LocalDateTime localDateTime = now(ZoneId.systemDefault());
+        Date now = Calendar.getInstance().getTime();
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        performTask(localDateTime, dataMap);
+        performTask(now, dataMap);
     }
 
     /**
      * Calls the Asset Lineage client to determine updates for Glossary Terms starting from the last saved time.
      * Then it calls the connector to save the current run time.
      *
-     * @param localDateTime the time when the job last run successfully, also the time to save in the graph
+     * @param date the time when the job last run successfully, also the time to save in the graph
      * @param dataMap       the job context data map containing useful data to run the job
      */
-    private void performTask(LocalDateTime localDateTime, JobDataMap dataMap) throws JobExecutionException {
+    private void performTask(Date date, JobDataMap dataMap) throws JobExecutionException {
         AssetLineage assetLineageClient = (AssetLineage) dataMap.get(JobConstants.ASSET_LINEAGE_CLIENT);
         String localServerName = (String) dataMap.get(JobConstants.ASSET_LINEAGE_SERVER_NAME);
         String localServerUserId = (String) dataMap.get(JobConstants.LOCAL_SERVER_USER_ID);
@@ -62,13 +60,13 @@ public class AssetLineageUpdateJob implements Job {
             LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
             String configAssetLineageDefaultTime = (String) dataMap.get(JobConstants.CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME);
             Optional<Long> storedAssetLineageUpdateTime = lineageGraph.getAssetLineageUpdateTime();
-            Optional<LocalDateTime> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,
-                    storedAssetLineageUpdateTime, localDateTime);
+            Optional<Date> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,
+                    storedAssetLineageUpdateTime, date);
             assetLineageLastUpdateTime.ifPresent(lastUpdateTime -> log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, lastUpdateTime, ZoneId.systemDefault().getId()));
             assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM, assetLineageLastUpdateTime);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            log.warn(RUNNING_FAILURE, localDateTime, ZoneId.systemDefault(), e.getMessage());
+            log.warn(RUNNING_FAILURE, date, ZoneId.systemDefault(), e.getMessage());
         }
     }
 
@@ -81,19 +79,19 @@ public class AssetLineageUpdateJob implements Job {
      *
      * @param configAssetLineageDefaultTime the asset lineage config default time
      * @param storedUpdateTime    the update time retrieved form the graph store
-     * @param localDateTime       the local date time indicating the actual job execution time
+     * @param executionDate       the local date time indicating the actual job execution time
      * @return the asset lineage last known update time
      */
-    private Optional<LocalDateTime> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime, Optional<Long> storedUpdateTime,
-                                                                  LocalDateTime localDateTime) throws JobExecutionException {
+    private Optional<Date> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime, Optional<Long> storedUpdateTime,
+                                                         Date executionDate) throws JobExecutionException {
 
         if (storedUpdateTime.isPresent()) {
-            return Optional.of(LocalDateTime.ofInstant(Instant.ofEpochMilli(storedUpdateTime.get()), ZoneId.systemDefault()));
+            return Optional.of(new Date(storedUpdateTime.get()));
         } else if (StringUtils.isNotEmpty(configAssetLineageDefaultTime)) {
             try {
-                return Optional.of(LocalDateTime.parse(configAssetLineageDefaultTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            } catch (DateTimeParseException exception) {
-                log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, localDateTime);
+                return Optional.of(new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss").parse(configAssetLineageDefaultTime));
+            } catch ( ParseException exception) {
+                log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, executionDate);
                 JobExecutionException jobExecutionException = new JobExecutionException(exception);
                 jobExecutionException.setUnscheduleAllTriggers(true);
                 throw jobExecutionException;
