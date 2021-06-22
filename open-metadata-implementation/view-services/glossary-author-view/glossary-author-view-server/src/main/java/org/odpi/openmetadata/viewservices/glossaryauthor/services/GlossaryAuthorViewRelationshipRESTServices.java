@@ -2119,13 +2119,13 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     *
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termIsATypeOfRelationship          the termIsATypeOfRelationship relationship
-     * @return response, when successful contains the created termIsATypeOfRelationship
+     * @param TermIsATypeOfDeprecated          the TermIsATypeOfDeprecated relationship
+     * @return response, when successful contains the created TermIsATypeOfDeprecated
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -2133,19 +2133,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(String serverName, String userId, IsATypeOf termIsATypeOfRelationship)
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createTermIsATypeOfDeprecated(String serverName, String userId, IsATypeOfDeprecated TermIsATypeOfDeprecated)
     {
-        String restAPIName = "createTermIsATypeOfRelationship";
+        String restAPIName = "createTermIsATypeOfDeprecated";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsATypeOf createdTermIsATypeOfRelationship = handler.createTermIsATypeOfRelationship(userId, termIsATypeOfRelationship);
-            response.addResult(createdTermIsATypeOfRelationship);
+            IsATypeOfDeprecated createdTermIsATypeOfDeprecated = handler.createIsATypeOfDeprecated(userId, TermIsATypeOfDeprecated);
+            response.addResult(createdTermIsATypeOfDeprecated);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
@@ -2156,7 +2156,196 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
 
     /**
-     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Get a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship to get
+     * @return response which when successful contains the term has a relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getTermIsATypeOfDeprecated(String serverName, String userId, String guid)
+    {
+
+        String restAPIName = "getTermIsATypeOfDeprecated";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            IsATypeOfDeprecated updatedTermIsATypeOfDeprecated = handler.getIsATypeOfDeprecated(userId, guid);
+            response.addResult(updatedTermIsATypeOfDeprecated);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Update a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship
+     * @param TermIsATypeOfDeprecated the TermIsATypeOfDeprecated relationship
+     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated TermIsATypeOfDeprecated
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateTermIsATypeOfDeprecated(String serverName, String userId, String guid, IsATypeOfDeprecated TermIsATypeOfDeprecated, boolean isReplace)
+    {
+        String restAPIName = "updateTermIsATypeOfDeprecated";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            IsATypeOfDeprecated updatedTermIsATypeOfDeprecated;
+            if (isReplace) {
+                updatedTermIsATypeOfDeprecated = handler.replaceIsATypeOfDeprecated(userId, guid, TermIsATypeOfDeprecated);
+            } else {
+                updatedTermIsATypeOfDeprecated = handler.updateIsATypeOfDeprecated(userId, guid, TermIsATypeOfDeprecated);
+            }
+
+            response.addResult(updatedTermIsATypeOfDeprecated);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Delete a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the term has a relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteTermIsATypeOfDeprecated(String serverName, String userId, String guid, Boolean isPurge)
+    {
+        String restAPIName = "deleteTermIsATypeOfDeprecated";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            if (isPurge) {
+                handler.purgeIsATypeOfDeprecated(userId, guid);
+            } else {
+                handler.deleteIsATypeOfDeprecated(userId, guid);
+            }
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Restore a TermIsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreTermIsATypeOfDeprecated(String serverName, String userId, String guid)
+    {
+        String restAPIName = "restoreTermIsATypeOfDeprecated";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            IsATypeOfDeprecated restoredTermIsATypeOfDeprecated = handler.restoreIsaTypeOfDeprecated(userId, guid);
+            response.addResult(restoredTermIsATypeOfDeprecated);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    /**
+     * Create a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param IsATypeOf    the IsATypeOf relationship
+     * @return response, when successful contains the created IsATypeOf
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createIsATypeOf(String serverName, String userId, IsATypeOf IsATypeOf)
+    {
+        String restAPIName = "createIsATypeOf";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            IsATypeOf createdIsATypeOf = handler.createIsATypeOf(userId, IsATypeOf);
+            response.addResult(createdIsATypeOf);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Get a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2170,10 +2359,10 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getIsATypeOf(String serverName, String userId, String guid)
     {
 
-        String restAPIName = "getTermIsATypeOfRelationship";
+        String restAPIName = "getIsATypeOf";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
@@ -2182,8 +2371,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsATypeOf updatedTermIsATypeOfRelationship = handler.getTermIsATypeOfRelationship(userId, guid);
-            response.addResult(updatedTermIsATypeOfRelationship);
+            IsATypeOf updatedIsATypeOf = handler.getIsATypeOf(userId, guid);
+            response.addResult(updatedIsATypeOf);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
@@ -2192,15 +2381,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Update a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Update a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship
-     * @param termIsATypeOfRelationship the termIsATypeOfRelationship relationship
+     * @param IsATypeOf the IsATypeOf relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated termIsATypeOfRelationship
+     * @return response, when successful contains the updated IsATypeOf
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -2208,9 +2397,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermIsATypeOfRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOfRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsATypeOf(String serverName, String userId, String guid, IsATypeOf IsATypeOf, boolean isReplace)
     {
-        String restAPIName = "updateTermIsATypeOfRelationship";
+        String restAPIName = "updateIsATypeOf";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
@@ -2219,14 +2408,14 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsATypeOf updatedTermIsATypeOfRelationship;
+            IsATypeOf updatedIsATypeOf;
             if (isReplace) {
-                updatedTermIsATypeOfRelationship = handler.replaceTermIsATypeOfRelationship(userId, guid, termIsATypeOfRelationship);
+                updatedIsATypeOf = handler.replaceIsATypeOf(userId, guid, IsATypeOf);
             } else {
-                updatedTermIsATypeOfRelationship = handler.updateTermIsATypeOfRelationship(userId, guid, termIsATypeOfRelationship);
+                updatedIsATypeOf = handler.updateIsATypeOf(userId, guid, IsATypeOf);
             }
 
-            response.addResult(updatedTermIsATypeOfRelationship);
+            response.addResult(updatedIsATypeOf);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
@@ -2235,7 +2424,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Delete a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2249,9 +2438,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIsATypeOf(String serverName, String userId, String guid, Boolean isPurge)
     {
-        String restAPIName = "deleteTermIsATypeOfRelationship";
+        String restAPIName = "deleteIsATypeOf";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
@@ -2262,9 +2451,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
-                handler.purgeTermIsATypeOfRelationship(userId, guid);
+                handler.purgeIsATypeOf(userId, guid);
             } else {
-                handler.deleteTermIsATypeOfRelationship(userId, guid);
+                handler.deleteIsATypeOf(userId, guid);
             }
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
@@ -2274,7 +2463,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Restore a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Restore a IsATypeOf relationship, which is an inheritance relationship between two spine objects.
      *
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -2288,9 +2477,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreIsATypeOf(String serverName, String userId, String guid)
     {
-        String restAPIName = "restoreTermIsATypeOfRelationship";
+        String restAPIName = "restoreIsATypeOf";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
@@ -2299,15 +2488,14 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsATypeOf restoredTermIsATypeOfRelationship = handler.restoreIsaTypeOfRelationship(userId, guid);
-            response.addResult(restoredTermIsATypeOfRelationship);
+            IsATypeOf restoredIsATypeOf = handler.restoreIsATypeOf(userId, guid);
+            response.addResult(restoredIsATypeOf);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
     /**
      * Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * <p>

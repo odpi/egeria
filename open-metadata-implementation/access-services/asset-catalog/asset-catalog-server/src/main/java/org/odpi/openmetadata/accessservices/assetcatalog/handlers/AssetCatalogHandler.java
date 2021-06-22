@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -400,8 +401,7 @@ public class AssetCatalogHandler {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
         }
 
-        List<AssetElements> list = new ArrayList<>();
-
+        Set<AssetElements> searchResults = new HashSet<>();
 
         for (EntityDetail entityDetail : result) {
             try {
@@ -417,17 +417,17 @@ public class AssetCatalogHandler {
                     continue;
                 }
                 AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
-                list.add(assetElements);
+                searchResults.add(assetElements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
                 log.debug("This asset if a different zone: {}", entityDetail.getGUID());
             }
         }
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
         String sequencingProperty = searchParameters.getSequencingProperty();
-
-        list.sort((firstAsset, secondAsset) ->
+        List<AssetElements> results = new ArrayList<>(searchResults);
+        results.sort((firstAsset, secondAsset) ->
                 orderElements(firstAsset, secondAsset, sequencingProperty, sequencingOrder));
-        return list;
+        return results;
     }
 
     /**

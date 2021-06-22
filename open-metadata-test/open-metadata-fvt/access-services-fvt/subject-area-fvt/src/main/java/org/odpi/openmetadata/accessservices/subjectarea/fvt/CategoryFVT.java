@@ -483,7 +483,7 @@ public class CategoryFVT {
     public List<Category> findCategories(String criteria) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        return subjectAreaCategory.find(this.userId, findRequest);
+        return subjectAreaCategory.find(this.userId, findRequest,false,true);
     }
     public List<Category> findCategories(String criteria, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
@@ -530,7 +530,7 @@ public class CategoryFVT {
             iter.remove();
             deleteCategory(guid);
         }
-        List<Category> categories = findCategories(".*");
+        List<Category> categories = findCategories("");
         if (categories.size() != existingCategoryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingCategoryCount  +" Categories to be found, got " + categories.size());
         }
