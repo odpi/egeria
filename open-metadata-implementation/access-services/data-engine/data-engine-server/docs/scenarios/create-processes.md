@@ -211,7 +211,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
             "updateSemantic": "REPLACE"
         }
     ],
-    "externalSourceName": "(organization)=ING::(project)=ExternalDataPlatform"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 

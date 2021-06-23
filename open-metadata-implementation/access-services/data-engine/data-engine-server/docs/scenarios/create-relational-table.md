@@ -40,7 +40,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
             }
         ]
     },
-    "externalSourceName": "Company::Project::ExternalDataEngine"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 
