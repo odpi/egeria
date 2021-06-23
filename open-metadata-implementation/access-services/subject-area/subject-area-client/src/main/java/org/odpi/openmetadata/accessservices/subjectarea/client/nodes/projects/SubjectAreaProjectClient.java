@@ -16,7 +16,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SubjectAreaNodeClient
 public class SubjectAreaProjectClient<P extends Project> extends AbstractSubjectAreaNode<P> {
@@ -25,12 +27,15 @@ public class SubjectAreaProjectClient<P extends Project> extends AbstractSubject
         super(client, SUBJECT_AREA_BASE_URL + "projects");
     }
 
-    public List<Term> getProjectTerms(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Term> getProjectTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodInfo = getMethodInfo("getProjectTerms");
-        final String urlTemplate = BASE_URL + "/%s/terms" + client.createFindQuery(methodInfo, findRequest).toString();
+        final String urlTemplate = BASE_URL + "/%s/terms";
+        Map<String, String> params = new HashMap<>();
+        params.put("exactValue", exactValue+"");
+        params.put("ignoreCase", ignoreCase+"");
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
         ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate);
+        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, params);
         return response.results();
     }
 }
