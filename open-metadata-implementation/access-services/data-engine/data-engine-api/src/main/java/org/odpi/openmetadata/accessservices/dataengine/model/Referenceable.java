@@ -2,76 +2,46 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.model;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
 
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
 public class Referenceable implements Serializable {
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    private String qualifiedName;
-    private Map<String, String> additionalProperties;
-
     /**
-     * Set up the fully qualified name.
-     *
-     * @param qualifiedName String name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
-
-    /**
+     * -- GETTER --
      * Returns the stored qualified name property for the metadata entity.
      * If no qualified name is available then the empty string is returned.
      *
      * @return qualifiedName
+     * -- SETTER --
+     * Set up the fully qualified name.
+     * @param qualifiedName String name
      */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
+    private String qualifiedName;
 
     /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-    /**
+     * -- GETTER --
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
      * @return AdditionalProperties
+     * -- SETTER --
+     * Set up additional properties.
+     * @param additionalProperties Additional properties object
      */
-    public Map<String, String> getAdditionalProperties()
-    {
-       return additionalProperties;
-    }
+    private Map<String, String> additionalProperties;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Referenceable that = (Referenceable) o;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(qualifiedName, additionalProperties);
-    }
-
-    @Override
-    public String toString() {
-        return "Referenceable{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                '}';
-    }
 }

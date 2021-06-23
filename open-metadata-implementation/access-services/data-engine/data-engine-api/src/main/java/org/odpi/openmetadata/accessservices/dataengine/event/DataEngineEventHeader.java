@@ -2,7 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.event;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -27,104 +36,56 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = SchemaTypeEvent.class, name = "SchemaTypeEvent"),
         @JsonSubTypes.Type(value = ProcessHierarchyEvent.class, name = "ProcessHierarchyEvent")
 })
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 public abstract class DataEngineEventHeader {
 
+    /**
+     * Event version ID
+     * -- GETTER --
+     * Gets the event version ID
+     * @return the user ID
+     * -- SETTER --
+     * Sets the event version ID
+     * @param eventVersionId the event version ID
+     */
     private long eventVersionId = 1L;
 
     /* different data engine event types */
+    /**
+     * The Data Engine event type
+     * -- GETTER --
+     * Gets the Data Engine event type
+     * @return the user ID
+     * -- SETTER --
+     * Sets the Data Engine event type
+     * @param eventType the Data Engine event type
+     */
     private DataEngineEventType eventType = null;
 
-    /* unique name for the external source */
+    /**
+     * The external source type unique name
+     * -- GETTER --
+     * Gets the external source type
+     * @return the user ID
+     * -- SETTER --
+     * Sets the external source type
+     * @param externalSourceName the external source type
+     */
     private String externalSourceName;
 
-    /* producer user id */
-    private String userId ;
-
     /**
-     * Instantiates a new Data engine event header.
+     * Producer user ID
+     * -- GETTER --
+     * Gets user ID
+     * @return the user ID
+     * -- SETTER --
+     * Sets the user ID
+     * @param userId the user ID
      */
-    public DataEngineEventHeader() {
-    }
+    private String userId;
 
-    /**
-     * Gets event version id.
-     *
-     * @return the event version id
-     */
-    public long getEventVersionId() {
-        return eventVersionId;
-    }
-
-    /**
-     * Sets event version id.
-     *
-     * @param eventVersionId the event version id
-     */
-    public void setEventVersionId(long eventVersionId) {
-        this.eventVersionId = eventVersionId;
-    }
-
-    /**
-     * Gets event type.
-     *
-     * @return the event type
-     */
-    public DataEngineEventType getEventType() {
-        return eventType;
-    }
-
-    /**
-     * Sets event type.
-     *
-     * @param eventType the event type
-     */
-    public void setEventType(DataEngineEventType eventType) {
-        this.eventType = eventType;
-    }
-
-    /**
-     * Gets external source name.
-     *
-     * @return the external source name
-     */
-    public String getExternalSourceName() {
-        return externalSourceName;
-    }
-
-    /**
-     * Sets external source name.
-     *
-     * @param externalSourceName the external source name
-     */
-    public void setExternalSourceName(String externalSourceName) {
-        this.externalSourceName = externalSourceName;
-    }
-
-    /**
-     * Gets user id.
-     *
-     * @return the user id
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * Sets user id.
-     *
-     * @param userId the user id
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "DataEngineEventHeader{" +
-                "eventVersionId=" + eventVersionId +
-                ", eventType=" + eventType +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                ", userId='" + userId + '\'' +
-                '}';
-    }
 }

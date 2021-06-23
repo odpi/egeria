@@ -5,6 +5,11 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -24,103 +29,72 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OwnerType implements Serializable
-{
-    USER_ID     (0,  0,  "UserId",    "The owner's user id is stored in the owner property."),
-    PROFILE_ID  (1,  1,  "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
-    OTHER       (99, 99, "Other",     "A different identifier for the owner outside of the scope of open metadata has been used.");
+@Getter
+@ToString
+public enum OwnerType implements Serializable {
+    USER_ID(0, 0, "UserId", "The owner's user id is stored in the owner property."),
+    PROFILE_ID(1, 1, "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
+    OTHER(99, 99, "Other", "A different identifier for the owner outside of the scope of open metadata has been used.");
 
-    public static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6feeee257b56";
-    public static final String ENUM_TYPE_NAME  = "AssetOwnerType";
+    /**
+     * -- GETTER --
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     * @return string guid
+     */
+    public static final String ENUM_TYPE_GUID = "9548390c-69f5-4dc6-950d-6feeee257b56";
 
-    private int    openTypeOrdinal;
+    /**
+     * -- GETTER --
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     * @return string name
+     */
+    public static final String ENUM_TYPE_NAME = "AssetOwnerType";
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    /**
+     * -- GETTER --
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     * @return int code number
+     */
+    private final int openTypeOrdinal;
 
-    private static final long     serialVersionUID = 1L;
+    /**
+     * -- GETTER --
+     * Return the numeric representation of the enumeration.
+     * @return int ordinal
+     */
+    private final int ordinal;
 
+    /**
+     * -- GETTER --
+     * Return the default name of the enumeration.
+     * @return String name
+     */
+    private final String name;
+
+    /**
+     * -- GETTER --
+     * Return the default description of the enumeration.
+     * @return String description
+     */
+    private final String description;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 1L;
 
     /**
      * Constructor to set up the instance of this enum.
      *
-     * @param ordinal code number
+     * @param ordinal         code number
      * @param openTypeOrdinal code number from the equivalent Enum Type
-     * @param name default name
-     * @param description default description
+     * @param name            default name
+     * @param description     default description
      */
-    OwnerType(int    ordinal,
-              int    openTypeOrdinal,
-              String name,
-              String description)
-    {
-        this.ordinal         = ordinal;
+    OwnerType(int ordinal, int openTypeOrdinal, String name, String description) {
+        this.ordinal = ordinal;
         this.openTypeOrdinal = openTypeOrdinal;
-        this.name            = name;
-        this.description     = description;
+        this.name = name;
+        this.description = description;
     }
 
-
-    /**
-     * Return the numeric representation of the enumeration.
-     *
-     * @return int ordinal
-     */
-    public int getOrdinal() { return ordinal; }
-
-
-    /**
-     * Return the default name of the enumeration.
-     *
-     * @return String name
-     */
-    public String getName() { return name; }
-
-
-    /**
-     * Return the default description of the enumeration.
-     *
-     * @return String description
-     */
-    public String getDescription() { return description; }
-
-
-    /**
-     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
-     *
-     * @return int code number
-     */
-    public int getOpenTypeOrdinal()
-    {
-        return openTypeOrdinal;
-    }
-
-
-    /**
-     * Return the unique identifier for the open metadata enum type that this enum class represents.
-     *
-     * @return string guid
-     */
-    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
-
-
-    /**
-     * Return the unique name for the open metadata enum type that this enum class represents.
-     *
-     * @return string name
-     */
-    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
-
-
-    /**
-     * toString() JSON-style
-     *
-     * @return string description
-     */
-    @Override
-    public String toString()
-    {
-        return "OwnerType : " + name;
-    }
 }
