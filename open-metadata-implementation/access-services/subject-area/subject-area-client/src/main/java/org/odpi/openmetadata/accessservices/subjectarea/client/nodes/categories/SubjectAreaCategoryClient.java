@@ -17,7 +17,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SubjectAreaNodeClient
 public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubjectAreaNode<C> {
@@ -37,9 +39,24 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
      */
 
     public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+      return getCategoryChildren(userId,guid, findRequest, false, false);
+    }
+    /**
+     * Get the Category's children categories
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param guid        unique identifier of the Category
+     * @return list of Category children
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+
+    public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo(" getCategoryChildren");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest);
+        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, exactValue, ignoreCase );
+
         String urlTemplate = urnTemplate + query.toString();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
@@ -59,9 +76,25 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
      */
 
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        return getTerms(userId,guid,findRequest, true,false);
+    }
+    /**
+     * Get the terms owned by this Category
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param guid        unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @return list of Terms
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+
+    public List<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/terms";
         final String methodInfo = getMethodInfo("getTerms");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest);
+        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, exactValue, ignoreCase);
         String urlTemplate = urnTemplate + query.toString();
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);

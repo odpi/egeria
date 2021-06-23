@@ -21,7 +21,7 @@ public abstract class AbstractSubjectAreaRelationship<L extends Relationship> ex
     }
 
     @Override
-    public List<L> find(String userId, FindRequest findRequest) {
+    public List<L> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase ) {
         throw new UnsupportedOperationException();
     }
 }

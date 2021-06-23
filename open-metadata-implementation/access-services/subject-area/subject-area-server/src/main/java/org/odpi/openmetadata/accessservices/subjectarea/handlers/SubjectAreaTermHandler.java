@@ -246,6 +246,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param findRequest        {@link FindRequest}
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of Terms meeting the search Criteria
      *
      * <ul>
@@ -255,14 +257,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> findTerm(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Term> findTerm(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
 
         final String methodName = "findTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         // If no search criteria is supplied then we return all terms, this should not be too many
         try {
-            List<Term> foundTerms = findEntities(userId, TERM_TYPE_NAME, findRequest, TermMapper.class, methodName);
+            List<Term> foundTerms = findNodes(userId, TERM_TYPE_NAME, findRequest, exactValue, ignoreCase, TermMapper.class, methodName);
             if (foundTerms != null) {
                 for (Term term : foundTerms) {
                     setSummaryObjects(userId, term, methodName);

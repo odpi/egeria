@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
@@ -36,8 +37,8 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Construct the Subject Area Graph Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper           omrs API helper
-     * @param maxPageSize             maximum page size
+     * @param oMRSAPIHelper omrs API helper
+     * @param maxPageSize   maximum page size
      */
     public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
         super(oMRSAPIHelper, maxPageSize);
@@ -49,17 +50,17 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Return the nodes and relationships that radiate out from the supplied node (identified by a GUID).
      * The results are scoped by types of relationships, types of nodes and classifications as well as level.
      *
-     * @param userId        userId under which the request is performed
-     * @param guid          the starting point of the query.
-     * @param nodeFilterStr Comma separated list of node names to include in the query results.  Null means include
-     *                      all entities found, irrespective of their type.
+     * @param userId                userId under which the request is performed
+     * @param guid                  the starting point of the query.
+     * @param nodeFilterStr         Comma separated list of node names to include in the query results.  Null means include
+     *                              all entities found, irrespective of their type.
      * @param relationshipFilterStr comma separated list of relationship names to include in the query results.  Null means include
-     *                      all relationships found, irrespective of their type.
-     * @param asOfTime      Requests a historical query of the relationships for the entity.  Null means return the
-     *                      present values.
-     * @param statusFilter  By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level         the number of the relationships (relationships) out from the starting node that the query will traverse to
-     *                      gather results. If not specified then it defaults to 3.
+     *                              all relationships found, irrespective of their type.
+     * @param asOfTime              Requests a historical query of the relationships for the entity.  Null means return the
+     *                              present values.
+     * @param statusFilter          By default only active instances are returned. Specify ALL to see all instance in any status.
+     * @param level                 the number of the relationships (relationships) out from the starting node that the query will traverse to
+     *                              gather results. If not specified then it defaults to 3.
      * @return A graph of nodeTypes.
      *
      * <ul>
@@ -100,12 +101,12 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                     userId,
                     guid,
                     getEntityGuids(nodeFilterStr),
-                    getRelationshipTypeGuids(relationshipFilterStr),
+                    getRelationshipTypeGuids(methodName, relationshipFilterStr),
                     requestedInstanceStatus,
                     null,
                     asOfTime,
                     level
-            );
+                                                                                  );
             Graph graph = new Graph();
             graph.setRootNodeGuid(guid);
             graph.setNodeFilter(nodeFilterStr);
@@ -113,7 +114,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
             if (CollectionUtils.isNotEmpty(instanceGraph.getRelationships())) {
                 List<Relationship> relationships = getRelationshipsFromRelationships(instanceGraph.getRelationships());
                 Map<String, Relationship> guidToRelationshipMap = new HashMap<>();
-                for (Relationship relationship: relationships) {
+                for (Relationship relationship : relationships) {
                     guidToRelationshipMap.put(relationship.getSystemAttributes().getGUID(), relationship);
                 }
                 graph.setRelationships(guidToRelationshipMap);
@@ -122,7 +123,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
             if (CollectionUtils.isNotEmpty(instanceGraph.getEntities())) {
                 List<Node> nodes = getNodesFromEntityDetails(instanceGraph.getEntities());
                 Map<String, Node> guidToNodeMap = new HashMap<>();
-                for (Node node: nodes) {
+                for (Node node : nodes) {
                     guidToNodeMap.put(node.getSystemAttributes().getGUID(), node);
                 }
                 graph.setNodes(guidToNodeMap);
@@ -140,7 +141,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
         // so we only get the types that this omas is interested in.
         Stream<NodeType> nodeTypeStream = Arrays.stream(NodeType.values());
         if (nodeFilterStr == null) {
-           return nodeTypeStream
+            return nodeTypeStream
                     .filter(type -> type != NodeType.Unknown)
                     .map(NodeTypeMapper::mapNodeTypeToEntityTypeGuid)
                     .collect(toList());
@@ -156,23 +157,33 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
         }
     }
 
-    private List<String> getRelationshipTypeGuids(String relationshipFilterStr) {
+    private List<String> getRelationshipTypeGuids(String operation, String relationshipFilterStr) throws InvalidParameterException {
         // if there was no relationship filter supplied then limit to the the relationshipType values,
         // so we only get the types that this omas is interested in.
         Stream<RelationshipType> relationshipTypeStream = Arrays.stream(RelationshipType.values());
+        List<String> relationshipTypeGuids = new ArrayList<>();
+        Set<RelationshipType> relationshipTypes = new HashSet<>();
+
         if (relationshipFilterStr == null) {
-          return relationshipTypeStream
-                    .filter(type -> type != RelationshipType.Unknown)
-                    .map(RelationshipTypeMapper::mapOMASRelationshipTypeToOMRSRelationshipTypeGuid)
-                    .collect(toList());
+            relationshipTypes = new HashSet(Arrays.asList(RelationshipType.values()));
         } else {
-            Set<String> typeNames = relationshipTypeStream.map(RelationshipType::name).collect(Collectors.toSet());
-            return Arrays.stream(relationshipFilterStr.split(","))
-                    .filter(typeNames::contains)
-                    .map(RelationshipType::valueOf)
-                    .map(RelationshipTypeMapper::mapOMASRelationshipTypeToOMRSRelationshipTypeGuid)
-                    .distinct()
-                    .collect(toList());
+            String[] relationshipStringArray = relationshipFilterStr.split(",");
+            for (String relationshipString : relationshipStringArray) {
+                RelationshipType relationshipType = RelationshipType.valueOf(relationshipString);
+                if (relationshipType == null) {
+                    // error
+                } else {
+                    relationshipTypes.add(relationshipType);
+                }
+            }
         }
+        for (RelationshipType type : relationshipTypes) {
+            if (type != RelationshipType.Unknown) {
+                String guid = RelationshipTypeMapper.mapOMASRelationshipTypeToOMRSRelationshipTypeGuid(operation, type);
+                relationshipTypeGuids.add(guid);
+            }
+        }
+
+        return relationshipTypeGuids;
     }
 }
