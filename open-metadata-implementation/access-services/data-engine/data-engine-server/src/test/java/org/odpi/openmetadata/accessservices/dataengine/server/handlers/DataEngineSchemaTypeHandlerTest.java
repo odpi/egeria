@@ -39,8 +39,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -333,15 +335,17 @@ class DataEngineSchemaTypeHandlerTest {
                 TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(ATTRIBUTE_GUID);
-        List<EntityDetail> entityDetails = Collections.singletonList(entityDetail);
-        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, SCHEMA_TYPE_TYPE_NAME,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
-                "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
+        Set<EntityDetail> entityDetails = new HashSet<>();
+        entityDetails.add(entityDetail);
+        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME))
+                .thenReturn(entityDetails);
 
         dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
                 TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
+                TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
     }
 
     @Test
