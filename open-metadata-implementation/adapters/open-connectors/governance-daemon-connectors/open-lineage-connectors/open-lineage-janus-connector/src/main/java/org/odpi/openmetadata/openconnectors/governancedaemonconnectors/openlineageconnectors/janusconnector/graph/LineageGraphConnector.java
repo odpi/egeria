@@ -310,7 +310,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Vertex subProcess = retrieveSubProcessStartingFromInputColumn(columnIn, processGuid, columnInGuid);
 
         if (existingSubProcessBelongsToProcess(processGuid, subProcess)) {
-            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(columnOut.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
             g.V(subProcess.id()).property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid).next();
             addOutAssetToProcessEdge(columnOut, process);
             log.info("OLS has updated output of subProcess node and edges for input column {} and output {} and process {} ",
@@ -437,7 +437,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         Iterator<Vertex> existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
                 .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
-                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid);
+                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_OUT_GUID);
 
         if (!existingSubprocess.hasNext()) {
             final String processName = getProcessName(process);
@@ -474,7 +475,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         Iterator<Vertex> existingSubprocess = g.V(columnOut.id()).inE(EDGE_LABEL_COLUMN_DATA_FLOW).outV()
                 .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
-                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_IN_GUID);
 
         if (!existingSubprocess.hasNext()) {
             final String processName = getProcessName(process);
