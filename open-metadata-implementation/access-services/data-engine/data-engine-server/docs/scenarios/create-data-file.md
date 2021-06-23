@@ -11,7 +11,7 @@ file.networkAddress
 A csv file can be created by changing the value of field file.type from "DataFile" into "CSVFile"
 
 More examples with all available properties for a data file can be found in the 
-[sample collection](../../../docs/samples/collections/DataEngine-technical-assets.postman_collection.json) 
+[sample collection](../../../docs/samples/collections/DataEngine-asset_endpoints.postman_collection.json) 
  
 
 ```

@@ -10,7 +10,7 @@ Check [create-port-implementation](create-port-implementation.md), [create-port-
 and [create-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
