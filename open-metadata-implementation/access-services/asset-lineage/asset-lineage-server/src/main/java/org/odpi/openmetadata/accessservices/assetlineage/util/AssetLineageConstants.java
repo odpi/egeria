@@ -40,6 +40,7 @@ public final class AssetLineageConstants {
     public static final String MEDIA_FILE = "MediaFile";
     public static final String DOCUMENT = "Document";
     public static final String CONNECTION = "Connection";
+    public static final String ENDPOINT = "Endpoint";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     //Relationships Type
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
@@ -73,6 +74,7 @@ public final class AssetLineageConstants {
     // Map of entities to relationship types
     public static final Map<String, String> immutableProcessRelationshipsTypes;
     public static final Set<String> immutableValidLineageEntityEvents;
+    public static final Set<String> immutableValidLineageDeleteEntityEvents;
 
     static {
         final Set<String> defaultLineageClassifications = new HashSet<>();
@@ -115,8 +117,16 @@ public final class AssetLineageConstants {
         validLineageEntityEvents.add(DATA_FILE);
         validLineageEntityEvents.add(PROCESS);
         immutableValidLineageEntityEvents = Collections.unmodifiableSet(validLineageEntityEvents);
-    }
 
+        final Set<String> validLineageDeleteEntityEvents = new HashSet<>(validLineageEntityEvents);
+        validLineageDeleteEntityEvents.add(TABULAR_SCHEMA_TYPE);
+        validLineageDeleteEntityEvents.add(PORT_IMPLEMENTATION);
+        validLineageDeleteEntityEvents.add(PORT_ALIAS);
+        validLineageDeleteEntityEvents.add(FILE_FOLDER);
+        validLineageDeleteEntityEvents.add(CONNECTION);
+        validLineageDeleteEntityEvents.add(ENDPOINT);
+        immutableValidLineageDeleteEntityEvents = Collections.unmodifiableSet(validLineageDeleteEntityEvents);
+    }
     private AssetLineageConstants() {
     }
 }
