@@ -11,14 +11,13 @@ the same metadata types that the governance server is managing in the third part
 The governance servers each have a specific subsystem that contains its services.
 
 The table below shows the different types of governance servers and the OMAS they are paired with.
-Some of the governance servers are daemons - that means they have no external API and are driven
-entirely by changes in metadata and the IT landscape.
 
-| Governance Server | Description | Supported by subsystem | Paired with OMAS | Daemon |
-|:----------------- | :---------- | :--------------------- | :--------------- | :-----:|
-| Data Engine Proxy Server | Manages capture of metadata from a data engine. | [Data Engine Proxy Services](../data-engine-proxy-services) | [Data Engine OMAS](../../access-services/data-engine) | Yes |
-| Integration Daemon | Manages the capture of metadata through configured integration services. | [Integration Daemon Services](../integration-daemon-services) | Defined in each [integration service](../../integration-services) | Yes |
-| Open Lineage Server | Provides a historic reporting warehouse for lineage. | [Open Lineage Services](../open-lineage-services) | [Asset Lineage OMAS](../../access-services/asset-lineage) | No |
+| Governance Server | Description | Supported by subsystem | Paired with OMAS | 
+|:----------------- | :---------- | :--------------------- | :--------------- | 
+| Integration Daemon | Manages the capture of metadata through configured integration services. | [Integration Daemon Services](../integration-daemon-services) | Defined in each [integration service](../../integration-services) |
+| Engine Host | Manages governance engines. | [Engine Host Services](../engine-host-services) | [Governance Engine OMAS](../../access-services/governance-engine) |
+| Data Engine Proxy Server | Manages capture of metadata from a data engine. | [Data Engine Proxy Services](../data-engine-proxy-services) | [Data Engine OMAS](../../access-services/data-engine) | 
+| Open Lineage Server | Provides a historic reporting warehouse for lineage. | [Open Lineage Services](../open-lineage-services) | [Asset Lineage OMAS](../../access-services/asset-lineage) | 
 
 ## Further information
 
