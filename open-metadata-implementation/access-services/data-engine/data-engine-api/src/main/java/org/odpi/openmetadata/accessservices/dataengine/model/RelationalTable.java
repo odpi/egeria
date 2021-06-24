@@ -35,4 +35,6 @@ public class RelationalTable extends Referenceable {
     private boolean isDeprecated;
     private String description;
 
+    private List<RelationalColumn> columns;
+
 }
