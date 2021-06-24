@@ -202,7 +202,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     genericHandler.validateAnchorEntity(serverUserId,
                                                         relationship.getEntityOneProxy().getGUID(),
                                                         entityProxyOneGUIDParameterName,
-                                                        instanceTypeName,
+                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                         false,
                                                         supportedZones,
                                                         methodName);
@@ -210,7 +210,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     genericHandler.validateAnchorEntity(serverUserId,
                                                         relationship.getEntityTwoProxy().getGUID(),
                                                         entityProxyTwoGUIDParameterName,
-                                                        instanceTypeName,
+                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                         false,
                                                         supportedZones,
                                                         methodName);
