@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -66,8 +67,10 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
         GUIDListResponse response;
         if(updatedAfterDate.isPresent()) {
+            String updatedAfterAsString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+                    .format(updatedAfterDate.get());
             response = callGUIDListGetRESTCall(methodName, urlTemplate + UPDATED_AFTER_DATE,
-                    serverName, userId, entityType, updatedAfterDate.get());
+                    serverName, userId, entityType, updatedAfterAsString);
         } else {
             response = callGUIDListGetRESTCall(methodName, urlTemplate, serverName, userId, entityType);
         }

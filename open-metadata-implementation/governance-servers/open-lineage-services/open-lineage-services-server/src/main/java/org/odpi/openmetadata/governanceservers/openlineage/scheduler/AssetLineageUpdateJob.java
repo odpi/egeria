@@ -89,7 +89,7 @@ public class AssetLineageUpdateJob implements Job {
             return Optional.of(new Date(storedUpdateTime.get()));
         } else if (StringUtils.isNotEmpty(configAssetLineageDefaultTime)) {
             try {
-                return Optional.of(new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss").parse(configAssetLineageDefaultTime));
+                return Optional.of(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(configAssetLineageDefaultTime));
             } catch ( ParseException exception) {
                 log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, executionDate);
                 JobExecutionException jobExecutionException = new JobExecutionException(exception);
