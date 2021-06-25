@@ -476,7 +476,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
                     for (Term term : childTermsResponse.results()) {
                         // this term to the results if it matches the search criteria and we have not already got a page of results to return
-                        if (termMatchSearchCriteria(term, searchCriteria) &&
+                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) &&
                                 termsToReturn.size() < pageSize) {
                             termsToReturn.add(term);
                         }
