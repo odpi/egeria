@@ -31,6 +31,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Process extends Asset {
 
     /**
+     * The process name
      * -- GETTER --
      * Gets the process name.
      * @return the name
@@ -41,6 +42,7 @@ public class Process extends Asset {
     private String name;
 
     /**
+     * The description of the processing performed by this process
      * -- GETTER --
      * Return the description of the processing performed by this process.
      * @return string description
@@ -51,6 +53,7 @@ public class Process extends Asset {
     private String formula;
 
     /**
+     * The name of the programming language that this process is implemented in
      * -- GETTER --
      * Return the name of the programming language that this process is implemented in.
      * @return string name
@@ -61,6 +64,7 @@ public class Process extends Asset {
     private String implementationLanguage;
 
     /**
+     * The port implementations
      * -- GETTER --
      * Gets port implementations.
      * @return the port implementations
@@ -71,6 +75,7 @@ public class Process extends Asset {
     private List<PortImplementation> portImplementations;
 
     /**
+     * The port aliases
      * -- GETTER --
      * Gets port aliases.
      * @return the port aliases
@@ -81,6 +86,7 @@ public class Process extends Asset {
     private List<PortAlias> portAliases;
 
     /**
+     * The lineage mappings
      * -- GETTER --
      * Gets lineage mappings.
      * @return the lineage mappings
@@ -91,8 +97,9 @@ public class Process extends Asset {
     private List<LineageMapping> lineageMappings;
 
     /**
+     * The collection to which the process belongs
      * -- GETTER --
-     *  Retrieves the collection to which the process belongs
+     * Retrieves the collection to which the process belongs
      * @return collection the collection to which it belongs
      * -- SETTER --
      * Sets the collection.
@@ -101,6 +108,7 @@ public class Process extends Asset {
     private Collection collection;
 
     /**
+     * The update semantic
      * -- SETTER --
      * Sets update semantic.
      * @param updateSemantic the update semantic
@@ -108,6 +116,7 @@ public class Process extends Asset {
     private UpdateSemantic updateSemantic;
 
     /**
+     * The parent processes
      * -- GETTER --
      * Gets parent processes.
      * @return the parent processes

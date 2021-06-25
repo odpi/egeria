@@ -44,7 +44,7 @@ public class SchemaTypeEvent extends DataEngineEventHeader {
      * @return the schema type
      * -- SETTER --
      * Sets up the schema type
-     * @param portQualifiedName the schema type
+     * @param schemaType the schema type
      */
     private SchemaType schemaType;
 

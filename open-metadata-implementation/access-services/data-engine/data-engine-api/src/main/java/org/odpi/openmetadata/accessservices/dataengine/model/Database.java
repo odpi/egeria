@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Database extends DataStore {
 
     /**
+     * The description of the database type
      * -- GETTER --
      * Return a description of the database type.
      * @return string type name
@@ -34,6 +35,7 @@ public class Database extends DataStore {
     private String databaseType;
 
     /**
+     * The version of the database
      * -- GETTER --
      * Return the version of the database - often this is related to the version of its schemas.
      * @return version name
@@ -44,6 +46,7 @@ public class Database extends DataStore {
     private String databaseVersion;
 
     /**
+     * The name of this database instance
      * -- GETTER --
      * Return the name of this database instance - useful if the same schemas are deployed to multiple database instances.
      * @return instance name
@@ -54,6 +57,7 @@ public class Database extends DataStore {
     private String databaseInstance;
 
     /**
+     * The the source (typically connection name) of the database information
      * -- GETTER --
      * Return the source (typically connection name) of the database information.
      * @return source name
@@ -64,6 +68,7 @@ public class Database extends DataStore {
     private String databaseImportedFrom;
 
     /**
+     * The database schema
      * -- GETTER --
      * Get database schema
      * @return the database schema for the database
@@ -75,6 +80,7 @@ public class Database extends DataStore {
     private DatabaseSchema databaseSchema;
 
     /**
+     * The Endpoint protocol
      * -- GETTER --
      * Get an Endpoint protocol
      * @return network address
@@ -87,6 +93,7 @@ public class Database extends DataStore {
     private String protocol;
 
     /**
+     * The Endpoint network address
      * -- GETTER --
      * Get an Endpoint network address
      * @return network address

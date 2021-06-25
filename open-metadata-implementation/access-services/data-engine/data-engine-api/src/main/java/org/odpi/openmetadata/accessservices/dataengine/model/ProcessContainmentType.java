@@ -37,6 +37,7 @@ public enum ProcessContainmentType {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The numeric representation of the instance provenance type
      * -- GETTER --
      * Return the numeric representation of the instance provenance type.
      * @return int ordinal
@@ -44,6 +45,7 @@ public enum ProcessContainmentType {
     private final int ordinal;
 
     /**
+     * The default name of the instance provenance type
      * -- GETTER --
      * Return the default name of the instance provenance type.
      * @return String name
@@ -51,6 +53,7 @@ public enum ProcessContainmentType {
     private final String name;
 
     /**
+     * The default description of the instance provenance type
      * -- GETTER --
      * Return the default description of the instance provenance type.
      * @return String description

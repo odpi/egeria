@@ -26,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataStore extends Asset {
 
     /**
+     * The fully qualified physical location of the data store
      * -- GETTER --
      * Return the fully qualified physical location of the data store.  This should be suitable for the
      * network address of the Endpoint.
@@ -38,19 +39,21 @@ public class DataStore extends Asset {
     private String pathName;
 
     /**
+     * The time that the data store was created
      * -- GETTER --
      * Return the time that the data store was created.
-     * @return date
-     * -- GETTER --
+     * @return create time
+     * -- SETTER --
      * Set up the time that the data store was created.
      * @param createTime date
      */
     private Date createTime;
 
     /**
+     * The last known time the data store was modified
      * -- GETTER --
      * Return the last known time the data store was modified.
-     * @return date
+     * @return modified time
      * -- SETTER --
      * Setup the last known time the data store was modified.
      * @param modifiedTime date
@@ -58,9 +61,10 @@ public class DataStore extends Asset {
     private Date modifiedTime;
 
     /**
+     * The name of the encoding style used in the data store
      * -- GETTER --
      * Return the name of the encoding style used in the data store.
-     * @return string name
+     * @return the encoding style used in the data store
      * -- SETTER --
      * Set up the name of the encoding style used in the data store.
      * @param encodingType string name
@@ -68,9 +72,10 @@ public class DataStore extends Asset {
     private String encodingType;
 
     /**
+     * The name of the natural language used for text strings within the data store
      * -- GETTER --
      * Return the name of the natural language used for text strings within the data store.
-     * @return string language name
+     * @return encodingLanguage string language name
      * -- SETTER --
      * Set up the name of the natural language used for text strings within the data store.
      * @param encodingLanguage string language name
@@ -78,9 +83,10 @@ public class DataStore extends Asset {
     private String encodingLanguage;
 
     /**
+     * The description of the encoding used in the data store
      * -- GETTER --
      * Return the description of the encoding used in the data store.
-     * @return string text
+     * @return encodingDescription string text
      * -- SETTER --
      * Set up the description of the encoding used in the data store.
      * @param encodingDescription string text
@@ -88,6 +94,10 @@ public class DataStore extends Asset {
     private String encodingDescription;
 
     /**
+     * The additional properties associated with the encoding process
+     * -- GETTER --
+     * Return the additional properties associated with the encoding process
+     * @return additional properties associated with the encoding process
      * -- SETTER --
      * Set up the additional properties associated with the encoding process.
      * @param encodingProperties map of name-value pairs

@@ -34,29 +34,30 @@ public class Port extends Referenceable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The display name
      * -- GETTER --
      * Gets display name.
-     *
      * @return the display name
      * -- SETTER --
-     * * Sets display name.
-     * * @param displayName the display name
+     * Sets display name.
+     * @param displayName the display name
      */
     private String displayName;
 
     /**
+     * The port type
      * --GETTER --
      * Gets port type.
-     *
      * @return the port type
      * -- SETTER --
-     * * Sets port type.
-     * * @param portType the port type
+     * Sets port type.
+     * @param portType the port type
      */
     @JsonProperty("type")
     private PortType portType;
 
     /**
+     * The update semantic
      * -- SETTER --
      * Sets update semantic.
      * @param updateSemantic the update semantic

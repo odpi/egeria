@@ -29,9 +29,9 @@ public class PortImplementation extends Port {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The schema type
      * -- GETTER --
      * Gets schema type.
-     *
      * @return the schema type
      * -- SETTER --
      * Sets schema type.

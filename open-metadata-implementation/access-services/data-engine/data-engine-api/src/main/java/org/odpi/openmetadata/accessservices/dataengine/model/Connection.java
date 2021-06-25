@@ -25,72 +25,79 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connection extends Referenceable {
 
     /**
+     * The clear password
      * -- GETTER --
      * Get clear password
      * @return clear password
      * -- SETTER --
      * Set clear password
-     * @param clearPassword
+     * @param clearPassword clear password
      */
     private String clearPassword;
 
     /**
+     * The configuration properties
      * -- GETTER --
      * Get configuration properties
      * @return configuration properties
      * -- SETTER --
      * Set configuration properties
-     * @param configurationProperties
+     * @param configurationProperties configuration properties
      */
     private Map<String, String> configurationProperties;
 
     /**
+     * The description
      * -- GETTER --
      * Get description
      * @return description
      * -- SETTER --
      * Set description
-     * @param description
+     * @param description description
      */
     private String description;
 
     /**
+     * The display name
      * -- GETTER --
      * Get display name
      * @return display name
      * -- SETTER --
      * Set display name
-     * @param displayName
+     * @param displayName display name
      */
     private String displayName;
 
     /**
+     * The encrypted password
      * -- GETTER --
      * Get encrypted password
      * @return encrypted password
      * -- SETTER --
      * Set encrypted password
-     * @param encryptedPassword
+     * @param encryptedPassword encrypted password
      */
     private String encryptedPassword;
 
     /**
+     * The secured properties
      * -- GETTER --
      * Get secured properties
      * @return secured properties
      * -- SETTER --
      * Set secured properties
-     * @param securedProperties
+     * @param securedProperties secured properties
      */
     private Map<String, String> securedProperties;
 
     /**
+     * The user id
      * -- GETTER --
      * Get user id
      * @return user id
      * -- SETTER --
      * Set user id
-     * @param userId
+     * @param userId user ID
      */
     private String userId;
 

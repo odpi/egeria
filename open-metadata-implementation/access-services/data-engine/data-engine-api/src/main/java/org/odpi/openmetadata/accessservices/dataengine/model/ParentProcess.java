@@ -29,6 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ParentProcess implements Serializable {
 
     /**
+     * The qualified name
      * -- GETTER --
      * Gets qualified name.
      * @return the qualified name
@@ -39,6 +40,7 @@ public class ParentProcess implements Serializable {
     private String qualifiedName;
 
     /**
+     * The process containment type
      * -- GETTER --
      * Gets process containment type.
      * @return the process containment type

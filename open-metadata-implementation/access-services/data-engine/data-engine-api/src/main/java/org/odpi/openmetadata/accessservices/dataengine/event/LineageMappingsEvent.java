@@ -33,7 +33,6 @@ public class LineageMappingsEvent extends DataEngineEventHeader {
      * The lineage mappings
      * -- GETTER --
      * Return the lineage mappings
-     *
      * @return the lineage mappings
      * -- SETTER --
      * Set up the lineage mappings

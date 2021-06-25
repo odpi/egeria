@@ -75,9 +75,10 @@ public enum DataEngineAuditCode {
             "This event contains external metadata changes that need to be processed by the access service.");
 
     /**
+     * A message definition object for logging
      * -- GETTER --
      * Retrieves a message definition object for logging. This method is used when there are no message inserts.
-     * @return message definition object.
+     * @return message definition object
      */
     @Getter
     private final AuditLogMessageDefinition messageDefinition;

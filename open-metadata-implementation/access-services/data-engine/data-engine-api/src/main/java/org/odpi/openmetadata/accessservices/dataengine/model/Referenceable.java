@@ -22,11 +22,11 @@ public class Referenceable implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The stored qualified name property for the metadata entity
      * -- GETTER --
      * Returns the stored qualified name property for the metadata entity.
      * If no qualified name is available then the empty string is returned.
-     *
-     * @return qualifiedName
+     * @return qualified name
      * -- SETTER --
      * Set up the fully qualified name.
      * @param qualifiedName String name
@@ -34,6 +34,7 @@ public class Referenceable implements Serializable {
     private String qualifiedName;
 
     /**
+     *  A copy of the additional properties
      * -- GETTER --
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *

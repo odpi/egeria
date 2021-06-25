@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@Getter
 @ToString
 public enum DataItemSortOrder implements Serializable {
     UNKNOWN(0, 99, "<Unknown>",  "The sort order is not specified."),
@@ -34,46 +33,44 @@ public enum DataItemSortOrder implements Serializable {
             "descending order."),
     UNSORTED(3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
-    /**
-     * -- GETTER --
-     * Return the unique identifier for the open metadata enum type that this enum class represents.
-     * @return string guid
-     */
     public static final String ENUM_TYPE_GUID = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
 
-    /**
-     * -- GETTER --
-     * Return the unique name for the open metadata enum type that this enum class represents.
-     * @return string name
-     */
     public static final String ENUM_TYPE_NAME = "DataItemSortOrder";
 
     /**
+     * The code for this enum that comes from the Open Metadata Type that this enum represents
      * -- GETTER --
      * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
      * @return int code number
      */
+    @Getter
     private final int openTypeOrdinal;
 
     /**
+     * The code for this enum used for indexing based on the enum value
      * -- GETTER --
      * Return the code for this enum used for indexing based on the enum value.
      * @return int code number
      */
+    @Getter
     private final int ordinal;
 
     /**
+     * The default name for this enum type
      * -- GETTER --
      * Return the default name for this enum type.
      * @return String name
      */
+    @Getter
     private final String name;
 
     /**
+     * The default description for this enum
      * -- GETTER --
      * Return the default description for this enum.
      * @return String description
      */
+    @Getter
     private final String description;
 
     @Getter(AccessLevel.NONE)
@@ -94,5 +91,20 @@ public enum DataItemSortOrder implements Serializable {
         this.name = name;
         this.description = description;
     }
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 }

@@ -26,22 +26,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CSVFile extends DataFile {
 
     /**
+     * The delimited character
      * -- GETTER --
      * Get delimited character
-     * @return  delimiter character
+     * @return delimiter character
      * -- SETTER --
      * Set delimited character
-     * @param delimiterCharacter
+     * @param delimiterCharacter delimiter character
      */
     protected String delimiterCharacter;
 
     /**
+     * The quote character
      * -- GETTER --
      * Get quote character
      * @return quote character
      * -- SETTER --
      * Set quote character
-     * @param quoteCharacter
+     * @param quoteCharacter quote character
      */
     protected String quoteCharacter;
 

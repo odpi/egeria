@@ -30,7 +30,6 @@ public class DeleteEvent extends DataEngineEventHeader {
      * The qualified name of the entity
      * -- GETTER --
      * Return the entity qualified name
-     *
      * @return String - qualified name of the entity
      * -- SETTER --
      * Set up the qualified name of the entity
@@ -42,7 +41,6 @@ public class DeleteEvent extends DataEngineEventHeader {
      * The unique identifier of the entity
      * -- GETTER --
      * Return the entity unique identifier
-     *
      * @return String - unique identifier of the entity
      * -- SETTER --
      * Set up the unique identifier of the entity
@@ -54,7 +52,6 @@ public class DeleteEvent extends DataEngineEventHeader {
      * The delete semantic
      * -- GETTER --
      * Return the delete semantic
-     *
      * @return String - unique identifier of the entity
      * -- SETTER --
      * Set up the delete semantic

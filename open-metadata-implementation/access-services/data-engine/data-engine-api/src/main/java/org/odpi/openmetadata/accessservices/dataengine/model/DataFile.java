@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataFile extends DataStore {
 
     /**
+     * The file type
      * -- GETTER --
      * Gets file type
      * @return type
@@ -43,9 +44,10 @@ public class DataFile extends DataStore {
     private String fileType;
 
     /**
+     * The file schema
      * -- GETTER --
      * Gets the file schema
-     * @return schema
+     * @return file schema
      * -- SETTER --
      * Sets the file schema
      * @param schema schema
@@ -53,6 +55,7 @@ public class DataFile extends DataStore {
     private SchemaType schema;
 
     /**
+     * The file columns
      * -- GETTER --
      * Gets the file columns
      * @return columns
@@ -63,6 +66,7 @@ public class DataFile extends DataStore {
     private List<Attribute> columns;
 
     /**
+     * The network address
      * -- GETTER --
      * Gets the network address
      * @return columns
@@ -75,6 +79,7 @@ public class DataFile extends DataStore {
     private String networkAddress;
 
     /**
+     * The Endpoint protocol
      * -- GETTER --
      * Get an Endpoint protocol
      * @return network address

@@ -31,47 +31,52 @@ public class Asset extends Referenceable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The stored display name property for the asset
      * -- SETTER --
      * Sets up the stored display name property for the asset.
      * @param displayName name
      * -- GETTER --
      * Returns the stored display name property for the asset.
      * If no display name is available then null is returned.
-     * @return displayName name
+     * @return name
      */
     private String displayName;
 
     /**
+     * The stored description property associated with the asset
      *  -- SETTER --
      *  Set up the stored description property associated with the asset.
      *  @param description String text
      * -- GETTER --
      * Returns the stored description property for the asset.
      * If no description is provided then null is returned.
-     * @return description String text
+     * @return description
      */
     private String description;
     /**
+     * The name of the owner for this asset
      * -- SETTER --
      * Set up the name of the owner for this asset.
      * @param owner String name
      * -- GETTER --
      * Returns the name of the owner for this asset.
-     * @return owner String
+     * @return owner
      */
     private String owner;
 
     /**
+     * The owner type for this asset
      * -- SETTER --
      * Set up the owner type for this asset.
      * @param ownerType OwnerType enum
      * -- GETTER --
      * Return the type of owner stored in the owner property.
-     * @return OwnerType enum
+     * @return owner type
      */
     private OwnerType ownerType;
 
     /**
+     * The names of the zones that this asset is a member of
      * -- SETTER--
      * Set up the names of the zones that this asset is a member of.
      * @param zoneMembership list of zone names
@@ -93,6 +98,7 @@ public class Asset extends Referenceable {
     private String GUID;
 
     /**
+     * The unique identifier for the organization that originated this asset
      * -- SETTER --
      * Set up the unique identifier for the organization that originated this asset.
      * @param originOrganizationGUID string guid
@@ -103,6 +109,7 @@ public class Asset extends Referenceable {
     private String originOrganizationGUID;
 
     /**
+     * The unique identifier of the business capability that originated this asset
      * -- SETTER --
      * Set up the unique identifier of the business capability that originated this asset.
      * @param originBusinessCapabilityGUID string guid
@@ -113,6 +120,7 @@ public class Asset extends Referenceable {
     private String originBusinessCapabilityGUID;
 
     /**
+     * The properties that characterize where this asset is from
      * -- SETTER --
      * Set up the properties that characterize where this asset is from.
      * @param otherOriginValues map of name value pairs, all strings

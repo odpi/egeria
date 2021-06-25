@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LineageMapping implements Serializable {
 
     /**
+     * The source attribute
      * -- GETTER --
      * Gets source attribute.
      * @return the source attribute
@@ -38,6 +39,7 @@ public class LineageMapping implements Serializable {
     private String sourceAttribute;
 
     /**
+     * The target attribute
      * -- GETTER --
      * Gets target attribute.
      * @return the target attribute

@@ -35,6 +35,7 @@ public class SchemaType extends Referenceable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The display name
      * -- GETTER --
      * Gets display name.
      * @return the display name
@@ -45,6 +46,7 @@ public class SchemaType extends Referenceable {
     private String displayName;
 
     /**
+     * The author
      * -- GETTER --
      * Gets author.
      * @return the author
@@ -55,6 +57,7 @@ public class SchemaType extends Referenceable {
     private String author;
 
     /**
+     * The usage
      * -- GETTER --
      * Gets usage.
      * @return the usage
@@ -65,6 +68,7 @@ public class SchemaType extends Referenceable {
     private String usage;
 
     /**
+     * The encoding standard
      * -- GETTER --
      * Gets encoding standard.
      * @return the encoding standard
@@ -75,6 +79,7 @@ public class SchemaType extends Referenceable {
     private String encodingStandard;
 
     /**
+     * The version number
      * -- GETTER --
      * Gets version number.
      * @return the version number
@@ -85,6 +90,7 @@ public class SchemaType extends Referenceable {
     private String versionNumber;
 
     /**
+     * The type
      * -- GETTER --
      * Gets type.
      * @return the type
@@ -95,6 +101,7 @@ public class SchemaType extends Referenceable {
     private String type;
 
     /**
+     * The attribute list
      * -- GETTER --
      * Gets attribute list.
      * @return the attribute list

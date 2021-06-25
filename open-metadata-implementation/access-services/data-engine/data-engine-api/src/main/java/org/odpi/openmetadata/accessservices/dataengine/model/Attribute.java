@@ -28,19 +28,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Attribute extends Referenceable {
 
     /**
+     * The simple name of the schema element
      * -- GETTER --
      * Return the simple name of the schema element.
-     * @return string name
+     * @return displayName string name
      * -- SETTER --
      * Set up the simple name of the schema element.
-     * @param name String display name
+     * @param displayName String display name
      */
     private String displayName;
 
     /**
+     * The stored description property for the schema element
      * -- GETTER --
      * Returns the stored description property for the schema element.
-     * @return string description
+     * @return description string description
      * -- SETTER --
      * Set up the stored description property for the schema element.
      * @param description string description
@@ -48,19 +50,21 @@ public class Attribute extends Referenceable {
     private String description;
 
     /**
+     * Indicates if the schema element is deprecated
      * -- GETTER --
      * Returns true if the schema element deprecated
-     * @return boolean flag
+     * @return isDeprecated boolean flag
      * -- SETTER --
      * Set whether the schema element deprecated or not.  Default is false.
-     * @param deprecated boolean flag
+     * @param isDeprecated boolean flag
      */
     private boolean isDeprecated;
 
     /**
+     * The position of this schema attribute in its parent schema
      * -- GETTER --
      * Return the position of this schema attribute in its parent schema.
-     * @return int position in schema - 0 means first
+     * @return position int position in schema - 0 means first
      * -- SETTER --
      * Set up the position of this schema attribute in its parent schema.
      * @param position int position in schema - 0 means first
@@ -68,9 +72,10 @@ public class Attribute extends Referenceable {
     private int position;
 
     /**
+     * This minimum number of instances allowed for this attribute
      * -- GETTER --
      * Return this minimum number of instances allowed for this attribute.
-     * @return int
+     * @return minCardinality int
      * -- SETTER --
      * Set up the minimum number of instances allowed for this attribute.
      * @param minCardinality int
@@ -78,10 +83,10 @@ public class Attribute extends Referenceable {
     private int minCardinality;
 
     /**
+     * The maximum number of instances allowed for this attribute
      * -- GETTER --
      * Return the maximum number of instances allowed for this attribute.
-     * @return int (-1 means infinite)
-     *
+     * @return maxCardinality int (-1 means infinite)
      * -- SETTER --
      * Set up the maximum number of instances allowed for this attribute.
      * @param maxCardinality int (-1 means infinite)
@@ -89,9 +94,10 @@ public class Attribute extends Referenceable {
     private int maxCardinality;
 
     /**
+     * Indicates whether the same value can be used by more than one instance of this attribute
      * -- GETTER --
      * Return whether the same value can be used by more than one instance of this attribute.
-     * @return boolean flag
+     * @return allowsDuplicateValues boolean flag
      * -- SETTER --
      * Set up whether the same value can be used by more than one instance of this attribute.
      * @param allowsDuplicateValues boolean flag
@@ -99,9 +105,10 @@ public class Attribute extends Referenceable {
     private boolean allowsDuplicateValues;
 
     /**
+     * Indicates whether the attribute instances are arranged in an order
      * -- GETTER --
      * Return whether the attribute instances are arranged in an order.
-     * @return boolean flag
+     * @return orderedValues boolean flag
      * -- SETTER --
      * Set up whether the attribute instances are arranged in an order.
      * @param orderedValues boolean flag
@@ -109,6 +116,7 @@ public class Attribute extends Referenceable {
     private boolean orderedValues;
 
     /**
+     * Default value override
      * -- GETTER --
      * Return any default value for this attribute that would override the default defined in the
      * schema element for this attribute's type (note only used is type is primitive).
@@ -121,6 +129,7 @@ public class Attribute extends Referenceable {
     private String defaultValueOverride;
 
     /**
+     * The order that the attribute instances are arranged in
      * -- GETTER --
      * Return the order that the attribute instances are arranged in - if any.
      * @return DataItemSortOrder enum
@@ -131,6 +140,7 @@ public class Attribute extends Referenceable {
     private DataItemSortOrder sortOrder;
 
     /**
+     * The minimum length of the data
      * -- GETTER --
      * Return the minimum length of the data.
      * @return int
@@ -141,6 +151,7 @@ public class Attribute extends Referenceable {
     private int minimumLength;
 
     /**
+     * The length of the data field
      * -- GETTER --
      * Return the length of the data field.
      * @return int
@@ -151,6 +162,7 @@ public class Attribute extends Referenceable {
     private int length;
 
     /**
+     * The number of significant digits to the right of decimal point
      * -- GETTER --
      * Return the number of significant digits to the right of decimal point.
      * @return int
@@ -161,16 +173,18 @@ public class Attribute extends Referenceable {
     private int precision;
 
     /**
+     * Indicates whether the field is nullable or not
      * -- GETTER --
      * Return whether the field is nullable or not.
      * @return boolean
      * -- SETTER --
      * Set up whether the field is nullable or not.
-     * @param nullable boolean
+     * @param isNullable boolean
      */
     private boolean isNullable;
 
     /**
+     * The name of the Java class to use to represent this type
      * -- GETTER --
      * Return the name of the Java class to use to represent this type.
      * @return fully qualified Java class name
@@ -181,6 +195,7 @@ public class Attribute extends Referenceable {
     private String nativeClass;
 
     /**
+     * A list of alternative names for the attribute
      * -- GETTER --
      * Return a list of alternative names for the attribute.
      * @return list of names
@@ -191,6 +206,7 @@ public class Attribute extends Referenceable {
     private List<String> aliases;
 
     /**
+     * The data type for this element
      * -- GETTER --
      * Return the data type for this element.  Null means unknown data type.
      * @return string data type name
@@ -201,6 +217,7 @@ public class Attribute extends Referenceable {
     private String dataType;
 
     /**
+     * The default value for the element
      * -- GETTER --
      * Return the default value for the element.  Null means no default value set up.
      * @return string containing default value
@@ -211,6 +228,7 @@ public class Attribute extends Referenceable {
     private String defaultValue;
 
     /**
+     * A fixed literal value - an alternative to default value
      * -- GETTER --
      * Return a fixed literal value - an alternative to default value.
      * @return string value
@@ -221,6 +239,7 @@ public class Attribute extends Referenceable {
     private String fixedValue;
 
     /**
+     * The unique identifier of this column's type
      * -- GETTER --
      * Return the unique identifier of this column's type.
      * @return unique identifier (guid) of the external schema type
@@ -232,6 +251,7 @@ public class Attribute extends Referenceable {
     private String externalTypeGUID;
 
     /**
+     * The set of valid values for this column
      * -- GETTER --
      * Return the set of valid values for this column.
      * @return unique identifier (guid) of the valid values set

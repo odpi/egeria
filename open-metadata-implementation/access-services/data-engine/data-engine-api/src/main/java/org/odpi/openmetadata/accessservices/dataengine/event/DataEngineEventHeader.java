@@ -47,7 +47,7 @@ public abstract class DataEngineEventHeader {
      * Event version ID
      * -- GETTER --
      * Gets the event version ID
-     * @return the user ID
+     * @return the event version ID
      * -- SETTER --
      * Sets the event version ID
      * @param eventVersionId the event version ID
@@ -59,7 +59,7 @@ public abstract class DataEngineEventHeader {
      * The Data Engine event type
      * -- GETTER --
      * Gets the Data Engine event type
-     * @return the user ID
+     * @return the Data Engine event type
      * -- SETTER --
      * Sets the Data Engine event type
      * @param eventType the Data Engine event type
@@ -69,11 +69,11 @@ public abstract class DataEngineEventHeader {
     /**
      * The external source type unique name
      * -- GETTER --
-     * Gets the external source type
-     * @return the user ID
+     * Gets the external source type unique name
+     * @return the external source type unique name
      * -- SETTER --
-     * Sets the external source type
-     * @param externalSourceName the external source type
+     * Sets the external source type unique name
+     * @param externalSourceName the external source type unique name
      */
     private String externalSourceName;
 

@@ -30,6 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProcessHierarchy implements Serializable {
 
     /**
+     * The parent process
      * -- GETTER --
      * Gets parent process.
      * @return the parent process
@@ -40,6 +41,7 @@ public class ProcessHierarchy implements Serializable {
     private String parentProcess;
 
     /**
+     * The child process
      * -- GETTER --
      * Gets child process.
      * @return the child process
@@ -50,10 +52,11 @@ public class ProcessHierarchy implements Serializable {
     private String childProcess;
 
     /**
+     * The process containment type
      * -- GETTER --
      * Gets process containment type.
      * @return the process containment type
-     * SETTER --
+     * -- SETTER --
      * Sets process containment type.
      * @param processContainmentType the process containment type
      */

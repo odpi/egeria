@@ -36,28 +36,20 @@ public enum OwnerType implements Serializable {
     PROFILE_ID(1, 1, "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
     OTHER(99, 99, "Other", "A different identifier for the owner outside of the scope of open metadata has been used.");
 
-    /**
-     * -- GETTER --
-     * Return the unique identifier for the open metadata enum type that this enum class represents.
-     * @return string guid
-     */
     public static final String ENUM_TYPE_GUID = "9548390c-69f5-4dc6-950d-6feeee257b56";
 
-    /**
-     * -- GETTER --
-     * Return the unique name for the open metadata enum type that this enum class represents.
-     * @return string name
-     */
     public static final String ENUM_TYPE_NAME = "AssetOwnerType";
 
     /**
+     * The code for this enum that comes from the Open Metadata Type that this enum represents
      * -- GETTER --
      * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
-     * @return int code number
+     * @return openTypeOrdinal int code number
      */
     private final int openTypeOrdinal;
 
     /**
+     * The numeric representation of the enumeration
      * -- GETTER --
      * Return the numeric representation of the enumeration.
      * @return int ordinal
@@ -65,6 +57,7 @@ public enum OwnerType implements Serializable {
     private final int ordinal;
 
     /**
+     * The default name of the enumeration
      * -- GETTER --
      * Return the default name of the enumeration.
      * @return String name
@@ -72,6 +65,7 @@ public enum OwnerType implements Serializable {
     private final String name;
 
     /**
+     * The default description of the enumeration
      * -- GETTER --
      * Return the default description of the enumeration.
      * @return String description
@@ -96,5 +90,20 @@ public enum OwnerType implements Serializable {
         this.name = name;
         this.description = description;
     }
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 }

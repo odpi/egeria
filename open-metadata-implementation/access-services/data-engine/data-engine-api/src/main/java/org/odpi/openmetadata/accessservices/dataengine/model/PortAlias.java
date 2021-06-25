@@ -28,9 +28,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PortAlias extends Port {
 
     /**
+     * Delegates to
      * -- GETTER --
      * Gets delegates to.
-     *
      * @return the delegates to
      * -- SETTER --
      * Sets delegates to.

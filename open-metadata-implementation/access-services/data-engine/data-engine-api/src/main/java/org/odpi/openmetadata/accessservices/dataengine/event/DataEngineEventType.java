@@ -47,6 +47,7 @@ public enum DataEngineEventType implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The int identifier used for indexing based on the enum
      * -- GETTER --
      * Return the int identifier used for indexing based on the enum.
      * @return eventTypeCode identifier code
@@ -54,27 +55,29 @@ public enum DataEngineEventType implements Serializable {
     private final int eventTypeCode;
 
     /**
+     * The string name used for messages that include the enum
      * -- GETTER --
      * Return the string name used for messages that include the enum.
-     * @return eventTypeName name
+     * @return event type name
      */
     private final String eventTypeName;
 
     /**
+     * The default description for the enum value - used when natural resource
      * -- GETTER --
      * Return the default description for the enum value - used when natural resource
      * bundle is not available.
-     * @return eventTypeDescription default description
+     * @return default description
      */
     private final String eventTypeDescription;
 
     /**
-     * Default Constructor - sets up the specific values for this instance of the enum.
+     * Sets up the specific values for this instance of the enum.
      *
-     * @param eventTypeCode - int identifier used for indexing based on the enum.
-     * @param eventTypeName - string name used for messages that include the enum.
-     * @param eventTypeDescription - default description for the enum value - used when natural resource
-     *                                     bundle is not available.
+     * @param eventTypeCode int identifier used for indexing based on the enum.
+     * @param eventTypeName string name used for messages that include the enum.
+     * @param eventTypeDescription default description for the enum value - used when natural resource
+     *                             bundle is not available.
      */
     DataEngineEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription) {
         this.eventTypeCode = eventTypeCode;

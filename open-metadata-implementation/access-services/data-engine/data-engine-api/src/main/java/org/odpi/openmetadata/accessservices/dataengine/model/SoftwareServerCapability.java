@@ -35,9 +35,9 @@ public class SoftwareServerCapability implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The qualified name
      * -- GETTER --
      * Gets qualified name.
-     *
      * @return the qualified name
      * -- SETTER --
      * Sets qualified name.
@@ -46,9 +46,9 @@ public class SoftwareServerCapability implements Serializable {
     private String qualifiedName;
 
     /**
+     * The display name
      * -- GETTER --
      * Gets display name.
-     *
      * @return the display name
      * -- SETTER --
      * Sets display name.
@@ -58,9 +58,9 @@ public class SoftwareServerCapability implements Serializable {
     private String name;
 
     /**
+     * The description
      * -- GETTER --
      * Gets description.
-     *
      * @return the description
      * -- SETTER --
      * Sets description.
@@ -69,9 +69,9 @@ public class SoftwareServerCapability implements Serializable {
     private String description;
 
     /**
+     * The engine type
      * -- GETTER --
      * Gets engine type.
-     *
      * @return the engine type
      * -- SETTER --
      * Sets engine type.
@@ -80,9 +80,9 @@ public class SoftwareServerCapability implements Serializable {
     private String engineType;
 
     /**
+     * The engine version
      * -- GETTER --
      * Gets engine version.
-     *
      * @return the engine version
      * -- SETTER --
      * Sets engine version.
@@ -91,9 +91,9 @@ public class SoftwareServerCapability implements Serializable {
     private String engineVersion;
 
     /**
+     * The patch level
      * -- GETTER --
      * Gets patch level.
-     *
      * @return the patch level
      * -- SETTER --
      * Sets patch level.
@@ -102,9 +102,9 @@ public class SoftwareServerCapability implements Serializable {
     private String patchLevel;
 
     /**
+     * The source
      * -- GETTER --
      * Gets source.
-     *
      * @return the source
      * -- SETTER --
      * Sets source.
