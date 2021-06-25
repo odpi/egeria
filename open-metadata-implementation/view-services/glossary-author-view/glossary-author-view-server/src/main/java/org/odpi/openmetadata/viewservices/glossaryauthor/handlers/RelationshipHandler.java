@@ -1244,8 +1244,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf createTermIsATypeOfRelationship(String userId, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().create(userId, isATypeOf);
+    public IsATypeOfDeprecated createIsATypeOfDeprecated(String userId, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().create(userId, isATypeOf);
     }
 
     /**
@@ -1258,8 +1258,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf getTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().getByGUID(userId, guid);
+    public IsATypeOfDeprecated getIsATypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().getByGUID(userId, guid);
     }
 
     /**
@@ -1274,8 +1274,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf updateTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().update(userId, guid, isATypeOf);
+    public IsATypeOfDeprecated updateIsATypeOfDeprecated(String userId, String guid, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().update(userId, guid, isATypeOf);
     }
 
     /**
@@ -1286,12 +1286,13 @@ public class RelationshipHandler {
      * @param guid      guid of the IsaTypeOf relationship
      * @param isATypeOf the IsaTypeOf relationship
      * @return IsaTypeOf replaced IsaTypeOf
+     *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf replaceTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().replace(userId, guid, isATypeOf);
+    public IsATypeOfDeprecated replaceIsATypeOfDeprecated(String userId, String guid, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().replace(userId, guid, isATypeOf);
     }
 
     /**
@@ -1306,22 +1307,132 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public void deleteTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.isaTypeOf().delete(userId, guid);
+    public void deleteIsATypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isaTypeOfDeprecated().delete(userId, guid);
     }
 
     /**
      * Purge a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
      * A purge means that the relationship will not exist after the operation.
      *
+     * @deprecated
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the IsaTypeOf relationship to delete
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public void purgeTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.isaTypeOf().purge(userId, guid);
+    public void purgeIsATypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isaTypeOfDeprecated().purge(userId, guid);
+    }
+
+    /**
+     * Restore an is a type of deprecated relationship
+     * <p>
+     * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @deprecated
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the is a type of relationship to delete
+     * @return the restored is a type of relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOfDeprecated restoreIsaTypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().restore(userId, guid);
+    }
+
+    /**
+     * Create a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     *
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return the createdIsATypeOf relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf createIsATypeOf(String userId, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().create(userId, IsATypeOf);
+    }
+
+    /**
+     * Get a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the IsATypeOf relationship to get
+     * @return IsATypeOf
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf getIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().getByGUID(userId, guid);
+    }
+
+    /**
+     * Update a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the IsATypeOf relationship
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return IsATypeOf updatedIsATypeOf
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf updateIsATypeOf(String userId, String guid, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().update(userId, guid, IsATypeOf);
+    }
+
+    /**
+     * Replace anIsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the IsATypeOf relationship
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return IsATypeOf replacedIsATypeOf
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf replaceIsATypeOf(String userId, String guid, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().replace(userId, guid, IsATypeOf);
+    }
+
+    /**
+     * Delete a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the IsATypeOf relationship to delete
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public void deleteIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isATypeOf().delete(userId, guid);
+    }
+
+    /**
+     * Purge a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the IsATypeOf relationship to delete
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public void purgeIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isATypeOf().purge(userId, guid);
     }
 
     /**
@@ -1336,8 +1447,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().restore(userId, guid);
+    public IsATypeOf restoreIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().restore(userId, guid);
     }
 
     /**

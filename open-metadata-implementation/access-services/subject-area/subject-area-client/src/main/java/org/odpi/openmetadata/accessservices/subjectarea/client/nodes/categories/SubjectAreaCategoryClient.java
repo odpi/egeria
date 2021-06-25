@@ -55,7 +55,7 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
     public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo(" getCategoryChildren");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest,exactValue, ignoreCase );
+        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, exactValue, ignoreCase );
 
         String urlTemplate = urnTemplate + query.toString();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);

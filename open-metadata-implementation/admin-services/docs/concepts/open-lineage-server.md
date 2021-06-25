@@ -6,8 +6,10 @@
 The open lineage server is a [Governance Server](governance-server-types.md)
 that manages a historical warehouse of lineage information.
 
+Its behavior and configuration is described [here](../../../governance-servers/open-lineage-services).
 
 ----
+
 * Go to [Governance Servers](governance-server-types.md).
 * Go to [Admin Guide](../user).
 

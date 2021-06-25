@@ -38,13 +38,13 @@ As such there is provision in these interfaces to support:
 
 The Data Manager OMAS Supports the following types of data managers:
 
-| Icon                                   | Name(s)     | Provenance | Description |
+| Icon                                   | Name     | Provenance | Description |
 | :----------------------------------:   | :---------- | :------------------------------------------------------: | :---------- |
-| ![File System](docs/file-system.png)   | File System | Local Cohort Instances | Create metadata elements for files and folders along with their data connections and any known schema information. Catalogued files and folders are members of the local cohort because many different types of processes may work with them. |
-| ![File Manager](docs/file-manager.png) | File Manager<br><br>Document Manager<br><br>Content Manager<br><br>Photo Library | External Instances | Create metadata elements for files and folders along with their data connections and any known schema information. Catalogued files and folders are members of the data manager's metadata collection because it is responsible for their maintenance.|
-| ![Database System](docs/database-server.png) | Database Server | External Instances | Create metadata elements for databases, database schemas, tables, views, columns, primary keys and foreign keys. Catalogued elements are members of the data manager's metadata collection because it is responsible for their maintenance.|
-| ![Event Manager](docs/event-broker.png) | Event Manager<br><br>Event Bus<br><br>Streaming Service<br> | External Instances | Create metadata elements for topics and the event payloads they support. Catalogued elements are members of the data manager's metadata collection because it is responsible for their maintenance.|
-| ![API Gateways](docs/api-gateway.png) | API Gateway | External Instances | Create metadata elements for APIs and their supported headers and payloads. Catalogued elements are members of the data manager's metadata collection because it is responsible for their maintenance.|
+| ![File System](docs/file-system.png)   | File System | Local Cohort | Create metadata elements for files and folders along with their data connections and any known schema information. Catalogued files and folders are members of the local cohort because many different types of processes may work with them. |
+| ![File Manager](docs/file-manager.png) | File Manager | External  | Create metadata elements for files and folders along with their data connections and any known schema information. Catalogued files and folders are members of the data manager's metadata collection because it is responsible for their maintenance.|
+| ![Database System](docs/database-server.png) | Database Manager | External | Create metadata elements for databases, database schemas, tables, views, columns, primary keys and foreign keys. Catalogued elements are members of the data manager's metadata collection because it is responsible for their maintenance.|
+| ![Event Manager](docs/event-broker.png) | Event Broker | External or Local Cohort | Create metadata elements for topics and the event payloads they support. Catalogued elements are members of the data manager's metadata collection (ie External provenance) if it is responsible for their maintenance.|
+| ![API Gateways](docs/api-gateway.png) | API Manager | External or Local Cohort | Create metadata elements for APIs and their supported headers and payloads. Catalogued elements are members of the data manager's metadata collection (ie External provenance) if it is responsible for their maintenance.|
 
 
 ## Design information
@@ -55,7 +55,7 @@ The module structure for the Data Manager OMAS is as follows:
 * [data-manager-api](data-manager-api) supports the common Java classes that are used both by the client and the server.
 * [data-manager-server](data-manager-server) supports in implementation of the access service and its related event management.
 * [data-manager-spring](data-manager-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
-* [data-manager-topic-connectors](data-manager-topic-connectors) supports the connectors used to access the InTopic and OutTopic
+* [data-manager-topic-connectors](data-manager-topic-connectors) supports the connectors used to access the OutTopic
 events from the Data Manager OMAS.
 
 

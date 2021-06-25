@@ -113,7 +113,7 @@ public interface SubjectAreaClient<T> {
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    List<T> find(String userId, FindRequest findRequest, boolean exactMatch, boolean ignoreCase) throws InvalidParameterException,
+    List<T> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException;
 
@@ -126,6 +126,8 @@ public interface SubjectAreaClient<T> {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
      * @param findRequest information Glossary Artifact for find calls.
+     * @param exactValue  exactValue - when false values with trailing characters will match
+     * @param ignoreCase  ignore the case when matching
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
      * @return list Glossary Artifacts of the T type relevant in the findRequest information.
      *
@@ -134,7 +136,7 @@ public interface SubjectAreaClient<T> {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
    List<T> find(String userId, FindRequest findRequest,
-                boolean exactMatch,
+                boolean exactValue,
                 boolean ignoreCase,
                 Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                PropertyServerException,
