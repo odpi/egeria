@@ -51,7 +51,7 @@ public class DesignModelArchiveBuilder
     private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
-    private static final String ISA_RELATIONSHIP_NAME                    = "ISARelationship";
+    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "IsATypeOfRelationship";
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
@@ -840,20 +840,20 @@ public class DesignModelArchiveBuilder
     }
 
     /**
-     * Add an isa relationship
+     * Add an is-a-type-of relationship
      * @param specialTermQName qualified name of the specialized term
      * @param generalizedTermQName qualified name of the generalized term
      */
-    protected void addISARelationship (String specialTermQName , String generalizedTermQName)
+    protected void addIsATypeOfRelationship(String specialTermQName , String generalizedTermQName)
     {
 
         String specializedTermId = idToGUIDMap.getGUID(specialTermQName);
         String generalizedTermId = idToGUIDMap.getGUID(generalizedTermQName);
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(ISA_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(generalizedTermId + "_to_" + specializedTermId),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(IS_A_TYPE_OF_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(specializedTermId + "_to_" + generalizedTermId ),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
