@@ -22,7 +22,7 @@ These tags are rich enough to map to Egeria glossaries, categories and terms. A 
 | [Rdfs:domain](https://terms.tdwg.org/wiki/rdfs:domain)      | Spine attribute to spine object has-a  |
 | [Rdfs:range](https://terms.tdwg.org/wiki/rdfs:range)       | TermAnchor and CategoryAnchor |
 | [Rdfs:member](https://terms.tdwg.org/wiki/Property:rdfs:member)      | TermCategorization , CategoryHierarchy |
-| [Rdfs:SubClassOf](https://terms.tdwg.org/wiki/rdfs:subClassOf)  | Spine object to spine object ISA |
+| [Rdfs:SubClassOf](https://terms.tdwg.org/wiki/rdfs:subClassOf)  | Spine object to spine object IsATypeOf |
 
 
  
@@ -36,7 +36,7 @@ Spine attribute to spine object related term
 Rdfs:member
 TermCategorization , CategoryHierarchy
 Rdfs:SubClassOf
-Spine object to spine object ISA
+Spine object to spine object IsATypeOfRelationship
 
 ###  
 We have provided [a sample jsonld file](../../src/test/resources/EgeriaSampleOntology.json), that can be used to familiarise yourself with the tags to use and how the model elements relate to each other.
