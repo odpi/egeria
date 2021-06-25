@@ -54,7 +54,7 @@ public class AssetLineageResource {
     public GUIDListResponse publishEntities(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String entityType,
-                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date updatedAfterDate,
+                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date updatedAfterDate,
                                             @RequestParam(required = false) List<String> entitySubtypeGUIDs,
                                             @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
                                             @RequestParam(required = false) SearchClassifications searchClassifications,
