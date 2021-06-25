@@ -88,7 +88,11 @@ public class FindEntitiesParameters {
         }
 
         public Builder withUpdatedAfter(Date updatedAfterDate) {
-            this.updatedAfter = updatedAfterDate.toInstant().toEpochMilli();
+            if(updatedAfterDate == null) {
+                this.updatedAfter = 0L;
+            } else {
+                this.updatedAfter = updatedAfterDate.toInstant().toEpochMilli();
+            }
             return this;
         }
 
