@@ -172,7 +172,7 @@ public class GlossaryFVT {
             iter.remove();
             deleteGlossary(guid);
         }
-        List<Glossary> glossaries = findGlossaries(".*");
+        List<Glossary> glossaries = findGlossaries("");
         if (glossaries.size() != existingGlossaryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
         }
