@@ -79,7 +79,7 @@ This is the command for changing the server's password.
 POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-user-password?password="{serverUserPassword}"
 ```
 
-## Set Max Page Size
+## Set the maximum page size for REST API requests
 
 The maximum page size value sets an upper limit on the number of results that a caller can request on any paging
 REST API to this server.  Setting maximum page size helps to prevent a denial of service attack that uses very
@@ -87,7 +87,7 @@ large requests to overwhelm the server.
 
 This is the command to set up the maximum page size.  A value of 0 means no limit.
 ```
-POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/max-page-size?limit="{maxPageSize}"
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/max-page-size?limit={maxPageSize}
 ```
 
 ----
