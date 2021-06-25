@@ -1,0 +1,120 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+ name: MuseDev
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  analyze_src:
+    name: Sonatype Lift code Analysis
+    runs-on: ubuntu-latest
+    container:
+        image: musedev/analyst
+        credentials:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    steps:
+        - uses: actions/checkout@v2
+          with:
+              fetch-depth: 0
+        # - name: Setup build environment
+        #   env:
+        #       nexus_token: ${{ secrets.MY_NEXUS_TOKEN }}
+        #   run: |
+        #       ... put shell script to create .m2/settings.xml
+        #       .... put shell script to install build dependencies if needed
+        - name: Produce src artifact
+          run: |
+              if [[ -z "$GITHUB_BASE_REF" ]] ; then
+                echo "This is not a pull request."
+                echo "Look for any result in the 'Destination Branch Analysis' job"
+              else
+                export SRC_SHA=$(cat $GITHUB_EVENT_PATH | jq -r -j .pull_request.head.sha)
+                export DST_SHA=$(cat $GITHUB_EVENT_PATH | jq -r -j .pull_request.base.sha)
+                analyst -t "$GITHUB_WORKSPACE" -C $SRC_SHA > lift-src-results.json
+                cat lift-src-results.json | jq . | sed 's/\\n/\n/g'
+                echo -n "$SRC_SHA" > lift-commit
+                echo -n "Source commit: " ; cat lift-commit ; echo ""
+                echo "SRC_SHA -> DST_SHA:  $SRC_SHA -> $DST_SHA"
+                git -C $GITHUB_WORKSPACE diff ${DST_SHA}..${SRC_SHA} > lift.git.diff
+              fi
+        - name: Upload src artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: lift_src_results
+            path: lift*
+
+  analyze_dst:
+    name: Destination Branch Analysis
+    runs-on: ubuntu-latest
+    container:
+        image: musedev/analyst
+        credentials:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    steps:
+        - uses: actions/checkout@v2
+          with:
+              fetch-depth: 0
+        # - name: Setup build environment
+        #   env:
+        #       nexus_token: ${{ secrets.MY_NEXUS_TOKEN }}
+        #   run: |
+        #       ... put shell script to create .m2/settings.xml
+        #       .... put shell script to install build dependencies if needed
+        - name: Produce dst artifact
+          run: |
+              if [ -z "$GITHUB_BASE_REF" ] ; then
+                export DST_SHA="$GITHUB_SHA"
+              else
+                export DST_SHA=$(cat $GITHUB_EVENT_PATH | jq -r -j .pull_request.base.sha)
+              fi
+              analyst -t "$GITHUB_WORKSPACE" -C $DST_SHA > lift-dst-results.json
+              cat lift-dst-results.json | jq . | sed 's/\\n/\n/g'
+        - name: Upload dst artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: lift_dst_results
+            path: lift-dst-results.json
+
+  unify_results:
+    name: Distill Result
+    needs: [analyze_src, analyze_dst]
+    runs-on: ubuntu-latest
+    container:
+        image: musedev/github-comment-composer
+        credentials:
+            username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    steps:
+        - name: Get Dst
+          uses: actions/download-artifact@v2
+          with:
+            name: lift_dst_results
+        - name: Get Src
+          uses: actions/download-artifact@v2
+          with:
+            name: lift_src_results
+        - name: Combine
+          run: |
+              github-comment-composer lift.git.diff lift-src-results.json lift-dst-results.json > github-comments.json
+        - name: Post comments
+          uses: actions/github-script@v4
+          with:
+            github-token: ${{secrets.GITHUB_TOKEN}}
+            script: |
+                const { promises: fs } = require('fs')
+                const commit = await fs.readFile('lift-commit', 'utf8')
+                console.log('Commit for comment: ' + commit)
+                const comments = await fs.readFile('github-comments.json', 'utf8')
+                console.log('Comments string (raw): ' + comments)
+                for(const comment of JSON.parse(comments)) {
+                    console.log('Comment: ' + comment)
+                    github.pulls.createReviewComment({
+                        ...comment,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pull_number: context.issue.number,
+                        commit_id: commit,
+                        });
+                }
