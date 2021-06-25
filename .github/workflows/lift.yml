@@ -12,7 +12,7 @@ jobs:
         image: musedev/analyst
         credentials:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+            password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     steps:
         - uses: actions/checkout@v2
           with:
@@ -51,7 +51,7 @@ jobs:
         image: musedev/analyst
         credentials:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+            password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     steps:
         - uses: actions/checkout@v2
           with:
@@ -85,7 +85,7 @@ jobs:
         image: musedev/github-comment-composer
         credentials:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+            password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     steps:
         - name: Get Dst
           uses: actions/download-artifact@v2
