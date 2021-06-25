@@ -72,6 +72,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
+          command:
+            - "/bin/bash"
+            - "-c"
+            - "java -jar /deployments/user-interface/ui-chassis-spring-*.jar --server.ssl.trust-store=/deployments/truststore.p12"
           ports:
             - containerPort: 8443
             {{ if .Values.debug.egeriaJVM }}
