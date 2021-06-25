@@ -27,7 +27,7 @@ public interface AnalyticsModelingImport {
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
 	 */
-	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
 			throws AnalyticsModelingCheckedException, PropertyServerException;
 
 	/**
@@ -41,7 +41,7 @@ public interface AnalyticsModelingImport {
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
 	 */
-	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize)
 			throws AnalyticsModelingCheckedException, PropertyServerException;
 
 	/**

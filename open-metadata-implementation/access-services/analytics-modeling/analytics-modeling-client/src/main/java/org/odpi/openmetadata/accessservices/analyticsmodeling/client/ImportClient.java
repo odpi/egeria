@@ -142,7 +142,7 @@ public class ImportClient implements AnalyticsModelingImport {
      * @throws PropertyServerException 
 	 */
 	@Override
-	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
 			throws AnalyticsModelingCheckedException, PropertyServerException
 	{
 		return restClient.getDatabases(userId, startFrom, pageSize);
@@ -160,7 +160,7 @@ public class ImportClient implements AnalyticsModelingImport {
      * @throws AnalyticsModelingCheckedException 
 	 */
 	@Override
-	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, Integer startFrom, Integer pageSize)
+	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize)
 			throws PropertyServerException, AnalyticsModelingCheckedException
 	{
 		return restClient.getSchemas(userId, databaseGuid, startFrom, pageSize);
