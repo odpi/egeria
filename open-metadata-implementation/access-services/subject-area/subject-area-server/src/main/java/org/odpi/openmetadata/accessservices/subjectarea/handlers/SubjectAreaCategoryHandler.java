@@ -449,7 +449,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param termHandler    term handler
      * @param startingFrom   initial position in the stored list.
      * @param pageSize       maximum number of definitions to return on this call.
-     * @return A list of terms is categorized by this Category
+     * @return A list of terms categorized by this Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -467,31 +467,45 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             startingFrom = 0;
         }
 
+        Integer filteredStartingFrom = 0;
+
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            List<Term> termsToReturn = new ArrayList<>();
+            List<Term> filteredTerms = new ArrayList<>();
             boolean continueGettingTerms = true;
             while (continueGettingTerms) {
-                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, filteredStartingFrom, pageSize);
                 if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
+                   // we now have results. We need to filter those results then apply the requested startingFrom
+
                     for (Term term : childTermsResponse.results()) {
                         // this term to the results if it matches the search criteria and we have not already got a page of results to return
-                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) &&
-                                termsToReturn.size() < pageSize) {
-                            termsToReturn.add(term);
+                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) ) {
+                            filteredTerms.add(term);
                         }
                     }
                 }
 
-                if (childTermsResponse.results().size() < pageSize || termsToReturn.size() == pageSize) {
+                if (childTermsResponse.results().size() < pageSize || filteredTerms.size() >= startingFrom + pageSize) {
                     // we have a page to return or the last get returned less than a page.
                     continueGettingTerms = false;
                 } else {
                     // issue another call to get another page of terms
-                    startingFrom = startingFrom + pageSize;
+                    filteredStartingFrom = filteredStartingFrom + pageSize;
                 }
             }
-            response.addAllResults(termsToReturn);
+            // we have a list of filteredTerms , we need to slice out the page we need to return to the user based on their requested startingFrom
+
+            if (filteredTerms.size() > startingFrom) {
+                // we have something to return
+                int endingAt = pageSize;
+                if (filteredTerms.size() < startingFrom + pageSize) {
+                    // if there is not a page worth - then calculate the ending index of the list.
+                    endingAt = filteredTerms.size() - startingFrom;
+                }
+                response.addAllResults(filteredTerms.subList(startingFrom, endingAt));
+            }
+
         }
 
         return response;
