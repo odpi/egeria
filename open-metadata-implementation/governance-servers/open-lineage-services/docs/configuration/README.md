@@ -63,7 +63,7 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
           "jobName": "AssetLineageUpdateJob",
           "jobInterval": 120,
           "jobEnabled": true,
-          "jobDefaultValue": "2021-12-03T10:15:30"
+          "jobDefaultValue": "2021-12-03T10:15:30.000+00:00"
         }
       ]
    }
