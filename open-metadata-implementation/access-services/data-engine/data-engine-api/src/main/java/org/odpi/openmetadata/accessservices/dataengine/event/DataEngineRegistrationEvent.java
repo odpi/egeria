@@ -5,9 +5,11 @@ package org.odpi.openmetadata.accessservices.dataengine.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,45 +20,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataEngineRegistrationEvent extends DataEngineEventHeader{
-
-    private SoftwareServerCapability softwareServerCapability;
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class DataEngineRegistrationEvent extends DataEngineEventHeader {
 
     /**
-     * Gets software server capability.
-     *
+     * Software server capability
+     * -- GETTER --
+     * Gets the software server capability
      * @return the software server capability
-     */
-    public SoftwareServerCapability getSoftwareServerCapability() {
-        return softwareServerCapability;
-    }
-
-    /**
-     * Sets software server capability.
-     *
+     * -- SETTER --
+     * Sets the software server capability
      * @param softwareServerCapability the software server capability
      */
-    public void setSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) {
-        this.softwareServerCapability = softwareServerCapability;
-    }
+    private SoftwareServerCapability softwareServerCapability;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DataEngineRegistrationEvent that = (DataEngineRegistrationEvent) o;
-        return Objects.equals(softwareServerCapability, that.softwareServerCapability);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(softwareServerCapability);
-    }
-
-    @Override
-    public String toString() {
-        return "DataEngineRegistrationEvent{" +
-                "softwareServerCapability=" + softwareServerCapability +
-                "} " + super.toString();
-    }
 }

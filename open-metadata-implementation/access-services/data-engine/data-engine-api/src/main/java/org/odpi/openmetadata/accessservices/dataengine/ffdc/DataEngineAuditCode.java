@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
+import lombok.Getter;
+import lombok.ToString;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
@@ -18,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
+@ToString
 public enum DataEngineAuditCode {
     SERVICE_INITIALIZING("OMAS-DATA-ENGINE-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
@@ -70,7 +73,15 @@ public enum DataEngineAuditCode {
             "The Data Engine Open Metadata Access Service (OMAS) client has sent event: {0}",
             "The access service client sends out event notification produced by external source like data engine system.",
             "This event contains external metadata changes that need to be processed by the access service.");
-    private AuditLogMessageDefinition messageDefinition;
+
+    /**
+     * A message definition object for logging
+     * -- GETTER --
+     * Retrieves a message definition object for logging. This method is used when there are no message inserts.
+     * @return message definition object
+     */
+    @Getter
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataEngineAuditCode expects to be passed one of the enumeration rows defined in
@@ -92,16 +103,6 @@ public enum DataEngineAuditCode {
     }
 
     /**
-     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
-     *
-     * @return message definition object.
-     */
-    public AuditLogMessageDefinition getMessageDefinition() {
-        return messageDefinition;
-    }
-
-
-    /**
      * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
@@ -113,15 +114,4 @@ public enum DataEngineAuditCode {
         return messageDefinition;
     }
 
-    /**
-     * JSON-style toString
-     *
-     * @return string of property names and values for this enum
-     */
-    @Override
-    public String toString() {
-        return "DataEngineAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
-    }
 }

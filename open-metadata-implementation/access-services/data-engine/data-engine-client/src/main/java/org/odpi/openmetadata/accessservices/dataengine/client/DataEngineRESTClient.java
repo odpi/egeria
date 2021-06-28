@@ -43,10 +43,10 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
 
-    private String serverPlatformRootURL;
+    private final String serverPlatformRootURL;
     private String externalSourceName;
     private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create a new client without authentication.

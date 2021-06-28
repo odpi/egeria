@@ -62,7 +62,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                                                                                                                            PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        return instance.getDataEngineCollecttionHandler();
+        return instance.getDataEngineCollectionHandler();
     }
 
     /**
@@ -148,7 +148,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                                                                                                                       PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        return instance.getPortHandler();
+        return instance.getDataEnginePortHandler();
     }
 
     /**
