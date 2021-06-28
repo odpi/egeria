@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFil
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,17 +21,11 @@ import java.util.List;
 /**
  * FilesAndFoldersClient is the client for managing the creation of files and folder assets.
  */
-public class FilesAndFoldersClient implements FilesAndFoldersInterface
+public class FilesAndFoldersClient extends SchemaManagerClient implements FilesAndFoldersInterface
 {
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/filesystems";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-    private AuditLog auditLog = null;          /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
-
+    private static final String defaultSchemaAttributeName = "SchemaAttribute";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -47,15 +40,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                  String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -70,14 +55,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
     public FilesAndFoldersClient(String serverName,
                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot);
     }
 
 
@@ -100,15 +78,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                  String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-        
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -128,14 +98,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -155,16 +118,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                  int                   maxPageSize,
                                  AuditLog              auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-        
-        this.restClient = restClient;
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 
@@ -244,8 +198,8 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
                                      String fileManagerCapabilityName,
                                      String fileSystemGUID,
                                      String folderGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         final String methodName                  = "attachTopLevelFolder";
         final String fileSystemGUIDParameterName = "fileSystemGUID";

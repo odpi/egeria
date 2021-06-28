@@ -1797,13 +1797,13 @@ public class OpenMetadataAPIMapper
     public static final String TABULAR_SCHEMA_TYPE_TYPE_NAME            = "TabularSchemaType";
     /* ComplexSchemaType */
 
-    public static final String TABULAR_COLUMN_TYPE_TYPE_GUID            = "a7392281-348d-48a4-bad7-f9742d7696fe";   /* from Area 5 */
-    public static final String TABULAR_COLUMN_TYPE_TYPE_NAME            = "TabularColumnType";
-    /* PrimitiveSchemaType */
-
     public static final String TABULAR_COLUMN_TYPE_GUID                 = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";   /* from Area 5 */
     public static final String TABULAR_COLUMN_TYPE_NAME                 = "TabularColumn";
     /* PrimitiveSchemaType */
+
+    public static final String TABULAR_FILE_COLUMN_TYPE_GUID            = "af6265e7-5f58-4a9c-9ae7-8d4284be62bd";   /* from Area 5 */
+    public static final String TABULAR_FILE_COLUMN_TYPE_NAME            = "TabularFileColumn";
+    /* TabularColumn */
 
     public static final String DOCUMENT_SCHEMA_TYPE_TYPE_GUID           = "33da99cd-8d04-490c-9457-c58908da7794";   /* from Area 5 */
     public static final String DOCUMENT_SCHEMA_TYPE_TYPE_NAME           = "DocumentSchemaType";
@@ -1920,6 +1920,7 @@ public class OpenMetadataAPIMapper
     public static final String API_PARAMETER_TYPE_GUID                  = "10277b13-509c-480e-9829-bc16d0eafc53";   /* from Area 5 */
     public static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     /* SchemaAttribute */
+
     public static final String API_OPERATIONS_RELATIONSHIP_TYPE_GUID    = "03737169-ceb5-45f0-84f0-21c5929945af"; /* from Area 5 */
     public static final String API_OPERATIONS_RELATIONSHIP_TYPE_NAME    = "APIOperations";
     /* End1 = APISchemaType; End 2 = APIOperation */
@@ -1933,10 +1934,27 @@ public class OpenMetadataAPIMapper
     public static final String API_RESPONSE_RELATIONSHIP_TYPE_NAME      = "APIResponse";
     /* End1 = APIOperation; End 2 = SchemaType */
 
-    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_GUID        = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";
-    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_NAME        = "ReferenceValueAssignment";
+    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_GUID = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";
+    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_NAME = "ReferenceValueAssignment";
     /* End1 = Referenceable; End 2 = ValidValueDefinition */
 
+    public static final String DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID       = "2f5796f5-3fac-4501-9d0d-207aa8620d16";   /* from Area 5 */
+    public static final String DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME       = "DisplayDataSchemaType";
+    /* ComplexSchemaType */
+
+    public static final String DISPLAY_DATA_FIELD_TYPE_GUID             = "46f9ea33-996e-4c62-a67d-803df75ef9d4";   /* from Area 5 */
+    public static final String DISPLAY_DATA_FIELD_TYPE_NAME             = "DisplayDataField";
+    /* SchemaAttribute */
+
+    public static final String INPUT_FIELD_PROPERTY_NAME                = "inputField";            /* from DisplayDataField entity */
+
+    public static final String QUERY_SCHEMA_TYPE_TYPE_GUID              = "4d11bdbb-5d4a-488b-9f16-bf1e34d34dd9";   /* from Area 5 */
+    public static final String QUERY_SCHEMA_TYPE_TYPE_NAME              = "QuerySchemaType";
+    /* ComplexSchemaType */
+
+    public static final String QUERY_DATA_FIELD_TYPE_GUID              = "0eb92215-52b1-4fac-92e7-ff02ff385a68";   /* from Area 5 */
+    public static final String QUERY_DATA_FIELD_TYPE_NAME              = "QueryDataField";
+    /* SchemaAttribute */
 
     public static final String VALID_VALUE_DEFINITION_TYPE_GUID         = "09b2133a-f045-42cc-bb00-ee602b74c618";   /* from Area 5 */
     public static final String VALID_VALUE_DEFINITION_TYPE_NAME         = "ValidValueDefinition";

@@ -82,9 +82,11 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0401](../open-metadata-publication/website/open-metadata-types/0401-Governance-Definitions.md) and
   [0405](../open-metadata-publication/website/open-metadata-types/0405-Governance-Drivers.md).
 
-* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types.
+* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types when it could be a literal for example.
+  Also a new subtype for **TabularColumn** called **TabularFileColumn** is added to be able to distinguish between tabular columns from
+  files and **RelationalColumn** (which also inherits from **TabularColumn**).
 
-  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabluar-Schemas.md).
+  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabular-Schemas.md).
 
 * Deprecated types called **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** because they
   offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.

@@ -7,13 +7,9 @@ import org.odpi.openmetadata.accessservices.datamanager.api.APIManagerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.APIOperationResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.APIOperationsResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.APIResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.APIsResponse;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -27,12 +23,8 @@ import java.util.List;
  */
 public class APIManagerClient extends SchemaManagerClient implements APIManagerInterface
 {
-    private final String apiManagerGUIDParameterName = "apiManagerGUID";
-    private final String apiManagerNameParameterName = "apiManagerName";
-    private final String editURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/event-brokers/{2}/{3}/apis";
-    private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/apis";
-    private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/apis";
-
+    private static final String apiURLTemplatePrefix       = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/apis";
+    private static final String defaultSchemaAttributeName = "APIParameter";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -47,7 +39,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                             String   serverPlatformURLRoot,
                             AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -62,7 +54,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public APIManagerClient(String serverName,
                             String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot);
     }
 
 
@@ -85,7 +77,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                             String   password,
                             AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -106,7 +98,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                             int                   maxPageSize,
                             AuditLog              auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 
@@ -126,21 +118,22 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                             String userId,
                             String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, userId, password);
     }
 
 
     /* ========================================================
-     * The api is the top level asset on an event manager server
+     * The API is a top level asset in an API manager
      */
 
 
     /**
-     * Create a new metadata element to represent a api.
+     * Create a new metadata element to represent an API.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
      * @param apiProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -150,9 +143,10 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createAPI(String          userId,
-                            String          apiManagerGUID,
-                            String          apiManagerName,
+    public String createAPI(String        userId,
+                            String        apiManagerGUID,
+                            String        apiManagerName,
+                            boolean       apiManagerIsHome,
                             APIProperties apiProperties) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -162,31 +156,34 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateObject(apiProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(apiProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix;
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "?apiManagerIsHome={2}";
+
+        APIRequestBody requestBody = new APIRequestBody(apiProperties);
+        
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  apiProperties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  apiManagerGUID,
-                                                                  apiManagerName);
+                                                                  apiManagerIsHome);
 
         return restResult.getGUID();
     }
 
 
     /**
-     * Create a new metadata element to represent a api using an existing metadata element as a template.
+     * Create a new metadata element to represent an API using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -200,6 +197,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIFromTemplate(String             userId,
                                         String             apiManagerGUID,
                                         String             apiManagerName,
+                                        boolean            apiManagerIsHome,
                                         String             templateGUID,
                                         TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -211,33 +209,35 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/from-template/{4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/from-template/{2}?apiManagerIsHome={3}";
+        
+        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
+        
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  templateProperties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  apiManagerGUID,
-                                                                  apiManagerName,
-                                                                  templateGUID);
+                                                                  templateGUID,
+                                                                  apiManagerIsHome);
 
         return restResult.getGUID();
     }
 
 
     /**
-     * Update the metadata element representing a api.
+     * Update the metadata element representing an API.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
      * @param apiGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param apiProperties new properties for this element
@@ -247,11 +247,11 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateAPI(String          userId,
-                          String          apiManagerGUID,
-                          String          apiManagerName,
-                          String          apiGUID,
-                          boolean         isMergeUpdate,
+    public void updateAPI(String        userId,
+                          String        apiManagerGUID,
+                          String        apiManagerName,
+                          String        apiGUID,
+                          boolean       isMergeUpdate,
                           APIProperties apiProperties) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -262,21 +262,22 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(apiProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(apiProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}?isMergeUpdate={5}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
+        APIRequestBody requestBody = new APIRequestBody(apiProperties);
+
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
+        
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        apiProperties,
+                                        requestBody,
                                         serverName,
                                         userId,
-                                        apiManagerGUID,
-                                        apiManagerName,
                                         apiGUID,
                                         isMergeUpdate);
     }
@@ -306,7 +307,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/{4}/publish";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -341,7 +342,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "apis/{4}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -353,11 +354,11 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Remove the metadata element representing a api.
+     * Remove the metadata element representing an API.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
      * @param apiGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -386,11 +387,16 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/{3}/delete";
+        
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
+        
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        nullRequestBody,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         apiManagerGUID,
@@ -430,7 +436,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
                                                                  urlTemplate,
@@ -474,7 +480,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
 
         APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
                                                                  urlTemplate,
@@ -492,8 +498,8 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * Retrieve the list of apis created by this caller.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the api manager (event broker)
-     * @param apiManagerName unique name of software server capability representing the api manager (event broker)
+     * @param apiManagerGUID unique identifier of software server capability representing the api manager
+     * @param apiManagerName unique name of software server capability representing the api manager
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -513,13 +519,15 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                          PropertyServerException
     {
         final String methodName = "getAPIsForAPIManager";
+        final String apiManagerGUIDParameterName = "apiManagerGUID";
+        final String apiManagerNameParameterName = "apiManagerName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-managers/{2}/{3}?startFrom={4}&pageSize={5}";
 
         APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
                                                                  urlTemplate,
@@ -558,7 +566,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}";
 
         APIResponse restResult = restClient.callAPIGetRESTCall(methodName,
                                                                urlTemplate,
@@ -571,69 +579,74 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /* ============================================================================
-     * A api may host one or more event types depending on its capability
+     * A api may host one or more API operations depending on its capability
      */
 
     /**
-     * Create a new metadata element to represent a event type.
+     * Create a new metadata element to represent an API Operation.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
-     * @param apiGUID unique identifier of the api where the event type is located
-     * @param properties properties about the event type
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
+     * @param apiGUID unique identifier of the api where the API operation is located
+     * @param properties properties about the API operation
      *
-     * @return unique identifier of the new event type
+     * @return unique identifier of the new API operation
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createAPIOperation(String              userId,
-                                     String              apiManagerGUID,
-                                     String              apiManagerName,
-                                     String              apiGUID,
+    public String createAPIOperation(String                 userId,
+                                     String                 apiManagerGUID,
+                                     String                 apiManagerName,
+                                     boolean                apiManagerIsHome,
+                                     String                 apiGUID,
                                      APIOperationProperties properties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
         final String methodName                     = "createAPIOperation";
         final String parentElementGUIDParameterName = "apiGUID";
-        final String propertiesParameterName        = "eventOperationAttributeProperties";
+        final String propertiesParameterName        = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(apiGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/api-operations";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations?apiManagerIsHome={3}";
+
+        APIOperationRequestBody requestBody = new APIOperationRequestBody(properties);
+
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  properties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  apiManagerGUID,
-                                                                  apiManagerName,
-                                                                  apiGUID);
+                                                                  apiGUID,
+                                                                  apiManagerIsHome);
 
         return restResult.getGUID();
     }
 
 
     /**
-     * Create a new metadata element to represent a event type using an existing metadata element as a template.
+     * Create a new metadata element to represent a API operation using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param apiGUID unique identifier of the api where the event type is located
+     * @param apiGUID unique identifier of the api where the API operation is located
      * @param templateProperties properties that override the template
      *
-     * @return unique identifier of the new event type
+     * @return unique identifier of the new API operation
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -643,6 +656,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIOperationFromTemplate(String             userId,
                                                  String             apiManagerGUID,
                                                  String             apiManagerName,
+                                                 boolean            apiManagerIsHome,
                                                  String             templateGUID,
                                                  String             apiGUID,
                                                  TemplateProperties templateProperties) throws InvalidParameterException,
@@ -653,37 +667,41 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         final String templateGUIDParameterName      = "templateGUID";
         final String parentElementGUIDParameterName = "apiGUID";
         final String propertiesParameterName        = "templateProperties";
+        final String qualifiedNameParameterName     = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(apiGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/api-operations/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations/from-template/{3}?apiManagerIsHome={4}";
+
+        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
+
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  templateProperties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  apiManagerGUID,
-                                                                  apiManagerName,
                                                                   apiGUID,
-                                                                  templateGUID);
+                                                                  templateGUID,
+                                                                  apiManagerIsHome);
 
         return restResult.getGUID();
     }
 
 
     /**
-     * Update the metadata element representing a event type.
+     * Update the metadata element representing a API operation.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
-     * @param apiSpecificationGUID unique identifier of the metadata element to update
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiOperationGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param properties new properties for the metadata element
      *
@@ -692,45 +710,47 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateAPIOperation(String              userId,
-                                   String              apiManagerGUID,
-                                   String              apiManagerName,
-                                   String              apiSpecificationGUID,
-                                   boolean             isMergeUpdate,
+    public void updateAPIOperation(String                 userId,
+                                   String                 apiManagerGUID,
+                                   String                 apiManagerName,
+                                   String                 apiOperationGUID,
+                                   boolean                isMergeUpdate,
                                    APIOperationProperties properties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
         final String methodName               = "updateAPIOperation";
-        final String elementGUIDParameterName = "apiSpecificationGUID";
-        final String propertiesParameterName  = "apiProperties";
+        final String elementGUIDParameterName = "apiOperationGUID";
+        final String propertiesParameterName  = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(apiSpecificationGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(apiOperationGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/api-operations/{4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}?isMergeUpdate={3}";
+
+        APIOperationRequestBody requestBody = new APIOperationRequestBody(properties);
+
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        properties,
+                                        requestBody,
                                         serverName,
                                         userId,
-                                        apiManagerGUID,
-                                        apiManagerName,
-                                        apiSpecificationGUID);
+                                        apiOperationGUID,
+                                        isMergeUpdate);
     }
 
 
     /**
-     * Remove the metadata element representing a event type.
+     * Remove the metadata element representing a API operation.
      *
      * @param userId calling user
-     * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
-     * @param apiSpecificationGUID unique identifier of the metadata element to remove
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager
+     * @param apiManagerName unique name of software server capability representing the API manager
+     * @param apiOperationGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -741,37 +761,38 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public void removeAPIOperation(String userId,
                                    String apiManagerGUID,
                                    String apiManagerName,
-                                   String apiSpecificationGUID,
+                                   String apiOperationGUID,
                                    String qualifiedName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
         final String methodName                  = "removeAPIOperation";
-        final String elementGUIDParameterName    = "apiSpecificationGUID";
+        final String elementGUIDParameterName    = "apiOperationGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(apiSpecificationGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(apiOperationGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/api-operations/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}/{3}/delete";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(apiManagerGUID);
+        requestBody.setExternalSourceName(apiManagerName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        nullRequestBody,
+                                        requestBody,
                                         serverName,
                                         userId,
-                                        apiManagerGUID,
-                                        apiManagerName,
-                                        apiSpecificationGUID,
+                                        apiOperationGUID,
                                         qualifiedName);
     }
 
 
     /**
-     * Retrieve the list of event type metadata elements that contain the search string.
+     * Retrieve the list of API operation metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
@@ -800,7 +821,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/api-operations/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -814,52 +835,10 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     }
 
 
-    /**
-     * Return the list of event types associated with an EvenSet.  This is a collection of APIOperation definitions.
-     * These event types can be used as a template for adding the event types to a api.
-     *
-     * @param userId calling user
-     * @param eventSetGUID unique identifier of the api to query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of metadata elements describing the event types associated with the requested EventSet
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<APIOperationElement> getAPIOperationsForEventSet(String userId,
-                                                                 String eventSetGUID,
-                                                                 int    startFrom,
-                                                                 int    pageSize) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        final String methodName                     = "getOperationsForAPI";
-        final String parentElementGUIDParameterName = "apiGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(eventSetGUID, parentElementGUIDParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/event-sets/{2}/api-operations?startFrom={3}&pageSize={4}";
-
-        APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   eventSetGUID,
-                                                                                   startFrom,
-                                                                                   validatedPageSize);
-
-        return restResult.getElementList();
-    }
 
 
     /**
-     * Return the list of api-operations associated with a api.
+     * Return the list of api-operations associated with an API.
      *
      * @param userId calling user
      * @param apiGUID unique identifier of the api to query
@@ -877,8 +856,8 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                          String apiGUID,
                                                          int    startFrom,
                                                          int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName                     = "getOperationsForAPI";
         final String parentElementGUIDParameterName = "apiGUID";
@@ -887,7 +866,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateGUID(apiGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/{2}/api-operations?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations?startFrom={3}&pageSize={4}";
 
         APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -902,7 +881,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Retrieve the list of event type metadata elements with a matching qualified or display name.
+     * Retrieve the list of API operation metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
@@ -931,7 +910,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/api-operations/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-name/{2}?startFrom={3}&pageSize={4}";
 
         APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -946,7 +925,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Retrieve the event type metadata element with the supplied unique identifier.
+     * Retrieve the API operation metadata element with the supplied unique identifier.
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
@@ -969,7 +948,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/api-operations/{2}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}";
 
         APIOperationResponse restResult = restClient.callAPIOperationGetRESTCall(methodName,
                                                                                  urlTemplate,
@@ -978,5 +957,231 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                  guid);
 
         return restResult.getElement();
+    }
+
+    /*
+     * A API Operation may support a header, a request and a response parameter list of operations depending on its capability
+     */
+
+    /**
+     * Create a new metadata element to represent an API Operation's Parameter list.  This describes the structure of the payload supported by
+     * the API's operation. The structure of this API Operation is added using API Parameter schema attributes.   These parameters can have
+     * a simple type or a nested structure.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
+     * @param apiOperationGUID unique identifier of an APIOperation
+     * @param parameterListType is this is a header, request of response
+     * @param properties properties about the API parameter list
+     *
+     * @return unique identifier of the new API parameter list
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createAPIParameterList(String                     userId,
+                                         String                     apiManagerGUID,
+                                         String                     apiManagerName,
+                                         boolean                    apiManagerIsHome,
+                                         String                     apiOperationGUID,
+                                         APIParameterListType       parameterListType,
+                                         APIParameterListProperties properties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param apiOperationGUID unique identifier of the API Operation where the API Parameter List is located
+     * @param parameterListType is this is a header, request of response
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new API Parameter List
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createAPIParameterListFromTemplate(String               userId,
+                                                     String               apiManagerGUID,
+                                                     String               apiManagerName,
+                                                     boolean              apiManagerIsHome,
+                                                     String               templateGUID,
+                                                     String               apiOperationGUID,
+                                                     APIParameterListType parameterListType,
+                                                     TemplateProperties   templateProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return null;
+    }
+
+
+
+    /**
+     * Update the metadata element representing an API Parameter List.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiParameterListGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param properties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateAPIParameterList(String                     userId,
+                                       String                     apiManagerGUID,
+                                       String                     apiManagerName,
+                                       String                     apiParameterListGUID,
+                                       boolean                    isMergeUpdate,
+                                       APIParameterListProperties properties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+    }
+
+
+    /**
+     * Remove an API Parameter List and all of its parameters.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiParameterListGUID unique identifier of the metadata element to remove
+     * @param qualifiedName unique name of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeAPIParameterList(String userId,
+                                       String apiManagerGUID,
+                                       String apiManagerName,
+                                       String apiParameterListGUID,
+                                       String qualifiedName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+    }
+
+
+    /**
+     * Retrieve the list of API Parameter List metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<APIParameterListElement> findAPIParameterLists(String userId,
+                                                               String searchString,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Return the list of API Parameter Lists associated with an API Operation.
+     *
+     * @param userId calling user
+     * @param apiOperationGUID unique identifier of the API Operation to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements describing the API Parameter Lists associated with the requested API Operation
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<APIParameterListElement> getParameterListsForAPIOperation(String userId,
+                                                                          String apiOperationGUID,
+                                                                          int    startFrom,
+                                                                          int    pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Retrieve the list of API Parameter List metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<APIParameterListElement> getAPIParameterListsByName(String userId,
+                                                                    String name,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Retrieve the API Parameter List metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public APIParameterListElement getAPIParameterListByGUID(String userId,
+                                                             String guid) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return null;
     }
 }
