@@ -7,9 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,145 +23,71 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "fileType")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = DataFile.class, name = "DataFile"),
-                @JsonSubTypes.Type(value = CSVFile.class, name = "CSVFile")
-        })
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "fileType")
+@JsonSubTypes({ @JsonSubTypes.Type(value = DataFile.class, name = "DataFile"),
+                @JsonSubTypes.Type(value = CSVFile.class, name = "CSVFile")})
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class DataFile extends DataStore {
 
-    private String fileType;
-    private SchemaType schema;
-    private List<Attribute> columns;
-
-    // Needed to create Endpoint, which in turn is internally generated along with Connection, not provided by user
-    private String networkAddress;
-    private String protocol;
-
     /**
+     * The file type
+     * -- GETTER --
      * Gets file type
-     *
      * @return type
-     */
-    public String getFileType() {
-        return fileType;
-    }
-
-    /**
+     * -- SETTER --
      * Sets the file type
-     *
      * @param fileType type
      */
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
+    private String fileType;
 
     /**
+     * The file schema
+     * -- GETTER --
      * Gets the file schema
-     *
-     * @return schema
-     */
-    public SchemaType getSchema() {
-        return schema;
-    }
-
-    /**
+     * @return file schema
+     * -- SETTER --
      * Sets the file schema
-     *
      * @param schema schema
      */
-    public void setSchema(SchemaType schema) {
-        this.schema = schema;
-    }
+    private SchemaType schema;
 
     /**
+     * The file columns
+     * -- GETTER --
      * Gets the file columns
-     *
      * @return columns
-     */
-    public List<Attribute> getColumns() {
-        return columns;
-    }
-
-    /**
+     * -- SETTER --
      * Sets the file columns
-     *
      * @param columns columns
      */
-    public void setColumns(List<Attribute> columns) {
-        this.columns = columns;
-    }
+    private List<Attribute> columns;
 
     /**
+     * The network address
+     * -- GETTER --
      * Gets the network address
-     *
      * @return columns
-     */
-    public String getNetworkAddress() {
-        return networkAddress;
-    }
-
-    /**
+     * -- SETTER --
      * Sets the network address. Needed to create Endpoint, which in turn is internally generated along with Connection,
      * not provided by user
-     *
      * @param networkAddress network address
      */
-    public void setNetworkAddress(String networkAddress) {
-        this.networkAddress = networkAddress;
-    }
+    // Needed to create Endpoint, which in turn is internally generated along with Connection, not provided by user
+    private String networkAddress;
 
     /**
+     * The Endpoint protocol
+     * -- GETTER --
      * Get an Endpoint protocol
-     *
      * @return network address
-     *
-     */
-    public String getProtocol() {
-        return protocol;
-    }
-
-    /**
+     * -- SETTER --
      * Sets the protocol. Needed to create Endpoint, which in turn is internally generated along with Connection,
      * not provided by user
-     *
      * @param protocol protocol
      */
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
-
-    @Override
-    public String toString() {
-        return "DataFile{" +
-                ", fileType='" + fileType + "'" +
-                ", schema='" + schema + "'" +
-                ", columns='" + columns + "'" +
-                ", networkAddress='" + networkAddress + "'" +
-                ", protocol='" + protocol + "'" +
-                "}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DataFile dataFile = (DataFile) o;
-
-        return Objects.equals(fileType, dataFile.fileType) &&
-                Objects.equals(schema, dataFile.schema) &&
-                Objects.equals(columns, dataFile.columns) &&
-                Objects.equals(networkAddress, dataFile.networkAddress) &&
-                Objects.equals(protocol, dataFile.protocol);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), fileType, schema, columns, networkAddress, protocol);
-    }
+    private String protocol;
 
 }

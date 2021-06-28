@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
@@ -59,20 +61,83 @@ import java.util.List;
  * It is also responsible for registering itself in the instance map.
  */
 public class DataEngineServicesInstance extends OMASServiceInstance {
+
     private static final AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
 
+    /**
+     * -- GETTER --
+     * Returns the Data Engine process handler.
+     * @return the Data Engine process handler
+     */
+    @Getter(AccessLevel.PACKAGE)
     private final DataEngineProcessHandler processHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine registration handler.
+     * @return the Data Engine registration handler
+     */
+    @Getter(AccessLevel.PACKAGE)
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine schema type handler.
+     * @return the Data Engine schema type handler
+     */
+    @Getter(AccessLevel.PACKAGE)
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine collection handler.
+     * @return the Data Engine collection handler
+     */
+    @Getter
     private final DataEngineCollectionHandler dataEngineCollectionHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine port handler.
+     * @return the Data Engine port handler
+     */
+    @Getter(AccessLevel.PACKAGE)
     private final DataEnginePortHandler dataEnginePortHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine relational data handler.
+     * @return the Data Engine relational data handler
+     */
+    @Getter
     private final DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the connection used in the client to create a connector that produces events on the input topic.
+     * @return connection object for client
+     */
+    @Getter
     private final Connection inTopicConnection;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine file handler.
+     * @return the Data Engine file handler
+     */
+    @Getter
     private final DataEngineDataFileHandler dataEngineDataFileHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine common handler.
+     * @return the Data Engine common handler
+     */
+    @Getter
     private final DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
-     * Set up the local repository connector that will service the REST Calls
+     * Sets up the local repository connector that will service the REST Calls
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls
      * @param supportedZones      list of zones that DataEngine is allowed to serve Assets from
@@ -195,75 +260,4 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 dataEngineConnectionAndEndpointHandler);
     }
 
-    /**
-     * Return the handler for process requests
-     *
-     * @return handler object
-     */
-    DataEngineProcessHandler getProcessHandler() {
-        return processHandler;
-    }
-
-    /**
-     * Return the handler for registration requests
-     *
-     * @return handler object
-     */
-    DataEngineRegistrationHandler getDataEngineRegistrationHandler() {
-        return dataEngineRegistrationHandler;
-    }
-
-    /**
-     * Return the handler for schema types requests
-     *
-     * @return handler object
-     */
-    DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler() {
-        return dataEngineSchemaTypeHandler;
-    }
-
-    /**
-     * Return the handler for port requests
-     *
-     * @return handler object
-     */
-    DataEnginePortHandler getPortHandler() {
-        return dataEnginePortHandler;
-    }
-
-    public DataEngineCollectionHandler getDataEngineCollecttionHandler() {
-        return dataEngineCollectionHandler;
-    }
-
-    /**
-     * Return the handler for database and relational table requests
-     *
-     * @return handler object
-     */
-    DataEngineRelationalDataHandler getDataEngineRelationalDataHandler() {
-        return dataEngineRelationalDataHandler;
-    }
-
-    /**
-     * Return the connection used in the client to create a connector that produces events on the input topic
-     *
-     * @return connection object for client
-     */
-    Connection getInTopicConnection() {
-        return inTopicConnection;
-    }
-
-    /**
-     * Return the handler for DataFile
-     */
-    public DataEngineDataFileHandler getDataEngineDataFileHandler() {
-        return dataEngineDataFileHandler;
-    }
-
-    /**
-     * Returns the common handler
-     */
-    public DataEngineCommonHandler getDataEngineCommonHandler() {
-        return dataEngineCommonHandler;
-    }
 }

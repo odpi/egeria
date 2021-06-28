@@ -15,13 +15,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
     private static final String IN_TOPIC_CONNECTION_PATH = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/topics/in-topic-connection";
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
-     *  Create DataEngineRESTConfigurationClient with unauthenticated access to the DE OMAS server.
-     * @param serverName
-     * @param serverPlatformRootURL
-     * @throws InvalidParameterException
+     * Create DataEngineRESTConfigurationClient with unauthenticated access to the DE OMAS server.
+     *
+     * @param serverName            the server name
+     * @param serverPlatformRootURL the server platform root url
+     * @throws InvalidParameterException the invalid parameter exception
      */
     public DataEngineRESTConfigurationClient(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL);
@@ -31,12 +32,13 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
     }
 
     /**
+     * Instantiates a new Data Engine REST configuration client.
      *
-     * @param serverName
-     * @param serverPlatformRootURL
-     * @param userId
-     * @param password
-     * @throws InvalidParameterException
+     * @param serverName            the server name
+     * @param serverPlatformRootURL the server platform root URL
+     * @param userId                the user ID
+     * @param password              the password
+     * @throws InvalidParameterException the invalid parameter exception
      */
     public DataEngineRESTConfigurationClient(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL, userId, password);
@@ -63,10 +65,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
         invalidParameterHandler.validateUserId(serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        ConnectionResponse restResult = callConnectionGetRESTCall(methodName, serverPlatformURLRoot + IN_TOPIC_CONNECTION_PATH, serverName, userId);
-
-        return restResult;
+        return callConnectionGetRESTCall(methodName, serverPlatformURLRoot + IN_TOPIC_CONNECTION_PATH, serverName, userId);
     }
-
 
 }

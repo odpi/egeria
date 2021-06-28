@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 
 public enum DataEngineErrorCode implements ExceptionMessageSet {
+
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
@@ -79,8 +80,7 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
 
     private static final long serialVersionUID = 1L;
 
-    private ExceptionMessageDefinition messageDefinition;
-
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -108,7 +108,6 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
     public ExceptionMessageDefinition getMessageDefinition() {
         return messageDefinition;
     }
-
 
     /**
      * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.

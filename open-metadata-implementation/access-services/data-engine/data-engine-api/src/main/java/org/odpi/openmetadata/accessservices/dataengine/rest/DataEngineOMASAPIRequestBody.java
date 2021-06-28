@@ -6,6 +6,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -29,39 +35,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "table"),
                 @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "dataFile")
         })
-
+@EqualsAndHashCode
+@ToString(callSuper = true)
+@NoArgsConstructor
+@Getter
+@Setter
 public abstract class DataEngineOMASAPIRequestBody implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 1L;
 
     /* unique name for the external source */
     private String externalSourceName;
 
-    /**
-     * Default constructor
-     */
-    DataEngineOMASAPIRequestBody() {
-    }
-
-
-    public String getExternalSourceName() {
-        return externalSourceName;
-    }
-
-    public void setExternalSourceName(String externalSourceName) {
-        this.externalSourceName = externalSourceName;
-    }
-
-    /**
-     * JSON-like toString
-     *
-     * @return string containing the class name
-     */
-    @Override
-    public String toString() {
-        return "DataEngineOMASAPIRequestBody{" +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                '}';
-    }
 }
 
