@@ -35,7 +35,7 @@ It is likely that this additional information is identified, captured and stored
 tools. The open metadata services gather this information together and distribute it to provide
 the most complete view of the asset's properties.
 
-More information on the types of attachments that can be added to an asset can be found [here](../attachments).
+More information on the types of attachments that can be added to an asset can be found [here](../../../../../open-metadata-publication/website/cataloging-assets/asset-catalog-contents.md).
 
 Inheriting from Asset is a hierarchy of increasingly specialized definitions
 for different types of Assets.  Each definition adds more properties

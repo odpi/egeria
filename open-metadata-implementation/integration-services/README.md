@@ -16,6 +16,7 @@ The integration services available today are:
 * [API Integrator](api-integrator) - provides cataloguing for APIs.
 * [Catalog Integrator](catalog-integrator) - provides a two-way synchronization for data catalogs.
 * [Database Integrator](database-integrator) - provides metadata extraction from relational databases.
+* [Display Integrator](display-integrator) - provides metadata extraction from systems that provide user displays and forms to capture new data values.
 * [Files Integrator](files-integrator) - collects metadata about files stored in a filesystem or file manager.
 * [Lineage Integrator](lineage-integrator) - collects metadata about processes, their internal logic and the data assets they work with.
 * [Organization Integrator](organization-integrator) - imports details of an organization's structure - such as teams and departments.

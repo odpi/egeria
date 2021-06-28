@@ -28,6 +28,7 @@ public interface EventBrokerInterface
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the caller
      * @param eventBrokerName unique name of software server capability representing the caller
+     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param topicProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -39,6 +40,7 @@ public interface EventBrokerInterface
     String createTopic(String          userId,
                        String          eventBrokerGUID,
                        String          eventBrokerName,
+                       boolean         eventBrokerIsHome,
                        TopicProperties topicProperties) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException;
@@ -50,6 +52,7 @@ public interface EventBrokerInterface
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the caller
      * @param eventBrokerName unique name of software server capability representing the caller
+     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -62,6 +65,7 @@ public interface EventBrokerInterface
     String createTopicFromTemplate(String             userId,
                                    String             eventBrokerGUID,
                                    String             eventBrokerName,
+                                   boolean            eventBrokerIsHome,
                                    String             templateGUID,
                                    TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
@@ -247,12 +251,10 @@ public interface EventBrokerInterface
      * the topic. The structure of this event type is added using SchemaAttributes.   These SchemaAttributes can have
      * a simple type or a nested structure.
      *
-     * The event type is then linked directly to the topic if it is the only event structure supported by the
-     * topic, or it is added to the topic's event type list.
-     *
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the caller
      * @param eventBrokerName unique name of software server capability representing the caller
+     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of a topic
      * @param properties properties about the topic schema
      *
@@ -265,6 +267,7 @@ public interface EventBrokerInterface
     String createEventType(String              userId,
                            String              eventBrokerGUID,
                            String              eventBrokerName,
+                           boolean             eventBrokerIsHome,
                            String              topicGUID,
                            EventTypeProperties properties) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -277,6 +280,7 @@ public interface EventBrokerInterface
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the caller
      * @param eventBrokerName unique name of software server capability representing the caller
+     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param templateProperties properties that override the template
@@ -290,6 +294,7 @@ public interface EventBrokerInterface
     String createEventTypeFromTemplate(String             userId,
                                        String             eventBrokerGUID,
                                        String             eventBrokerName,
+                                       boolean            eventBrokerIsHome,
                                        String             templateGUID,
                                        String             topicGUID,
                                        TemplateProperties templateProperties) throws InvalidParameterException,
