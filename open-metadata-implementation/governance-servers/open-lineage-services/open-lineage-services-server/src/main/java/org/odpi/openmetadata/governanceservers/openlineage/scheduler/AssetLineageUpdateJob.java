@@ -16,9 +16,10 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -89,8 +90,10 @@ public class AssetLineageUpdateJob implements Job {
             return Optional.of(new Date(storedUpdateTime.get()));
         } else if (StringUtils.isNotEmpty(configAssetLineageDefaultTime)) {
             try {
-                return Optional.of(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(configAssetLineageDefaultTime));
-            } catch ( ParseException exception) {
+                Instant configAssetLineageAsInstant = LocalDateTime.parse(configAssetLineageDefaultTime, DateTimeFormatter.ISO_DATE_TIME)
+                        .atZone(ZoneId.systemDefault()).toInstant();
+                return Optional.of(Date.from(configAssetLineageAsInstant));
+            } catch ( Exception exception) {
                 log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, executionDate);
                 JobExecutionException jobExecutionException = new JobExecutionException(exception);
                 jobExecutionException.setUnscheduleAllTriggers(true);
