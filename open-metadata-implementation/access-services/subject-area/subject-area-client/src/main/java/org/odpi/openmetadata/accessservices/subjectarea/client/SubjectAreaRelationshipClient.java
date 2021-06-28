@@ -16,5 +16,5 @@ public interface SubjectAreaRelationshipClient<L extends Relationship> extends S
      * @throws UnsupportedOperationException - this method is until not supported
      **/
     @Override
-    List<L> find(String userId, FindRequest findRequest) throws UnsupportedOperationException;
+    List<L> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws UnsupportedOperationException;
 }
