@@ -2049,8 +2049,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                                null,
                                                                                                null,
                                                                                                null,
-                                                                                               OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID,
-                                                                                               OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
+                                                                                               OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_GUID,
+                                                                                               OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_NAME,
                                                                                                null,
                                                                                                repositoryHelper,
                                                                                                serviceName,
@@ -2060,8 +2060,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                     schemaAttributeBuilder.setAnchors(userId, fileAssetGUID, methodName);
 
                     SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(columnQualifiedName + ":columnType",
-                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_TYPE_GUID,
-                                                                                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_TYPE_NAME,
+                                                                                OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID,
+                                                                                OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
                                                                                 repositoryHelper,
                                                                                 serviceName,
                                                                                 serverName);

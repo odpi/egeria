@@ -1010,7 +1010,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
                 return executor.getEntityDetail();
             }
-            catch (EntityProxyOnlyException | EntityNotKnownException proxyException)
+            catch (EntityProxyOnlyException proxyException)
             {
                 cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
@@ -1354,7 +1354,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                   FunctionNotSupportedException,
                                                                                   UserNotAuthorizedException
     {
-        final String  methodName                   = "findEntities";
+        final String  methodName = "findEntities";
 
         /*
          * Validate parameters

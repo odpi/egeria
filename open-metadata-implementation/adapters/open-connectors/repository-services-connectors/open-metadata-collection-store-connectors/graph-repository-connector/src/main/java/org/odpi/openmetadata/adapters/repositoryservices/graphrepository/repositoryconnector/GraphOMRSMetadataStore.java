@@ -574,7 +574,7 @@ class GraphOMRSMetadataStore {
         {
 
             // Entity was not found by GUID
-            log.error("{} entity with GUID {} not found", methodName, guid);
+            log.warn("{} entity with GUID {} not found", methodName, guid);
             g.tx().rollback();
 
             throw new EntityNotKnownException(
@@ -643,7 +643,7 @@ class GraphOMRSMetadataStore {
         {
 
             // Entity was not found by GUID
-            log.error("{} entity with GUID {} not found", methodName, guid);
+            log.warn("{} entity with GUID {} not found", methodName, guid);
             g.tx().rollback();
 
             throw new EntityNotKnownException(

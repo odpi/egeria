@@ -321,7 +321,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
+            log.warn("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
             entity = null;
         }
 

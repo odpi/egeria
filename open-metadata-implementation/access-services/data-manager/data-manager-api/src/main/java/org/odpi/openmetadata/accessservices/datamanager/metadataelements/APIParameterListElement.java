@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListType;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,9 +25,10 @@ public class APIParameterListElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private APIParameterListProperties properties     = null;
-    private ElementHeader              elementHeader  = null;
-    private int                        parameterCount = 0;
+    private ElementHeader              elementHeader     = null;
+    private APIParameterListProperties properties        = null;
+    private APIParameterListType       parameterListType = null;
+    private int                        parameterCount    = 0;
 
     /**
      * Default constructor
@@ -48,7 +50,7 @@ public class APIParameterListElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-
+            parameterListType = template.getParameterListType();
             parameterCount = template.getParameterCount();
         }
     }
@@ -100,6 +102,27 @@ public class APIParameterListElement implements MetadataElement, Serializable
     }
 
 
+    /**
+     * Return the type of parameter list for the API operation.
+     *
+     * @return enum value
+     */
+    public APIParameterListType getParameterListType()
+    {
+        return parameterListType;
+    }
+
+
+    /**
+     * Set up the type of parameter list for the API Operation.
+     *
+     * @param parameterListType enum value
+     */
+    public void setParameterListType(APIParameterListType parameterListType)
+    {
+        this.parameterListType = parameterListType;
+    }
+
 
     /**
      * Return the count of parameters in this parameter list.
@@ -129,8 +152,9 @@ public class APIParameterListElement implements MetadataElement, Serializable
     public String toString()
     {
         return "APIParameterListElement{" +
-                       "properties=" + properties +
-                       ", elementHeader=" + elementHeader +
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
+                       ", parameterListType=" + parameterListType +
                        ", parameterCount=" + parameterCount +
                        '}';
     }
@@ -156,6 +180,7 @@ public class APIParameterListElement implements MetadataElement, Serializable
         APIParameterListElement that = (APIParameterListElement) objectToCompare;
         return parameterCount == that.parameterCount &&
                        Objects.equals(properties, that.properties) &&
+                       Objects.equals(parameterListType, that.parameterListType) &&
                        Objects.equals(elementHeader, that.elementHeader);
     }
 
@@ -168,6 +193,6 @@ public class APIParameterListElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, parameterCount);
+        return Objects.hash(super.hashCode(), elementHeader, properties, parameterListType, parameterCount);
     }
 }

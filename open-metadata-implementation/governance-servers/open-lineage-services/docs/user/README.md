@@ -17,7 +17,7 @@ Most of the interaction with the Open Lineage Services will be driven by the ext
 
 To understand how to configure:
 
-* [Configuring OLS](../configuration/README.md)
+* [Configuring OLS](../configuration)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
