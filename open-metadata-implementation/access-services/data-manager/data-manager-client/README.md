@@ -8,7 +8,7 @@ interface for asynchronous integration.  This client
 package provides Java clients to make it easier
 for data tools and applications to call these interfaces.
 
-There are 4 clients:
+There are 6 clients:
 
  * **MetadataSourceClient** enables the caller to create the Software Server Capability that represents
    the source, or owner, of the metadata.  These sources are database manager, file managers and 
@@ -19,6 +19,10 @@ There are 4 clients:
     
  * **FilesAndFoldersClient** enables the caller to describe files and the organizing folder structure
    around it.
+
+ * **EventBrokerClient** enables the caller to define topics and event types from an event broker.
+
+ * **APIManagerClient** enables the caller to define APIs that are supported by a server or API gateway.
 
  * **DataManagerEventClient** enables the client to send and receive events from the Data Manager OMAS.
 

@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class APIIntegratorContextManager extends IntegrationContextManager
 {
-    private APIManagerClient apiManagerClient  = null;
+    private APIManagerClient      apiManagerClient  = null;
     private MetadataSourceClient  metadataSourceClient   = null;
     private DataManagerRESTClient restClient             = null;
 
