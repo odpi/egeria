@@ -11,7 +11,7 @@ and the open metadata ecosystem.
 
 It supports a type of [integration connector](../../governance-servers/integration-daemon-services/docs/integration-connector.md)
 that are able to create [DeployedAPI](../../../open-metadata-publication/website/open-metadata-types/0212-Deployed-APIs.md)
-assets along with is associated API specification ([APISchemaType](../../../open-metadata-publication/website/open-metadata-types/0536-API-Schemas.md)).
+assets along with its associated API specification ([APISchemaType](../../../open-metadata-publication/website/open-metadata-types/0536-API-Schemas.md)).
 Optionally, this metadata can be tied to an [APIManager](../../../open-metadata-publication/website/open-metadata-types/0050-Applications-and-Processes.md).
 
 Figure 1 shows the types of metadata that integrators connectors can create with this integration service.
