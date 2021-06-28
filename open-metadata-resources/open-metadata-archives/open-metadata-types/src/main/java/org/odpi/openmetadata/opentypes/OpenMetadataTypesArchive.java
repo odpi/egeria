@@ -882,8 +882,10 @@ public class OpenMetadataTypesArchive
     {
 
         this.archiveBuilder.addEntityDef(addDisplayDataSchemaTypeEntity());
+        this.archiveBuilder.addEntityDef(addDisplayDataContainerEntity());
         this.archiveBuilder.addEntityDef(addDisplayDataFieldEntity());
         this.archiveBuilder.addEntityDef(addQuerySchemaTypeEntity());
+        this.archiveBuilder.addEntityDef(addQueryDataContainerEntity());
         this.archiveBuilder.addEntityDef(addQueryDataFieldEntity());
     }
 
@@ -908,6 +910,30 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+    }
+
+
+    /**
+     * This new subtype of schema type that describes a list of parameters for an API.
+     *
+     * @return entity definition
+     */
+    private EntityDef addDisplayDataContainerEntity()
+    {
+        final String guid            = "f2a4ff99-1954-48c0-8081-92d1a4dfd910";
+        final String name            = "DisplayDataContainer";
+        final String description     = "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+
     }
 
 
@@ -965,6 +991,28 @@ public class OpenMetadataTypesArchive
         final String descriptionGUID = null;
 
         final String superTypeName = "ComplexSchemaType";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /**
+     * This new subtype of schema attribute that describes a field in an information view.
+     *
+     * @return entity definition
+     */
+    private EntityDef addQueryDataContainerEntity()
+    {
+        final String guid            = "b55c2740-2d41-4433-a099-596c8e9b7bf6";
+        final String name            = "QueryDataContainer";
+        final String description     = "A grouping of display data fields (and nested containers) for a query.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

@@ -1942,6 +1942,10 @@ public class OpenMetadataAPIMapper
     public static final String DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME       = "DisplayDataSchemaType";
     /* ComplexSchemaType */
 
+    public static final String DISPLAY_DATA_CONTAINER_TYPE_GUID         = "f2a4ff99-1954-48c0-8081-92d1a4dfd910";   /* from Area 5 */
+    public static final String DISPLAY_DATA_CONTAINER_TYPE_NAME         = "DisplayDataContainer";
+    /* SchemaAttribute */
+
     public static final String DISPLAY_DATA_FIELD_TYPE_GUID             = "46f9ea33-996e-4c62-a67d-803df75ef9d4";   /* from Area 5 */
     public static final String DISPLAY_DATA_FIELD_TYPE_NAME             = "DisplayDataField";
     /* SchemaAttribute */
@@ -1952,8 +1956,12 @@ public class OpenMetadataAPIMapper
     public static final String QUERY_SCHEMA_TYPE_TYPE_NAME              = "QuerySchemaType";
     /* ComplexSchemaType */
 
-    public static final String QUERY_DATA_FIELD_TYPE_GUID              = "0eb92215-52b1-4fac-92e7-ff02ff385a68";   /* from Area 5 */
-    public static final String QUERY_DATA_FIELD_TYPE_NAME              = "QueryDataField";
+    public static final String QUERY_DATA_CONTAINER_TYPE_GUID           = "0eb92215-52b1-4fac-92e7-ff02ff385a68";   /* from Area 5 */
+    public static final String QUERY_DATA_CONTAINER_TYPE_NAME           = "QueryDataContainer";
+    /* SchemaAttribute */
+
+    public static final String QUERY_DATA_FIELD_TYPE_GUID               = "0eb92215-52b1-4fac-92e7-ff02ff385a68";   /* from Area 5 */
+    public static final String QUERY_DATA_FIELD_TYPE_NAME               = "QueryDataField";
     /* SchemaAttribute */
 
     public static final String VALID_VALUE_DEFINITION_TYPE_GUID         = "09b2133a-f045-42cc-bb00-ee602b74c618";   /* from Area 5 */
