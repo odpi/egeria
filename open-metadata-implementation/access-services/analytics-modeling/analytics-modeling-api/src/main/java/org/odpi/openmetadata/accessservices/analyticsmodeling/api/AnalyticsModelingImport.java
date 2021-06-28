@@ -13,7 +13,9 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 public interface AnalyticsModelingImport {
 
@@ -26,9 +28,11 @@ public interface AnalyticsModelingImport {
 	 * @return list of databases for the requested server/user.
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
-			throws AnalyticsModelingCheckedException, PropertyServerException;
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
 	/**
 	 * Get schema defined by database GUID.
@@ -40,9 +44,11 @@ public interface AnalyticsModelingImport {
 	 * @return list of schemas for the requested database.
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize)
-			throws AnalyticsModelingCheckedException, PropertyServerException;
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
 	/**
 	 * Get tables for the schema.
@@ -54,9 +60,11 @@ public interface AnalyticsModelingImport {
 	 * @return list of tables for the requested schema.
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerSchemaTables getTables(String userId, String databaseGuid, String catalog, String schema)
-			throws AnalyticsModelingCheckedException, PropertyServerException;
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
 	/**
 	 * Build module for the schema.
@@ -69,8 +77,10 @@ public interface AnalyticsModelingImport {
 	 * @return module for the requested schema.
 	 * @throws AnalyticsModelingCheckedException error executing request.
 	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
-			throws AnalyticsModelingCheckedException, PropertyServerException;
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
 }

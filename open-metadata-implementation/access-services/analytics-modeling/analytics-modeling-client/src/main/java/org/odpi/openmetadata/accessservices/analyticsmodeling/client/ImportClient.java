@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 public class ImportClient implements AnalyticsModelingImport {
 	
@@ -138,12 +139,14 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param startFrom		starting element (used in paging through large result sets)
      * @param pageSize		maximum number of results to return
 	 * @return list of databases for the requested server/user.
-     * @throws AnalyticsModelingCheckedException 
-     * @throws PropertyServerException 
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	@Override
 	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
-			throws AnalyticsModelingCheckedException, PropertyServerException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.getDatabases(userId, startFrom, pageSize);
 	}
@@ -156,12 +159,14 @@ public class ImportClient implements AnalyticsModelingImport {
      * @param startFrom		 starting element (used in paging through large result sets)
      * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
-     * @throws PropertyServerException 
-     * @throws AnalyticsModelingCheckedException 
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	@Override
 	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.getSchemas(userId, databaseGuid, startFrom, pageSize);
 	}
@@ -174,12 +179,14 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param catalog      name of the database.
 	 * @param schema       schema name on the database.
 	 * @return list of tables for the requested schema.
-	 * @throws PropertyServerException 
-	 * @throws AnalyticsModelingCheckedException 
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	@Override
 	public ResponseContainerSchemaTables getTables(String userId, String databaseGuid, String catalog, String schema)
-			throws AnalyticsModelingCheckedException, PropertyServerException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.getTables(userId, databaseGuid, catalog, schema);
 	}
@@ -193,12 +200,14 @@ public class ImportClient implements AnalyticsModelingImport {
 	 * @param schema       schema name of the database.
 	 * @param request      table filter 
 	 * @return module for the requested schema.
-	 * @throws PropertyServerException 
-	 * @throws AnalyticsModelingCheckedException 
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	@Override
 	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
-			throws AnalyticsModelingCheckedException, PropertyServerException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.getModule(userId, databaseGuid, catalog, schema, request);
 	}

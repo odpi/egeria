@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	
@@ -136,10 +137,14 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @param serverCapability source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
 	public ResponseContainerAssets createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.createAssets(userId, serverCapability, artifact);
 	}
@@ -150,10 +155,14 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @param serverCapability source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
 	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
 		return restClient.updateAssets(userId, serverCapability, artifact);
 	}
@@ -164,10 +173,14 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @param serverCapability where the artifact is stored.
 	 * @param identifier of the artifact in 3rd party system.
 	 * @return errors or list of created assets.
+	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws PropertyServerException in case REST call failed.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
 	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String identifier)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
     {
 		return restClient.deleteAssets(userId, serverCapability, identifier);
 	}

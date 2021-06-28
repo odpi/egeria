@@ -101,9 +101,10 @@ public class AnalyticsArtifactHandler {
 	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
@@ -119,7 +120,7 @@ public class AnalyticsArtifactHandler {
 			if (AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createVisualizationAsset(asset));
 			}
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_CREATE_ARTIFACT.getMessageDefinition(),
 					this.getClass().getSimpleName(),
@@ -774,7 +775,7 @@ public class AnalyticsArtifactHandler {
 
         if (bCreate) {
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(src.getQualifiedName(),
-            		IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+            		IdMap.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID, IdMap.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
                     ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
     		
     		builder.setSchemaType(ctx.getUserId(), schemaTypeBuilder, methodName);
@@ -790,9 +791,10 @@ public class AnalyticsArtifactHandler {
 	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
@@ -818,7 +820,7 @@ public class AnalyticsArtifactHandler {
 				guids.add(updateVisualizationAsset(asset));
 			}
 			
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_UPDATE_ARTIFACT.getMessageDefinition(user, asset.getQualifiedName(), ex.getLocalizedMessage()),
 					this.getClass().getSimpleName(),
@@ -1177,9 +1179,10 @@ public class AnalyticsArtifactHandler {
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
-			throws AnalyticsModelingCheckedException 
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException 
 	{
 		String methodName = "deleteAssets";
 		ctx.initializeSoftwareServerCapability(userId, serverCapability);
@@ -1213,7 +1216,7 @@ public class AnalyticsArtifactHandler {
 
 			}
 			
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_DELETE_ARTIFACT.getMessageDefinition(userId, identifier, ex.getLocalizedMessage()),
 					this.getClass().getSimpleName(),

@@ -34,6 +34,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterExce
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -100,7 +101,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabases() throws AnalyticsModelingCheckedException {
+	public void getDatabases() throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		// setup repository
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
@@ -119,7 +120,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
+	public void getDatabasesPage() throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		// setup repository with four databases sorted: AdventureWorks, DB_3, DB_4, DB_5, GOSALES
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
@@ -146,14 +147,14 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
+	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(USER_ID, FROM_INDEX, PAGE_SIZE);
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
 	}
 
 	@Test
 	public void getDatabaseSchemasWithEmptyCatalog()
-			throws AnalyticsModelingCheckedException, InvalidParameterException {
+			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -165,7 +166,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabaseSchemas() throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public void getDatabaseSchemas() throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -185,7 +186,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabaseSchemasPage() throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public void getDatabaseSchemasPage() throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 		// setup repository with four schemas sorted: dbo, s1, s2, s3, sys
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
@@ -220,7 +221,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 	@Test
 	public void getDatabaseSchemasSameNameForTwoCatalogs()
-			throws AnalyticsModelingCheckedException, InvalidParameterException {
+			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);

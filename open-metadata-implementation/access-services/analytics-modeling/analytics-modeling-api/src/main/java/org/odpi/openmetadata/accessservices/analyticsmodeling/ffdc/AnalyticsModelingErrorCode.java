@@ -179,6 +179,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Rest call {0} failed. Cause: {1}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue and repeat request."),
+    UNAUTHORIZED_USER (
+			"OMAS-ANALYTICS-MODELING-030", 
+			"User {0} is not authorized to perform operation: {1}",
+			"The system is unable to process the request.",
+			"Review the user permissions to resolve the issue and repeat request."),
     UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
             "An unexpected {0} exception was caught by {1}; error message was {2}",
             "The system is unable to process the request and has returned an exception to the caller.",

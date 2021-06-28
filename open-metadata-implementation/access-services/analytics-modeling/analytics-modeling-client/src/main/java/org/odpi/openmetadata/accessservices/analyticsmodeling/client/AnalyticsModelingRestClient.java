@@ -21,10 +21,12 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleRe
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -32,6 +34,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  */
 public class AnalyticsModelingRestClient extends FFDCRESTClient
 {
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
+	
 	private final String urlTemplateResource = "/servers/{0}/open-metadata/access-services/analytics-modeling/users/{1}/";
 	private final String urlTemplateSynchronization= urlTemplateResource + "sync?serverCapability={2}";
 
@@ -109,9 +114,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
      * @return list of databases.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
      */
 	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
-			throws PropertyServerException, AnalyticsModelingCheckedException 
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException 
 	{
 		String methodName = "getDatabases";
 		String url = serverPlatformURLRoot + urlTemplateResource + "databases?startFrom={2}&pageSize={3}";
@@ -133,9 +140,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return list of schemas.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize) 
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "getSchemas";
 		String url = serverPlatformURLRoot + urlTemplateResource + "{2}/schemas?startFrom={3}&pageSize={4}";
@@ -157,9 +166,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return list of tables.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerSchemaTables getTables(String userId, String databaseGuid, String catalog, String schema)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "getTables";
 
@@ -183,9 +194,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return created module.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "getModule";
 		String url = serverPlatformURLRoot + urlTemplateResource + "{2}/physicalModule?catalog={3}&schema={4}";
@@ -205,9 +218,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return list of GUIDs for created assets.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset artifact)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
 		String url = serverPlatformURLRoot + urlTemplateSynchronization;
@@ -227,9 +242,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return list of GUIDs for updated assets.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset artifact)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
 		String url = serverPlatformURLRoot + urlTemplateSynchronization;
@@ -249,9 +266,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @return list of GUIDs for deleted assets.
 	 * @throws PropertyServerException in case REST call failed.
 	 * @throws AnalyticsModelingCheckedException error executing request.
+	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
+	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
 	public ResponseContainerAssets deleteAssets(String user, String serverCapability, String identifier)
-			throws PropertyServerException, AnalyticsModelingCheckedException
+			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "deleteAssets";
 		String url = serverPlatformURLRoot + urlTemplateSynchronization;
@@ -264,8 +283,10 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	}
 	
 	private void handleFailedResponse(AnalyticsModelingOMASAPIResponse response, String methodName) 
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException
 	{
+		restExceptionHandler.detectAndThrowStandardExceptions(methodName, response);
+		
 		if (response.getRelatedHTTPCode() != 200) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAIL_REST_CALL.getMessageDefinition(methodName, response.getExceptionErrorMessage()),
