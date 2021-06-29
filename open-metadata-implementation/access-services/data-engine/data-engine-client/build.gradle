@@ -19,6 +19,8 @@ dependencies {
     implementation 'org.springframework:spring-core'
     implementation 'org.apache.commons:commons-collections4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'junit:junit'
 
 }
 

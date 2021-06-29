@@ -183,7 +183,7 @@ class DataEngineRegistrationHandlerTest {
     @Test
     void removeExternalDataEngine_throwsFunctionNotSupportedException() {
         FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                registrationHandler.removeExternalDataEngine(USER, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
+                registrationHandler.removeExternalDataEngine(USER, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
 
         assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
     }

@@ -2,14 +2,35 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesDeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -29,6 +50,12 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
+    private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
+    private static final String RELATIONAL_TABLE_URL_TEMPLATE = DATA_ENGINE_PATH + "relational-tables";
+    private static final String DATA_FILE_URL_TEMPLATE = DATA_ENGINE_PATH + "data-files";
+    private static final String FOLDER_URL_TEMPLATE = DATA_ENGINE_PATH + "folders";
+    private static final String CONNECTION_URL_TEMPLATE = DATA_ENGINE_PATH + "connections";
+    private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
     private static final String PROCESSES_DELETE_METHOD_NAME = "deleteProcesses";
@@ -42,10 +69,19 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_DELETE_METHOD_NAME = "deletePortAlias";
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
+    private static final String DATABASE_METHOD_NAME = "upsertDatabase";
+    private static final String RELATIONAL_TABLE_METHOD_NAME = "upsertRelationalTable";
+    private static final String DATA_FILE_METHOD_NAME = "upsertDataFile";
+    private static final String DATABASE_DELETE_METHOD_NAME = "deleteDatabase";
+    private static final String RELATIONAL_TABLE_DELETE_METHOD_NAME = "deleteRelationalTable";
+    private static final String DATA_FILE_DELETE_METHOD_NAME = "deleteDataFile";
+    private static final String FOLDER_DELETE_METHOD_NAME = "deleteFolder";
+    private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
+    private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
 
     private final String serverPlatformRootURL;
     private String externalSourceName;
-    private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
+    private DeleteSemantic deleteSemantic = DeleteSemantic.SOFT;
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
@@ -114,6 +150,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callProcessListPostRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
                                                                                                        PropertyServerException {
@@ -147,6 +186,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   PropertyServerException {
@@ -174,6 +216,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, SCHEMA_TYPE_DELETE_METHOD_NAME);
@@ -201,6 +246,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME);
@@ -229,6 +277,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException{
         invalidParameterHandler.validateUserId(userId, PORT_ALIAS_DELETE_METHOD_NAME);
@@ -272,6 +323,128 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                          PropertyServerException {
+        final String methodName = DATABASE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        DatabaseRequestBody requestBody = new DatabaseRequestBody();
+        requestBody.setDatabase(database);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                               PropertyServerException {
+        final String methodName = RELATIONAL_TABLE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
+        requestBody.setRelationalTable(relationalTable);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        final String methodName = DATA_FILE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        DataFileRequestBody requestBody = new DataFileRequestBody();
+        requestBody.setDataFile(dataFile);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, DATABASE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, DATABASE_DELETE_METHOD_NAME, DATABASE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, RELATIONAL_TABLE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, RELATIONAL_TABLE_DELETE_METHOD_NAME, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, DATA_FILE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, DATA_FILE_DELETE_METHOD_NAME, DATA_FILE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, FOLDER_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, FOLDER_DELETE_METHOD_NAME, FOLDER_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, CONNECTION_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, CONNECTION_DELETE_METHOD_NAME, CONNECTION_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, ENDPOINT_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, ENDPOINT_DELETE_METHOD_NAME, ENDPOINT_URL_TEMPLATE, requestBody);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

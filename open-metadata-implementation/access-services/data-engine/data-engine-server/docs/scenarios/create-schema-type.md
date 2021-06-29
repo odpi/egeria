@@ -6,7 +6,7 @@
 Create a SchemaType with SchemaAttributes and relationships
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/schema-types/
 

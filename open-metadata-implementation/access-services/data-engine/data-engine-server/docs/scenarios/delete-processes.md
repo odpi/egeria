@@ -10,7 +10,7 @@ Check [delete-port-implementation](delete-port-implementation.md), [delete-port-
 and [delete-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 ```
 DELETE {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
 

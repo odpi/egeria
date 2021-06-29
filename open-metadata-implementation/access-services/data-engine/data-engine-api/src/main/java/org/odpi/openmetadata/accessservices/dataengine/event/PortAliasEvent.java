@@ -46,8 +46,8 @@ public class PortAliasEvent extends DataEngineEventHeader {
      * @return the port alias
      * -- SETTER --
      * Sets up the port alias
-     * @param port the port alias
+     * @param portAlias the port alias
      */
-    private PortAlias port;
+    private PortAlias portAlias;
 
 }
