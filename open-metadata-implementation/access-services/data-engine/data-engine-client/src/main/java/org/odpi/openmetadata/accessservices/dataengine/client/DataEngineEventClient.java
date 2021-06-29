@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class DataEngineEventClient implements DataEngineClient {
 
-    private DataEngineInTopicClientConnector topicConnector;
+    private final DataEngineInTopicClientConnector topicConnector;
     private String externalSource;
     private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
 

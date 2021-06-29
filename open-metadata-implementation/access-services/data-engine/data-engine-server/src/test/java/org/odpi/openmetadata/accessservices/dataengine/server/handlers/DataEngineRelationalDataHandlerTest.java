@@ -207,7 +207,7 @@ class DataEngineRelationalDataHandlerTest {
 
         when(relationalDataHandler.createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, SCHEMA_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, methodName)).thenReturn(TABLE_GUID);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable, EXTERNAL_SOURCE_DE_NAME);
@@ -217,10 +217,10 @@ class DataEngineRelationalDataHandlerTest {
         verify(relationalDataHandler, times(1)).createDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 TABLE_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(), column.getExternalTypeGUID(),
                 column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getValidValuesSetGUID(), column.getFormula(),
-                column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
+                column.getIsDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                 column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(),
                 column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(), column.getLength(), column.getPrecision(),
-                column.isNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
+                column.getIsNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
                 RELATIONAL_COLUMN_TYPE_NAME, null, null, "upsertRelationalColumns");
     }
 
@@ -242,14 +242,14 @@ class DataEngineRelationalDataHandlerTest {
         verifyInvalidParameterHandlerInvocations(methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, TABLE_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 COLUMN_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
-                column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.isDeprecated(),
+                column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.getIsDeprecated(),
                 column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                 column.getOrderedValues(), column.getDefaultValueOverride(), column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(),
-                column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
+                column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
                 column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null,
                 "upsertRelationalColumns");
     }
@@ -307,7 +307,7 @@ class DataEngineRelationalDataHandlerTest {
         relationalTable.setQualifiedName(QUALIFIED_NAME);
         relationalTable.setDisplayName(NAME);
         relationalTable.setDescription(DESCRIPTION);
-        relationalTable.setDeprecated(false);
+        relationalTable.setIsDeprecated(false);
         relationalTable.setAliases(Collections.singletonList("alias"));
 
         return relationalTable;

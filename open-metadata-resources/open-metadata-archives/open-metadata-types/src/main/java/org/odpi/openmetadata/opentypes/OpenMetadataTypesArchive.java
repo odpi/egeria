@@ -164,7 +164,7 @@ public class OpenMetadataTypesArchive
         update0534RelationalSchema();
         update0535EventSchemas();
         update0536APISchemas();
-
+        update0537DisplaySchemas();
     }
 
 
@@ -545,11 +545,13 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * The TabularColumnType only allows for a column to be primitive - could be a literal.
+     * The TabularColumnType only allows for a column to be primitive - could be a literal - so deprecate.
+     * Add TabularFileColumn to be able to distinguish between a tabular column in a file and a relational column
      */
     private void update0530TabularSchema()
     {
         this.archiveBuilder.addTypeDefPatch(deprecateTabularColumnType());
+        this.archiveBuilder.addEntityDef(addTabularFileColumnEntity());
     }
 
     private TypeDefPatch deprecateTabularColumnType()
@@ -566,6 +568,28 @@ public class OpenMetadataTypesArchive
     }
 
 
+    /**
+     * This new subtype of TabularColumn is to document a column in a tabular file.  This is to allow a distinction between
+     * a tabular column in a file and a relational database column.
+     *
+     * @return entity definition
+     */
+    private EntityDef addTabularFileColumnEntity()
+    {
+        final String guid            = "af6265e7-5f58-4a9c-9ae7-8d4284be62bd";
+        final String name            = "TabularFileColumn";
+        final String description     = "A column in a tabular file.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "TabularColumn";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -843,6 +867,180 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * A variety of changes to improve definition of schemas that represent displayed data
+     */
+    private void update0537DisplaySchemas()
+    {
+
+        this.archiveBuilder.addEntityDef(addDisplayDataSchemaTypeEntity());
+        this.archiveBuilder.addEntityDef(addDisplayDataContainerEntity());
+        this.archiveBuilder.addEntityDef(addDisplayDataFieldEntity());
+        this.archiveBuilder.addEntityDef(addQuerySchemaTypeEntity());
+        this.archiveBuilder.addEntityDef(addQueryDataContainerEntity());
+        this.archiveBuilder.addEntityDef(addQueryDataFieldEntity());
+    }
+
+
+
+    /**
+     * This new subtype of schema type that describes a report or form.
+     *
+     * @return entity definition
+     */
+    private EntityDef addDisplayDataSchemaTypeEntity()
+    {
+        final String guid            = "2f5796f5-3fac-4501-9d0d-207aa8620d16";
+        final String name            = "DisplayDataSchemaType";
+        final String description     = "A structure describing data that is to be displayed.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "ComplexSchemaType";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /**
+     * This new subtype of schema type that describes a list of parameters for an API.
+     *
+     * @return entity definition
+     */
+    private EntityDef addDisplayDataContainerEntity()
+    {
+        final String guid            = "f2a4ff99-1954-48c0-8081-92d1a4dfd910";
+        final String name            = "DisplayDataContainer";
+        final String description     = "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+
+    }
+
+
+    /**
+     * This new subtype of schema type that describes a list of parameters for an API.
+     *
+     * @return entity definition
+     */
+    private EntityDef addDisplayDataFieldEntity()
+    {
+        final String guid            = "46f9ea33-996e-4c62-a67d-803df75ef9d4";
+        final String name            = "DisplayDataField";
+        final String description     = "A data display field.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute2Name            = "inputField";
+        final String attribute2Description     = "Is this data field accepting new  data from the end user or not.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * This new subtype of schema type that describes a report or form.
+     *
+     * @return entity definition
+     */
+    private EntityDef addQuerySchemaTypeEntity()
+    {
+        final String guid            = "4d11bdbb-5d4a-488b-9f16-bf1e34d34dd9";
+        final String name            = "QuerySchemaType";
+        final String description     = "A structure describing data that being queried and formatted to support a user display or report.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "ComplexSchemaType";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /**
+     * This new subtype of schema attribute that describes a field in an information view.
+     *
+     * @return entity definition
+     */
+    private EntityDef addQueryDataContainerEntity()
+    {
+        final String guid            = "b55c2740-2d41-4433-a099-596c8e9b7bf6";
+        final String name            = "QueryDataContainer";
+        final String description     = "A grouping of display data fields (and nested containers) for a query.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /**
+     * This new subtype of schema attribute that describes a field in an information view.
+     *
+     * @return entity definition
+     */
+    private EntityDef addQueryDataFieldEntity()
+    {
+        final String guid            = "0eb92215-52b1-4fac-92e7-ff02ff385a68";
+        final String name            = "QueryDataField";
+        final String description     = "A data field that is returned by a query.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SchemaAttribute";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 }
 

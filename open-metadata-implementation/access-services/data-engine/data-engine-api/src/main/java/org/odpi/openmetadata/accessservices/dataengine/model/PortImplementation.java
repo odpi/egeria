@@ -6,8 +6,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,47 +21,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class PortImplementation extends Port {
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
-    @JsonProperty("schema")
-    private SchemaType schemaType;
 
     /**
+     * The schema type
+     * -- GETTER --
      * Gets schema type.
-     *
      * @return the schema type
-     */
-    public SchemaType getSchemaType() {
-        return schemaType;
-    }
-
-    /**
+     * -- SETTER --
      * Sets schema type.
-     *
      * @param schemaType the schema type
      */
-    public void setSchemaType(SchemaType schemaType) {
-        this.schemaType = schemaType;
-    }
+    @JsonProperty("schema")
+    @Getter
+    @Setter
+    private SchemaType schemaType;
 
-    @Override
-    public String toString() {
-        return "PortImplementation{" +
-                "schemaType=" + schemaType +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        PortImplementation that = (PortImplementation) o;
-        return Objects.equals(schemaType, that.schemaType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), schemaType);
-    }
 }

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class CollectionBuilder extends ReferenceableBuilder {
 
-    private String collectionName;
+    private final String collectionName;
 
     public CollectionBuilder(String qualifiedName, String collectionName, String typeName,
                              OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {

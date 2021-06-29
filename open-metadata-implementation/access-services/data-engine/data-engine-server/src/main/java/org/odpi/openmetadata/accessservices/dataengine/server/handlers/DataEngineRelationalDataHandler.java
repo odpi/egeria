@@ -259,13 +259,13 @@ public class DataEngineRelationalDataHandler {
             String databaseSchemaGUID = getDatabaseSchemaGUID(userId, databaseQualifiedName, methodName);
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                    relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                    relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                     RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                    relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                    relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                     RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         }
 
@@ -305,18 +305,18 @@ public class DataEngineRelationalDataHandler {
                 relationalDataHandler.createDatabaseColumn(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                         column.getQualifiedName(), column.getDisplayName(), column.getDescription(), column.getExternalTypeGUID(),
                         column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getValidValuesSetGUID(), column.getFormula(),
-                        column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
+                        column.getIsDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
-                        column.getMinimumLength(), column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(),
+                        column.getMinimumLength(), column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(),
                         column.getAliases(), column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
                         null, methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
                         originalRelationalColumnEntity.get().getGUID(), column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
-                        column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.isDeprecated(),
+                        column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.getIsDeprecated(),
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
-                        column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
+                        column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
                         column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
                         null, methodName);
             }

@@ -3,6 +3,9 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id "io.freefair.lombok"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')

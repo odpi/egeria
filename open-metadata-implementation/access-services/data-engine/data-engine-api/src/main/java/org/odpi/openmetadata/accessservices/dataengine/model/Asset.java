@@ -5,10 +5,14 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,217 +20,114 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class Asset extends Referenceable {
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
-    private String displayName;
-    private String description;
-    private String owner;
-    private OwnerType ownerType;
-    private List<String> zoneMembership;
-    private String GUID;
-    private String originOrganizationGUID;
-    private String originBusinessCapabilityGUID;
-    private Map<String, String> otherOriginValues;
 
     /**
+     * The stored display name property for the asset
+     * -- SETTER --
+     * Sets up the stored display name property for the asset.
+     * @param displayName name
+     * -- GETTER --
      * Returns the stored display name property for the asset.
      * If no display name is available then null is returned.
-     *
-     * @return String name
+     * @return name
      */
-    public String getDisplayName() {
-        return displayName;
-    }
+    private String displayName;
 
     /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
+     * The stored description property associated with the asset
+     *  -- SETTER --
+     *  Set up the stored description property associated with the asset.
+     *  @param description String text
+     * -- GETTER --
      * Returns the stored description property for the asset.
      * If no description is provided then null is returned.
-     *
-     * @return description String text
+     * @return description
      */
-    public String getDescription() {
-        return description;
-    }
-
+    private String description;
     /**
-     * Set up the stored description property associated with the asset.
-     *
-     * @param description String text
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-    /**
+     * The name of the owner for this asset
+     * -- SETTER --
      * Set up the name of the owner for this asset.
-     *
      * @param owner String name
+     * -- GETTER --
+     * Returns the name of the owner for this asset.
+     * @return owner
      */
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+    private String owner;
 
     /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerType enum
-     */
-    public OwnerType getOwnerType() {
-        return ownerType;
-    }
-
-    /**
+     * The owner type for this asset
+     * -- SETTER --
      * Set up the owner type for this asset.
-     *
      * @param ownerType OwnerType enum
+     * -- GETTER --
+     * Return the type of owner stored in the owner property.
+     * @return owner type
      */
-    public void setOwnerType(OwnerType ownerType) {
-        this.ownerType = ownerType;
-    }
+    private OwnerType ownerType;
 
     /**
+     * The names of the zones that this asset is a member of
+     * -- SETTER--
+     * Set up the names of the zones that this asset is a member of.
+     * @param zoneMembership list of zone names
+     * -- GETTER --
      * Return the names of the zones that this asset is a member of.
-     *
      * @return list of zone names
      */
-    public List<String> getZoneMembership() {
-        return zoneMembership;
-    }
+    private List<String> zoneMembership;
 
     /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
+     * The GUID
+     * -- GETTER --
+     * Gets the GUID
+     * @return the GUID
+     * -- SETTER --
+     * Sets the GUID
+     * @param GUID the GUID
      */
-    public void setZoneMembership(List<String> zoneMembership) {
-        this.zoneMembership = zoneMembership;
-    }
+    private String GUID;
 
     /**
-     * Return the unique identifier for the organization that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID() {
-        return originOrganizationGUID;
-    }
-
-    /**
+     * The unique identifier for the organization that originated this asset
+     * -- SETTER --
      * Set up the unique identifier for the organization that originated this asset.
-     *
      * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID) {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-    /**
-     * Return the unique identifier of the business capability that originated this asset.
-     *
+     * -- GETTER --
+     * Return the unique identifier for the organization that originated this asset.
      * @return string guid
      */
-    public String getOriginBusinessCapabilityGUID() {
-        return originBusinessCapabilityGUID;
-    }
+    private String originOrganizationGUID;
 
     /**
+     * The unique identifier of the business capability that originated this asset
+     * -- SETTER --
      * Set up the unique identifier of the business capability that originated this asset.
-     *
      * @param originBusinessCapabilityGUID string guid
+     * -- GETTER --
+     * Return the unique identifier of the business capability that originated this asset.
+     * @return string guid
      */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID) {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
+    private String originBusinessCapabilityGUID;
 
     /**
+     * The properties that characterize where this asset is from
+     * -- SETTER --
+     * Set up the properties that characterize where this asset is from.
+     * @param otherOriginValues map of name value pairs, all strings
+     * -- GETTER --
      * Return the properties that characterize where this asset is from.
-     *
      * @return map of name value pairs, all strings
      */
-    public Map<String, String> getOtherOriginValues() {
-        return otherOriginValues;
-    }
+    private Map<String, String> otherOriginValues;
 
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues) {
-        this.otherOriginValues = otherOriginValues;
-    }
-
-    /**
-     * Gets guid.
-     *
-     * @return the guid
-     */
-    public String getGUID() {
-        return GUID;
-    }
-
-    /**
-     * Sets guid.
-     *
-     * @param GUID the guid
-     */
-    public void setGUID(String GUID) {
-        this.GUID = GUID;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Asset asset = (Asset) o;
-        return Objects.equals(displayName, asset.displayName) &&
-                Objects.equals(description, asset.description) &&
-                Objects.equals(owner, asset.owner) &&
-                ownerType == asset.ownerType &&
-                Objects.equals(zoneMembership, asset.zoneMembership) &&
-                Objects.equals(GUID, asset.GUID) &&
-                Objects.equals(originOrganizationGUID, asset.originOrganizationGUID) &&
-                Objects.equals(originBusinessCapabilityGUID, asset.originBusinessCapabilityGUID) &&
-                Objects.equals(otherOriginValues, asset.otherOriginValues);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, GUID, originOrganizationGUID,
-                originBusinessCapabilityGUID, otherOriginValues);
-    }
-
-    @Override
-    public String toString() {
-        return "Asset{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", GUID='" + GUID + '\'' +
-                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                ", otherOriginValues=" + otherOriginValues +
-                '}';
-    }
 }

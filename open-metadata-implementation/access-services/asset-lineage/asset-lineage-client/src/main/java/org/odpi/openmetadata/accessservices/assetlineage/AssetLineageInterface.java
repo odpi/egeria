@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public interface AssetLineageInterface {
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<String> publishEntities(String serverName, String userId, String entityType, Optional<LocalDateTime> updatedAfterDate)
+    List<String> publishEntities(String serverName, String userId, String entityType, Optional<Date> updatedAfterDate)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
     /**
