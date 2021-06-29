@@ -3424,7 +3424,6 @@
                         <exclude>**/build/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/.repository/**</exclude>
-                        <exclude>**/charts/**/charts/**</exclude>
                         <exclude>gradle/wrapper/**</exclude>
                         <exclude>**/log</exclude>
                         <exclude>**/*.lock</exclude>
