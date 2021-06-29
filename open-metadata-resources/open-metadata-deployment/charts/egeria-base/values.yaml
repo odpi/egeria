@@ -6,7 +6,7 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "2.11-SNAPSHOT"
+  version: "3.0-SNAPSHOT"
   repositoryType: "local-graph-repository"
   debug: false
   persistence: true
