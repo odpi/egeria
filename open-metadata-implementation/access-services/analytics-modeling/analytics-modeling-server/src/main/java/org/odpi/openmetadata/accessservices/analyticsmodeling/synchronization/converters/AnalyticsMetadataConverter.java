@@ -122,24 +122,25 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
      */
 	protected void convertAnalyticsMetadataProperties(AnalyticsMetadata bean) 
 	{
-		if (bean.getAdditionalProperties() != null) {
-	        if (bean.getAdditionalProperties().get(IdMap.SOURCE_ID) != null) {
-	        	bean.setSourceId(Arrays.asList(bean.getAdditionalProperties().get(IdMap.SOURCE_ID).split(Constants.SYNC_ID_LIST_DELIMITER)));
+		Map<String, String> properties = bean.getAdditionalProperties();
+		
+		if (properties != null) {
+	        if (properties.get(IdMap.SOURCE_ID) != null) {
+	        	bean.setSourceId(Arrays.asList(properties.get(IdMap.SOURCE_ID).split(Constants.SYNC_ID_LIST_DELIMITER)));
 	        }
 
-	        if (bean.getAdditionalProperties().get(IdMap.SOURCE_GUID) != null) {
-	        	bean.setSourceGuid(Arrays.asList(bean.getAdditionalProperties().get(IdMap.SOURCE_GUID).split(Constants.SYNC_ID_LIST_DELIMITER)));
+	        if (properties.get(IdMap.SOURCE_GUID) != null) {
+	        	bean.setSourceGuid(Arrays.asList(properties.get(IdMap.SOURCE_GUID).split(Constants.SYNC_ID_LIST_DELIMITER)));
 	        }
 
-	        bean.setType(bean.getAdditionalProperties().get(Constants.TYPE));
-	        bean.setIdentifier(bean.getAdditionalProperties().get(Constants.SYNC_IDENTIFIER));
+	        bean.setType(properties.get(Constants.TYPE));
+	        bean.setIdentifier(properties.get(Constants.SYNC_IDENTIFIER));
 
 	        if (bean instanceof MetadataItem) {
 	        	MetadataItem item = (MetadataItem)bean;
-	        	item.setExpression(bean.getAdditionalProperties().get(Constants.SYNC_EXPRESSION));
-	        	item.setDataType(bean.getAdditionalProperties().get(Constants.SYNC_DATA_TYPE));
+	        	item.setExpression(properties.get(Constants.SYNC_EXPRESSION));
+	        	item.setDataType(properties.get(Constants.SYNC_DATA_TYPE));
 	        }
-
 		}
 	}
 	
