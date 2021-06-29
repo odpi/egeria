@@ -10,19 +10,22 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
- * DataEngineRESTConfigurationClient provides an extension to the client-side REST interface for obtaining Data Engine access service configuration specifics.
+ * DataEngineRESTConfigurationClient provides an extension to the client-side REST interface for obtaining Data Engine access service configuration
+ * specifics.
  */
 public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
-    private static final String IN_TOPIC_CONNECTION_PATH = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/topics/in-topic-connection";
+    private static final String IN_TOPIC_CONNECTION_PATH =
+            "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/topics/in-topic-connection";
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create DataEngineRESTConfigurationClient with unauthenticated access to the DE OMAS server.
      *
      * @param serverName            the server name
-     * @param serverPlatformRootURL the server platform root url
-     * @throws InvalidParameterException the invalid parameter exception
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     *
+     * @throws InvalidParameterException null URL or server name
      */
     public DataEngineRESTConfigurationClient(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL);
@@ -33,14 +36,15 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
     /**
      * Instantiates a new Data Engine REST configuration client.
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId                caller's userId embedded in all HTTP requests
+     * @param password              caller's userId embedded in all HTTP requests
      *
-     * @param serverName            the server name
-     * @param serverPlatformRootURL the server platform root URL
-     * @param userId                the user ID
-     * @param password              the password
-     * @throws InvalidParameterException the invalid parameter exception
+     * @throws InvalidParameterException null URL or server name
      */
-    public DataEngineRESTConfigurationClient(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
+    public DataEngineRESTConfigurationClient(String serverName, String serverPlatformRootURL, String userId, String password) throws
+                                                                                                                              InvalidParameterException {
         super(serverName, serverPlatformRootURL, userId, password);
 
         this.serverName = serverName;
@@ -51,14 +55,16 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
      * Retrieve input topic connection details from remote DE OMAS instance.
      *
      * @param serverName name of the server hosting DE access service
-     * @param userId user accessing the server hosting DE access service
+     * @param userId     user accessing the server hosting DE access service
+     *
      * @return ConnectionResponse OCF object
      *
-     * @throws InvalidParameterException input parameter(s) invalid
-     * @throws PropertyServerException something went wrong with the REST call stack
+     * @throws InvalidParameterException  input parameter(s) invalid
+     * @throws PropertyServerException    something went wrong with the REST call stack
      * @throws UserNotAuthorizedException user is not authorized
      */
-    public ConnectionResponse getInTopicConnection(String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public ConnectionResponse getInTopicConnection(String serverName, String userId) throws InvalidParameterException, PropertyServerException,
+                                                                                            UserNotAuthorizedException {
 
         String methodName = "getInTopicConnection";
 

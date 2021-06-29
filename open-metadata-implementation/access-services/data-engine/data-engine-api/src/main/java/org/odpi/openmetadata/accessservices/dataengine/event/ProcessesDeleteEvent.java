@@ -59,5 +59,5 @@ public class ProcessesDeleteEvent extends DataEngineEventHeader {
      * Set up the delete semantic
      * @param deleteSemantic of the entity
      */
-    private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
+    private DeleteSemantic deleteSemantic = DeleteSemantic.SOFT;
 }

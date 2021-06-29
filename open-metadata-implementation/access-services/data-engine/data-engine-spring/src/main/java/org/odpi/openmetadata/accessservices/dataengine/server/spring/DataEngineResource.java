@@ -91,9 +91,9 @@ public class DataEngineResource {
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
-     * @param requestBody properties of the port implementation
+     * @param requestBody properties of the data engine
      *
-     * @return unique identifier of the created port implementation
+     * @return void response
      */
     @DeleteMapping(path = "/registration")
     public VoidResponse deleteExternalDataEngine(@PathVariable("userId") String userId,
@@ -125,7 +125,7 @@ public class DataEngineResource {
      * @param userId      the name of the calling user
      * @param requestBody properties for the schema type
      *
-     * @return unique identifier of the created entity
+     * @return void response
      */
     @DeleteMapping(path = "/schema-types")
     public VoidResponse deleteSchemaType(@PathVariable("userId") String userId,
@@ -157,7 +157,7 @@ public class DataEngineResource {
      * @param userId      the name of the calling user
      * @param requestBody properties of the port implementation
      *
-     * @return unique identifier of the created port implementation
+     * @return void response
      */
     @DeleteMapping(path = "/port-implementations")
     public VoidResponse deletePortImplementation(@PathVariable("userId") String userId,
@@ -189,7 +189,7 @@ public class DataEngineResource {
      * @param userId      the name of the calling user
      * @param requestBody properties of the port implementation
      *
-     * @return unique identifier of the created port alias
+     * @return void response
      */
     @DeleteMapping(path = "/port-aliases")
     public VoidResponse deletePortAliases(@PathVariable("userId") String userId,
@@ -215,7 +215,7 @@ public class DataEngineResource {
     }
 
     /**
-     * Create or update  the Process entities with ports, schema types and all needed relationships
+     * Create or update the Process entities with ports, schema types and all needed relationships
      *
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
@@ -233,18 +233,19 @@ public class DataEngineResource {
     /**
      * Delete the Process
      *
-     * @param serverName           name of server instance to call
-     * @param userId               the name of the calling user
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
      * @param requestBody properties of the process
      *
-     * @return unique identifier of the created process
+     * @return void response
      */
     @DeleteMapping(path = "/processes")
     public VoidResponse deleteProcesses(@PathVariable("userId") String userId,
-                                                    @PathVariable("serverName") String serverName,
-                                                    @RequestBody ProcessesDeleteRequestBody requestBody) {
+                                        @PathVariable("serverName") String serverName,
+                                        @RequestBody ProcessesDeleteRequestBody requestBody) {
         return restAPI.deleteProcesses(userId, serverName, requestBody);
     }
+
     /**
      * Add LineageMapping relationships
      *
@@ -298,11 +299,27 @@ public class DataEngineResource {
     }
 
     /**
+     * Deletes the database
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/databases")
+    public VoidResponse deleteDatabase(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteDatabase(userId, serverName, requestBody);
+    }
+
+    /**
      * Create a RelationalTable entity with all the needed relationships
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
-     * @param requestBody properties for the schema type
+     * @param requestBody properties for the relational table
      *
      * @return unique identifier of the created entity
      */
@@ -313,6 +330,22 @@ public class DataEngineResource {
         return restAPI.upsertRelationalTable(userId, serverName, requestBody);
     }
 
+    /**
+     * Deletes the relational table with columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the relational table
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/relational-tables")
+    public VoidResponse deleteRelationalTable(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteRelationalTable(userId, serverName, requestBody);
+    }
+
     /***
      * Add a DataFile asset or any of its subtype
      *
@@ -320,7 +353,7 @@ public class DataEngineResource {
      * @param userId name of the calling user
      * @param dataFileRequestBody properties of data file
      *
-     * @return file guid
+     * @return unique identifier of the created entity
      */
     @PostMapping(path = "/data-files")
     public GUIDResponse upsertDataFile(@PathVariable String serverName, @PathVariable String userId,
@@ -328,4 +361,67 @@ public class DataEngineResource {
         return restAPI.upsertDataFile(serverName, userId, dataFileRequestBody);
     }
 
+    /**
+     * Deletes the data file with columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the data file
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/data-files")
+    public VoidResponse deleteDataFile(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteDataFile(userId, serverName, requestBody);
+    }
+
+    /**
+     * Deletes the folder
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the folder
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/folders")
+    public VoidResponse deleteFolder(@PathVariable("userId") String userId,
+                                     @PathVariable("serverName") String serverName,
+                                     @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteFolder(userId, serverName, requestBody);
+    }
+
+    /**
+     * Deletes the connection
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the connection
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/connections")
+    public VoidResponse deleteConnection(@PathVariable("userId") String userId,
+                                         @PathVariable("serverName") String serverName,
+                                         @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteConnection(userId, serverName, requestBody);
+    }
+
+    /**
+     * Deletes the connection
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the connection
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/endpoints")
+    public VoidResponse deleteEndpoint(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteEndpoint(userId, serverName, requestBody);
+    }
 }
