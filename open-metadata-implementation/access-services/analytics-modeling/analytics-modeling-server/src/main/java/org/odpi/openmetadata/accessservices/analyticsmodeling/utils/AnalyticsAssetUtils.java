@@ -1,16 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model;
+package org.odpi.openmetadata.accessservices.analyticsmodeling.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 
 /**
  * Class provides useful operations with bean class

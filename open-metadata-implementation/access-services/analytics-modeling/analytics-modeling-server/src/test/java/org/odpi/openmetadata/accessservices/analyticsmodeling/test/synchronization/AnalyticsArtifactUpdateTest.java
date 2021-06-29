@@ -10,9 +10,6 @@ import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.mockito.Mockito;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
@@ -42,11 +39,9 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testModuleNotChanged() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -79,11 +74,9 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testRemoveObjects() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -124,11 +117,9 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testAddedObjects() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "moduleShort"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("moduleShort"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -162,11 +153,9 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testUpdateReferences() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -197,21 +186,13 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testRestoreReferences() throws Exception {
 
 		// prepare for test
-		String baseModule = TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule");
-		AnalyticsAsset assetBaseModule = createBean("baseModule");
-		// create entities for columns referenced in base module
-		Map<String, String>guidMap = new HashMap<>();
-		createReferencedEntitiesForMetadataLinks(assetBaseModule.getContainer(), guidMap);
-		// replace GUIDs from input with real GUIDs of created entities
-		for (Entry<String, String> pair : guidMap.entrySet()) {
-			baseModule = baseModule.replace(pair.getKey(), pair.getValue());
-		}
+		String baseModule = getBaseModuleJson("baseModule");	// base module definition with fixed GUIDs
+		AnalyticsAsset assetBaseModule = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
 
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, baseModule);
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
 		String guidBase = guidsModule.getAssetsList().get(0);
 		
-		guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, 
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
 		// Verify structure before test 
 		String guidModule = guidsModule.getAssetsList().get(0);
@@ -260,8 +241,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		module.setType("baseModule");
 		module.setDescription(TEST_DESCRIPTION);
 		
-		String strModule = TestUtilities.writeObjectJson(module);
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, strModule);
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
 		String guid = guidsModule.getAssetsList().get(0);
 		
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
@@ -295,11 +275,10 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	@Test
 	void testUpdateVisualization() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		
-		String report = TestUtilities.readJsonFile(FOLDER_INPUT, "report");
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, report);
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
 		String guidModule = guidsReport.getAssetsList().get(0);
 		String guidReport = guidsReport.getAssetsList().get(1);
 		
@@ -325,18 +304,20 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	@Test
 	void testUpdateModifiedModuleReference() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule2"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule2"));
 		
-		String module = TestUtilities.readJsonFile(FOLDER_INPUT, "module");
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
 		String guidModule = guidsReport.getAssetsList().get(0);
 		
 		// Verify structure and content of the built asset before test. 
 		assertSubgraph(guidModule, "moduleSubgraph");
 		
 		// modify reference from baseModule to baseModule2
-		module = module.replaceAll("iBASEMODULE", "iBASEMODULE2").replaceAll("_GOSALES_Egeria", "_GOSALES_Egeria2");
+		String module = TestUtilities.readJsonFile(FOLDER_INPUT, "module")
+				.replaceAll("iBASEMODULE", "iBASEMODULE2")
+				.replaceAll("_GOSALES_Egeria", "_GOSALES_Egeria2");
+		
 		AnalyticsAsset asset = TestUtilities.readObjectJson(module, AnalyticsAsset.class);
 		
 		// update report

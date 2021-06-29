@@ -21,5 +21,13 @@ public class SchemasResponse extends AnalyticsModelingOMASAPIResponse{
         this.setData(databaseSchemas);
     }
 
+	/**
+	 * Get list of schemas available for database.
+	 * @return list of schemas available for database.
+	 */
+    @SuppressWarnings("unchecked")
+	public List<ResponseContainerDatabaseSchema> getSchemaList() {
+        return (List<ResponseContainerDatabaseSchema>) this.getData();
+    }
 }
 
