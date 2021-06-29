@@ -43,8 +43,8 @@ debug:
 imageDefaults:
   registry: docker.io
   namespace: odpi
-  tag: latest
-  pullPolicy: Always
+  tag: 2.11
+  pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -59,14 +59,14 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: latest
+    tag: 2.11.0
   configure:
     name: egeria-configure
   jupyter:
     name: jupyter
   uistatic:
     name: egeria-ui
-    tag: latest
+    tag: 2.8.0
   nginx:
     name: nginx
     namespace:
