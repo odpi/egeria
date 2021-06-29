@@ -309,10 +309,10 @@ public class DataEngineSchemaTypeHandler {
     SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
         HashMap<String, String> additionalProperties = new HashMap<>();
         return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), attribute.getDescription(),
-                attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.isDeprecated(),
+                attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getIsDeprecated(),
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(), attribute.getLength(), attribute.getPrecision(),
-                attribute.isNullable(), attribute.getNativeClass(), attribute.getAliases(), additionalProperties,
+                attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(), additionalProperties,
                 TABULAR_COLUMN_TYPE_GUID, TABULAR_COLUMN_TYPE_NAME, null, repositoryHelper, serviceName, serverName);
     }
 

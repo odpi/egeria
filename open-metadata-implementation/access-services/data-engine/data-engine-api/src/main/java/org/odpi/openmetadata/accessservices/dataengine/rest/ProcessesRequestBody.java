@@ -5,6 +5,10 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 
 import java.util.List;
@@ -16,34 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class ProcessesRequestBody extends DataEngineOMASAPIRequestBody {
+
     private List<Process> processes;
 
-    public List<Process> getProcesses() {
-        return processes;
-    }
-
-    public void setProcesses(List<Process> processes) {
-        this.processes = processes;
-    }
-
-    @Override
-    public String toString() {
-        return "ProcessesRequestBody{" +
-                "processes=" + processes +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProcessesRequestBody that = (ProcessesRequestBody) o;
-        return Objects.equals(processes, that.processes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processes);
-    }
 }

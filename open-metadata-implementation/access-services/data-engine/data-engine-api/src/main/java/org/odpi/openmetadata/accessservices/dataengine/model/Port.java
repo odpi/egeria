@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,52 +24,48 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class Port extends Referenceable {
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The display name
+     * -- GETTER --
+     * Gets display name.
+     * @return the display name
+     * -- SETTER --
+     * Sets display name.
+     * @param displayName the display name
+     */
     private String displayName;
+
+    /**
+     * The port type
+     * --GETTER --
+     * Gets port type.
+     * @return the port type
+     * -- SETTER --
+     * Sets port type.
+     * @param portType the port type
+     */
     @JsonProperty("type")
     private PortType portType;
+
+    /**
+     * The update semantic
+     * -- SETTER --
+     * Sets update semantic.
+     * @param updateSemantic the update semantic
+     */
     private UpdateSemantic updateSemantic;
 
     /**
-     * Gets display name.
-     *
-     * @return the display name
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     * Sets display name.
-     *
-     * @param displayName the display name
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
-     * Gets port type.
-     *
-     * @return the port type
-     */
-    public PortType getPortType() {
-        return portType;
-    }
-
-    /**
-     * Sets port type.
-     *
-     * @param portType the port type
-     */
-    public void setPortType(PortType portType) {
-        this.portType = portType;
-    }
-
-    /**
      * Gets update semantic.
-     *
      * @return the update semantic
      */
     public UpdateSemantic getUpdateSemantic() {
@@ -75,36 +76,4 @@ public class Port extends Referenceable {
         return updateSemantic;
     }
 
-    /**
-     * Sets update semantic.
-     *
-     * @param updateSemantic the update semantic
-     */
-    public void setUpdateSemantic(UpdateSemantic updateSemantic) {
-        this.updateSemantic = updateSemantic;
-    }
-
-    @Override
-    public String toString() {
-        return "Port{" +
-                "displayName='" + displayName + '\'' +
-                ", portType=" + portType +
-                ", updateSemantic=" + updateSemantic +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Port port = (Port) o;
-        return Objects.equals(displayName, port.displayName) &&
-                portType == port.portType &&
-                updateSemantic == port.updateSemantic;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(displayName, portType, updateSemantic);
-    }
 }
