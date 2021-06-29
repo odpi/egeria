@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -34,6 +36,8 @@ public enum DeleteSemantic implements Serializable {
     HARD(1, "HARD", "Hard delete"),
     MEMENTO(1, "MEMENTO", "Memento");
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
     /**

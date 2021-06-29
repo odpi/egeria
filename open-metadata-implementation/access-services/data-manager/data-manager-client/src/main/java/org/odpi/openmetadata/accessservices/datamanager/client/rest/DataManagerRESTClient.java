@@ -903,4 +903,242 @@ public class DataManagerRESTClient extends OCFRESTClient
     }
 
 
+    /**
+     * Issue a POST REST call that returns a SchemaAttributeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributeResponse callSchemaAttributePostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        SchemaAttributeResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaAttributesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributesResponse callSchemaAttributesPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        SchemaAttributesResponse restResult = this.callPostRESTCall(methodName, SchemaAttributesResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a SchemaAttributeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributeResponse callSchemaAttributeGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        SchemaAttributeResponse restResult = this.callGetRESTCall(methodName, SchemaAttributeResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a SchemaAttributesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributesResponse callSchemaAttributesGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        SchemaAttributesResponse restResult = this.callGetRESTCall(methodName, SchemaAttributesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaTypeResponse callSchemaTypePostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        SchemaTypeResponse restResult = this.callPostRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a SchemaTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaTypeResponse callSchemaTypeGetRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        SchemaTypeResponse restResult = this.callGetRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a SchemaTypesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaTypesResponse callSchemaTypesGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        SchemaTypesResponse restResult = this.callGetRESTCall(methodName, SchemaTypesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ValidValueSetsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ValidValueSetsResponse callValidValueSetsGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        ValidValueSetsResponse restResult = this.callGetRESTCall(methodName, ValidValueSetsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ElementStubResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ElementStubResponse callElementStubGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        ElementStubResponse restResult = this.callGetRESTCall(methodName, ElementStubResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
 }

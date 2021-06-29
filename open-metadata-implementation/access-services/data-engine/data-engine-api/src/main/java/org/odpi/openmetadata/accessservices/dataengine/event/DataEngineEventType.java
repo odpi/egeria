@@ -6,6 +6,10 @@ package org.odpi.openmetadata.accessservices.dataengine.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -20,8 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DataEngineEventType implements Serializable
-{
+@ToString
+@Getter
+public enum DataEngineEventType implements Serializable {
+
     UNKNOWN_DATA_ENGINE_EVENT               (0,   "Unknown Data Engine Job Event",  "An event that is not recognized by the local server."),
     DATA_ENGINE_REGISTRATION_EVENT          (1,   "DataEngineRegistrationEvent",      "An event that register a data engine as external source."),
     LINEAGE_MAPPINGS_EVENT                  (2,   "LineageMappingsEvent",  "An event that add or update lineage mappings."),
@@ -45,75 +51,47 @@ public enum DataEngineEventType implements Serializable
     DELETE_CONNECTION_EVENT                 (21,  "DeleteConnectionEvent",  "An event that deletes a connection."),
     DELETE_ENDPOINT_EVENT                   (22,  "DeleteEndpointEvent",  "An event that deletes an endpoint.");
 
-    private static final long     serialVersionUID = 1L;
-
-    private  int      eventTypeCode;
-    private  String   eventTypeName;
-    private  String   eventTypeDescription;
-
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Default Constructor - sets up the specific values for this instance of the enum.
-     *
-     * @param eventTypeCode - int identifier used for indexing based on the enum.
-     * @param eventTypeName - string name used for messages that include the enum.
-     * @param eventTypeDescription - default description for the enum value - used when natural resource
-     *                                     bundle is not available.
+     * The int identifier used for indexing based on the enum
+     * -- GETTER --
+     * Return the int identifier used for indexing based on the enum.
+     * @return eventTypeCode identifier code
      */
-    DataEngineEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)
-    {
+    private final int eventTypeCode;
+
+    /**
+     * The string name used for messages that include the enum
+     * -- GETTER --
+     * Return the string name used for messages that include the enum.
+     * @return event type name
+     */
+    private final String eventTypeName;
+
+    /**
+     * The default description for the enum value - used when natural resource
+     * -- GETTER --
+     * Return the default description for the enum value - used when natural resource
+     * bundle is not available.
+     * @return default description
+     */
+    private final String eventTypeDescription;
+
+    /**
+     * Sets up the specific values for this instance of the enum.
+     *
+     * @param eventTypeCode int identifier used for indexing based on the enum.
+     * @param eventTypeName string name used for messages that include the enum.
+     * @param eventTypeDescription default description for the enum value - used when natural resource
+     *                             bundle is not available.
+     */
+    DataEngineEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription) {
         this.eventTypeCode = eventTypeCode;
         this.eventTypeName = eventTypeName;
         this.eventTypeDescription = eventTypeDescription;
     }
 
-
-    /**
-     * Return the int identifier used for indexing based on the enum.
-     *
-     * @return int identifier code
-     */
-    public int getEventTypeCode()
-    {
-        return eventTypeCode;
-    }
-
-
-    /**
-     * Return the string name used for messages that include the enum.
-     *
-     * @return String name
-     */
-    public String getEventTypeName()
-    {
-        return eventTypeName;
-    }
-
-
-    /**
-     * Return the default description for the enum value - used when natural resource
-     * bundle is not available.
-     *
-     * @return String default description
-     */
-    public String getEventTypeDescription()
-    {
-        return eventTypeDescription;
-    }
-
-
-    /**
-     * JSON-style toString
-     *
-     * @return return string containing the property names and values
-     */
-    @Override
-    public String toString()
-    {
-        return "DataEngineEventType{" +
-                "eventTypeCode=" + eventTypeCode +
-                ", eventTypeName='" + eventTypeName + '\'' +
-                ", eventTypeDescription='" + eventTypeDescription + '\'' +
-                '}';
-    }
 }

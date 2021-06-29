@@ -79,10 +79,10 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
     private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
 
-    private String serverPlatformRootURL;
+    private final String serverPlatformRootURL;
     private String externalSourceName;
     private DeleteSemantic deleteSemantic = DeleteSemantic.SOFT;
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create a new client without authentication.

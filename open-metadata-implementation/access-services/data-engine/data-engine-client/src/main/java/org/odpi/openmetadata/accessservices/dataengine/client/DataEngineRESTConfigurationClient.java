@@ -17,7 +17,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
     private static final String IN_TOPIC_CONNECTION_PATH =
             "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/topics/in-topic-connection";
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create DataEngineRESTConfigurationClient with unauthenticated access to the DE OMAS server.
@@ -35,6 +35,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
     }
 
     /**
+     * Instantiates a new Data Engine REST configuration client.
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId                caller's userId embedded in all HTTP requests
@@ -72,6 +73,5 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
         return callConnectionGetRESTCall(methodName, serverPlatformURLRoot + IN_TOPIC_CONNECTION_PATH, serverName, userId);
     }
-
 
 }
