@@ -15,7 +15,7 @@ The samples themselves broadly fit into two categories:
 ## Requirements
 
 The simplest way to deploy the samples is as part of the complete kubernetes-based demo environment,
-based on the provided Helm charts under [open-metadata-deployment](../../README.md).
+based on the provided Helm charts at https://github.com/odpi/egeria-charts/tree/main/charts/odpi-egeria-lab .
 
 Alternatively, if you want to make use of a pre-existing IBM InfoSphere Information Governance Catalog
 repository, you will need:

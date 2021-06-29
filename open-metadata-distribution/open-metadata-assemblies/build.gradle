@@ -178,14 +178,6 @@ distributions {
                 exclude 'build.gradle'
                 fileMode = 0755
             }
-            into('charts') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:charts').projectDir}")
-                exclude '**/charts**'
-                exclude '**/*.lock'
-                exclude '**/*.swp'
-
-                fileMode = 0755
-            }
             into('docker-compose') {
                 from("${project(':open-metadata-resources:open-metadata-deployment:compose').projectDir}")
 

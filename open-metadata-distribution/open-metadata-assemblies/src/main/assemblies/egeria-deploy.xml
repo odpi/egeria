@@ -30,20 +30,6 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
-        <!-- Copy the helm charts -->
-        <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-deployment/charts</directory>
-            <outputDirectory>./charts</outputDirectory>
-            <excludes>
-                <exclude>**/charts/**</exclude>
-                <exclude>**/*.lock</exclude>
-                <exclude>**/*.swp</exclude>
-            </excludes>
-
-            <fileMode>0755</fileMode>
-            <directoryMode>0755</directoryMode>
-        </fileSet>
-
         <!-- Copy the docker compose definitions -->
         <fileSet>
             <directory>../../open-metadata-resources/open-metadata-deployment/compose</directory>
