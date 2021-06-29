@@ -140,8 +140,8 @@
         <open-metadata.version>${project.version}</open-metadata.version>
 
         <!-- Level of Java  -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Platform encoding  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -3374,8 +3374,8 @@
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <level>ERROR</level>
-                                    <version>[1.8,)</version>
-                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
+                                    <version>[11,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 11 or above is required.
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
