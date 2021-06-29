@@ -103,11 +103,6 @@ public class AssetLineagePublisher {
     public Multimap<String, RelationshipsContext> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase,
                                                                                                           JsonProcessingException {
         Multimap<String, RelationshipsContext> processContext = processContextHandler.buildProcessContext(serverUserName, entityDetail);
-
-        if (processContext.isEmpty()) {
-            log.info("Context not found for the entity {} ", entityDetail.getGUID());
-        }
-
         publishLineageRelationshipsEvents(processContext);
 
         return processContext;
@@ -176,7 +171,8 @@ public class AssetLineagePublisher {
 
 
     /**
-     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable by glossaryTermLineageEventsChunkSize.
+     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable
+     * by glossaryTermLineageEventsChunkSize.
      *
      * @param contextMap the context map to be published
      *
@@ -184,7 +180,7 @@ public class AssetLineagePublisher {
      * @throws JsonProcessingException   exception parsing the event json
      */
     private void publishGlossaryTermLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
-            ConnectorCheckedException {
+                                                                                                                         ConnectorCheckedException {
         for (String eventType : contextMap.keySet()) {
             for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
                 if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
@@ -216,11 +212,12 @@ public class AssetLineagePublisher {
      *
      * @param entityGUID the GUID of the published entity
      * @param contextMap the context map that was published
+     *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
     private void publishLineageSyncUpdateEvent(String entityGUID, Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
-            ConnectorCheckedException {
+                                                                                                                            ConnectorCheckedException {
         Set<String> neighbourGuids = new HashSet<>();
         for (String eventType : contextMap.keySet()) {
             for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
@@ -327,12 +324,12 @@ public class AssetLineagePublisher {
     }
 
     /**
-     *
      * Publish LineageSyncEvent that contains LineagePublishSummary details.
      *
      * @param summary details about lineage processing and publish activity completed by Asset Lineage OMAS.
-     * @throws JsonProcessingException
-     * @throws ConnectorCheckedException
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
      */
     public void publishLineageSummaryEvent(LineagePublishSummary summary) throws JsonProcessingException, ConnectorCheckedException {
         LineageSyncEvent event = new LineageSyncEvent();
