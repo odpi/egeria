@@ -102,7 +102,7 @@ public class DatabaseContextHandler {
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
 	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize) 
-			throws AnalyticsModelingCheckedException {
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		
 		String methodName = "getDatabases";
 		setContext(methodName);
@@ -115,12 +115,11 @@ public class DatabaseContextHandler {
 	}
 
 	private List<Database> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		try {
 			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, methodName);
-		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
-				| PropertyServerException ex) {
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASES.getMessageDefinition(),
 					this.getClass().getSimpleName(),
@@ -149,9 +148,10 @@ public class DatabaseContextHandler {
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String userId, String guidDatabase, Integer startFrom, Integer pageSize) 
-			throws AnalyticsModelingCheckedException, InvalidParameterException {
+			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 
 		String methodName = "getDatabaseSchemas";
 		setContext(methodName);
@@ -168,8 +168,7 @@ public class DatabaseContextHandler {
 					.map(e->buildSchema(dbName, e))
 					.filter(Objects::nonNull).collect(Collectors.toList());
 			
-		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
-				| PropertyServerException ex) {
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASE_SCHEMAS.getMessageDefinition(guidDatabase),
 					this.getClass().getSimpleName(),
@@ -210,7 +209,8 @@ public class DatabaseContextHandler {
 	 * @throws AnalyticsModelingCheckedException if failed
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema)
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getSchemaTables";
 		setContext(context);
@@ -237,7 +237,9 @@ public class DatabaseContextHandler {
 	 * @return list of table entities that belongs to the schema.
 	 * @throws AnalyticsModelingCheckedException 
 	 */
-	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) throws AnalyticsModelingCheckedException {
+	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) 
+			throws AnalyticsModelingCheckedException
+	{
 
 		List<Relationship> allDbSchemaToSchemaType = omEntityDao.getRelationshipsForEntity(dbSchemaEntity, Constants.ASSET_SCHEMA_TYPE);
 

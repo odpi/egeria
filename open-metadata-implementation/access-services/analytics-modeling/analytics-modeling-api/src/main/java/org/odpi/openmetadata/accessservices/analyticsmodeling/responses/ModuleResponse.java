@@ -22,4 +22,12 @@ public class ModuleResponse extends AnalyticsModelingOMASAPIResponse {
         this.setData(Arrays.asList(module));
     }
 
+	/**
+	 * Get module definition.
+	 * @return module definition.
+	 */
+	public ResponseContainerModule getModule() {
+		return (this.getData() == null || this.getData().isEmpty()) ? null : (ResponseContainerModule) this.getData();
+    }
+
 }

@@ -20,6 +20,8 @@ public class IdMap {
 	public static final String ASSET_TYPE_NAME = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
 	public static final String SCHEMA_ATTRIBUTE_TYPE_GUID = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID;
 	public static final String SCHEMA_ATTRIBUTE_TYPE_NAME = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+	public static final String PRIMITIVE_SCHEMA_TYPE_TYPE_GUID = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID;
+	public static final String PRIMITIVE_SCHEMA_TYPE_TYPE_NAME = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
 	public static final String COMPLEX_SCHEMA_TYPE_TYPE_GUID = OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_GUID;
 	public static final String COMPLEX_SCHEMA_TYPE_TYPE_NAME = OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
     public static final String ASSET_TO_SCHEMA_TYPE_TYPE_GUID = OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID;

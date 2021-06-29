@@ -9,8 +9,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import java.util.ArrayList;
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -87,18 +85,5 @@ public class MetadataItem extends AnalyticsMetadata {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	@Override
-	protected void convertProperties() {
-        this.setExpression(additionalProperties.get(Constants.SYNC_EXPRESSION));
-        this.setDataType(additionalProperties.get(Constants.SYNC_DATA_TYPE));
-	}
-	
-	/**
-	 * The function to save custom properties as additional properties.
-	 */
-	@Override
-	protected void prepareCustomProperties() {
-        additionalProperties.put(Constants.SYNC_EXPRESSION, this.getExpression());
-        additionalProperties.put(Constants.SYNC_DATA_TYPE, this.getDataType());
-	}
+
 }

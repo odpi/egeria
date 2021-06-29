@@ -7,14 +7,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -124,58 +120,6 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
 			sourceId = new ArrayList<>();
 		}
 		sourceId.add(id);
-	}
-	
-	/**
-	 * Convert properties from entity into bean.
-	 */
-	protected abstract void convertProperties();
-
-	/**
-	 * Helper function to load common properties from additional properties.
-	 */
-	public void convertAnalyticsMetadataProperties() {
-		
-        if (additionalProperties.get(IdMap.SOURCE_ID) != null) {
-        	this.setSourceId(Arrays.asList(additionalProperties.get(IdMap.SOURCE_ID).split(Constants.SYNC_ID_LIST_DELIMITER)));
-        }
-
-        if (additionalProperties.get(IdMap.SOURCE_GUID) != null) {
-        	this.setSourceGuid(Arrays.asList(additionalProperties.get(IdMap.SOURCE_GUID).split(Constants.SYNC_ID_LIST_DELIMITER)));
-        }
-
-        this.setType(additionalProperties.get(Constants.TYPE));
-        this.setIdentifier(additionalProperties.get(Constants.SYNC_IDENTIFIER));
-        
-        convertProperties();
-	}
-	
-	/**
-	 * Save bean custom properties into entity additional properties.
-	 */
-	protected abstract void prepareCustomProperties();
-	
-	/**
-	 * Helper function to preserve common properties as additional properties.
-	 */
-	public void prepareAnalyticsMetadataProperties() {
-		
-		if (additionalProperties == null) {
-			additionalProperties = new HashMap<>();
-		}
-		
-        if (this.getSourceId() != null) {
-            additionalProperties.put(IdMap.SOURCE_ID, String.join(Constants.SYNC_ID_LIST_DELIMITER, this.getSourceId()));
-        }
-
-        if (this.getSourceGuid() != null) {
-            additionalProperties.put(IdMap.SOURCE_GUID, String.join(Constants.SYNC_ID_LIST_DELIMITER, this.getSourceGuid()));
-        }
-
-        additionalProperties.put(Constants.TYPE, this.getType());
-        additionalProperties.put(Constants.SYNC_IDENTIFIER, this.getIdentifier());
-        
-        prepareCustomProperties();
 	}
 	
     @Override

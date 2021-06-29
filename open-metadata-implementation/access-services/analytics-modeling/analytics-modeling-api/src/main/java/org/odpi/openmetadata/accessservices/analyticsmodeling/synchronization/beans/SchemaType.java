@@ -222,4 +222,16 @@ public class SchemaType extends SchemaElement
                 ", additionalProperties=" + getAdditionalProperties() +
                 '}';
     }
+    
+    /**
+     * Return a number that represents the contents of this object.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace);
+    }
+
 }

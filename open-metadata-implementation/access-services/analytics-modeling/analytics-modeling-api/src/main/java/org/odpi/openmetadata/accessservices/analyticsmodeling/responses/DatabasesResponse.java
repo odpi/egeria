@@ -20,5 +20,13 @@ public class DatabasesResponse extends AnalyticsModelingOMASAPIResponse{
         this.setData(databases);
     }
 
+	/**
+	 * Get list of databases as response content.
+	 * @return databases list.
+	 */
+    @SuppressWarnings("unchecked")
+	public List<ResponseContainerDatabase> getDatabasesList() {
+        return (List<ResponseContainerDatabase>) this.getData();
+    }
 }
 
