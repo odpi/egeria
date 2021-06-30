@@ -8,10 +8,11 @@ This image is intended to support on-site labs, tutorials.
 Rather than having to install Egeria, prerequisites and tools separately, these scripts make it easy
 to get a stack running quickly.
 
-This has much reduced function than Egeria's [kubernetes support](../../charts) via Helm which is a better
+This has much reduced function than Egeria's [kubernetes support](https://github.com/odpi/egeria-charts) via Helm which is a better
 option for real-world coding and deployment. 
 It is therefore recommended you consider switching to kubernetes as it offers us more flexibility.
-See [https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab).
+We do not expect to develop these docker-compose environments substantially and may withdraw them in future.
+See https://github.com/odpi/egeria-charts/tree/main/charts/odpi-egeria-lab .
 
 ## Contents
 
