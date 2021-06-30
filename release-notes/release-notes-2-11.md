@@ -147,7 +147,10 @@ in the [Data Connectors](https://github.com/odpi/egeria-data-connectors) GitHub 
 ## Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
-* When running the 'Understanding Platform Services' lab, ensure you run the 'egeria-service-config' notebook first and do not restart the python kernel before running this lab. See [#4842](https://github.com/odpi/egeria/issues/4842) .
+
+## Special note on Java Support
+
+* This is expected to be the last release supporting Java 8. The next release will commence the 3.x series of releases and require Java 11.
 
 # Egeria Implementation Status at Release 2.11
 
