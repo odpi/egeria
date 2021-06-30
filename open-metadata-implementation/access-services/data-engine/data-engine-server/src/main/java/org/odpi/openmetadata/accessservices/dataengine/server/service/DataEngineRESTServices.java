@@ -40,7 +40,9 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBod
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
@@ -74,16 +76,25 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -98,7 +109,7 @@ public class DataEngineRESTServices {
     public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
-    private static final String DEBUG_DELETE_MESSAGE = "DataEngine OMAS deleted entity with GUID {}";
+    private static final String DEBUG_DELETE_MESSAGE = "Data Engine OMAS deleted entity with GUID {} and type {}";
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
@@ -199,7 +210,8 @@ public class DataEngineRESTServices {
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void deleteExternalDataEngine(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                         DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
+                                         DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                               PropertyServerException,
                                                                                FunctionNotSupportedException {
         final String methodName = "deleteExternalDataEngine";
 
@@ -215,77 +227,54 @@ public class DataEngineRESTServices {
         }
 
         dataEngineRegistrationHandler.removeExternalDataEngine(userId, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, guid);
+        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
     }
 
     /**
-     * Get the unique identifier of a process
-     *
-     * @param serverName    name of the service to route the request to
-     * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the process
-     *
-     * @return the unique identifier of a process or empty optional
-     */
-    public Optional<String> getProcessGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                          PropertyServerException,
-                                                                                                          UserNotAuthorizedException {
-        final String methodName = "getProcessGUID";
-
-        if (StringUtils.isEmpty(qualifiedName)) {
-            return Optional.empty();
-        }
-
-        DataEngineProcessHandler handler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-
-        Optional<EntityDetail> processEntity = handler.findProcessEntity(userId, qualifiedName);
-        return processEntity.map(InstanceHeader::getGUID);
-    }
-
-    /**
-     * Get the unique identifier of a port
+     * Get the unique identifier of an entity
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the port
+     * @param typeName      the type name of the entity
      *
-     * @return the unique identifier of a port or empty optional
+     * @return the unique identifier of the entity or empty optional
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<String> getPortGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException {
-        final String methodName = "getPortGUID";
-
-        if (StringUtils.isEmpty(qualifiedName)) {
-            return Optional.empty();
-        }
-        DataEnginePortHandler handler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        Optional<EntityDetail> portEntity = handler.findPortEntity(userId, qualifiedName);
-        return portEntity.map(InstanceHeader::getGUID);
+    public Optional<String> getEntityGUID(String serverName, String userId, String qualifiedName, String typeName) throws InvalidParameterException,
+                                                                                                                          PropertyServerException,
+                                                                                                                          UserNotAuthorizedException {
+        return getEntityDetails(serverName, userId, qualifiedName, typeName).map(InstanceHeader::getGUID);
     }
 
     /**
-     * Get the unique identifier of a schema type
+     * Get the entity details of an entity
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the port
+     * @param typeName      the type name of the entity
      *
-     * @return the unique identifier of a port or empty optional
+     * @return the entity details of the entity or empty optional
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<String> getSchemaTypeGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException {
-        final String methodName = "getSchemaTypeGUID";
-
+    public Optional<EntityDetail> getEntityDetails(String serverName, String userId, String qualifiedName, String typeName) throws
+                                                                                                                            InvalidParameterException,
+                                                                                                                            PropertyServerException,
+                                                                                                                            UserNotAuthorizedException {
+        final String methodName = "getEntityDetails";
         if (StringUtils.isEmpty(qualifiedName)) {
             return Optional.empty();
         }
-        DataEngineSchemaTypeHandler handler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        Optional<EntityDetail> schemaType = handler.findSchemaTypeEntity(userId, qualifiedName);
-        return schemaType.map(InstanceHeader::getGUID);
+        DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, typeName);
     }
 
     /**
@@ -357,25 +346,19 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deleteSchemaType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                       PropertyServerException, FunctionNotSupportedException, EntityNotDeletedException {
+                                                                       PropertyServerException, FunctionNotSupportedException,
+                                                                       EntityNotDeletedException {
         final String methodName = "deleteSchemaType";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        Optional<String> schemaTypeGUIDOptional = Optional.ofNullable(guid);
-        if (!schemaTypeGUIDOptional.isPresent()) {
-            schemaTypeGUIDOptional = getSchemaTypeGUID(serverName, userId, qualifiedName);
-        }
-
-        if (!schemaTypeGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-        String schemaTypeGUID = schemaTypeGUIDOptional.get();
+        String schemaTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, SCHEMA_TYPE_TYPE_NAME, methodName);
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, schemaTypeGUID);
+        log.debug(DEBUG_DELETE_MESSAGE, schemaTypeGUID, SCHEMA_TYPE_TYPE_NAME);
     }
 
     /**
@@ -394,7 +377,8 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
 
-            String processGUID = getProcessGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName()).orElse(null);
+            String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
+                    .orElse(null);
             String externalSourceName = portImplementationRequestBody.getExternalSourceName();
             PortImplementation portImplementation = portImplementationRequestBody.getPortImplementation();
 
@@ -429,7 +413,8 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
 
-            String processGUID = getProcessGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName()).orElse(null);
+            String processGUID = getEntityGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
+                    .orElse(null);
             String externalSourceName = portAliasRequestBody.getExternalSourceName();
 
             updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
@@ -483,22 +468,14 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deletePort(String userId, String serverName, String externalSourceName, String guid, String qualifiedName, String portType,
                            DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
                                                                  FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deletePort";
 
-        Optional<String> portGUIDOptional = Optional.ofNullable(guid);
-        if (!portGUIDOptional.isPresent()) {
-            portGUIDOptional = getPortGUID(serverName, userId, qualifiedName);
-        }
-
-        if (!portGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-        }
-
-        String portGUID = portGUIDOptional.get();
+        String portGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PORT_TYPE_NAME, methodName);
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         if (PORT_IMPLEMENTATION_TYPE_NAME.equalsIgnoreCase(portType)) {
@@ -509,7 +486,7 @@ public class DataEngineRESTServices {
         }
 
         dataEnginePortHandler.removePort(userId, portGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, guid);
+        log.debug(DEBUG_DELETE_MESSAGE, portGUID, PORT_TYPE_NAME);
     }
 
 
@@ -597,6 +574,7 @@ public class DataEngineRESTServices {
      * Delete a list of processes, with the associated port implementations, port aliases and lineage mappings.
      *
      * @param userId             the name of the calling user
+     * @param serverName         the server name
      * @param externalSourceName the unique name of the external source
      * @param guids              the unique identifiers of the processes
      * @param qualifiedNames     the qualified names of the processes
@@ -606,6 +584,7 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
      */
     public void deleteProcesses(String userId, String serverName, String externalSourceName, List<String> guids, List<String> qualifiedNames,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
@@ -613,11 +592,12 @@ public class DataEngineRESTServices {
         final String methodName = "deleteProcesses";
         if (CollectionUtils.isNotEmpty(qualifiedNames)) {
             for (String qualifiedName : qualifiedNames) {
-                Optional<String> processGUIDOptional = getProcessGUID(serverName, userId, qualifiedName);
-                if (!processGUIDOptional.isPresent()) {
+                Optional<String> processGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, PROCESS_TYPE_NAME);
+                if (processGUIDOptional.isPresent()) {
+                    deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
+                } else {
                     throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
                 }
-                deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
             }
         }
 
@@ -648,7 +628,7 @@ public class DataEngineRESTServices {
             deletePort(userId, serverName, externalSourceName, port.getGUID(), null, PORT_ALIAS_TYPE_NAME, deleteSemantic);
         }
         processHandler.removeProcess(userId, processGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, processGUID);
+        log.debug(DEBUG_DELETE_MESSAGE, processGUID, PROCESS_TYPE_NAME);
     }
 
     /**
@@ -657,6 +637,7 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param portAlias          the port alias values
+     * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created port alias
@@ -744,13 +725,15 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param portImplementation the port implementation values
+     * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created port alias
      *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public String upsertPortImplementation(String userId, String serverName, PortImplementation portImplementation, String processGUID,
                                            String externalSourceName) throws InvalidParameterException, PropertyServerException,
@@ -1010,19 +993,94 @@ public class DataEngineRESTServices {
         try {
             if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
 
-            Database database = databaseRequestBody.getDatabase();
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
-
-            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
-                    methodName);
-            String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, databaseRequestBody.getExternalSourceName());
-
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
         return response;
+    }
+
+    /**
+     * Create or update the Database with corresponding associated schema type and relationship
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param database           the database values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created database
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException {
+        final String methodName = "upsertDatabase";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+        return databaseGUID;
+    }
+
+    /**
+     * Delete the Database with all the associated relational tables
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the database
+     *
+     * @return void response
+     */
+    public VoidResponse deleteDatabase(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteDatabase";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteDatabase(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the Database with all the associated relational tables
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the database
+     * @param qualifiedName      the qualified name of the database
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteDatabase(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                     EntityNotDeletedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteDatabase";
+
+        DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+        String databaseGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATABASE_TYPE_NAME, methodName);
+        relationalDataHandler.removeDatabase(userId, databaseGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, databaseGUID, DATABASE_TYPE_NAME);
     }
 
     /**
@@ -1042,20 +1100,409 @@ public class DataEngineRESTServices {
         try {
             if (!isRelationalTableRequestBodyValid(userId, serverName, relationalTableRequestBody, methodName)) return response;
 
-            RelationalTable relationalTable = relationalTableRequestBody.getRelationalTable();
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
-
-            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
-                    methodName);
-            String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId,
-                    relationalTableRequestBody.getDatabaseQualifiedName(), relationalTable, relationalTableRequestBody.getExternalSourceName());
-
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseQualifiedName(),
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName());
             response.setGUID(relationalTableGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
         return response;
+    }
+
+    /**
+     * Create the Relational Table with Relational Columns and corresponding relationships
+     *
+     * @param userId                the name of the calling user
+     * @param serverName            name of server instance to call
+     * @param databaseQualifiedName the unique name of the database
+     * @param relationalTable       the relational table values
+     * @param externalSourceName    the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created relational table
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertRelationalTable(String userId, String serverName, String databaseQualifiedName, RelationalTable relationalTable,
+                                        String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                          PropertyServerException {
+        final String methodName = "upsertRelationalTable";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                methodName);
+
+        String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseQualifiedName, relationalTable,
+                externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+        return relationalTableGUID;
+    }
+
+    /**
+     * Delete the Relational Table with all the associated Relational Columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the relational table
+     *
+     * @return void response
+     */
+    public VoidResponse deleteRelationalTable(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteRelationalTable";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteRelationalTable(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the Relational Table with all the associated Relational Columns
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the relational table
+     * @param qualifiedName      the qualified name of the relational table
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteRelationalTable(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                      DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
+                                                                            UserNotAuthorizedException, EntityNotDeletedException,
+                                                                            FunctionNotSupportedException {
+
+        final String methodName = "deleteRelationalTable";
+
+        DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+        String relationalTableGUID = getEntityGUID(userId, serverName, guid, qualifiedName, RELATIONAL_TABLE_TYPE_NAME, methodName);
+        relationalDataHandler.removeRelationalTable(userId, relationalTableGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, relationalTableGUID, RELATIONAL_TABLE_TYPE_NAME);
+    }
+
+
+    /**
+     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
+     *
+     * @param userId              the name of the calling user
+     * @param serverName          name of server instance to call
+     * @param dataFileRequestBody properties of the data file
+     *
+     * @return the unique identifier (guid) of the created data file
+     */
+    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
+        String methodName = "upsertDataFile";
+        GUIDResponse response = new GUIDResponse();
+        String guid;
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
+                return response;
+            }
+
+            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
+            response.setGUID(guid);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    /**
+     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param file               the data file properties
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created data file
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException {
+        String methodName = "upsertDataFile";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
+
+        DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+        DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+
+        String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+
+        List<Attribute> columns = file.getColumns();
+        SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
+
+        Map<String, Object> extendedProperties = getExtendedProperties(file);
+        String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID;
+        String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
+        file.setFileType(fileTypeName);
+
+        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns, extendedProperties,
+                externalSourceGuid, externalSourceName, userId, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
+        return guid;
+    }
+
+    /**
+     * Delete the Data File with all the associated Tabular Columns
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the data file
+     *
+     * @return void response
+     */
+    public VoidResponse deleteDataFile(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteDataFile";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteDataFile(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the Data File with all the associated Tabular Columns
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the data file
+     * @param qualifiedName      the qualified name of the data file
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteDataFile(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
+        final String methodName = "deleteDataFile";
+
+        DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+        DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+
+        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATA_FILE_TYPE_NAME, methodName);
+
+        String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        dataFileHandler.removeDataFile(userId, dataFileGUID, externalSourceName, externalSourceGuid, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, DATA_FILE_TYPE_NAME);
+    }
+
+    /**
+     * Delete the File Folder
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the folder
+     *
+     * @return void response
+     */
+    public VoidResponse deleteFolder(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteFolder";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteFolder(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the File Folder
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the folder
+     * @param qualifiedName      the qualified name of the folder
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                   EntityNotDeletedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteFolder";
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, FILE_FOLDER_TYPE_NAME, methodName);
+
+        DataEngineFolderHierarchyHandler folderHierarchyHandler = instanceHandler.getFolderHierarchyHandler(userId, serverName, methodName);
+        folderHierarchyHandler.removeFolder(userId, folderGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, FILE_FOLDER_TYPE_NAME);
+    }
+
+    /**
+     * Delete the Connection
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the connection
+     *
+     * @return void response
+     */
+    public VoidResponse deleteConnection(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteConnection";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteConnection(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the Connection
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the connection
+     * @param qualifiedName      the qualified name of the connection
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                       UserNotAuthorizedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteConnection";
+        String connectionGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
+
+        DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
+                methodName);
+        connectionAndEndpointHandler.removeConnection(userId, connectionGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, connectionGUID, CONNECTION_TYPE_NAME);
+    }
+
+    /**
+     * Delete the Endpoint
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the endpoint
+     *
+     * @return void response
+     */
+    public VoidResponse deleteEndpoint(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteEndpoint";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteEndpoint(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the Endpoint
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the endpoint
+     * @param qualifiedName      the qualified name of the endpoint
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
+                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteEndpoint";
+        String endpointGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
+
+        DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
+                methodName);
+        connectionAndEndpointHandler.removeEndpoint(userId, endpointGUID, deleteSemantic, externalSourceName);
+
+        log.debug(DEBUG_DELETE_MESSAGE, endpointGUID, ENDPOINT_TYPE_NAME);
+    }
+
+    private String getEntityGUID(String userId, String serverName, String guid, String qualifiedName, String entityTypeName, String methodName) throws
+                                                                                                                                                InvalidParameterException,
+                                                                                                                                                PropertyServerException,
+                                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                                EntityNotDeletedException {
+        Optional<String> entityGUIDOptional = Optional.ofNullable(guid);
+        if (!entityGUIDOptional.isPresent()) {
+            entityGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, entityTypeName);
+        }
+        if (entityGUIDOptional.isPresent()) {
+            return entityGUIDOptional.get();
+        } else {
+            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
+        }
+        return null;
     }
 
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQualifiedName, String oldSchemaTypeQualifiedName,
@@ -1067,13 +1514,13 @@ public class DataEngineRESTServices {
             return;
         }
 
-        Optional<String> schemaTypeGUID = getSchemaTypeGUID(serverName, userId, oldSchemaTypeQualifiedName);
+        Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, oldSchemaTypeQualifiedName, SCHEMA_TYPE_TYPE_NAME);
         if (!schemaTypeGUID.isPresent()) {
             return;
         }
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.HARD);
+        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.SOFT);
     }
 
     private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
@@ -1090,8 +1537,8 @@ public class DataEngineRESTServices {
         response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
-    private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
-                                             String externalSourceName) {
+    public VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
+                                            String externalSourceName) {
         final String methodName = "updateProcessStatus";
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processGUID);
@@ -1250,9 +1697,9 @@ public class DataEngineRESTServices {
                 portQualifiedNames.stream().collect(partitioningBy(newPortQualifiedNames::contains)).get(Boolean.FALSE);
         obsoletePortQualifiedNames.forEach(portQualifiedName -> {
             try {
-                Optional<String> portGUID = getPortGUID(serverName, userId, portQualifiedName);
+                Optional<String> portGUID = getEntityGUID(serverName, userId, portQualifiedName, PORT_TYPE_NAME);
                 if (portGUID.isPresent()) {
-                    dataEnginePortHandler.removePort(userId, portGUID.get(), externalSourceName, DeleteSemantic.HARD);
+                    dataEnginePortHandler.removePort(userId, portGUID.get(), externalSourceName, DeleteSemantic.SOFT);
                 }
             } catch (Exception error) {
                 restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1339,8 +1786,9 @@ public class DataEngineRESTServices {
         return false;
     }
 
-    private boolean isDeleteProcessesRequestBodyValid(String userId, String serverName, ProcessesDeleteRequestBody requestBody, String methodName) throws
-                                                                                                                                                   InvalidParameterException {
+    private boolean isDeleteProcessesRequestBodyValid(String userId, String serverName, ProcessesDeleteRequestBody requestBody,
+                                                      String methodName) throws
+                                                                         InvalidParameterException {
         if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return false;
 
         if (CollectionUtils.isEmpty(requestBody.getQualifiedNames()) && CollectionUtils.isEmpty(requestBody.getGuids())) {
@@ -1348,52 +1796,6 @@ public class DataEngineRESTServices {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
-     *
-     * @param serverName          server name
-     * @param userId              user id
-     * @param dataFileRequestBody request body
-     *
-     * @return file guid
-     */
-    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
-
-        String methodName = "createDataFileAndSchema";
-        GUIDResponse response = new GUIDResponse();
-        String guid;
-
-        try {
-            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
-                return response;
-            }
-
-            DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
-            DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
-
-            String externalSourceName = dataFileRequestBody.getExternalSourceName();
-            String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-
-            DataFile file = dataFileRequestBody.getDataFile();
-            List<Attribute> columns = file.getColumns();
-            SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
-
-            Map<String, Object> extendedProperties = getExtendedProperties(file);
-            String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID;
-            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
-            file.setFileType(fileTypeName);
-
-            guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns,
-                    extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
-
-            response.setGUID(guid);
-
-        } catch (Exception error) {
-            restExceptionHandler.captureExceptions(response, error, methodName);
-        }
-        return response;
     }
 
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {
@@ -1420,10 +1822,11 @@ public class DataEngineRESTServices {
         return extendedProperties;
     }
 
-    private void throwEntityNotDeletedException(String userId, String serverName, String methodName, String qualifiedName) throws InvalidParameterException,
-                                                                                                                                  UserNotAuthorizedException,
-                                                                                                                                  PropertyServerException,
-                                                                                                                                  EntityNotDeletedException {
+    private void throwEntityNotDeletedException(String userId, String serverName, String methodName, String qualifiedName) throws
+                                                                                                                           InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException,
+                                                                                                                           EntityNotDeletedException {
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         dataEngineCommonHandler.throwEntityNotDeletedException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, qualifiedName);
     }

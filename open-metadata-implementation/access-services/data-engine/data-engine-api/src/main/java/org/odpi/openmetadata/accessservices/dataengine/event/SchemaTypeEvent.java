@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -46,6 +47,7 @@ public class SchemaTypeEvent extends DataEngineEventHeader {
      * Sets up the schema type
      * @param schemaType the schema type
      */
+    @JsonProperty("schema")
     private SchemaType schemaType;
 
 }

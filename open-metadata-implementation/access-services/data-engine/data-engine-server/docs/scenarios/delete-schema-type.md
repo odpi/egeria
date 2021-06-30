@@ -6,7 +6,7 @@
 Delete a SchemaType with columns and relationships
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 
 ```
 DELETE {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/schema-types/
@@ -20,7 +20,7 @@ DELETE {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-e
 `externalSourceName` - qualifiedName of the external data engine tool.<br>
 `guid` - optional property describing the unique identifier of the schema type to be deleted
 `qualifiedName` - optional property describing the qualifiedName of the schema type to be deleted<br>
-Note that you must provide either the qualifiedName or the guid of the schema type <br>
+Note that you must provide either the qualifiedName, or the guid of the schema type <br>
 `VoidRespone` - void response with status and error message if failing
 
 

@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Connection;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Endpoint;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ConnectionBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.EndpointBuilder;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
@@ -40,6 +42,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,8 +54,6 @@ class DataEngineConnectionAndEndpointHandlerTest {
     private static final String ASSET_GUID = "assetGuid";
     private static final String CONNECTION_GUID = "connectionGuid";
     private static final String ENDPOINT_GUID = "endpointGuid";
-    private static final String CONNECTION_TO_ASSET_GUID = "connectionToAssetGuid";
-    private static final String CONNECTION_ENDPOINT_GUID = "connectionEndpointGuid";
     private static final String ASSET_QUALIFIED_NAME = "qualifiedName";
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
@@ -124,7 +125,6 @@ class DataEngineConnectionAndEndpointHandlerTest {
                 eq(CONNECTION_ENDPOINT_TYPE_NAME), eq(ENDPOINT_TYPE_NAME), eq(EXTERNAL_SOURCE_NAME), any());
     }
 
-
     /**
      *  Issue -> https://github.com/mockito/mockito/issues/1066
      *  Unable to properly inject generics; connectionHandler mock is also used for endpointHandler even though a separate mock is defined
@@ -146,6 +146,27 @@ class DataEngineConnectionAndEndpointHandlerTest {
         endpointHandlerField.setAccessible(endpointHandlerIsAccessible);
     }
 
+    @Test
+    void removeConnection() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
+        String methodName = "removeConnection";
+        dataEngineConnectionAndEndpointHandler.removeConnection(USER, CONNECTION_GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_NAME);
+
+        verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
+       verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+       verify(invalidParameterHandler, times(1)).validateGUID(CONNECTION_GUID, GUID_PROPERTY_NAME, methodName);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, CONNECTION_GUID, CONNECTION_TYPE_NAME, EXTERNAL_SOURCE_NAME);
+    }
+
+    @Test
+    void removeEndpoint() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
+        String methodName = "removeEndpoint";
+        dataEngineConnectionAndEndpointHandler.removeEndpoint(USER, ENDPOINT_GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_NAME);
+
+        verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(ENDPOINT_GUID, GUID_PROPERTY_NAME, methodName);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ENDPOINT_GUID, ENDPOINT_TYPE_NAME, EXTERNAL_SOURCE_NAME);
+    }
     private void mockDataEngineCommonHandler(boolean insert, ConnectionBuilder connectionBuilder, EndpointBuilder endpointBuilder)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 

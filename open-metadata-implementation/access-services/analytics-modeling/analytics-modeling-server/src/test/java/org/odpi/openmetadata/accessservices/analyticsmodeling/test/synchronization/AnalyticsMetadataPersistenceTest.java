@@ -98,7 +98,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		obj.setDescription(TEST_DESCRIPTION);
 		obj.setType(TEST_ANALYTICS_METADATA_TYPE);
 		
-		obj.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(obj);
 
 		
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
@@ -163,7 +163,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		obj.setDescription(TEST_DESCRIPTION);
 		obj.setType(TEST_ANALYTICS_METADATA_TYPE);
 		
-		obj.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(obj);
 
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {

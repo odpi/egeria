@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
@@ -275,7 +277,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 	//----------------------------------------------------------------------------------------------------------------
 	// Tests support functions.
 	//----------------------------------------------------------------------------------------------------------------
-	protected void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list, Map<String, String> guidMap ) {
+	private void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list, Map<String, String> guidMap )
+	{
 		if (list == null) {
 			return;
 		}
@@ -319,5 +322,37 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		// confirm data read successful
 		TestUtilities.assertObjectJson(asset, TestUtilities.readJsonFile(FOLDER_MASTER, input));
 		return asset;
+	}
+	
+	/**
+	 * Helper function to create JSON definition of the module
+	 * connected to created entities defined by source GUID list. 
+	 * @param input - file name to read.
+	 * @return module definition in JSON format
+	 * @throws IOException
+	 */
+	protected String getBaseModuleJson(String input) throws IOException {
+		AnalyticsAsset baseModule = createBean(input);
+
+		// create entities for columns referenced in base module
+		Map<String, String>guidMap = new HashMap<>();
+		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
+		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
+		// replace GUIDs from input with real GUIDs of created entities
+		for (Entry<String, String> pair : guidMap.entrySet()) {
+			json = json.replace(pair.getKey(), pair.getValue());
+		}
+		return json;
+	}
+
+	/**
+	 * Helper function to create asset definition of the module
+	 * connected to created entities defined by source GUID list. 
+	 * @param input - file name to read.
+	 * @return module definition in JSON format
+	 * @throws IOException
+	 */
+	protected AnalyticsAsset getBaseModuleAsset(String input) throws IOException {
+		return TestUtilities.readObjectJson(getBaseModuleJson(input), AnalyticsAsset.class);
 	}
 }

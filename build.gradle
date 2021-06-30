@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '2.11-SNAPSHOT'
+    version = '3.0-SNAPSHOT'
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -246,8 +246,8 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
     }
 
 

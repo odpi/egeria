@@ -7,23 +7,23 @@ Create a database, with the associated schema type. If no schema is provided, on
 If provided, the fields protocol and networkAddress will trigger the creation of a connection and an endpoint
 
 More examples with all available properties for a database can be found in the
-[sample collection](../../../docs/samples/collections/DataEngine-technical-assets.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-asset_endpoints.postman_collection.json)
 
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/databases
 
 {
     "database": {
-        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema",
-        "displayName": "MINIMAL-basic-schema",
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+        "displayName": "MINIMAL-basic",
         "protocol" : "ftp",
         "networkAddress" : "localhost",
         "schema": {
-            "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1",
+            "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1",
             "displayName": "DB2INST1"
         }
     },
-    "externalSourceName": "Company::Project::ExternalDataEngine"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 

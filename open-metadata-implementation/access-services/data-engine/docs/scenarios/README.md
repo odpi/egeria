@@ -9,7 +9,7 @@ Below is the list of tasks supported by Data Engine OMAS.
 #### External Tool registration
 
 Typically the first action to take for an external tool is to [register](register-external-tool.md) as a 
-[softare-server-capability](../../../docs/concepts/server-capabilities).
+[software-server-capability](../../../docs/concepts/server-capabilities).
 
 #### External Tool lookup
 
@@ -30,6 +30,17 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 #### [Create Relational Tables](create-relational-tables.md) 
 
 #### [Create Data Files](create-data-files.md)
+
+#### [Delete Database](delete-databases.md)
+
+#### [Delete Relational Tables](delete-relational-tables.md)
+
+#### [Delete Data Files](delete-data-files.md)
+
+#### [Delete Connections](delete-connections.md)
+
+#### [Delete Endpoint](delete-endpoints.md)
+
 
 # Sample use case
 
