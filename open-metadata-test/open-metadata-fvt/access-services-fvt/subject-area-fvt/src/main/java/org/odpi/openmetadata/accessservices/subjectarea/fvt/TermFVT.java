@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * FVT resource to call subject area term client API
@@ -94,7 +95,7 @@ public class TermFVT {
     }
     public static int getTermCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         TermFVT fvt = new TermFVT(url, serverName, userId);
-        return fvt.findTerms(".*").size();
+        return fvt.findTerms("").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -587,7 +588,7 @@ public class TermFVT {
             iter.remove();
             deleteTerm(guid);
         }
-        List<Term> terms = findTerms(".*");
+        List<Term> terms = findTerms("");
         if (terms.size() != existingTermCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingTermCount + " Terms to be found, got " + terms.size());
         }
@@ -647,7 +648,7 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary term, got " + count);
         }
 
-        findRequest.setSearchCriteria("tt.*");
+        findRequest.setSearchCriteria("tt");
         count =  categoryFVT.getTerms(parentGuid, findRequest).size();
         if (count !=10) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 category terms, got " + count);
@@ -667,34 +668,94 @@ public class TermFVT {
         if (count !=5) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms with tt, got " + count);
         }
-        findRequest.setSearchCriteria("ss.*");
+        findRequest.setSearchCriteria("ss");
         findRequest.setPageSize(20);
         if ( categoryFVT.getTerms(parentGuid, findRequest).size() !=10) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss");
         }
-        count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
+        List<Term> tenTerms = glossaryFVT.getTerms(glossaryGuid, findRequest);
+        count = tenTerms.size();
         if (count !=10) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
         }
+        Set<String> tenTermNames = tenTerms.stream()
+                .map(term ->term.getName()).collect(Collectors.toSet());
+        count = tenTermNames.size();
+        if (count !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms distinct names ss, got " + count);
+        }
         findRequest.setPageSize(5);
-        count =  categoryFVT.getTerms(parentGuid, findRequest).size();
 
+        List<Term> firstFiveCategoryTerms =categoryFVT.getTerms(parentGuid, findRequest);
+        count =  firstFiveCategoryTerms.size();
         if (count !=5) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 terms for ss, got " + count);
         }
-        count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
+        Set<String> firstFiveCategoryTermsNames = firstFiveCategoryTerms.stream()
+                .map(term ->term.getName()).collect(Collectors.toSet());
+        count =  firstFiveCategoryTermsNames.size();
         if (count !=5) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 distinct term names for ss, got " + count);
         }
-        findRequest.setPageSize(10);
-        count =  categoryFVT.getTerms(parentGuid, findRequest).size();
+        findRequest.setStartingFrom(5);
+        List<Term> secondFiveCategoryTerms =categoryFVT.getTerms(parentGuid, findRequest);
+        count =  secondFiveCategoryTerms.size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 category terms for ss for 2nd page, got " + count);
+        }
+        Set<String> secondFiveCategoryTermsNames = secondFiveCategoryTerms.stream()
+                .map(term ->term.getName()).collect(Collectors.toSet());
+        count =  secondFiveCategoryTermsNames.size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 5 category term names for ss for 2nd page " + count);
+        }
+        Set<String> totalFiveCategoryTermsNames = firstFiveCategoryTermsNames;
+        totalFiveCategoryTermsNames.addAll(secondFiveCategoryTermsNames);
+        count = totalFiveCategoryTermsNames.size();
         if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss, got " + count);
+            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 10 different category term names for ss from first 2 pages " + count);
         }
-        count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
-        if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
-        }
+//        findRequest.setStartingFrom(0);
+//        List<Term> firstFiveTerms = glossaryFVT.getTerms(glossaryGuid, findRequest);
+//        count = firstFiveTerms.size();
+//        if (count !=5) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss, got " + count);
+//        }
+//        Set<String> firstFiveTermsNames = firstFiveTerms.stream()
+//                .map(term ->term.getName()).collect(Collectors.toSet());
+//        count =  firstFiveTermsNames.size();
+//        if (count !=5) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary distinct term names for ss, got " + count);
+//        }
+//        findRequest.setStartingFrom(5);
+//        List<Term> secondFiveTerms =glossaryFVT.getTerms(parentGuid, findRequest);
+//        count =  secondFiveTerms.size();
+//        if (count !=5) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss for 2nd page, got " + count);
+//        }
+//        Set<String> secondFiveTermsNames = secondFiveTerms.stream()
+//                .map(term ->term.getName()).collect(Collectors.toSet());
+//        count =  secondFiveTermsNames.size();
+//        if (count !=5) {
+//            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 5 glossary term names for ss for 2nd page " + count);
+//        }
+//        Set<String> totalFiveTermsNames = firstFiveTermsNames;
+//        totalFiveTermsNames.addAll(secondFiveTermsNames);
+//        count = totalFiveCategoryTermsNames.size();
+//        if (count !=10) {
+//            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 10 different glossary term names for ss from first 2 pages " + count);
+//        }
+//
+//        findRequest.setStartingFrom(0);
+//        findRequest.setPageSize(10);
+//        count =  categoryFVT.getTerms(parentGuid, findRequest).size();
+//        if (count !=10) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss, got " + count);
+//        }
+//        count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
+//        if (count !=10) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
+//        }
 
         //cleanup
         for (String termGuid: termGuids) {
