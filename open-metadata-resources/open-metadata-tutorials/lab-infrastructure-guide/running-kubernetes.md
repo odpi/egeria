@@ -28,26 +28,23 @@ Install [Helm v3.1 or above](https://github.com/helm/helm/releases) & ensure it 
 
 ## Running the environment
 
-1. Download the latest [Egeria release](https://github.com/odpi/egeria/releases) & unpack
-   
-1. Navigate to the `open-metadata-resources/open-metadata-deployment/charts` directory
-   
-1. First we need to retrieve dependencies we use for Egeria:
+1. Add a helm repo for the egeria content & update
 
-    ```bash
-    $ helm dep update odpi-egeria-lab
-    ```
+   ```bash
+   helm repo add egeria https://odpi.github.io/egeria-charts
+   helm repo update
+   ```
     
-1. We can now deploy the lab environment:
+2. We can now deploy the lab environment:
 
     ```bash
-    $ helm install lab odpi-egeria-lab
+    $ helm install lab egeria/odpi-egeria-lab
     ```
 
-1. By default the Jupyter notebook is available on port 30888 and is defined as a `NodePort`. This means you need to know the
+3. By default the Jupyter notebook is available on port 30888 and is defined as a `NodePort`. This means you need to know the
    IP address or DNS name of one of your Kubernetes worker nodes. If we call this 'mycloud-service.com' you would now get to the tutorials via `http://mycloud-service.com:30888`
    
-1. To remove the lab environment
+4. To remove the lab environment
 
     ```bash
     $ helm delete lab

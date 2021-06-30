@@ -82,9 +82,11 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0401](../open-metadata-publication/website/open-metadata-types/0401-Governance-Definitions.md) and
   [0405](../open-metadata-publication/website/open-metadata-types/0405-Governance-Drivers.md).
 
-* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types.
+* Deprecated type called **TabularColumnType** because it restricts tabular columns to primitive types when it could be a literal for example.
+  Also a new subtype for **TabularColumn** called **TabularFileColumn** is added to be able to distinguish between tabular columns from
+  files and **RelationalColumn** (which also inherits from **TabularColumn**).
 
-  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabluar-Schemas.md).
+  See type descriptions in model [0530](../open-metadata-publication/website/open-metadata-types/0530-Tabular-Schemas.md).
 
 * Deprecated types called **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** because they
   offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
@@ -110,6 +112,10 @@ The following changes have been made to the open metadata types:
   
   See new type descriptions in model [0536](../open-metadata-publication/website/open-metadata-types/0536-API-Schemas.md).
 
+* New types for **DisplayDataSchemaType**, **DisplayDataContainer**, **DisplayDataField**, **QuerySchemaType**, 
+  **QueryDataContainer** and **QueryDataField** to allow the capture of properties related to the display of data to end users.
+  
+  See new type descriptions in model [0537](../open-metadata-publication/website/open-metadata-types/0537-Display-Schemas.md).
 
 ### Bug fixes and other updates
 
@@ -120,18 +126,23 @@ For details on both see the commit history in GitHub.
 
 ## Removed Functionality
 
-The following capabilities have now been removed (previously  deprecated and/or not in 'Released' status.
-) :
+The following capabilities have now been removed (they were previously deprecated and/or in not in 'Released' status):
 * Information View OMAS.
 * Virtualization Services & associated connectors.
 * Security Officer Services, Security sync services & associated connectors including for Apache Ranger.
 * Gaian database connector & additional authentication/impersonation support.
-* Much of the above capability can be implemented via [Integration Services](https://egeria.odpi.org/open-metadata-implementation/integration-services/) .
-* Hadoop specifics may be developed in the future within the [Egeria Hadoop](https://github.com/odpi/egeria-connector-hadoop-ecosystem) GitHub repository.
-* For more details see [#5314](https://github.com/odpi/egeria/pull/5314) .
+
+Much of the above capability can be implemented via [Integration Services](https://egeria.odpi.org/open-metadata-implementation/integration-services/) .
+Hadoop specifics may be developed in the future within the [Egeria Hadoop](https://github.com/odpi/egeria-connector-hadoop-ecosystem) GitHub repository.
+
+For more details of this change see [#5314](https://github.com/odpi/egeria/pull/5314).
+
+Similarly, the following services have been deleted:
+
 * Data Platform Services and Data Platform OMAS. For more details see [#5344](https://github.com/odpi/egeria/pull/5344) .
 * Data Platform capabilities are already available in [Database Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator/) and [Files Integrator](https://egeria.odpi.org/open-metadata-implementation/integration-services/files-integrator/) already part of Integration Services. 
-* Cassandra connectors: cassandra-data-store-connector and cassandra-metadata-extractor-connector will be introduced back in new GitHub repository. For more information see [#2671](https://github.com/odpi/egeria/issues/2671) .
+* Cassandra connectors: cassandra-data-store-connector and cassandra-metadata-extractor-connector will be introduced back
+in the [Data Connectors](https://github.com/odpi/egeria-data-connectors) GitHub repository. For more information see [#2671](https://github.com/odpi/egeria/issues/2671) .
 
 ## Known Issues
 

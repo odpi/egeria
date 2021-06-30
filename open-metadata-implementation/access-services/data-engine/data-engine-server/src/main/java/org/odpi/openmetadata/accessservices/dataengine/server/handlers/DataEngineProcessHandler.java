@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
@@ -27,8 +26,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -218,21 +215,11 @@ public class DataEngineProcessHandler {
     public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException {
-        final String methodName = "getPortsForProcess";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
-
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, PROCESS_PORT_TYPE_NAME);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, processGUID, PROCESS_TYPE_NAME,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
-
-        if (CollectionUtils.isEmpty(entities)) {
-            return new HashSet<>();
-        }
-
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).collect(Collectors.toSet());
+        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
+                PROCESS_TYPE_NAME);
+        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).
+                collect(Collectors.toSet());
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
@@ -312,15 +299,10 @@ public class DataEngineProcessHandler {
                                                                                                                            UserNotAuthorizedException,
                                                                                                                            FunctionNotSupportedException {
         final String methodName = "removeProcess";
-
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
-        repositoryHandler.purgeEntity(userId, processGUID, PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, methodName);
     }
 }

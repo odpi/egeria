@@ -12,6 +12,7 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
@@ -23,23 +24,32 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
@@ -207,7 +217,7 @@ class DataEngineRelationalDataHandlerTest {
 
         when(relationalDataHandler.createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, SCHEMA_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, methodName)).thenReturn(TABLE_GUID);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable, EXTERNAL_SOURCE_DE_NAME);
@@ -217,10 +227,10 @@ class DataEngineRelationalDataHandlerTest {
         verify(relationalDataHandler, times(1)).createDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 TABLE_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(), column.getExternalTypeGUID(),
                 column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getValidValuesSetGUID(), column.getFormula(),
-                column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
+                column.getIsDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                 column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(),
                 column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(), column.getLength(), column.getPrecision(),
-                column.isNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
+                column.getIsNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
                 RELATIONAL_COLUMN_TYPE_NAME, null, null, "upsertRelationalColumns");
     }
 
@@ -242,38 +252,80 @@ class DataEngineRelationalDataHandlerTest {
         verifyInvalidParameterHandlerInvocations(methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, TABLE_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
-                relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 COLUMN_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
-                column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.isDeprecated(),
+                column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.getIsDeprecated(),
                 column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                 column.getOrderedValues(), column.getDefaultValueOverride(), column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(),
-                column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
+                column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
                 column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null,
                 "upsertRelationalColumns");
     }
 
-    private void mockGetDatabaseSchemaGUID() throws UserNotAuthorizedException, PropertyServerException {
+    @Test
+    void removeDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
+
+        final String methodName = "removeDatabase";
+
+        EntityDetail mockedEntity = mockEntityDetail(GUID);
+        when(dataEngineCommonHandler.getEntityDetails(USER, GUID, DATABASE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+
+        EntityDetail mockedDatabaseSchema = mockEntityDetail(SCHEMA_GUID);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME, DATABASE_TYPE_NAME)).thenReturn(Optional.of(mockedDatabaseSchema));
+
+        when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+
+        dataEngineRelationalDataHandler.removeDatabase(USER, GUID, EXTERNAL_SOURCE_DE_NAME, DeleteSemantic.SOFT);
+
+        verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
+        verify(relationalDataHandler, times(1)).removeDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
+                SCHEMA_GUID, QUALIFIED_NAME, "removeDatabaseSchema");
+        verify(relationalDataHandler, times(1)).removeDatabase(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
+                GUID, QUALIFIED_NAME, methodName);
+    }
+
+    @Test
+    void removeDatabase_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+        FunctionNotSupportedException mockedException = mock(FunctionNotSupportedException.class);
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removeDatabase");
+
+        assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineRelationalDataHandler.removeDatabase(USER, GUID, EXTERNAL_SOURCE_DE_NAME, DeleteSemantic.HARD));
+    }
+
+    private EntityDetail mockEntityDetail(String guid) {
+        EntityDetail entityDetail = mock(EntityDetail.class);
+
+        when(entityDetail.getGUID()).thenReturn(guid);
+        InstanceProperties instanceProperties = mock(InstanceProperties.class);
+        InstancePropertyValue propertyValue = mock(InstancePropertyValue.class);
+        when(propertyValue.valueAsString()).thenReturn(QUALIFIED_NAME);
+        when(instanceProperties.getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME)).thenReturn(propertyValue);
+        when(entityDetail.getProperties()).thenReturn(instanceProperties);
+
+        return entityDetail;
+    }
+
+    private void mockGetDatabaseSchemaGUID() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         TypeDef relationshipTypeDef = mock(TypeDef.class);
         when(relationshipTypeDef.getName()).thenReturn(DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
         when(relationshipTypeDef.getGUID()).thenReturn(DATA_CONTENT_FOR_DATA_SET_TYPE_GUID);
         when(repositoryHelper.getTypeDefByName(USER, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)).thenReturn(relationshipTypeDef);
         EntityDetail mockedEntityDetail = mock(EntityDetail.class);
         when(mockedEntityDetail.getGUID()).thenReturn(SCHEMA_GUID);
-        when(repositoryHandler.getEntityForRelationshipType(USER, GUID, DATABASE_TYPE_NAME, DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                DATA_CONTENT_FOR_DATA_SET_TYPE_NAME, "findSchemaForDatabase")).thenReturn(mockedEntityDetail);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,DATABASE_TYPE_NAME))
+                .thenReturn(Optional.of(mockedEntityDetail));
     }
 
-    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
+    private void mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
                                                                                                          PropertyServerException,
                                                                                                          InvalidParameterException {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(guid);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
         when(dataEngineCommonHandler.findEntity(USER, qualifiedName, entityTypeName)).thenReturn(optionalOfMockedEntity);
-
-        return entityDetail;
     }
 
     private DatabaseSchema getDatabaseSchema() {
@@ -307,7 +359,7 @@ class DataEngineRelationalDataHandlerTest {
         relationalTable.setQualifiedName(QUALIFIED_NAME);
         relationalTable.setDisplayName(NAME);
         relationalTable.setDescription(DESCRIPTION);
-        relationalTable.setDeprecated(false);
+        relationalTable.setIsDeprecated(false);
         relationalTable.setAliases(Collections.singletonList("alias"));
 
         return relationalTable;

@@ -23,8 +23,7 @@ public class APIParameterListProperties extends ComplexSchemaTypeProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private boolean required     = true;
-
+    private boolean required = true;
 
     /**
      * Default constructor

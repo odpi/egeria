@@ -6,12 +6,8 @@ package org.odpi.openmetadata.integrationservices.files.connector;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import java.util.List;
@@ -28,6 +24,7 @@ public class FilesIntegratorContext
     private String                 userId;
     private String                 fileServerCapabilityGUID;
     private String                 fileServerCapabilityName;
+    private boolean                fileServerCapabilityIsHome = true;
 
 
     /**
@@ -50,6 +47,11 @@ public class FilesIntegratorContext
         this.userId                   = userId;
         this.fileServerCapabilityGUID = fileServerCapabilityGUID;
         this.fileServerCapabilityName = fileServerCapabilityName;
+
+        if (fileServerCapabilityGUID == null)
+        {
+            fileServerCapabilityIsHome = false;
+        }
     }
 
 
@@ -553,5 +555,563 @@ public class FilesIntegratorContext
                                                                        PropertyServerException
     {
         return client.getFileByPathName(userId, pathName);
+    }
+
+
+    /* =====================================================================================================================
+     * A schemaType is used to describe complex structures found in the schema of a file
+     */
+
+    /**
+     * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createPrimitiveSchemaType(PrimitiveSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        return client.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type that has a fixed value.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createLiteralSchemaType(LiteralSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return client.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     * @param validValuesSetGUID unique identifier of the valid values set to used
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEnumSchemaType(EnumSchemaTypeProperties schemaTypeProperties,
+                                       String                   validValuesSetGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return client.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, validValuesSetGUID);
+    }
+
+
+    /**
+     * Retrieve the list of valid value set metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueSetElement> getValidValueSetByName(String name,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return client.getValidValueSetByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of valid value set metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueSetElement> findValidValueSet(String searchString,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return client.findValidValueSet(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createStructSchemaType(StructSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return client.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaTypeChoice(SchemaTypeChoiceProperties schemaTypeProperties,
+                                         List<String>               schemaTypeOptionGUIDs) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return client.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, schemaTypeOptionGUIDs);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createMapSchemaType(MapSchemaTypeProperties schemaTypeProperties,
+                                      String                  mapFromSchemaTypeGUID,
+                                      String                  mapToSchemaTypeGUID) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return client.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaTypeFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return client.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a schema type.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param schemaTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaTypeProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaType(String               schemaTypeGUID,
+                                 boolean              isMergeUpdate,
+                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        client.updateSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema type.
+     *
+     * @param schemaTypeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSchemaType(String schemaTypeGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        client.removeSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaTypeElement> findSchemaType(String searchString,
+                                                  String typeName,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return client.findSchemaType(userId,  searchString, typeName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the schema type associated with a specific open metadata element (data asset, process or port).
+     *
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is connected to
+     *
+     * @return metadata element describing the schema type associated with the requested parent element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaTypeElement getSchemaTypeForElement(String parentElementGUID,
+                                                     String parentElementTypeName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return client.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaTypeElement>   getSchemaTypeByName(String name,
+                                                         String typeName,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return client.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the schema type metadata element with the supplied unique identifier.
+     *
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return client.getSchemaTypeByGUID(userId, schemaTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the header of the metadata element connected to a schema type.
+     *
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return header for parent element (data asset, process, port)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ElementHeader getSchemaTypeParent(String schemaTypeGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return client.getSchemaTypeParent(userId, schemaTypeGUID);
+    }
+
+
+    /* ===============================================================================
+     * A schemaType typically contains many schema attributes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a schema attribute.
+     *
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is nested underneath
+     * @param schemaAttributeProperties properties for the schema attribute
+     *
+     * @return unique identifier of the new metadata element for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaAttribute(String                    schemaElementGUID,
+                                        SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return client.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, schemaAttributeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
+     *
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSchemaAttributeFromTemplate(String             schemaElementGUID,
+                                                    String             templateGUID,
+                                                    TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return client.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Connect a schema type to a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaType(String schemaAttributeGUID,
+                                String schemaTypeGUID) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        client.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, schemaTypeGUID);
+    }
+
+
+    /**
+     * Remove the type information from a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaType(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        client.clearSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the schema attribute to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaAttributeProperties new properties for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSchemaAttribute(String                    schemaAttributeGUID,
+                                      boolean                   isMergeUpdate,
+                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        client.updateSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema attribute.
+     *
+     * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSchemaAttribute(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        client.removeSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement> findSchemaAttributes(String searchString,
+                                                             String typeName,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return client.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.
+     *
+     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement> getNestedAttributes(String parentSchemaElementGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return client.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SchemaAttributeElement> getSchemaAttributesByName(String name,
+                                                                  String typeName,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return client.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the schema attribute metadata element with the supplied unique identifier.
+     *
+     * @param schemaAttributeGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        return client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
     }
 }

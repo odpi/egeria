@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,7 +54,7 @@ public class AssetLineageResource {
     public GUIDListResponse publishEntities(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String entityType,
-                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAfterDate,
+                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date updatedAfterDate,
                                             @RequestParam(required = false) List<String> entitySubtypeGUIDs,
                                             @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
                                             @RequestParam(required = false) SearchClassifications searchClassifications,

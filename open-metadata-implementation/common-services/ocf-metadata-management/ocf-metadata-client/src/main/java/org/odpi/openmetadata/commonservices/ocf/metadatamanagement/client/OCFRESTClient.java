@@ -611,32 +611,6 @@ public class OCFRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns an SchemaTypeResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return SchemaTypeResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public SchemaTypeResponse callSchemaTypeGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        SchemaTypeResponse restResult = this.callGetRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a GET REST call that returns an SchemaAttributesResponse object.
      *
      * @param methodName  name of the method being called.

@@ -4,9 +4,8 @@ package org.odpi.openmetadata.accessservices.datamanager.api;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -15,7 +14,7 @@ import java.util.List;
 
 /**
  * APIManagerInterface defines the client side interface for the Data Manager OMAS that is
- * relevant for API assets that provide event-based services.   It provides the ability to
+ * relevant for API assets that provide call-based services.   It provides the ability to
  * define and maintain the metadata about an API and the
  * APIOperations that define the operations and parameters of the API.
  */
@@ -23,15 +22,16 @@ public interface APIManagerInterface
 {
 
     /*
-     * The API is the top level asset in an event manager
+     * The API is the top level asset in API manager
      */
 
     /**
      * Create a new metadata element to represent an API.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
      * @param apiProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -40,20 +40,22 @@ public interface APIManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createAPI(String userId,
-                       String eventBrokerGUID,
-                       String eventBrokerName,
-                       APIProperties apiProperties) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException;
+    String createAPI(String        userId,
+                     String        apiManagerGUID,
+                     String        apiManagerName,
+                     boolean       apiManagerIsHome,
+                     APIProperties apiProperties) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException;
 
 
     /**
      * Create a new metadata element to represent an API using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -63,21 +65,22 @@ public interface APIManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createAPIFromTemplate(String userId,
-                                   String eventBrokerGUID,
-                                   String eventBrokerName,
-                                   String templateGUID,
-                                   TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+    String createAPIFromTemplate(String             userId,
+                                 String             apiManagerGUID,
+                                 String             apiManagerName,
+                                 boolean            apiManagerIsHome,
+                                 String             templateGUID,
+                                 TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
      * Update the metadata element representing an API.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
      * @param apiGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param apiProperties new properties for this element
@@ -86,14 +89,14 @@ public interface APIManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateAPI(String userId,
-                     String eventBrokerGUID,
-                     String eventBrokerName,
-                     String apiGUID,
-                     boolean isMergeUpdate,
-                     APIProperties apiProperties) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
+    void updateAPI(String        userId,
+                   String        apiManagerGUID,
+                   String        apiManagerName,
+                   String        apiGUID,
+                   boolean       isMergeUpdate,
+                   APIProperties apiProperties) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException;
 
 
     /**
@@ -109,9 +112,9 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void publishAPI(String userId,
-                      String apiGUID) throws InvalidParameterException,
-                                               UserNotAuthorizedException,
-                                               PropertyServerException;
+                    String apiGUID) throws InvalidParameterException,
+                                           UserNotAuthorizedException,
+                                           PropertyServerException;
 
 
     /**
@@ -127,17 +130,17 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void withdrawAPI(String userId,
-                       String apiGUID) throws InvalidParameterException,
-                                                UserNotAuthorizedException,
-                                                PropertyServerException;
+                     String apiGUID) throws InvalidParameterException,
+                                            UserNotAuthorizedException,
+                                            PropertyServerException;
 
 
     /**
      * Remove the metadata element representing an API.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
      * @param apiGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -146,12 +149,12 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void removeAPI(String userId,
-                     String eventBrokerGUID,
-                     String eventBrokerName,
-                     String apiGUID,
-                     String qualifiedName) throws InvalidParameterException,
-                                                  UserNotAuthorizedException,
-                                                  PropertyServerException;
+                   String apiManagerGUID,
+                   String apiManagerName,
+                   String apiGUID,
+                   String qualifiedName) throws InvalidParameterException,
+                                                UserNotAuthorizedException,
+                                                PropertyServerException;
 
 
     /**
@@ -170,11 +173,11 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<APIElement> findAPIs(String userId,
-                                  String searchString,
-                                  int startFrom,
-                                  int pageSize) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException;
+                              String searchString,
+                              int    startFrom,
+                              int    pageSize) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
 
 
     /**
@@ -193,19 +196,19 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<APIElement> getAPIsByName(String userId,
-                                       String name,
-                                       int startFrom,
-                                       int pageSize) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException;
+                                   String name,
+                                   int    startFrom,
+                                   int    pageSize) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
 
 
     /**
      * Retrieve the list of APIs created by this caller.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the API manager (event broker)
-     * @param eventBrokerName unique name of software server capability representing the API manager (event broker)
+     * @param apiManagerGUID unique identifier of software server capability representing the API manager (API manager)
+     * @param apiManagerName unique name of software server capability representing the API manager (API manager)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -216,12 +219,12 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<APIElement> getAPIsForAPIManager(String userId,
-                                               String eventBrokerGUID,
-                                               String eventBrokerName,
-                                               int startFrom,
-                                               int pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+                                          String apiManagerGUID,
+                                          String apiManagerName,
+                                          int    startFrom,
+                                          int    pageSize) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
@@ -237,50 +240,50 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     APIElement getAPIByGUID(String userId,
-                                String guid) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+                            String guid) throws InvalidParameterException,
+                                                UserNotAuthorizedException,
+                                                PropertyServerException;
 
 
     /*
-     * A API may support one or more types of event depending on its capability
+     * A API may support one or more types of operations depending on its capability
      */
 
     /**
-     * Create a new metadata element to represent an API Operation.  This describes the structure of an event supported by
-     * the API. The structure of this API Operation is added using SchemaAttributes.   These SchemaAttributes can have
+     * Create a new metadata element to represent an API Operation.  This describes the structure of an operation supported by
+     * the API. The structure of this API Operation is added using API Parameter Lists.   These parameter lists can have
      * a simple type or a nested structure.
      *
-     * The API Operation is then linked directly to the API if it is the only event structure supported by the
-     * API, or it is added to the API's API Operation list.
-     *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiGUID unique identifier of an API
-     * @param properties properties about the API schema
+     * @param properties properties about the API Operation
      *
-     * @return unique identifier of the new API schema
+     * @return unique identifier of the new API Operation
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createAPIOperation(String userId,
-                           String eventBrokerGUID,
-                           String eventBrokerName,
-                           String apiGUID,
-                           APIOperationProperties properties) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+    String createAPIOperation(String                 userId,
+                              String                 apiManagerGUID,
+                              String                 apiManagerName,
+                              boolean                apiManagerIsHome,
+                              String                 apiGUID,
+                              APIOperationProperties properties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
      * Create a new metadata element to represent a an API Operation using an existing API Operation as a template.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiGUID unique identifier of the API where the API Operation is located
      * @param templateProperties properties that override the template
@@ -291,14 +294,15 @@ public interface APIManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createAPIOperationFromTemplate(String userId,
-                                       String eventBrokerGUID,
-                                       String eventBrokerName,
-                                       String templateGUID,
-                                       String apiGUID,
-                                       TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    String createAPIOperationFromTemplate(String             userId,
+                                          String             apiManagerGUID,
+                                          String             apiManagerName,
+                                          boolean            apiManagerIsHome,
+                                          String             templateGUID,
+                                          String             apiGUID,
+                                          TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 
 
 
@@ -306,8 +310,8 @@ public interface APIManagerInterface
      * Update the metadata element representing an API Operation.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
      * @param apiOperationGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param properties new properties for the metadata element
@@ -316,22 +320,22 @@ public interface APIManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateAPIOperation(String userId,
-                         String eventBrokerGUID,
-                         String eventBrokerName,
-                         String apiOperationGUID,
-                         boolean isMergeUpdate,
-                         APIOperationProperties properties) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+    void updateAPIOperation(String                 userId,
+                            String                 apiManagerGUID,
+                            String                 apiManagerName,
+                            String                 apiOperationGUID,
+                            boolean                isMergeUpdate,
+                            APIOperationProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**
      * Remove an API Operation.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
      * @param apiOperationGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -340,12 +344,12 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void removeAPIOperation(String userId,
-                         String eventBrokerGUID,
-                         String eventBrokerName,
-                         String apiOperationGUID,
-                         String qualifiedName) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+                            String apiManagerGUID,
+                            String apiManagerName,
+                            String apiOperationGUID,
+                            String qualifiedName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException;
 
 
     /**
@@ -364,44 +368,22 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<APIOperationElement> findAPIOperations(String userId,
-                                          String searchString,
-                                          int startFrom,
-                                          int pageSize) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+                                                String searchString,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
-     * Return the list of API Operations associated with an EvenSet.  This is a collection of APIOperation definitions.
-     * These API Operations can be used as a template for adding the API Operations to an API.
-     *
-     * @param userId calling user
-     * @param eventSetGUID unique identifier of the API to query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of metadata elements describing the API Operations associated with the requested EventSet
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<APIOperationElement> getAPIOperationsForEventSet(String userId,
-                                                    String eventSetGUID,
-                                                    int startFrom,
-                                                    int pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
-
-    /**
-     * Return the list of API Operations associated with an API.
+     * Return the list of API Parameter Lists associated with an API Operation.
      *
      * @param userId calling user
      * @param apiGUID unique identifier of the API to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
-     * @return list of metadata elements describing the API Operations associated with the requested API
+     * @return list of metadata elements describing the API Parameter Lists associated with the requested API Operation
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -409,10 +391,10 @@ public interface APIManagerInterface
      */
     List<APIOperationElement> getOperationsForAPI(String userId,
                                                   String apiGUID,
-                                                  int startFrom,
-                                                  int pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -431,11 +413,11 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<APIOperationElement> getAPIOperationsByName(String userId,
-                                               String name,
-                                               int startFrom,
-                                               int pageSize) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException;
+                                                     String name,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
 
 
     /**
@@ -451,7 +433,203 @@ public interface APIManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     APIOperationElement getAPIOperationByGUID(String userId,
-                                        String guid) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+                                              String guid) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
+
+    /*
+     * A API Operation may support a header, a request and a response parameter list of operations depending on its capability
+     */
+
+    /**
+     * Create a new metadata element to represent an API Operation's Parameter list.  This describes the structure of the payload supported by
+     * the API's operation. The structure of this API Operation is added using API Parameter schema attributes.   These parameters can have
+     * a simple type or a nested structure.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
+     * @param apiOperationGUID unique identifier of an APIOperation
+     * @param properties properties about the API parameter list
+     *
+     * @return unique identifier of the new API parameter list
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createAPIParameterList(String                     userId,
+                                  String                     apiManagerGUID,
+                                  String                     apiManagerName,
+                                  boolean                    apiManagerIsHome,
+                                  String                     apiOperationGUID,
+                                  APIParameterListType       parameterListType,
+                                  APIParameterListProperties properties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
+     * Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param apiOperationGUID unique identifier of the API where the API Operation is located
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new API Parameter List
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createAPIParameterListFromTemplate(String               userId,
+                                              String               apiManagerGUID,
+                                              String               apiManagerName,
+                                              boolean              apiManagerIsHome,
+                                              String               templateGUID,
+                                              String               apiOperationGUID,
+                                              APIParameterListType parameterListType,
+                                              TemplateProperties   templateProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
+
+
+
+    /**
+     * Update the metadata element representing an API ParameterList.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiParameterListGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param properties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void updateAPIParameterList(String                     userId,
+                                String                     apiManagerGUID,
+                                String                     apiManagerName,
+                                String                     apiParameterListGUID,
+                                boolean                    isMergeUpdate,
+                                APIParameterListProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Remove an API Parameter List and all of its parameters.
+     *
+     * @param userId calling user
+     * @param apiManagerGUID unique identifier of software server capability representing the caller
+     * @param apiManagerName unique name of software server capability representing the caller
+     * @param apiParameterListGUID unique identifier of the metadata element to remove
+     * @param qualifiedName unique name of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeAPIParameterList(String userId,
+                                String apiManagerGUID,
+                                String apiManagerName,
+                                String apiParameterListGUID,
+                                String qualifiedName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
+
+
+
+
+    /**
+     * Retrieve the list of API Parameter List metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<APIParameterListElement> findAPIParameterLists(String userId,
+                                                        String searchString,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
+     * Return the list of API Parameter Lists associated with an API Operation.
+     *
+     * @param userId calling user
+     * @param apiOperationGUID unique identifier of the API Operation to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements describing the API Parameter Lists associated with the requested API Operation
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<APIParameterListElement> getParameterListsForAPIOperation(String userId,
+                                                                   String apiOperationGUID,
+                                                                   int    startFrom,
+                                                                   int    pageSize) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Retrieve the list of API Parameter List metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<APIParameterListElement> getAPIParameterListsByName(String userId,
+                                                             String name,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the API Parameter List metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    APIParameterListElement getAPIParameterListByGUID(String userId,
+                                                      String guid) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 }
