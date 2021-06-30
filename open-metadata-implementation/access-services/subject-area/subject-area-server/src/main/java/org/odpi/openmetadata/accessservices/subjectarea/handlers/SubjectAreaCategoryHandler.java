@@ -466,15 +466,16 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (startingFrom == null) {
             startingFrom = 0;
         }
-
-        Integer filteredStartingFrom = 0;
+        // this is used to track getting all the pages of all the data from the start
+        // We use this to issue calls to get all the data so we can then apply the filter.
+        Integer unfilteredStartingFrom = 0;
 
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
             List<Term> filteredTerms = new ArrayList<>();
             boolean continueGettingTerms = true;
             while (continueGettingTerms) {
-                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, filteredStartingFrom, pageSize);
+                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, unfilteredStartingFrom, pageSize);
                 if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
                    // we now have results. We need to filter those results then apply the requested startingFrom
 
@@ -491,17 +492,17 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     continueGettingTerms = false;
                 } else {
                     // issue another call to get another page of terms
-                    filteredStartingFrom = filteredStartingFrom + pageSize;
+                    unfilteredStartingFrom = unfilteredStartingFrom + pageSize;
                 }
             }
             // we have a list of filteredTerms , we need to slice out the page we need to return to the user based on their requested startingFrom
 
             if (filteredTerms.size() > startingFrom) {
                 // we have something to return
-                int endingAt = pageSize;
+                int endingAt = startingFrom + pageSize;
                 if (filteredTerms.size() < startingFrom + pageSize) {
                     // if there is not a page worth - then calculate the ending index of the list.
-                    endingAt = filteredTerms.size() - startingFrom;
+                    endingAt = filteredTerms.size();
                 }
                 response.addAllResults(filteredTerms.subList(startingFrom, endingAt));
             }
