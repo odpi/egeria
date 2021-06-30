@@ -6,7 +6,7 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "2.11-SNAPSHOT"
+  version: "2.11"
   repositoryType: "local-graph-repository"
   debug: false
   persistence: true
@@ -68,8 +68,8 @@ options:
 imageDefaults:
   registry: docker.io
   namespace: odpi
-  tag: latest
-  pullPolicy: Always
+  tag: 2.11
+  pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -84,7 +84,7 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: latest
+    tag: 2.11
   configure:
     name: egeria-configure
 
