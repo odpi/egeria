@@ -84,7 +84,7 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: 2.11
+    tag: 2.11.0
   configure:
     name: egeria-configure
 
