@@ -39,7 +39,7 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
      */
 
     public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-      return getCategoryChildren(userId,guid, findRequest, false, false);
+      return getCategoryChildren(userId,guid, findRequest, false, true);
     }
     /**
      * Get the Category's children categories
@@ -77,7 +77,7 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
 
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        return getTerms(userId,guid,findRequest, true,false);
+        return getTerms(userId, guid, findRequest, false,true);
     }
     /**
      * Get the terms owned by this Category
