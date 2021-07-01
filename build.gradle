@@ -82,7 +82,7 @@ allprojects {
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
         springwebVersion = '5.3.8'
-        springdataVersion = '2.5.1'
+        springdataVersion = '2.5.2'
         springldapVersion = '2.3.4.RELEASE'
         springbootVersion = '2.5.0'
         springsecurityVersion = '5.5.0'
