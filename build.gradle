@@ -111,7 +111,7 @@ allprojects {
             implementation("com.mikesamuel:json-sanitizer:1.2.3")
             implementation("com.sleepycat:je:18.3.12")
             implementation("commons-codec:commons-codec:1.15")
-            implementation("commons-io:commons-io:2.9.0")
+            implementation("commons-io:commons-io:2.10.0")
             implementation("commons-logging:commons-logging:1.2")
             implementation("org.apache.commons:commons-text:1.9")
             implementation("io.github.classgraph:classgraph:4.8.107")
