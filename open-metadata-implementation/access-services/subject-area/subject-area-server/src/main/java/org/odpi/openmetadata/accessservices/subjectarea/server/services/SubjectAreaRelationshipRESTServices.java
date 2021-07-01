@@ -1334,7 +1334,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Create a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     * @deprecated IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.
+     * @Deprecated IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param IsATypeOfDeprecated the IsaTypeOf relationship
@@ -1350,6 +1350,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createIsATypeOfDeprecated(String serverName, String userId, IsATypeOfDeprecated IsATypeOfDeprecated) {
         String restAPIName = "createIsATypeOfDeprecated";
         return createRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated);
@@ -1357,7 +1358,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Get a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsATypeOfDeprecated relationship to get
@@ -1370,6 +1371,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getIsATypeOfDeprecated(String serverName, String userId, String guid) {
         String restAPIName = "getIsATypeOfDeprecated";
         return getRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
@@ -1378,7 +1380,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Update a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param guid                      unique identifier of the relationship
@@ -1396,6 +1398,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateIsATypeOfDeprecated(String serverName, String userId, String guid, IsATypeOfDeprecated IsATypeOfDeprecated, boolean isReplace) {
         String restAPIName = "updateIsATypeOfDeprecated";
         return updateRelationship(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated, isReplace);
@@ -1403,7 +1406,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
@@ -1420,6 +1423,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteIsATypeOfDeprecatedRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteIsATypeOfDeprecatedRelationship";
         return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid, isPurge);
@@ -1430,7 +1434,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the relationship to restore
@@ -1446,6 +1450,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreIsATypeOfDeprecated(String serverName, String userId, String guid) {
         String restAPIName = "restoreIsATypeOfDeprecated";
         return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);

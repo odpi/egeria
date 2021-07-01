@@ -14,8 +14,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 /**
  * Mapping methods to map between the termISATypeOFRelationship and the equivalent omrs Relationship.
  *
- * @deprecated use IsATypeOfRelationship not TermISATypeOFRelationship
+ * @Deprecated use IsATypeOfRelationship not TermISATypeOFRelationship
  */
+@Deprecated
 @SubjectAreaMapper
 public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMapper<IsATypeOfDeprecated> {
     private static final String TERM_ISA_TYPE_OF_DEPRECATED_RELATIONSHIP = "TermISATypeOFRelationship";
