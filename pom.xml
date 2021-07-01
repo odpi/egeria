@@ -163,8 +163,8 @@
         <kafka.version>2.8.0</kafka.version>
         <janus.version>0.5.3</janus.version>
         <netty.version>4.1.65.Final</netty.version>
-        <spring-boot.version>2.5.0</spring-boot.version>
         <tomcat.version>9.0.48</tomcat.version>
+        <spring-boot.version>2.5.2</spring-boot.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.11</gremlin.version>
         <spring-security.version>5.5.0</spring-security.version>
@@ -173,7 +173,7 @@
         <springdoc.version>1.5.9</springdoc.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.10.0</commons-io.version>
-	<commons-text.version>1.9</commons-text.version>
+	    <commons-text.version>1.9</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.17.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
