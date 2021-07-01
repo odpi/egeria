@@ -24,14 +24,23 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 2.11](release-notes-2-11.md) - July 2021
+  * New option to have multiple topics for a cohort
+  * New support for automatic extraction of metadata from event brokers and API managers
+  * Open Metadata Types - changes
+  * Removed functionality
+  * Bug Fixes
+  * Dependency updates
+  * Additional notes including known issues
+  
+## Older Releases
+
 * [Release 2.10](release-notes-2-10.md) - June 2021
   * Changes to metadata types
   * Updates to Governance Program OMAS API
   * Bug Fixes
   * Dependency updates
   * Important notes included on known issues
-  
-## Older Releases
 
 * [Release 2.9](release-notes-2-9.md) - May 2021
   * Updates to open metadata types
