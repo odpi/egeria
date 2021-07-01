@@ -31,6 +31,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
      * @param isATypeOfDeprecated               supplied relationship
      * @param instanceProperties equivalent instance properties to the relationship
      */
+    @Deprecated
     @Override
     protected void mapRelationshipToInstanceProperties(IsATypeOfDeprecated isATypeOfDeprecated, InstanceProperties instanceProperties) {
         if (isATypeOfDeprecated.getDescription() != null) {
@@ -58,6 +59,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
      * @param value        the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
+    @Deprecated
     @Override
     protected boolean mapPrimitiveToRelationship(IsATypeOfDeprecated isATypeOfDeprecated, String propertyName, Object value) {
         String stringValue = (String) value;
@@ -76,7 +78,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
         }
         return foundProperty;
     }
-
+    @Deprecated
     @Override
     protected boolean mapEnumToRelationship(IsATypeOfDeprecated termIsATypeOFRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
@@ -87,12 +89,12 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
         }
         return foundProperty;
     }
-
+    @Deprecated
     @Override
     public String getTypeName() {
         return TERM_ISA_TYPE_OF_DEPRECATED_RELATIONSHIP;
     }
-
+    @Deprecated
     @Override
     protected IsATypeOfDeprecated getRelationshipInstance() {
         return new IsATypeOfDeprecated();
