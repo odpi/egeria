@@ -254,7 +254,7 @@
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
-        <git-commit-plugin.version>4.0.4</git-commit-plugin.version>
+        <git-commit-plugin.version>4.0.5</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <properties.plugin.version>1.0.0</properties.plugin.version>
