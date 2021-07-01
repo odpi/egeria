@@ -166,7 +166,7 @@ allprojects {
             implementation("org.javassist:3.27.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
             implementation("org.reflections:reflections:0.9.12")
-            implementation("org.slf4j:jcl-over-slf4j:1.7.30")
+            implementation("org.slf4j:jcl-over-slf4j:1.7.31")
             implementation("org.slf4j:slf4j-api:1.7.30")
             implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
             implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
