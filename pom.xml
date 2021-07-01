@@ -167,7 +167,7 @@
         <tomcat.version>9.0.46</tomcat.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.11</gremlin.version>
-        <spring-security.version>5.5.0</spring-security.version>
+        <spring-security.version>5.5.1</spring-security.version>
         <spring.version>5.3.8</spring.version>
         <spring-data.version>2.5.1</spring-data.version>
         <springdoc.version>1.5.9</springdoc.version>
