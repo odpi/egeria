@@ -5,12 +5,16 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferencableConverter;
 
 /**
  * SubjectAreaRESTServicesInstance caches references to OMRS objects for a specific server.
@@ -62,6 +66,20 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
                         repositoryHelper
                 );
             }
+            OpenMetadataAPIGenericHandler<Glossary> genericHandler = new OpenMetadataAPIGenericHandler<>(
+                    new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
+                                                                      Referenceable.class,    // no beans
+                                                                      serviceName,
+                                                                      serverName,
+                                                                      invalidParameterHandler,
+                                                                      repositoryHandler,
+                                                                      repositoryHelper,
+                                                                      localServerUserId,
+                                                                      securityVerifier,
+                                                                      supportedZones,
+                                                                      defaultZones,
+                                                                      publishZones,
+                                                                      auditLog);
 
             this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper, maxPageSize);
 
