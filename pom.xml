@@ -208,7 +208,7 @@
         <swagger.version>2.1.9</swagger.version>
         <groovy.version>3.0.8</groovy.version>
         <micrometer-registry-prometheus.version>1.7.0</micrometer-registry-prometheus.version>
-        <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
+        <jcl-over-slf4j.version>1.7.31</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
