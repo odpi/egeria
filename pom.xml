@@ -222,7 +222,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <elasticsearch.version>7.13.1</elasticsearch.version>
-        <thrift.version>0.14.1</thrift.version>
+        <thrift.version>0.14.2</thrift.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
