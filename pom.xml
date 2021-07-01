@@ -207,7 +207,7 @@
         <classgraph.version>4.8.107</classgraph.version>
         <swagger.version>2.1.9</swagger.version>
         <groovy.version>3.0.8</groovy.version>
-        <micrometer-registry-prometheus.version>1.7.0</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.7.1</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
