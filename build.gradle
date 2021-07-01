@@ -116,7 +116,7 @@ allprojects {
             implementation("org.apache.commons:commons-text:1.9")
             implementation("io.github.classgraph:classgraph:4.8.107")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
-            implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.7.1")
             implementation('io.lettuce:lettuce-core:6.1.2.RELEASE')
             implementation("io.netty:netty-handler:${nettyVersion}")
             implementation("io.netty:netty-common:${nettyVersion}")
