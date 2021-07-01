@@ -14,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 /**
  * Mapping methods to map between the termISATypeOFRelationship and the equivalent omrs Relationship.
  *
- * @Deprecated use IsATypeOfRelationship not TermISATypeOFRelationship
+ * @deprecated use IsATypeOfRelationship not TermISATypeOFRelationship
  */
 @Deprecated
 @SubjectAreaMapper
