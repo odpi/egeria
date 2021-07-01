@@ -1334,7 +1334,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Create a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     * @Deprecated IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.
+     * @deprecated IsATypeOfDeprecated is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param IsATypeOfDeprecated the IsaTypeOf relationship
@@ -1358,7 +1358,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Get a IsATypeOfDeprecated relationship, which is an inheritance relationship between two spine objects.
-     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsATypeOfDeprecated relationship to get
@@ -1380,7 +1380,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     /**
      * Update a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
      * <p>
-     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param guid                      unique identifier of the relationship
@@ -1406,7 +1406,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
 
     /**
      * Delete a IsaTypeOf relationship, which is an inheritance relationship between two spine objects.
-     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
@@ -1434,7 +1434,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     * @Deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
+     * @deprecated IsATypeOfRelationship it is deprecated; move your instances to use IsATypeOf instead.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the relationship to restore
