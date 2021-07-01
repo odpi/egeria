@@ -483,9 +483,12 @@ public abstract class SubjectAreaHandler {
      *
      * @param term           term to use for match
      * @param searchCriteria criteria to use for match
+     * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
+
      * @return boolean indicating whether the term matches the search criteria
      */
-    protected boolean termMatchSearchCriteria(Term term, String searchCriteria) {
+    protected boolean termMatchSearchCriteria(Term term, String searchCriteria, boolean exactValue, boolean ignoreCase) {
         if (searchCriteria == null) return true;
         boolean isMatch = false;
         final String name = term.getName();
@@ -494,23 +497,27 @@ public abstract class SubjectAreaHandler {
         final String abbreviation = term.getAbbreviation();
         final String examples = term.getExamples();
         final String usage = term.getUsage();
+        FindRequest findRequest = new FindRequest();
+        findRequest.setSearchCriteria(searchCriteria);
+        FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
+        String sanitizedSearchCriteria = sanitisedFindRequest.getSearchCriteria();
 
-        if (name != null && name.matches(searchCriteria)) {
+        if (name != null && name.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (description != null && description.matches(searchCriteria)) {
+        if (description != null && description.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+        if (qualifiedName != null && qualifiedName.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (abbreviation != null && abbreviation.matches(searchCriteria)) {
+        if (abbreviation != null && abbreviation.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (examples != null && examples.matches(searchCriteria)) {
+        if (examples != null && examples.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (usage != null && usage.matches(searchCriteria)) {
+        if (usage != null && usage.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
         return isMatch;
