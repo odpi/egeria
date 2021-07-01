@@ -223,7 +223,7 @@ allprojects {
             testImplementation("org.mockito:mockito-core:${mockitoVersion}")
             testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
             testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
-            testImplementation("org.slf4j:slf4j-simple:1.7.30")
+            testImplementation("org.slf4j:slf4j-simple:1.7.31")
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.14.1")
