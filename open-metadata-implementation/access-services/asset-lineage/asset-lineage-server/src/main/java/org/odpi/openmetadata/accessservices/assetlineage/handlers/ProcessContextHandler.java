@@ -96,7 +96,7 @@ public class ProcessContextHandler {
 
         List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
         if (CollectionUtils.isEmpty(processPorts)) {
-            log.info("No relationship ProcessPort has been found for the Process with guid {}", processGUID);
+            log.debug("No relationship ProcessPort has been found for the Process with guid {}", processGUID);
         }
         else {
             RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
