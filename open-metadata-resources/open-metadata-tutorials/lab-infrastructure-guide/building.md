@@ -60,7 +60,7 @@ by running the command `java -version` from the command-line.
 
 Java can be installed by:
 
-1. Downloading the **OpenJDK 8 (LTS) HotSpot** JVM from [AdoptOpenJDK](https://adoptopenjdk.net).
+1. Downloading the **OpenJDK 11 (LTS) HotSpot** JVM from [Adoptium](https://adoptopenjdk.net).
 1. Running the installer that is downloaded.
 
 ## Apache Maven

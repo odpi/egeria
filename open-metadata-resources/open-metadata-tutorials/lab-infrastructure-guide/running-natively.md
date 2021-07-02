@@ -37,7 +37,7 @@ You can check if you have a JRE available by running the command `java -version`
 If not, and you prefer to run it directly rather than via one of the options outlined below,
 Java can be installed by:
 
-1. Downloading the OpenJDK JRE or JDK from [AdoptOpenJDK](https://adoptopenjdk.net). Java 8 and Java 11 are both supported. Hotspot is tested, J9 should work.
+1. Downloading the OpenJDK JRE or JDK from [AdoptOpenJDK](https://adoptopenjdk.net). Java 11 is required. Hotspot is tested, J9 should work.
 1. Running the installer that is downloaded.
 
 Alternatively you may wish to install from your package manager such as 'homebrew' on MacOS.
