@@ -180,13 +180,14 @@ public abstract class SubjectAreaHandler {
 
     protected <T extends Node>List<T> findNodes(String userId,
                                                 String typeEntityName,
+                                                String typeEntityGuid,
                                                 FindRequest findRequest,
                                                 boolean exactValue,
                                                 boolean ignoreCase,
                                                 Class<? extends INodeMapper<T>> mapperClass,
-                                                String methodName) throws SubjectAreaCheckedException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                String methodName) throws PropertyServerException,
+                                                                             UserNotAuthorizedException,
+                                                                             InvalidParameterException {
         List<EntityDetail> entityDetails = null;
         List<T> foundEntities = null;
 
@@ -195,10 +196,30 @@ public abstract class SubjectAreaHandler {
         }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         if (findRequest.getSearchCriteria() == null) {
-            entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
+//            entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
+              entityDetails = genericHandler.getEntitiesByType(userId,
+                                                              typeEntityGuid,
+                                                              typeEntityName,
+                                                              null,
+                                                              findRequest.getSequencingProperty(),
+                                                              findRequest.getStartingFrom(),
+                                                              findRequest.getPageSize(),
+                                                              methodName);
         } else {
             FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
-            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, sanitisedFindRequest);
+//            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, sanitisedFindRequest);
+
+            entityDetails = genericHandler.findEntities(userId,
+                                                        sanitisedFindRequest.getSearchCriteria(),
+                                                        "searchCriteria",
+                                                        typeEntityGuid,
+                                                        typeEntityName,
+                                                        null,
+                                                        null,
+                                                        findRequest.getSequencingProperty(),
+                                                        findRequest.getStartingFrom(),
+                                                        findRequest.getPageSize(),
+                                                        methodName);
         }
         if (entityDetails != null) {
             foundEntities = convertOmrsToOmas(entityDetails, mapperClass);

@@ -176,11 +176,17 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, GLOSSARY_TYPE_NAME, methodName);
-            entityDetail.ifPresent(entity -> {
-                GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
-                response.addResult(glossaryMapper.map(entity));
-            });
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
+            GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
+            response.addResult(glossaryMapper.map(entityDetail));
         } catch (InvalidParameterException | SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             response.setExceptionInfo(e, className);
         }
@@ -207,13 +213,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
         // If no search criteria is supplied then we return all glossaries, this should not be too many.
         try {
-            List<Glossary> foundGlossaries = findNodes(userId, GLOSSARY_TYPE_NAME, findRequest, exactValue, ignoreCase, GlossaryMapper.class, methodName);
+            List<Glossary> foundGlossaries = findNodes(userId,  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID, findRequest, exactValue, ignoreCase, GlossaryMapper.class, methodName);
             if (foundGlossaries != null) {
                 response.addAllResults(foundGlossaries);
             } else {
                 return response;
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;

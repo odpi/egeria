@@ -23,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 import java.util.*;
 
@@ -127,13 +128,21 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, PROJECT_TYPE_NAME, methodName);
-            if (entityDetail.isPresent()) {
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
+
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
-                Project project = projectMapper.map(entityDetail.get());
+                Project project = projectMapper.map(entityDetail);
                 response.addResult(project);
-            }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -161,13 +170,13 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Project> foundGlossaries = findNodes(userId, PROJECT_TYPE_NAME, findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
-            if (foundGlossaries != null) {
-                response.addAllResults(foundGlossaries);
+            List<Project> foundProjects = findNodes(userId, OpenMetadataAPIMapper.PROJECT_TYPE_NAME, OpenMetadataAPIMapper.PROJECT_TYPE_GUID,  findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
+            if (foundProjects != null) {
+                response.addAllResults(foundProjects);
             } else {
                 return response;
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+        } catch (PropertyServerException | UserNotAuthorizedException |InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;

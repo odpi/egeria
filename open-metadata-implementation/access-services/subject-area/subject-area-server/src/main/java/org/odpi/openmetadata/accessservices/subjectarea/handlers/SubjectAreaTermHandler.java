@@ -255,13 +255,21 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, TERM_TYPE_NAME, methodName);
-            if (entityDetail.isPresent()) {
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
+
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
-                Term term = termMapper.map(entityDetail.get());
+                Term term = termMapper.map(entityDetail);
                 setSummaryObjects(userId, term, methodName);
                 response.addResult(term);
-            }
+
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
@@ -292,7 +300,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
         // If no search criteria is supplied then we return all terms, this should not be too many
         try {
-            List<Term> foundTerms = findNodes(userId, TERM_TYPE_NAME, findRequest, exactValue, ignoreCase, TermMapper.class, methodName);
+            List<Term> foundTerms = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID, findRequest, exactValue, ignoreCase, TermMapper.class, methodName);
             if (foundTerms != null) {
                 for (Term term : foundTerms) {
                     setSummaryObjects(userId, term, methodName);

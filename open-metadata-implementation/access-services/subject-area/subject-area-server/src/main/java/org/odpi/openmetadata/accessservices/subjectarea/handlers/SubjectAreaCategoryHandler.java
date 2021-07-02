@@ -185,14 +185,21 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, CATEGORY_TYPE_NAME, methodName);
-            if (entityDetail.isPresent()) {
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
                 CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
-                Category category = categoryMapper.map(entityDetail.get());
+                Category category = categoryMapper.map(entityDetail);
                 setGlossary(userId, category, methodName);
                 setParentCategory(userId, category, methodName);
                 response.addResult(category);
-            }
+
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | SubjectAreaCheckedException e) {
             response.setExceptionInfo(e, className);
         }
@@ -218,7 +225,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Category> foundCategories = findNodes(userId, CATEGORY_TYPE_NAME, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
+            List<Category> foundCategories = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,  findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
 
             if (foundCategories != null) {
                 for (Category category : foundCategories) {

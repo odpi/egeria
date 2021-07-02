@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -55,9 +56,9 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
         if (repositoryHandler != null)
         {
             if (this.oMRSAPIHelper == null ) {
-                OpenMetadataAPIGenericHandler<Object> genericHandler = new OpenMetadataAPIGenericHandler<>(
+                OpenMetadataAPIGenericHandler<Glossary> genericHandler = new OpenMetadataAPIGenericHandler<>(
                         null,
-                        Object.class,    // no beans
+                        Glossary.class,    // default to Glossary for now
                         serviceName,
                         serverName,
                         invalidParameterHandler,
