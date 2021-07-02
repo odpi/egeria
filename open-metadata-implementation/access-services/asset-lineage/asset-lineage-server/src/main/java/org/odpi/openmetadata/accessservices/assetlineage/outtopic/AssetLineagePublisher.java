@@ -376,6 +376,11 @@ public class AssetLineagePublisher {
                 lineageRelationship.getSourceEntity())));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
                 lineageRelationship.getTargetEntity())));
+
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
+                lineageRelationship.getSourceEntity())));
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
+                lineageRelationship.getTargetEntity())));
     }
 
     /**
