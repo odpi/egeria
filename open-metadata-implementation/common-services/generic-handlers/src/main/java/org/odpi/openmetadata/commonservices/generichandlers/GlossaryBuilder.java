@@ -70,6 +70,41 @@ public class GlossaryBuilder extends ReferenceableBuilder
      * @param qualifiedName unique name for the glossary
      * @param displayName short display name for the glossary
      * @param description description of the glossary
+     * @param language the language used in the definitions with in the glossary
+     * @param usage intended usage of the glossary
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public GlossaryBuilder(String               qualifiedName,
+                    String               displayName,
+                    String               description,
+                    String               language,
+                    String               usage,
+                    OMRSRepositoryHelper repositoryHelper,
+                    String               serviceName,
+                    String               serverName)
+    {
+        super(qualifiedName,
+              null,
+              OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+        this.language = language;
+        this.usage = usage;
+    }
+    /**
+     * Create constructor
+     *
+     * @param qualifiedName unique name for the glossary
+     * @param displayName short display name for the glossary
+     * @param description description of the glossary
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server

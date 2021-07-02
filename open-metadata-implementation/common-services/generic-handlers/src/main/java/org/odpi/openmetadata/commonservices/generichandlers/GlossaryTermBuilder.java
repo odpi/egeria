@@ -64,6 +64,43 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
     }
+    /**
+     * Constructor when basic properties are known.
+     *
+     * @param qualifiedName unique name
+     * @param repositoryHelper helper methods
+     * @param displayName display name of glossary term
+     * @param description new description for the glossary term.
+     * @param summary short description
+     * @param examples  example
+     * @param abbreviation abbreviation
+     * @param usage usage guidance
+     * @param examples  example
+     * @param abbreviation abbreviation
+     * @param usage usage guidance
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public GlossaryTermBuilder(String               qualifiedName,
+                        String               displayName,
+                        String               description,
+                        String               summary,
+                        String               examples,
+                        String               abbreviation,
+                        String               usage,
+                        OMRSRepositoryHelper repositoryHelper,
+                        String               serviceName,
+                        String               serverName)
+    {
+        super(qualifiedName, repositoryHelper, serviceName, serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+        this.summary = summary;
+        this.examples = examples;
+        this.abbreviation = abbreviation;
+        this.usage = usage;
+    }
 
 
     /**

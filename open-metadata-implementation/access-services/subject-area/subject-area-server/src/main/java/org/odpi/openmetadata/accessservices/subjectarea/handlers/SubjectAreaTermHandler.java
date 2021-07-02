@@ -31,6 +31,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -117,8 +119,34 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     instanceProperties.setEffectiveFromTime(new Date());
                     termEntityDetail.setProperties(instanceProperties);
                 }
-                createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
+                GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
+                                                                      suppliedTerm.getName(),
+                                                                      suppliedTerm.getDescription(),
+                                                                      suppliedTerm.getSummary(),
+                                                                      suppliedTerm.getExamples(),
+                                                                      suppliedTerm.getAbbreviation(),
+                                                                      suppliedTerm.getUsage(),
+                                                                      genericHandler.getRepositoryHelper(),
+                                                                      genericHandler.getServiceName(),
+                                                                      genericHandler.getServerName());
+                createdTermGuid = genericHandler.createBeanInRepository(userId,
+                                                                            null,
+                                                                            null,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                            null,
+                                                                            null,
+                                                                            builder,
+                                                                            methodName);
                 if (createdTermGuid != null) {
+                    // set effectivity dates if required
+                    setEffectivity(userId,
+                                   suppliedTerm,
+                                   methodName,
+                                   createdTermGuid,
+                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
+
                     TermAnchor termAnchor = new TermAnchor();
                     // we expect that the created term has a from time of now or the supplied value.
                     // set the relationship from value to the same

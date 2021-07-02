@@ -27,6 +27,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,30 +96,43 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedCategory);
-                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
-                EntityDetail categoryEntityDetail = categoryMapper.map(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
-
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
-                InstanceProperties instanceProperties = categoryEntityDetail.getProperties();
-                if (instanceProperties == null) {
-                    instanceProperties = new InstanceProperties();
-                }
-                if (instanceProperties.getEffectiveFromTime() == null) {
-                    instanceProperties.setEffectiveFromTime(new Date());
-                    categoryEntityDetail.setProperties(instanceProperties);
-                }
-                createdCategoryGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, categoryEntityDetail);
+                GlossaryCategoryBuilder builder = new GlossaryCategoryBuilder(suppliedCategory.getQualifiedName(),
+                                              suppliedCategory.getName(),
+                                              suppliedCategory.getDescription(),
+                                              genericHandler.getRepositoryHelper(),
+                                              genericHandler.getServiceName(),
+                                              genericHandler.getServerName());
+                createdCategoryGuid = genericHandler.createBeanInRepository(userId,
+                                                                            null,
+                                                                            null,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                            null,
+                                                                            null,
+                                                                            builder,
+                                                                            methodName);
+
                 if (createdCategoryGuid != null) {
+
+                    // set effectivity dates if required
+                    setEffectivity(userId,
+                                   suppliedCategory,
+                                   methodName,
+                                   createdCategoryGuid,
+                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
+
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
                     // we expect that the created category has a from time of now or the supplied value.
                     // set the relationship from value to the same
-                    categoryAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                    if (instanceProperties.getEffectiveToTime() != null) {
-                        categoryAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
-                    }
+//                    categoryAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+//                    if (instanceProperties.getEffectiveToTime() != null) {
+//                        categoryAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+//                    }
                     CategoryAnchorMapper anchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
                     org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = anchorMapper.map(categoryAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
@@ -130,10 +145,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
                     // we expect that the created category has a from time of now or the supplied value.
                     // set the relationship from value to the same
-                    categoryHierarchyLink.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                    if (instanceProperties.getEffectiveToTime() != null) {
-                        categoryHierarchyLink.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
-                    }
+//                    categoryHierarchyLink.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+//                    if (instanceProperties.getEffectiveToTime() != null) {
+//                        categoryHierarchyLink.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+//                    }
                     CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
                     org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);

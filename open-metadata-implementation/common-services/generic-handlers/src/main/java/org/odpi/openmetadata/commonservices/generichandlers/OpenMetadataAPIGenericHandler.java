@@ -170,6 +170,15 @@ public class OpenMetadataAPIGenericHandler<B>
         return repositoryHelper;
     }
 
+    /**
+     * Return the repository handler for this server.
+     *
+     * @return repository handler object
+     */
+    public RepositoryHandler getRepositoryHandler()
+    {
+        return repositoryHandler;
+    }
 
     /**
      * Return the name of this service.
@@ -179,6 +188,16 @@ public class OpenMetadataAPIGenericHandler<B>
     public String getServiceName()
     {
         return serviceName;
+    }
+
+    /**
+     * Return the name of this server.
+     *
+     * @return string name
+     */
+    public String getServerName()
+    {
+        return serverName;
     }
 
 
@@ -483,7 +502,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateBeanEffectivityDates(String userId,
+    public void updateBeanEffectivityDates(String userId,
                                               String externalSourceGUID,
                                               String externalSourceName,
                                               String beanGUID,

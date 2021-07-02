@@ -34,6 +34,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -59,6 +60,7 @@ public abstract class SubjectAreaHandler {
 
     protected final MappersFactory mappersFactory;
     protected final OMRSAPIHelper oMRSAPIHelper;
+    protected final OpenMetadataAPIGenericHandler genericHandler;
     protected final int maxPageSize;
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -71,6 +73,7 @@ public abstract class SubjectAreaHandler {
      */
     public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
         this.oMRSAPIHelper = oMRSAPIHelper;
+        this.genericHandler = oMRSAPIHelper.getGenericHandler();
         this.mappersFactory = new MappersFactory(oMRSAPIHelper);
         this.maxPageSize = maxPageSize;
         invalidParameterHandler.setMaxPagingSize(this.maxPageSize);
@@ -549,6 +552,43 @@ public abstract class SubjectAreaHandler {
             // reject
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP.getMessageDefinition(operation, relationship.getType().getTypeDefName());
             throw new PropertyServerException(messageDefinition, className , methodName);
+        }
+    }
+
+    /**
+     * Set the effectivity to and from dates date
+     * @param userId calling user
+     * @param node node to update with effectivity dates if required
+     * @param methodName
+     * @param guid guid of the Bean to update
+     * @param typeGUID the guid of the associated type
+     * @param typeName the name of the associated type
+     * @throws InvalidParameterException the classification name is null
+     * @throws PropertyServerException there is a problem with the repositories
+     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     */
+    protected void setEffectivity(String userId, Node node, String methodName, String guid, String typeGUID, String typeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Long effectiveFromLong = node.getEffectiveFromTime();
+        Long effectiveToLong = node.getEffectiveToTime();
+        if (effectiveFromLong != null || effectiveToLong != null) {
+            Date effectiveFrom = null;
+            Date effectiveTo = null;
+            if (effectiveToLong != null) {
+                effectiveTo = new Date(effectiveToLong);
+            }
+            if (effectiveFromLong != null) {
+                effectiveFrom = new Date(effectiveFromLong);
+            }
+            genericHandler.updateBeanEffectivityDates(userId,
+                                       null,
+                                       null,
+                                       guid,
+                                       "guid",
+                                       typeGUID,
+                                       typeName,
+                                       effectiveFrom,
+                                       effectiveTo,
+                                       methodName);
         }
     }
 }

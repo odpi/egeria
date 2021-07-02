@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -24,6 +25,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
 
@@ -84,24 +87,76 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "name");
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedGlossary);
-                GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
-                EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
-                InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
-                if (instanceProperties == null) {
-                    instanceProperties = new InstanceProperties();
+//                GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
+//                EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
+//                InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
+//                if (instanceProperties == null) {
+//                    instanceProperties = new InstanceProperties();
+//                }
+//                if (instanceProperties.getEffectiveFromTime() == null) {
+//                    instanceProperties.setEffectiveFromTime(new Date());
+//                    glossaryEntityDetail.setProperties(instanceProperties);
+//                }
+
+                GlossaryBuilder builder = new GlossaryBuilder(suppliedGlossary.getQualifiedName(),
+                                                                              suppliedGlossary.getName(),
+                                                                              suppliedGlossary.getDescription(),
+                                                                              suppliedGlossary.getLanguage(),
+                                                                              suppliedGlossary.getUsage(),
+                                                                              genericHandler.getRepositoryHelper(),
+                                                                              genericHandler.getServiceName(),
+                                                                              genericHandler.getServerName());
+                String guid = genericHandler.createBeanInRepository(userId,
+                                                                            null,
+                                                                            null,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                            null,
+                                                                            null,
+                                                                            builder,
+                                                                            methodName);
+                // set effectivity dates if required
+                setEffectivity(userId,
+                               suppliedGlossary,
+                               methodName,
+                               guid,
+                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
+                // set classifications if required
+                if (suppliedGlossary.getNodeType() == NodeType.Taxonomy || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
+
+                    genericHandler.setClassificationInRepository(userId,
+                                                                 guid,
+                                                                 "guid",
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
+                                                                 null,  // TODO properties
+                                                                 methodName);
                 }
-                if (instanceProperties.getEffectiveFromTime() == null) {
-                    instanceProperties.setEffectiveFromTime(new Date());
-                    glossaryEntityDetail.setProperties(instanceProperties);
+                if (suppliedGlossary.getNodeType() == NodeType.CanonicalGlossary || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
+                    genericHandler.setClassificationInRepository(userId,
+                                                                 guid,
+                                                                 "guid",
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                                                 null,  // TODO properties
+                                                                 methodName);
                 }
-                String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, glossaryEntityDetail);
-                response = getGlossaryByGuid(userId, entityDetailGuid);
+
+
+
+
+                response = getGlossaryByGuid(userId, guid);
             }
         } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
     }
+
+
 
     /**
      * Get a glossary by guid.

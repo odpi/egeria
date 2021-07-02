@@ -42,6 +42,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class Node implements Serializable, OmasObject {
     protected NodeType nodeType = NodeType.Unknown;
+    private String typeName = null;
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
@@ -51,7 +52,8 @@ public class Node implements Serializable, OmasObject {
     private String description =null;
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
-    private Map<String,String> additionalProperties;
+    private Map<String, String> additionalProperties;
+    private Map<String, Object> extensionProperties;
 
     /**
      * Node type
@@ -75,6 +77,18 @@ public class Node implements Serializable, OmasObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * The name of the type of the node
+     * @return name
+     */
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
     /**
      * The qualified name of the node.

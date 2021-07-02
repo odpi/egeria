@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +26,15 @@ import java.util.*;
 public class OMRSAPIHelper {
 
     private static final Logger log = LoggerFactory.getLogger(OMRSAPIHelper.class);
-    private final String serviceName;
-    private final String serverName;
-    private OMRSRepositoryHelper omrsRepositoryHelper;
+    private String serviceName;
+    private String serverName;
+    private OMRSRepositoryHelper repositoryHelper;
     private RepositoryHandler repositoryHandler;
+
+    private OpenMetadataAPIGenericHandler genericHandler;
+    public OpenMetadataAPIGenericHandler getGenericHandler() {
+        return genericHandler;
+    }
 
     /**
      * @param serviceName            name of the consuming service
@@ -42,11 +48,17 @@ public class OMRSAPIHelper {
             RepositoryHandler repositoryHandler,
             OMRSRepositoryHelper repositoryHelper
 
-    ) {
+                        ) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.repositoryHandler = repositoryHandler;
-        this.omrsRepositoryHelper = repositoryHelper;
+        this.repositoryHelper = repositoryHelper;
+    }
+    public OMRSAPIHelper(OpenMetadataAPIGenericHandler genericHandler) {
+        this.genericHandler = genericHandler;
+        this.serverName = genericHandler.getServiceName();
+        this.repositoryHandler =  genericHandler.getRepositoryHandler();
+        this.repositoryHelper =  genericHandler.getRepositoryHelper();
     }
 
     /**
@@ -59,7 +71,7 @@ public class OMRSAPIHelper {
     }
 
     public OMRSRepositoryHelper getOMRSRepositoryHelper() {
-        return this.omrsRepositoryHelper;
+        return this.repositoryHelper;
     }
 
     public RepositoryHandler getRepositoryHandler() { return this.repositoryHandler; }
