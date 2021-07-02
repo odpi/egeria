@@ -9,7 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation('org.slf4j:slf4j-api:1.7.30')
+    implementation('org.slf4j:slf4j-api:1.7.31')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

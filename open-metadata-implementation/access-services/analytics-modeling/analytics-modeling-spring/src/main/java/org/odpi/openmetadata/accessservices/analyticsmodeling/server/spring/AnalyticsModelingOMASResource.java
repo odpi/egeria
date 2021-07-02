@@ -146,7 +146,7 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
-			@RequestBody(required=true) String artifact
+			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
 		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);

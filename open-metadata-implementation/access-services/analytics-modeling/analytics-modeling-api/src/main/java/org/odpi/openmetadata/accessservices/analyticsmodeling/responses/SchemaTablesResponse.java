@@ -23,4 +23,11 @@ public class SchemaTablesResponse extends AnalyticsModelingOMASAPIResponse {
     public void setTableList(ResponseContainerSchemaTables tables) {
         this.setData(Arrays.asList(tables));
     }
+	/**
+	 * Get list of tables of the schema.
+	 * @return list of tables.
+	 */
+    public ResponseContainerSchemaTables getTableList() {
+        return (this.getData() == null || this.getData().isEmpty()) ? null : (ResponseContainerSchemaTables)this.getData().get(0);
+    }
 }

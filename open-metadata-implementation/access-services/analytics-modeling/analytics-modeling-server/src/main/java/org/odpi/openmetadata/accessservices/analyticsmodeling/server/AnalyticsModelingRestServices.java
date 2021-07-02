@@ -26,6 +26,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -77,12 +79,9 @@ public class AnalyticsModelingRestServices {
 					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(userId, startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
+		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		}
-
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
 	}
@@ -115,10 +114,8 @@ public class AnalyticsModelingRestServices {
 			
 			response.setSchemaList(databasesSchemas);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
+		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		}
 
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -148,11 +145,10 @@ public class AnalyticsModelingRestServices {
 					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
+		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		}
+		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
 	}
@@ -184,10 +180,8 @@ public class AnalyticsModelingRestServices {
 					.getModule(databaseGuid, catalog, schema, request);
 			response.setModule(module);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
+		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -202,7 +196,7 @@ public class AnalyticsModelingRestServices {
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, String artifact) {
+	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
 
 		String methodName = "createArtifact";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -217,10 +211,8 @@ public class AnalyticsModelingRestServices {
 					.createAssets(userId, serverCapability, artifact);
 			response.setAssetList(assets);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
+		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -250,13 +242,9 @@ public class AnalyticsModelingRestServices {
 					.updateAssets(userId, serverCapability, artifact);
 			response.setAssetList(assets);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
-			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		} catch (Exception e) {
-			ret = handleExceptionResponse(e, methodName);
-        }
+			ret = handleErrorResponse(e, methodName);
+		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
@@ -286,13 +274,9 @@ public class AnalyticsModelingRestServices {
 					.deleteAssets(userId, serverCapability, identifier);
 			response.setAssetList(assets);
 			ret = response;
-		} catch (AnalyticsModelingCheckedException e) {
-			ret = handleErrorResponse(e, methodName);
-		} catch (InvalidParameterException e) {
-			ret = handleInvalidParameterResponse(e, methodName);
 		} catch (Exception e) {
-			ret = handleExceptionResponse(e, methodName);
-        }
+			ret = handleErrorResponse(e, methodName);
+		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
@@ -333,31 +317,58 @@ public class AnalyticsModelingRestServices {
 	 * @param methodName context
 	 * @return response with error definition.
 	 */
-	private AnalyticsModelingOMASAPIResponse handleErrorResponse(AnalyticsModelingCheckedException error, String methodName) {
+	private AnalyticsModelingOMASAPIResponse handleErrorResponse(Exception e, String methodName)	{
+		AnalyticsModelingCheckedException error = createAnalyticsException(e, methodName);
 		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		getExceptionHandler().captureThrowable(ret, error, methodName);
+		getExceptionHandler().captureThrowable(ret, e, methodName);
 		return ret;
 	}
 	
-	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
-		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
-				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
-				this.getClass().getSimpleName(),
-				methodName,
-				e);
-		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		getExceptionHandler().captureThrowable(ret, error, methodName);
-		return ret;
+	private AnalyticsModelingCheckedException createAnalyticsException(Exception error, String methodName)	{
+		
+		if (error instanceof AnalyticsModelingCheckedException) {
+			return (AnalyticsModelingCheckedException)error;
+		}
+        else if (error instanceof UserNotAuthorizedException)
+        {
+        	UserNotAuthorizedException e = (UserNotAuthorizedException)error;
+        	
+    		return new AnalyticsModelingCheckedException(
+    				AnalyticsModelingErrorCode.UNAUTHORIZED_USER.getMessageDefinition(e.getUserId(), e.getReportingActionDescription()),
+    				this.getClass().getSimpleName(),
+    				methodName,
+    				error);
+        }
+        else if (error instanceof InvalidParameterException)
+        {
+        	InvalidParameterException e = (InvalidParameterException)error;
+        	
+    		return new AnalyticsModelingCheckedException(
+    				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+    				this.getClass().getSimpleName(),
+    				methodName,
+    				error);
+        }
+        else
+        {
+            String message = error.getLocalizedMessage();
+
+            if (message == null)
+            {
+                message = "null";
+            }
+
+            ExceptionMessageDefinition messageDefinition = 
+            		AnalyticsModelingErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                            methodName,
+                            message);
+
+            return new AnalyticsModelingCheckedException(
+            		messageDefinition,
+    				this.getClass().getSimpleName(),
+    				methodName,
+    				error);
+        }
 	}
-	
-	private AnalyticsModelingOMASAPIResponse handleExceptionResponse(Exception e, String methodName)	{
-		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
-				AnalyticsModelingErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(e.getClass().getName(), methodName, e.getLocalizedMessage()),
-				this.getClass().getSimpleName(),
-				methodName,
-				e);
-		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		getExceptionHandler().captureThrowable(ret, error, methodName);
-		return ret;
-	}
+
 }

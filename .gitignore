@@ -152,12 +152,6 @@ open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/ma
 # Ignore private maven repo (jenkins)
 .repository
 
-# Ignore sub-charts
-# when helm pulls in dependencies (dependency.yaml) it keeps the chart locally. We don't want
-# to check these into git as they are not owned by this project and helm will automatically
-# retrieve from the authoritative source
-**/charts/**/charts/**
-
 # exclude temporary lock files
 *.lock
 log
