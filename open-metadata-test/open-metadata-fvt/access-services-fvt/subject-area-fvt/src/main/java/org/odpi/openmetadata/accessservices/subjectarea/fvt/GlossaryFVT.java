@@ -78,7 +78,7 @@ public class GlossaryFVT {
 
     public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
-        return fvt.findGlossaries(".*").size();
+        return fvt.findGlossaries("").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -172,7 +172,7 @@ public class GlossaryFVT {
             iter.remove();
             deleteGlossary(guid);
         }
-        List<Glossary> glossaries = findGlossaries(".*");
+        List<Glossary> glossaries = findGlossaries("");
         if (glossaries.size() != existingGlossaryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
         }

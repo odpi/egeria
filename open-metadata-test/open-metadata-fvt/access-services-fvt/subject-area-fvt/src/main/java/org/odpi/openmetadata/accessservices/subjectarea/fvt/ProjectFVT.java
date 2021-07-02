@@ -54,7 +54,7 @@ public class ProjectFVT
         subjectAreaProject = new SubjectAreaProjectClient<>(client);
         this.serverName=serverName;
         this.userId=userId;
-        existingProjectCount = findProjects(".*").size();
+        existingProjectCount = findProjects("").size();
         System.out.println("existingProjectCount " + existingProjectCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
