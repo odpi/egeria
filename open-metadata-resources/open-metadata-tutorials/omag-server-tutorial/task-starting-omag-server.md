@@ -23,7 +23,7 @@ The response from the command lists the subsystems that have been activated in t
 ```
 
 The window where your OMAG server platform is running will show the start up
-messages, something like this:
+messages, something like this (note this is from an older version where we used Java 8):
 
 ```text
 /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=9443 ...
