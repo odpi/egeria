@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -2734,6 +2735,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, methodName);
         }
+        //TODO include term anchor and category anchor here?
 
         return anchorGUID;
     }
@@ -6094,6 +6096,44 @@ public class OpenMetadataAPIGenericHandler<B>
         }
     }
 
+    /**
+     * Is the bean isolated - i.e. has no relationships.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of object to update
+     * @param entityTypeName unique name of the entity's type
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public boolean isBeanIsolated(String       userId,
+                                  String       entityGUID,
+                                  String       entityTypeName,
+                                  String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        boolean isIsolated = true;
+        /*
+         * Retrieve the first relationship, if there is one then we have relationships.
+         */
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       entityGUID,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       methodName);
+
+        if (iterator.moreToReceive())
+        {
+            isIsolated = false;
+        }
+        return isIsolated;
+    }
 
     /**
      * Return the elements of the requested type indirectly attached to an entity identified by the starting GUID via the listed relationship
@@ -7165,7 +7205,214 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+    /**
+     * Retrieve the requested element from the supplied relationship.
+     *
+     * @param userId       calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param relationship relationship between the requested element and the related keyword
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage is this request part of lineage?
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param serviceSupportedZones supported zones for calling service
+     * @param specificMatchPropertyNames list of property names to
+     * @param ignoreCase ignore case
+     * @param searchCriteria text to search on
+     * @param startsWith if flag set seach looking for atches startihg with the supplied searchCriteria
+     * @param methodName   calling method
+     * @return new bean
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    private B getAttachedElement(String        userId,
+                                 String        startingGUID,
+                                 String        startingGUIDParameterName,
+                                 String        startingTypeName,
+                                 Relationship  relationship,
+                                 String        attachmentEntityTypeName,
+                                 String        requiredClassificationName,
+                                 String        omittedClassificationName,
+                                 boolean       forLineage,
+                                 int           selectionEnd,
+                                 List<String>  serviceSupportedZones,
+                                 Set<String>   specificMatchPropertyNames,
+                                 String        searchCriteria,
+                                 boolean       startsWith,
+                                 boolean       ignoreCase,
+                                 String        methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String guidParameterName = "relationship.end.guid";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+
+        if (relationship != null)
+        {
+            EntityProxy entityProxy = null;
+
+            if (selectionEnd == 0)
+            {
+                entityProxy = repositoryHandler.getOtherEnd(startingGUID,
+                                                            startingTypeName,
+                                                            relationship,
+                                                            methodName);
+            }
+            else if (selectionEnd == 1)
+            {
+                entityProxy = relationship.getEntityOneProxy();
+            }
+            else if (selectionEnd == 2)
+            {
+                entityProxy = relationship.getEntityTwoProxy();
+            }
+
+            if (entityProxy != null)
+            {
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        entityProxy.getGUID(),
+                                                                        guidParameterName,
+                                                                        attachmentEntityTypeName,
+                                                                        methodName);
+
+                this.validateAnchorEntity(userId,
+                                          entityProxy.getGUID(),
+                                          attachmentEntityTypeName,
+                                          entity,
+                                          guidParameterName,
+                                          false,
+                                          serviceSupportedZones,
+                                          methodName);
+
+                boolean beanValid = true;
+
+                if (requiredClassificationName != null)
+                {
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, requiredClassificationName, methodName) == null)
+                        {
+                            beanValid = false;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                        beanValid = false;
+                    }
+                }
+
+                if (omittedClassificationName != null)
+                {
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
+                        {
+                            beanValid = false;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                    }
+                }
+
+
+                if (! forLineage)
+                {
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                        {
+                            beanValid = false;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                    }
+                }
+                /*
+                 * Check that the searchCriteria and regex flags match
+                 * First create a regex expression then match it against the values of the supplied attribute names.
+                 */
+                if (!entityMatchSearchCriteria(entity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase)) {
+                    beanValid = false;
+                }
+
+                if (beanValid)
+                {
+                    /*
+                     * Valid entity to return since no exception occurred.
+                     */
+                    return converter.getNewBean(beanClass, entity, relationship, methodName);
+                }
+            }
+        }
+
+        return null;
+    }
+    protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase) {
+        if (searchCriteria == null) return true;
+        if (attributeNames == null) return true;
+        String regexedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
+        boolean isMatch = false;
+        InstanceProperties matchProperties = entity.getProperties();
+        Iterator<String> propertyNames = matchProperties.getPropertyNames();
+
+        if (propertyNames != null) {
+            while (propertyNames.hasNext()) {
+                String propertyName = propertyNames.next();
+                if (attributeNames.contains(propertyName)) {
+                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
+
+                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
+                    if (ipCat == InstancePropertyCategory.PRIMITIVE) {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
+                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
+                            PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
+                            String currentValue = (String) ppv.getPrimitiveValue();
+
+                            if (currentValue != null && currentValue.matches(regexedSearchCriteria)) {
+                                isMatch = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isMatch;
+    }
+    protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase) {
+        if (searchCriteria != null && searchCriteria.trim() == "") {
+            // ignore the flags for an empty search criteria string - assume we want everything
+            searchCriteria = ".*";
+        } else {
+            // lose any leading and trailing blanks
+            searchCriteria = searchCriteria.trim();
+            if (exactValue) {
+                searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
+            } else {
+                searchCriteria = repositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
+            }
+        }
+
+        return searchCriteria;
+    }
     /**
      * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
      *

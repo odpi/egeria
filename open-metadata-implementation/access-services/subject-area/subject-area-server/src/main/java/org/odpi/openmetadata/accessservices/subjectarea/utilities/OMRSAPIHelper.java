@@ -290,7 +290,7 @@ public class OMRSAPIHelper {
         showMethodNameIfDebugEnabled(methodName);
 
         try {
-            getRepositoryHandler().restoreEntity(userId, deletedEntityGUID, restAPIName);
+            getRepositoryHandler().restoreEntity(userId, null, null, deletedEntityGUID, restAPIName);
         } catch (PropertyServerException | UserNotAuthorizedException e) {
             throw e;
         } catch (Throwable error) {

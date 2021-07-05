@@ -417,30 +417,35 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
             response = getTermByGuid(userId, guid);
             if (response.head().isPresent()) {
-                Term currentTerm = response.head().get();
-                checkReadOnly(methodName, currentTerm, "update");
-                Set<String> currentClassificationNames = getCurrentClassificationNames(currentTerm);
-
-                if (isReplace)
-                    replaceAttributes(currentTerm, suppliedTerm);
-                else
-                    updateAttributes(currentTerm, suppliedTerm);
-
-                Long termFromTime = suppliedTerm.getEffectiveFromTime();
-                Long termToTime = suppliedTerm.getEffectiveToTime();
-                currentTerm.setEffectiveFromTime(termFromTime);
-                currentTerm.setEffectiveToTime(termToTime);
-                // always update the governance actions for a replace or an update
-                currentTerm.setGovernanceClassifications(suppliedTerm.getGovernanceClassifications());
-                currentTerm.setSpineObject(suppliedTerm.isSpineObject());
-                currentTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
-                currentTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
+                Term storedTerm = response.head().get();
+                checkReadOnly(methodName, storedTerm, "update");
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
-                EntityDetail forUpdate = termMapper.map(currentTerm);
-                Optional<EntityDetail> updatedEntity = oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, forUpdate);
-                if (updatedEntity.isPresent()) {
-                    List<Classification> suppliedClassifications = forUpdate.getClassifications();
-                    List<Classification> storedClassifications = updatedEntity.get().getClassifications();
+
+                EntityDetail suppliedEntity = termMapper.map(suppliedTerm);
+                EntityDetail storedEntity = termMapper.map(storedTerm);
+                genericHandler.updateBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                      suppliedEntity.getProperties(),
+                                                      !isReplace,
+                                                      methodName);
+                setEffectivity(userId,
+                               suppliedTerm,
+                               methodName,
+                               guid,
+                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
+                // the update properties should not have updated the classifications so we can use
+                Set<String> storedClassificationNames = getStoredClassificationNames(storedTerm);
+
+                // always update the governance actions for a replace or an update
+
+                    List<Classification> suppliedClassifications = suppliedEntity.getClassifications();
+                    List<Classification> storedClassifications = storedEntity.getClassifications();
                     Map<String, Classification> storedClassificationMap = null;
 
                     if ((storedClassifications != null) && (! storedClassifications.isEmpty())) {
@@ -460,11 +465,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                 } else {
                                     oMRSAPIHelper.callOMRSUpdateClassification(methodName, userId, guid, storedClassificationMap.get(suppliedClassification.getName()), suppliedClassification.getProperties());
                                 }
-                                currentClassificationNames.remove(suppliedClassification.getName());
+                                storedClassificationNames.remove(suppliedClassification.getName());
                             }
                         }
 
-                        for (String deClassifyName : currentClassificationNames) {
+                        for (String deClassifyName : storedClassificationNames) {
                             oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
                         }
                     }
@@ -474,7 +479,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     } else {
                         replaceCategories(userId, guid, suppliedTerm, methodName);
                     }
-                }
+//                }
                 response = getTermByGuid(userId, guid);
             }
 
@@ -539,7 +544,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
     }
 
-    private Set<String> getCurrentClassificationNames(Term currentTerm) {
+    private Set<String> getStoredClassificationNames(Term currentTerm) {
         Set<String> currentClassificationNames = currentTerm.getClassifications()
                 .stream()
                 .map(x -> x.getClassificationName())

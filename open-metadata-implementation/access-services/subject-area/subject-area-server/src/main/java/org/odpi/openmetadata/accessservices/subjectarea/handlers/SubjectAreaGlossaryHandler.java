@@ -24,10 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
 
@@ -88,17 +85,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "name");
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedGlossary);
-//                GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
-//                EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
-//                InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
-//                if (instanceProperties == null) {
-//                    instanceProperties = new InstanceProperties();
-//                }
-//                if (instanceProperties.getEffectiveFromTime() == null) {
-//                    instanceProperties.setEffectiveFromTime(new Date());
-//                    glossaryEntityDetail.setProperties(instanceProperties);
-//                }
-
                 GlossaryBuilder builder = new GlossaryBuilder(suppliedGlossary.getQualifiedName(),
                                                                               suppliedGlossary.getName(),
                                                                               suppliedGlossary.getDescription(),
@@ -276,23 +262,29 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             if (response.head().isPresent()) {
                 Glossary currentGlossary = response.head().get();
                 checkReadOnly(methodName, currentGlossary, "update");
-                if (isReplace)
-                    replaceAttributes(currentGlossary, suppliedGlossary);
-                else
-                    updateAttributes(currentGlossary, suppliedGlossary);
-
-                Long glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
-                Long glossaryToTime = suppliedGlossary.getEffectiveToTime();
-                currentGlossary.setEffectiveFromTime(glossaryFromTime);
-                currentGlossary.setEffectiveToTime(glossaryToTime);
 
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail entityDetail = glossaryMapper.map(currentGlossary);
-                final String glossaryGuid = entityDetail.getGUID();
-                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, entityDetail);
-                response = getGlossaryByGuid(userId, glossaryGuid);
+                genericHandler.updateBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                      entityDetail.getProperties(),
+                                                      !isReplace,
+                                                      methodName);
+                setEffectivity(userId,
+                               suppliedGlossary,
+                               methodName,
+                               guid,
+                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
+
+                response = getGlossaryByGuid(userId, guid);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -364,11 +356,15 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             if (isPurge) {
                 issueDelete = true;
             } else {
-                // if this is a not a purge then attempt to get all term and category relationships (these may or may not be anchored depending how they were created).
-                List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
-                if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, GLOSSARY_TYPE_NAME, methodName)) {
+                // if this is a not a purge then check there are no relationships before deleting,
+                // otherwise the deletion could remove all anchored entities.
+                if (genericHandler.isBeanIsolated(userId,
+                                                  guid,
+                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                  methodName)) {
+
                     issueDelete = true;
-                } else {
+                } else{
                     throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
                                                         className,
                                                         methodName,
@@ -525,59 +521,26 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         }
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
-            int startingFrom = 0;
-            List<Category> filteredCategoriesList = new ArrayList<>();
-            // we have more to get, bump up the requestedStartingFrom and get the next page
-            boolean continueGettingCategories = true;
-            while (continueGettingCategories) {
-                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
-                if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
-                    for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                        if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
-                            boolean addCategory = false;
-                            if (categoryMatchSearchCriteria(relatedCategory, searchCriteria, exactValue, ignoreCase)) {
-                                if (onlyTop) {
-                                    if (relatedCategory.getParentCategory() == null) {
-                                        // search criteria matches and only top categories required
-                                        addCategory = true;
-                                    }
-                                } else {
-                                    // search criteria matches
-                                    addCategory = true;
-                                }
-                            } else {
-                                // there is a search criteria and it does not match
-                            }
-                            if (addCategory) {
-                                filteredCategoriesList.add(relatedCategory);
-                            }
-                        }
-
-                    }
-                }
-                // we should keep getting results until we have run out of results to get or we have enough to satisfy the requested pagesize.
-                if (relatedCategoriesResponse.results().size() < pageSize || filteredCategoriesList.size() == requestedStartingFrom + pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingCategories = false;
-                } else {
-                    // issue another call to get another page of terms
-                    startingFrom = startingFrom + pageSize;
-                }
+            try {
+                List<Category> categories = genericHandler.getAttachedElements(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               2,   // get only the children
+                                                                               null,
+                                                                               requestedStartingFrom,
+                                                                               pageSize,
+                                                                               methodName);
+                response.addAllResults(categories);
+            } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-            // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
-            if (filteredCategoriesList.size() >= requestedStartingFrom) {
-                int endOffset = requestedStartingFrom + pageSize;
-                if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
-                    endOffset = filteredCategoriesList.size();
-                }
-                // now get the appropriate sublist
-                List<Category> filteredPagedCategoriesList = filteredCategoriesList.subList(requestedStartingFrom, endOffset);
-
-                response.addAllResults(filteredPagedCategoriesList);
-            }
-
         }
-
         return response;
     }
 
