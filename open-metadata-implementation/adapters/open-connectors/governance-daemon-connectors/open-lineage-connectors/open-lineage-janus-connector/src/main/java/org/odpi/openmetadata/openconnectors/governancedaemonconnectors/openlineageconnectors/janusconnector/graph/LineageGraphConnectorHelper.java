@@ -119,8 +119,7 @@ public class LineageGraphConnectorHelper {
     private final String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
             EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
             EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
-    private final String[] relationalColumnAndClassificationEdges =
-            {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+    private final String[] relationalColumnAndClassificationEdges = {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
     private final String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
 
     public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource, boolean supportingTransactions) {
@@ -156,7 +155,7 @@ public class LineageGraphConnectorHelper {
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (edgeLabelOptional.isEmpty()) {
+        if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -252,7 +251,7 @@ public class LineageGraphConnectorHelper {
 
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (edgeLabelOptional.isEmpty()) {
+        if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -345,7 +344,7 @@ public class LineageGraphConnectorHelper {
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (edgeLabelOptional.isEmpty()) {
+        if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -769,8 +768,7 @@ public class LineageGraphConnectorHelper {
         Set<LineageVertex> tabularSchemaTypes =
                 lineageVertices.stream().filter(lineageVertex -> lineageVertex.getNodeType().equalsIgnoreCase(TABULAR_SCHEMA_TYPE))
                         .collect(Collectors.toSet());
-        Set<LineageEdge> lineageMappings = getLineageEdgesToRemove(lineageEdges, tabularSchemaTypes).stream()
-                .filter(edge -> edge.getEdgeType().equalsIgnoreCase(LINEAGE_MAPPING)).collect(Collectors.toSet());
+        Set<LineageEdge> edgesToReplace = getLineageEdgesToRemove(lineageEdges, tabularSchemaTypes);
 
         for (LineageVertex tabularSchemaType : tabularSchemaTypes) {
             String vertexID = tabularSchemaType.getNodeID();
@@ -778,7 +776,10 @@ public class LineageGraphConnectorHelper {
             if (dataFileOptional.isPresent()) {
                 LineageVertex dataFile = dataFileOptional.get();
                 lineageVertices.add(dataFile);
-                for (LineageEdge edge : lineageMappings) {
+                for (LineageEdge edge : edgesToReplace) {
+                    if (!LINEAGE_MAPPING.equalsIgnoreCase(edge.getEdgeType())) {
+                        continue;
+                    }
                     if (edge.getSourceNodeID().equalsIgnoreCase(vertexID)) {
                         lineageEdges.add(new LineageEdge(LINEAGE_MAPPING, dataFile.getNodeID(), edge.getDestinationNodeID()));
                     }
@@ -788,7 +789,7 @@ public class LineageGraphConnectorHelper {
                 }
             }
             lineageVertices.removeAll(tabularSchemaTypes);
-            lineageEdges.removeAll(lineageMappings);
+            lineageEdges.removeAll(edgesToReplace);
         }
     }
 
@@ -1037,7 +1038,7 @@ public class LineageGraphConnectorHelper {
         properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
 
         Optional<String> connectionDetails = getConnectionDetailsFromNeighborhood(g, vertexId);
-        if (connectionDetails.isEmpty()) {
+        if (!connectionDetails.isPresent()) {
             connectionDetails = getConnectionDetailsFromNeighborhood(g, lastFolderVertexId);
         }
         connectionDetails.ifPresent(s -> properties.put(CONNECTION_KEY, s));
