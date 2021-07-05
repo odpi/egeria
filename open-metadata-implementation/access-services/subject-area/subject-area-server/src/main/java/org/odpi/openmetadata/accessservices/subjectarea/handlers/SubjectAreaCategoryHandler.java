@@ -431,7 +431,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                       null,
                                                       methodName);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
