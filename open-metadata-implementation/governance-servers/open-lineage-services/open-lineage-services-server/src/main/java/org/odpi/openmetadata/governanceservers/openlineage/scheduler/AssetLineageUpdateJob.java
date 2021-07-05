@@ -33,7 +33,7 @@ public class AssetLineageUpdateJob implements Job {
     private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Polling AssetLineage OMAS for changes as of time {} {}";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} {} failed because of the following exception {}";
     private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value" +
-            " was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. " +
+            " was defined as '{}' and it should have an ISO-8601 format such as yyyy-MM-ddTHH:mm:ss. The job will shutdown and won't start again. " +
             "Correct the default value and restart the server instance.";
     private static final String LAST_UPDATE_TIME_UNKNOWN = "Last update time unknown";
 
@@ -62,7 +62,7 @@ public class AssetLineageUpdateJob implements Job {
             String configAssetLineageDefaultTime = (String) dataMap.get(JobConstants.CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME);
             Optional<Long> storedAssetLineageUpdateTime = lineageGraph.getAssetLineageUpdateTime();
             Optional<Date> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,
-                    storedAssetLineageUpdateTime, date);
+                    storedAssetLineageUpdateTime);
             assetLineageLastUpdateTime.ifPresent(lastUpdateTime -> log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, lastUpdateTime, ZoneId.systemDefault().getId()));
             assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM, assetLineageLastUpdateTime);
 
@@ -80,11 +80,10 @@ public class AssetLineageUpdateJob implements Job {
      *
      * @param configAssetLineageDefaultTime the asset lineage config default time
      * @param storedUpdateTime    the update time retrieved form the graph store
-     * @param executionDate       the local date time indicating the actual job execution time
      * @return the asset lineage last known update time
      */
-    private Optional<Date> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime, Optional<Long> storedUpdateTime,
-                                                         Date executionDate) throws JobExecutionException {
+    private Optional<Date> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime,
+                                                         Optional<Long> storedUpdateTime) throws JobExecutionException {
 
         if (storedUpdateTime.isPresent()) {
             return Optional.of(new Date(storedUpdateTime.get()));
@@ -93,8 +92,8 @@ public class AssetLineageUpdateJob implements Job {
                 Instant configAssetLineageAsInstant = LocalDateTime.parse(configAssetLineageDefaultTime, DateTimeFormatter.ISO_DATE_TIME)
                         .atZone(ZoneId.systemDefault()).toInstant();
                 return Optional.of(Date.from(configAssetLineageAsInstant));
-            } catch ( Exception exception) {
-                log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, executionDate);
+            } catch (Exception exception) {
+                log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime);
                 JobExecutionException jobExecutionException = new JobExecutionException(exception);
                 jobExecutionException.setUnscheduleAllTriggers(true);
                 throw jobExecutionException;
