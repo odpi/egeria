@@ -428,6 +428,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                       null,
+                                                      null,
                                                       methodName);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
