@@ -411,17 +411,24 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         final String methodName = "deleteCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
-
         try {
+            response = getCategoryByGuid(userId, guid);
+            if (response.head().isPresent()) {
+                Category categoryToBeDeleted = response.head().get();
+                checkReadOnly(methodName, categoryToBeDeleted, "delete");
+            }
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, CATEGORY_TYPE_NAME, guid);
             } else {
-                response = getCategoryByGuid(userId, guid);
-                if (response.head().isPresent()) {
-                    Category currentCategory = response.head().get();
-                    checkReadOnly(methodName, currentCategory, "delete");
-                }
-                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, CATEGORY_TYPE_NAME, guid);
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      null,
+                                                      methodName);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             response.setExceptionInfo(e, className);

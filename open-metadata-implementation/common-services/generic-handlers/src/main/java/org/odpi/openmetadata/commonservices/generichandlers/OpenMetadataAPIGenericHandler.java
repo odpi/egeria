@@ -1748,7 +1748,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return anchorGUID or null
      */
-    String getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
+    public String getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
                                                   String       methodName)
     {
         /*
@@ -5785,7 +5785,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Remove any entity if it is anchored to the anchor entity
+     * Remove an entity if it is anchored to the anchor entity
      *
      * @param anchorEntity entity anchor to match against
      * @param potentialAnchoredEntity entity to validate
@@ -5794,7 +5794,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem in the repository services
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
-    private void deleteAnchoredEntity(EntityDetail anchorEntity,
+    public void deleteAnchoredEntity(EntityDetail anchorEntity,
                                       EntityProxy  potentialAnchoredEntity,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -6010,7 +6010,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private void deleteBeanInRepository(String       userId,
+    public void deleteBeanInRepository(String       userId,
                                         String       externalSourceGUID,
                                         String       externalSourceName,
                                         String       entityGUID,

@@ -637,17 +637,26 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         final String methodName = "deleteTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            if (response.head().isPresent()) {
+                Term termToBeDeleted = response.head().get();
+                checkReadOnly(methodName, termToBeDeleted, "delete");
+            }
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, TERM_TYPE_NAME, guid);
             } else {
-                response = getTermByGuid(userId, guid);
-                if (response.head().isPresent()) {
-                    Term currentTerm = response.head().get();
-                    checkReadOnly(methodName, currentTerm, "delete");
-                }
-                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, TERM_TYPE_NAME, guid);
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                      null,
+                                                      null,
+                                                      methodName);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e ) {
             response.setExceptionInfo(e, className);
         }
         return response;

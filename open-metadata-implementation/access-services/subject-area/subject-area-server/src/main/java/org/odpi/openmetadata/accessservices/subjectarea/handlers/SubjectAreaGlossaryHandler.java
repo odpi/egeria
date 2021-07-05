@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -353,20 +354,20 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        boolean issueDelete = false;
         try {
+            response = getGlossaryByGuid(userId, guid);
+            Glossary currentGlossary = response.head().get();
+            if (response.head().isPresent()) {
+                checkReadOnly(methodName, currentGlossary, "delete");
+            }
             if (isPurge) {
-                // TODO check whether whether the deleted glossary is not readonly prior to attempting a purge
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
+                issueDelete = true;
             } else {
-                response = getGlossaryByGuid(userId, guid);
-                Glossary currentGlossary = response.head().get();
-                if (response.head().isPresent()) {
-                    checkReadOnly(methodName, currentGlossary, "delete");
-                }
-                // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
+                // if this is a not a purge then attempt to get all term and category relationships (these may or may not be anchored depending how they were created).
                 List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
                 if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, GLOSSARY_TYPE_NAME, methodName)) {
-                    oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
+                    issueDelete = true;
                 } else {
                     throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
                                                         className,
@@ -374,7 +375,19 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                         guid);
                 }
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            if (issueDelete) {
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,    // true for sub types
+                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,    // true for sub types
+                                                      null,
+                                                      null,
+                                                      methodName);
+            }
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;

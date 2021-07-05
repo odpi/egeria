@@ -196,7 +196,6 @@ public abstract class SubjectAreaHandler {
         }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         if (findRequest.getSearchCriteria() == null) {
-//            entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
               entityDetails = genericHandler.getEntitiesByType(userId,
                                                               typeEntityGuid,
                                                               typeEntityName,
@@ -207,8 +206,6 @@ public abstract class SubjectAreaHandler {
                                                               methodName);
         } else {
             FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
-//            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, sanitisedFindRequest);
-
             entityDetails = genericHandler.findEntities(userId,
                                                         sanitisedFindRequest.getSearchCriteria(),
                                                         "searchCriteria",
