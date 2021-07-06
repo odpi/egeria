@@ -144,18 +144,17 @@ public class LineageGraphConnectorHelper {
         Graph sourceGraph;
         List<Vertex> sourcesList;
         if (ASSETS.contains(queriedVertex.label())) {
-            String assetGUID = getAssetGUID(guid, queriedVertex);
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
-            sourceGraph = queryUltimateSource(assetGUID, LINEAGE_MAPPING);
-            sourcesList = querySources(assetGUID, LINEAGE_MAPPING);
+            sourceGraph = queryUltimateSource(guid, LINEAGE_MAPPING);
+            sourcesList = querySources(guid, LINEAGE_MAPPING);
             if (sourceGraph.vertices().hasNext()) {
-                return Optional.of(getCondensedLineage(assetGUID, g, sourceGraph, getLineageVertices(sourcesList),
+                return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
                         SOURCE_CONDENSATION, includeProcesses));
             }
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (!edgeLabelOptional.isPresent()) {
+        if (edgeLabelOptional.isEmpty()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -239,12 +238,11 @@ public class LineageGraphConnectorHelper {
         List<Vertex> destinationsList;
         String label = queriedVertex.label();
         if (ASSETS.contains(label)) {
-            String assetGUID = getAssetGUID(guid, queriedVertex);
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
-            destinationGraph = queryUltimateDestination(assetGUID, LINEAGE_MAPPING);
-            destinationsList = queryDestinations(assetGUID, LINEAGE_MAPPING);
+            destinationGraph = queryUltimateDestination(guid, LINEAGE_MAPPING);
+            destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
             if (destinationGraph.vertices().hasNext()) {
-                return Optional.of(getCondensedLineage(assetGUID, g, destinationGraph, getLineageVertices(destinationsList),
+                return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
                         DESTINATION_CONDENSATION, includeProcesses));
             }
         }
@@ -335,16 +333,15 @@ public class LineageGraphConnectorHelper {
         String label = queriedVertex.label();
 
         if (ASSETS.contains(label)) {
-            String assetGUID = getAssetGUID(guid, queriedVertex);
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
-            endToEndGraph = queryEndToEnd(assetGUID, LINEAGE_MAPPING);
+            endToEndGraph = queryEndToEnd(guid, LINEAGE_MAPPING);
             if (endToEndGraph.vertices().hasNext()) {
                 return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
             }
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (!edgeLabelOptional.isPresent()) {
+        if (edgeLabelOptional.isEmpty()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -575,8 +572,6 @@ public class LineageGraphConnectorHelper {
             lineageVertices = ultimateVertices;
         }
 
-        replaceTabularSchemaTypes(lineageVertices, lineageEdges);
-
         addCondensation(lineageVertices, lineageEdges, ultimateVertices, queriedVertex, condensationType);
 
         condenseProcesses(includeProcesses, lineageVertices, lineageEdges);
@@ -747,50 +742,11 @@ public class LineageGraphConnectorHelper {
         Set<LineageVertex> lineageVertices = getLineageVertices(subGraph);
         Set<LineageEdge> lineageEdges = getLineageEdges(subGraph, false);
 
-        replaceTabularSchemaTypes(lineageVertices, lineageEdges);
-
         condenseProcesses(includeProcesses, lineageVertices, lineageEdges);
 
         addColumnProperties(lineageVertices);
 
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
-    }
-
-    /**
-     * Replace the lineage vertices of type TabularSchemaType with the corresponding attached Asset lineage vertex.
-     * It will replace the LineageMapping edges that have one of the ends of TabularSchemaType with LineageMapping edges
-     * that have the corresponding ends of the attached Asset.
-     *
-     * @param lineageVertices the vertices to be modified
-     * @param lineageEdges    the edges to be modified
-     */
-    private void replaceTabularSchemaTypes(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
-        Set<LineageVertex> tabularSchemaTypes =
-                lineageVertices.stream().filter(lineageVertex -> lineageVertex.getNodeType().equalsIgnoreCase(TABULAR_SCHEMA_TYPE))
-                        .collect(Collectors.toSet());
-        Set<LineageEdge> edgesToReplace = getLineageEdgesToRemove(lineageEdges, tabularSchemaTypes);
-
-        for (LineageVertex tabularSchemaType : tabularSchemaTypes) {
-            String vertexID = tabularSchemaType.getNodeID();
-            Optional<LineageVertex> dataFileOptional = getDataFileLineageVertex(tabularSchemaType);
-            if (dataFileOptional.isPresent()) {
-                LineageVertex dataFile = dataFileOptional.get();
-                lineageVertices.add(dataFile);
-                for (LineageEdge edge : edgesToReplace) {
-                    if (!LINEAGE_MAPPING.equalsIgnoreCase(edge.getEdgeType())) {
-                        continue;
-                    }
-                    if (edge.getSourceNodeID().equalsIgnoreCase(vertexID)) {
-                        lineageEdges.add(new LineageEdge(LINEAGE_MAPPING, dataFile.getNodeID(), edge.getDestinationNodeID()));
-                    }
-                    if (edge.getDestinationNodeID().equalsIgnoreCase(vertexID)) {
-                        lineageEdges.add(new LineageEdge(LINEAGE_MAPPING, edge.getSourceNodeID(), dataFile.getNodeID()));
-                    }
-                }
-            }
-            lineageVertices.removeAll(tabularSchemaTypes);
-            lineageEdges.removeAll(edgesToReplace);
-        }
     }
 
     private Set<LineageVertex> getLineageVerticesToRemove(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges,
@@ -1146,63 +1102,5 @@ public class LineageGraphConnectorHelper {
         lineageVertex.setProperties(properties);
 
         return lineageVertex;
-    }
-
-    /**
-     * Return the unique identifier of the asset.
-     * It will return the guid ot the TabularSchemaType attached if the asset is of type DataFile or subtypes
-     *
-     * @param guid        the guid of the asset
-     * @param assetVertex the asset vertex
-     *
-     * @return the unique identifier of the asset
-     */
-    private String getAssetGUID(String guid, Vertex assetVertex) {
-        String assetGUID = guid;
-        if (DATA_FILE_AND_SUBTYPES.contains(assetVertex.label())) {
-            Optional<String> tabularSchemaTypeGUID = getTabularSchemaGUID(assetVertex);
-            if (tabularSchemaTypeGUID.isPresent()) {
-                // query lineage for the TabularSchemaType if the asset is a DataFile or a subtype
-                assetGUID = tabularSchemaTypeGUID.get();
-            }
-        }
-        return assetGUID;
-    }
-
-    /**
-     * Return the unique identifier of the TabularSchemaType that is attached to the asset
-     *
-     * @param dataFile the data file vertex
-     *
-     * @return the guid of the TabularSchemaType, or an empty Optional if null
-     */
-    private Optional<String> getTabularSchemaGUID(Vertex dataFile) {
-        Iterator<Vertex> tabularSchemaType =
-                g.V(dataFile.id()).emit().repeat(bothE().inV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
-
-        commitTransaction();
-        if (tabularSchemaType.hasNext()) {
-            return Optional.of(tabularSchemaType.next().property(PROPERTY_KEY_ENTITY_GUID).value().toString());
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Return the DataFile vertex in an Open Lineage specific format
-     *
-     * @param tabularSchemaType the schema vetex attached to the data file
-     *
-     * @return the data file lineage vertex, or an empty Optional if null
-     */
-    private Optional<LineageVertex> getDataFileLineageVertex(LineageVertex tabularSchemaType) {
-        Iterator<Vertex> dataFile = g.V().has(PROPERTY_KEY_ENTITY_GUID, tabularSchemaType.getNodeID()).emit()
-                .repeat(bothE().outV().simplePath()).times(1)
-                .or(hasLabel(DATA_FILE, DATA_FILE_AND_SUBTYPES.toArray(new String[0])));
-
-        commitTransaction();
-        if (dataFile.hasNext()) {
-            return Optional.of(abstractVertex(dataFile.next()));
-        }
-        return Optional.empty();
     }
 }
