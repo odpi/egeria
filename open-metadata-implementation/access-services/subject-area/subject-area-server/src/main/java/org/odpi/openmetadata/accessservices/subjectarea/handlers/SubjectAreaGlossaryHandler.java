@@ -522,18 +522,39 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
             try {
+                /*
+                String      userId,
+                                                  String        startingGUID,
+                                                  String        startingGUIDParameterName,
+                                                  String        startingTypeName,
+                                                  String        relationshipTypeName,
+                                                  String        relationshipTypeGUID,
+                                                  String        requiredClassificationName,
+                                                  String        omittedClassificationName,
+                                                  boolean       forLineage,
+                                                  int           selectionEnd,
+                                                  List<String>  serviceSupportedZones,
+                                                  Set<String>   specificMatchPropertyNames,
+                                                  String        searchCriteria,
+                                                  boolean       startsWith,
+                                                  boolean       ignoreCase,
+                                                  int           queryPageSize ,
+                                                  String        methodName
+                 */
                 List<Category> categories = genericHandler.getAttachedElements(userId,
                                                                                guid,
                                                                                "guid",
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
-                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                               null,
-                                                                               null,
+                                                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                                                               null,  // no required classifications
+                                                                               null,  // no committed classifications
+                                                                               false,
                                                                                2,   // get only the children
-                                                                               null,
-                                                                               requestedStartingFrom,
+                                                                               null,  // no zones
+                                                                               searchCriteria,
+                                                                               !exactValue,
+                                                                               ignoreCase,
                                                                                pageSize,
                                                                                methodName);
                 response.addAllResults(categories);

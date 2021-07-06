@@ -7212,161 +7212,102 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingGUID identifier for the entity that the identifier is attached to
      * @param startingGUIDParameterName name of parameter supplying the GUID
      * @param startingTypeName name of the type of object being attached to
-     * @param relationship relationship between the requested element and the related keyword
-     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param relationshipTypeName name of the type of relationship attaching the attached entity
+     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage is this request part of lineage?
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param serviceSupportedZones supported zones for calling service
      * @param specificMatchPropertyNames list of property names to
-     * @param ignoreCase ignore case
      * @param searchCriteria text to search on
-     * @param startsWith if flag set seach looking for atches startihg with the supplied searchCriteria
+     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
+     * @param ignoreCase if set ignore case on the match, if not set then case must match
+     * @param queryPageSize requested page size
      * @param methodName   calling method
-     * @return new bean
+     * @return List of attached entities
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    private B getAttachedElement(String        userId,
-                                 String        startingGUID,
-                                 String        startingGUIDParameterName,
-                                 String        startingTypeName,
-                                 Relationship  relationship,
-                                 String        attachmentEntityTypeName,
-                                 String        requiredClassificationName,
-                                 String        omittedClassificationName,
-                                 boolean       forLineage,
-                                 int           selectionEnd,
-                                 List<String>  serviceSupportedZones,
-                                 Set<String>   specificMatchPropertyNames,
-                                 String        searchCriteria,
-                                 boolean       startsWith,
-                                 boolean       ignoreCase,
-                                 String        methodName) throws InvalidParameterException,
+    protected List<EntityDetail> getAttachedElement(String      userId,
+                                                  String        startingGUID,
+                                                  String        startingGUIDParameterName,
+                                                  String        startingTypeName,
+                                                  String        relationshipTypeName,
+                                                  String        relationshipTypeGUID,
+                                                  String        requiredClassificationName,
+                                                  String        omittedClassificationName,
+                                                  boolean       forLineage,
+                                                  int           selectionEnd,
+                                                  List<String>  serviceSupportedZones,
+                                                  Set<String>   specificMatchPropertyNames,
+                                                  String        searchCriteria,
+                                                  boolean       startsWith,
+                                                  boolean       ignoreCase,
+                                                  int           queryPageSize ,
+                                                  String        methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        final String guidParameterName = "relationship.end.guid";
+        final String guidParameterName = "guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
 
-        if (relationship != null)
+         RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                                     userId,
+                                                                                                     startingGUID,
+                                                                                                     startingTypeName,
+                                                                                                     relationshipTypeName,
+                                                                                                     relationshipTypeGUID,
+                                                                                                     null,  // we could get this passed in from the caller
+                                                                                                     0,
+                                                                                                     0,
+                                                                                                     methodName);
+
+        List<EntityDetail> results = new ArrayList<>();
+
+        while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || results.size() < queryPageSize))
         {
-            EntityProxy entityProxy = null;
+            EntityDetail relatedEntity = relatedEntityIterator.getNext();
 
-            if (selectionEnd == 0)
+            if (relatedEntity != null)
             {
-                entityProxy = repositoryHandler.getOtherEnd(startingGUID,
-                                                            startingTypeName,
-                                                            relationship,
-                                                            methodName);
-            }
-            else if (selectionEnd == 1)
-            {
-                entityProxy = relationship.getEntityOneProxy();
-            }
-            else if (selectionEnd == 2)
-            {
-                entityProxy = relationship.getEntityTwoProxy();
-            }
-
-            if (entityProxy != null)
-            {
-                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                        entityProxy.getGUID(),
-                                                                        guidParameterName,
-                                                                        attachmentEntityTypeName,
-                                                                        methodName);
-
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          attachmentEntityTypeName,
-                                          entity,
-                                          guidParameterName,
-                                          false,
-                                          serviceSupportedZones,
-                                          methodName);
-
-                boolean beanValid = true;
-
-                if (requiredClassificationName != null)
+                if (entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase))
                 {
-                    try
-                    {
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, requiredClassificationName, methodName) == null)
-                        {
-                            beanValid = false;
-                        }
-                    }
-                    catch (ClassificationErrorException error)
-                    {
-                        /*
-                         * Since this classification is not supported, it can not be attached to the entity
-                         */
-                        beanValid = false;
-                    }
-                }
-
-                if (omittedClassificationName != null)
-                {
-                    try
-                    {
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
-                        {
-                            beanValid = false;
-                        }
-                    }
-                    catch (ClassificationErrorException error)
-                    {
-                        /*
-                         * Since this classification is not supported, it can not be attached to the entity
-                         */
-                    }
-                }
-
-
-                if (! forLineage)
-                {
-                    try
-                    {
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
-                        {
-                            beanValid = false;
-                        }
-                    }
-                    catch (ClassificationErrorException error)
-                    {
-                        /*
-                         * Since this classification is not supported, it can not be attached to the entity
-                         */
-                    }
-                }
-                /*
-                 * Check that the searchCriteria and regex flags match
-                 * First create a regex expression then match it against the values of the supplied attribute names.
-                 */
-                if (!entityMatchSearchCriteria(entity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase)) {
-                    beanValid = false;
-                }
-
-                if (beanValid)
-                {
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    return converter.getNewBean(beanClass, entity, relationship, methodName);
+                    results.add(relatedEntity);
                 }
             }
         }
 
-        return null;
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+
     }
+
+    /**
+     * Check whether the attribute values, associated with the supplied attribute names, in the supplied entity match the search criteria. This text match is influenced by the
+     * exactValue and ignoreCase flags.
+     *
+     * @param entity entity to check
+     * @param attributeNames attribute names to check the value of - these are expected to be attributes that hold text values; if they will be ignored
+     * @param searchCriteria literal text search criteria
+     * @param exactValue when set match exactly otherwise look for matches starting with this text
+     * @param ignoreCase when set ignore the case, otherwise do a case sensitive match.
+     * @return true for match otherwise false
+     */
+
     protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase) {
-        if (searchCriteria == null) return true;
-        if (attributeNames == null) return true;
+        if (attributeNames == null) return true; // TODO maybe this should be an error
+        if (searchCriteria == null) return true; // nothing specific to match so it all matches
+
         String regexedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
         boolean isMatch = false;
         InstanceProperties matchProperties = entity.getProperties();
@@ -7390,11 +7331,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                 isMatch = true;
                             }
                         }
+                        // TODO if there are no valid string attributes throw an error?
                     }
                 }
             }
         }
-
         return isMatch;
     }
     protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase) {
