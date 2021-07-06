@@ -27,8 +27,8 @@ if java is already installed by running the command `java -version` from the com
 
 Java can be installed by:
 
-1. Downloading the **OpenJDK 8 (LTS) HotSpot** JVM from [AdoptOpenJDK](https://adoptopenjdk.net).
-1. Running the installer that is downloaded.
+1. Downloading the **OpenJDK 11 (LTS) HotSpot** JVM from [Adoptium](https://adoptopenjdk.net).
+5. Running the installer that is downloaded.
 
 Maven is the tool used to run the Egeria build.
 You can check if Maven installed by running the command `mvn --version` from the command-line.
