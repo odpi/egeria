@@ -171,10 +171,6 @@ public class AssetContextHandler {
             case RELATIONAL_TABLE:
                 context = buildRelationalTableContext(userId, entityDetail);
                 break;
-
-            case TABULAR_SCHEMA_TYPE:
-                context = buildTabularSchemaTypeContext(userId, entityDetail);
-                break;
         }
 
         return context;
@@ -216,17 +212,17 @@ public class AssetContextHandler {
 
         Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
                 TABULAR_COLUMN);
-        if (!relationship.isPresent()) {
+        if (relationship.isEmpty()) {
             return false;
         }
 
         EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, tabularColumn.getGUID(), relationship.get());
         Optional<Classification> anchorGUIDClassification = getAnchorsClassification(schemaType);
-        if (!anchorGUIDClassification.isPresent()) {
+        if (anchorGUIDClassification.isEmpty()) {
             return false;
         }
         Optional<String> anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
-        if (!anchorGUID.isPresent()) {
+        if (anchorGUID.isEmpty()) {
             return false;
         }
 
@@ -291,27 +287,6 @@ public class AssetContextHandler {
         }
 
         return new RelationshipsContext(entityDetail.getGUID(), context);
-    }
-
-    /**
-     * Builds the context for a tabular schema type
-     *
-     * @param userId            the unique identifier for the user
-     * @param tabularSchemaType the entity for which the context is build
-     *
-     * @return the context of the tabular schema type
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    private RelationshipsContext buildTabularSchemaTypeContext(String userId, EntityDetail tabularSchemaType)
-            throws OCFCheckedExceptionBase {
-        Set<GraphContext> context = new HashSet<>();
-
-        EntityDetail dataFile = handlerHelper.addContextForRelationships(userId, tabularSchemaType, ASSET_SCHEMA_TYPE, context);
-
-        context.addAll(buildDataFileContext(userId, dataFile).getRelationships());
-
-        return new RelationshipsContext(tabularSchemaType.getGUID(), context);
     }
 
     /**
