@@ -421,7 +421,7 @@ public class OpenMetadataTypesArchive
 
     }
     /**
-     * Deprecate the TermIsATypeOfRelationship - use TermTypeOFRelationship
+     * Deprecate the TermIsATypeOfRelationship - use IsATypeOfRelationship
      *
      * @return patch
      */
