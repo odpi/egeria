@@ -20,13 +20,19 @@ The JDK also contains the runtime environment (JRE).
 There are various JDKs available, and you may even have one pre-installed on your system. You can check
 by running the command `java -version` from the command-line.
 
-Egeria can run with version 8 or version 11.  Any Java code you create must
-build and run with both versions.
+Egeria requires Java 11 as a minimum level. Language Constructs up to Java 11 are permitted, but not above.
+We use the [Adoptium (was AdoptOpenJDK)](https://adoptopenjdk.net) distribution. Official images & maven artifacts are built with this level.
+Additionally code must compile and run on the current latest Java release. This is validated before any code can be merged.
+
 
 Java can be installed by:
 
-1. Downloading the **OpenJDK 8 (LTS) HotSpot** JVM from [AdoptOpenJDK](https://adoptopenjdk.net).
-1. Running the installer that is downloaded.
+1. Downloading the **OpenJDK 11 (LTS) HotSpot** JVM from [Adoptium](https://adoptopenjdk.net).
+2. Running the installer that is downloaded.
+
+Alternatively jdk may be found on your operating system install repositories or via third party tools like HomeBrew (macOS).
+
+Also you must ensure JAVA_HOME is set, and pointing to a JDK. If this is not done, an error such as `Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:3.1.1:jar (attach-javadocs) on project open-connector-framework: MavenReportException: Error while generating Javadoc: Unable to find javadoc command: The environment variable JAVA_HOME is not correctly set.` will be seen as the javadoc maven plugin depends on this value to work correctly.
 
 ----
 * Return to [Programming Languages](.)

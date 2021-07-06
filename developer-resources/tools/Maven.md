@@ -9,6 +9,8 @@ This includes the code compilation, running unit tests,
 validating dependencies and javadoc as well
 as build our distribution archive.
 
+Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
+
 The maven processing organizes the modules into a
 hierarchy.  Each module has a `pom.xml` file (called "pom file") that defines the
 artifact, its parent/children, dependencies and
