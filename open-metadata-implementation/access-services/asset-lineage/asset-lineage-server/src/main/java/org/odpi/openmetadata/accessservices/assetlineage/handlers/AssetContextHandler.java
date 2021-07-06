@@ -48,6 +48,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -121,6 +122,26 @@ public class AssetContextHandler {
     /**
      * Builds the asset context for a schema element.
      *
+     * @param userId        the unique identifier for the user
+     * @param lineageEntity the entity for which the context is build
+     *
+     * @return the asset context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Map<String, RelationshipsContext> buildAssetContext(String userId, LineageEntity lineageEntity)
+            throws OCFCheckedExceptionBase {
+
+        Map<String, RelationshipsContext> context = new HashMap<>();
+
+        EntityDetail asset = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), lineageEntity.getTypeDefName());
+        context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildAssetContext(userId, asset));
+        return context;
+    }
+
+    /**
+     * Builds the asset context for a schema element.
+     *
      * @param userId       the unique identifier for the user
      * @param entityDetail the entity for which the context is build
      *
@@ -149,6 +170,10 @@ public class AssetContextHandler {
 
             case RELATIONAL_TABLE:
                 context = buildRelationalTableContext(userId, entityDetail);
+                break;
+
+            case TABULAR_SCHEMA_TYPE:
+                context = buildTabularSchemaTypeContext(userId, entityDetail);
                 break;
         }
 
@@ -266,6 +291,27 @@ public class AssetContextHandler {
         }
 
         return new RelationshipsContext(entityDetail.getGUID(), context);
+    }
+
+    /**
+     * Builds the context for a tabular schema type
+     *
+     * @param userId            the unique identifier for the user
+     * @param tabularSchemaType the entity for which the context is build
+     *
+     * @return the context of the tabular schema type
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private RelationshipsContext buildTabularSchemaTypeContext(String userId, EntityDetail tabularSchemaType)
+            throws OCFCheckedExceptionBase {
+        Set<GraphContext> context = new HashSet<>();
+
+        EntityDetail dataFile = handlerHelper.addContextForRelationships(userId, tabularSchemaType, ASSET_SCHEMA_TYPE, context);
+
+        context.addAll(buildDataFileContext(userId, dataFile).getRelationships());
+
+        return new RelationshipsContext(tabularSchemaType.getGUID(), context);
     }
 
     /**
