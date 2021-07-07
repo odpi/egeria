@@ -72,7 +72,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             /* we don't care why the thread ended , we just restart it */
             /* The thread will log on exit and on restart already, so no need to let anyone know */
             initializeProducerAndProducerThread();
-            producerExecutor.execute(producerThread);
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                producerExecutor.execute(producerThread);
+            }
         }
     }
     
@@ -89,7 +91,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             /* we don't care why the thread ended , we just restart it */
             /* The thread will log on exit and on restart already, so no need to let anyone know */
             initializeConsumerAndConsumerThread();
-            consumerExecutor.execute(consumerThread);
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                consumerExecutor.execute(consumerThread);
+            }
         }
     }
 
