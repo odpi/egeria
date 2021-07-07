@@ -10370,8 +10370,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachingGUID             unique id of the entity for the element that is being attached
      * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
      * @param attachingElementTypeName  type name of the attaching element's entity
-     * @param relationshipTypeGUID        unique identifier of type of the relationship to create
-     * @param relationshipTypeName        unique name of type of the relationship to create
+     * @param relationshipTypeGUID      unique identifier of type of the relationship to create
+     * @param relationshipTypeName      unique name of type of the relationship to create
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
      * @param methodName                calling method
      *

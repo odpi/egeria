@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -66,6 +67,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                                      String userId,
                                                                                      Class<? extends IRelationshipMapper<R>> clazz,
                                                                                      R relationship) {
+        String methodName = "createRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
@@ -81,13 +83,23 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 omrsRelationship.setProperties(instanceProperties);
             }
 
-            Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> createdOMRSRelationship = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
-            if (createdOMRSRelationship.isPresent()) {
-                R createdrelationship = mapper.map(createdOMRSRelationship.get());
-                response.addResult(createdrelationship);
-            }
+           String guid =  genericHandler.linkElementToElement(
+                                 userId,
+                                 null,
+                                 null,
+                                 omrsRelationship.getEntityOneProxy().getGUID(),
+                                 "end1.guid",
+                                 omrsRelationship.getEntityOneProxy().getType().getTypeDefName(),
+                                 omrsRelationship.getEntityTwoProxy().getGUID(),
+                                 "end2.guid",
+                                 omrsRelationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                 omrsRelationship.getType().getTypeDefGUID(),
+                                 omrsRelationship.getType().getTypeDefName(),
+                                 instanceProperties,
+                                 methodName);
+           response = getRelationship(methodName, userId, clazz, guid);
 
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException | PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -117,12 +129,17 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
-            Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> gotOMRSRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
-            if (gotOMRSRelationship.isPresent()) {
-                R omasRelationship = mapper.map(gotOMRSRelationship.get());
+            String typeDefName = mapper.getTypeName();
+            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship oMRSRelationship =
+                    genericHandler.getRepositoryHandler().getRelationshipByGUID(userId, guid,
+                                                                        "guid",
+                                                                       typeDefName,
+                                                                       restAPIName);
+
+                R omasRelationship = mapper.map(oMRSRelationship);
                 response.addResult(omasRelationship);
-            }
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+
+        } catch (UserNotAuthorizedException | PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
