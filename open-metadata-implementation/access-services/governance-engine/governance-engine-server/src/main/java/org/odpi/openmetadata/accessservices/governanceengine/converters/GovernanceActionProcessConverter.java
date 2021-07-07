@@ -75,32 +75,6 @@ public class GovernanceActionProcessConverter<B> extends GovernanceEngineOMASCon
                     processProperties.setDisplayName(this.removeName(instanceProperties));
                     processProperties.setDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    processProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    processProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    processProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setOwner(this.getOwner(instanceProperties));
-                    processProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    processProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    processProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
                     bean.setProcessProperties(processProperties);
                 }
                 else

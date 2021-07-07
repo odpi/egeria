@@ -4,7 +4,7 @@
 # 0010 Base Model
 
 The base model defines key concepts such as **Referenceable**, **Asset**,
-**Infrastructure**, **Process** and **DataSet** along with the root entity for all metadata types, 
+**Infrastructure**, **Process** and **DataSet** along with the root entity for all open metadata entity types, 
 **OpenMetadataRoot**.
 
 
@@ -44,9 +44,7 @@ More information on assets can be found in [Building an Asset Catalog](../catalo
 
 The **Anchors** classification is used internally by the open metadata ecosystem to optimize
 the look up of the entity at the root of a cluster of elements that represents a larger object.
-Currently there is support for objects uniquely "owned" an asset to store the guid of that asset,
-for a schema element to point to the schema type at the root of the schema object and a comment
-to store the guid at the start of a comment thread.
+Currently there is support for objects uniquely "owned" by an asset to store the guid of that asset.
 
 Finally, the **Memento** classification identifies that the Referenceable
 refers to a real-world asset/artifact that has either been deleted or archived offline.  The metadata
@@ -62,9 +60,29 @@ the asset/artifact in the archive (if applicable).
 * [Anchors](../../../open-metadata-implementation/access-services/docs/concepts/anchor.md)
 * [Lineage](../lineage)
 
+## Deprecated Attributes
+
+The **Asset** entity has the following deprecated attributes.  Their values have been moved to
+classifications as shown in the table below.
+Many assets are
+created by their hosting technology and locked read-only to the broader metadata ecosystem
+(see [external metadata provenance](../metadata-provenance) for more detail).
+By moving the governance related
+information to a classification, it can be maintained by a different service to the Asset creator.
+
+
+| attribute name | moved to classification |
+| :------ | :------- |
+| **owner** (type string) | [**Ownership** Classification](0445-Governance-Roles.md) |
+| **ownerType** (type AssetOwnerType enum) | [**Ownership** Classification](0445-Governance-Roles.md)  |
+| **zoneMembership** (type array<string>) | [**AssetZoneMembership** Classification](0424-Governance-Zones.md)  |
+| **latestChange** (type string) | [**LatestChange** Classification](0011-Managing-Referenceables.md)  |
+  
+ 
 
 ----
-Return to [Area 0](Area-0-models.md).
+
+* Return to [Area 0](Area-0-models.md).
 
 
 

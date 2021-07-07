@@ -335,18 +335,12 @@ class DataEnginePortHandlerTest {
 
     @Test
     void findSchemaTypeForPort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "findSchemaTypeForPort";
-
-        mockTypeDef();
-
         EntityDetail entityDetail = mock(EntityDetail.class);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PORT_TYPE_NAME,
-                PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(entityDetail);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, PORT_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME))
+                .thenReturn(Optional.of(entityDetail));
 
         Optional<EntityDetail> result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
 
-        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID, "guid", methodName);
         assertTrue(result.isPresent());
         assertEquals(entityDetail, result.get());
     }
@@ -357,14 +351,14 @@ class DataEnginePortHandlerTest {
                                                                          InvocationTargetException,
                                                                          NoSuchMethodException,
                                                                          InstantiationException,
-                                                                         IllegalAccessException {
+                                                                         IllegalAccessException,
+                                                                         InvalidParameterException {
         String methodName = "findSchemaTypeForPort";
 
         mockTypeDef();
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PORT_TYPE_NAME,
-                PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenThrow(mockedException);
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, PORT_GUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, PORT_TYPE_NAME)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID));
@@ -464,20 +458,19 @@ class DataEnginePortHandlerTest {
     @Test
     void removePort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
 
-        dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
+        dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
 
         verify(portHandler, times(1)).removePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID, "portGUID",
-                "removePort");
-        verify(repositoryHandler, times(1)).purgeEntity(USER, PORT_GUID, PORT_TYPE_GUID, PORT_TYPE_NAME,
                 "removePort");
     }
 
     @Test
-    void removePort_throwsFunctionNotSupportedException() {
-        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+    void removePort_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+        FunctionNotSupportedException mockedException = mock(FunctionNotSupportedException.class);
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removePort");
 
-        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
+       assertThrows(FunctionNotSupportedException.class, () ->
+               dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
     private void mockDelegatedPortEntity(PortType portType) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {

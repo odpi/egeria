@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableF
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -145,7 +146,7 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
-			@RequestBody(required=true) String artifact
+			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
 		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
@@ -169,5 +170,24 @@ public class AnalyticsModelingOMASResource {
 			) {
 
 		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);
+	}
+    
+    /**
+	 * Delete assets in repository defined by artifact unique identifier.
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param identifier of the artifact in 3rd party system.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Delete assets that represent analytics artifact.")
+	@DeleteMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=true) String identifier)
+    {
+		return restAPI.deleteArtifact(serverName, userId, serverCapability, identifier);
 	}
 }

@@ -5,6 +5,10 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -23,15 +27,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
+@Getter
 public enum UpdateSemantic implements Serializable {
     REPLACE(0, "REPLACE", "Replace with new entities"),
     APPEND(1, "APPEND", "Append new entities");
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    private int ordinal;
-    private String name;
-    private String description;
+    /**
+     * The numeric representation of the instance provenance type
+     * -- GETTER --
+     * Return the numeric representation of the instance provenance type.
+     * @return int ordinal
+     */
+    private final int ordinal;
+
+    /**
+     * The default name of the instance provenance type
+     * -- GETTER --
+     * Return the default name of the instance provenance type.
+     * @return String name
+     */
+    private final String name;
+
+    /**
+     * The default description of the instance provenance type
+     * -- GETTER --
+     * Return the default description of the instance provenance type.
+     * @return String description
+     */
+    private final String description;
 
 
     /**
@@ -47,48 +75,4 @@ public enum UpdateSemantic implements Serializable {
         this.description = description;
     }
 
-
-    /**
-     * Return the numeric representation of the instance provenance type.
-     *
-     * @return int ordinal
-     */
-    public int getOrdinal() {
-        return ordinal;
-    }
-
-
-    /**
-     * Return the default name of the instance provenance type.
-     *
-     * @return String name
-     */
-    public String getName() {
-        return name;
-    }
-
-
-    /**
-     * Return the default description of the instance provenance type.
-     *
-     * @return String description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-
-    /**
-     * toString() JSON-style
-     *
-     * @return string description
-     */
-    @Override
-    public String toString() {
-        return "UpdateSemantic{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }}
-
+}

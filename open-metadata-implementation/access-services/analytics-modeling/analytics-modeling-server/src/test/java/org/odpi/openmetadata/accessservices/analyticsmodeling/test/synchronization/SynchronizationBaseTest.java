@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
@@ -51,6 +53,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 											+ "/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']";
 
 	protected static final String UID_STOREID = "iBASEMODULE";
+	protected static final String UID_STOREID_MODULE = "iMODULE";
+	protected static final String UID_STOREID_REPORT = "iREPORT";
 	protected static final String MODULE_NAME = "dbo";
 	protected static final String TEST_DESCRIPTION = "This is for testing description persistance.";
 
@@ -88,10 +92,12 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 	// Verify structure and content of the built asset as graph with nodes and edges. 
 	//----------------------------------------------------------------------------------
 	protected void assertSubgraph(String guid, String fileMaster) throws IOException, AnalyticsModelingCheckedException {
+		
 		ArrayList<EntityDetail> nodes = new ArrayList<>();
 		ArrayList<Relationship> edges = new ArrayList<>();
 		
-		String assetQName = omEntityDao.getEntityQName(omEntityDao.getEntityByGuid(guid));
+		EntityDetail asset = omEntityDao.getEntityByGuid(guid);
+		String assetQName = omEntityDao.getEntityQName(asset);
 
 		try {
 			
@@ -130,6 +136,11 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 	}
 
 	private String buildJsonArray(String name, List<? extends Object> list) {
+		
+		if (list == null) {
+			return String.format("\"%s\":[]", name);
+		}
+		
 		StringBuilder content = new StringBuilder();
 		for ( Object element : list) {
 			if (content.length() != 0) {
@@ -211,6 +222,14 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		});
 	}
 
+	/**
+	 * Collect nodes of the graph following the edges from the specified node.
+	 * @param nodes collected
+	 * @param edges followed
+	 * @param guid of the specified node
+	 * @param assetQName 
+	 * @throws AnalyticsModelingCheckedException
+	 */
 	private void collectRelatedNodes(ArrayList<EntityDetail> nodes, ArrayList<Relationship> edges, String guid, String assetQName)
 			throws AnalyticsModelingCheckedException {
 
@@ -233,7 +252,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		nodes.add(start);
 
 		// collect all nodes connected to the start as second end of a relationship
-		List<Relationship> rels = omEntityDao.getRelationshipsForEntity(start, null).stream()
+		List<Relationship> rels = omEntityDao.getRelationshipsForEntity(start, null)
+			.stream()
 			.filter(r->r.getEntityOneProxy().getGUID().equals(guid))
 			.collect(Collectors.toList());
 		
@@ -253,12 +273,12 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 			collectRelatedNodes(nodes, edges, r.getEntityTwoProxy().getGUID(), assetQName);
 		}
 	}
-
-
+	
 	//----------------------------------------------------------------------------------------------------------------
 	// Tests support functions.
 	//----------------------------------------------------------------------------------------------------------------
-	protected void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list, Map<String, String> guidMap ) {
+	private void createReferencedEntitiesForMetadataLinks(List<? extends AnalyticsMetadata> list, Map<String, String> guidMap )
+	{
 		if (list == null) {
 			return;
 		}
@@ -302,5 +322,37 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		// confirm data read successful
 		TestUtilities.assertObjectJson(asset, TestUtilities.readJsonFile(FOLDER_MASTER, input));
 		return asset;
+	}
+	
+	/**
+	 * Helper function to create JSON definition of the module
+	 * connected to created entities defined by source GUID list. 
+	 * @param input - file name to read.
+	 * @return module definition in JSON format
+	 * @throws IOException
+	 */
+	protected String getBaseModuleJson(String input) throws IOException {
+		AnalyticsAsset baseModule = createBean(input);
+
+		// create entities for columns referenced in base module
+		Map<String, String>guidMap = new HashMap<>();
+		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
+		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
+		// replace GUIDs from input with real GUIDs of created entities
+		for (Entry<String, String> pair : guidMap.entrySet()) {
+			json = json.replace(pair.getKey(), pair.getValue());
+		}
+		return json;
+	}
+
+	/**
+	 * Helper function to create asset definition of the module
+	 * connected to created entities defined by source GUID list. 
+	 * @param input - file name to read.
+	 * @return module definition in JSON format
+	 * @throws IOException
+	 */
+	protected AnalyticsAsset getBaseModuleAsset(String input) throws IOException {
+		return TestUtilities.readObjectJson(getBaseModuleJson(input), AnalyticsAsset.class);
 	}
 }

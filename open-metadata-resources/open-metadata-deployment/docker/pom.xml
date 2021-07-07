@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-deployment</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.10-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -35,9 +35,6 @@
         <docker.namespace>${docker.repo}</docker.namespace>
         <docker.build.tag>build</docker.build.tag>
         <dockerfile.build.noCache>true</dockerfile.build.noCache>
-        <apache.atlas.version>2.0.0</apache.atlas.version>
-        <apache.ranger.version>1.2.0</apache.ranger.version>
-        <apache.solr.version>8.5.1</apache.solr.version>
     </properties>
     <build>
         <plugins>
@@ -92,10 +89,7 @@
                 </property>
             </activation>
             <modules>
-                <module>build-images</module>
-                <module>apache-atlas</module>
-                <module>apache-ranger-admin</module>
-                <module>gaian</module>
+                <!-- these are now removed -->
             </modules>
         </profile>
         <profile>

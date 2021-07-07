@@ -8,16 +8,16 @@ contains a Java Archive (Jar) file for the server platform itself along with a d
 
 ```bash
 $ ls
-resources				server-chassis-spring-2.10-SNAPSHOT.jar
+resources				server-chassis-spring-3.0-SNAPSHOT.jar
 ```
 
 The name of the Java Archive (Jar) file will
-depend on the release of ODPi Egeria that you have installed.  In this example, the release is **2.10-SNAPSHOT**.
+depend on the release of ODPi Egeria that you have installed.  In this example, the release is **3.0-SNAPSHOT**.
 
 The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
 Check the version of Java you have with the command **java -version**
-(You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select **OpenJDK 8 (LTS)**
+(You can download Java from [Adoptium](https://adoptopenjdk.net/) and select **OpenJDK 11 (LTS)**
 and the **HotSpot** version for your operating system.
 You only need the JRE but select the JDK if you expect to also write some Java code.)
 
@@ -27,7 +27,7 @@ on different ports, as required by the tutorials.
 You should be in the main distribution directory as setup when installing the server. 
 
 ```bash
-$ java -Dserver.port=9443 -jar server/server-chassis-spring-2.10-SNAPSHOT.jar
+$ java -Dserver.port=9443 -jar server/server-chassis-spring-3.0-SNAPSHOT.jar
 ```
 
 The OMAG server platform first displays this banner and then initializes itself.

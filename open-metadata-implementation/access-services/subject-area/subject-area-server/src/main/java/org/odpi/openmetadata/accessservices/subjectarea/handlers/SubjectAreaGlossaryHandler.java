@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -88,7 +87,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
                 InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
-                if (instanceProperties == null ) {
+                if (instanceProperties == null) {
                     instanceProperties = new InstanceProperties();
                 }
                 if (instanceProperties.getEffectiveFromTime() == null) {
@@ -138,6 +137,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param findRequest {@link FindRequest}
+     * @param exactValue  a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase  a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of Glossaries meeting the search Criteria
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -145,13 +146,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
         final String methodName = "findGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
 
         // If no search criteria is supplied then we return all glossaries, this should not be too many.
         try {
-            List<Glossary> foundGlossaries = findEntities(userId, GLOSSARY_TYPE_NAME, findRequest, GlossaryMapper.class, methodName);
+            List<Glossary> foundGlossaries = findNodes(userId, GLOSSARY_TYPE_NAME, findRequest, exactValue, ignoreCase, GlossaryMapper.class, methodName);
             if (foundGlossaries != null) {
                 response.addAllResults(foundGlossaries);
             } else {
@@ -351,6 +352,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param guid        guid of the category to get terms
      * @param findRequest {@link FindRequest}
+     * @param exactValue  a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase  a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -359,7 +362,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
         final String methodName = "getTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -373,49 +376,44 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         if (requestedStartingFrom == null) {
             requestedStartingFrom = 0;
         }
-        // isAll indicates there is no searchCriteria filter.
-        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
 
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
-            if (isAll) {
-                response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, requestedStartingFrom, pageSize);
 
-            } else {
-                int startingFrom = 0;
-                List<Term> filteredTermsList = new ArrayList<>();
-                // we have more to get, bump up the requestedStartingFrom and get the next page
-                boolean continueGettingTerms = true;
-                while (continueGettingTerms) {
-                    SubjectAreaOMASAPIResponse<Term> relatedTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
-                    if (relatedTermsResponse.results() != null && relatedTermsResponse.results().size() > 0) {
-                        for (Term relatedTerm : relatedTermsResponse.results()) {
-                            if (filteredTermsList.size() < pageSize && termMatchSearchCriteria(relatedTerm, searchCriteria)) {
-                                filteredTermsList.add(relatedTerm);
-                            }
-
+            int startingFrom = 0;
+            List<Term> filteredTermsList = new ArrayList<>();
+            // we have more to get, bump up the requestedStartingFrom and get the next page
+            boolean continueGettingTerms = true;
+            while (continueGettingTerms) {
+                SubjectAreaOMASAPIResponse<Term> relatedTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+                if (relatedTermsResponse.results() != null && relatedTermsResponse.results().size() > 0) {
+                    for (Term relatedTerm : relatedTermsResponse.results()) {
+                        if (filteredTermsList.size() < pageSize && termMatchSearchCriteria(relatedTerm, searchCriteria, exactValue, ignoreCase)) {
+                            filteredTermsList.add(relatedTerm);
                         }
-                    }
-                    if (relatedTermsResponse.results().size() < pageSize || filteredTermsList.size() == pageSize) {
-                        // we have a page to return or the last get returned less than a page.
-                        continueGettingTerms = false;
-                    } else {
-                        // issue another call to get another page of terms
-                        startingFrom = startingFrom + pageSize;
+
                     }
                 }
-                // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
-                if (filteredTermsList.size() >= requestedStartingFrom) {
-                    int endOffset = requestedStartingFrom + pageSize;
-                    if (filteredTermsList.size() < requestedStartingFrom + pageSize) {
-                        endOffset = filteredTermsList.size();
-                    }
-                    // now get the appropriate sublist
-                    List<Term> filteredPagedTermsList = filteredTermsList.subList(requestedStartingFrom, endOffset);
-
-                    response.addAllResults(filteredPagedTermsList);
+                if (relatedTermsResponse.results().size() < pageSize || filteredTermsList.size() == pageSize) {
+                    // we have a page to return or the last get returned less than a page.
+                    continueGettingTerms = false;
+                } else {
+                    // issue another call to get another page of terms
+                    startingFrom = startingFrom + pageSize;
                 }
             }
+            // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
+            if (filteredTermsList.size() >= requestedStartingFrom) {
+                int endOffset = requestedStartingFrom + pageSize;
+                if (filteredTermsList.size() < requestedStartingFrom + pageSize) {
+                    endOffset = filteredTermsList.size();
+                }
+                // now get the appropriate sublist
+                List<Term> filteredPagedTermsList = filteredTermsList.subList(requestedStartingFrom, endOffset);
+
+                response.addAllResults(filteredPagedTermsList);
+            }
+
         }
         return response;
     }
@@ -426,6 +424,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @param userId          unique identifier for requesting user, under which the request is performed
      * @param guid            guid of the category to get terms
      * @param findRequest     {@link FindRequest}
+     * @param exactValue      a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase      a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param onlyTop         when only the top categories (those categories without parents) are returned.
      * @param categoryHandler category handler is supplied, so that we can obtain  categories containing the parentCategory field,
      *                        which we need to test as part of the onlyTop processing
@@ -437,7 +437,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, SubjectAreaCategoryHandler categoryHandler) {
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Boolean onlyTop, SubjectAreaCategoryHandler categoryHandler) {
         final String methodName = "getCategories";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         Integer pageSize = findRequest.getPageSize();
@@ -449,82 +449,59 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         if (requestedStartingFrom == null) {
             requestedStartingFrom = 0;
         }
-        // isAll indicates there is no searchCriteria filter.
-        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
-
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
-            // the supplied glossary guid exists.
-            if (isAll && !onlyTop) {
-                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, requestedStartingFrom, pageSize, methodName);
-                for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                    response.addResult(relatedCategory);
-                }
-            } else {
-                // if we have onlyTop and/or a searchCriteria, then we need to get all of the categories from the 0th record up to the requested startingFrom + pagesize.
-
-                int startingFrom = 0;
-                List<Category> filteredCategoriesList = new ArrayList<>();
-                // we have more to get, bump up the requestedStartingFrom and get the next page
-                boolean continueGettingCategories = true;
-                while (continueGettingCategories) {
-                    SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
-                    if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
-                        for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                            if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
-                                boolean addCategory = false;
-                                if (isAll) {
-                                    if (onlyTop) {
-                                        if (relatedCategory.getParentCategory() == null) {
-                                            addCategory = true;
-                                        }
-                                    } else {
+            int startingFrom = 0;
+            List<Category> filteredCategoriesList = new ArrayList<>();
+            // we have more to get, bump up the requestedStartingFrom and get the next page
+            boolean continueGettingCategories = true;
+            while (continueGettingCategories) {
+                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
+                if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
+                    for (Category relatedCategory : relatedCategoriesResponse.results()) {
+                        if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
+                            boolean addCategory = false;
+                            if (categoryMatchSearchCriteria(relatedCategory, searchCriteria, exactValue, ignoreCase)) {
+                                if (onlyTop) {
+                                    if (relatedCategory.getParentCategory() == null) {
+                                        // search criteria matches and only top categories required
                                         addCategory = true;
                                     }
                                 } else {
-                                    // there is a search criteria
-                                    if (categoryMatchSearchCriteria(relatedCategory, searchCriteria)) {
-                                        if (onlyTop) {
-                                            if (relatedCategory.getParentCategory() == null) {
-                                                // search criteria matches and only top categories required
-                                                addCategory = true;
-                                            }
-                                        } else {
-                                            // search criteria matches
-                                            addCategory = true;
-                                        }
-                                    } else {
-                                        // there is a search criteria and it does not match
-                                    }
+                                    // search criteria matches
+                                    addCategory = true;
                                 }
-                                if (addCategory) {
-                                    filteredCategoriesList.add(relatedCategory);
-                                }
+                            } else {
+                                // there is a search criteria and it does not match
                             }
-
+                            if (addCategory) {
+                                filteredCategoriesList.add(relatedCategory);
+                            }
                         }
-                    }
-                    // we should keep getting results until we have run out of results to get or we have enough to satisfy the requested pagesize.
-                    if (relatedCategoriesResponse.results().size() < pageSize || filteredCategoriesList.size() == requestedStartingFrom + pageSize) {
-                        // we have a page to return or the last get returned less than a page.
-                        continueGettingCategories = false;
-                    } else {
-                        // issue another call to get another page of terms
-                        startingFrom = startingFrom + pageSize;
+
                     }
                 }
-                // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
-                if (filteredCategoriesList.size() >= requestedStartingFrom) {
-                    int endOffset = requestedStartingFrom + pageSize;
-                    if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
-                        endOffset = filteredCategoriesList.size();
-                    }
-                    // now get the appropriate sublist
-                    List<Category> filteredPagedCategoriesList = filteredCategoriesList.subList(requestedStartingFrom, endOffset);
-
-                    response.addAllResults(filteredPagedCategoriesList);
+                // we should keep getting results until we have run out of results to get or we have enough to satisfy the requested pagesize.
+                if (relatedCategoriesResponse.results().size() < pageSize || filteredCategoriesList.size() == requestedStartingFrom + pageSize) {
+                    // we have a page to return or the last get returned less than a page.
+                    continueGettingCategories = false;
+                } else {
+                    // issue another call to get another page of terms
+                    startingFrom = startingFrom + pageSize;
                 }
             }
+            // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
+            if (filteredCategoriesList.size() >= requestedStartingFrom) {
+                int endOffset = requestedStartingFrom + pageSize;
+                if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
+                    endOffset = filteredCategoriesList.size();
+                }
+                // now get the appropriate sublist
+                List<Category> filteredPagedCategoriesList = filteredCategoriesList.subList(requestedStartingFrom, endOffset);
+
+                response.addAllResults(filteredPagedCategoriesList);
+            }
+
         }
 
         return response;

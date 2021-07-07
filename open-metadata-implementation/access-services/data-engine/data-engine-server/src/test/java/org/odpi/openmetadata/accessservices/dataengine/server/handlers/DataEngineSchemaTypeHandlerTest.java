@@ -30,15 +30,19 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,6 +58,7 @@ import static org.odpi.openmetadata.accessservices.dataengine.server.util.Mocked
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID;
@@ -80,6 +85,7 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String ATTRIBUTE_GUID = "attributeGuid";
     private static final String SOURCE_GUID = "sourceGuid";
     private static final String SOURCE_QUALIFIED_NAME = "sourceQualifiedName";
+    private static final String SOURCE_TYPE = "sourceType";
     private static final String TARGET_GUID = "targetGuid";
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
@@ -270,14 +276,14 @@ class DataEngineSchemaTypeHandlerTest {
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
                                                 InvalidParameterException {
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, REFERENCEABLE_TYPE_NAME);
 
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -290,12 +296,12 @@ class DataEngineSchemaTypeHandlerTest {
                                                                                  InvalidParameterException {
         final String methodName = "addLineageMappingRelationship";
 
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, REFERENCEABLE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, REFERENCEABLE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME,
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -314,7 +320,7 @@ class DataEngineSchemaTypeHandlerTest {
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
+        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND,
                 "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
     }
 
@@ -329,34 +335,38 @@ class DataEngineSchemaTypeHandlerTest {
                 TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(ATTRIBUTE_GUID);
-        List<EntityDetail> entityDetails = Collections.singletonList(entityDetail);
-        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, SCHEMA_TYPE_TYPE_NAME,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
-                "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
+        Set<EntityDetail> entityDetails = new HashSet<>();
+        entityDetails.add(entityDetail);
+        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME))
+                .thenReturn(entityDetails);
 
-        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
-
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
+                TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
                 TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
-                TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
-    void removeSchemaType_throwsFunctionNotSupportedException() {
-        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
-                dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+    void removeSchemaType_throwsFunctionNotSupportedException() throws FunctionNotSupportedException {
+       FunctionNotSupportedException mockedException = new FunctionNotSupportedException(
+                OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition("removeSchemaType", this.getClass().getName(),
+                        "server"), this.getClass().getName(), "removeSchemaType");
+        doThrow(mockedException).when(dataEngineCommonHandler).validateDeleteSemantic(DeleteSemantic.HARD, "removeSchemaType");
 
-        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
+        assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
     }
 
-    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                         PropertyServerException,
-                                                                                                         InvalidParameterException {
+    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+
+        InstanceType type = mock(InstanceType.class);
+        when(type.getTypeDefName()).thenReturn(SOURCE_TYPE);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(guid);
+        when(entityDetail.getType()).thenReturn(type);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
         when(dataEngineCommonHandler.findEntity(USER, qualifiedName, entityTypeName)).thenReturn(optionalOfMockedEntity);
 

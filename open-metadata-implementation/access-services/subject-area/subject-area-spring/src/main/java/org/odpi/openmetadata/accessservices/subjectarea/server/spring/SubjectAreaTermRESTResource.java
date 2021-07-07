@@ -92,6 +92,8 @@ public class SubjectAreaTermRESTResource {
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -110,13 +112,15 @@ public class SubjectAreaTermRESTResource {
     @GetMapping(path = "/users/{userId}/terms")
     public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                     @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                      @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findTerm(serverName, userId, searchCriteria, exactValue, ignoreCase, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.Connection;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Endpoint;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ConnectionBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.EndpointBuilder;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Optional;
 
@@ -22,6 +24,8 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
 
@@ -43,12 +47,12 @@ public class DataEngineConnectionAndEndpointHandler {
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHelper provides utilities for manipulating the repository services objects
-     * @param serviceName service name
-     * @param serverName server name
+     * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param serviceName             service name
+     * @param serverName              server name
      * @param dataEngineCommonHandler provides common Data Engine Omas utilities
-     * @param connectionHandler provides utilities specific for manipulating Connection
-     * @param endpointHandler provides utilities specific for manipulating Endpoint
+     * @param connectionHandler       provides utilities specific for manipulating Connection
+     * @param endpointHandler         provides utilities specific for manipulating Endpoint
      */
     public DataEngineConnectionAndEndpointHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                                   String serviceName, String serverName, DataEngineCommonHandler dataEngineCommonHandler,
@@ -67,15 +71,16 @@ public class DataEngineConnectionAndEndpointHandler {
      * Constructs an Endpoint linked to a Connection, which in turn links it to provided asset
      *
      * @param assetQualifiedName asset qualified name
-     * @param assetTypeName asset type name
-     * @param networkAddress property of Endpoint
+     * @param assetTypeName      asset type name
+     * @param protocol           property of Endpoint
+     * @param networkAddress     property of Endpoint
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
-     * @param userId user id
-     * @param methodName method name
+     * @param userId             user id
+     * @param methodName         method name
      *
-     * @throws InvalidParameterException if invalid parameters
-     * @throws PropertyServerException if errors in repository
+     * @throws InvalidParameterException  if invalid parameters
+     * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
     public void upsertConnectionAndEndpoint(String assetQualifiedName, String assetTypeName, String protocol, String networkAddress,
@@ -85,7 +90,7 @@ public class DataEngineConnectionAndEndpointHandler {
         validateParameters(assetQualifiedName, assetTypeName, protocol, networkAddress, externalSourceGuid, externalSourceName,
                 userId, methodName);
         Optional<EntityDetail> optionalAsset = dataEngineCommonHandler.findEntity(userId, assetQualifiedName, assetTypeName);
-        if(!optionalAsset.isPresent()){
+        if (!optionalAsset.isPresent()) {
             return;
         }
 
@@ -98,14 +103,66 @@ public class DataEngineConnectionAndEndpointHandler {
                 endpointQualifiedName);
     }
 
+    /**
+     * Remove the connection
+     *
+     * @param userId             the name of the calling user
+     * @param connectionGUID     unique identifier of the connection to be removed
+     * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
+    public void removeConnection(String userId, String connectionGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
+                                                                                                                                 FunctionNotSupportedException,
+                                                                                                                                 InvalidParameterException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 UserNotAuthorizedException {
+        String methodName = "removeConnection";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, GUID_PROPERTY_NAME, methodName);
+
+        dataEngineCommonHandler.removeEntity(userId, connectionGUID, CONNECTION_TYPE_NAME, externalSourceName);
+    }
+
+    /**
+     * Remove the endpoint
+     *
+     * @param userId             the name of the calling user
+     * @param endpointGUID     unique identifier of the endpoint to be removed
+     * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
+    public void removeEndpoint(String userId, String endpointGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
+                                                                                                                             FunctionNotSupportedException,
+                                                                                                                             InvalidParameterException,
+                                                                                                                             PropertyServerException,
+                                                                                                                             UserNotAuthorizedException {
+        String methodName = "removeEndpoint";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, GUID_PROPERTY_NAME, methodName);
+
+        dataEngineCommonHandler.removeEntity(userId, endpointGUID, ENDPOINT_TYPE_NAME, externalSourceName);
+    }
+
     private String upsertConnection(String externalSourceGuid, String externalSourceName, String userId, String methodName,
                                     EntityDetail asset, String connectionQualifiedName)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String connectionGuid;
         Optional<EntityDetail> optionalConnection = dataEngineCommonHandler.findEntity(userId, connectionQualifiedName, CONNECTION_TYPE_NAME);
-        if(!optionalConnection.isPresent()){
+        if (!optionalConnection.isPresent()) {
             connectionGuid = createConnection(connectionQualifiedName, externalSourceGuid, externalSourceName, userId, methodName);
-        }else {
+        } else {
             connectionGuid = optionalConnection.get().getGUID();
         }
         dataEngineCommonHandler.upsertExternalRelationship(userId, connectionGuid, asset.getGUID(),
@@ -114,7 +171,7 @@ public class DataEngineConnectionAndEndpointHandler {
     }
 
     private String createConnection(String qualifiedName, String externalSourceGuid, String externalSourceName, String userId,
-                                  String methodName)
+                                    String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         ConnectionBuilder connectionBuilder = getConnectionBuilder(qualifiedName);
@@ -132,7 +189,7 @@ public class DataEngineConnectionAndEndpointHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String endpointGuid;
         Optional<EntityDetail> optionalEndpoint = dataEngineCommonHandler.findEntity(userId, endpointQualifiedName, ENDPOINT_TYPE_NAME);
-        if(optionalEndpoint.isPresent()){
+        if (optionalEndpoint.isPresent()) {
             updateEndpoint(protocol, networkAddress, endpointQualifiedName, optionalEndpoint.get().getGUID(),
                     externalSourceGuid, externalSourceName, userId, methodName);
             endpointGuid = optionalEndpoint.get().getGUID();
@@ -169,7 +226,7 @@ public class DataEngineConnectionAndEndpointHandler {
                 ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
-    private void validateParameters(String qualifiedName, String typeName,String protocol, String networkAddress,
+    private void validateParameters(String qualifiedName, String typeName, String protocol, String networkAddress,
                                     String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException {
 

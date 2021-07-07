@@ -7,8 +7,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaAuditCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -77,7 +80,52 @@ public class SubjectAreaRESTServicesInstance {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.createRelationship(restAPIName, userId, clazz, relationship);
+            if (response.results().size() >0) {
+                // if required attempt to create spine objects orientated classifications on the ends
+                // typed by should have spine attribute and spine object
+                // hasa  should have spine attribute and spine object
+                // isatypeof should have spine object and spine object
+                // isatypeofdeprecated is deprecated
+                // isa is not to do with spine objects.
+                 Relationship createdRelationship = response.results().get(0);
+                  final String relationshipName = createdRelationship.getName();
+                  SubjectAreaTermHandler termHandler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, restAPIName);
+                  String end1Guid = createdRelationship.getEnd1().getNodeGuid();
+                  String end2Guid = createdRelationship.getEnd2().getNodeGuid();
 
+                  if (relationshipName.equals(RelationshipType.HasA.name()) || relationshipName.equals(RelationshipType.TypedBy.name())) {
+                      SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
+                      SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
+                      Term end1Term = end1TermResponse.results().get(0);
+                      Term end2Term = end2TermResponse.results().get(0);
+                      if (!end1Term.isSpineObject()) {
+                          end1Term.setSpineObject(true);
+                          // ignore the response -as the repository may not set spine objects
+                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
+                      }
+                      if (!end2Term.isSpineAttribute()) {
+                          end2Term.setSpineAttribute(true);
+                          // ignore the response -as the repository may not set spine attributes
+                          termHandler.updateTerm(userId,end2Guid, end2Term, false);
+                      }
+                  } else  if (relationshipName.equals(RelationshipType.IsATypeOf.name())) {
+                      SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
+                      SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
+                      Term end1Term = end1TermResponse.results().get(0);
+                      Term end2Term = end2TermResponse.results().get(0);
+                      if (!end1Term.isSpineObject()) {
+                          end1Term.setSpineObject(true);
+                          // ignore the response -as the repository may not set spine objects
+                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
+                      }
+                      if (!end2Term.isSpineObject()) {
+                          // ignore the response -as the repository may not set spine objects
+                          end2Term.setSpineObject(true);
+                          termHandler.updateTerm(userId, end2Guid, end2Term, false);
+                      }
+                  }
+
+            }
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

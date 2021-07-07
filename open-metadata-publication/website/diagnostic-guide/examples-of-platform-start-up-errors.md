@@ -4,6 +4,8 @@
 
 # Examples of errors starting the OMAG Server Platform
 
+Note that these examples were taken using Java 8. Egeria requires Java 11 as of release 3.0 .
+
 ## Port already in use
 
 Each OMAG Server Platform makes use of a network port to listen for incoming REST API calls.
@@ -57,7 +59,7 @@ This is a file called `truststore.p12`.
 If it is missing, the following errors occur at OMAG Server Platform start up.
 
 ```
-MyBox:~/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target$ java -jar server-chassis-spring-2.10-SNAPSHOT.jar
+MyBox:~/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target$ java -jar server-chassis-spring-3.0-SNAPSHOT.jar
  Project Egeria - Open Metadata and Governance
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -91,10 +93,10 @@ org.springframework.context.ApplicationContextException: Failed to start bean 'w
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
-	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
-	at org.springframework.boot.loader.Launcher.launch(Launcher.java:107) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
-	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
-	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:467) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49) ~[server-chassis-spring-3.0-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:107) ~[server-chassis-spring-3.0-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58) ~[server-chassis-spring-3.0-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:467) ~[server-chassis-spring-3.0-SNAPSHOT.jar:na]
 Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat server
 	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:229) ~[spring-boot-2.4.4.jar!/:2.4.4]
 	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.start(WebServerStartStopLifecycle.java:43) ~[spring-boot-2.4.4.jar!/:2.4.4]

@@ -23,8 +23,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
-import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -376,9 +376,14 @@ public class AssetLineagePublisher {
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                lineageRelationship.getSourceEntity().getGuid())));
+                lineageRelationship.getSourceEntity())));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                lineageRelationship.getTargetEntity().getGuid())));
+                lineageRelationship.getTargetEntity())));
+
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
+                lineageRelationship.getSourceEntity())));
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
+                lineageRelationship.getTargetEntity())));
     }
 
     /**

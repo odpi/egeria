@@ -51,7 +51,7 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
 	BAD_CONFIG(
 			"OMAS-ANALYTICS-MODELING-005",
-			"The Information View Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+			"The Analytics Modeling Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
 			"The access service has not been passed valid configuration.",
 			"Correct the configuration and restart the service."),
 	ENTITY_NOT_FOUND_EXCEPTION(404,
@@ -169,14 +169,29 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"User {0} failed to update artifact {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue and repeat request to fix artifact."),
-	
+	FAILED_DELETE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-028", 
+			"User {0} failed to delete asset {1}. Cause: {2}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request to fix artifact."),
+    FAIL_REST_CALL(
+			"OMAS-ANALYTICS-MODELING-029", 
+			"Rest call {0} failed. Cause: {1}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request."),
+    UNAUTHORIZED_USER (
+			"OMAS-ANALYTICS-MODELING-030", 
+			"User {0} is not authorized to perform operation: {1}",
+			"The system is unable to process the request.",
+			"Review the user permissions to resolve the issue and repeat request."),
     UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
             "An unexpected {0} exception was caught by {1}; error message was {2}",
             "The system is unable to process the request and has returned an exception to the caller.",
             "Review the error message.  Also look up its full message definition which includes the system action " +
                     "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
                     "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
-                    "caller is a valid client of this server and is operating correctly."),
+                    "caller is a valid client of this server and is operating correctly."), 
+
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
 			"Server failed to execute request with unknown reason.",

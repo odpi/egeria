@@ -27,9 +27,11 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
-     * @param scope scope of the organization that this some applies to
+     * @param scope scope of the organization that this zone applies to
      * @param domainIdentifier the identifier of the governance domain where the zone is managed
      * @param additionalProperties additional properties for a governance zone
+     * @param typeGUID unique identifier of the type for the zone
+     * @param typeName unique name for the type for the zone
      * @param extendedProperties  properties for a governance zone subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -42,6 +44,8 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
                           String               scope,
                           int                  domainIdentifier,
                           Map<String, String>  additionalProperties,
+                          String               typeGUID,
+                          String               typeName,
                           Map<String, Object>  extendedProperties,
                           OMRSRepositoryHelper repositoryHelper,
                           String               serviceName,
@@ -49,8 +53,8 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.ZONE_TYPE_GUID,
-              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+              typeGUID,
+              typeName,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -76,47 +80,34 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
 
-        if (criteria != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
-                                                                      criteria,
-                                                                      methodName);
-        }
-
-        if (scope != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
-                                                                      scope,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
+                                                                  criteria,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
+                                                                  scope,
+                                                                  methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
-                                                                   domainIdentifier,
-                                                                   methodName);
+                                                               properties,
+                                                               OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               domainIdentifier,
+                                                               methodName);
 
         return properties;
     }

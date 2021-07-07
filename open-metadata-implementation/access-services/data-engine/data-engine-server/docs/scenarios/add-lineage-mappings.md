@@ -3,10 +3,10 @@
 
 # Add lineage mappings
 
-Add LineageMappings between schema types, based on the qualified names of the existing schemas.
+Add LineageMappings between any Referenceable, based on the qualified names of existing entities.
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/lineage-mappings

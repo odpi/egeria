@@ -60,8 +60,8 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     EVENT_PROCESSING_ERROR("OMAS-GOVERNANCE-ENGINE-0007",
                            OMRSAuditLogRecordSeverity.EXCEPTION,
-                           "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing event from {0} of type {1} for instance {2}",
-                           "The event could not be processed",
+                           "The Governance Engine Open Metadata Access Service (OMAS) encountered an unexpected {0} exception while processing event from {1} of type {2} for instance {3}. Error message is: {4}",
+                           "The event could not be processed due to an unexpected error",
                            "Review the exception to determine the source of the error and correct it if necessary."),
 
 
@@ -179,6 +179,14 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                     "Log message for asset {0} from governance service {1}: {2}",
                     "A governance service has logged a message about an asset.",
                     "Review the message to ensure no action is required."),
+
+    SKIPPING_INSTANCE("OMAS-GOVERNANCE-ENGINE-0021",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The Governance Engine Open Metadata Access Service (OMAS) is ignoring event from {0} of type {1} for instance {2} because it does not have access to all of the instance's information. Error message is: {3}",
+                           "The event could not be processed because additional information, such as the anchor entity, is not available to this server.  " +
+                                   "This is not necessarily an error if the server is connected to a cohort where members are also connected to other cohorts, of there is strict security in place that is restricting what this server can see.",
+                           "Review the exception to reassure yourself that this is expected behavior."),
+
     ;
 
 

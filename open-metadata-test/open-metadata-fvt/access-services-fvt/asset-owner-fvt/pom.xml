@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.10-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -126,6 +126,8 @@
                             <!--processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile-->
                             <arguments>
                                 <argument>java</argument>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <argument>${jacoco.argLine}</argument>
                                 <argument>-Dserver.port=${fvt.serverport}</argument>
                                 <argument>-Dloader.path=${fvt.distdir}/server/lib</argument>
                                 <argument>-Dspringdoc.api-docs.enabled=false</argument>

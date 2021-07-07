@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -145,6 +144,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param findRequest        {@link FindRequest}
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of Projects meeting the search Criteria
      *
      * <ul>
@@ -154,13 +155,13 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Project> findProject(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Project> findProject(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
 
         final String methodName = "findProject";
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Project> foundGlossaries = findEntities(userId, PROJECT_TYPE_NAME, findRequest, ProjectMapper.class, methodName);
+            List<Project> foundGlossaries = findNodes(userId, PROJECT_TYPE_NAME, findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
             if (foundGlossaries != null) {
                 response.addAllResults(foundGlossaries);
             } else {

@@ -100,7 +100,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
                 InstanceProperties instanceProperties = categoryEntityDetail.getProperties();
-                if (instanceProperties == null ) {
+                if (instanceProperties == null) {
                     instanceProperties = new InstanceProperties();
                 }
                 if (instanceProperties.getEffectiveFromTime() == null) {
@@ -189,6 +189,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param findRequest {@link FindRequest}
+     * @param exactValue  a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase  a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of Categories meeting the search Criteria
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -196,12 +198,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> findCategory(String userId, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Category> findCategory(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
         final String methodName = "findCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Category> foundCategories = findEntities(userId, CATEGORY_TYPE_NAME, findRequest, CategoryMapper.class, methodName);
+            List<Category> foundCategories = findNodes(userId, CATEGORY_TYPE_NAME, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
 
             if (foundCategories != null) {
                 for (Category category : foundCategories) {
@@ -441,10 +443,13 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param userId         unique identifier for requesting user, under which the request is performed
      * @param guid           guid of the category to get terms
      * @param searchCriteria String expression to match the categorized Term property values.
+     * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
+     * @param startingFrom   the starting element number for this set of results.  This is used when retrieving elements
      * @param termHandler    term handler
      * @param startingFrom   initial position in the stored list.
      * @param pageSize       maximum number of definitions to return on this call.
-     * @return A list of terms is categorized by this Category
+     * @return A list of terms categorized by this Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -452,7 +457,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, String searchCriteria, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategorizedTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         if (pageSize == null) {
@@ -461,43 +466,48 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (startingFrom == null) {
             startingFrom = 0;
         }
-        // isAll indicates there is no searchCriteria filter.
-        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
+        // this is used to track getting all the pages of all the data from the start
+        // We use this to issue calls to get all the data so we can then apply the filter.
+        Integer unfilteredStartingFrom = 0;
 
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            if (isAll) {
-                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
-                if (childTermsResponse != null && childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
-                    response.addAllResults(childTermsResponse.results());
-                }
-            } else {
-                List<Term> termsToReturn = new ArrayList<>();
-                boolean continueGettingTerms = true;
-                while (continueGettingTerms) {
-                    SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
-                    if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
-                        for (Term term : childTermsResponse.results()) {
-                            // this term to the results if it matches the search criteria and we have not already got a page of results to return
-                            if (termMatchSearchCriteria(term, searchCriteria) &&
-                                    termsToReturn.size() < pageSize) {
-                                termsToReturn.add(term);
-                            }
+            List<Term> filteredTerms = new ArrayList<>();
+            boolean continueGettingTerms = true;
+            while (continueGettingTerms) {
+                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, unfilteredStartingFrom, pageSize);
+                if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
+                   // we now have results. We need to filter those results then apply the requested startingFrom
+
+                    for (Term term : childTermsResponse.results()) {
+                        // this term to the results if it matches the search criteria and we have not already got a page of results to return
+                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) ) {
+                            filteredTerms.add(term);
                         }
                     }
-
-                    if (childTermsResponse.results().size() < pageSize || termsToReturn.size() == pageSize) {
-                        // we have a page to return or the last get returned less than a page.
-                        continueGettingTerms = false;
-                    } else {
-                        // issue another call to get another page of terms
-                        startingFrom = startingFrom + pageSize;
-                    }
                 }
-                response.addAllResults(termsToReturn);
-            }
-        }
 
+                if (childTermsResponse.results().size() < pageSize || filteredTerms.size() >= startingFrom + pageSize) {
+                    // we have a page to return or the last get returned less than a page.
+                    continueGettingTerms = false;
+                } else {
+                    // issue another call to get another page of terms
+                    unfilteredStartingFrom = unfilteredStartingFrom + pageSize;
+                }
+            }
+            // we have a list of filteredTerms , we need to slice out the page we need to return to the user based on their requested startingFrom
+
+            if (filteredTerms.size() > startingFrom) {
+                // we have something to return
+                int endingAt = startingFrom + pageSize;
+                if (filteredTerms.size() < startingFrom + pageSize) {
+                    // if there is not a page worth - then calculate the ending index of the list.
+                    endingAt = filteredTerms.size();
+                }
+                response.addAllResults(filteredTerms.subList(startingFrom, endingAt));
+            }
+
+        }
 
         return response;
     }
@@ -508,6 +518,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param userId         unique identifier for requesting user, under which the request is performed
      * @param guid           guid of the parent category
      * @param searchCriteria String expression matching child Category property values.
+     * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom   the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize       the maximum number of elements that can be returned on this request.
      * @return A list of child categories filtered by the search criteria if one is supplied.
@@ -518,7 +530,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         if (pageSize == null) {
@@ -527,57 +539,35 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (startingFrom == null) {
             startingFrom = 0;
         }
-        // isAll indicates there is no searchCriteria filter.
-        boolean isAll = searchCriteria == null || searchCriteria.equals("") || searchCriteria.equals(".*");
 
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
             String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
 
-            if (isAll) {
+            List<Category> categoriesToReturn = new ArrayList<>();
+            // we have more to get, bump up the startingFrom and get the next page
+            boolean continueGettingCategories = true;
+            while (continueGettingCategories) {
                 SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-                boolean foundParent = false;
-                for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                    // only add related categories that are not the parent Category.
-                    if (relatedCategory.getSystemAttributes().getGUID().equals(parentCategoryGuid)) {
-                        foundParent = true;
-                    } else
-                        response.addResult(relatedCategory);
-                }
-                // if we got back a page of categories and we found a parent which we removed from the results then we need to get another category, which can't be a parent as
-                // a category can only have one parent.
-                if (foundParent && relatedCategoriesResponse.results().size() == maxPageSize) {
-                    SubjectAreaOMASAPIResponse<Category> extraCategoryResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, maxPageSize, 1);
-                    if (extraCategoryResponse.getRelatedHTTPCode() == 200 && extraCategoryResponse.results() != null && extraCategoryResponse.results().size() == 1) {
-                        response.addResult(extraCategoryResponse.results().get(0));
-                    }
-                }
-            } else {
-                List<Category> categoriesToReturn = new ArrayList<>();
-                // we have more to get, bump up the startingFrom and get the next page
-                boolean continueGettingCategories = true;
-                while (continueGettingCategories) {
-                    SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-                    if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
-                        for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                            // this category to the results if it is not the parent category and it matches the search criteria
-                            if (categoryMatchSearchCriteria(relatedCategory, searchCriteria) &&
-                                    !parentCategoryGuid.equals(relatedCategory.getSystemAttributes().getGUID()) &&
-                                    categoriesToReturn.size() < pageSize) {
-                                categoriesToReturn.add(relatedCategory);
-                            }
+                if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
+                    for (Category relatedCategory : relatedCategoriesResponse.results()) {
+                        // this category to the results if it is not the parent category and it matches the search criteria
+                        if (categoryMatchSearchCriteria(relatedCategory, searchCriteria, exactValue, ignoreCase) &&
+                                !parentCategoryGuid.equals(relatedCategory.getSystemAttributes().getGUID()) &&
+                                categoriesToReturn.size() < pageSize) {
+                            categoriesToReturn.add(relatedCategory);
                         }
                     }
-                    if (relatedCategoriesResponse.results().size() < pageSize || categoriesToReturn.size() == pageSize) {
-                        // we have a page to return or the last get returned less than a page.
-                        continueGettingCategories = false;
-                    } else {
-                        // issue another call to get another page of terms
-                        startingFrom = startingFrom + pageSize;
-                    }
                 }
-                response.addAllResults(categoriesToReturn);
+                if (relatedCategoriesResponse.results().size() < pageSize || categoriesToReturn.size() == pageSize) {
+                    // we have a page to return or the last get returned less than a page.
+                    continueGettingCategories = false;
+                } else {
+                    // issue another call to get another page of terms
+                    startingFrom = startingFrom + pageSize;
+                }
             }
+            response.addAllResults(categoriesToReturn);
         }
 
         return response;

@@ -33,8 +33,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**
@@ -136,12 +138,50 @@ public abstract class SubjectAreaHandler {
 
         return null;
     }
+    protected String sanitiseFindRequest(String searchCriteria, boolean exactValue, boolean ignoreCase) {
+        OMRSRepositoryHelper omrsRepositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
 
-    protected <T extends Node>List<T> findEntities(String userId,
-                                                   String typeEntityName,
-                                                   FindRequest findRequest,
-                                                   Class<? extends INodeMapper<T>> mapperClass,
-                                                   String methodName) throws SubjectAreaCheckedException,
+        if (searchCriteria != null && searchCriteria.trim() == "") {
+            // ignore the flags for an empty search criteria string - assume we want everything
+            searchCriteria = ".*";
+        } else {
+            // lose any leading and trailing blanks
+            searchCriteria = searchCriteria.trim();
+            if (exactValue) {
+                searchCriteria = omrsRepositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
+            } else {
+                searchCriteria = omrsRepositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
+            }
+        }
+
+        return searchCriteria;
+    }
+    /**
+     * Take a FindRequest and sanitise it.
+     *
+     * The FindRequest from the user could contain a regex expression which would cause the regex engine to loop.
+     * to avoid this, we turn what the user has given us into a literal and then use the exactValue and ignoreCase flags
+     * to add to the regular expression in a controlled way.
+     *
+     * @param findRequest supplied find request - that contains the search criteria
+     * @param exactValue flag indicating that exact value mathcing should be done
+     * @param ignoreCase flag indicating that case should be ignored
+     * @return sanitised find request
+     */
+    protected FindRequest sanitiseFindRequest(FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
+        FindRequest sanitisedFindRequest = findRequest;
+        String searchCriteria = sanitiseFindRequest(findRequest.getSearchCriteria(), exactValue, ignoreCase);
+        sanitisedFindRequest.setSearchCriteria(searchCriteria);
+        return sanitisedFindRequest;
+    }
+
+    protected <T extends Node>List<T> findNodes(String userId,
+                                                String typeEntityName,
+                                                FindRequest findRequest,
+                                                boolean exactValue,
+                                                boolean ignoreCase,
+                                                Class<? extends INodeMapper<T>> mapperClass,
+                                                String methodName) throws SubjectAreaCheckedException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         List<EntityDetail> entityDetails = null;
@@ -154,7 +194,8 @@ public abstract class SubjectAreaHandler {
         if (findRequest.getSearchCriteria() == null) {
             entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
         } else {
-            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, findRequest);
+            FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
+            entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, sanitisedFindRequest);
         }
         if (entityDetails != null) {
             foundEntities = convertOmrsToOmas(entityDetails, mapperClass);
@@ -418,20 +459,21 @@ public abstract class SubjectAreaHandler {
      * @param searchCriteria criteria to use for match
      * @return boolean indicating whether the category matches the search criteria
      */
-    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria) {
+    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria, boolean exactValue, boolean ignoreCase) {
         boolean isMatch = false;
         if (searchCriteria == null) return true;
         final String name = category.getName();
         final String description = category.getDescription();
         final String qualifiedName = category.getQualifiedName();
+        final String sanitizedSearchCriteria = sanitiseFindRequest(searchCriteria, exactValue, ignoreCase);
 
-        if (name != null && name.matches(searchCriteria)) {
+        if (name != null && name.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (description != null && description.matches(searchCriteria)) {
+        if (description != null && description.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+        if (qualifiedName != null && qualifiedName.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
         return isMatch;
@@ -441,9 +483,12 @@ public abstract class SubjectAreaHandler {
      *
      * @param term           term to use for match
      * @param searchCriteria criteria to use for match
+     * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
+
      * @return boolean indicating whether the term matches the search criteria
      */
-    protected boolean termMatchSearchCriteria(Term term, String searchCriteria) {
+    protected boolean termMatchSearchCriteria(Term term, String searchCriteria, boolean exactValue, boolean ignoreCase) {
         if (searchCriteria == null) return true;
         boolean isMatch = false;
         final String name = term.getName();
@@ -452,23 +497,27 @@ public abstract class SubjectAreaHandler {
         final String abbreviation = term.getAbbreviation();
         final String examples = term.getExamples();
         final String usage = term.getUsage();
+        FindRequest findRequest = new FindRequest();
+        findRequest.setSearchCriteria(searchCriteria);
+        FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
+        String sanitizedSearchCriteria = sanitisedFindRequest.getSearchCriteria();
 
-        if (name != null && name.matches(searchCriteria)) {
+        if (name != null && name.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (description != null && description.matches(searchCriteria)) {
+        if (description != null && description.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+        if (qualifiedName != null && qualifiedName.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (abbreviation != null && abbreviation.matches(searchCriteria)) {
+        if (abbreviation != null && abbreviation.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (examples != null && examples.matches(searchCriteria)) {
+        if (examples != null && examples.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
-        if (usage != null && usage.matches(searchCriteria)) {
+        if (usage != null && usage.matches(sanitizedSearchCriteria)) {
             isMatch = true;
         }
         return isMatch;

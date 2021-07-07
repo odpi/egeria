@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
 import java.util.ArrayList;
@@ -58,12 +57,15 @@ public class CohortConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                           cohortName                     = null;
-    private Connection                       cohortRegistryConnection       = null;
-    private Connection                       cohortOMRSTopicConnection      = null;
-    private OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion = null;
-    private OpenMetadataExchangeRule         eventsToProcessRule            = null;
-    private List<TypeDefSummary>             selectedTypesToProcess         = null;
+    private String                           cohortName                            = null;
+    private Connection                       cohortRegistryConnection              = null;
+    private Connection                       cohortOMRSTopicConnection             = null;
+    private Connection                       cohortOMRSRegistrationTopicConnection = null;
+    private Connection                       cohortOMRSTypesTopicConnection        = null;
+    private Connection                       cohortOMRSInstancesTopicConnection    = null;
+    private OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion        = null;
+    private OpenMetadataExchangeRule         eventsToProcessRule                   = null;
+    private List<TypeDefSummary>             selectedTypesToProcess                = null;
 
 
 
@@ -89,6 +91,9 @@ public class CohortConfig extends AdminServicesConfigHeader
             cohortName = template.getCohortName();
             cohortRegistryConnection = template.getCohortRegistryConnection();
             cohortOMRSTopicConnection = template.getCohortOMRSTopicConnection();
+            cohortOMRSRegistrationTopicConnection = template.getCohortOMRSRegistrationTopicConnection();
+            cohortOMRSTypesTopicConnection = template.getCohortOMRSTypesTopicConnection();
+            cohortOMRSInstancesTopicConnection = template.getCohortOMRSInstancesTopicConnection();
             cohortOMRSTopicProtocolVersion = template.getCohortOMRSTopicProtocolVersion();
             eventsToProcessRule = template.getEventsToProcessRule();
             selectedTypesToProcess = template.getSelectedTypesToProcess();
@@ -141,7 +146,8 @@ public class CohortConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the connection to the cohort's OMRS Topic.
+     * Return the connection to the cohort's single OMRS Topic.  This topic is used for exchanging metadata with back-level servers.
+     * It should be removed if all members of the cohort are able to use the three split cohort topics since it is much more efficient.
      *
      * @return Connection object
      */
@@ -152,13 +158,80 @@ public class CohortConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the connection to the cohort's OMRS Topic.
+     * Set up the connection to the cohort's single OMRS Topic.  This topic is used for exchanging metadata with back-level servers.
+     * It should be removed if all members of the cohort are able to use the three split cohort topics since it is much more efficient.
      *
      * @param cohortOMRSTopicConnection Connection object
      */
     public void setCohortOMRSTopicConnection(Connection cohortOMRSTopicConnection)
     {
         this.cohortOMRSTopicConnection = cohortOMRSTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the topic that is dedicated to the registration requests that manage the membership of the cohort.
+     *
+     * @return Connection object
+     */
+    public Connection getCohortOMRSRegistrationTopicConnection()
+    {
+        return cohortOMRSRegistrationTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the topic that is dedicated to the registration requests that manage the membership of the cohort.
+     *
+     * @param cohortOMRSRegistrationTopicConnection Connection object
+     */
+    public void setCohortOMRSRegistrationTopicConnection(Connection cohortOMRSRegistrationTopicConnection)
+    {
+        this.cohortOMRSRegistrationTopicConnection = cohortOMRSRegistrationTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the topic that is dedicated to the type validation requests that manage the consistency of types within the cohort.
+     *
+     * @return Connection object
+     */
+    public Connection getCohortOMRSTypesTopicConnection()
+    {
+        return cohortOMRSTypesTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the topic that is dedicated to the type validation requests that manage the consistency of types within the cohort.
+     *
+     * @param cohortOMRSTypesTopicConnection Connection object
+     */
+    public void setCohortOMRSTypesTopicConnection(Connection cohortOMRSTypesTopicConnection)
+    {
+        this.cohortOMRSTypesTopicConnection = cohortOMRSTypesTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the topic that is dedicated to exchanging details of the metadata instances stored by the members of the cohort.
+     *
+     * @return Connection object
+     */
+    public Connection getCohortOMRSInstancesTopicConnection()
+    {
+        return cohortOMRSInstancesTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the topic that is dedicated to exchanging details of the metadata instances stored by the members of the cohort.
+     *
+     * @param cohortOMRSInstancesTopicConnection Connection object
+     */
+    public void setCohortOMRSInstancesTopicConnection(Connection cohortOMRSInstancesTopicConnection)
+    {
+        this.cohortOMRSInstancesTopicConnection = cohortOMRSInstancesTopicConnection;
     }
 
 
@@ -260,13 +333,16 @@ public class CohortConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "CohortConfig{" +
-                "cohortName='" + cohortName + '\'' +
-                ", cohortRegistryConnection=" + cohortRegistryConnection +
-                ", cohortOMRSTopicConnection=" + cohortOMRSTopicConnection +
-                ", cohortOMRSTopicProtocolVersion=" + cohortOMRSTopicProtocolVersion +
-                ", eventsToProcessRule=" + eventsToProcessRule +
-                ", selectedTypesToProcess=" + selectedTypesToProcess +
-                '}';
+                       "cohortName='" + cohortName + '\'' +
+                       ", cohortRegistryConnection=" + cohortRegistryConnection +
+                       ", cohortOMRSTopicConnection=" + cohortOMRSTopicConnection +
+                       ", cohortOMRSRegistrationTopicConnection=" + cohortOMRSRegistrationTopicConnection +
+                       ", cohortOMRSTypesTopicConnection=" + cohortOMRSTypesTopicConnection +
+                       ", cohortOMRSInstancesTopicConnection=" + cohortOMRSInstancesTopicConnection +
+                       ", cohortOMRSTopicProtocolVersion=" + cohortOMRSTopicProtocolVersion +
+                       ", eventsToProcessRule=" + eventsToProcessRule +
+                       ", selectedTypesToProcess=" + selectedTypesToProcess +
+                       '}';
     }
 
 
@@ -288,14 +364,16 @@ public class CohortConfig extends AdminServicesConfigHeader
             return false;
         }
         CohortConfig that = (CohortConfig) objectToCompare;
-        return Objects.equals(getCohortName(), that.getCohortName()) &&
-                Objects.equals(getCohortRegistryConnection(), that.getCohortRegistryConnection()) &&
-                Objects.equals(getCohortOMRSTopicConnection(), that.getCohortOMRSTopicConnection()) &&
-                getCohortOMRSTopicProtocolVersion() == that.getCohortOMRSTopicProtocolVersion() &&
-                getEventsToProcessRule() == that.getEventsToProcessRule() &&
-                Objects.equals(getSelectedTypesToProcess(), that.getSelectedTypesToProcess());
+        return Objects.equals(cohortName, that.cohortName) &&
+                       Objects.equals(cohortRegistryConnection, that.cohortRegistryConnection) &&
+                       Objects.equals(cohortOMRSTopicConnection, that.cohortOMRSTopicConnection) &&
+                       Objects.equals(cohortOMRSRegistrationTopicConnection, that.cohortOMRSRegistrationTopicConnection) &&
+                       Objects.equals(cohortOMRSTypesTopicConnection, that.cohortOMRSTypesTopicConnection) &&
+                       Objects.equals(cohortOMRSInstancesTopicConnection, that.cohortOMRSInstancesTopicConnection) &&
+                       cohortOMRSTopicProtocolVersion == that.cohortOMRSTopicProtocolVersion &&
+                       eventsToProcessRule == that.eventsToProcessRule &&
+                       Objects.equals(selectedTypesToProcess, that.selectedTypesToProcess);
     }
-
 
 
     /**
@@ -306,7 +384,8 @@ public class CohortConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCohortName(), getCohortRegistryConnection(), getCohortOMRSTopicConnection(),
-                            getCohortOMRSTopicProtocolVersion(), getEventsToProcessRule(), getSelectedTypesToProcess());
+        return Objects.hash(cohortName, cohortRegistryConnection, cohortOMRSTopicConnection, cohortOMRSRegistrationTopicConnection,
+                            cohortOMRSTypesTopicConnection, cohortOMRSInstancesTopicConnection, cohortOMRSTopicProtocolVersion, eventsToProcessRule,
+                            selectedTypesToProcess);
     }
 }

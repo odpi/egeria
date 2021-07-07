@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,8 +30,8 @@ public class IsATypeOf extends Relationship {
      * Set up end 1.
      */
      private static final String END_1_NODE_TYPE = "Term";
-     private static final String END_1_ATTRIBUTE_NAME = "supertypes";
-     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Supertypes for this object.";
+     private static final String END_1_ATTRIBUTE_NAME = "inherited";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Inherited (Subtypes) for this object.";
      private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
      private static final RelationshipEnd RELATIONSHIP_END_1 = new RelationshipEnd(END_1_NODE_TYPE,
                                                                            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
@@ -39,8 +40,9 @@ public class IsATypeOf extends Relationship {
      * Set up end 2.
      */
      private static final String END_2_NODE_TYPE = "Term";
-     private static final String END_2_ATTRIBUTE_NAME = "subtypes";
-     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Subtypes for this object.";
+     private static final String END_2_ATTRIBUTE_NAME = "inheritedFrom";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Inherited from (Supertypes) for this object.";
+
      private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
      private static final RelationshipEnd RELATIONSHIP_END_2 = new RelationshipEnd(END_2_NODE_TYPE,
                                                                            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
@@ -50,7 +52,7 @@ public class IsATypeOf extends Relationship {
     private String source;
 
     public IsATypeOf() {
-        super("IsaTypeOf", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.IsATypeOf.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**
@@ -114,9 +116,9 @@ public class IsATypeOf extends Relationship {
         if (sb == null) {
             sb = new StringBuilder();
         }
-        sb.append(" IsATypeOf=");
+        sb.append(" isATypeOf=");
         sb.append(super.toString(sb));
-        sb.append(" IsATypeOf Attributes{");
+        sb.append(" isATypeOf Attributes{");
         sb.append("description=").append(this.description).append(",");
         sb.append("steward=").append(this.steward).append(",");
         sb.append("source=").append(this.source).append(",");

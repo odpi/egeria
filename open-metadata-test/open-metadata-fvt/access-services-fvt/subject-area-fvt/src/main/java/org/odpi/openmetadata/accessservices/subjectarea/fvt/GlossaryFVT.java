@@ -46,7 +46,7 @@ public class GlossaryFVT {
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
-        existingGlossaryCount = findGlossaries(".*").size();
+        existingGlossaryCount = findGlossaries("").size();
         System.out.println("existingGlossaryCount " + existingGlossaryCount);
     }
 
@@ -78,7 +78,7 @@ public class GlossaryFVT {
 
     public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
-        return fvt.findGlossaries(".*").size();
+        return fvt.findGlossaries("").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -126,7 +126,7 @@ public class GlossaryFVT {
         FVTUtils.validateNode(glossary);
 
         System.out.println("create glossaries to find");
-        Glossary glossaryForFind1 = getGlossaryForInput("abc");
+        Glossary glossaryForFind1 = getGlossaryForInput("qrs");
         glossaryForFind1.setQualifiedName("yyy");
         glossaryForFind1 = issueCreateGlossary(glossaryForFind1);
         FVTUtils.validateNode(glossaryForFind1);
@@ -172,7 +172,7 @@ public class GlossaryFVT {
             iter.remove();
             deleteGlossary(guid);
         }
-        List<Glossary> glossaries = findGlossaries(".*");
+        List<Glossary> glossaries = findGlossaries("");
         if (glossaries.size() != existingGlossaryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
         }

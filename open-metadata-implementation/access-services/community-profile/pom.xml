@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.10-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -34,6 +34,7 @@
         <module>community-profile-client</module>
         <module>community-profile-server</module>
         <module>community-profile-spring</module>
+        <module>community-profile-topic-connectors</module>
     </modules>
 
 

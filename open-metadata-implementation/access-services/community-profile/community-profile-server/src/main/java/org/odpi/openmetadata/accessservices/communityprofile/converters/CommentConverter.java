@@ -2,128 +2,216 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.CommentMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Comment;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommentElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentType;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+
 
 /**
- * CommentConverter generates an Comment bean from an Comment entity and its attachment to a Referenceable.
+ * CommentConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from CommentProperties.
  */
-public class CommentConverter extends CommonHeaderConverter
+public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(CommentConverter.class);
-
-    private List<Relationship>  acceptedAnswersRelationships;
     /**
-     * Constructor captures the initial content with relationship
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param attachedCommentRelationship properties to convert
-     * @param acceptedAnswersRelationships properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public CommentConverter(EntityDetail         entity,
-                            Relationship         attachedCommentRelationship,
-                            List<Relationship>   acceptedAnswersRelationships,
-                            OMRSRepositoryHelper repositoryHelper,
-                            String               serviceName)
+    public CommentConverter(OMRSRepositoryHelper repositoryHelper,
+                            String               serviceName,
+                            String               serverName)
     {
-        super(entity, attachedCommentRelationship, repositoryHelper, serviceName);
-        this.acceptedAnswersRelationships = acceptedAnswersRelationships;
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public Comment getBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        Comment  bean = new Comment();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof CommentElement)
             {
+                CommentElement    bean              = (CommentElement) returnBean;
+                CommentProperties commentProperties = new CommentProperties();
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
                 /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * user identity properties.
+                 * The initial set of values come from the entity.
                  */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, CommentMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setText(repositoryHelper.removeStringProperty(serviceName, CommentMapper.TEXT_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, CommentMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-            }
-        }
-
-        if (relationship != null)
-        {
-            bean.setUserId(relationship.getCreatedBy());
-        }
-
-        if (acceptedAnswersRelationships != null)
-        {
-            List<String>  answeredBy = new ArrayList<>();
-            List<String>  answers = new ArrayList<>();
-            String        myGUID = entity.getGUID();
-
-            if (myGUID != null)
-            {
-                for (Relationship relationship : acceptedAnswersRelationships)
+                if (entity != null)
                 {
-                    if (relationship != null)
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+                    commentProperties.setUser(entity.getCreatedBy());
+
+
+                    commentProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    commentProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    commentProperties.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
+                    commentProperties.setCommentText(this.removeCommentText(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    commentProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    commentProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    commentProperties.setIsPublic(this.getIsPublic(instanceProperties));
+                }
+
+                bean.setProperties(commentProperties);
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, null, methodName);
+    }
+
+
+    /**
+     * Retrieve and delete the CommentType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return CommentType  enum value
+     */
+    private CommentType removeCommentTypeFromProperties(InstanceProperties   properties)
+    {
+        CommentType commentType = this.getCommentTypeFromProperties(properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME_DEP);
+            }
+
+            properties.setInstanceProperties(instancePropertiesMap);
+        }
+
+        return commentType;
+    }
+
+
+    /**
+     * Retrieve the CommentType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return CommentType  enum value
+     */
+    private CommentType getCommentTypeFromProperties(InstanceProperties   properties)
+    {
+        CommentType commentType = CommentType.STANDARD_COMMENT;
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+
+                if (instancePropertyValue instanceof EnumPropertyValue)
+                {
+                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+                    switch (enumPropertyValue.getOrdinal())
                     {
-                        InstanceType instanceType = relationship.getType();
+                        case 0:
+                            commentType = CommentType.STANDARD_COMMENT;
+                            break;
 
-                        if (instanceType != null)
-                        {
-                            String answeredQuestionGUID = repositoryHelper.getEnd1EntityGUID(relationship);
-                            String acceptedAnswerGUID   = repositoryHelper.getEnd2EntityGUID(relationship);
+                        case 1:
+                            commentType = CommentType.QUESTION;
+                            break;
 
-                            if (myGUID.equals(answeredQuestionGUID))
-                            {
-                                answeredBy.add(acceptedAnswerGUID);
-                            }
-                            else if (myGUID.equals(acceptedAnswerGUID))
-                            {
-                                answers.add(answeredQuestionGUID);
-                            }
-                        }
+                        case 2:
+                            commentType = CommentType.ANSWER;
+                            break;
+
+                        case 3:
+                            commentType = CommentType.SUGGESTION;
+                            break;
+
+                        case 4:
+                            commentType = CommentType.USAGE_EXPERIENCE;
+                            break;
+
+                        case 99:
+                            commentType = CommentType.OTHER;
+                            break;
                     }
                 }
             }
-
-            if (! answeredBy.isEmpty())
-            {
-                bean.setAnsweredBy(answeredBy);
-            }
-
-            if (! answers.isEmpty())
-            {
-                bean.setAnswers(answers);
-            }
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return commentType;
     }
 }

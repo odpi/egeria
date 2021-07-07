@@ -109,7 +109,7 @@ public class InvalidParameterTest
 
         try
         {
-            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
             MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             testCreateFileSystem(userId, client);
@@ -557,7 +557,7 @@ public class InvalidParameterTest
 
         try
         {
-            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
             DatabaseManagerClient client = new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             testCreateDatabase(userId, client);
@@ -765,7 +765,7 @@ public class InvalidParameterTest
 
         try
         {
-            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+            DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
             FilesAndFoldersClient client     = new FilesAndFoldersClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             testCreateNestedFolders(userId, client);
@@ -973,7 +973,7 @@ public class InvalidParameterTest
 
         try
         {
-            DataManagerRESTClient  restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+            DataManagerRESTClient  restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
             DataManagerEventClient client     = new DataManagerEventClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog, "");
 
             testRegisterListener(userId, client);

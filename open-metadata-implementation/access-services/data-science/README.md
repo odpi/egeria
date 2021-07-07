@@ -9,6 +9,14 @@ and machine learning models.  It provides the ability to define the purpose
 and requirements for a model, along with lineage and audit information relating
 to the development and validation process associated with the model.
 
+It also supports the packaging of the model into software components for consumption
+by the [Software Developer OMAS](../software-developer), [Digital Architecture OMAS](../digital-architecture)
+and [DevOps OMAS](../dev-ops) since the models ultimately provide the implementation of software
+components that form part of the implementation of a [digital service](../digital-service).
+
+
+## Design
+
 The module structure for the Data Science OMAS is as follows:
 
 * [data-science-client](data-science-client) supports the client library.

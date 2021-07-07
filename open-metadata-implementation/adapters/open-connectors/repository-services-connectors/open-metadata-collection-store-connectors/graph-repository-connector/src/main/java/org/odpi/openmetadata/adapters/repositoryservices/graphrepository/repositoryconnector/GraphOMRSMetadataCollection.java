@@ -321,7 +321,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
-            log.error("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
+            log.warn("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
             entity = null;
         }
 
@@ -2781,10 +2781,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     if (relationship != null) {
                         InstanceType type = relationship.getType();
                         if (type != null) {
-                            this.deleteRelationship(userId,
-                                    type.getTypeDefGUID(),
-                                    type.getTypeDefName(),
-                                    relationship.getGUID());
+                            if (metadataCollectionId.equals(relationship.getMetadataCollectionId())) {
+                                this.deleteRelationship(userId,
+                                        type.getTypeDefGUID(),
+                                        type.getTypeDefName(),
+                                        relationship.getGUID());
+                            } else {
+                                graphStore.removeRelationshipFromStore(relationship.getGUID());
+                            }
                         }
                     }
                 }

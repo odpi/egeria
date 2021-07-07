@@ -264,13 +264,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             typeName = processProperties.getTypeName();
         }
 
-        int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
-
-        if (processProperties.getOwnerCategory() != null)
-        {
-            ownerCategory = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
         String processGUID = processHandler.createProcess(userId,
                                                           this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                           this.getExternalSourceName(correlationProperties, assetManagerIsHome),
@@ -279,12 +272,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getTechnicalDescription(),
                                                           processProperties.getFormula(),
                                                           processProperties.getImplementationLanguage(),
-                                                          processProperties.getZoneMembership(),
-                                                          processProperties.getOwner(),
-                                                          ownerCategory,
-                                                          processProperties.getOriginOrganizationGUID(),
-                                                          processProperties.getOriginBusinessCapabilityGUID(),
-                                                          processProperties.getOtherOriginValues(),
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,
                                                           processProperties.getExtendedProperties(),
@@ -428,13 +415,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             typeName = processProperties.getTypeName();
         }
 
-        int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
-
-        if (processProperties.getOwnerCategory() != null)
-        {
-            ownerCategory = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
         processHandler.updateProcess(userId,
                                      externalSourceGUID,
                                      externalSourceName,
@@ -446,12 +426,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                      processProperties.getTechnicalDescription(),
                                      processProperties.getFormula(),
                                      processProperties.getImplementationLanguage(),
-                                     processProperties.getZoneMembership(),
-                                     processProperties.getOwner(),
-                                     ownerCategory,
-                                     processProperties.getOriginOrganizationGUID(),
-                                     processProperties.getOriginBusinessCapabilityGUID(),
-                                     processProperties.getOtherOriginValues(),
                                      processProperties.getAdditionalProperties(),
                                      typeName,
                                      processProperties.getExtendedProperties(),
@@ -1783,7 +1757,14 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         correlationProperties,
                                         methodName);
 
-        processHandler.setBusinessSignificant(userId, elementGUID, elementGUIDParameterName, methodName);
+        processHandler.setBusinessSignificant(userId,
+                                              elementGUID,
+                                              elementGUIDParameterName,
+                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                              null,
+                                              null,
+                                              null,
+                                              methodName);
     }
 
 
@@ -1818,7 +1799,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         correlationProperties,
                                         methodName);
 
-        processHandler.clearBusinessSignificant(userId, elementGUID, elementGUIDParameterName, methodName);
+        processHandler.clearBusinessSignificant(userId,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                methodName);
     }
 
 

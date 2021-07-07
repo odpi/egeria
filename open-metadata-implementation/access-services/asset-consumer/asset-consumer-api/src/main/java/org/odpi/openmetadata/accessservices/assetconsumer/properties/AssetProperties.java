@@ -27,8 +27,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from attribute owner within Asset - model 0010)</li>
- *     <li>ownerType - type of the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerType - type of the the person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
@@ -55,6 +59,8 @@ public class AssetProperties extends ReferenceableProperties
     private String              description                  = null;
     private String              owner                        = null;
     private OwnerType           ownerType                    = null;
+    private String              ownerTypeName                = null;
+    private String              ownerPropertyName            = null;
     private List<String>        zoneMembership               = null;
     private String              originOrganizationGUID       = null;
     private String              originBusinessCapabilityGUID = null;
@@ -83,6 +89,8 @@ public class AssetProperties extends ReferenceableProperties
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
+            ownerTypeName                = template.getOwnerTypeName();
+            ownerPropertyName            = template.getOwnerPropertyName();
             ownerType                    = template.getOwnerType();
             zoneMembership               = template.getZoneMembership();
             originOrganizationGUID       = template.getOriginOrganizationGUID();
@@ -161,10 +169,55 @@ public class AssetProperties extends ReferenceableProperties
 
 
     /**
+     * Returns the name of the type used to identify of the owner for this asset.
+     *
+     * @return owner String
+     */
+    public String getOwnerTypeName()
+    {
+        return ownerTypeName;
+    }
+
+
+    /**
+     * Set up the name of the type used to identify the owner for this asset.
+     *
+     * @param ownerTypeName String name
+     */
+    public void setOwnerTypeName(String ownerTypeName)
+    {
+        this.ownerTypeName = ownerTypeName;
+    }
+
+
+    /**
+     * Returns the property name used to identify the owner for this asset.
+     *
+     * @return owner String
+     */
+    public String getOwnerPropertyName()
+    {
+        return ownerPropertyName;
+    }
+
+
+    /**
+     * Set up the property name used to identify the owner for this asset.
+     *
+     * @param ownerPropertyName String name
+     */
+    public void setOwnerPropertyName(String ownerPropertyName)
+    {
+        this.ownerPropertyName = ownerPropertyName;
+    }
+
+
+    /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerCategory enum
+     * @return OwnerType enum
      */
+    @Deprecated
     public OwnerType getOwnerType()
     {
         return ownerType;
@@ -174,8 +227,9 @@ public class AssetProperties extends ReferenceableProperties
     /**
      * Set up the owner type for this asset.
      *
-     * @param ownerType OwnerCategory enum
+     * @param ownerType OwnerType enum
      */
+    @Deprecated()
     public void setOwnerType(OwnerType ownerType)
     {
         this.ownerType = ownerType;
@@ -301,19 +355,21 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerCategory=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                ", otherOriginValues=" + otherOriginValues +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", owner='" + owner + '\'' +
+                       ", ownerTypeName=" + ownerTypeName +
+                       ", ownerPropertyName=" + ownerPropertyName+
+                       ", ownerType=" + ownerType +
+                       ", zoneMembership=" + zoneMembership +
+                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
+                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
+                       ", otherOriginValues=" + otherOriginValues +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -340,13 +396,15 @@ public class AssetProperties extends ReferenceableProperties
         }
         AssetProperties that = (AssetProperties) objectToCompare;
         return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(owner, that.owner) &&
-                ownerType == that.ownerType &&
-                Objects.equals(zoneMembership, that.zoneMembership) &&
-                Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                Objects.equals(otherOriginValues, that.otherOriginValues);
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(owner, that.owner) &&
+                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
+                       Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
+                       ownerType == that.ownerType &&
+                       Objects.equals(zoneMembership, that.zoneMembership) &&
+                       Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
+                       Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
+                       Objects.equals(otherOriginValues, that.otherOriginValues);
     }
 
 
@@ -358,7 +416,8 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, originOrganizationGUID,
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerTypeName, ownerPropertyName, ownerType,
+                            zoneMembership, originOrganizationGUID,
                             originBusinessCapabilityGUID, otherOriginValues);
     }
 }

@@ -27,14 +27,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ContactMethodType implements Serializable
 {
-    EMAIL     (0,  "Email",    "Send email"),
-    PHONE     (1,  "Phone",    "Call by phone."),
-    CHAT      (2,  "Chat",     "Send chat message."),
-    PROFILE   (3,  "Profile",  "Send comment to personal profile."),
-    ACCOUNT   (4,  "Account",  "Send comment to a social media account."),
-    OTHER     (99, "Other",    "Another mechanism.");
+    EMAIL     (0, 0,  "Email",    "Send email"),
+    PHONE     (1, 1,  "Phone",    "Call by phone."),
+    CHAT      (2, 2,  "Chat",     "Send chat message."),
+    PROFILE   (3, 3,  "Profile",  "Send comment to personal profile."),
+    ACCOUNT   (4, 4,  "Account",  "Send comment to a social media account."),
+    OTHER     (99,99, "Other",    "Another mechanism.");
 
     private static final long serialVersionUID = 1L;
+
+    public static final String ENUM_TYPE_GUID  = "30e7d8cd-df01-46e8-9247-a24c5650910d";
+    public static final String ENUM_TYPE_NAME  = "ContactMethodType";
+
+    private int    openTypeOrdinal;
 
     private int            ordinal;
     private String         name;
@@ -42,18 +47,50 @@ public enum ContactMethodType implements Serializable
 
 
     /**
-     * Default constructor for the enumeration.
+     * Constructor to set up the instance of this enum.
      *
-     * @param ordinal numerical representation of the enumeration
-     * @param name default string name of the enumeration
-     * @param description default string description of the enumeration
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
+     * @param description default description
      */
-    ContactMethodType(int  ordinal, String name, String description)
+    ContactMethodType(int    ordinal,
+                      int    openTypeOrdinal,
+                      String name,
+                      String description)
     {
-        this.ordinal = ordinal;
-        this.name = name;
-        this.description = description;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**

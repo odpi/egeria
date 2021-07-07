@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = DatabaseSchemaProperties.class, name = "DatabaseSchemaProperties"),
+                @JsonSubTypes.Type(value = TopicProperties.class, name = "TopicProperties"),
         })
 public class DataSetProperties extends AssetProperties
 {
@@ -56,10 +57,6 @@ public class DataSetProperties extends AssetProperties
         return "DataSetProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", typeName='" + getTypeName() + '\'' +

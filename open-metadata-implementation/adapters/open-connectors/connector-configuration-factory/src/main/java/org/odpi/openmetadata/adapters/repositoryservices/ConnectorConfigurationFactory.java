@@ -29,8 +29,11 @@ public class ConnectorConfigurationFactory
     /*
      * Default property fillers
      */
-    private static final String defaultTopicRootName     = "openmetadata.repositoryservices.";
-    private static final String defaultOMRSTopicLeafName = ".OMRSTopic";
+    private static final String defaultTopicRootName                 = "openmetadata.repositoryservices.";
+    private static final String defaultSingleOMRSTopicLeafName       = ".OMRSTopic";
+    private static final String defaultRegistrationOMRSTopicLeafName = ".OMRSTopic.registration";
+    private static final String defaultTypesOMRSTopicLeafName        = ".OMRSTopic.types";
+    private static final String defaultInstancesOMRSTopicLeafName    = ".OMRSTopic.instances";
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
@@ -532,7 +535,7 @@ public class ConnectorConfigurationFactory
     public Connection getDefaultEnterpriseOMRSTopicConnection(String              localServerName,
                                                               String              serverId)
     {
-        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultOMRSTopicLeafName;
+        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultSingleOMRSTopicLeafName;
 
         VirtualConnection connection = new VirtualConnection();
 
@@ -550,7 +553,7 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for the OMRS topic for the named cohort.
+     * Return the connection for the single OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
      * @param configurationProperties name value property pairs for the topic connection
@@ -560,25 +563,145 @@ public class ConnectorConfigurationFactory
      * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
-    public Connection getDefaultCohortOMRSTopicConnection(String              cohortName,
+    public Connection getDefaultSingleCohortOMRSTopicConnection(String              cohortName,
+                                                                Map<String, Object> configurationProperties,
+                                                                String              eventBusConnectorProvider,
+                                                                String              topicURLRoot,
+                                                                String              serverId,
+                                                                Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultSingleOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        serverId,
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultRegistrationCohortOMRSTopicConnection(String              cohortName,
+                                                                      Map<String, Object> configurationProperties,
+                                                                      String              eventBusConnectorProvider,
+                                                                      String              topicURLRoot,
+                                                                      Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultRegistrationOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for registrations";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        UUID.randomUUID().toString(),
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultTypesCohortOMRSTopicConnection(String              cohortName,
+                                                               Map<String, Object> configurationProperties,
+                                                               String              eventBusConnectorProvider,
+                                                               String              topicURLRoot,
+                                                               Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultTypesOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for types";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        UUID.randomUUID().toString(),
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the single OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultInstancesCohortOMRSTopicConnection(String              cohortName,
+                                                                   Map<String, Object> configurationProperties,
+                                                                   String              eventBusConnectorProvider,
+                                                                   String              topicURLRoot,
+                                                                   String              serverId,
+                                                                   Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultInstancesOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for instances";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        serverId,
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param topicName   name of the topic in the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventSourceName name of the event source
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param consumerGroupId identifier of the consumer group - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultCohortOMRSTopicConnection(String              topicName,
                                                           Map<String, Object> configurationProperties,
+                                                          String              eventSourceName,
                                                           String              eventBusConnectorProvider,
                                                           String              topicURLRoot,
-                                                          String              serverId,
+                                                          String              consumerGroupId,
                                                           Map<String, Object> eventBusConfigurationProperties)
     {
-        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultOMRSTopicLeafName;
-
         VirtualConnection connection = new VirtualConnection();
 
         connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setConfigurationProperties(configurationProperties);
-        connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
+        connection.setEmbeddedConnections(getEmbeddedEventBusConnection(eventSourceName,
                                                                         null,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         topicName,
-                                                                        serverId,
+                                                                        consumerGroupId,
                                                                         eventBusConfigurationProperties));
 
         return connection;

@@ -64,27 +64,22 @@ For example:
 * {adminUserId} - The user id of the administrator, for example **garygeeke**.
 * {serverName} - The name of the OMAG server, for example **cocoMDS1**.
 
-Below are the linked to the 
+Below are the links to the configuration tasks for each type of server.
 
-### Common Configuration Tasks
+* Cohort Members
+  * [Metadata Server](../concepts/metadata-server.md)
+  * [Metadata Access Point](../concepts/metadata-access-point.md)
+  * [Repository Proxy](../concepts/repository-proxy.md)
+  * [Conformance Test Server](../concepts/conformance-test-server.md)
 
-* Configuration for all OMAG Servers
-  * [Setting up the default event bus](configuring-event-bus.md)
-  * [Configuring the default local server URL root](configuring-local-server-url.md)
-  * [Setting basic properties for an OMAG server](configuring-omag-server-basic-properties.md)
-  * [Configuring the audit log destinations](configuring-the-audit-log.md)
-  * [Configuring the server security connector](configuring-the-server-security-connector.md)
-   
-* Specialist configuration for specific types of OMAG Servers
-  * [Configuring the local repository](configuring-the-local-repository.md) - Metadata Server only
-  * [Configuring registration to a cohort](configuring-registration-to-a-cohort.md) - Metadata Access Point, Metadata Server, Repository Proxy and Conformance Test Server only
-  * [Configuring the open metadata archives loaded at server start](configuring-the-startup-archives.md) - Metadata Access Point, Metadata Server and Repository Proxy only
-  * [Configuring the repository proxy connectors](configuring-the-repository-proxy-connector.md) - Repository Proxy only
-  * [Configuring the Open Metadata Access Services (OMASs)](configuring-the-access-services.md) - Metadata Access Point and Metadata Server only
-  * [Configuring the Open Metadata Engine Services (OMES)](configuring-the-engine-services.md) - Engine Host only
-  * [Configuring the Open Metadata Integration Services (OMIS)](configuring-the-integration-services.md) - Integration Daemon only
-  * [Configuring the Open Metadata View Services (OMVSs)](configuring-the-view-services.md) - View Server only
+* [View Server](../concepts/view-server.md)
 
+* Governance Servers
+  * [Integration Daemon](../concepts/integration-daemon.md) 
+  * [Engine Host](../concepts/engine-host.md) 
+  * [Data Engine Proxy](../concepts/data-engine-proxy.md) 
+  * [Open Lineage Server](../concepts/open-lineage-server.md) 
+  
 ### Advanced Configuration Topics
 
 * [Migrating configuration documents](migrating-configuration-documents.md)
@@ -99,7 +94,7 @@ GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "Egeria OMAG Server Platform (version 2.10-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "Egeria OMAG Server Platform (version 3.0-SNAPSHOT)".
 
 ```
 GET {platformURLRoot}/open-metadata/platform-services/users/{adminUserId}/servers/{serverName}/server-platform-origin
@@ -107,8 +102,8 @@ GET {platformURLRoot}/open-metadata/platform-services/users/{adminUserId}/server
 
 
 ----
-Return to the [Administration Guide Overview](.)
 
+* Return to the [Administration Guide Overview](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
