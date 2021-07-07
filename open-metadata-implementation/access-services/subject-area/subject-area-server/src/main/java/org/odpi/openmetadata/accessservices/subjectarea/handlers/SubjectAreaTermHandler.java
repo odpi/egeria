@@ -713,24 +713,58 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getTermCategories";
-        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodesForEnd2(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-        List<Category> allCategories = new ArrayList<>();
-        // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
-        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
-            for (Category mappedCategory: response.results()) {
-                SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
-                if (categoryResponse.getRelatedHTTPCode() == 200) {
-                    allCategories.add(categoryResponse.results().get(0));
-                } else {
-                    response = categoryResponse;
-                    break;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+
+        if (pageSize == null) {
+            pageSize = maxPageSize;
+        }
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        SubjectAreaOMASAPIResponse<Term> thisTermResponse = getTermByGuid(userId, guid);
+        if (thisTermResponse.getRelatedHTTPCode() == 200) {
+            try {
+                Set<String> specificMatchPropertyNames = new HashSet();
+
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                         1,      // get the categories
+                                                                                         specificMatchPropertyNames,
+                                                                                         "", // no search criteria
+                                                                                         startingFrom,
+                                                                                         false,
+                                                                                         false,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Category> categories = new HashSet<>();
+                for (EntityDetail entity:entities) {
+                    SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
+                    if (categoryResponse.getRelatedHTTPCode() == 200) {
+                        categories.add(categoryResponse.results().get(0));
+                    } else {
+                        response = categoryResponse;
+                        break;
+                    }
                 }
+                if( response.getRelatedHTTPCode() == 200) {
+                    response.addAllResults(categories);
+                }
+
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
         }
-        if (response.getRelatedHTTPCode() == 200) {
-            response = new SubjectAreaOMASAPIResponse<>();
-            response.addAllResults(allCategories);
-        }
+
         return response;
     }
 }

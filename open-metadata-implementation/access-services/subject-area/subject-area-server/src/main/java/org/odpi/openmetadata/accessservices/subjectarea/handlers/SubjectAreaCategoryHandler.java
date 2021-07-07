@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -30,10 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -490,55 +488,56 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategorizedTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
         if (startingFrom == null) {
             startingFrom = 0;
         }
-        // this is used to track getting all the pages of all the data from the start
-        // We use this to issue calls to get all the data so we can then apply the filter.
-        Integer unfilteredStartingFrom = 0;
-
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            List<Term> filteredTerms = new ArrayList<>();
-            boolean continueGettingTerms = true;
-            while (continueGettingTerms) {
-                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, unfilteredStartingFrom, pageSize);
-                if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
-                   // we now have results. We need to filter those results then apply the requested startingFrom
+            try {
+                Set<String> specificMatchPropertyNames = new HashSet();
 
-                    for (Term term : childTermsResponse.results()) {
-                        // this term to the results if it matches the search criteria and we have not already got a page of results to return
-                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) ) {
-                            filteredTerms.add(term);
-                        }
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                         2,      // get only the children
+                                                                                         specificMatchPropertyNames,
+                                                                                         searchCriteria,
+                                                                                         startingFrom,
+                                                                                         !exactValue,
+                                                                                         ignoreCase,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Term> terms = new HashSet<>();
+                for (EntityDetail entity:entities) {
+                    SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
+                    if (termResponse.getRelatedHTTPCode() == 200) {
+                        terms.add(termResponse.results().get(0));
+                    } else {
+                        response = termResponse;
+                        break;
                     }
                 }
-
-                if (childTermsResponse.results().size() < pageSize || filteredTerms.size() >= startingFrom + pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingTerms = false;
-                } else {
-                    // issue another call to get another page of terms
-                    unfilteredStartingFrom = unfilteredStartingFrom + pageSize;
+                if( response.getRelatedHTTPCode() == 200) {
+                    response.addAllResults(terms);
                 }
-            }
-            // we have a list of filteredTerms , we need to slice out the page we need to return to the user based on their requested startingFrom
 
-            if (filteredTerms.size() > startingFrom) {
-                // we have something to return
-                int endingAt = startingFrom + pageSize;
-                if (filteredTerms.size() < startingFrom + pageSize) {
-                    // if there is not a page worth - then calculate the ending index of the list.
-                    endingAt = filteredTerms.size();
-                }
-                response.addAllResults(filteredTerms.subList(startingFrom, endingAt));
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-
         }
-
         return response;
     }
 
@@ -563,41 +562,55 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
         if (startingFrom == null) {
             startingFrom = 0;
         }
-
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
+            try {
+                Set<String> specificMatchPropertyNames = new HashSet();
 
-            List<Category> categoriesToReturn = new ArrayList<>();
-            // we have more to get, bump up the startingFrom and get the next page
-            boolean continueGettingCategories = true;
-            while (continueGettingCategories) {
-                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-                if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
-                    for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                        // this category to the results if it is not the parent category and it matches the search criteria
-                        if (categoryMatchSearchCriteria(relatedCategory, searchCriteria, exactValue, ignoreCase) &&
-                                !parentCategoryGuid.equals(relatedCategory.getSystemAttributes().getGUID()) &&
-                                categoriesToReturn.size() < pageSize) {
-                            categoriesToReturn.add(relatedCategory);
-                        }
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                                                         2,      // get only the children
+                                                                                         specificMatchPropertyNames,
+                                                                                         searchCriteria,
+                                                                                         startingFrom,
+                                                                                         !exactValue,
+                                                                                         ignoreCase,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Category> categories = new HashSet<>();
+                for (EntityDetail entity:entities) {
+                    SubjectAreaOMASAPIResponse<Category> categoryResponse = getCategoryByGuid(userId, entity.getGUID());
+                    if (categoryResponse.getRelatedHTTPCode() == 200) {
+                        categories.add(categoryResponse.results().get(0));
+                    } else {
+                        response = categoryResponse;
+                        break;
                     }
                 }
-                if (relatedCategoriesResponse.results().size() < pageSize || categoriesToReturn.size() == pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingCategories = false;
-                } else {
-                    // issue another call to get another page of terms
-                    startingFrom = startingFrom + pageSize;
+                if( response.getRelatedHTTPCode() == 200) {
+                    response.addAllResults(categories);
                 }
+
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-            response.addAllResults(categoriesToReturn);
         }
 
         return response;

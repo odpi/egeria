@@ -537,7 +537,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 String parentToCheckTypeGUID = null;
                 String parentToCheckTypeName = null;
                 if (onlyTop) {
-                    parentToCheckTypeGUID =  OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID;
+                    parentToCheckTypeGUID = OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID;
                     parentToCheckTypeName = OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME;
                 }
 

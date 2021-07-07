@@ -392,6 +392,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             if (pageSize == null) {
                 pageSize = handler.getMaxPageSize();
             }
+
             response = handler.getTermCategories(userId, guid, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
