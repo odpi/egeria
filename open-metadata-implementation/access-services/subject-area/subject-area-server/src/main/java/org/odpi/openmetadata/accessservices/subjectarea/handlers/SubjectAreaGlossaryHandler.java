@@ -432,58 +432,64 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, SubjectAreaTermHandler termHandler, FindRequest findRequest, boolean exactValue, boolean ignoreCase) {
         final String methodName = "getTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-
         Integer pageSize = findRequest.getPageSize();
         Integer requestedStartingFrom = findRequest.getStartingFrom();
         String searchCriteria = findRequest.getSearchCriteria();
-
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
         if (requestedStartingFrom == null) {
             requestedStartingFrom = 0;
         }
-
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
+            try {
+                Set<String>   specificMatchPropertyNames = new HashSet();
 
-            int startingFrom = 0;
-            List<Term> filteredTermsList = new ArrayList<>();
-            // we have more to get, bump up the requestedStartingFrom and get the next page
-            boolean continueGettingTerms = true;
-            while (continueGettingTerms) {
-                SubjectAreaOMASAPIResponse<Term> relatedTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
-                if (relatedTermsResponse.results() != null && relatedTermsResponse.results().size() > 0) {
-                    for (Term relatedTerm : relatedTermsResponse.results()) {
-                        if (filteredTermsList.size() < pageSize && termMatchSearchCriteria(relatedTerm, searchCriteria, exactValue, ignoreCase)) {
-                            filteredTermsList.add(relatedTerm);
-                        }
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.USAGE_PROPERTY_NAME);
 
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                                                         2,      // get only the children
+                                                                                         specificMatchPropertyNames,
+                                                                                         searchCriteria,
+                                                                                         requestedStartingFrom,
+                                                                                         !exactValue,
+                                                                                         ignoreCase,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Term> terms = new HashSet<>();
+                for (EntityDetail entity:entities) {
+                    SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
+                    if (termResponse.getRelatedHTTPCode() == 200) {
+                        terms.add(termResponse.results().get(0));
+                    } else {
+                        response = termResponse;
+                        break;
                     }
                 }
-                if (relatedTermsResponse.results().size() < pageSize || filteredTermsList.size() == pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingTerms = false;
-                } else {
-                    // issue another call to get another page of terms
-                    startingFrom = startingFrom + pageSize;
+                if( response.getRelatedHTTPCode() == 200) {
+                    response.addAllResults(terms);
                 }
-            }
-            // Apply the requested startingFrom. It is not very efficient, but at present there are no APIs to push down these predicates (perhaps the genericHandler could do the search Criteria more optimally)
-            if (filteredTermsList.size() >= requestedStartingFrom) {
-                int endOffset = requestedStartingFrom + pageSize;
-                if (filteredTermsList.size() < requestedStartingFrom + pageSize) {
-                    endOffset = filteredTermsList.size();
-                }
-                // now get the appropriate sublist
-                List<Term> filteredPagedTermsList = filteredTermsList.subList(requestedStartingFrom, endOffset);
 
-                response.addAllResults(filteredPagedTermsList);
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-
         }
         return response;
     }
@@ -522,43 +528,53 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
             try {
-                /*
-                String      userId,
-                                                  String        startingGUID,
-                                                  String        startingGUIDParameterName,
-                                                  String        startingTypeName,
-                                                  String        relationshipTypeName,
-                                                  String        relationshipTypeGUID,
-                                                  String        requiredClassificationName,
-                                                  String        omittedClassificationName,
-                                                  boolean       forLineage,
-                                                  int           selectionEnd,
-                                                  List<String>  serviceSupportedZones,
-                                                  Set<String>   specificMatchPropertyNames,
-                                                  String        searchCriteria,
-                                                  boolean       startsWith,
-                                                  boolean       ignoreCase,
-                                                  int           queryPageSize ,
-                                                  String        methodName
-                 */
-                List<Category> categories = genericHandler.getAttachedElements(userId,
+                Set<String>   specificMatchPropertyNames = new HashSet();
+
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                String parentToCheckTypeGUID = null;
+                String parentToCheckTypeName = null;
+                if (onlyTop) {
+                    parentToCheckTypeGUID =  OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID;
+                    parentToCheckTypeName = OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME;
+                }
+
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                guid,
                                                                                "guid",
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                                                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                                                               null,  // no required classifications
-                                                                               null,  // no committed classifications
+                                                                               2,      // get only the children
+                                                                               parentToCheckTypeName,
+                                                                               parentToCheckTypeGUID,
                                                                                false,
-                                                                               2,   // get only the children
-                                                                               null,  // no zones
+                                                                               specificMatchPropertyNames,
                                                                                searchCriteria,
+                                                                               requestedStartingFrom,
                                                                                !exactValue,
                                                                                ignoreCase,
                                                                                pageSize,
                                                                                methodName);
-                response.addAllResults(categories);
-            } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException | InvalidParameterException e) {
+                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
+                Set<Category> categories = new HashSet<>();
+                for (EntityDetail entity:entities) {
+                        SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
+                        if (categoryResponse.getRelatedHTTPCode() == 200) {
+                           categories.add(categoryResponse.results().get(0));
+                        } else {
+                            response = categoryResponse;
+                            break;
+                        }
+                }
+                if( response.getRelatedHTTPCode() == 200) {
+                    response.addAllResults(categories);
+                }
+
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
                 response.setExceptionInfo(e, className);
             }
         }

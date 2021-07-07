@@ -75,9 +75,6 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param examples  example
      * @param abbreviation abbreviation
      * @param usage usage guidance
-     * @param examples  example
-     * @param abbreviation abbreviation
-     * @param usage usage guidance
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */

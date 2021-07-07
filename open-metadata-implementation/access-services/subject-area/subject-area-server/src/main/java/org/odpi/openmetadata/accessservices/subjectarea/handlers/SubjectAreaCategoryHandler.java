@@ -249,9 +249,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, CATEGORY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME, methodName);
         if (CollectionUtils.isNotEmpty(relationships)) {
             for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : relationships) {
-                CategoryAnchorMapper categotyAnchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
-                CategoryAnchor termAnchor = categotyAnchorMapper.map(relationship);
-                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
+                CategoryAnchorMapper categoryAnchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
+                CategoryAnchor categoryAnchor = categoryAnchorMapper.map(relationship);
+                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, categoryAnchor);
                 if (glossarySummary != null) {
                     category.setGlossary(glossarySummary);
                     break;

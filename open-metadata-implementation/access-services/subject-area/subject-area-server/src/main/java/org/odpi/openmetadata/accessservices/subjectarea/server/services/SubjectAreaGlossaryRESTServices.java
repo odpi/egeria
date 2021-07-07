@@ -391,7 +391,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.getTerms(userId, guid, findRequest, exactValue, ignoreCase);
+            response = handler.getTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName),  findRequest, exactValue, ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

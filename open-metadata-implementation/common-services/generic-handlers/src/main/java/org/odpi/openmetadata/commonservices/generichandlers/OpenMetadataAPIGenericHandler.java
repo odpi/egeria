@@ -7204,9 +7204,25 @@ public class OpenMetadataAPIGenericHandler<B>
 
         return null;
     }
-
     /**
-     * Retrieve the requested element from the supplied relationship.
+     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
+     *
+     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
+     * <ul>
+     * <li> with the relationship relationshipTypeName</li>
+     * <li> the relationship relationshipTypeGUID</li>
+     * <li> be at this end of the relationship.</li>
+     * <li> it is visible to the calling user </li>
+     * </ul>
+     * <p>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
+     *</ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
+     * </ul>
      *
      * @param userId       calling user
      * @param startingGUID identifier for the entity that the identifier is attached to
@@ -7214,13 +7230,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingTypeName name of the type of object being attached to
      * @param relationshipTypeName name of the type of relationship attaching the attached entity
      * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
-     * @param forLineage is this request part of lineage?
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param serviceSupportedZones supported zones for calling service
      * @param specificMatchPropertyNames list of property names to
      * @param searchCriteria text to search on
+     * @param startFrom  index of the list to start from (0 for start)
      * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
      * @param ignoreCase if set ignore case on the match, if not set then case must match
      * @param queryPageSize requested page size
@@ -7230,19 +7243,108 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    protected List<EntityDetail> getAttachedElement(String      userId,
+
+    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
+                                                          String        startingGUID,
+                                                          String        startingGUIDParameterName,
+                                                          String        startingTypeName,
+                                                          String        relationshipTypeName,
+                                                          String        relationshipTypeGUID,
+                                                          int           selectionEnd,
+                                                          Set<String>   specificMatchPropertyNames,
+                                                          String        searchCriteria,
+                                                          int           startFrom,
+                                                          boolean       startsWith,
+                                                          boolean       ignoreCase,
+                                                          int           queryPageSize ,
+                                                          String        methodName) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        return getAttachedFilteredEntities(userId,
+                                           startingGUID,
+                                           startingGUIDParameterName,
+                                           startingTypeName,
+                                           relationshipTypeName,
+                                           relationshipTypeGUID,
+                                           selectionEnd,
+                                           null,
+                                           null,
+                                           true,
+                                           specificMatchPropertyNames,
+                                           searchCriteria,
+                                           startFrom,
+                                           startsWith,
+                                           ignoreCase,
+                                           queryPageSize,
+                                           methodName);
+    }
+
+    /**
+     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
+     *
+     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
+     * <ul>
+     * <li> with the relationship relationshipTypeName</li>
+     * <li> the relationship relationshipTypeGUID</li>
+     * <li> be at this end of the relationship.</li>
+     * <li> it is visible to the calling user </li>
+     * </ul>
+     * <p>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
+     *</ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
+     * </ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityWithoutRelationshipTypeName</li>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityWithoutRelationshipTypeGUID</li>
+     * <li> not have a relationship to a unique parent entity where the parent is at the other end, the parent end is identified using parentAtEnd1</li>
+     *</ul>
+     *
+     * @param userId       calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param relationshipTypeName name of the type of relationship attaching the attached entity
+     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param attachedEntityWithoutRelationshipTypeName do not return attached entities that have this parent relationship at parentAtEnd1. If null this has not effect on the match.
+     * @param attachedEntityWithoutRelationshipTypeGUID do not return attached entities that have this parent relationship at parentAtEnd1. If null this has not effect on the match.
+     * @param parentAtEnd1 if the attached entity has a parent the entity will not be returned.
+     * @param specificMatchPropertyNames list of property names to
+     * @param searchCriteria text to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
+     * @param ignoreCase if set ignore case on the match, if not set then case must match
+     * @param queryPageSize requested page size
+     * @param methodName   calling method
+     * @return List of attached entities
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+
+    /*
+     * Note this method has parameters that are bing used by callers. If you need more options (e.g. to specify asOfTime or to limit on classification or around zones) then overload this method.
+     */
+    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
                                                   String        startingGUID,
                                                   String        startingGUIDParameterName,
                                                   String        startingTypeName,
                                                   String        relationshipTypeName,
                                                   String        relationshipTypeGUID,
-                                                  String        requiredClassificationName,
-                                                  String        omittedClassificationName,
-                                                  boolean       forLineage,
                                                   int           selectionEnd,
-                                                  List<String>  serviceSupportedZones,
+                                                  String        attachedEntityWithoutRelationshipTypeName,
+                                                  String        attachedEntityWithoutRelationshipTypeGUID,
+                                                  boolean       parentAtEnd1,
                                                   Set<String>   specificMatchPropertyNames,
                                                   String        searchCriteria,
+                                                  int           startFrom,
                                                   boolean       startsWith,
                                                   boolean       ignoreCase,
                                                   int           queryPageSize ,
@@ -7262,8 +7364,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                                      relationshipTypeName,
                                                                                                      relationshipTypeGUID,
                                                                                                      null,  // we could get this passed in from the caller
-                                                                                                     0,
-                                                                                                     0,
+                                                                                                     startFrom,
+                                                                                                     queryPageSize,
+                                                                                                     selectionEnd,
                                                                                                      methodName);
 
         List<EntityDetail> results = new ArrayList<>();
@@ -7274,7 +7377,19 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (relatedEntity != null)
             {
-                if (entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase))
+                Relationship parentRelationship = null;
+                if (attachedEntityWithoutRelationshipTypeGUID != null && attachedEntityWithoutRelationshipTypeName != null)
+                {
+                    parentRelationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
+                                                                                             relatedEntity.getGUID(),
+                                                                                             startingTypeName,
+                                                                                             attachedEntityWithoutRelationshipTypeGUID,
+                                                                                             attachedEntityWithoutRelationshipTypeName,
+                                                                                             parentAtEnd1,
+                                                                                             methodName);
+                }
+
+                if (parentRelationship == null && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase))
                 {
                     results.add(relatedEntity);
                 }
@@ -7304,7 +7419,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @return true for match otherwise false
      */
 
-    protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase) {
+    protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase)
+    {
         if (attributeNames == null) return true; // TODO maybe this should be an error
         if (searchCriteria == null) return true; // nothing specific to match so it all matches
 
@@ -7313,21 +7429,25 @@ public class OpenMetadataAPIGenericHandler<B>
         InstanceProperties matchProperties = entity.getProperties();
         Iterator<String> propertyNames = matchProperties.getPropertyNames();
 
-        if (propertyNames != null) {
-            while (propertyNames.hasNext()) {
+        if (propertyNames != null)
+        {
+            while (propertyNames.hasNext())
+            {
                 String propertyName = propertyNames.next();
-                if (attributeNames.contains(propertyName)) {
+                if (attributeNames.contains(propertyName))
+                {
                     InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
 
                     InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
-                    if (ipCat == InstancePropertyCategory.PRIMITIVE) {
+                    if (ipCat == InstancePropertyCategory.PRIMITIVE)
+                    {
                         PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
                         PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
-                            PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
+                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        {
                             String currentValue = (String) ppv.getPrimitiveValue();
-
-                            if (currentValue != null && currentValue.matches(regexedSearchCriteria)) {
+                            if (currentValue != null && currentValue.matches(regexedSearchCriteria))
+                            {
                                 isMatch = true;
                             }
                         }
@@ -7338,16 +7458,31 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         return isMatch;
     }
-    protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase) {
-        if (searchCriteria != null && searchCriteria.trim() == "") {
+
+    /**
+     * Take a literal string supplied in searchCriteria and augment it with extra content for the regex engine to process.
+     * 2 flags exactValue and ignoreCase are supplied that determine the nature of the regex expression that is created.
+     *
+     * @param searchCriteria text literal use as the basis of the match, if this empty then match everything ignoring the flags.
+     * @param exactValue the exactValue flag when set means to exactly match the streing, otehrwise it looks for srings starting with the searchCriteria.
+     * @param ignoreCase if set ignore the case on the match, if not set then the case must match.
+     * @return a regex expression created to match implement the supplied searchCriteria and flags.
+     */
+    protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase)
+    {
+        if (searchCriteria != null && searchCriteria.trim() == "")
+        {
             // ignore the flags for an empty search criteria string - assume we want everything
             searchCriteria = ".*";
-        } else {
+        } else
+        {
             // lose any leading and trailing blanks
             searchCriteria = searchCriteria.trim();
-            if (exactValue) {
+            if (exactValue)
+            {
                 searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
-            } else {
+            } else
+            {
                 searchCriteria = repositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
             }
         }
@@ -7815,7 +7950,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property names to look in (or null to search any string property)
      * @param exactValueMatch should the value be treated as a literal or a RegEx?
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param queryPageSize maximum number of values to return
      * @param methodName calling method
      * @return configured iterator
@@ -8259,7 +8394,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8309,7 +8444,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8358,7 +8493,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8408,7 +8543,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8545,7 +8680,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8601,7 +8736,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8658,7 +8793,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8715,7 +8850,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8794,7 +8929,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8872,7 +9007,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8999,7 +9134,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -9055,7 +9190,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9111,7 +9246,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9167,7 +9302,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9241,7 +9376,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9315,7 +9450,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param queryPageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9469,7 +9604,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9650,7 +9785,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -9702,7 +9837,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9756,7 +9891,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch does the value need to match exactly?
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9893,7 +10028,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9924,7 +10059,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9986,7 +10121,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10017,7 +10152,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10116,7 +10251,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10172,7 +10307,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
