@@ -184,6 +184,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"User {0} is not authorized to perform operation: {1}",
 			"The system is unable to process the request.",
 			"Review the user permissions to resolve the issue and repeat request."),
+	FAILED_UPDATE_UNKNOWN_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-031", 
+			"User {0} failed to update artifact {1}. The artifact is unknown.",
+			"The system is unable to process the request.",
+			"Confirm the arifact exists."),
     UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
             "An unexpected {0} exception was caught by {1}; error message was {2}",
             "The system is unable to process the request and has returned an exception to the caller.",
