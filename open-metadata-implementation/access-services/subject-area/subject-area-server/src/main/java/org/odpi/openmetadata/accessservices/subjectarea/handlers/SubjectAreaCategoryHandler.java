@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -325,57 +326,36 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-
             response = getCategoryByGuid(userId, guid);
             if (response.head().isPresent()) {
-                Category currentCategory = response.head().get();
-                checkReadOnly(methodName, currentCategory, "update");
-                if (isReplace)
-                    // copy over attributes
-                    replaceAttributes(currentCategory, suppliedCategory);
-                else
-                    updateAttributes(currentCategory, suppliedCategory);
+                Category storedCategory = response.head().get();
+                checkReadOnly(methodName, storedCategory, "update");
+                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
 
-                Long categoryFromTime = suppliedCategory.getEffectiveFromTime();
-                Long categoryToTime = suppliedCategory.getEffectiveToTime();
-                currentCategory.setEffectiveFromTime(categoryFromTime);
-                currentCategory.setEffectiveToTime(categoryToTime);
-
-                CategoryMapper mapper = mappersFactory.get(CategoryMapper.class);
-                EntityDetail entityDetail = mapper.map(currentCategory);
-                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, entityDetail);
+                EntityDetail suppliedEntity = categoryMapper.map(suppliedCategory);
+                EntityDetail storedEntity = categoryMapper.map(storedCategory);
+                genericHandler.updateBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      suppliedEntity.getProperties(),
+                                                      !isReplace,
+                                                      methodName);
+                setEffectivity(userId,
+                               suppliedCategory,
+                               methodName,
+                               guid,
+                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
                 response = getCategoryByGuid(userId, guid);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
-    }
-
-    private void replaceAttributes(Category currentCategory, Category newCategory) {
-        currentCategory.setName(newCategory.getName());
-        currentCategory.setQualifiedName(newCategory.getQualifiedName());
-        currentCategory.setDescription(newCategory.getDescription());
-        currentCategory.setAdditionalProperties(newCategory.getAdditionalProperties());
-        //TODO handle classifications
-    }
-
-    private void updateAttributes(Category currentCategory, Category newTerm) {
-        // copy over attributes if specified
-        if (newTerm.getName() != null) {
-            currentCategory.setName(newTerm.getName());
-        }
-        if (newTerm.getQualifiedName() != null) {
-            currentCategory.setQualifiedName(newTerm.getQualifiedName());
-        }
-        if (newTerm.getDescription() != null) {
-            currentCategory.setDescription(newTerm.getDescription());
-        }
-
-        if (newTerm.getAdditionalProperties() != null) {
-            currentCategory.setAdditionalProperties(newTerm.getAdditionalProperties());
-        }
-        //TODO handle classifications
     }
 
     /**

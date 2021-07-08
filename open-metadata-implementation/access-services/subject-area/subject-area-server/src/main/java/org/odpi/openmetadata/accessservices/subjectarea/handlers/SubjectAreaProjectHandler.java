@@ -20,9 +20,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 import java.util.*;
@@ -90,18 +91,36 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedProject);
-                ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
-                EntityDetail projectEntityDetail = projectMapper.map(suppliedProject);
-                InstanceProperties instanceProperties = projectEntityDetail.getProperties();
-                if (instanceProperties == null ) {
-                    instanceProperties = new InstanceProperties();
+                ProjectBuilder builder = new ProjectBuilder(suppliedProject.getQualifiedName(),
+                                                            suppliedProject.getStartDate(),
+                                                            suppliedProject.getPlannedEndDate(),
+                                                            suppliedProject.getStatus(),
+                                                            null,
+                                                            OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+                                                            OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                            null,
+                                                            genericHandler.getRepositoryHelper(),
+                                                            genericHandler.getServiceName(),
+                                                            genericHandler.getServerName());
+                String entityDetailGuid = genericHandler.createBeanInRepository(userId,
+                                                                                null,
+                                                                                null,
+                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                                                null,
+                                                                                null,
+                                                                                builder,
+                                                                                methodName);
+                if (entityDetailGuid != null) {
+                    // set effectivity dates if required
+                    setEffectivity(userId,
+                                   suppliedProject,
+                                   methodName,
+                                   entityDetailGuid,
+                                   OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+                                   OpenMetadataAPIMapper.PROJECT_TYPE_NAME);
+                    response = getProjectByGuid(userId, entityDetailGuid);
                 }
-                if (instanceProperties.getEffectiveFromTime() == null) {
-                    instanceProperties.setEffectiveFromTime(new Date());
-                    projectEntityDetail.setProperties(instanceProperties);
-                }
-                String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
-                response = getProjectByGuid(userId, entityDetailGuid);
             }
         } catch (InvalidParameterException | SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             response.setExceptionInfo(e, className);
@@ -235,24 +254,33 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 
             response = getProjectByGuid(userId, guid);
             if (response.head().isPresent()) {
-                Project updateProject = response.head().get();
-                if (isReplace)
-                    replaceAttributes(updateProject, suppliedProject);
-                else
-                    updateAttributes(updateProject, suppliedProject);
+//
 
-                Long projectFromTime = suppliedProject.getEffectiveFromTime();
-                Long projectToTime = suppliedProject.getEffectiveToTime();
-                updateProject.setEffectiveFromTime(projectFromTime);
-                updateProject.setEffectiveToTime(projectToTime);
+                    Project storedProject = response.head().get();
+                    checkReadOnly(methodName, storedProject, "update");
+                    ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
 
-                ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
-                EntityDetail entityDetail = projectMapper.map(updateProject);
-                final String projectGuid = entityDetail.getGUID();
-                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, entityDetail);
-                response = getProjectByGuid(userId, projectGuid);
+                    EntityDetail suppliedEntity = projectMapper.map(suppliedProject);
+                    EntityDetail storedEntity = projectMapper.map(storedProject);
+                    genericHandler.updateBeanInRepository(userId,
+                                                          null,
+                                                          null,
+                                                          guid,
+                                                          "guid",
+                                                          OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                          suppliedEntity.getProperties(),
+                                                          !isReplace,
+                                                          methodName);
+                    setEffectivity(userId,
+                                   suppliedProject,
+                                   methodName,
+                                   guid,
+                                   OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+                                   OpenMetadataAPIMapper.PROJECT_TYPE_NAME);
+                response = getProjectByGuid(userId, guid);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -326,24 +354,38 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Project> deleteProject(String userId, String guid) {
         final String methodName = "deleteProject";
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
-        try {
+        boolean issueDelete = false;        try {
             response = getProjectByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Project currentProject = response.head().get();
                 checkReadOnly(methodName, currentProject, "delete");
             }
-            // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
-            List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
-            if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {
-                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
+            if (genericHandler.isBeanIsolated(userId,
+                                              guid,
+                                              OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                              methodName)) {
+
+                issueDelete = true;
             } else {
                 throw new EntityNotDeletedException(SubjectAreaErrorCode.PROJECT_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
                                                     className,
                                                     methodName,
                                                     guid);
             }
+            if (issueDelete) {
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.PROJECT_TYPE_GUID,    // true for sub types
+                                                      OpenMetadataAPIMapper.PROJECT_TYPE_NAME,    // true for sub types
+                                                      null,
+                                                      null,
+                                                      methodName);
+            }
 
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;

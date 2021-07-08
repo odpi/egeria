@@ -99,18 +99,22 @@ public abstract class SubjectAreaHandler {
                                        Relationship relationship) throws UserNotAuthorizedException,
                                                                  PropertyServerException,
                                                                  InvalidParameterException,
-                                                                 SubjectAreaCheckedException
-    {
+                                                                 SubjectAreaCheckedException {
         String guid = SubjectAreaUtils.getGlossaryGuidFromAnchor(relationship);
-        Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, GLOSSARY_TYPE_NAME, restAPIName);
-        if (entityDetail.isPresent()) {
-            GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
-            Glossary glossary = glossaryMapper.map(entityDetail.get());
-            // TODO sort out icons
-            return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, relationship);
-        }
 
-        return null;
+        EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                           guid,
+                                                                           "guid",
+                                                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           null,
+                                                                           restAPIName);
+        GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
+        Glossary glossary = glossaryMapper.map(entityDetail);
+        // TODO sort out icons
+        return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, relationship);
     }
     /**
      * Get category summary
@@ -131,20 +135,24 @@ public abstract class SubjectAreaHandler {
                                                                  SubjectAreaCheckedException
     {
         String categoryGuid = relationship.getEnd1().getNodeGuid();
-        Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, categoryGuid, CATEGORY_TYPE_NAME, restAPIName);
-        if (entityDetail.isPresent()) {
+        EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                           categoryGuid,
+                                                                           "guid",
+                                                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           null,
+                                                                           restAPIName);
             CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
-            Category category = CategoryMapper.map(entityDetail.get());
+            Category category = CategoryMapper.map(entityDetail);
             // TODO sort out icons
             return SubjectAreaUtils.extractCategorySummaryFromCategory(category, relationship);
-        }
-
-        return null;
     }
     protected String sanitiseFindRequest(String searchCriteria, boolean exactValue, boolean ignoreCase) {
         OMRSRepositoryHelper omrsRepositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
 
-        if (searchCriteria != null && searchCriteria.trim() == "") {
+        if (searchCriteria != null && "".equals(searchCriteria.trim())) {
             // ignore the flags for an empty search criteria string - assume we want everything
             searchCriteria = ".*";
         } else {
@@ -411,8 +419,7 @@ public abstract class SubjectAreaHandler {
                                                            GlossarySummary suppliedGlossary) throws UserNotAuthorizedException,
                                                                                                     PropertyServerException,
                                                                                                     InvalidParameterException,
-                                                                                                    SubjectAreaCheckedException
-    {
+                                                                                                    SubjectAreaCheckedException {
         /*
          * There needs to be an associated glossary supplied
          * The glossary could be of NodeType Glossary, Taxonomy , Canonical glossary or canonical and taxonomy.
@@ -434,19 +441,19 @@ public abstract class SubjectAreaHandler {
                         "glossary",
                         null);
             }
-            // find by guid
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, GLOSSARY_TYPE_NAME, methodName);
-            if (entityDetail.isPresent()) {
-                return entityDetail.get().getGUID();
-            } else {
-                ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
-                throw new InvalidParameterException(
-                        messageDefinition,
-                        className,
-                        methodName,
-                        "glossary",
-                        null);
-            }
+            // find by glossary by guid
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
+
+            return entityDetail.getGUID();
+
         } else {
             // error - glossary is mandatory
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();

@@ -43,7 +43,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId
      * @param suppliedTerm term to create
      * @return response, when successful contains the created term.
@@ -67,7 +67,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            response = handler.createTerm(userId, suppliedTerm);
+            response = handler.createTerm(userId, instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, methodName), suppliedTerm);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -390,7 +390,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                 pageSize = handler.getMaxPageSize();
             }
 
-            response = handler.getTermCategories(userId, guid, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
+            response = handler.getTermCategories(userId, guid, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName),  startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
