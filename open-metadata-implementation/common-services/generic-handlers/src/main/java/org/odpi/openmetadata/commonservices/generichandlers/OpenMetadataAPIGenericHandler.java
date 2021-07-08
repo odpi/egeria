@@ -7470,7 +7470,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase)
     {
-        if (searchCriteria != null && searchCriteria.trim() == "")
+        if (searchCriteria != null && "".equals(searchCriteria.trim()))
         {
             // ignore the flags for an empty search criteria string - assume we want everything
             searchCriteria = ".*";
