@@ -10,7 +10,7 @@ Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
 
-## Java 11 
+### Java 11 
 
 As of Release 3.0 of Egeria, Java 11 is **required** to build and run Egeria.
 
@@ -20,7 +20,11 @@ Java releases beyond Java 11 up to the current release have some informal testin
 
 See [Java](../developer-resources/languages/Java.md) for further information.
 
-## Known Issues
+### Egeria UI
+* Passwords for the samples Coco Pharmaceuticals users changed to 'secret';
+
+
+### Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or alternatively Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
 
