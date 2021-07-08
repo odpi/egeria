@@ -141,8 +141,6 @@ public class TermFVT {
         System.out.println("Delete term1 again");
         deleteTerm(guid);
         //FVTUtils.validateNode(gotTerm);
-        System.out.println("Purge term1");
-        purgeTerm(guid);
         System.out.println("Create term3 with governance actions");
         GovernanceClassifications governanceClassifications = createGovernanceClassifications();
         Term term3 = createTermWithGovernanceClassifications(DEFAULT_TEST_TERM_NAME, glossaryGuid, governanceClassifications);
@@ -410,16 +408,10 @@ public class TermFVT {
 
         // clean up
         categoryFVT.deleteCategory(cat1Summary.getGuid());
-        categoryFVT.purgeCategory(cat1Summary.getGuid());
         categoryFVT.deleteCategory(cat2Summary.getGuid());
-        categoryFVT.purgeCategory(cat2Summary.getGuid());
         categoryFVT.deleteCategory(cat3Summary.getGuid());
-        categoryFVT.purgeCategory(cat3Summary.getGuid());
         deleteTerm(createdTerm4cats.getSystemAttributes().getGUID());
-        purgeTerm(createdTerm4cats.getSystemAttributes().getGUID());
         deleteTerm(createdTerm4cats2.getSystemAttributes().getGUID());
-        purgeTerm(createdTerm4cats2.getSystemAttributes().getGUID());
-
     }
 
     public  Term createTerm(String termName, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -550,18 +542,6 @@ public class TermFVT {
             subjectAreaTerm.delete(this.userId, guid);
             createdTermsSet.remove(guid);
             System.out.println("Delete succeeded");
-    }
-
-    /**
-     * Purge - we should not need to decrement the createdTermsSet as the soft delete should have done this
-     * @param guid
-     * @throws InvalidParameterException
-     * @throws PropertyServerException
-     * @throws UserNotAuthorizedException
-     */
-    public void purgeTerm(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaTerm.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
     }
 
     public List<Relationship> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

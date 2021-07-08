@@ -323,16 +323,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * The deletion of a glossary is only allowed if there is no glossary content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the glossary will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param userId  unique identifier for requesting user, under which the request is performed
      * @param guid    guid of the glossary to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -340,10 +338,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String userId, String guid) {
         final String methodName = "deleteGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         boolean issueDelete = false;
@@ -353,24 +350,21 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             if (response.head().isPresent()) {
                 checkReadOnly(methodName, currentGlossary, "delete");
             }
-            if (isPurge) {
+            // if this is a not a purge then check there are no relationships before deleting,
+            // otherwise the deletion could remove all anchored entities.
+            if (genericHandler.isBeanIsolated(userId,
+                                              guid,
+                                              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                              methodName)) {
+
                 issueDelete = true;
             } else {
-                // if this is a not a purge then check there are no relationships before deleting,
-                // otherwise the deletion could remove all anchored entities.
-                if (genericHandler.isBeanIsolated(userId,
-                                                  guid,
-                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                  methodName)) {
-
-                    issueDelete = true;
-                } else{
-                    throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
-                                                        className,
-                                                        methodName,
-                                                        guid);
-                }
+                throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
+                                                    className,
+                                                    methodName,
+                                                    guid);
             }
+
             if (issueDelete) {
                 genericHandler.deleteBeanInRepository(userId,
                                                       null,

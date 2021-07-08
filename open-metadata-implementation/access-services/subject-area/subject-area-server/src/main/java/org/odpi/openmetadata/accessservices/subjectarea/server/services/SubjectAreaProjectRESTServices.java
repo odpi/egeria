@@ -330,7 +330,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * Delete a Project instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the Project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -340,7 +340,6 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  unique identifier for requesting user, under which the request is performed
      * @param guid    guid of the Project to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -348,12 +347,11 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid) {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -363,7 +361,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = handler.deleteProject(userId, guid,isPurge);
+            response = handler.deleteProject(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

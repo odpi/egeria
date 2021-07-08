@@ -218,17 +218,15 @@ public class SubjectAreaProjectRESTResource {
      * Delete a Project instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the Project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the Project will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Project to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -238,16 +236,14 @@ public class SubjectAreaProjectRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/projects/{guid}")
     public SubjectAreaOMASAPIResponse<Project> deleteProject(@PathVariable String serverName,
                                                              @PathVariable String userId,
-                                                             @PathVariable String guid,
-                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
-    ) {
-        return restAPI.deleteProject(serverName, userId, guid, isPurge);
+                                                             @PathVariable String guid
+                                                            ) {
+        return restAPI.deleteProject(serverName, userId, guid);
     }
 
     /**

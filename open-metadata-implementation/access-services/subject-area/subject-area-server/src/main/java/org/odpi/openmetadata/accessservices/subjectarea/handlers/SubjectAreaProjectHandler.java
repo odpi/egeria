@@ -304,16 +304,14 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * The deletion of a project is only allowed if there is no project content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the project will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param userId  unique identifier for requesting user, under which the request is performed
      * @param guid    guid of the project to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -321,34 +319,30 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Project> deleteProject(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String userId, String guid) {
         final String methodName = "deleteProject";
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
-            } else {
-                response = getProjectByGuid(userId, guid);
-                if (response.head().isPresent()) {
-                    Project currentProject = response.head().get();
-                    checkReadOnly(methodName, currentProject, "delete");
-                }
-                // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
-                List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
-                if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {
-                    oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
-                } else {
-                    throw new EntityNotDeletedException(SubjectAreaErrorCode.PROJECT_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
-                            className,
-                            methodName,
-                            guid);
-                }
+            response = getProjectByGuid(userId, guid);
+            if (response.head().isPresent()) {
+                Project currentProject = response.head().get();
+                checkReadOnly(methodName, currentProject, "delete");
             }
+            // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
+            List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
+            if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {
+                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
+            } else {
+                throw new EntityNotDeletedException(SubjectAreaErrorCode.PROJECT_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
+                                                    className,
+                                                    methodName,
+                                                    guid);
+            }
+
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }

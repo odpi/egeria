@@ -195,10 +195,6 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to process the request to change the status to deleted.",
             "Correct the code in the caller to provide a valid status. Use delete call to change status to deleted."),
 
-    GUID_NOT_PURGED_ERROR(400, "OMAS-SUBJECT-AREA-400-048",
-            "Guid {0} was not deleted.",
-            "The system is unable to process to delete the userId.",
-            "Contact your administrator to review the audit log to find the cause of why this userId cannot be deleted."),
     GLOSSARY_CREATE_WITHOUT_NAME(400, "OMAS-SUBJECT-AREA-400-049",
             "Cannot create a Glossary without a name",
             "The system is unable to process the Glossary create request without a name.",

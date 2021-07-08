@@ -2,25 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
-
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-
-import java.lang.reflect.InvocationTargetException;
+;
 import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+
 
 
 /**
@@ -179,60 +172,63 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
 
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
-            Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
-            if (gotRelationship.isPresent()) {
-                checkRelationshipReadOnly(methodName, gotRelationship.get(), "update");
+            response = getRelationship(methodName, userId, clazz, relationshipGuid);
+            R storedOMASRelationship = response.results().get(0);
+            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship storedRelationship = mapper.map(storedOMASRelationship);
 
-                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship originalRelationship = gotRelationship.get();
-                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate = mapper.map(relationship);
-                relationshipToUpdate.setGUID(relationshipGuid);
+            checkRelationshipReadOnly(methodName, storedRelationship, "update");
 
-                if (relationshipToUpdate.getProperties() == null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
-                    // nothing to update.
-                    // TODO may need to change this logic if effectivity updates can be made through this call.
-                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.RELATIONSHIP_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
-                    throw new InvalidParameterException(messageDefinition, className, restAPIName, "properties", null);
-                }
+            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate = mapper.map(relationship);
+            relationshipToUpdate.setGUID(relationshipGuid);
 
-                if (!isReplace) {
-                    // copy over with effectivity dates - honour what is in the request. So null means we lose any effectivity time that are set.
-                    InstanceProperties instanceProperties = updateProperties(originalRelationship, relationshipToUpdate);
-                    if (relationship.getEffectiveFromTime() != null) {
-                        instanceProperties.setEffectiveFromTime(new Date(relationship.getEffectiveFromTime()));
-                    }
-                    if (relationship.getEffectiveToTime() != null) {
-                        instanceProperties.setEffectiveToTime(new Date(relationship.getEffectiveToTime()));
-                    }
-                    relationshipToUpdate.setProperties(instanceProperties);
-                }
-                oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
-                response = getRelationship(restAPIName, userId, clazz, relationshipGuid);
+            if (relationshipToUpdate.getProperties() != null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
+                // nothing to update.
+//                    // TODO may need to change this logic if effectivity updates can be made through this call.
+//                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.RELATIONSHIP_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
+//                    throw new InvalidParameterException(messageDefinition, className, restAPIName, "properties", null);
+            } else {
+                genericHandler.updateRelationshipProperties(userId,
+                                                            null,  // local cohort.
+                                                            null,
+                                                            relationshipGuid,
+                                                            "guid",
+                                                            mapper.getTypeName(),
+                                                            !isReplace,
+                                                            relationshipToUpdate.getProperties(),
+                                                            methodName);
             }
-        } catch (PropertyServerException | UserNotAuthorizedException | SubjectAreaCheckedException e) {
+            Date requestedEffectiveFrom = relationship.getEffectiveFromTime() == null ? null : new Date(relationship.getEffectiveFromTime());
+            Date requestedEffectiveTo = relationship.getEffectiveToTime() == null ? null : new Date(relationship.getEffectiveToTime());
+            Date storedEffectiveFrom = storedRelationship.getProperties().getEffectiveFromTime();
+            Date storedEffectiveTo = storedRelationship.getProperties().getEffectiveToTime();
+
+            if (!isReplace) {
+                // do not change the effectivity dates if null and not replacing
+                if (requestedEffectiveFrom == null && storedEffectiveFrom != null) {
+                    requestedEffectiveFrom = storedEffectiveFrom;
+                }
+                if (requestedEffectiveTo == null && storedEffectiveTo != null) {
+                    requestedEffectiveTo = storedEffectiveTo;
+                }
+            }
+
+            genericHandler.updateRelationshipEffectivityDates(userId,
+                                                              null,  // local cohort.
+                                                              null,
+                                                              relationshipGuid,
+                                                              "guid",
+                                                              mapper.getTypeName(),
+                                                              requestedEffectiveFrom,
+                                                              requestedEffectiveTo,
+                                                              methodName);
+
+            response = getRelationship(restAPIName, userId, clazz, relationshipGuid);
+
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
     }
-
-    private InstanceProperties updateProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship originalRelationship, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate) {
-            Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
-            if (originalRelationship.getProperties() != null) {
-                Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
-
-                // if there a property that already exists but is not in the update properties
-                // then make sure that value is not overwritten by including it in this update request.
-                for (String orgPropertyName : orgInstanceProperties.keySet()) {
-                    if (!updateInstanceProperties.containsKey(orgPropertyName)) {
-                        // make sure the original value is not lost.
-                        updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
-                    }
-                }
-            }
-            InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
-            instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
-
-            return instancePropertiesToUpdate;
-        }
 
     /**
      * Delete a relationship
@@ -241,8 +237,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
-     * @param guid        guid of the HAS A relationship to delete
-     * @param isPurge     true indicates a hard delete, false is a soft delete.
+     * @param guid        guid of the relationship to delete
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -252,30 +247,40 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> deleteRelationship(String restAPIName,
                                                                                      String userId,
                                                                                      Class<? extends IRelationshipMapper<R>> clazz,
-                                                                                     String guid,
-                                                                                     Boolean isPurge) {
+                                                                                     String guid) {
         final String methodName = "deleteRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
-            String typeGuid = mapper.getTypeDefGuid();
-            if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
-            } else {
-                Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
-                if (gotRelationship.isPresent()) {
-                    checkRelationshipReadOnly(methodName, gotRelationship.get(), "delete");
-                }
-                oMRSAPIHelper.callOMRSDeleteRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
-            }
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship oMRSRelationship =
+                    genericHandler.getRepositoryHandler().getRelationshipByGUID(userId, guid,
+                                                                                "guid",
+                                                                                mapper.getTypeName(),
+                                                                                restAPIName);
+
+            checkRelationshipReadOnly(methodName, oMRSRelationship, "delete");
+
+            genericHandler.unlinkElementFromElement(userId,
+                                                    false,
+                                                    null,
+                                                    null,
+                                                    oMRSRelationship.getEntityOneProxy().getGUID(),
+                                                    "end1,guid",
+                                                    oMRSRelationship.getEntityOneProxy().getType().getTypeDefName(),
+                                                    oMRSRelationship.getEntityTwoProxy().getGUID(),
+                                                    "end2,guid",
+                                                    oMRSRelationship.getEntityTwoProxy().getType().getTypeDefGUID(),
+                                                    oMRSRelationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                    oMRSRelationship.getType().getTypeDefName(),
+                                                    oMRSRelationship,
+                                                    methodName);
+        } catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -299,8 +304,6 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> restoreRelationship(String restAPIName,

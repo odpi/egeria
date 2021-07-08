@@ -243,9 +243,8 @@ public class SubjectAreaRESTServicesInstance {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest API name
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param clazz       mapper Class
+     * @param clazz      mapper Class
      * @param guid       guid of the HAS A relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -253,17 +252,15 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
     public <L extends Relationship> SubjectAreaOMASAPIResponse<L> deleteRelationship(String serverName,
                                                                                      String restAPIName,
                                                                                      String userId,
                                                                                      Class<? extends IRelationshipMapper<L>> clazz,
-                                                                                     String guid,
-                                                                                     Boolean isPurge)
+                                                                                     String guid)
     {
 
         if (log.isDebugEnabled()) {
@@ -274,7 +271,7 @@ public class SubjectAreaRESTServicesInstance {
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.deleteRelationship(restAPIName, userId, clazz, guid, isPurge);
+            response = handler.deleteRelationship(restAPIName, userId, clazz, guid);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);

@@ -279,17 +279,15 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * Delete a Term instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the term will not exist after the operation.
-     * when not successful the following Exception responses can occur
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid    guid of the term to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -299,10 +297,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String serverName, String userId, String guid)
     {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
@@ -313,7 +310,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            response = handler.deleteTerm(userId, guid, isPurge);
+            response = handler.deleteTerm(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

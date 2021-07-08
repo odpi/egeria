@@ -609,7 +609,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateRelationshipEffectivityDates(String userId,
+    public void updateRelationshipEffectivityDates(String userId,
                                                       String externalSourceGUID,
                                                       String externalSourceName,
                                                       String relationshipGUID,

@@ -187,8 +187,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             //if the entity is created, but subsequently an error occurred while creating the relationship
             if (createdTermGuid != null) {
-                deleteTerm(userId, createdTermGuid, false);
-                deleteTerm(userId, createdTermGuid, true);
+                deleteTerm(userId, createdTermGuid);
             }
             response.setExceptionInfo(e, className);
         }
@@ -616,16 +615,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the term will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the term to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -635,10 +632,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String userId, String guid) {
         final String methodName = "deleteTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
@@ -646,22 +642,19 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 Term termToBeDeleted = response.head().get();
                 checkReadOnly(methodName, termToBeDeleted, "delete");
             }
-            if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, TERM_TYPE_NAME, guid);
-            } else {
-                genericHandler.deleteBeanInRepository(userId,
-                                                      null,
-                                                      null,
-                                                      guid,
-                                                      "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                      null,
-                                                      null,
-                                                      methodName);
-            }
+            genericHandler.deleteBeanInRepository(userId,
+                                                  null,
+                                                  null,
+                                                  guid,
+                                                  "guid",
+                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                  null,
+                                                  null,
+                                                  methodName);
 
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e ) {
+
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e ) {
             response.setExceptionInfo(e, className);
         }
         return response;

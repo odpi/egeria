@@ -154,8 +154,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             //if the entity is created, but subsequently an error occurred while creating the relationship
             if (createdCategoryGuid != null) {
-                deleteCategory(userId, createdCategoryGuid, false);
-                deleteCategory(userId, createdCategoryGuid, true);
+                deleteCategory(userId, createdCategoryGuid);
             }
             response.setExceptionInfo(e, className);
         }
@@ -400,10 +399,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String userId, String guid) {
         final String methodName = "deleteCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -413,21 +411,17 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 Category categoryToBeDeleted = response.head().get();
                 checkReadOnly(methodName, categoryToBeDeleted, "delete");
             }
-            if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, CATEGORY_TYPE_NAME, guid);
-            } else {
-                genericHandler.deleteBeanInRepository(userId,
-                                                      null,
-                                                      null,
-                                                      guid,
-                                                      "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                      null,
-                                                      null,
-                                                      methodName);
-            }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            genericHandler.deleteBeanInRepository(userId,
+                                                  null,
+                                                  null,
+                                                  guid,
+                                                  "guid",
+                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                  null,
+                                                  null,
+                                                  methodName);
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -471,7 +465,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param searchCriteria String expression to match the categorized Term property values.
      * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
      * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
-     * @param startingFrom   the starting element number for this set of results.  This is used when retrieving elements
      * @param termHandler    term handler
      * @param startingFrom   initial position in the stored list.
      * @param pageSize       maximum number of definitions to return on this call.

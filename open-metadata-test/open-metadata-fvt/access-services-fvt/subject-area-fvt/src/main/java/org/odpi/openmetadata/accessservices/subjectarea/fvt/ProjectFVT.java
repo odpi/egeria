@@ -125,9 +125,6 @@ public class ProjectFVT
         System.out.println("Delete the project again");
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        //TODO - delete a deletedProject should fail
-        System.out.println("Purge a project");
-        purgeProject(guid);
         System.out.println("Create project with the same name as a deleted one");
         project = createProject(serverName + " " + DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
@@ -244,10 +241,6 @@ public class ProjectFVT
         return restoredProject;
     }
 
-    public  void purgeProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaProject.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
-    }
     public List<Relationship> getProjectRelationships(Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaProject.getAllRelationships(this.userId, project.getSystemAttributes().getGUID());
     }
