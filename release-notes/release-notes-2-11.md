@@ -117,6 +117,13 @@ The following changes have been made to the open metadata types:
   
   See new type descriptions in model [0537](../open-metadata-publication/website/open-metadata-types/0537-Display-Schemas.md).
 
+* Deprecated type called **TermISATypeOFRelationship** because the ends are defined the wrong way round. When visualising 
+end1 should point to end2. This relationship incorrectly has the super type pointing to the subtype. Use **IsATypeOfRelationship**
+instead.  
+
+* New type **IsATypeOfRelationship** to represent an is-a-type-of relationship between two spine objects. 
+
+
 ### Bug fixes and other updates
 
 * Additional Bug Fixes
