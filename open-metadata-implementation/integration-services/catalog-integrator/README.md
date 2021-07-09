@@ -35,7 +35,8 @@ Open Metadata Access Service (OMAS).
 
 
 ----
-Return to the [Integration Services](..)
+
+* Return to the [Integration Services](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

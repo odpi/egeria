@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
     private static final String schemaTypeURLTemplatePrefix      = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-types";
     private static final String validValueSetsURLTemplatePrefix  = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/valid-value-sets";
     private static final String schemaAttributeURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-attributes";
+    private static final String schemaElementURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-elements";
 
     String   serverName;               /* Initialized in constructor */
     String   serverPlatformURLRoot;    /* Initialized in constructor */
@@ -210,9 +212,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -223,9 +224,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createPrimitiveSchemaType(String                        userId,
-                                            String                        schemaManagerGUID,
-                                            String                        schemaManagerName,
-                                            boolean                       schemaManagerIsHome,
+                                            String                        externalSourceGUID,
+                                            String                        externalSourceName,
                                             PrimitiveSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
@@ -238,19 +238,18 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/primitives?schemaManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/primitives";
 
         PrimitiveSchemaTypeRequestBody requestBody = new PrimitiveSchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  schemaManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -260,9 +259,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema type that has a fixed value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -273,9 +271,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createLiteralSchemaType(String                      userId,
-                                          String                      schemaManagerGUID,
-                                          String                      schemaManagerName,
-                                          boolean                     schemaManagerIsHome,
+                                          String                      externalSourceGUID,
+                                          String                      externalSourceName,
                                           LiteralSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
@@ -288,19 +285,18 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/literals?schemaManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/literals";
 
         LiteralSchemaTypeRequestBody requestBody = new LiteralSchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  schemaManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -310,9 +306,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      * @param validValuesSetGUID unique identifier of the valid values set to used
      *
@@ -324,9 +319,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createEnumSchemaType(String                   userId,
-                                       String                   schemaManagerGUID,
-                                       String                   schemaManagerName,
-                                       boolean                  schemaManagerIsHome,
+                                       String                   externalSourceGUID,
+                                       String                   externalSourceName,
                                        EnumSchemaTypeProperties schemaTypeProperties,
                                        String                   validValuesSetGUID) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -342,20 +336,19 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateGUID(validValuesSetGUID, validValueSetGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/enums/valid-values/{2}?schemaManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/enums/valid-values/{2}";
 
         EnumSchemaTypeRequestBody requestBody = new EnumSchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  validValuesSetGUID,
-                                                                  schemaManagerIsHome);
+                                                                  validValuesSetGUID);
 
         return restResult.getGUID();
     }
@@ -453,9 +446,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -466,9 +458,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createStructSchemaType(String                     userId,
-                                         String                     schemaManagerGUID,
-                                         String                     schemaManagerName,
-                                         boolean                    schemaManagerIsHome,
+                                         String                     externalSourceGUID,
+                                         String                     externalSourceName,
                                          StructSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
@@ -481,19 +472,18 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/structs?schemaManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/structs";
 
         StructSchemaTypeRequestBody requestBody = new StructSchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  schemaManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -503,9 +493,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -516,9 +505,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createSchemaTypeChoice(String                     userId,
-                                         String                     schemaManagerGUID,
-                                         String                     schemaManagerName,
-                                         boolean                    schemaManagerIsHome,
+                                         String                     externalSourceGUID,
+                                         String                     externalSourceName,
                                          SchemaTypeChoiceProperties schemaTypeProperties,
                                          List<String>               schemaTypeOptionGUIDs) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
@@ -534,20 +522,19 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(schemaTypeOptionGUIDs, optionGUIDsParameterName, methodName);
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/choices?schemaManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/choices";
 
         SchemaTypeChoiceRequestBody requestBody = new SchemaTypeChoiceRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setSchemaTypeOptionGUIDs(schemaTypeOptionGUIDs);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  schemaManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -557,10 +544,11 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
+     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
      *
      * @return unique identifier of the new schema type
      *
@@ -570,9 +558,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createMapSchemaType(String                  userId,
-                                      String                  schemaManagerGUID,
-                                      String                  schemaManagerName,
-                                      boolean                 schemaManagerIsHome,
+                                      String                  externalSourceGUID,
+                                      String                  externalSourceName,
                                       MapSchemaTypeProperties schemaTypeProperties,
                                       String                  mapFromSchemaTypeGUID,
                                       String                  mapToSchemaTypeGUID) throws InvalidParameterException,
@@ -591,12 +578,12 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateGUID(mapToSchemaTypeGUID, toGUIDParameterName, methodName);
         invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/maps/from/{2}/to/{3}?schemaManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/maps/from/{2}/to/{3}";
 
         MapSchemaTypeRequestBody requestBody = new MapSchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -604,8 +591,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                                                                   serverName,
                                                                   userId,
                                                                   mapFromSchemaTypeGUID,
-                                                                  mapToSchemaTypeGUID,
-                                                                  schemaManagerIsHome);
+                                                                  mapToSchemaTypeGUID);
 
         return restResult.getGUID();
     }
@@ -615,9 +601,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -629,9 +614,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createSchemaTypeFromTemplate(String             userId,
-                                               String             schemaManagerGUID,
-                                               String             schemaManagerName,
-                                               boolean            schemaManagerIsHome,
+                                               String             externalSourceGUID,
+                                               String             externalSourceName,
                                                String             templateGUID,
                                                TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -647,20 +631,19 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/from-template/{2}?schemaManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/from-template/{2}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID,
-                                                                  schemaManagerIsHome);
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }
@@ -671,8 +654,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * set up specialized properties in extended properties.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaTypeProperties new properties for the metadata element
@@ -683,8 +666,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void updateSchemaType(String               userId,
-                                 String               schemaManagerGUID,
-                                 String               schemaManagerName,
+                                 String               externalSourceGUID,
+                                 String               externalSourceName,
                                  String               schemaTypeGUID,
                                  boolean              isMergeUpdate,
                                  SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
@@ -699,14 +682,18 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/update?isMergeUpdate={3}";
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody(schemaTypeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -724,8 +711,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Remove the metadata element representing a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -734,8 +721,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void removeSchemaType(String userId,
-                                 String schemaManagerGUID,
-                                 String schemaManagerName,
+                                 String externalSourceGUID,
+                                 String externalSourceName,
                                  String schemaTypeGUID) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
@@ -750,8 +737,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -780,8 +767,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public List<SchemaTypeElement> findSchemaType(String userId,
-                                                  String searchString,
                                                   String typeName,
+                                                  String searchString,
                                                   int    startFrom,
                                                   int    pageSize) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -976,7 +963,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/Parent";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/parent";
 
         ElementStubResponse restResult = restClient.callElementStubGetRESTCall(methodName,
                                                                                urlTemplate,
@@ -996,9 +983,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is nested underneath
      * @param schemaAttributeProperties properties for the schema attribute
      *
@@ -1010,9 +996,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createSchemaAttribute(String                    userId,
-                                        String                    schemaManagerGUID,
-                                        String                    schemaManagerName,
-                                        boolean                   schemaManagerIsHome,
+                                        String                    externalSourceGUID,
+                                        String                    externalSourceName,
                                         String                    schemaElementGUID,
                                         SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
@@ -1028,7 +1013,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/attached-to/{2}?schemaManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/attached-to/{2}";
 
         if (schemaAttributeProperties.getTypeName() == null)
         {
@@ -1037,16 +1022,15 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
 
         SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody(schemaAttributeProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  schemaElementGUID,
-                                                                  schemaManagerIsHome);
+                                                                  schemaElementGUID);
 
         return restResult.getGUID();
     }
@@ -1056,9 +1040,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -1071,9 +1054,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public String createSchemaAttributeFromTemplate(String             userId,
-                                                    String             schemaManagerGUID,
-                                                    String             schemaManagerName,
-                                                    boolean            schemaManagerIsHome,
+                                                    String             externalSourceGUID,
+                                                    String             externalSourceName,
                                                     String             schemaElementGUID,
                                                     String             templateGUID,
                                                     TemplateProperties templateProperties) throws InvalidParameterException,
@@ -1092,12 +1074,12 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/from-template/{2}/attached-to/{3}?schemaManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/from-template/{2}/attached-to/{3}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
-        requestBody.setExternalSourceGUID(schemaManagerGUID);
-        requestBody.setExternalSourceName(schemaManagerName);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1105,8 +1087,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                                                                   serverName,
                                                                   userId,
                                                                   templateGUID,
-                                                                  schemaElementGUID,
-                                                                  schemaManagerIsHome);
+                                                                  schemaElementGUID);
 
         return restResult.getGUID();
     }
@@ -1116,34 +1097,62 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Connect a schema type to a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param relationshipTypeName name of relationship to create
      * @param schemaAttributeGUID unique identifier of the schema attribute
      * @param schemaTypeGUID unique identifier of the schema type to connect
+     *
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupSchemaType(String userId,
-                                String schemaManagerGUID,
-                                String schemaManagerName,
-                                String schemaAttributeGUID,
-                                String schemaTypeGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupSchemaType(String  userId,
+                                String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  relationshipTypeName,
+                                String  schemaAttributeGUID,
+                                String  schemaTypeGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
+        final String methodName                        = "setupSchemaType";
+        final String schemaAttributeGUIDParameterName  = "schemaAttributeGUID";
+        final String schemaTypeGUIDParameterName       = "schemaTypeGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/schema-types/{3}/relationship-type-name/{4}";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID,
+                                        schemaTypeGUID,
+                                        relationshipTypeName);
 
     }
 
 
     /**
-     * Remove the type information from a schema attribute.
+     * Remove the linked schema types from a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the schema attribute
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1151,14 +1160,32 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearSchemaType(String userId,
-                                String schemaManagerGUID,
-                                String schemaManagerName,
-                                String schemaAttributeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearSchemaTypes(String userId,
+                                 String externalSourceGUID,
+                                 String externalSourceName,
+                                 String schemaAttributeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
+        final String methodName                       = "clearSchemaTypes";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/schema-types/remove";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
     }
 
 
@@ -1166,8 +1193,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Update the properties of the metadata element representing a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaAttributeProperties new properties for the schema attribute
@@ -1178,15 +1205,42 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void updateSchemaAttribute(String                    userId,
-                                      String                    schemaManagerGUID,
-                                      String                    schemaManagerName,
+                                      String                    externalSourceGUID,
+                                      String                    externalSourceName,
                                       String                    schemaAttributeGUID,
                                       boolean                   isMergeUpdate,
                                       SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
+        final String methodName                  = "updateSchemaAttribute";
+        final String elementGUIDParameterName    = "schemaAttributeGUID";
+        final String propertiesParameterName     = "schemaAttributeProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/update?isMergeUpdate={3}";
+
+        SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody(schemaAttributeProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -1194,8 +1248,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Remove the metadata element representing a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1204,13 +1258,31 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void removeSchemaAttribute(String userId,
-                                      String schemaManagerGUID,
-                                      String schemaManagerName,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
                                       String schemaAttributeGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
+        final String methodName                  = "removeSchemaAttribute";
+        final String elementGUIDParameterName    = "schemaAttributeGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/remove";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
     }
 
 
@@ -1248,7 +1320,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-search-string/{3}?startFrom={4}&pageSize={5}";
 
-        String requestTypeName = "SchemaAttribute";
+        String requestTypeName = schemaAttributeTypeName;
 
         if (typeName != null)
         {
@@ -1290,7 +1362,25 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return null;
+        final String methodName                  = "getNestedAttributes";
+        final String elementGUIDParameterName    = "schemaAttributeGUID";
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentSchemaElementGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/nested-attributes";
+
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         parentSchemaElementGUID,
+                                                                                         startFrom,
+                                                                                         validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -1328,7 +1418,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-name/{3}?startFrom={4}&pageSize={5}";
 
-        String requestTypeName = "SchemaAttribute";
+        String requestTypeName = schemaAttributeTypeName;
 
         if (typeName != null)
         {
@@ -1393,9 +1483,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Classify the schema element to indicate that it describes a calculated value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param formula formula for calculating the value - this may contain placeholders that are identified by the
      *                queryIds used in the queryTarget relationships
@@ -1406,15 +1495,35 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void setupCalculatedValue(String  userId,
-                                     String  schemaManagerGUID,
-                                     String  schemaManagerName,
-                                     boolean schemaManagerIsHome,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
                                      String  schemaElementGUID,
                                      String  formula) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
+        final String methodName                     = "setupCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+        final String formulaParameterName           = "formula";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(formula, formulaParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/calculated-value";
+
+        FormulaRequestBody requestBody = new FormulaRequestBody();
+
+        requestBody.setFormula(formula);
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
     }
 
 
@@ -1422,8 +1531,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Remove the calculated value designation from the schema element.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the metadata element to update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1432,13 +1541,31 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void clearCalculatedValue(String userId,
-                                     String schemaManagerGUID,
-                                     String schemaManagerName,
+                                     String externalSourceGUID,
+                                     String externalSourceName,
                                      String schemaElementGUID) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
+        final String methodName                     = "clearCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/calculated-value/remove";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
     }
 
 
@@ -1447,9 +1574,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * data values to calculate a derived value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      * @param queryTargetProperties properties for the query target relationship
@@ -1460,9 +1586,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void setupQueryTargetRelationship(String                                 userId,
-                                             String                                 schemaManagerGUID,
-                                             String                                 schemaManagerName,
-                                             boolean                                schemaManagerIsHome,
+                                             String                                 externalSourceGUID,
+                                             String                                 externalSourceName,
                                              String                                 derivedElementGUID,
                                              String                                 queryTargetGUID,
                                              DerivedSchemaTypeQueryTargetProperties queryTargetProperties) throws InvalidParameterException,
@@ -1470,7 +1595,28 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                                                                                                                   PropertyServerException
 
     {
+        final String methodName                     = "setupQueryTargetRelationship";
+        final String schemaElementGUIDParameterName = "derivedElementGUID";
+        final String queryTargetGUIDParameterName   = "queryTargetGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(derivedElementGUID, schemaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(queryTargetGUID, queryTargetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/query-targets/{3}";
+
+        DerivedSchemaTypeQueryTargetRequestBody requestBody = new DerivedSchemaTypeQueryTargetRequestBody(queryTargetProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        derivedElementGUID,
+                                        queryTargetGUID);
     }
 
 
@@ -1478,8 +1624,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Update the relationship properties for the query target.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      * @param queryTargetProperties properties for the query target relationship
@@ -1490,15 +1636,36 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void updateQueryTargetRelationship(String                                 userId,
-                                              String                                 schemaManagerGUID,
-                                              String                                 schemaManagerName,
+                                              String                                 externalSourceGUID,
+                                              String                                 externalSourceName,
                                               String                                 derivedElementGUID,
                                               String                                 queryTargetGUID,
                                               DerivedSchemaTypeQueryTargetProperties queryTargetProperties) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException
     {
+        final String methodName                     = "updateQueryTargetRelationship";
+        final String schemaElementGUIDParameterName = "derivedElementGUID";
+        final String queryTargetGUIDParameterName   = "queryTargetGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(derivedElementGUID, schemaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(queryTargetGUID, queryTargetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/query-targets/{3}/update";
+
+        DerivedSchemaTypeQueryTargetRequestBody requestBody = new DerivedSchemaTypeQueryTargetRequestBody(queryTargetProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        derivedElementGUID,
+                                        queryTargetGUID);
     }
 
 
@@ -1506,8 +1673,8 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Remove the query target relationship between two schema elements.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      *
@@ -1517,13 +1684,34 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      */
     @Override
     public void clearQueryTargetRelationship(String userId,
-                                             String schemaManagerGUID,
-                                             String schemaManagerName,
+                                             String externalSourceGUID,
+                                             String externalSourceName,
                                              String derivedElementGUID,
                                              String queryTargetGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
+        final String methodName                     = "clearQueryTargetRelationship";
+        final String schemaElementGUIDParameterName = "derivedElementGUID";
+        final String queryTargetGUIDParameterName   = "queryTargetGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(derivedElementGUID, schemaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(queryTargetGUID, queryTargetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/query-targets/{3}/remove";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        derivedElementGUID,
+                                        queryTargetGUID);
     }
 }

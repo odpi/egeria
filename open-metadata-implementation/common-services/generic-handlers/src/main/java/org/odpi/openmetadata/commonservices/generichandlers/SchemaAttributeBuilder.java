@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class SchemaAttributeBuilder extends ReferenceableBuilder
 {
-    private String            displayName;
-    private String            description;
+    private String            displayName           = null;
+    private String            description           = null;
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;
@@ -66,6 +66,25 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
+    }
+
+
+    /**
+     * Template constructor
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public SchemaAttributeBuilder(OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName)
+    {
+        super(OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+              repositoryHelper,
+              serviceName,
+              serverName);
     }
 
 
@@ -254,8 +273,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    private InstanceProperties getCalculatedValueProperties(String formula,
-                                                            String methodName)
+    public InstanceProperties getCalculatedValueProperties(String formula,
+                                                           String methodName)
     {
         InstanceProperties properties = null;
 

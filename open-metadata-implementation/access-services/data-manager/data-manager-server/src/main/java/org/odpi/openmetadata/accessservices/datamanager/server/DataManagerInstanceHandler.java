@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
+import org.odpi.openmetadata.accessservices.datamanager.converters.ElementStubConverter;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -9,8 +10,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+
 
 class DataManagerInstanceHandler extends OMASServiceInstanceHandler
 {
@@ -22,6 +22,36 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
         super(AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName());
 
         DataManagerOMASRegistration.registerAccessService();
+    }
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getElementStubConverter();
+        }
+
+        return null;
     }
 
 
@@ -39,8 +69,8 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
     SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
                                                                                                         String serverName,
                                                                                                         String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                         UserNotAuthorizedException,
-                                                                                                                                         PropertyServerException
+                                                                                                                                            UserNotAuthorizedException,
+                                                                                                                                            PropertyServerException
     {
         DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                            serverName,
@@ -351,6 +381,68 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
+    SchemaAttributeHandler<DataContainerElement, SchemaTypeElement> getDataContainerHandler(String userId,
+                                                                                            String serverName,
+                                                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                PropertyServerException
+    {
+
+        DataManagerServicesInstance instance = (DataManagerServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                            serverName,
+                                                                                                            serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataContainerHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    SchemaAttributeHandler<DataFieldElement, SchemaTypeElement> getDataFieldHandler(String userId,
+                                                                                    String serverName,
+                                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+
+        DataManagerServicesInstance instance = (DataManagerServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                            serverName,
+                                                                                                            serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataFieldHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
     SchemaTypeHandler<SchemaTypeElement> getSchemaTypeHandler(String userId,
                                                               String serverName,
                                                               String serviceOperationName) throws InvalidParameterException,
@@ -396,6 +488,43 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getSchemaAttributeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ValidValuesHandler<ValidValueSetElement,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean> getValidValuesHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getValidValuesHandler();
         }
 
         return null;

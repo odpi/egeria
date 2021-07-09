@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * FileSystemConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a FileSystemElement bean.
@@ -53,7 +55,7 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof FileSystemElement)
             {
@@ -100,7 +102,7 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

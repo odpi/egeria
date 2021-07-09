@@ -372,6 +372,102 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
 
 
     /**
+     * Create information about an application.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param applicationProperties description of the application (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the application's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String  createApplication(String                userId,
+                                     String                externalSourceGUID,
+                                     String                externalSourceName,
+                                     ApplicationProperties applicationProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName                  = "createApplication";
+        final String propertiesParameterName     = "applicationProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(applicationProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(applicationProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ApplicationRequestBody requestBody = new ApplicationRequestBody(applicationProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/applications";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create information about a data processing engine - set up typeName in the properties to create sub types such as
+     * ReportingEngine, WorkflowEngine, AnalyticsEngine, DataMovementEngine or DataVirtualizationEngine.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param engineProperties description of the engine (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the engine's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String  createDataProcessingEngine(String                         userId,
+                                              String                         externalSourceGUID,
+                                              String                         externalSourceName,
+                                              DataProcessingEngineProperties engineProperties) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                  = "createDataProcessingEngine";
+        final String propertiesParameterName     = "engineProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(engineProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(engineProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        DataProcessingEngineRequestBody requestBody = new DataProcessingEngineRequestBody(engineProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-processing-engines";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
      * Retrieve the unique identifier of the data manager.
      *
      * @param userId calling user
