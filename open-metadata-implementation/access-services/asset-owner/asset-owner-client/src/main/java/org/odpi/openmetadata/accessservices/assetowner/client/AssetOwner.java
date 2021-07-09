@@ -962,6 +962,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
+    @Deprecated
     public void updateAssetOwner(String    userId,
                                  String    assetGUID,
                                  String    ownerId,

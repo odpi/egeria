@@ -156,7 +156,7 @@ public class ConnectorBroker
         try
         {
             Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-            Object     potentialConnectorProvider = connectorProviderClass.newInstance();
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
             connectorProvider = (ConnectorProvider)potentialConnectorProvider;
         }

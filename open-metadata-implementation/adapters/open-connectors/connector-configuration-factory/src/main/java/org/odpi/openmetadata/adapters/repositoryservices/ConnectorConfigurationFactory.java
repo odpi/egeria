@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
@@ -401,8 +402,10 @@ public class ConnectorConfigurationFactory
     public Connection getRepositoryConnection(String              connectorProviderClassName,
                                               String              url,
                                               Map<String, Object> configurationProperties) throws ClassNotFoundException,
-                                                                                                        InstantiationException,
-                                                                                                        IllegalAccessException
+                                                                                                  InstantiationException,
+                                                                                                  IllegalAccessException,
+                                                                                                  NoSuchMethodException,
+                                                                                                  InvocationTargetException
     {
         Endpoint endpoint = new Endpoint();
 
@@ -724,7 +727,9 @@ public class ConnectorConfigurationFactory
                                                          Map<String, Object> configurationProperties,
                                                          String              eventSource) throws ClassNotFoundException,
                                                                                                  InstantiationException,
-                                                                                                 IllegalAccessException
+                                                                                                 IllegalAccessException,
+                                                                                                 NoSuchMethodException,
+                                                                                                 InvocationTargetException
     {
         Endpoint endpoint = new Endpoint();
 
@@ -782,14 +787,16 @@ public class ConnectorConfigurationFactory
      */
     private ConnectorType getDynamicConnectorType(String connectorProviderClassName) throws ClassNotFoundException,
                                                                                             InstantiationException,
-                                                                                            IllegalAccessException
+                                                                                            IllegalAccessException,
+                                                                                            NoSuchMethodException,
+                                                                                            InvocationTargetException
     {
         ConnectorType  connectorType = null;
 
         if (connectorProviderClassName != null)
         {
                 Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-                Object     potentialConnectorProvider = connectorProviderClass.newInstance();
+                Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
                 ConnectorProvider  connectorProvider = (ConnectorProvider)potentialConnectorProvider;
 
