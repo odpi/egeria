@@ -106,14 +106,20 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
     public String toString()
     {
         return "FileSystemProperties{" +
-                "format='" + format + '\'' +
-                ", encryption='" + encryption + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "format='" + format + '\'' +
+                       ", encryption='" + encryption + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", version='" + getVersion() + '\'' +
+                       ", patchLevel='" + getPatchLevel() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

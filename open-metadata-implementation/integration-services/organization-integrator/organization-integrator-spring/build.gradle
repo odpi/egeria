@@ -16,7 +16,7 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations'
 }
 
-description = 'File Integrator OMIS with Spring'
+description = 'Organization Integrator OMIS with Spring'
 
 java {
     withJavadocJar()

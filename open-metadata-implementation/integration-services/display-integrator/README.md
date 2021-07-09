@@ -96,10 +96,31 @@ linked to the structure using the
 [NestedSchemaAttribute](../../../open-metadata-publication/website/open-metadata-types/0505-Schema-Attributes.png) relationship.
 
 
+
 ## Module Implementation
 
-This module is not implemented yet.
+The modules are as follows:
 
+* [display-integrator-api](display-integrator-api) - defines the interface for an integration
+connector that is supported by the Display Integrator OMIS.  This includes the implementation
+of the context that wraps the Data Manager OMAS's clients.
+
+* [display-integrator-server](display-integrator-server) - implements the context manager for
+the Analytics Integrator OMIS.
+
+* [display-integrator-spring](display-integrator-spring) - implements a rest API for validating that a specific
+integration connector is able to run under this service.
+
+* [display-integrator-client](display-integrator-client) - implements a Java client for the REST API.
+
+
+This integration service is paired with the [Data Manager](../../access-services/data-manager)
+Open Metadata Access Service (OMAS).
+
+
+----
+
+* Return to the [integration services](..)
 
 
 

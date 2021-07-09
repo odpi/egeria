@@ -84,6 +84,20 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return an instance properties that only contains the properties that uniquely identify the entity.
+     * This is used when creating entity proxies.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @param allProperties all of the instance's properties
+     * @return just the unique properties
+     */
+    InstanceProperties getUniqueProperties(String              sourceName,
+                                           String              typeName,
+                                           InstanceProperties  allProperties);
+
+
+    /**
      * Return the attribute name for the related entity.
      *
      * @param sourceName  source of the request (used for logging)

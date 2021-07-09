@@ -17,6 +17,7 @@ import static org.testng.Assert.assertTrue;
 /**
  * PrimitivePropertyValueTest provides test of PrimitivePropertyValue
  */
+@SuppressWarnings(value = "deprecation")
 public class PrimitivePropertyValueTest
 {
     private InstancePropertyCategory category           = InstancePropertyCategory.PRIMITIVE;

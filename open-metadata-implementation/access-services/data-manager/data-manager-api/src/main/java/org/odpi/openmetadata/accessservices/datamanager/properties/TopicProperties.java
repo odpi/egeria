@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -39,15 +41,30 @@ public class TopicProperties extends DataSetProperties
     public TopicProperties(TopicProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            topicType = template.getTopicType();
+        }
     }
 
 
+    /**
+     * Return the type of topic.  Often this the type of data that can be placed on the topic.
+     *
+     * @return type name
+     */
     public String getTopicType()
     {
         return topicType;
     }
 
 
+    /**
+     * Set up the type of topic.  Often this the type of data that can be placed on the topic.
+     *
+     * @param topicType type name
+     */
     public void setTopicType(String topicType)
     {
         this.topicType = topicType;
@@ -62,14 +79,53 @@ public class TopicProperties extends DataSetProperties
     @Override
     public String toString()
     {
-        return "DatabaseSchemaProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+        return "TopicProperties{" +
+                       "topicType='" + topicType + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        TopicProperties that = (TopicProperties) objectToCompare;
+        return Objects.equals(topicType, that.topicType);
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), topicType);
     }
 }

@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * EventBrokerRESTServices is the server-side implementation of the Data Manager OMAS's
- * support for relational topics.  It matches the EventBrokerClient.
+ * support for topics.  It matches the EventBrokerClient.
  */
 public class EventBrokerRESTServices
 {

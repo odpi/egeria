@@ -14,6 +14,7 @@ connectors inside the integration daemon.
 The integration services available today are:
 
 * [API Integrator](api-integrator) - provides cataloguing for APIs.
+* [Analytics Integrator](analytics-integrator) - provides cataloguing for Analytics tools.
 * [Catalog Integrator](catalog-integrator) - provides a two-way synchronization for data catalogs.
 * [Database Integrator](database-integrator) - provides metadata extraction from relational databases.
 * [Display Integrator](display-integrator) - provides metadata extraction from systems that provide user displays and forms to capture new data values.
