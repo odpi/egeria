@@ -354,6 +354,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
     }
 
+
     /**
      * Set up the unique Id for this metadata collection.
      *
