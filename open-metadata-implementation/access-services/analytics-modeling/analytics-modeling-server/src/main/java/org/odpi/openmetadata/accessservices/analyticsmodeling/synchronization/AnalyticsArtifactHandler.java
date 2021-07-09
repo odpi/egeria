@@ -24,11 +24,11 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.co
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -98,21 +98,20 @@ public class AnalyticsArtifactHandler {
 	 * Create assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
-	 * @param input definition of analytic artifact.
+	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
-	public ResponseContainerAssets createAssets(String user, String serverCapability, String input)
-			throws AnalyticsModelingCheckedException
+	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
 		
-		ObjectMapper mapper = new ObjectMapper();
 		List<String> guids = new ArrayList<>();
 		
 		try {
-			AnalyticsAsset asset = mapper.readValue(input, AnalyticsAsset.class);
 			
 			if (AnalyticsAssetUtils.hasMetadataModule(asset) || !AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createModuleAsset(asset));
@@ -121,14 +120,7 @@ public class AnalyticsArtifactHandler {
 			if (AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createVisualizationAsset(asset));
 			}
-			
-		} catch (JsonProcessingException ex) {
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.INCORRECT_ARTIFACT_DEFINITION.getMessageDefinition(input),
-					this.getClass().getSimpleName(),
-					methodName,
-					ex);
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_CREATE_ARTIFACT.getMessageDefinition(),
 					this.getClass().getSimpleName(),
@@ -472,7 +464,7 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		AnalyticsMetadata containerOld = analyticsMetadataConverter.getNewBean(entity, methodName);
-		container.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(container);
 		
 		if (!container.equals(containerOld)) {
 			metadataHandler.updateSchemaAttribute(ctx.getUserId(), ssc.getGUID(), ssc.getSource(), entity.getGUID(),
@@ -604,7 +596,7 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		AnalyticsMetadata itemOld = analyticsMetadataConverter.getNewBean(entity, methodName);
-		item.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(item);
 		item.setGuid(entity.getGUID());	// after update the item has entity
 
 		if (!item.equals(itemOld)) {
@@ -683,14 +675,14 @@ public class AnalyticsArtifactHandler {
 		}
 		
 		for (int i = 0; i < metadata.size(); ) {
-			String srcGUID = metadata.get(0);
+			String srcGUID = metadata.get(i);
 			try {
 				ctx.getRepositoryHandler().createRelationship(
 						ctx.getUserId(), 
 						IdMap.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
 						ctx.getServerSoftwareCapability().getGUID(), ctx.getServerSoftwareCapability().getSource(),
 						item.getGuid(), srcGUID, null, methodName);
-				metadata.remove(0);	// relationship replaced the GUID
+				metadata.remove(i);	// relationship replaced the GUID
 			} catch (UserNotAuthorizedException | PropertyServerException e) {
 				// log warning in execution context
 				++i;	// leave GUID for relationship which was not created
@@ -773,7 +765,7 @@ public class AnalyticsArtifactHandler {
 	{
 		String methodName = "createAnalyticsMetadataBuilder";
 
-		src.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(src);
 
         AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(src, null, ctx);
 		
@@ -783,7 +775,7 @@ public class AnalyticsArtifactHandler {
 
         if (bCreate) {
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(src.getQualifiedName(),
-            		IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+            		IdMap.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID, IdMap.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
                     ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
     		
     		builder.setSchemaType(ctx.getUserId(), schemaTypeBuilder, methodName);
@@ -799,9 +791,10 @@ public class AnalyticsArtifactHandler {
 	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
@@ -827,7 +820,7 @@ public class AnalyticsArtifactHandler {
 				guids.add(updateVisualizationAsset(asset));
 			}
 			
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_UPDATE_ARTIFACT.getMessageDefinition(user, asset.getQualifiedName(), ex.getLocalizedMessage()),
 					this.getClass().getSimpleName(),
@@ -1072,6 +1065,13 @@ public class AnalyticsArtifactHandler {
 		AnalyticsAsset assetRepo = assetHandler.getBeanByQualifiedName(
 				ctx.getUserId(), assetTypeGuid, assetTypeName, asset.getQualifiedName(), Constants.QUALIFIED_NAME, methodName);
 
+		if (assetRepo == null) {
+		    throw new AnalyticsModelingCheckedException(
+		    		AnalyticsModelingErrorCode.FAILED_UPDATE_UNKNOWN_ARTIFACT.getMessageDefinition(ctx.getUserId(), asset.getUid()),
+					this.getClass().getSimpleName(),
+					methodName);
+		}
+		
 		asset.setGuid(assetRepo.getGuid());	// asset is new definition of the assetRepo
 		
 		// update relationships for referenced assets
@@ -1186,9 +1186,10 @@ public class AnalyticsArtifactHandler {
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
 	 * @throws AnalyticsModelingCheckedException in case of error.
+	 * @throws UserNotAuthorizedException 
 	 */
 	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
-			throws AnalyticsModelingCheckedException 
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException 
 	{
 		String methodName = "deleteAssets";
 		ctx.initializeSoftwareServerCapability(userId, serverCapability);
@@ -1222,7 +1223,7 @@ public class AnalyticsArtifactHandler {
 
 			}
 			
-		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+		} catch (InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_DELETE_ARTIFACT.getMessageDefinition(userId, identifier, ex.getLocalizedMessage()),
 					this.getClass().getSimpleName(),

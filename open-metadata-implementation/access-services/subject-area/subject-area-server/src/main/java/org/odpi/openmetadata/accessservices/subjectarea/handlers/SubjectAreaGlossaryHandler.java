@@ -388,7 +388,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 SubjectAreaOMASAPIResponse<Term> relatedTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
                 if (relatedTermsResponse.results() != null && relatedTermsResponse.results().size() > 0) {
                     for (Term relatedTerm : relatedTermsResponse.results()) {
-                        if (filteredTermsList.size() < pageSize && termMatchSearchCriteria(relatedTerm, searchCriteria)) {
+                        if (filteredTermsList.size() < pageSize && termMatchSearchCriteria(relatedTerm, searchCriteria, exactValue, ignoreCase)) {
                             filteredTermsList.add(relatedTerm);
                         }
 

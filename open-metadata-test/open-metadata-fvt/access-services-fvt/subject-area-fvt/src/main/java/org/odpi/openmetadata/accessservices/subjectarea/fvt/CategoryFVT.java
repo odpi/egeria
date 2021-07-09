@@ -537,7 +537,7 @@ public class CategoryFVT {
     }
     public List<Category> getCategoryChildren(String categoryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        return subjectAreaCategoryClient.getCategoryChildren(userId, categoryGuid, new FindRequest(), true, false);
+        return subjectAreaCategoryClient.getCategoryChildren(userId, categoryGuid, new FindRequest(), false, true);
     }
 
     public List<Term> getTerms(String categoryGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException

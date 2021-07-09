@@ -23,4 +23,11 @@ public class AssetsResponse extends AnalyticsModelingOMASAPIResponse {
     public void setAssetList(ResponseContainerAssets assets) {
         this.setData(Arrays.asList(assets));
     }
+	/**
+	 * Get list of asset GUIDs.
+	 * @return list of asset GUIDs.
+	 */
+    public ResponseContainerAssets getAssetList() {
+        return (this.getData() == null || this.getData().isEmpty()) ? null : (ResponseContainerAssets) this.getData().get(0);
+    }
 }

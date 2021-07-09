@@ -117,6 +117,13 @@ The following changes have been made to the open metadata types:
   
   See new type descriptions in model [0537](../open-metadata-publication/website/open-metadata-types/0537-Display-Schemas.md).
 
+* Deprecated type called **TermISATypeOFRelationship** because the ends are defined the wrong way round. When visualising 
+end1 should point to end2. This relationship incorrectly has the super type pointing to the subtype. Use **IsATypeOfRelationship**
+instead.  
+
+* New type **IsATypeOfRelationship** to represent an is-a-type-of relationship between two spine objects. 
+
+
 ### Bug fixes and other updates
 
 * Additional Bug Fixes
@@ -147,7 +154,10 @@ in the [Data Connectors](https://github.com/odpi/egeria-data-connectors) GitHub 
 ## Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
-* When running the 'Understanding Platform Services' lab, ensure you run the 'egeria-service-config' notebook first and do not restart the python kernel before running this lab. See [#4842](https://github.com/odpi/egeria/issues/4842) .
+
+## Special note on Java Support
+
+* This is expected to be the last release supporting Java 8. The next release will commence the 3.x series of releases and require Java 11.
 
 # Egeria Implementation Status at Release 2.11
 
