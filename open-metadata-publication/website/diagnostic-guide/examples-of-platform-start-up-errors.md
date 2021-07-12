@@ -4,6 +4,8 @@
 
 # Examples of errors starting the OMAG Server Platform
 
+Note that these examples were taken using Java 8. Egeria requires Java 11 as of release 3.0 .
+
 ## Port already in use
 
 Each OMAG Server Platform makes use of a network port to listen for incoming REST API calls.

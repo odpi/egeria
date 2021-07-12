@@ -17,7 +17,7 @@ depend on the release of ODPi Egeria that you have installed.  In this example, 
 The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
 Check the version of Java you have with the command **java -version**
-(You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select **OpenJDK 8 (LTS)**
+(You can download Java from [Adoptium](https://adoptopenjdk.net/) and select **OpenJDK 11 (LTS)**
 and the **HotSpot** version for your operating system.
 You only need the JRE but select the JDK if you expect to also write some Java code.)
 
