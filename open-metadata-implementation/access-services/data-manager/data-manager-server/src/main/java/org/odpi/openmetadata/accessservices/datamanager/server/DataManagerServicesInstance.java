@@ -25,6 +25,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
 
+    private ElementStubConverter<ElementStub>                                elementStubConverter;
     private OpenMetadataAPIGenericHandler<ElementStub>                       genericHandler;
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> dataManagerIntegratorHandler;
     private RelationalDataHandler<DatabaseElement,
@@ -46,9 +47,25 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private SchemaTypeHandler<APIParameterListElement>                       apiParameterListHandler;
     private SchemaAttributeHandler<APIParameterElement, SchemaTypeElement>   apiParameterHandler;
 
+    private AssetHandler<FormElement>                                        formHandler;
+    private AssetHandler<ReportElement>                                      reportHandler;
+    private AssetHandler<QueryElement>                                       queryHandler;
+    private SchemaAttributeHandler<DataContainerElement, SchemaTypeElement>  dataContainerHandler;
+    private SchemaAttributeHandler<DataFieldElement, SchemaTypeElement>      dataFieldHandler;
+
+
     private SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
     private SchemaAttributeHandler<SchemaAttributeElement,
                                    SchemaTypeElement>                        schemaAttributeHandler;
+
+    private ValidValuesHandler<ValidValueSetElement,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean> validValuesHandler;
 
 
     /**
@@ -96,6 +113,8 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                            methodName);
 
         }
+
+        this.elementStubConverter = new ElementStubConverter<>(repositoryHelper, serviceName, serverName);
 
         this.genericHandler = new OpenMetadataAPIGenericHandler<>(new DataManagerOMASConverter<>(repositoryHelper, serviceName,serverName),
                                                                   ElementStub.class,
@@ -269,6 +288,80 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                 publishZones,
                                                                 auditLog);
 
+        this.formHandler = new AssetHandler<>(new FormConverter<>(repositoryHelper, serviceName,serverName),
+                                              FormElement.class,
+                                              serviceName,
+                                              serverName,
+                                              invalidParameterHandler,
+                                              repositoryHandler,
+                                              repositoryHelper,
+                                              localServerUserId,
+                                              securityVerifier,
+                                              supportedZones,
+                                              defaultZones,
+                                              publishZones,
+                                              auditLog);
+
+        this.reportHandler = new AssetHandler<>(new ReportConverter<>(repositoryHelper, serviceName,serverName),
+                                                ReportElement.class,
+                                                serviceName,
+                                                serverName,
+                                                invalidParameterHandler,
+                                                repositoryHandler,
+                                                repositoryHelper,
+                                                localServerUserId,
+                                                securityVerifier,
+                                                supportedZones,
+                                                defaultZones,
+                                                publishZones,
+                                                auditLog);
+
+        this.queryHandler = new AssetHandler<>(new QueryConverter<>(repositoryHelper, serviceName,serverName),
+                                               QueryElement.class,
+                                               serviceName,
+                                               serverName,
+                                               invalidParameterHandler,
+                                               repositoryHandler,
+                                               repositoryHelper,
+                                               localServerUserId,
+                                               securityVerifier,
+                                               supportedZones,
+                                               defaultZones,
+                                               publishZones,
+                                               auditLog);
+
+        this.dataContainerHandler = new SchemaAttributeHandler<>(new DataContainerConverter<>(repositoryHelper, serviceName,serverName),
+                                                                DataContainerElement.class,
+                                                                new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                SchemaTypeElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        this.dataFieldHandler = new SchemaAttributeHandler<>(new DataFieldConverter<>(repositoryHelper, serviceName,serverName),
+                                                             DataFieldElement.class,
+                                                             new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                             SchemaTypeElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
         this.schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
                                                         SchemaTypeElement.class,
                                                         serviceName,
@@ -298,6 +391,45 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
+
+        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
+                                                           ValidValueSetElement.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper,
+                                                           localServerUserId,
+                                                           securityVerifier,
+                                                           supportedZones,
+                                                           defaultZones,
+                                                           publishZones,
+                                                           auditLog);
+    }
+
+
+    /**
+     * Return the element stub converter
+     *
+     * @return converter
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter()
+    {
+        return elementStubConverter;
     }
 
 
@@ -311,6 +443,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     {
         return genericHandler;
     }
+
 
 
     /**
@@ -413,6 +546,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         return apiHandler;
     }
 
+
     /**
      * Return the handler for managing APISpecificationElement objects.
      *
@@ -478,6 +612,86 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for managing FormElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<FormElement> getFormHandler() throws PropertyServerException
+    {
+        final String methodName = "getFormHandler";
+
+        validateActiveRepository(methodName);
+
+        return formHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ReportElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<ReportElement> getReportHandler() throws PropertyServerException
+    {
+        final String methodName = "getReportHandler";
+
+        validateActiveRepository(methodName);
+
+        return reportHandler;
+    }
+
+
+    /**
+     * Return the handler for managing QueryElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<QueryElement> getQueryHandler() throws PropertyServerException
+    {
+        final String methodName = "getQueryHandler";
+
+        validateActiveRepository(methodName);
+
+        return queryHandler;
+    }
+
+
+    /**
+     * Return the handler for managing DataContainerElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaAttributeHandler<DataContainerElement, SchemaTypeElement> getDataContainerHandler() throws PropertyServerException
+    {
+        final String methodName = "getDataContainerHandler";
+
+        validateActiveRepository(methodName);
+
+        return dataContainerHandler;
+    }
+
+
+    /**
+     * Return the handler for managing DataFieldElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaAttributeHandler<DataFieldElement, SchemaTypeElement> getDataFieldHandler() throws PropertyServerException
+    {
+        final String methodName = "getDataFieldHandler";
+
+        validateActiveRepository(methodName);
+
+        return dataFieldHandler;
+    }
+
+
+    /**
      * Return the handler for managing SchemaTypeElement objects.
      *
      * @return  handler object
@@ -506,5 +720,28 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return schemaAttributeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing valid values.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ValidValuesHandler<ValidValueSetElement,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean> getValidValuesHandler() throws PropertyServerException
+    {
+        final String methodName = "getValidValuesHandler";
+
+        validateActiveRepository(methodName);
+
+        return validValuesHandler;
     }
 }

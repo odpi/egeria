@@ -438,7 +438,7 @@ public interface APIManagerInterface
                                                                   PropertyServerException;
 
     /*
-     * A API Operation may support a header, a request and a response parameter list of operations depending on its capability
+     * An API Operation may support a header, a request and a response parameter list of depending on its capability
      */
 
     /**

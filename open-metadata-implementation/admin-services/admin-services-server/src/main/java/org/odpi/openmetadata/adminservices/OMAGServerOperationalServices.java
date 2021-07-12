@@ -880,9 +880,9 @@ public class OMAGServerOperationalServices
         {
             try
             {
-                return (AccessServiceAdmin) Class.forName(accessServiceAdminClassName).newInstance();
+                return (AccessServiceAdmin) Class.forName(accessServiceAdminClassName).getDeclaredConstructor().newInstance();
             }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
@@ -897,17 +897,6 @@ public class OMAGServerOperationalServices
                                                           this.getClass().getName(),
                                                           methodName,
                                                           error);
-            }
-            catch (Exception error)
-            {
-                auditLog.logException(methodName,
-                                      OMAGAdminAuditCode.BAD_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
-                                                                                                             accessServiceAdminClassName,
-                                                                                                             error.getMessage()),
-                                      accessServiceConfig.toString(),
-                                      error);
-
-                throw error;
             }
         }
         else
@@ -946,9 +935,9 @@ public class OMAGServerOperationalServices
         {
             try
             {
-                return (ViewServiceAdmin) Class.forName(viewServiceAdminClassName).newInstance();
+                return (ViewServiceAdmin) Class.forName(viewServiceAdminClassName).getDeclaredConstructor().newInstance();
             }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_VIEW_SERVICE_ADMIN_CLASS.getMessageDefinition(viewServiceConfig.getViewServiceName(),
@@ -963,17 +952,6 @@ public class OMAGServerOperationalServices
                                                           this.getClass().getName(),
                                                           methodName,
                                                           error);
-            }
-            catch (Exception error)
-            {
-                auditLog.logException(methodName,
-                                      OMAGAdminAuditCode.BAD_VIEW_SERVICE_ADMIN_CLASS.getMessageDefinition(viewServiceConfig.getViewServiceName(),
-                                                                                                           viewServiceAdminClassName,
-                                                                                                           error.getMessage()),
-                                      viewServiceConfig.toString(),
-                                      error);
-
-                throw error;
             }
         }
         else

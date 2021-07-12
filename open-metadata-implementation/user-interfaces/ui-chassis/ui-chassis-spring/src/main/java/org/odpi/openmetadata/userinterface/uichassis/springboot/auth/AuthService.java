@@ -94,7 +94,7 @@ public interface AuthService {
      *
      * @param token the encoded token
      * @param secret secret phrase to decode
-     * @return
+     * @return parsed TokenUser
      */
     default TokenUser parseUserFromToken(String token, String secret) {
         String userJSON = Jwts.parser()

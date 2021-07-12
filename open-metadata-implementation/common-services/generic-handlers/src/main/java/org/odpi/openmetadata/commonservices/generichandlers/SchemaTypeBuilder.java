@@ -46,8 +46,10 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     /*
      * Values for a schema type that is a map
      */
-    private SchemaTypeBuilder   mapFrom = null;
-    private SchemaTypeBuilder   mapTo   = null;
+    private SchemaTypeBuilder   mapFrom     = null;
+    private SchemaTypeBuilder   mapTo       = null;
+    private String              mapFromGUID = null;
+    private String              mapToGUID   = null;
 
     /*
      * Values for a schema type choice
@@ -253,6 +255,20 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
 
     /**
+     * Set up the builder to support a map type.  This needs to point to two other schema types.
+     *
+     * @param mapFromGUID the GUID of the value that is in the domain of the map
+     * @param mapToGUID the GUID of the value that is in the rage of the map
+     */
+    public void setMapGUIDs(String   mapFromGUID,
+                            String   mapToGUID)
+    {
+        this.mapFromGUID = mapFromGUID;
+        this.mapToGUID   = mapToGUID;
+    }
+
+
+    /**
      * Return the builder for the type of the value that is in the domain of the map.
      *
      * @return builder for requested type
@@ -271,6 +287,28 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     public SchemaTypeBuilder  getMapTo()
     {
         return this.mapTo;
+    }
+
+
+    /**
+     * Return the GUID for the type of the value that is in the domain of the map.
+     *
+     * @return string
+     */
+    public String  getMapFromGUID()
+    {
+        return this.mapFromGUID;
+    }
+
+
+    /**
+     * Return the GUID for the type of the value that is in the range of the map.
+     *
+     * @return string
+     */
+    public String  getMapToGUID()
+    {
+        return this.mapToGUID;
     }
 
 
@@ -360,33 +398,21 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SCHEMA_DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (versionNumber != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.VERSION_NUMBER_PROPERTY_NAME,
-                                                                      versionNumber,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SCHEMA_DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VERSION_NUMBER_PROPERTY_NAME,
+                                                                  versionNumber,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
@@ -394,69 +420,41 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                    isDeprecated,
                                                                    methodName);
 
-        if (author != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.AUTHOR_PROPERTY_NAME,
-                                                                      author,
-                                                                      methodName);
-        }
-
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SCHEMA_USAGE_PROPERTY_NAME,
-                                                                      usage,
-                                                                      methodName);
-        }
-
-        if (encodingStandard != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ENCODING_STANDARD_PROPERTY_NAME,
-                                                                      encodingStandard,
-                                                                      methodName);
-        }
-
-        if (namespace != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NAMESPACE_PROPERTY_NAME,
-                                                                      namespace,
-                                                                      methodName);
-        }
-
-
-        if (dataType != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DATA_TYPE_PROPERTY_NAME,
-                                                                      dataType,
-                                                                      methodName);
-        }
-
-        if (defaultValue != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
-                                                                      defaultValue,
-                                                                      methodName);
-        }
-
-        if (fixedValue != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.FIXED_VALUE_PROPERTY_NAME,
-                                                                      fixedValue,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.AUTHOR_PROPERTY_NAME,
+                                                                  author,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SCHEMA_USAGE_PROPERTY_NAME,
+                                                                  usage,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ENCODING_STANDARD_PROPERTY_NAME,
+                                                                  encodingStandard,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAMESPACE_PROPERTY_NAME,
+                                                                  namespace,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DATA_TYPE_PROPERTY_NAME,
+                                                                  dataType,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  defaultValue,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FIXED_VALUE_PROPERTY_NAME,
+                                                                  fixedValue,
+                                                                  methodName);
 
         return properties;
     }
@@ -475,14 +473,11 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = this.getInstanceProperties(methodName);
 
-        if (typeName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.TYPE_NAME_PROPERTY_NAME,
-                                                                      typeName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.TYPE_NAME_PROPERTY_NAME,
+                                                                  typeName,
+                                                                  methodName);
 
         return properties;
     }

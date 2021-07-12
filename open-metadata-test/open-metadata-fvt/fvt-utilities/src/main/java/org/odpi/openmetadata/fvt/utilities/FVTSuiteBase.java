@@ -6,6 +6,7 @@ package org.odpi.openmetadata.fvt.utilities;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.System.exit;
 
@@ -28,11 +29,11 @@ public abstract class FVTSuiteBase
             String userId = getUserId(args);
 
             Class<?> fvtSuiteClass = Class.forName(fvtSuiteClassName);
-            FVTSuiteBase fvtSuite = (FVTSuiteBase)fvtSuiteClass.newInstance();
+            FVTSuiteBase fvtSuite = (FVTSuiteBase)fvtSuiteClass.getDeclaredConstructor().newInstance();
 
             exitCode = fvtSuite.performFVT(url, serverName, userId);
         }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException error)
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error)
         {
             System.out.println("Invalid FVTSuite class: " + fvtSuiteClassName);
             error.printStackTrace();

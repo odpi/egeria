@@ -2535,7 +2535,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
         if (localMetadataCollection == null)
         {
-            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(localServerName),
                                               this.getClass().getName(),
                                               methodName);
         }
