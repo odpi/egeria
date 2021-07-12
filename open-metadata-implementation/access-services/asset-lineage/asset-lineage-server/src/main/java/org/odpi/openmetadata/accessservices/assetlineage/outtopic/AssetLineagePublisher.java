@@ -372,15 +372,33 @@ public class AssetLineagePublisher {
                                                                                                                                  JsonProcessingException {
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
-        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                lineageRelationship.getSourceEntity())));
-        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                lineageRelationship.getTargetEntity())));
+        publishLineageMappingContext(eventType, lineageRelationship.getSourceEntity());
+        publishLineageMappingContext(eventType, lineageRelationship.getTargetEntity());
+    }
 
-        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
-                lineageRelationship.getSourceEntity())));
-        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName,
-                lineageRelationship.getTargetEntity())));
+    /**
+     * Publishes the context for an entity involved in a lineage mapping. If the entity is of type column, it will publish the column context.
+     * If the entity is of type asset, it will publish the asset context.
+     *
+     * @param eventType     the type on the event
+     * @param lineageEntity the lineage entity
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishLineageMappingContext(AssetLineageEventType eventType, LineageEntity lineageEntity) throws JsonProcessingException,
+                                                                                                                   OCFCheckedExceptionBase {
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName, lineageEntity)));
+
+        Map<String, RelationshipsContext> sourceAssetContext = assetContextHandler.buildAssetContext(serverUserName, lineageEntity);
+        publishLineageRelationshipsEvents(Multimaps.forMap(sourceAssetContext));
+
+        if (sourceAssetContext.isEmpty()) {
+            publishLineageEntityEvent(lineageEntity, eventType);
+        }
+
+        log.debug("Asset Lineage OMAS published the context for entity with guid {} and type {}", lineageEntity.getGuid(),
+                lineageEntity.getTypeDefName());
     }
 
     /**
