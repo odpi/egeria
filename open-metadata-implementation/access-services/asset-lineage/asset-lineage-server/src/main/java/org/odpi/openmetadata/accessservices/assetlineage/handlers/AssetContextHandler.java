@@ -48,7 +48,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -187,7 +186,7 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
-        if(!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())){
+        if (!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())) {
             return new HashMap<>();
         }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), TABULAR_COLUMN);
@@ -350,5 +349,25 @@ public class AssetContextHandler {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
+    }
+
+    /**
+     * Returns the asset entity context in lineage format
+     *
+     * @param userId      the unique identifier for the user
+     * @param guid        the guid of the entity for which the context is build
+     * @param typeDefName the type def name of the entity for which the context is build
+     *
+     * @return the asset entity context in lineage format
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
+        if (!handlerHelper.isTableOrDataFileAsset(userId, entityDetail)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 }
