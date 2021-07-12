@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOfDeprecated;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -21,8 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMapper<IsATypeOfDeprecated> {
     private static final String TERM_ISA_TYPE_OF_DEPRECATED_RELATIONSHIP = "TermISATypeOFRelationship";
 
-    public TermIsATypeOfRelationshipDeprecatedMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public TermIsATypeOfRelationshipDeprecatedMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**

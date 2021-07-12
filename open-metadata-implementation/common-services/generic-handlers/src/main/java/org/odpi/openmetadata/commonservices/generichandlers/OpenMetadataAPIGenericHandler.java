@@ -388,7 +388,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateClassificationEffectivityDates(String userId,
+    public void updateClassificationEffectivityDates(String userId,
                                                         String externalSourceGUID,
                                                         String externalSourceName,
                                                         String beanGUID,
@@ -860,7 +860,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to update the security tags
      */
-    void removeClassificationFromRepository(String userId,
+    public void removeClassificationFromRepository(String userId,
                                             String beanGUID,
                                             String beanGUIDParameterName,
                                             String beanGUIDTypeName,

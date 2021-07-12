@@ -153,34 +153,6 @@ public class SubjectAreaProjectRESTResource {
     }
 
     /**
-     * Get the terms in this project.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Project to get
-     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     * @return a response which when successful contains the Project relationships
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * </ul>
-     */
-    @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String guid,
-                                                            @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
-                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize
-    ) {
-        return restAPI.getProjectTerms(serverName, userId, guid, startingFrom, pageSize);
-    }
-
-    /**
      * Update a Project
      * <p>
      * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those

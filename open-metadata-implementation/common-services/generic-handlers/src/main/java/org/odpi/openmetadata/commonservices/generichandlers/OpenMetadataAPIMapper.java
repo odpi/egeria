@@ -464,6 +464,10 @@ public class OpenMetadataAPIMapper
     public static final String PROJECT_TYPE_NAME                         = "Project";   /* from Area 1 */
     /* Project */
 
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_GUID      = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_NAME      = "ProjectScope";   /* from Area 1 */
+    /* Project Scope*/
+
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID   = "01664609-e777-4079-b543-6baffe910ff1";   /* from Area 1 */
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME   = "ProfileIdentity";
     /* End1 = ActorProfile; End 2 = UserIdentity */

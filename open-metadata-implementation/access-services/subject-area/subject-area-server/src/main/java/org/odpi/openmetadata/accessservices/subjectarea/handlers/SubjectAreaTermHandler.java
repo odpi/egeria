@@ -21,7 +21,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermCategorizationMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -32,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,11 +51,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * Construct the Subject Area Term Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper           omrs API helper
-     * @param maxPageSize             maximum page size
+     * @param genericHandler generic handler
+     * @param maxPageSize    maximum page size
      */
-    public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaTermHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
         termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
         termCategorizationMapper = mappersFactory.get(TermCategorizationMapper.class);
         categoryMapper = mappersFactory.get(CategoryMapper.class);
@@ -77,9 +77,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li>Term to create a term that is not a taxonomy or a canonical term</li>
      * </ul>
      *
-     * @param userId           unique identifier for requesting user, under which the request is performed
+     * @param userId              unique identifier for requesting user, under which the request is performed
      * @param relationshipHandler relationship handler
-     * @param suppliedTerm     Term to create
+     * @param suppliedTerm        Term to create
      * @return response, when successful contains the created term.
      * when not successful the following Exception responses can occur
      * <ul>
@@ -111,9 +111,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 List<CategorySummary> suppliedCategorysummaries = suppliedTerm.getCategories();
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
-                validateCategoriesDuringCreation(userId,methodName,suppliedCategorysummaries);
+                validateCategoriesDuringCreation(userId, methodName, suppliedCategorysummaries);
                 InstanceProperties instanceProperties = termEntityDetail.getProperties();
-                if (instanceProperties == null ) {
+                if (instanceProperties == null) {
                     instanceProperties = new InstanceProperties();
                 }
                 if (instanceProperties.getEffectiveFromTime() == null) {
@@ -131,22 +131,22 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       genericHandler.getServiceName(),
                                                                       genericHandler.getServerName());
                 createdTermGuid = genericHandler.createBeanInRepository(userId,
-                                                                            null,
-                                                                            null,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                            null,
-                                                                            null,
-                                                                            builder,
-                                                                            methodName);
+                                                                        null,
+                                                                        null,
+                                                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                        null,
+                                                                        null,
+                                                                        builder,
+                                                                        methodName);
                 if (createdTermGuid != null) {
                     // set effectivity dates if required
-                    setEffectivity(userId,
-                                   suppliedTerm,
-                                   methodName,
-                                   createdTermGuid,
-                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
+                    setNodeEffectivity(userId,
+                                       suppliedTerm,
+                                       methodName,
+                                       createdTermGuid,
+                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
 
                     TermAnchor termAnchor = new TermAnchor();
                     // we expect that the created term has a from time of now or the supplied value.
@@ -162,7 +162,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     relationshipHandler.createRelationship(methodName, userId, TermAnchorMapper.class, termAnchor);
                     response = getTermByGuid(userId, createdTermGuid);
                     if (response.getRelatedHTTPCode() == 200) {
-                        if (suppliedCategorysummaries != null && suppliedCategorysummaries.size() >0) {
+                        if (suppliedCategorysummaries != null && suppliedCategorysummaries.size() > 0) {
                             for (CategorySummary categorySummary : suppliedCategorysummaries) {
                                 Categorization categorization = new Categorization();
                                 categorization.getEnd1().setNodeGuid(categorySummary.getGuid());
@@ -193,24 +193,24 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
         return response;
     }
+
     /**
      * This method validates that any Categories supplied to a Term create exist.
      *
-     * @param userId           userId under which the request is performed
-     * @param methodName       method making the call
+     * @param userId             userId under which the request is performed
+     * @param methodName         method making the call
      * @param suppliedCategories categories to validate.
-
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException     something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException   one of the parameters is null or invalid
      * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
     protected void validateCategoriesDuringCreation(String userId,
                                                     String methodName,
                                                     List<CategorySummary> suppliedCategories) throws UserNotAuthorizedException,
-                                                                                                    PropertyServerException,
-                                                                                                    InvalidParameterException,
-                                                                                                    SubjectAreaCheckedException {
+                                                                                                     PropertyServerException,
+                                                                                                     InvalidParameterException,
+                                                                                                     SubjectAreaCheckedException {
         /*
          * If there are categories supplied then they need to specify a guid that is exists and is for a Category or
          * a child of Category.
@@ -235,8 +235,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
     /**
      * Get a term by guid.
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to get
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to get
      * @return response which when successful contains the term with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -261,10 +261,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                null,
                                                                                methodName);
 
-                TermMapper termMapper = mappersFactory.get(TermMapper.class);
-                Term term = termMapper.map(entityDetail);
-                setSummaryObjects(userId, term, methodName);
-                response.addResult(term);
+            TermMapper termMapper = mappersFactory.get(TermMapper.class);
+            Term term = termMapper.map(entityDetail);
+            setSummaryObjects(userId, term, methodName);
+            response.addResult(term);
 
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
@@ -276,10 +276,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
     /**
      * Find Term
      *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param findRequest        {@link FindRequest}
-     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
-     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param findRequest {@link FindRequest}
+     * @param exactValue  a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase  a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @return A list of Terms meeting the search Criteria
      *
      * <ul>
@@ -315,9 +315,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * Set the summary objects into the Term. This means if we find a relationship to a Glossary (TermAnchor) or a relationship
      * to a Category (TermCategorization) then represent those relationships are summary objects.
      *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param term               Term on which to set the summary objects
-     * @param methodName         rest API
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param term       Term on which to set the summary objects
+     * @param methodName rest API
      * @throws SubjectAreaCheckedException
      * @throws PropertyServerException
      * @throws UserNotAuthorizedException
@@ -326,27 +326,46 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
     private void setSummaryObjects(String userId, Term term, String methodName) throws SubjectAreaCheckedException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException,
-                                                                                       InvalidParameterException
-    {
+                                                                                       InvalidParameterException {
         final String guid = term.getSystemAttributes().getGUID();
-        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> termAnchorRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
+
+        List<Relationship> termAnchorRelationships =
+                getRelationshipsForEntityByType(methodName,
+                                                userId,
+                                                guid,
+                                                new FindRequest(),
+                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME
+                                               );
         if (CollectionUtils.isNotEmpty(termAnchorRelationships)) {
-            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : termAnchorRelationships) {
-                TermAnchor termAnchor = termAnchorMapper.map(relationship);
+            for (Relationship relationship : termAnchorRelationships) {
+                TermAnchor termAnchor = (TermAnchor)relationship;
                 GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
                 if (glossarySummary != null) {
                     term.setGlossary(glossarySummary);
                 }
             }
         }
-        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> termCategorizationRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_CATEGORIZATION_RELATIONSHIP_NAME, methodName);
+        List<Relationship> termCategorizationRelationships =
+                getRelationshipsForEntityByType(methodName,
+                                                userId,
+                                                guid,
+                                                new FindRequest(),
+                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME
+                                               );
+
         if (CollectionUtils.isNotEmpty(termCategorizationRelationships)) {
             List<CategorySummary> categorySummaryList = new ArrayList<>();
-            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : termCategorizationRelationships) {
-                Categorization categorization = termCategorizationMapper.map(relationship);
-                if (categorization !=null) {
+            for (Relationship relationship : termCategorizationRelationships) {
+                Categorization categorization = (Categorization)relationship;
+                if (categorization != null) {
                     CategorySummary categorySummary = getCategorySummary(methodName, userId, categorization);
-                    if (categorySummary !=null) {
+                    if (categorySummary != null) {
                         categorySummaryList.add(categorySummary);
                     }
                 }
@@ -360,11 +379,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
     /**
      * Get Term relationships
      *
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               guid
-     * @param findRequest        {@link FindRequest}
+     * @param userId      unique identifier for requesting user, under which the request is performed
+     * @param guid        guid
+     * @param findRequest {@link FindRequest}
      * @return the relationships associated with the requested Term guid
-     *
+     * <p>
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
@@ -375,7 +394,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
     public SubjectAreaOMASAPIResponse<Relationship> getTermRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getTermRelationships";
-        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
     }
 
     /**
@@ -390,10 +409,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * For an update (rather than a replace) with no categories supplied, no changes are made to the termCategorizations; otherwise the
      * supplied categorizing Categories will replace the existing ones.
      *
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the term to update
-     * @param suppliedTerm     term to be updated
-     * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the term to update
+     * @param suppliedTerm term to be updated
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -404,7 +423,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> updateTerm(String userId, String guid, Term suppliedTerm, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(String userId, String guid, Term suppliedTerm, SubjectAreaRelationshipHandler relationshipHandler, boolean isReplace) {
         final String methodName = "updateTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -429,53 +448,91 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                       suppliedEntity.getProperties(),
                                                       !isReplace,
                                                       methodName);
-                setEffectivity(userId,
-                               suppliedTerm,
-                               methodName,
-                               guid,
-                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
+                setNodeEffectivity(userId,
+                                   suppliedTerm,
+                                   methodName,
+                                   guid,
+                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
                 // the update properties should not have updated the classifications so we can use
                 Set<String> storedClassificationNames = getStoredClassificationNames(storedTerm);
 
                 // always update the governance actions for a replace or an update
 
-                    List<Classification> suppliedClassifications = suppliedEntity.getClassifications();
-                    List<Classification> storedClassifications = storedEntity.getClassifications();
-                    Map<String, Classification> storedClassificationMap = null;
+                List<Classification> suppliedClassifications = suppliedEntity.getClassifications();
+                List<Classification> storedClassifications = storedEntity.getClassifications();
+                Map<String, Classification> storedClassificationMap = null;
 
-                    if ((storedClassifications != null) && (! storedClassifications.isEmpty())) {
-                        storedClassificationMap = new HashMap<>();
-                        for (Classification storedClassification : storedClassifications) {
-                            if (storedClassification != null) {
-                                storedClassificationMap.put(storedClassification.getName(), storedClassification);
+                if ((storedClassifications != null) && (!storedClassifications.isEmpty())) {
+                    storedClassificationMap = new HashMap<>();
+                    for (Classification storedClassification : storedClassifications) {
+                        if (storedClassification != null) {
+                            storedClassificationMap.put(storedClassification.getName(), storedClassification);
+                        }
+                    }
+                }
+
+                if (CollectionUtils.isNotEmpty(suppliedClassifications)) {
+                    for (Classification suppliedClassification : suppliedClassifications) {
+                        if (suppliedClassification != null) {
+                            String classificationTypeName = suppliedClassification.getName();
+                            String classificationTypeGUID = null;
+                            TypeDef typeDef = genericHandler.getRepositoryHelper().getTypeDefByName(genericHandler.getServiceName(),
+                                                                                classificationTypeName);
+                            if (typeDef != null) {
+                                classificationTypeGUID = typeDef.getGUID();
                             }
-                        }
-                    }
 
-                    if (CollectionUtils.isNotEmpty(suppliedClassifications)) {
-                        for (Classification suppliedClassification : suppliedClassifications) {
-                            if (suppliedClassification != null) {
-                                if ((storedClassificationMap == null) || (! storedClassificationMap.keySet().contains(suppliedClassification.getName()))) {
-                                    oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, suppliedClassification);
-                                } else {
-                                    oMRSAPIHelper.callOMRSUpdateClassification(methodName, userId, guid, storedClassificationMap.get(suppliedClassification.getName()), suppliedClassification.getProperties());
-                                }
-                                storedClassificationNames.remove(suppliedClassification.getName());
+                            if ((storedClassificationMap == null) || (!storedClassificationMap.containsKey(classificationTypeName))) {
+                                genericHandler.setClassificationInRepository(userId,
+                                                              guid,
+                                                             "guid",
+                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                             classificationTypeGUID,
+                                                             classificationTypeName,
+                                                             suppliedClassification.getProperties(),
+                                                             methodName);
+                            } else {
+                                genericHandler.setClassificationInRepository(userId,
+                                                                             null,
+                                                                             null,
+                                                                             guid,
+                                                                             "guid",
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                             classificationTypeGUID,
+                                                                             classificationTypeName,
+                                                                             suppliedClassification.getProperties(),
+                                                                             true,    //  merge
+                                                                             methodName);
                             }
+                            storedClassificationNames.remove(suppliedClassification.getName());
                         }
+                    }
 
-                        for (String deClassifyName : storedClassificationNames) {
-                            oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
+                    for (String deClassifyName : storedClassificationNames) {
+                        String classificationTypeGUID = null;
+                        TypeDef typeDef = genericHandler.getRepositoryHelper().getTypeDefByName(genericHandler.getServiceName(),
+                                                                                                deClassifyName);
+                        if (typeDef != null) {
+                            classificationTypeGUID = typeDef.getGUID();
                         }
+                        genericHandler.removeClassificationFromRepository(userId,
+                                                           guid,
+                                                           "guid",
+                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           classificationTypeGUID,
+                                                           deClassifyName,
+                                                           methodName);
+
+
                     }
-                    List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
-                    if (suppliedCategories==null && !isReplace) {
-                        // in the update case with null categories supplied then do not change anything.
-                    } else {
-                        replaceCategories(userId, guid, suppliedTerm, methodName);
-                    }
-//                }
+                }
+                List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
+                if (suppliedCategories == null && !isReplace) {
+                    // in the update case with null categories supplied then do not change anything.
+                } else {
+                    replaceCategories(userId, guid, suppliedTerm, relationshipHandler, methodName);
+                }
                 response = getTermByGuid(userId, guid);
             }
 
@@ -490,19 +547,21 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
     /**
      * Update the Categories sub-object of Term. Replace the categories with those supplied. This means that the termCategorization relationships are removed and
      * added as per the request.
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param guid             guid of the term to update
-     * @param suppliedTerm     term to be updated
-     * @param methodName       API name
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException              reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector.
-     * @throws SubjectAreaCheckedException          reporting errors found when using the Subject Area OMAS services.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     *
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the term to update
+     * @param suppliedTerm term to be updated
+     * @param relationshipHandler relationship handler
+     * @param methodName   API name
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException     reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector.
+     * @throws SubjectAreaCheckedException reporting errors found when using the Subject Area OMAS services.
+     * @throws InvalidParameterException   one of the parameters is null or invalid.
      */
-    private void replaceCategories(String userId, String guid, Term suppliedTerm, String methodName) throws UserNotAuthorizedException, PropertyServerException, SubjectAreaCheckedException, InvalidParameterException {
+    private void replaceCategories(String userId, String guid, Term suppliedTerm, SubjectAreaRelationshipHandler relationshipHandler, String methodName) throws UserNotAuthorizedException, PropertyServerException, SubjectAreaCheckedException, InvalidParameterException {
         Set<String> deleteCategorizationGuidSet = new HashSet<>();
         SubjectAreaOMASAPIResponse<Relationship> relationshipResponse = getTermRelationships(userId, guid, new FindRequest());
-        List<Relationship> relationships= relationshipResponse.results();
+        List<Relationship> relationships = relationshipResponse.results();
         /*
          * The supplied categories may not be completely filled out.
          * we will accept a guid (i.e. that of the category) and ignore the rest.
@@ -516,9 +575,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         // always replace the categories if categories are supplied
         // delete any existing categorizations
         if (deleteCategorizationGuidSet != null && deleteCategorizationGuidSet.size() > 0) {
-            for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
-                String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
-                oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, termCategorizationMapper.getTypeName(), categorizationGuidToDelete);
+            for (String guidToDelete : deleteCategorizationGuidSet) {
+                    relationshipHandler.deleteRelationship(methodName, userId, TermCategorizationMapper.class,guidToDelete);
             }
         }
         // add any supplied ones
@@ -549,8 +607,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 //            oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, termCategorizationMapper.map(categorization));
 
 
-
-
     }
 
     private Set<String> getStoredClassificationNames(Term currentTerm) {
@@ -561,13 +617,13 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
         GovernanceClassifications currentActions = currentTerm.getGovernanceClassifications();
         if (currentActions != null) {
-            if (currentActions.getConfidence()!=null)
+            if (currentActions.getConfidence() != null)
                 currentClassificationNames.add(currentActions.getConfidence().getClassificationName());
-            if (currentActions.getConfidentiality()!=null)
+            if (currentActions.getConfidentiality() != null)
                 currentClassificationNames.add(currentActions.getConfidentiality().getClassificationName());
-            if (currentActions.getRetention()!=null)
+            if (currentActions.getRetention() != null)
                 currentClassificationNames.add(currentActions.getRetention().getClassificationName());
-            if (currentActions.getCriticality()!=null)
+            if (currentActions.getCriticality() != null)
                 currentClassificationNames.add(currentActions.getCriticality().getClassificationName());
         }
         return currentClassificationNames;
@@ -631,8 +687,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * that it is possible to undo the delete.
      * A hard delete means that the term will not exist after the operation.
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to be deleted.
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to be deleted.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -664,7 +720,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                   methodName);
 
 
-        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e ) {
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -675,8 +731,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <p>
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the term to restore
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to restore
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -691,21 +747,26 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         final String methodName = "restoreTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
+            genericHandler.getRepositoryHandler().restoreEntity(userId,
+                                                                null,
+                                                                null,
+                                                                guid,
+                                                                methodName);
             response = getTermByGuid(userId, guid);
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException |  PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
     }
+
     /**
      * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
      *
-     * @param userId       unique identifier for requesting user, under which the request is performed
-     * @param guid         guid of the category to get terms
-     * @param categoryHandler  category handler
-     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
-     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @param userId          unique identifier for requesting user, under which the request is performed
+     * @param guid            guid of the category to get terms
+     * @param categoryHandler category handler
+     * @param startingFrom    the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize        the maximum number of elements that can be returned on this request.
      * @return A list of categories categorizing this Term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -750,7 +811,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                          methodName);
 
                 Set<Category> categories = new HashSet<>();
-                for (EntityDetail entity:entities) {
+                for (EntityDetail entity : entities) {
                     SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
                     if (categoryResponse.getRelatedHTTPCode() == 200) {
                         categories.add(categoryResponse.results().get(0));
@@ -759,7 +820,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                         break;
                     }
                 }
-                if( response.getRelatedHTTPCode() == 200) {
+                if (response.getRelatedHTTPCode() == 200) {
                     response.addAllResults(categories);
                 }
 

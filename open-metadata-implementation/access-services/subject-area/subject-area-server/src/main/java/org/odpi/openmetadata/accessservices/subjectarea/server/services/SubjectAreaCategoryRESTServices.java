@@ -73,7 +73,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = categoryHandler.createCategory(userId, suppliedCategory);
+            response = categoryHandler.createCategory(userId, instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, methodName), suppliedCategory);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

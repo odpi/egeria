@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
@@ -263,7 +264,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            response = handler.updateTerm(userId, guid, suppliedTerm, isReplace);
+            response = handler.updateTerm(userId, guid, suppliedTerm, instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, methodName), isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

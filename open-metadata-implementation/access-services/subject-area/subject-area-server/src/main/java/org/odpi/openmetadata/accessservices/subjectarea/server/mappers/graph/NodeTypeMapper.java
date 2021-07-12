@@ -39,28 +39,4 @@ public class NodeTypeMapper {
         }
         return OpenMetadataTypesArchiveAccessor.getInstance().getEntityDefByName(entityTypeName).getGUID();
     }
-
-    /**
-     * convert an entity type guid to a NodeType
-     * @param guid entity Type guid.
-     * @return NodeType nodetype
-     */
-    public static NodeType mapEntityTypeGuidToNodeType(String guid) {
-        String nodeTypeName = OpenMetadataTypesArchiveAccessor.getInstance().getEntityDefByGuid(guid).getName();
-        if (nodeTypeName.equals("GlossaryTerm")) {
-            nodeTypeName = "Term";
-        }
-        if (nodeTypeName.equals("GlossaryCategory")) {
-            nodeTypeName = "Category";
-        }
-        NodeType nodeType = null;
-        for (NodeType nodeTypeToCheck : NodeType.values()) {
-            if (nodeTypeToCheck.name().equals(nodeTypeName)) {
-                nodeType = nodeTypeToCheck;
-                break;
-            }
-        }
-        //TODO deal with nodetypes that are actually classifications in OMRS.
-        return nodeType;
-    }
 }

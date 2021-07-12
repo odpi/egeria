@@ -6,11 +6,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 ;
 import java.util.Date;
 
@@ -28,11 +28,11 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Construct the Subject Area Relationship Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper omrs API helper
-     * @param maxPageSize   maximum page size
+     * @param genericHandler    generic handler
+     * @param maxPageSize       maximum page size
      */
-    public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaRelationshipHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
     }
 
     /**
@@ -312,9 +312,13 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                                       String guid) {
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
+            genericHandler.getRepositoryHandler().restoreRelationship(userId,
+                                null,
+                                null,
+                                guid,
+                                restAPIName);
             response = getRelationship(restAPIName, userId, clazz, guid);
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }
         return response;

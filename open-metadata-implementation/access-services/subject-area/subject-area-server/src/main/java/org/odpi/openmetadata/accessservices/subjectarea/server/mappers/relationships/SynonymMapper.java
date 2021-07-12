@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,8 +18,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class SynonymMapper extends RelationshipMapper<Synonym> {
     public static final String SYNONYM = "Synonym";
 
-    public SynonymMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public SynonymMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**

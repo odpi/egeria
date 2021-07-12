@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications.ClassificationFactory;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -25,10 +25,10 @@ import java.util.*;
  */
 abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<N> {
     protected final OMRSRepositoryHelper repositoryHelper;
-    protected final OMRSAPIHelper omrsapiHelper;
-    public EntityDetailMapper(OMRSAPIHelper omrsapiHelper) {
-        this.omrsapiHelper = omrsapiHelper;
-        this.repositoryHelper =  omrsapiHelper.getOMRSRepositoryHelper();
+    protected final OpenMetadataAPIGenericHandler genericHandler;
+    public EntityDetailMapper(OpenMetadataAPIGenericHandler genericHandler){
+        this.genericHandler = genericHandler;
+        this.repositoryHelper = genericHandler.getRepositoryHelper();
     }
 
     /**
@@ -195,7 +195,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
         if (CollectionUtils.isNotEmpty(omrsclassifications)) {
-            ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
+            ClassificationFactory classficationFactory = new ClassificationFactory(genericHandler);
             List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification>
                     existingClassifications = node.getClassifications();
             if (existingClassifications == null) {
@@ -235,7 +235,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsClassifications = new ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification>();
             for (org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification : omasClassifications) {
 
-                ClassificationFactory classificationFactory = new ClassificationFactory(omrsapiHelper);
+                ClassificationFactory classificationFactory = new ClassificationFactory(genericHandler);
                 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = classificationFactory.getOMRSClassification(omasClassification);
                 //classificationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
 
@@ -285,20 +285,20 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         mapNodeEffectivityToInstanceProperties(node, instanceProperties);
         //  map the Referencable node properties to instanceproperties
         if (node.getQualifiedName()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"qualifiedName",node.getQualifiedName(),methodName);
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"qualifiedName",node.getQualifiedName(),methodName);
         }
         if (node.getName()!=null) {
             if (node.getNodeType() == NodeType.Project || node.getNodeType() == NodeType.GlossaryProject) {
                 SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "name");
-                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "name", node.getName(), methodName);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, "name", node.getName(), methodName);
             } else {
                 SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
-                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "displayName", node.getName(), methodName);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, "displayName", node.getName(), methodName);
             }
         }
 
         if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), "description");
-           repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"description",node.getDescription(),methodName);
+           repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"description",node.getDescription(),methodName);
         }
         // if there are additionalProperties then we should honour them and send them through to omrs.
         if (node.getAdditionalProperties()!=null) {
@@ -341,7 +341,13 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      */
     @Override
     public String getTypeDefGuid() {
-        return omrsapiHelper.getTypeDefGUID(getTypeName());
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(genericHandler.getServiceName(),
+                                                             getTypeName());
+        String guid = null;
+        if (typeDef != null) {
+            guid = typeDef.getGUID();
+        }
+        return guid;
     }
 
     protected void populateAdditionalProperties(N node, InstanceProperties instanceProperties) {

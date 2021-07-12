@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -16,8 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class ProjectScopeMapper extends RelationshipMapper<ProjectScope> {
     public static final String PROJECT_SCOPE = "ProjectScope";
 
-    public ProjectScopeMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public ProjectScopeMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     @Override

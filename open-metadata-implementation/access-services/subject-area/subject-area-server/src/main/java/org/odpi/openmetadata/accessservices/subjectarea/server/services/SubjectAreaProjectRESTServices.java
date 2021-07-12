@@ -235,50 +235,50 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         return response;
     }
 
-    /**
-     * Get the terms in this project.
-     *
-     * @param serverName     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId         unique identifier for requesting user, under which the request is performed
-     * @param guid           guid of the Project
-     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     * @return a response which when successful contains the Project Terms
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
-                                                            String userId,
-                                                            String guid,
-                                                            Integer startingFrom,
-                                                            Integer pageSize) {
-        String methodName = "getProjectTerms";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId );
-        }
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-        AuditLog auditLog = null;
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
-        } catch (OCFCheckedExceptionBase e) {
-            response.setExceptionInfo(e, className);
-        } catch (Exception exception) {
-            response = getResponseForException(exception, auditLog, className, methodName);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
-
-        return response;
-    }
+//    /**
+//     * Get the terms in this project.
+//     *
+//     * @param serverName     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+//     * @param userId         unique identifier for requesting user, under which the request is performed
+//     * @param guid           guid of the Project
+//     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
+//     *                 beyond the first page of results. Zero means the results start from the first element.
+//     * @param pageSize the maximum number of elements that can be returned on this request.
+//     * @return a response which when successful contains the Project Terms
+//     * when not successful the following Exception responses can occur
+//     * <ul>
+//     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+//     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+//     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+//     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+//     * </ul>
+//     */
+//    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
+//                                                            String userId,
+//                                                            String guid,
+//                                                            Integer startingFrom,
+//                                                            Integer pageSize) {
+//        String methodName = "getProjectTerms";
+//        if (log.isDebugEnabled()) {
+//            log.debug("==> Method: " + methodName + ",userId=" + userId );
+//        }
+//        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+//        AuditLog auditLog = null;
+//        try {
+//            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+//            SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
+//            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
+//        } catch (OCFCheckedExceptionBase e) {
+//            response.setExceptionInfo(e, className);
+//        } catch (Exception exception) {
+//            response = getResponseForException(exception, auditLog, className, methodName);
+//        }
+//        if (log.isDebugEnabled()) {
+//            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+//        }
+//
+//        return response;
+//    }
 
     /**
      * Update a Project

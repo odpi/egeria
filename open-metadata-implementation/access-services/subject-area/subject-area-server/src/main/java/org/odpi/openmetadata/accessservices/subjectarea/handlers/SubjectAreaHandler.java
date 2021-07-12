@@ -13,7 +13,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -23,7 +22,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.Mapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.MappersFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -37,7 +35,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 /**
@@ -47,34 +44,21 @@ import java.util.regex.Pattern;
 public abstract class SubjectAreaHandler {
     private static final String className = SubjectAreaHandler.class.getName();
 
-    protected static final String GLOSSARY_TYPE_NAME = "Glossary";
-    protected static final String CATEGORY_TYPE_NAME = "GlossaryCategory";
-    protected static final String TERM_TYPE_NAME = "GlossaryTerm";
-    protected static final String PROJECT_TYPE_NAME = "Project";
-
-    protected static final String TERM_ANCHOR_RELATIONSHIP_NAME = "TermAnchor";
-    protected static final String TERM_CATEGORIZATION_RELATIONSHIP_NAME = "TermCategorization";
-    protected static final String PROJECT_SCOPE_RELATIONSHIP_NAME = "ProjectScope";
-    protected static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
-    protected static final String CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME ="CategoryHierarchyLink";
-
     protected final MappersFactory mappersFactory;
-    protected final OMRSAPIHelper oMRSAPIHelper;
     protected final OpenMetadataAPIGenericHandler genericHandler;
     protected final int maxPageSize;
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
-     * Construct the Subject Area Project Handler
+     * Construct the Subject Area Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper           omrs API helper
-     * @param maxPageSize             maximum page size
+     * @param genericHandler    generic handler
+     * @param maxPageSize       maximum page size
      */
-    public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        this.oMRSAPIHelper = oMRSAPIHelper;
-        this.genericHandler = oMRSAPIHelper.getGenericHandler();
-        this.mappersFactory = new MappersFactory(oMRSAPIHelper);
+    public SubjectAreaHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        this.genericHandler =genericHandler;
+        this.mappersFactory = new MappersFactory(genericHandler);
         this.maxPageSize = maxPageSize;
         invalidParameterHandler.setMaxPagingSize(this.maxPageSize);
     }
@@ -150,7 +134,7 @@ public abstract class SubjectAreaHandler {
             return SubjectAreaUtils.extractCategorySummaryFromCategory(category, relationship);
     }
     protected String sanitiseFindRequest(String searchCriteria, boolean exactValue, boolean ignoreCase) {
-        OMRSRepositoryHelper omrsRepositoryHelper = oMRSAPIHelper.getOMRSRepositoryHelper();
+        OMRSRepositoryHelper omrsRepositoryHelper =genericHandler.getRepositoryHelper();
 
         if (searchCriteria != null && "".equals(searchCriteria.trim())) {
             // ignore the flags for an empty search criteria string - assume we want everything
@@ -233,95 +217,20 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Get the related nodes from end 1 of a given type of relationship
-     * @param methodName           name of the method being called.
-     * @param userId               unique identifier for requesting user, under which the request is performed
-     * @param guid                 guid
-     * @param relationshipTypeName relationship type name
-     * @param mapperClass          mapper class used to get the type name of the Node to return
-     * @param startingFrom         retrieve items starting from this location
-     * @param pageSize             maximum size of the returned items
-     * @return response containing the the related Nodes if there are any
-     */
-    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedNodesForEnd1(String methodName,
-                                                                                 String userId,
-                                                                                 String guid,
-                                                                                 String relationshipTypeName,
-                                                                                 Class<? extends INodeMapper<T>> mapperClass,
-                                                                                 Integer startingFrom,
-                                                                                 Integer pageSize) {
-        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
-
-        try {
-            if (pageSize == null) {
-               pageSize = maxPageSize;
-            }
-            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
-            final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
-            List<EntityDetail> entityDetails= oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
-                        methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
-            if (entityDetails != null) {
-                for (EntityDetail entityDetail : entityDetails) {
-                    response.addResult(mapper.map(entityDetail));
-                }
-            }
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-            response.setExceptionInfo(e, className);
-        }
-        return response;
-    }
-    /**
-     * Get the related nodes from end 2 of a given type of relationship
-     * @param methodName           name of the method being called.
-     * @param userId               unique identifier for requesting user, under which the request is performed
-     * @param guid                 guid
-     * @param relationshipTypeName relationship type name
-     * @param mapperClass          mapper class used to get the type name of the Node to return
-     * @param startingFrom         retrieve items starting from this location
-     * @param pageSize             maximum size of the returned items
-     * @return response containing the the related Nodes if there are any
-     */
-    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedNodesForEnd2(String methodName,
-                                                                                 String userId,
-                                                                                 String guid,
-                                                                                 String relationshipTypeName,
-                                                                                 Class<? extends INodeMapper<T>> mapperClass,
-                                                                                 Integer startingFrom,
-                                                                                 Integer pageSize) {
-        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
-
-        try {
-            if (pageSize == null) {
-                pageSize = maxPageSize;
-            }
-            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
-            final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
-            List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd2(
-                   methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
-            if (entityDetails != null) {
-                for (EntityDetail entityDetail : entityDetails) {
-                    response.addResult(mapper.map(entityDetail));
-                }
-            }
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-            response.setExceptionInfo(e, className);
-        }
-        return response;
-    }
-
-    /**
      * Get All relationships for Node
      *
      * @param methodName         name of the method being called.
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid
      * @param findRequest        {@link FindRequest}
+     * @param entityTypeName     typpe name of the starting entity
      * @return the relationships associated with the requested guid
      * */
     public SubjectAreaOMASAPIResponse<Relationship> getAllRelationshipsForEntity(String methodName,
                                                                                  String userId,
                                                                                  String guid,
-                                                                                 FindRequest findRequest)
+                                                                                 FindRequest findRequest,
+                                                                                 String entityTypeName)
     {
         SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         try {
@@ -329,8 +238,8 @@ public abstract class SubjectAreaHandler {
                 findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
             }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
-            response.addAllResults(getAllRelationshipForEntity(methodName, userId, guid, findRequest));
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  e) {
+            response.addAllResults(getAllRelationshipForEntity(methodName, userId, guid, findRequest, entityTypeName));
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | InvalidParameterException  e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -344,6 +253,7 @@ public abstract class SubjectAreaHandler {
      * @param userId                  user identity
      * @param entityGuid              globally unique identifier
      * @param findRequest             {@link FindRequest}
+     * @param entityTypeName          type name of the starting entity
      * @return {@code List<Relationship>}
      *
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -351,18 +261,79 @@ public abstract class SubjectAreaHandler {
      * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
     public List<Relationship> getAllRelationshipForEntity(String restAPIName,
-                                                  String userId,
-                                                  String entityGuid,
-                                                  FindRequest findRequest) throws SubjectAreaCheckedException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                          String userId,
+                                                          String entityGuid,
+                                                          FindRequest findRequest,
+                                                          String entityTypeName) throws SubjectAreaCheckedException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          InvalidParameterException {
         if (findRequest.getPageSize() == null) {
             findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
         }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
-        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships =
+                genericHandler.getAttachmentLinks(userId,
+                                                  entityGuid,
+                                                  "guid",
+                                                  entityTypeName,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  findRequest.getStartingFrom(),
+                                                  findRequest.getPageSize(),
+                                                  restAPIName);
+
+
         return getRelationshipsFromRelationships(relationships);
     }
+    /**
+     * Get the relationships keyed off an entity guid.
+     *
+     * @param restAPIName             rest API name
+     * @param userId                  user identity
+     * @param entityGuid              globally unique identifier
+     * @param findRequest             {@link FindRequest}
+     * @param entityTypeName          type name of the starting entity
+     * @param attachmentRelationshipTypeGUID attachment relationship type guid
+     * @param attachmentRelationshipTypeName attachment relationship type name
+     * @param attachmentEntityTypeName  attached entity type name
+     * @return {@code List<Relationship>}
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
+     */
+    public List<Relationship> getRelationshipsForEntityByType(String restAPIName,
+                                                              String userId,
+                                                              String entityGuid,
+                                                              FindRequest findRequest,
+                                                              String entityTypeName,
+                                                              String attachmentRelationshipTypeGUID,
+                                                              String attachmentRelationshipTypeName,
+                                                              String attachmentEntityTypeName) throws SubjectAreaCheckedException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      InvalidParameterException {
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships =
+                genericHandler.getAttachmentLinks(userId,
+                                                  entityGuid,
+                                                  "guid",
+                                                  entityTypeName,
+                                                  attachmentRelationshipTypeGUID,
+                                                  attachmentRelationshipTypeName,
+                                                  attachmentEntityTypeName,
+                                                  findRequest.getStartingFrom(),
+                                                  findRequest.getPageSize(),
+                                                  restAPIName);
+
+        return getRelationshipsFromRelationships(relationships);
+    }
+
 
     public List<Relationship> getRelationshipsFromRelationships(Collection<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships) {
         return convertOmrsToOmas(relationships, IRelationshipMapper.class);
@@ -510,18 +481,18 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Set the effectivity to and from dates date
+     * Set the effectivity to and from dates date for a Node
      * @param userId calling user
      * @param node node to update with effectivity dates if required
-     * @param methodName
+     * @param methodName name of the calling method
      * @param guid guid of the Bean to update
      * @param typeGUID the guid of the associated type
      * @param typeName the name of the associated type
-     * @throws InvalidParameterException the classification name is null
+     * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException there is a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to update the security tags
      */
-    protected void setEffectivity(String userId, Node node, String methodName, String guid, String typeGUID, String typeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    protected void setNodeEffectivity(String userId, Node node, String methodName, String guid, String typeGUID, String typeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Long effectiveFromLong = node.getEffectiveFromTime();
         Long effectiveToLong = node.getEffectiveToTime();
         if (effectiveFromLong != null || effectiveToLong != null) {
@@ -543,6 +514,42 @@ public abstract class SubjectAreaHandler {
                                        effectiveFrom,
                                        effectiveTo,
                                        methodName);
+        }
+    }
+    /**
+     * Set the effectivity to and from dates date for a Relationship
+     * @param userId calling user
+     * @param node node to take the effectivity dates from
+     * @param methodName name of the calling method
+     * @param relationshipGUID relationshipGUID of the Relationship to update
+     * @param typeGUID the relationshipGUID of the associated type
+     * @param typeName the name of the associated type
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException there is a problem with the repositories
+     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     */
+    protected void setRelationshipEffectivity(String userId, Node node, String methodName, String relationshipGUID, String typeGUID, String typeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Long effectiveFromLong = node.getEffectiveFromTime();
+        Long effectiveToLong = node.getEffectiveToTime();
+        if (effectiveFromLong != null || effectiveToLong != null) {
+            Date effectiveFrom = null;
+            Date effectiveTo = null;
+            if (effectiveToLong != null) {
+                effectiveTo = new Date(effectiveToLong);
+            }
+            if (effectiveFromLong != null) {
+                effectiveFrom = new Date(effectiveFromLong);
+            }
+            genericHandler.updateRelationshipEffectivityDates(userId,
+                                                      null,
+                                                      null,
+                                                      relationshipGUID,
+                                                      "relationshipGUID",
+                                                      typeName,
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      methodName);
+
         }
     }
 }

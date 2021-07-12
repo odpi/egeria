@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermHasARelationshipMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -98,15 +99,16 @@ public class SubjectAreaRESTServicesInstance {
                       SubjectAreaOMASAPIResponse<Term> end2TermResponse  = termHandler.getTermByGuid(userId, end2Guid);
                       Term end1Term = end1TermResponse.results().get(0);
                       Term end2Term = end2TermResponse.results().get(0);
+
                       if (!end1Term.isSpineObject()) {
                           end1Term.setSpineObject(true);
                           // ignore the response -as the repository may not set spine objects
-                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
+                          termHandler.updateTerm(userId,end1Guid, end1Term, handler, false);
                       }
                       if (!end2Term.isSpineAttribute()) {
                           end2Term.setSpineAttribute(true);
                           // ignore the response -as the repository may not set spine attributes
-                          termHandler.updateTerm(userId,end2Guid, end2Term, false);
+                          termHandler.updateTerm(userId,end2Guid, end2Term, handler,false);
                       }
                   } else  if (relationshipName.equals(RelationshipType.IsATypeOf.name())) {
                       SubjectAreaOMASAPIResponse<Term> end1TermResponse = termHandler.getTermByGuid(userId, end1Guid);
@@ -116,12 +118,12 @@ public class SubjectAreaRESTServicesInstance {
                       if (!end1Term.isSpineObject()) {
                           end1Term.setSpineObject(true);
                           // ignore the response -as the repository may not set spine objects
-                          termHandler.updateTerm(userId,end1Guid, end1Term, false);
+                          termHandler.updateTerm(userId,end1Guid, end1Term, handler, false);
                       }
                       if (!end2Term.isSpineObject()) {
                           // ignore the response -as the repository may not set spine objects
                           end2Term.setSpineObject(true);
-                          termHandler.updateTerm(userId, end2Guid, end2Term, false);
+                          termHandler.updateTerm(userId, end2Guid, end2Term, handler,false);
                       }
                   }
 

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -30,8 +30,8 @@ public class ProjectMapper extends EntityDetailMapper<Project> {
     public static final String GLOSSARY_PROJECT = "GlossaryProject";
 
 
-    public ProjectMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public ProjectMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -46,7 +46,7 @@ public class ProjectMapper extends EntityDetailMapper<Project> {
             if (omrsClassifications !=null) {
                 for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification : omrsClassifications) {
 
-                    if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(), GLOSSARY_PROJECT, omrsClassification.getName())) {
+                    if (repositoryHelper.isTypeOf(genericHandler.getServiceName(), GLOSSARY_PROJECT, omrsClassification.getName())) {
                         project = new GlossaryProject();
                     } else {
                         project = new Project();
@@ -128,7 +128,7 @@ public class ProjectMapper extends EntityDetailMapper<Project> {
         if (existingNodeType==null) {
             existingNodeType=NodeType.Project;
         }
-        String sourceName = omrsapiHelper.getServiceName();
+        String sourceName = genericHandler.getServiceName();
         if (existingNodeType == NodeType.Project && repositoryHelper.isTypeOf(sourceName, GLOSSARY_PROJECT,classificationName)) {
             project.setNodeType(NodeType.GlossaryProject);
             handled=true;

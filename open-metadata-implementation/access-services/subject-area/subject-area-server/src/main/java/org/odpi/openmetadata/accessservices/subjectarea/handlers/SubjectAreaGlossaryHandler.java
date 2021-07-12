@@ -9,15 +9,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -40,11 +36,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * Construct the Subject Area Glossary Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper omrs API helper
-     * @param maxPageSize   maximum page size
+     * @param genericHandler    generic handler
+     * @param maxPageSize       maximum page size
      */
-    public SubjectAreaGlossaryHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaGlossaryHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
     }
 
     /**
@@ -103,12 +99,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                             builder,
                                                                             methodName);
                 // set effectivity dates if required
-                setEffectivity(userId,
-                               suppliedGlossary,
-                               methodName,
-                               guid,
-                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
+                setNodeEffectivity(userId,
+                                   suppliedGlossary,
+                                   methodName,
+                                   guid,
+                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
                 // set classifications if required
                 if (suppliedGlossary.getNodeType() == NodeType.Taxonomy || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
 
@@ -229,7 +225,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getGlossaryRelationships";
-        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME );
     }
 
     /**
@@ -275,12 +271,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                       entityDetail.getProperties(),
                                                       !isReplace,
                                                       methodName);
-                setEffectivity(userId,
-                               suppliedGlossary,
-                               methodName,
-                               guid,
-                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
+                setNodeEffectivity(userId,
+                                   suppliedGlossary,
+                                   methodName,
+                                   guid,
+                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
 
                 response = getGlossaryByGuid(userId, guid);
             }
@@ -402,9 +398,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         final String methodName = "restoreGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
+            genericHandler.getRepositoryHandler().restoreEntity(userId,
+                                                                null,
+                                                                null,
+                                                                guid,
+                                                                methodName);
             response = getGlossaryByGuid(userId, guid);
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -553,7 +553,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                ignoreCase,
                                                                                pageSize,
                                                                                methodName);
-                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
                 Set<Category> categories = new HashSet<>();
                 for (EntityDetail entity:entities) {
                         SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
@@ -572,40 +571,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 response.setExceptionInfo(e, className);
             }
         }
-        return response;
-    }
-
-
-    /**
-     * Get categories with paging. This call uses the category handler to get a Category that is fully filled out, including a valid value for the categoryParent.
-     *
-     * @param userId          unique identifier for requesting user, under which the request is performed
-     * @param guid            guid of the glossary to get categories
-     * @param categoryHandler category handler
-     * @param startingFrom    starting element
-     * @param pageSize        maximum elements returned on the request
-     * @param methodName      Rest API
-     * @return Categories  response
-     */
-    private SubjectAreaOMASAPIResponse<Category> getCategoriesWithPaging(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize, String methodName) {
-        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
-        SubjectAreaOMASAPIResponse<Category> relatedNodesResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-        List<Category> allCategories = new ArrayList<>();
-        // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
-        if (relatedNodesResponse.getRelatedHTTPCode() == 200 && relatedNodesResponse.results() != null && relatedNodesResponse.results().size() > 0) {
-            for (Category mappedCategory : relatedNodesResponse.results()) {
-                SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
-                if (categoryResponse.getRelatedHTTPCode() == 200) {
-                    allCategories.add(categoryResponse.results().get(0));
-                } else {
-                    response = categoryResponse;
-                    break;
-                }
-            }
-        } else {
-            response = relatedNodesResponse;
-        }
-        response.addAllResults(allCategories);
         return response;
     }
 

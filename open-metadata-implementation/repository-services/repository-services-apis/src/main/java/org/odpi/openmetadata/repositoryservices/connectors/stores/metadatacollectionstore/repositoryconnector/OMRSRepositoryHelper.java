@@ -168,7 +168,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return TypeDef object
      * @throws TypeErrorException  unknown or invalid type
      */
-    TypeDef getTypeDef(String sourceName,
+    public TypeDef getTypeDef(String sourceName,
                        String guidParameterName,
                        String nameParameterName,
                        String typeDefGUID,
