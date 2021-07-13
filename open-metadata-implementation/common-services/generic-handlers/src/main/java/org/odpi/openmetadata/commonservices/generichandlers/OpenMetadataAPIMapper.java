@@ -861,7 +861,7 @@ public class OpenMetadataAPIMapper
     public static final String COHORT_MEMBER_TYPE_NAME               = "CohortMember";
     /* SoftwareServerCapability */
 
-    public static final String EVENT_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
+    public static final String PROTOCOL_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
 
     public static final String DEPLOYED_API_TYPE_GUID                    = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
     public static final String DEPLOYED_API_TYPE_NAME                    = "DeployedAPI";
@@ -883,9 +883,28 @@ public class OpenMetadataAPIMapper
     public static final String SUBSCRIBER_LIST_TYPE_GUID                 = "69751093-35f9-42b1-944b-ba6251ff513d";  /* from Area 2 */
     public static final String SUBSCRIBER_LIST_TYPE_NAME                 = "SubscriberList";
     /* DataSet */
+
     public static final String TOPIC_SUBSCRIBERS_TYPE_GUID               = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";  /* from Area 2 */
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
     /* End1 = SubscriberList; End 2 = Topic */
+
+    public static final String INFORMATION_VIEW_TYPE_GUID                = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
+    public static final String INFORMATION_VIEW_TYPE_NAME                = "InformationView";
+    /* DataSet */
+
+    public static final String FORM_TYPE_GUID                            = "8078e3d1-0c63-4ace-aafa-68498b39ccd6";  /* from Area 2 */
+    public static final String FORM_TYPE_NAME                            = "Form";
+    /* DataSet */
+
+    public static final String DEPLOYED_REPORT_TYPE_GUID                 = "e9077f4f-955b-4d7b-b1f7-12ee769ff0c3";  /* from Area 2 */
+    public static final String DEPLOYED_REPORT_TYPE_NAME                 = "DeployedReport";
+    /* DataSet */
+
+    public static final String ID_PROPERTY_NAME                          = "id";                                    /* from DeployedReport entity */
+    public static final String CREATED_TIME_PROPERTY_NAME                = "createdTime";                            /* from DeployedReport entity */
+    public static final String LAST_MODIFIED_TIME_PROPERTY_NAME          = "lastModifiedTime";                      /* from DeployedReport entity */
+    public static final String LAST_MODIFIER_PROPERTY_NAME               = "lastModifier";                          /* from DeployedReport entity */
+
 
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID     = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME     = "DeployedSoftwareComponent";

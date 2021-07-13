@@ -1445,6 +1445,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getSchemaAttributesForComplexSchemaType(userId,
                                                                              schemaTypeGUID,
                                                                              guidParameterName,
+                                                                             OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                              null,
                                                                              null,
                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),

@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * SchemaManagerInterface defines the common methods for managing SchemaTypes and SchemaAttributes. It is incorporated in the
- * EventBrokerInterface and the APIManagerInterface.
+ * EventBrokerInterface, ApplicationInterface and the APIManagerInterface.
  *
  * SchemaAttributes describe the data fields of the schema. If a schema attribute's type is simple (that is
  * primitive, literal, enum or external, its details are passed with the schema attribute.  Complex schema types (such as Maps,
@@ -31,9 +31,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -43,9 +42,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createPrimitiveSchemaType(String                        userId,
-                                     String                        schemaManagerGUID,
-                                     String                        schemaManagerName,
-                                     boolean                       schemaManagerIsHome,
+                                     String                        externalSourceGUID,
+                                     String                        externalSourceName,
                                      PrimitiveSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException;
@@ -55,9 +53,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema type that has a fixed value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -67,9 +64,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createLiteralSchemaType(String                      userId,
-                                   String                      schemaManagerGUID,
-                                   String                      schemaManagerName,
-                                   boolean                     schemaManagerIsHome,
+                                   String                      externalSourceGUID,
+                                   String                      externalSourceName,
                                    LiteralSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
@@ -79,9 +75,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      * @param validValuesSetGUID unique identifier of the valid values set to used
      *
@@ -92,9 +87,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createEnumSchemaType(String                   userId,
-                                String                   schemaManagerGUID,
-                                String                   schemaManagerName,
-                                boolean                  schemaManagerIsHome,
+                                String                   externalSourceGUID,
+                                String                   externalSourceName,
                                 EnumSchemaTypeProperties schemaTypeProperties,
                                 String                   validValuesSetGUID) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
@@ -150,9 +144,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -162,9 +155,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createStructSchemaType(String                     userId,
-                                  String                     schemaManagerGUID,
-                                  String                     schemaManagerName,
-                                  boolean                    schemaManagerIsHome,
+                                  String                     externalSourceGUID,
+                                  String                     externalSourceName,
                                   StructSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException;
@@ -174,9 +166,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -186,9 +177,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createSchemaTypeChoice(String                     userId,
-                                  String                     schemaManagerGUID,
-                                  String                     schemaManagerName,
-                                  boolean                    schemaManagerIsHome,
+                                  String                     externalSourceGUID,
+                                  String                     externalSourceName,
                                   SchemaTypeChoiceProperties schemaTypeProperties,
                                   List<String>               schemaTypeOptionGUIDs) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -199,10 +189,11 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
+     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
      *
      * @return unique identifier of the new schema type
      *
@@ -211,9 +202,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createMapSchemaType(String                  userId,
-                               String                  schemaManagerGUID,
-                               String                  schemaManagerName,
-                               boolean                 schemaManagerIsHome,
+                               String                  externalSourceGUID,
+                               String                  externalSourceName,
                                MapSchemaTypeProperties schemaTypeProperties,
                                String                  mapFromSchemaTypeGUID,
                                String                  mapToSchemaTypeGUID) throws InvalidParameterException,
@@ -225,9 +215,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -238,9 +227,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createSchemaTypeFromTemplate(String             userId,
-                                        String             schemaManagerGUID,
-                                        String             schemaManagerName,
-                                        boolean            schemaManagerIsHome,
+                                        String             externalSourceGUID,
+                                        String             externalSourceName,
                                         String             templateGUID,
                                         TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -252,8 +240,8 @@ public interface SchemaManagerInterface
      * set up specialized properties in extended properties.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaTypeProperties new properties for the metadata element
@@ -263,8 +251,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void updateSchemaType(String               userId,
-                          String               schemaManagerGUID,
-                          String               schemaManagerName,
+                          String               externalSourceGUID,
+                          String               externalSourceName,
                           String               schemaTypeGUID,
                           boolean              isMergeUpdate,
                           SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
@@ -278,8 +266,8 @@ public interface SchemaManagerInterface
      * Remove the metadata element representing a schema type.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -287,8 +275,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void removeSchemaType(String userId,
-                          String schemaManagerGUID,
-                          String schemaManagerName,
+                          String externalSourceGUID,
+                          String externalSourceName,
                           String schemaTypeGUID) throws InvalidParameterException,
                                                         UserNotAuthorizedException,
                                                         PropertyServerException;
@@ -408,9 +396,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is nested underneath
      * @param schemaAttributeProperties properties for the schema attribute
      *
@@ -421,9 +408,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createSchemaAttribute(String                    userId,
-                                 String                    schemaManagerGUID,
-                                 String                    schemaManagerName,
-                                 boolean                   schemaManagerIsHome,
+                                 String                    externalSourceGUID,
+                                 String                    externalSourceName,
                                  String                    schemaElementGUID,
                                  SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -434,9 +420,8 @@ public interface SchemaManagerInterface
      * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -448,9 +433,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createSchemaAttributeFromTemplate(String             userId,
-                                             String             schemaManagerGUID,
-                                             String             schemaManagerName,
-                                             boolean                       schemaManagerIsHome,
+                                             String             externalSourceGUID,
+                                             String             externalSourceName,
                                              String             schemaElementGUID,
                                              String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
@@ -462,8 +446,9 @@ public interface SchemaManagerInterface
      * Connect a schema type to a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param relationshipTypeName name of relationship to create
      * @param schemaAttributeGUID unique identifier of the schema attribute
      * @param schemaTypeGUID unique identifier of the schema type to connect
      *
@@ -471,41 +456,42 @@ public interface SchemaManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupSchemaType(String userId,
-                         String schemaManagerGUID,
-                         String schemaManagerName,
-                         String schemaAttributeGUID,
-                         String schemaTypeGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
+    void setupSchemaType(String  userId,
+                         String  externalSourceGUID,
+                         String  externalSourceName,
+                         String  relationshipTypeName,
+                         String  schemaAttributeGUID,
+                         String  schemaTypeGUID) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
 
 
     /**
-     * Remove the type information from a schema attribute.
+     * Remove the linked schema types from a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the schema attribute
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void clearSchemaType(String userId,
-                         String schemaManagerGUID,
-                         String schemaManagerName,
-                         String schemaAttributeGUID) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+    void clearSchemaTypes(String userId,
+                          String externalSourceGUID,
+                          String externalSourceName,
+                          String schemaAttributeGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**
      * Update the properties of the metadata element representing a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaAttributeProperties new properties for the schema attribute
@@ -515,8 +501,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void updateSchemaAttribute(String                    userId,
-                               String                    schemaManagerGUID,
-                               String                    schemaManagerName,
+                               String                    externalSourceGUID,
+                               String                    externalSourceName,
                                String                    schemaAttributeGUID,
                                boolean                   isMergeUpdate,
                                SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
@@ -528,8 +514,8 @@ public interface SchemaManagerInterface
      * Remove the metadata element representing a schema attribute.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -537,8 +523,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void removeSchemaAttribute(String userId,
-                               String schemaManagerGUID,
-                               String schemaManagerName,
+                               String externalSourceGUID,
+                               String externalSourceName,
                                String schemaAttributeGUID) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException;
@@ -643,10 +629,9 @@ public interface SchemaManagerInterface
      * Classify the schema element to indicate that it describes a calculated value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the metadata element to update
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
      * @param formula formula for calculating the value - this may contain placeholders that are identified by the
      *                queryIds used in the queryTarget relationships
      *
@@ -655,9 +640,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void setupCalculatedValue(String  userId,
-                              String  schemaManagerGUID,
-                              String  schemaManagerName,
-                              boolean schemaManagerIsHome,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
                               String  schemaElementGUID,
                               String  formula) throws InvalidParameterException,
                                                       UserNotAuthorizedException,
@@ -668,8 +652,8 @@ public interface SchemaManagerInterface
      * Remove the calculated value designation from the schema element.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaElementGUID unique identifier of the metadata element to update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -677,8 +661,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearCalculatedValue(String userId,
-                              String schemaManagerGUID,
-                              String schemaManagerName,
+                              String externalSourceGUID,
+                              String externalSourceName,
                               String schemaElementGUID) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException;
@@ -689,9 +673,8 @@ public interface SchemaManagerInterface
      * data values to calculate a derived value.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
-     * @param schemaManagerIsHome should the schema element be marked as owned by the schema manager so others can not update?
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      * @param queryTargetProperties properties for the query target relationship
@@ -701,9 +684,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void setupQueryTargetRelationship(String                                 userId,
-                                      String                                 schemaManagerGUID,
-                                      String                                 schemaManagerName,
-                                      boolean                                schemaManagerIsHome,
+                                      String                                 externalSourceGUID,
+                                      String                                 externalSourceName,
                                       String                                 derivedElementGUID,
                                       String                                 queryTargetGUID,
                                       DerivedSchemaTypeQueryTargetProperties queryTargetProperties) throws InvalidParameterException,
@@ -714,8 +696,8 @@ public interface SchemaManagerInterface
      * Update the relationship properties for the query target.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      * @param queryTargetProperties properties for the query target relationship
@@ -725,8 +707,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void updateQueryTargetRelationship(String                                 userId,
-                                       String                                 schemaManagerGUID,
-                                       String                                 schemaManagerName,
+                                       String                                 externalSourceGUID,
+                                       String                                 externalSourceName,
                                        String                                 derivedElementGUID,
                                        String                                 queryTargetGUID,
                                        DerivedSchemaTypeQueryTargetProperties queryTargetProperties) throws InvalidParameterException,
@@ -738,8 +720,8 @@ public interface SchemaManagerInterface
      * Remove the query target relationship between two schema elements.
      *
      * @param userId calling user
-     * @param schemaManagerGUID unique identifier of software server capability representing the caller
-     * @param schemaManagerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param derivedElementGUID unique identifier of the derived schema element
      * @param queryTargetGUID unique identifier of the query target schema element
      *
@@ -748,8 +730,8 @@ public interface SchemaManagerInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearQueryTargetRelationship(String userId,
-                                      String schemaManagerGUID,
-                                      String schemaManagerName,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
                                       String derivedElementGUID,
                                       String queryTargetGUID) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,

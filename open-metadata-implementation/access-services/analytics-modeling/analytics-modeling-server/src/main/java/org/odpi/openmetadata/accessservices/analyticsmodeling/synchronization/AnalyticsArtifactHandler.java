@@ -1065,6 +1065,13 @@ public class AnalyticsArtifactHandler {
 		AnalyticsAsset assetRepo = assetHandler.getBeanByQualifiedName(
 				ctx.getUserId(), assetTypeGuid, assetTypeName, asset.getQualifiedName(), Constants.QUALIFIED_NAME, methodName);
 
+		if (assetRepo == null) {
+		    throw new AnalyticsModelingCheckedException(
+		    		AnalyticsModelingErrorCode.FAILED_UPDATE_UNKNOWN_ARTIFACT.getMessageDefinition(ctx.getUserId(), asset.getUid()),
+					this.getClass().getSimpleName(),
+					methodName);
+		}
+		
 		asset.setGuid(assetRepo.getGuid());	// asset is new definition of the assetRepo
 		
 		// update relationships for referenced assets

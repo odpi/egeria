@@ -30,7 +30,8 @@ This integration service is paired with the [Asset Manager](../../access-service
 Open Metadata Access Service (OMAS).
 
 ----
-Return to the [Integration Services](..)
+
+* Return to the [Integration Services](..)
 
 
 ----

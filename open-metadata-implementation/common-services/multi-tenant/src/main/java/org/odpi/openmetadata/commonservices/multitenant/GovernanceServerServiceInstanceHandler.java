@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * GovernanceServerServiceInstanceHandler provides the base class for a governance
  * server's instance handler.
@@ -49,6 +51,8 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
      * @throws ClassNotFoundException when the provided class cannot be found
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     * @throws NoSuchMethodException the default constructor is missing
+     * @throws InvocationTargetException unable to call the default constructor
      */
     public ConnectorType validateConnector(String   connectorProviderClassName,
                                            Class<?> requiredConnectorInterface,
@@ -57,7 +61,9 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
                                                                         ConnectorCheckedException,
                                                                         ClassNotFoundException,
                                                                         InstantiationException,
-                                                                        IllegalAccessException
+                                                                        IllegalAccessException,
+                                                                        NoSuchMethodException,
+                                                                        InvocationTargetException
     {
         final String providerClassNameParameterName = "connectorProviderClassName";
         final String requiredConnectorInterfaceParameterName = "requiredConnectorInterface";
@@ -70,7 +76,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
         ConnectorType  connectorType;
 
         Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-        Object     potentialConnectorProvider = connectorProviderClass.newInstance();
+        Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
         ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;
 

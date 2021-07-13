@@ -238,7 +238,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
         try
         {
             Class<?>   connectorClass = Class.forName(connectorClassName);
-            Object     potentialConnector = connectorClass.newInstance();
+            Object     potentialConnector = connectorClass.getDeclaredConstructor().newInstance();
 
             connector = (Connector)potentialConnector;
             connector.initialize(guid, connection);
