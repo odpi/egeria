@@ -688,7 +688,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody(schemaTypeProperties);
 
@@ -733,7 +733,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/{2}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -1173,7 +1173,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/schema-types/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/schema-types/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -1227,7 +1227,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
         SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody(schemaAttributeProperties);
 
@@ -1270,7 +1270,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/{2}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -1553,7 +1553,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/calculated-value/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/calculated-value/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -1699,7 +1699,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateGUID(derivedElementGUID, schemaElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(queryTargetGUID, queryTargetGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/query-targets/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/query-targets/{3}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 

@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
 @Tag(name="Data Manager OMAS",
-        description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data manager " +
-                "such as database servers, content managers and file systems.",
-        externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
+     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
+                         "such as database servers, event brokers, content managers and file systems.",
+     externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
+                                         url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
 public class DatabaseManagerResource
 {

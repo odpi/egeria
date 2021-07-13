@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
     private static final String reportURLTemplatePrefix    = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/reports";
     private static final String queryURLTemplatePrefix     = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/queries";
     private static final String schemaURLTemplatePrefix    = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schemas";
-    private static final String defaultSchemaAttributeName = "DataField";
+    private static final String defaultSchemaAttributeName = "DisplayDataField";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -144,10 +145,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createForm(String          userId,
-                             String          applicationGUID,
-                             String          applicationName,
-                             boolean         applicationIsHome,
+    public String createForm(String         userId,
+                             String         applicationGUID,
+                             String         applicationName,
+                             boolean        applicationIsHome,
                              FormProperties formProperties) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -248,11 +249,11 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateForm(String          userId,
-                           String          applicationGUID,
-                           String          applicationName,
-                           String          formGUID,
-                           boolean         isMergeUpdate,
+    public void updateForm(String         userId,
+                           String         applicationGUID,
+                           String         applicationName,
+                           String         formGUID,
+                           boolean        isMergeUpdate,
                            FormProperties formProperties) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -1510,7 +1511,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateObject(dataContainerProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(dataContainerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers?applicationIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/elements/{2}/data-containers?applicationIsHome={3}";
 
         DataContainerRequestBody requestBody = new DataContainerRequestBody(dataContainerProperties);
 
@@ -1522,6 +1523,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
+                                                                  parentElementGUID,
                                                                   applicationIsHome);
 
         return restResult.getGUID();
@@ -1535,6 +1537,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @param applicationGUID unique identifier of software server capability representing the caller
      * @param applicationName unique name of software server capability representing the caller
      * @param applicationIsHome should the query be marked as owned by the event broker so others can not update?
+     * @param parentElementGUID element to link the data container to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -1549,6 +1552,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                                   String             applicationGUID,
                                                   String             applicationName,
                                                   boolean            applicationIsHome,
+                                                  String             parentElementGUID,
                                                   String             templateGUID,
                                                   TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
@@ -1564,7 +1568,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/from-template/{2}?applicationIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/elements/{2}/data-containers/from-template/{3}?applicationIsHome={4}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -1576,6 +1580,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
+                                                                  parentElementGUID,
                                                                   templateGUID,
                                                                   applicationIsHome);
 
@@ -1599,11 +1604,11 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateDataContainer(String               userId,
-                                    String               applicationGUID,
-                                    String               applicationName,
-                                    String               dataContainerGUID,
-                                    boolean              isMergeUpdate,
+    public void updateDataContainer(String                  userId,
+                                    String                  applicationGUID,
+                                    String                  applicationName,
+                                    String                  dataContainerGUID,
+                                    boolean                 isMergeUpdate,
                                     DataContainerProperties dataContainerProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -1622,7 +1627,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
             invalidParameterHandler.validateName(dataContainerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/{2}?isMergeUpdate={3}";
 
         DataContainerRequestBody requestBody = new DataContainerRequestBody(dataContainerProperties);
 
@@ -1667,7 +1672,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataContainerGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/{2}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -1700,15 +1705,15 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataContainerElement> findDataContainer(String userId,
-                                                        String typeName,
-                                                        String searchString,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<DataContainerElement> findDataContainers(String userId,
+                                                         String typeName,
+                                                         String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        final String methodName                = "findDataContainer";
+        final String methodName                = "findDataContainers";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1742,6 +1747,8 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      *
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this data container is connected to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return metadata element describing the data container associated with the requested parent element
      *
@@ -1750,27 +1757,31 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public DataContainerElement getDataContainerForElement(String userId,
-                                                           String parentElementGUID) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public List<DataContainerElement> getDataContainersForElement(String userId,
+                                                                  String parentElementGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName                     = "findDataContainer";
         final String parentElementGUIDParameterName = "parentElementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/by-parent-element/{2}";
-        
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/by-parent-element/{2}?startFrom={4}&pageSize={5}";
 
-        DataContainerResponse restResult = restClient.callDataContainerGetRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   parentElementGUID);
+        DataContainersResponse restResult = restClient.callDataContainersGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     parentElementGUID,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
 
-        return restResult.getElement();
+        return restResult.getElementList();
     }
 
 
@@ -1941,22 +1952,14 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/{2}/data-fields?applicationIsHome={3}";
-
-        DataFieldRequestBody requestBody = new DataFieldRequestBody(properties);
-
-        requestBody.setExternalSourceGUID(applicationGUID);
-        requestBody.setExternalSourceName(applicationName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  parentElementGUID,
-                                                                  applicationIsHome);
-
-        return restResult.getGUID();
+        if (applicationIsHome)
+        {
+            return super.createSchemaAttribute(userId, applicationGUID, applicationName, parentElementGUID, properties);
+        }
+        else
+        {
+            return super.createSchemaAttribute(userId, null, null, parentElementGUID, properties);
+        }
     }
 
 
@@ -1968,7 +1971,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @param applicationName unique name of software server capability representing the event broker
      * @param applicationIsHome should the data field be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param reportGUID unique identifier of the report where the data field is located
+     * @param parentElementGUID unique identifier of the report where the data field is located
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new data field
@@ -1983,39 +1986,67 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
                                               String             applicationName,
                                               boolean            applicationIsHome,
                                               String             templateGUID,
-                                              String             reportGUID,
+                                              String             parentElementGUID,
                                               TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
         final String methodName                     = "createDataFieldFromTemplate";
         final String templateGUIDParameterName      = "templateGUID";
-        final String parentElementGUIDParameterName = "reportGUID";
+        final String parentElementGUIDParameterName = "parentElementGUID";
         final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(reportGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/{2}/data-fields/from-template/{3}?applicationIsHome={4}";
-
-        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
-
-        requestBody.setExternalSourceGUID(applicationGUID);
-        requestBody.setExternalSourceName(applicationName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  reportGUID,
-                                                                  templateGUID,
-                                                                  applicationIsHome);
-
-        return restResult.getGUID();
+        if (applicationIsHome)
+        {
+            return super.createSchemaAttributeFromTemplate(userId, applicationGUID, applicationName, parentElementGUID, templateGUID, templateProperties);
+        }
+        else
+        {
+            return super.createSchemaAttributeFromTemplate(userId, null, null, parentElementGUID, templateGUID, templateProperties);
+        }
     }
+
+
+    /**
+     * Connect a schema type to a data field.
+     *
+     * @param userId calling user
+     * @param applicationGUID unique identifier of software server capability representing the event broker
+     * @param applicationName unique name of software server capability representing the event broker
+     * @param applicationIsHome should the data field be marked as owned by the event broker so others can not update?
+     * @param relationshipTypeName name of relationship to create
+     * @param apiParameterGUID unique identifier of the API parameter
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaType(String  userId,
+                                String  applicationGUID,
+                                String  applicationName,
+                                boolean applicationIsHome,
+                                String  relationshipTypeName,
+                                String  apiParameterGUID,
+                                String  schemaTypeGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        if (applicationIsHome)
+        {
+            super.setupSchemaType(userId, applicationGUID, applicationName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        }
+        else
+        {
+            super.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        }
+    }
+
 
 
     /**
@@ -2045,24 +2076,18 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         final String methodName               = "updateDataField";
         final String elementGUIDParameterName = "dataFieldGUID";
         final String propertiesParameterName  = "reportProperties";
+        final String qualifiedNameParameterName     = "properties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFieldGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-fields/{2}";
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
-        DataFieldRequestBody requestBody = new DataFieldRequestBody(properties);
-
-        requestBody.setExternalSourceGUID(applicationGUID);
-        requestBody.setExternalSourceName(applicationName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        dataFieldGUID);
+        super.updateSchemaAttribute(userId, applicationGUID, applicationName, dataFieldGUID, isMergeUpdate, properties);
     }
 
 
@@ -2073,7 +2098,6 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
      * @param applicationGUID unique identifier of software server capability representing the event broker
      * @param applicationName unique name of software server capability representing the event broker
      * @param dataFieldGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2083,33 +2107,49 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
     public void removeDataField(String userId,
                                 String applicationGUID,
                                 String applicationName,
-                                String dataFieldGUID,
-                                String qualifiedName) throws InvalidParameterException,
+                                String dataFieldGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
         final String methodName                  = "removeDataField";
         final String elementGUIDParameterName    = "dataFieldGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFieldGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-fields/{2}/{3}/delete";
+        super.removeSchemaAttribute(userId, applicationGUID, applicationName, dataFieldGUID);
+    }
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
-        requestBody.setExternalSourceGUID(applicationGUID);
-        requestBody.setExternalSourceName(applicationName);
+    /**
+     * Convert a list of schema attribute elements into a list of Data Fields.
+     *
+     * @param schemaAttributeElements returned list
+     * @return return reformatted list
+     */
+    private List<DataFieldElement> getDataFieldFromSchemaAttributes(List<SchemaAttributeElement> schemaAttributeElements)
+    {
+        if (schemaAttributeElements != null)
+        {
+            List<DataFieldElement> dataFieldElements = new ArrayList<>();
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        dataFieldGUID,
-                                        qualifiedName);
+            for (SchemaAttributeElement schemaAttributeElement : schemaAttributeElements)
+            {
+                if (schemaAttributeElement != null)
+                {
+                    DataFieldElement dataFieldElement = new DataFieldElement(schemaAttributeElement);
+
+                    dataFieldElements.add(dataFieldElement);
+                }
+            }
+
+            if (! dataFieldElements.isEmpty())
+            {
+                return dataFieldElements;
+            }
+        }
+
+        return null;
     }
 
 
@@ -2143,17 +2183,9 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-fields/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        List<SchemaAttributeElement> schemaAttributeElements = super.findSchemaAttributes(userId, searchString, defaultSchemaAttributeName, startFrom, validatedPageSize);
 
-        DataFieldsResponse restResult = restClient.callDataFieldsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             searchString,
-                                                                             startFrom,
-                                                                             validatedPageSize);
-
-        return restResult.getElementList();
+        return getDataFieldFromSchemaAttributes(schemaAttributeElements);
     }
 
 
@@ -2186,17 +2218,9 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/{2}/data-fields?startFrom={3}&pageSize={4}";
+        List<SchemaAttributeElement> schemaAttributeElements = super.getNestedAttributes(userId, parentElementGUID, startFrom, validatedPageSize);
 
-        DataFieldsResponse restResult = restClient.callDataFieldsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             parentElementGUID,
-                                                                             startFrom,
-                                                                             validatedPageSize);
-
-        return restResult.getElementList();
+        return getDataFieldFromSchemaAttributes(schemaAttributeElements);
     }
 
 
@@ -2230,17 +2254,9 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-fields/by-name/{2}?startFrom={3}&pageSize={4}";
+        List<SchemaAttributeElement> schemaAttributeElements = super.getSchemaAttributesByName(userId, name, defaultSchemaAttributeName, startFrom, validatedPageSize);
 
-        DataFieldsResponse restResult = restClient.callDataFieldsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             name,
-                                                                             startFrom,
-                                                                             validatedPageSize);
-
-        return restResult.getElementList();
+        return getDataFieldFromSchemaAttributes(schemaAttributeElements);
     }
 
 
@@ -2268,14 +2284,15 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/data-fields/{2}";
+        SchemaAttributeElement schemaAttributeElement = super.getSchemaAttributeByGUID(userId, guid);
 
-        DataFieldResponse restResult = restClient.callDataFieldGetRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           guid);
-
-        return restResult.getElement();
+        if (schemaAttributeElement != null)
+        {
+            return new DataFieldElement(schemaAttributeElement);
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -309,8 +309,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param parentElementGUIDParameterName parameter name supplying parentElementGUID
      * @param qualifiedName unique identifier for this schema type
      * @param qualifiedNameParameterName name of parameter supplying the qualified name
-     * @param displayName the stored display name property for the database table
-     * @param description the stored description property associated with the database table
+     * @param displayName the stored display name property for the attribute
+     * @param description the stored description property associated with the attribute
      * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
      * @param dataType data type name - for stored values
      * @param defaultValue string containing default value - for stored values
@@ -318,8 +318,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
      * @param formula String formula - for derived values
      * @param isDeprecated is this table deprecated?
-     * @param elementPosition the position of this column in its parent table.
-     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param elementPosition the position of this attribute in its parent type.
+     * @param minCardinality minimum number of repeating instances allowed for this attribute - typically 1
      * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
      * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
      * @param orderedValues whether the attribute instances are arranged in an order
@@ -641,6 +641,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         return this.getSchemaAttributesForComplexSchemaType(userId,
                                                             schemaTypeGUID,
                                                             guidParameterName,
+                                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                             requiredClassificationName,
                                                             omittedClassificationName,
                                                             supportedZones,
@@ -674,6 +675,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     public List<SCHEMA_ATTRIBUTE> getSchemaAttributesForComplexSchemaType(String       userId,
                                                                           String       schemaTypeGUID,
                                                                           String       schemaTypeGUIDParameterName,
+                                                                          String       schemaAttributeTypeName,
                                                                           String       requiredClassificationName,
                                                                           String       omittedClassificationName,
                                                                           List<String> serviceSupportedZones,
@@ -685,13 +687,20 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String schemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
+        String typeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+
+        if (schemaAttributeTypeName != null)
+        {
+            typeName = schemaAttributeTypeName;
+        }
+
         List<EntityDetail>  entities = this.getAttachedEntities(userId,
                                                                 schemaTypeGUID,
                                                                 schemaTypeGUIDParameterName,
                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                typeName,
                                                                 requiredClassificationName,
                                                                 omittedClassificationName,
                                                                 false,
@@ -739,6 +748,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param userId         String   userId of user making request.
      * @param parentElementGUID String   unique id for parent schema element.
      * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName sub type of schema attribute or null
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
      * @param methodName     calling method
@@ -748,14 +758,15 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public List<SCHEMA_ATTRIBUTE> getAttachedSchemaAttributes(String       userId,
-                                                              String       parentElementGUID,
-                                                              String       parentElementGUIDParameterName,
-                                                              int          startFrom,
-                                                              int          pageSize,
-                                                              String       methodName) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+    public List<SCHEMA_ATTRIBUTE> getAttachedSchemaAttributes(String userId,
+                                                              String parentElementGUID,
+                                                              String parentElementGUIDParameterName,
+                                                              String schemaAttributeTypeName,
+                                                              int    startFrom,
+                                                              int    pageSize,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         EntityDetail parentEntity = this.getEntityFromRepository(userId,
                                                                  parentElementGUID,
@@ -774,6 +785,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 return this.getNestedSchemaAttributes(userId,
                                                       parentElementGUID,
                                                       parentElementGUIDParameterName,
+                                                      schemaAttributeTypeName,
                                                       supportedZones,
                                                       startFrom,
                                                       pageSize,
@@ -784,6 +796,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 return this.getSchemaAttributesForComplexSchemaType(userId,
                                                                     parentElementGUID,
                                                                     parentElementGUIDParameterName,
+                                                                    schemaAttributeTypeName,
                                                                     null,
                                                                     null,
                                                                     supportedZones,
@@ -824,7 +837,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, supportedZones, startFrom, pageSize, methodName);
+        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, supportedZones, startFrom, pageSize, methodName);
     }
 
 
@@ -837,6 +850,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param userId         String   userId of user making request.
      * @param schemaAttributeGUID String   unique id for containing schema attribute.
      * @param schemaAttributeGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName subtype of schema attribute (or null)
      * @param serviceSupportedZones list of zone names for calling service
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
@@ -850,6 +864,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String       userId,
                                                             String       schemaAttributeGUID,
                                                             String       schemaAttributeGUIDParameterName,
+                                                            String       schemaAttributeTypeName,
                                                             List<String> serviceSupportedZones,
                                                             int          startFrom,
                                                             int          pageSize,
@@ -859,13 +874,20 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String nestedSchemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
+        String resultTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+
+        if (schemaAttributeTypeName != null)
+        {
+            resultTypeName = schemaAttributeTypeName;
+        }
+
         List<EntityDetail>  entities = this.getAttachedEntities(userId,
                                                                 schemaAttributeGUID,
                                                                 schemaAttributeGUIDParameterName,
                                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                 OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                resultTypeName,
                                                                 null,
                                                                 null,
                                                                 false,
@@ -914,6 +936,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 return getSchemaAttributesForComplexSchemaType(userId,
                                                                entity.getGUID(),
                                                                schemaTypeGUIDParameterName,
+                                                               schemaAttributeTypeName,
                                                                null,
                                                                null,
                                                                supportedZones,

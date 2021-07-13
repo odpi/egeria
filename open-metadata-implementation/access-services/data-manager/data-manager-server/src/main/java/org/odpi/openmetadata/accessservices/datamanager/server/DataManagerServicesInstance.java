@@ -43,15 +43,14 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
     private AssetHandler<APIElement>                                         apiHandler;
     private SchemaTypeHandler<APISpecificationElement>                       apiSpecificationHandler;
-    private SchemaTypeHandler<APIOperationElement>                           apiOperationHandler;
-    private SchemaTypeHandler<APIParameterListElement>                       apiParameterListHandler;
-    private SchemaAttributeHandler<APIParameterElement, SchemaTypeElement>   apiParameterHandler;
+    private APIOperationHandler<APIOperationElement>                         apiOperationHandler;
+    private APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
 
     private AssetHandler<FormElement>                                        formHandler;
     private AssetHandler<ReportElement>                                      reportHandler;
     private AssetHandler<QueryElement>                                       queryHandler;
-    private SchemaAttributeHandler<DataContainerElement, SchemaTypeElement>  dataContainerHandler;
-    private SchemaAttributeHandler<DataFieldElement, SchemaTypeElement>      dataFieldHandler;
+    private DisplayDataContainerHandler<DataContainerElement,
+                                        SchemaTypeElement>                   dataContainerHandler;
 
 
     private SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
@@ -188,18 +187,18 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                    auditLog);
 
         this.topicHandler = new AssetHandler<>(new TopicConverter<>(repositoryHelper, serviceName,serverName),
-                                                                   TopicElement.class,
-                                                                   serviceName,
-                                                                   serverName,
-                                                                   invalidParameterHandler,
-                                                                   repositoryHandler,
-                                                                   repositoryHelper,
-                                                                   localServerUserId,
-                                                                   securityVerifier,
-                                                                   supportedZones,
-                                                                   defaultZones,
-                                                                   publishZones,
-                                                                   auditLog);
+                                               TopicElement.class,
+                                               serviceName,
+                                               serverName,
+                                               invalidParameterHandler,
+                                               repositoryHandler,
+                                               repositoryHelper,
+                                               localServerUserId,
+                                               securityVerifier,
+                                               supportedZones,
+                                               defaultZones,
+                                               publishZones,
+                                               auditLog);
 
         this.eventTypeHandler = new EventTypeHandler<>(new EventTypeConverter<>(repositoryHelper, serviceName,serverName),
                                                        EventTypeElement.class,
@@ -244,49 +243,33 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                auditLog);
 
 
-        this.apiOperationHandler = new SchemaTypeHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
-                                                           APIOperationElement.class,
-                                                           serviceName,
-                                                           serverName,
-                                                           invalidParameterHandler,
-                                                           repositoryHandler,
-                                                           repositoryHelper,
-                                                           localServerUserId,
-                                                           securityVerifier,
-                                                           supportedZones,
-                                                           defaultZones,
-                                                           publishZones,
-                                                           auditLog);
+        this.apiOperationHandler = new APIOperationHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
+                                                             APIOperationElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
 
-        this.apiParameterListHandler = new SchemaTypeHandler<>(new APIParameterListConverter<>(repositoryHelper, serviceName,serverName),
-                                                               APIParameterListElement.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
-
-        this.apiParameterHandler = new SchemaAttributeHandler<>(new APIParameterConverter<>(repositoryHelper, serviceName,serverName),
-                                                                APIParameterElement.class,
-                                                                new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
-                                                                SchemaTypeElement.class,
-                                                                serviceName,
-                                                                serverName,
-                                                                invalidParameterHandler,
-                                                                repositoryHandler,
-                                                                repositoryHelper,
-                                                                localServerUserId,
-                                                                securityVerifier,
-                                                                supportedZones,
-                                                                defaultZones,
-                                                                publishZones,
-                                                                auditLog);
+        this.apiParameterListHandler = new APIParameterListHandler<>(new APIParameterListConverter<>(repositoryHelper, serviceName,serverName),
+                                                                     APIParameterListElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
 
         this.formHandler = new AssetHandler<>(new FormConverter<>(repositoryHelper, serviceName,serverName),
                                               FormElement.class,
@@ -330,37 +313,21 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                publishZones,
                                                auditLog);
 
-        this.dataContainerHandler = new SchemaAttributeHandler<>(new DataContainerConverter<>(repositoryHelper, serviceName,serverName),
-                                                                DataContainerElement.class,
-                                                                new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
-                                                                SchemaTypeElement.class,
-                                                                serviceName,
-                                                                serverName,
-                                                                invalidParameterHandler,
-                                                                repositoryHandler,
-                                                                repositoryHelper,
-                                                                localServerUserId,
-                                                                securityVerifier,
-                                                                supportedZones,
-                                                                defaultZones,
-                                                                publishZones,
-                                                                auditLog);
-
-        this.dataFieldHandler = new SchemaAttributeHandler<>(new DataFieldConverter<>(repositoryHelper, serviceName,serverName),
-                                                             DataFieldElement.class,
-                                                             new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
-                                                             SchemaTypeElement.class,
-                                                             serviceName,
-                                                             serverName,
-                                                             invalidParameterHandler,
-                                                             repositoryHandler,
-                                                             repositoryHelper,
-                                                             localServerUserId,
-                                                             securityVerifier,
-                                                             supportedZones,
-                                                             defaultZones,
-                                                             publishZones,
-                                                             auditLog);
+        this.dataContainerHandler = new DisplayDataContainerHandler<>(new DataContainerConverter<>(repositoryHelper, serviceName,serverName),
+                                                                      DataContainerElement.class,
+                                                                      new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                      SchemaTypeElement.class,
+                                                                      serviceName,
+                                                                      serverName,
+                                                                      invalidParameterHandler,
+                                                                      repositoryHandler,
+                                                                      repositoryHelper,
+                                                                      localServerUserId,
+                                                                      securityVerifier,
+                                                                      supportedZones,
+                                                                      defaultZones,
+                                                                      publishZones,
+                                                                      auditLog);
 
         this.schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
                                                         SchemaTypeElement.class,
@@ -569,7 +536,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SchemaTypeHandler<APIOperationElement> getAPIOperationHandler() throws PropertyServerException
+    APIOperationHandler<APIOperationElement> getAPIOperationHandler() throws PropertyServerException
     {
         final String methodName = "getAPIOperationHandler";
 
@@ -585,29 +552,13 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SchemaTypeHandler<APIParameterListElement> getAPIParameterListHandler() throws PropertyServerException
+    APIParameterListHandler<APIParameterListElement> getAPIParameterListHandler() throws PropertyServerException
     {
         final String methodName = "getAPIParameterListHandler";
 
         validateActiveRepository(methodName);
 
         return apiParameterListHandler;
-    }
-
-
-    /**
-     * Return the handler for managing APIParameterElement objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    SchemaAttributeHandler<APIParameterElement, SchemaTypeElement> getAPIParameterHandler() throws PropertyServerException
-    {
-        final String methodName = "getAPIParameterHandler";
-
-        validateActiveRepository(methodName);
-
-        return apiParameterHandler;
     }
 
 
@@ -665,29 +616,13 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SchemaAttributeHandler<DataContainerElement, SchemaTypeElement> getDataContainerHandler() throws PropertyServerException
+    DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> getDisplayDataContainerHandler() throws PropertyServerException
     {
-        final String methodName = "getDataContainerHandler";
+        final String methodName = "getDisplayDataContainerHandler";
 
         validateActiveRepository(methodName);
 
         return dataContainerHandler;
-    }
-
-
-    /**
-     * Return the handler for managing DataFieldElement objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    SchemaAttributeHandler<DataFieldElement, SchemaTypeElement> getDataFieldHandler() throws PropertyServerException
-    {
-        final String methodName = "getDataFieldHandler";
-
-        validateActiveRepository(methodName);
-
-        return dataFieldHandler;
     }
 
 
