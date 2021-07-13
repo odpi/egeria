@@ -71,6 +71,25 @@ introduce the metadata to the open metadata ecosystem.
   assets that are being imported from a third party (such as a business partner) that is also providing the
   accompanying metadata. 
   Just as with content packs, this metadata is updated by loading a newer version of the metadata export archive.
+
+
+## Using provenance to manage metadata integrity
+
+Egeria ensures that only the owner of a metadata instance is permitted to update it.
+This enforcement makes use of the metadata provenance information in the metadata instance's
+header.
+
+Typically the owner is the originator of the metadata instance, but the section below describes how to move a metadata instance's home from
+one metadata collection.  This effectively changes the owner to the new metadata collection.
+
+## Changing the metadata collection that a metadata instance belongs to
+
+The [Open Metadata Repository Services](../../../open-metadata-implementation/repository-services)
+supports commands to change the metadata collection that a metadata instance belongs to.  This should be done
+only if the instance needs to be edited and the technology supporting the original metadata collection is no longer
+available. For example, for instances belonging to a deregistered repository.  The change needs to be made with care
+and planning ensuring that all members of the cohort are connected when the command is issued so that the change of
+ownership can be recorded consistently in all repositories.
   
 ## Further Information
 
@@ -78,7 +97,7 @@ introduce the metadata to the open metadata ecosystem.
 * Learn about how [external sources can integrate with the open metadata ecosystem](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 * Set up [metadata solutions that integrate metadata from many sources](../solutions).
 * Create and load [Open Metadata Archives](../../../open-metadata-resources/open-metadata-archives) into your open metadata ecosystem.
-* Learn about [Configuration Documents](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
+* Learn about [Configuration Documents](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md) that control the behaviour of OMAG Servers
   and how to set them up.
 
 ----

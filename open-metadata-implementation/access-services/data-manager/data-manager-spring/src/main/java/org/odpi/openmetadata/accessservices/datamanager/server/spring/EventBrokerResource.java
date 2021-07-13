@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * EventBrokerRESTServices is the server-side implementation of the Data Manager OMAS's
- * support for relational topics.  It matches the EventBrokerClient.
+ * EventBrokerResource is the server-side implementation of the Data Manager OMAS's
+ * support for topics.  It matches the EventBrokerClient.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")

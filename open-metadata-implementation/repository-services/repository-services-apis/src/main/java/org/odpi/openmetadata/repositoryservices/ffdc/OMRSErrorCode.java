@@ -130,8 +130,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Correct the caller's code and try the request again."),
     NULL_METADATA_COLLECTION(400, "OMRS-REPOSITORY-400-025",
             "Local metadata repository has not initialized correctly because it has a null metadata collection.",
-            "The system is unable to process requests for this repository.",
-            "Verify that the repository connector is correctly configured in the OMAG server."),
+            "The system is unable to process requests for this repository without a metadata collection.",
+            "The repository connector for the local repository has not initialized correctly.  This may be an " +
+                    "error in the repository connector's logic, or a missing or incorrect property in the connector's connection object stored in " +
+                    "the server's configuration document, or a missing resource, or permission needed by the connector.  The repository connector should " +
+                    "have output diagnostics either through an exception or message to the audit log that details the problem.  If no other diagnostics " +
+                    "are present, contact the developers of the repository connector to request that the diagnostics are improved, particularly " +
+                    "around initialization.  Use the diagnostics from the connector to diagnose the root cause of the problem and then correct " +
+                    "either the repository connector's logic, or its configuration or runtime environment as appropriate."),
     NULL_CLASSIFICATION_NAME(400, "OMRS-REPOSITORY-400-026",
             "A null classification name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
             "The system is unable to access the local metadata repository.",

@@ -6,5 +6,5 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db.domain;
  * This Role class is used for demos and tests
  */
 public enum Role {
-    USER, ADMIN, HR, DATA_ANALYST
+    COCO_PHARMA_USER, COCO_PHARMA_ADMIN, HR, DATA_ANALYST
 }
