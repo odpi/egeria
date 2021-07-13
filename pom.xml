@@ -3253,7 +3253,7 @@
                         <forkCount>3</forkCount>
                         <reuseForks>true</reuseForks>
                         <!--suppress UnresolvedMavenProperty -->
-                        <argLine>-Xmx1024m ${argLine}</argLine>
+                        <argLine>-Xmx1024m ${jacoco.surefireArgLine}</argLine>
                         <systemPropertyVariables>
                             <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
                         </systemPropertyVariables>
@@ -3564,14 +3564,22 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <phase>process-test-resources</phase>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <propertyName>jacoco.surefireArgLine</propertyName>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>report</id>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                        </configuration>
                     </execution>
                 </executions>
+
             </plugin>
 
             <!-- Check no unnecessary or missing dependencies           -->

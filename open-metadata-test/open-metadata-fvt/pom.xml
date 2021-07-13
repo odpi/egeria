@@ -46,19 +46,31 @@
                         </goals>
                         <phase>pre-integration-test</phase>
                         <configuration>
-                            <propertyName>jacoco.argLine</propertyName>
+                            <propertyName>jacoco.chassisArgLine</propertyName>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-fvt.exec</destFile>
                         </configuration>
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>post-integration-test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-fvt.exec</dataFile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-
+            <!-- Override unit tests - we don't want to run any here nor
+            have surefire connect to the java agent for coverage -->
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin-->
         </plugins>
     </build>
 </project>
