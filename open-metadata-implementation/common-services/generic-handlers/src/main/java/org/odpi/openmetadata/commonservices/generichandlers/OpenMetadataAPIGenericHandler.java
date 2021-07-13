@@ -7356,13 +7356,12 @@ public class OpenMetadataAPIGenericHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
-
          RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
                                                                                                      userId,
                                                                                                      startingGUID,
                                                                                                      startingTypeName,
-                                                                                                     relationshipTypeName,
                                                                                                      relationshipTypeGUID,
+                                                                                                     relationshipTypeName,
                                                                                                      null,  // we could get this passed in from the caller
                                                                                                      startFrom,
                                                                                                      queryPageSize,

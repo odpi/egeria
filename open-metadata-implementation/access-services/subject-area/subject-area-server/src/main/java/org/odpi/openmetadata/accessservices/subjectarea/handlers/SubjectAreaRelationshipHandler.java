@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
@@ -60,9 +59,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                                      String userId,
                                                                                      Class<? extends IRelationshipMapper<R>> clazz,
                                                                                      R relationship) {
-        String methodName = "createRelationship";
+
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
+
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = mapper.map(relationship);
             InstanceProperties instanceProperties = omrsRelationship.getProperties();
@@ -75,6 +75,17 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 instanceProperties.setEffectiveFromTime(new Date());
                 omrsRelationship.setProperties(instanceProperties);
             }
+            String end1TypeGuid =  invalidParameterHandler.validateTypeName(relationship.getEnd1().getNodeTypeName(),
+                                                     relationship.getEnd1().getNodeTypeName(),
+                                                     genericHandler.getServiceName(),
+                                                     restAPIName,
+                                                     genericHandler.getRepositoryHelper());
+            String end2TypeGuid =  invalidParameterHandler.validateTypeName(relationship.getEnd2().getNodeTypeName(),
+                                                                            relationship.getEnd2().getNodeTypeName(),
+                                                                            genericHandler.getServiceName(),
+                                                                            restAPIName,
+                                                                            genericHandler.getRepositoryHelper());
+
 
            String guid =  genericHandler.linkElementToElement(
                                  userId,
@@ -82,15 +93,15 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                  null,
                                  omrsRelationship.getEntityOneProxy().getGUID(),
                                  "end1.guid",
-                                 omrsRelationship.getEntityOneProxy().getType().getTypeDefName(),
-                                 omrsRelationship.getEntityTwoProxy().getGUID(),
+                                 relationship.getEnd1().getNodeTypeName(),
+                                 end1TypeGuid,
                                  "end2.guid",
-                                 omrsRelationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                 omrsRelationship.getType().getTypeDefGUID(),
+                                 relationship.getEnd2().getNodeTypeName(),
+                                 end2TypeGuid,
                                  omrsRelationship.getType().getTypeDefName(),
                                  instanceProperties,
-                                 methodName);
-           response = getRelationship(methodName, userId, clazz, guid);
+                                 restAPIName);
+           response = getRelationship(restAPIName, userId, clazz, guid);
 
         } catch (UserNotAuthorizedException | PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             response.setExceptionInfo(e, className);

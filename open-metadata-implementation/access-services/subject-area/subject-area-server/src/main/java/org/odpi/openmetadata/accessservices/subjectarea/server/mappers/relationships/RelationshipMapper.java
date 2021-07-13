@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -150,21 +152,44 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
     }
 
     /**
-     * Map omasRelationship to the omrs omasRelationship equivalent
+     * Map omasRelationship to the omrs relationship equivalent
      *
      * @param omasRelationship supplied omasRelationship
-     * @return omrs omasRelationship equivalent
+     * @return omrs relationship equivalent
      */
-    public org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R omasRelationship) {
+    public org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R omasRelationship) throws InvalidParameterException {
+
+
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship();
         InstanceProperties instanceProperties = new InstanceProperties();
         omrsRelationship.setProperties(instanceProperties);
         mapRelationshipToInstanceProperties(omasRelationship, instanceProperties);
         String proxy1Guid = omasRelationship.getEnd1().getNodeGuid();
+        String proxy1TypeName = omasRelationship.getEnd1().getNodeTypeName();
+        InstanceType typeEnd1 = new InstanceType();
+        typeEnd1.setTypeDefName(proxy1TypeName);
+        String proxy1TypeGuid =  new InvalidParameterHandler().validateTypeName(proxy1TypeName,
+                                                                                proxy1TypeName,
+                                                                                  genericHandler.getServiceName(),
+                                                                                  "map end1 " +omasRelationship.getRelationshipType(),
+                                                                                genericHandler.getRepositoryHelper());
+        typeEnd1.setTypeDefGUID(proxy1TypeGuid);
+
         String proxy2Guid = omasRelationship.getEnd2().getNodeGuid();
+        String proxy2TypeName = omasRelationship.getEnd2().getNodeTypeName();
+        String proxy2TypeGuid =  new InvalidParameterHandler().validateTypeName(proxy2TypeName,
+                                                                                proxy2TypeName,
+                                                                                genericHandler.getServiceName(),
+                                                                                "map end2 " +omasRelationship.getRelationshipType(),
+                                                                                genericHandler.getRepositoryHelper());
+
+        InstanceType typeEnd2 = new InstanceType();
+        typeEnd2.setTypeDefName(proxy2TypeName);
+        typeEnd2.setTypeDefGUID(proxy2TypeGuid);
 
         EntityProxy proxy1 = new EntityProxy();
         proxy1.setGUID(proxy1Guid);
+
         omrsRelationship.setEntityOneProxy(proxy1);
         EntityProxy proxy2 = new EntityProxy();
         proxy2.setGUID(proxy2Guid);

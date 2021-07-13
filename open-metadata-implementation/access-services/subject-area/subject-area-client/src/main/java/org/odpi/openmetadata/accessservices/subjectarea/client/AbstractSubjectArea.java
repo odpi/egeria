@@ -73,7 +73,8 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        client.deleteRESTCall(userId, guid, getMethodInfo("delete()"), getParameterizedType(), BASE_URL);
+        final String urlTemplate = BASE_URL + "/%s";
+        client.deleteRESTCall(userId, guid, getMethodInfo("delete()"), getParameterizedType(), urlTemplate);
     }
 
     @Override
