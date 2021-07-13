@@ -757,6 +757,7 @@ public class DisplayIntegratorContext
     /**
      * Create a new metadata element to represent a data container using an existing metadata element as a template.
      *
+     * @param parentElementGUID element to link the data container to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -766,12 +767,13 @@ public class DisplayIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDataContainerFromTemplate(String             templateGUID,
+    public String createDataContainerFromTemplate(String             parentElementGUID,
+                                                  String             templateGUID,
                                                   TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return client.createDataContainerFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, templateGUID, templateProperties);
+        return client.createDataContainerFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, parentElementGUID, templateGUID, templateProperties);
     }
 
 
@@ -831,14 +833,14 @@ public class DisplayIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataContainerElement> findDataContainer(String typeName,
-                                                        String searchString,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<DataContainerElement> findDataContainers(String typeName,
+                                                         String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        return client.findDataContainer(userId, typeName, searchString, startFrom, pageSize);
+        return client.findDataContainers(userId, typeName, searchString, startFrom, pageSize);
     }
 
 
@@ -847,6 +849,8 @@ public class DisplayIntegratorContext
      *
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this data container is connected to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return metadata element describing the data container associated with the requested parent element
      *
@@ -854,12 +858,14 @@ public class DisplayIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataContainerElement getDataContainerForElement(String userId,
-                                                           String parentElementGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<DataContainerElement> getDataContainersForElement(String userId,
+                                                                  String parentElementGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return client.getDataContainerForElement(userId, parentElementGUID);
+        return client.getDataContainersForElement(userId, parentElementGUID, startFrom, pageSize);
     }
 
 
@@ -972,6 +978,27 @@ public class DisplayIntegratorContext
 
 
     /**
+     * Connect a schema type to a data field.
+     *
+     * @param relationshipTypeName name of relationship to create
+     * @param apiParameterGUID unique identifier of the API parameter
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaType(String  relationshipTypeName,
+                                String  apiParameterGUID,
+                                String  schemaTypeGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        client.setupSchemaType(userId, applicationGUID, applicationName, applicationIsHome, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+    }
+
+
+    /**
      * Update the metadata element representing a data field.
      *
      * @param dataFieldGUID unique identifier of the metadata element to update
@@ -999,7 +1026,6 @@ public class DisplayIntegratorContext
      * @param applicationGUID unique identifier of software server capability representing the event broker
      * @param applicationName unique name of software server capability representing the event broker
      * @param dataFieldGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1008,12 +1034,11 @@ public class DisplayIntegratorContext
     public void removeDataField(String userId,
                                 String applicationGUID,
                                 String applicationName,
-                                String dataFieldGUID,
-                                String qualifiedName) throws InvalidParameterException,
+                                String dataFieldGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        client.removeDataField(userId, applicationGUID, applicationName, dataFieldGUID, qualifiedName);
+        client.removeDataField(userId, applicationGUID, applicationName, dataFieldGUID);
     }
 
 

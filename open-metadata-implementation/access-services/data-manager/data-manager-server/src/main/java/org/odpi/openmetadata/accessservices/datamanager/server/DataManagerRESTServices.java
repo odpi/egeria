@@ -318,11 +318,11 @@ public class DataManagerRESTServices
 
 
     /**
-     * Create the Software server capability for the API Manager.
+     * Create the Software server capability for the Event Broker.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param requestBody description of the API manager
+     * @param requestBody description of the Event Broker
      *
      * @return unique identifier of the software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -352,6 +352,122 @@ public class DataManagerRESTServices
                                                                     requestBody.getExternalSourceName(),
                                                                     OpenMetadataAPIMapper.EVENT_BROKER_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.EVENT_BROKER_TYPE_NAME,
+                                                                    null,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getTypeDescription(),
+                                                                    requestBody.getVersion(),
+                                                                    requestBody.getPatchLevel(),
+                                                                    requestBody.getSource(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    requestBody.getVendorProperties(),
+                                                                    methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create the Software server capability for an Application.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the Application
+     *
+     * @return unique identifier of the software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    public GUIDResponse createApplicationInCatalog(String                 serverName,
+                                                   String                 userId,
+                                                   ApplicationRequestBody requestBody)
+    {
+        final String methodName = "createApplicationInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                          serverName,
+                                                                                                                                          methodName);
+            response.setGUID(handler.createSoftwareServerCapability(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    OpenMetadataAPIMapper.APPLICATION_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.APPLICATION_TYPE_NAME,
+                                                                    null,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getTypeDescription(),
+                                                                    requestBody.getVersion(),
+                                                                    requestBody.getPatchLevel(),
+                                                                    requestBody.getSource(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    requestBody.getVendorProperties(),
+                                                                    methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create the Software server capability for a data processing engine such as a reporting engine.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the data processing engine
+     *
+     * @return unique identifier of the software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    public GUIDResponse createDataProcessingEngineInCatalog(String                          serverName,
+                                                            String                          userId,
+                                                            DataProcessingEngineRequestBody requestBody)
+    {
+        final String methodName = "createDataProcessingEngineInCatalog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                          serverName,
+                                                                                                                                          methodName);
+            response.setGUID(handler.createSoftwareServerCapability(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    OpenMetadataAPIMapper.ENGINE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.ENGINE_TYPE_NAME,
                                                                     null,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
