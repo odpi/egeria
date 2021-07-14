@@ -1668,6 +1668,7 @@ public class SchemaManagerRESTServices
             List<SchemaAttributeElement> results = handler.getAttachedSchemaAttributes(userId,
                                                                                        parentSchemaElementGUID,
                                                                                        elementGUIDParameterName,
+                                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        startFrom,
                                                                                        pageSize,
                                                                                        methodName);

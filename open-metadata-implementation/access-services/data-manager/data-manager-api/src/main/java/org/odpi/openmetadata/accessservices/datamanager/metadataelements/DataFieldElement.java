@@ -52,6 +52,21 @@ public class DataFieldElement implements MetadataElement, Serializable
 
 
     /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public DataFieldElement(SchemaAttributeElement template)
+    {
+        if (template != null)
+        {
+            elementHeader = template.getElementHeader();
+            properties = new DataFieldProperties(template.getProperties());
+        }
+    }
+
+
+    /**
      * Return the element header associated with the properties.
      *
      * @return element header object

@@ -727,6 +727,7 @@ public interface DisplayApplicationInterface
      * @param applicationGUID unique identifier of software server capability representing the caller
      * @param applicationName unique name of software server capability representing the caller
      * @param applicationIsHome should the query be marked as owned by the event broker so others can not update?
+     * @param parentElementGUID element to link the data container to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -740,6 +741,7 @@ public interface DisplayApplicationInterface
                                            String             applicationGUID,
                                            String             applicationName,
                                            boolean            applicationIsHome,
+                                           String             parentElementGUID,
                                            String             templateGUID,
                                            TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -809,13 +811,13 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<DataContainerElement> findDataContainer(String userId,
-                                                 String searchString,
-                                                 String typeName,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+    List<DataContainerElement> findDataContainers(String userId,
+                                                  String searchString,
+                                                  String typeName,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -823,6 +825,8 @@ public interface DisplayApplicationInterface
      *
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this data container is connected to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return metadata element describing the data container associated with the requested parent element
      *
@@ -830,10 +834,12 @@ public interface DisplayApplicationInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    DataContainerElement getDataContainerForElement(String userId,
-                                                    String parentElementGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<DataContainerElement> getDataContainersForElement(String userId,
+                                                           String parentElementGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 
 
     /**
@@ -957,6 +963,30 @@ public interface DisplayApplicationInterface
                                                                                      PropertyServerException;
 
 
+    /**
+     * Connect a schema type to a data field.
+     *
+     * @param userId calling user
+     * @param applicationGUID unique identifier of software server capability representing the event broker
+     * @param applicationName unique name of software server capability representing the event broker
+     * @param applicationIsHome should the data field be marked as owned by the event broker so others can not update?
+     * @param relationshipTypeName name of relationship to create
+     * @param apiParameterGUID unique identifier of the API parameter
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupSchemaType(String  userId,
+                         String  applicationGUID,
+                         String  applicationName,
+                         boolean applicationIsHome,
+                         String  relationshipTypeName,
+                         String  apiParameterGUID,
+                         String  schemaTypeGUID) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
 
     /**
      * Update the metadata element representing an data field.
@@ -989,7 +1019,6 @@ public interface DisplayApplicationInterface
      * @param applicationGUID unique identifier of software server capability representing the caller
      * @param applicationName unique name of software server capability representing the caller
      * @param dataFieldGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -998,8 +1027,7 @@ public interface DisplayApplicationInterface
     void removeDataField(String userId,
                          String applicationGUID,
                          String applicationName,
-                         String dataFieldGUID,
-                         String qualifiedName) throws InvalidParameterException,
+                         String dataFieldGUID) throws InvalidParameterException,
                                                       UserNotAuthorizedException,
                                                       PropertyServerException;
 

@@ -377,14 +377,10 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                        PropertyServerException
     {
         final String methodName = "removeAPI";
-        final String apiManagerGUIDParameterName = "apiManagerGUID";
-        final String apiManagerNameParameterName = "apiManagerName";
         final String elementGUIDParameterName    = "apiGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(apiManagerGUID, apiManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(apiManagerName, apiManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -974,7 +970,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param apiManagerName unique name of software server capability representing the caller
      * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiOperationGUID unique identifier of an APIOperation
-     * @param parameterListType is this is a header, request of response
+     * @param parameterListType is this a header, request or response
      * @param properties properties about the API parameter list
      *
      * @return unique identifier of the new API parameter list
@@ -1035,7 +1031,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the API Operation where the API Parameter List is located
-     * @param parameterListType is this is a header, request of response
+     * @param parameterListType is this a header, request or response
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new API Parameter List
@@ -1445,7 +1441,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Connect a schema type to a API parameter.
+     * Connect a schema type to an API parameter.
      *
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
@@ -1475,7 +1471,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         }
         else
         {
-            super.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+            super.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
         }
     }
 
@@ -1594,6 +1590,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                 return apiParameterElements;
             }
         }
+
         return null;
     }
 

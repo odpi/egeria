@@ -4,7 +4,14 @@
 # Egeria's Connector Catalog
 
 Egeria has a growing collection of [connectors](../developer-guide/what-is-a-connector.md) to third party technologies.
-These connectors help to accelerate the rollout of your open metadata ecosystem.
+These connectors help to accelerate the rollout of your open metadata ecosystem since they can be used to automate the extraction and distribution of metadata to the third party technologies.
+
+A connector is a client to a third party technology.  It supports a standard API
+that Egeria calls and it then translates these calls into
+requests to the third party technology.  Some connectors are also able to listen
+for notifications from the third party technology.  When a notification
+is received, the connector converts its content into a call to Egeria to
+distribute the information to the open metadata ecosystem.
 
 ## Connectors supported by the Egeria OMAG Servers
 
@@ -13,24 +20,33 @@ Many subsystems in Egeria's
 use connectors to plug in additional function through connector. 
 These subsystems define a specialized interface for the type of connector they support.
 
-* One or more connector implementations supporting that interface are then written either by the Egeria community or
+
+One or more connector implementations supporting that interface are then written either by the Egeria community or
 other organizations.
 
-* When an Egeria [OMAG Server](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md) is configured, 
+When an Egeria [OMAG Server](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md) is configured, 
 details of which connector implementation to use is specified in the
 server's 
-[configuration document](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md).  
+[configuration document](../../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
+using a [Connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connection.md).  
 
-* At start up, the OMAG server passes the connector configuration to the OCF to
-instantiate the required connector instance.  Connectors enable Egeria to operate in many environments
+At start up, the OMAG server passes the connection to the OCF to
+instantiate the required connector instance.
+
+Connectors enable Egeria to operate in many environments
 and with many types of third party technologies, just by managing the configuration of the OMAG servers.
 
-The connectors listed below are available for use ...
+The Connector Catalog list the connector implementations supplied by the Egeria community.
 
 ### Integration Connectors
 
 The integration connectors support the exchange of metadata with third party technologies.  This exchange
-may be inbound, outbound, synchronous, polling or event-driven.  Details of how integration connector work is
+may be inbound, outbound, synchronous, polling or event-driven.
+
+![Figure 1](integration-connectors.png)
+> **Figure 1:** Integration Connectors
+
+Details of how integration connector work is
 described in [this article](../../../open-metadata-implementation/governance-servers/integration-daemon-services/docs/integration-connector.md).
 
 #### Files
@@ -71,7 +87,10 @@ hosted in the [Integration Daemon](../../../open-metadata-implementation/admin-s
 
 [Open Discovery Services](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md) 
 are connectors that analyze the content of resources in the digital landscape and create annotations
-that are attached to the resource's Asset metadata element in the open metadata repositories.
+that are attached to the resource's Asset metadata element in the open metadata repositories in the form of an open discovery report.
+
+![Figure 2](discovery-service.png)
+> **Figure 2:** Discovery Services
 
 The interfaces used by a discovery service are defined in
 the [Open Discovery Framework (ODF)](../../../open-metadata-implementation/frameworks/open-discovery-framework)
@@ -91,6 +110,11 @@ along with a guide on how to write a discovery service.
 [Governance Action Services](../../../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-service.md) 
 are connectors that perform monitoring of metadata changes, validation of metadata, triage of issues, 
 assessment and/or remediation activities on request.
+
+
+![Figure 3](governance-action-service.png)
+> **Figure 3:** Governance Action Services
+
 They run in the
 [Governance Action Open Metadata Engine Service (OMES)](../../../open-metadata-implementation/engine-services/governance-action)
 hosted by the
@@ -112,7 +136,18 @@ hosted by the
 ### Event Bus Connectors
 
 The event bus connectors are used by Egeria to connect to an event bus to support event exchange
-in topics.
+in topics.  
+
+
+![Figure 4](event-bus-connector.png)
+> **Figure 4:** Event Bus Connectors
+
+They are used to connect servers into an [open metadata repository cohort](../../../open-metadata-implementation/admin-services/docs/concepts/cohort-member.md)
+and to exchange notifications through the [Open Metadata Access Services (OMAS)'s](../../../open-metadata-implementation/access-services)
+topics called the
+[InTopic](../../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md) and
+[OutTopic](../../../open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.md).
+
 
 * The [Kafka Open Metadata Topic Connector](../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector) implements 
 an [Apache Kafka](https://kafka.apache.org/) connector for a topic that exchanges
@@ -123,8 +158,19 @@ Java Objects as JSON payloads.
 The repository connectors provide the ability to integrate a third party metadata repository
 into an [open metadata repository cohort](../../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md).
 
+Figure 5 shows the repository connector providing a native open metadata repository
+that uses a particular type of store within an Egeria [Metadata Server](../../../open-metadata-implementation/admin-services/docs/concepts/metadata-server.md).
+
+![Figure 5](native-repository-connector.png)
+> **Figure 5:** Repository connector supporting a native open metadata repository
+
+
+
 * The [JanusGraph OMRS Repository Connector](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)
   provides a native repository for a [Metadata Server](../../../open-metadata-implementation/admin-services/docs/concepts/metadata-server.md).
+  
+* The [CRUX OMRS Repository Connector](https://github.com/odpi/egeria-connector-crux)
+  provides a native repository for a [Metadata Server](../../../open-metadata-implementation/admin-services/docs/concepts/metadata-server.md) that supports historical queries.
   
 * The [In-memory OMRS Repository Connector](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)
   provides a simple native repository implementation that "stores" metadata in hash maps within the JVM. 
@@ -137,12 +183,23 @@ into an [open metadata repository cohort](../../../open-metadata-implementation/
   and is able to cache metadata.  This means it can be loaded with open metadata archives to provide
   standard metadata definitions.
   
-* The [Apache Atlas OMRS Repository Connector](https://github.com/odpi/egeria-connector-hadoop-ecosystem) 
+
+Figure 6 shows the repository connector providing a native open metadata repository
+that uses a particular type of store within an Egeria [Metadata Server](../../../open-metadata-implementation/admin-services/docs/concepts/metadata-server.md).
+
+![Figure 6](adapter-repository-connector.png)
+> **Figure 6:** Repository connector and optional event mapper supporting an adapter to a third party metadata catalog
+
+* The [Apache Atlas OMRS Repository Connectors](https://github.com/odpi/egeria-connector-hadoop-ecosystem) 
   implements read-only connectivity to the Apache Atlas metadata repository.
   
 * The [IBM Information Governance Catalog (IGC) OMRS Repository Connector](https://github.com/odpi/egeria-connector-ibm-information-server)
   implements read-only connectivity to the metadata repository within the 
   [IBM InfoSphere Information Server](https://www.ibm.com/analytics/information-server) suite.
+
+* The [SAS Viya OMRS Repository Connector](https://github.com/odpi/egeria-connector-sas-viya)
+  implements metadata exchange to the metadata repository within the 
+  [SAS Viya Platform](https://support.sas.com/en/software/sas-viya.html).
 
 ### Audit Log Connectors
 
@@ -183,6 +240,11 @@ cohort registry store connector:
 
 The open metadata archive connectors support connectors that can
 read and write [open metadata archives](../../../open-metadata-resources/open-metadata-archives).
+Open metadata archives store open metadata types and instances for sharing,
+or for back up.
+These archives can be
+[loaded into an OMAG Server at start up](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-startup-archives.md) or
+[added to a running OMAG Server](../../../open-metadata-implementation/admin-services/docs/user/adding-archive-to-running-server.md).
 
 Egeria provides a single implementation of
 this type of connector:
@@ -191,10 +253,20 @@ this type of connector:
  stores an open metadata archive as a JSON file.
   
   
-## Connectors for use in Applications and Tools
+## Data Connectors for use in Applications and Tools
 
 These connectors are for use by external applications and tools to connect with resources 
-and services in the digital landscape along with stored metadata from Egeria.
+and services in the digital landscape.  These connectors also supply the Asset metadata from Egeria
+that describes these resources.
+Instances of these connectors are created through the 
+[Asset Consumer OMAS](../../../open-metadata-implementation/access-services/asset-consumer) or
+[Asset Owner OMAS](../../../open-metadata-implementation/access-services/asset-owner) interfaces.
+They use the Connection linked to the corresponding Asset in the open metadata ecosystem.
+Connection objects are associated with assets in the
+metadata catalog using the Asset Owner OMAS,
+[Data Manager OMAS](../../../open-metadata-implementation/access-services/data-manager) and
+[Asset Manager OMAS](../../../open-metadata-implementation/access-services/asset-manager).
+
 
 ### Files
 
