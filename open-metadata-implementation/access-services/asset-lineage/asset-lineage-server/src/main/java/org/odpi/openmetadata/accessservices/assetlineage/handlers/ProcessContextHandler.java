@@ -7,7 +7,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -24,9 +23,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
@@ -35,7 +34,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -84,22 +82,7 @@ public class ProcessContextHandler {
         String processGUID = process.getGUID();
         invalidParameterHandler.validateAssetInSupportedZone(processGUID, GUID_PARAMETER,
                 handlerHelper.getAssetZoneMembership(process.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
-
-        List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
-        if (CollectionUtils.isEmpty(processPorts)) {
-            log.warn("No relationships Process Port has been found for the Process with guid {}", processGUID);
-            return ArrayListMultimap.create();
-        }
-
-        RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
-
-        for (Relationship processPort : processPorts) {
-            EntityDetail port = handlerHelper.getEntityAtTheEnd(userId, processGUID, processPort);
-            addContextForPort(userId, port, relationshipsContext.getRelationships());
-        }
-
         Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
-        context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
 
         List<Relationship> collection = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
         if (!CollectionUtils.isEmpty(collection)) {
@@ -111,14 +94,28 @@ public class ProcessContextHandler {
             context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), collectionMembershipContext);
         }
 
-        Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
-                .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))
-                .map(GraphContext::getToVertex).collect(Collectors.toSet());
-
-        for (LineageEntity tabularColumn : tabularColumns) {
-            addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+        List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
+        if (CollectionUtils.isEmpty(processPorts)) {
+            log.debug("No relationship ProcessPort has been found for the Process with guid {}", processGUID);
         }
+        else {
+            RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
 
+            for (Relationship processPort : processPorts) {
+                EntityDetail port = handlerHelper.getEntityAtTheEnd(userId, processGUID, processPort);
+                addContextForPort(userId, port, relationshipsContext.getRelationships());
+            }
+
+            context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
+
+            Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
+                    .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))
+                    .map(GraphContext::getToVertex).collect(Collectors.toSet());
+
+            for (LineageEntity tabularColumn : tabularColumns) {
+                addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+            }
+        }
         return context;
     }
 

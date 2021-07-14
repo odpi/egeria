@@ -69,7 +69,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param outTopicConnector    The connector used for the Asset Lineage OMAS Out Topic
      * @param serverName           name of this server instance
      * @param serverUserName       name of the user of the server instance
-     * @param accessServiceOptions
+     * @param accessServiceOptions options passed to the access service.
      */
     public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
                                          OpenMetadataTopicConnector outTopicConnector,
@@ -188,7 +188,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
 
         if (isProcessStatusChangedToActive(entityDetail, originalEntity)) {
-            publisher.publishProcessContext(entityDetail);
+            if (publisher.publishProcessContext(entityDetail).isEmpty()) {
+                publishEntityEvent(entityDetail, AssetLineageEventType.UPDATE_ENTITY_EVENT);
+            }
 
             log.info("Asset Lineage OMAS published the context for process with guid {}", entityDetail.getGUID());
         } else {
@@ -277,7 +279,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             return;
         }
 
-        log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT.getEventTypeName(), entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
+        log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT.getEventTypeName(), entityDetail.getGUID(),
+                entityDetail.getType().getTypeDefName());
 
         if (anyLineageClassificationsLeft(entityDetail)) {
             publisher.publishClassificationContext(entityDetail, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);

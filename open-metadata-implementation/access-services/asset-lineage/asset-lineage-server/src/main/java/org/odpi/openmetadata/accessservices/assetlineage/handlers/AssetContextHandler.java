@@ -48,7 +48,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -171,10 +170,6 @@ public class AssetContextHandler {
             case RELATIONAL_TABLE:
                 context = buildRelationalTableContext(userId, entityDetail);
                 break;
-
-            case TABULAR_SCHEMA_TYPE:
-                context = buildTabularSchemaTypeContext(userId, entityDetail);
-                break;
         }
 
         return context;
@@ -191,7 +186,7 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
-        if(!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())){
+        if (!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())) {
             return new HashMap<>();
         }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), TABULAR_COLUMN);
@@ -216,17 +211,17 @@ public class AssetContextHandler {
 
         Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
                 TABULAR_COLUMN);
-        if (!relationship.isPresent()) {
+        if (relationship.isEmpty()) {
             return false;
         }
 
         EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, tabularColumn.getGUID(), relationship.get());
         Optional<Classification> anchorGUIDClassification = getAnchorsClassification(schemaType);
-        if (!anchorGUIDClassification.isPresent()) {
+        if (anchorGUIDClassification.isEmpty()) {
             return false;
         }
         Optional<String> anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
-        if (!anchorGUID.isPresent()) {
+        if (anchorGUID.isEmpty()) {
             return false;
         }
 
@@ -294,27 +289,6 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the context for a tabular schema type
-     *
-     * @param userId            the unique identifier for the user
-     * @param tabularSchemaType the entity for which the context is build
-     *
-     * @return the context of the tabular schema type
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    private RelationshipsContext buildTabularSchemaTypeContext(String userId, EntityDetail tabularSchemaType)
-            throws OCFCheckedExceptionBase {
-        Set<GraphContext> context = new HashSet<>();
-
-        EntityDetail dataFile = handlerHelper.addContextForRelationships(userId, tabularSchemaType, ASSET_SCHEMA_TYPE, context);
-
-        context.addAll(buildDataFileContext(userId, dataFile).getRelationships());
-
-        return new RelationshipsContext(tabularSchemaType.getGUID(), context);
-    }
-
-    /**
      * Adds the connection to asset context for an asset.
      *
      * @param userId       the unique identifier for the user
@@ -375,5 +349,25 @@ public class AssetContextHandler {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
+    }
+
+    /**
+     * Returns the asset entity context in lineage format
+     *
+     * @param userId      the unique identifier for the user
+     * @param guid        the guid of the entity for which the context is build
+     * @param typeDefName the type def name of the entity for which the context is build
+     *
+     * @return the asset entity context in lineage format
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
+        if (!handlerHelper.isTableOrDataFileAsset(userId, entityDetail)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 }

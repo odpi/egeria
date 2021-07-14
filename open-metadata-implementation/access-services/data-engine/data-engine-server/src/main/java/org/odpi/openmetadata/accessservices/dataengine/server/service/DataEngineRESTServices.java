@@ -828,7 +828,7 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        lineageMappings.parallelStream().forEach(lineageMapping -> {
+        lineageMappings.forEach(lineageMapping -> {
             try {
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
                         lineageMapping.getTargetAttribute(), externalSourceName);
@@ -1606,7 +1606,8 @@ public class DataEngineRESTServices {
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
             upsertPortAliases(userId, serverName, portAliases, processGUID, response, externalSourceName);
 
-            addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
+            FFDCResponseBase lineageMappingsResponse = new FFDCResponseBase();
+            addLineageMappings(userId, serverName, lineageMappings, lineageMappingsResponse, externalSourceName);
 
             log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
             response.setGUID(processGUID);
@@ -1644,6 +1645,10 @@ public class DataEngineRESTServices {
     private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,
                                                   String externalSourceName) {
         final String methodName = "addProcessHierarchyRelationships";
+
+        if (CollectionUtils.isEmpty(response.getGUIDs())) {
+            return;
+        }
 
         // add the ProcessHierarchy relationships only for successfully created processes
         processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {

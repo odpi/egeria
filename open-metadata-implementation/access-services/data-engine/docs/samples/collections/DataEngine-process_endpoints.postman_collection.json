@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4087cfd5-3e70-40dc-b4a7-956c4a46ee14",
+		"_postman_id": "35d2fd44-da51-4fa2-aeeb-f455ba5d8dad",
 		"name": "DataEngine - process endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -976,7 +976,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n            \"displayName\": \"CopyColumnsFlow-high-level\",\n            \"name\": \"CopyColumnsFlow-high level\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\",\n            \"lineageMappings\": [\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow-high-level\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow-high-level\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv\"\n                }\n            ],\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n            \"displayName\": \"CopyColumnsFlow-high-level\",\n            \"name\": \"CopyColumnsFlow-high level\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\",\n            \"lineageMappings\": [\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::schema\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow-high-level\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow-high-level\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::schema\"\n                }\n            ],\n            \"collection\": {\n                \"qualifiedName\": \"(transformation-project)=Transformation_Project\",\n                \"name\": \"CopyColumnsFlow-transformation-project\"\n            },\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
