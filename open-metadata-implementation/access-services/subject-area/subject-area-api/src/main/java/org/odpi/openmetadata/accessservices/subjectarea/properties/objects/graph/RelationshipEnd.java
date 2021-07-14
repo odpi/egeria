@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RelationshipEnd implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private String nodeGuid =null;
-    private String nodeType = null;
+    private String nodeTypeName = null;
     private String nodeQualifiedName = null;
     private String name = null;
     private String description = null;
@@ -43,13 +43,13 @@ public class RelationshipEnd implements Serializable, OmasObject {
 
     /**
      * constructor
-     * @param nodeType node type associated with this end of the relationship
+     * @param nodeTypeName node type associated with this end of the relationship
      * @param name name of the end
      * @param description description of the end
      * @param cardinality cardinality of the end
      */
-    public RelationshipEnd(String nodeType, String name, String description, RelationshipEndCardinality cardinality) {
-        this.setNodeType(nodeType);
+    public RelationshipEnd(String nodeTypeName, String name, String description, RelationshipEndCardinality cardinality) {
+        this.setNodeTypeName(nodeTypeName);
         this.setName(name);
         this.setDescription(description);
         this.setCardinality(cardinality);
@@ -61,7 +61,7 @@ public class RelationshipEnd implements Serializable, OmasObject {
      * @param endToCopy relationshipEnd to copy
      */
     public RelationshipEnd(RelationshipEnd endToCopy) {
-        this.setNodeType(endToCopy.getNodeType());
+        this.setNodeTypeName(endToCopy.getNodeTypeName());
         this.setName(endToCopy.getName());
         this.setDescription(endToCopy.getDescription());
         this.setCardinality(endToCopy.getCardinality());
@@ -105,16 +105,16 @@ public class RelationshipEnd implements Serializable, OmasObject {
      * Get the node type for this end
      * @return node type
      */
-    public String getNodeType() {
-        return nodeType;
+    public String getNodeTypeName() {
+        return nodeTypeName;
     }
 
     /**
      * Set the node type for this end
-     * @param nodeType node type
+     * @param nodeTypeName node type
      */
-    public void setNodeType(String nodeType) {
-        this.nodeType = nodeType;
+    public void setNodeTypeName(String nodeTypeName) {
+        this.nodeTypeName = nodeTypeName;
     }
 
     /**
@@ -173,7 +173,7 @@ public class RelationshipEnd implements Serializable, OmasObject {
         sb.append("RelationshipEnd{");
         sb.append("nodeGuid=").append(nodeGuid).append(",");
         sb.append("nodeQualifiedName=").append(nodeQualifiedName).append(",");
-        sb.append("nodeType=").append(nodeType).append(",");
+        sb.append("nodeType=").append(nodeTypeName).append(",");
         sb.append("name=").append(name).append(",");
         sb.append("description=").append(description).append(",");
         sb.append("cardinality=").append(cardinality);

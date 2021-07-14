@@ -253,7 +253,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
      * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -263,7 +263,6 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param guid       guid of the category to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -275,8 +274,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteCategory";
@@ -289,12 +287,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            clients.categories().delete(userId, guid);
 
-            if (isPurge) {
-                clients.categories().purge(userId, guid);
-            } else {
-                clients.categories().delete(userId, guid);
-            }
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

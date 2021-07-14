@@ -135,10 +135,6 @@ public class CategoryFVT {
         if (children.size() != 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 Categories as the child has been deleted " + children.size());
         }
-        purgeCategory(categoryChild.getSystemAttributes().getGUID());
-        if (children.size() != 0) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 Categories as the child has been purged " + children.size());
-        }
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName + " " + DEFAULT_TEST_CATEGORY_NAME_UPDATED);
@@ -161,8 +157,6 @@ public class CategoryFVT {
         System.out.println("Delete the category1");
         deleteCategory(guid);
         //FVTUtils.validateNode(gotCategory);
-        System.out.println("Purge a category1");
-        purgeCategory(gotCategory.getSystemAttributes().getGUID());
         // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
         System.out.println("Create a category with a parent category");
         Category category3 = createCategoryWithParentGlossaryGuid(serverName + " " + DEFAULT_TEST_CATEGORY_NAME3, category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
@@ -509,11 +503,6 @@ public class CategoryFVT {
         createdCategoriesSet.add(guid);
         System.out.println("restored Category name is " + restoredCategory.getName());
         return restoredCategory;
-    }
-
-    public void purgeCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaCategory.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
     }
 
     public List<Relationship> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

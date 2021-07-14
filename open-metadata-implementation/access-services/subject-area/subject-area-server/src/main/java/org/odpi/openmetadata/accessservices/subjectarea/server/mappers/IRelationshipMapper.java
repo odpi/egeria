@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 
 /**
  * Interface for mapping between a Subject Area OMAS Relationship to an OMRS Relationship
@@ -22,5 +23,5 @@ public interface IRelationshipMapper<R extends Relationship> extends Mapper<org.
      * @param relationship a Subject Area OMAS relationship
      * @return an OMRS Relationship
      */
-    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R relationship);
+    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R relationship) throws InvalidParameterException;
 }

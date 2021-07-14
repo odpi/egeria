@@ -8,7 +8,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -31,8 +32,8 @@ public class CategoryMapper extends EntityDetailMapper<Category> {
     private static final String className = CategoryMapper.class.getName();
     public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
 
-    public CategoryMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public CategoryMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -55,7 +56,7 @@ public class CategoryMapper extends EntityDetailMapper<Category> {
     }
 
     @Override
-    public EntityDetail map(Category node) {
+    public EntityDetail map(Category node) throws InvalidParameterException {
         return super.toEntityDetail(node);
     }
 
@@ -77,7 +78,7 @@ public class CategoryMapper extends EntityDetailMapper<Category> {
         final String classificationName = omasClassification.getClassificationName();
         //TODO do additional properties for classification subtypes.
         NodeType nodeType = NodeType.Category;
-        if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),"SubjectArea",classificationName)) {
+        if (repositoryHelper.isTypeOf(genericHandler.getServiceName(),"SubjectArea",classificationName)) {
             nodeType =NodeType.SubjectAreaDefinition;
             handled =true;
         }

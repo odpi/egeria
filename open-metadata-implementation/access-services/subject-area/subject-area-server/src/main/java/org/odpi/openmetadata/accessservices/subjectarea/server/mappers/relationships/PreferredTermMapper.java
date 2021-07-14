@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.PreferredTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,8 +18,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class PreferredTermMapper extends RelationshipMapper<PreferredTerm> {
     public static final String PREFERRED_TERM = "PreferredTerm";
 
-    public PreferredTermMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public PreferredTermMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
 

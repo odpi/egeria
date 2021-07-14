@@ -153,34 +153,6 @@ public class SubjectAreaProjectRESTResource {
     }
 
     /**
-     * Get the terms in this project.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Project to get
-     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     * @return a response which when successful contains the Project relationships
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * </ul>
-     */
-    @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String guid,
-                                                            @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
-                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize
-    ) {
-        return restAPI.getProjectTerms(serverName, userId, guid, startingFrom, pageSize);
-    }
-
-    /**
      * Update a Project
      * <p>
      * If the caller has chosen to incorporate the Project name in their Project Terms or Categories qualified name, renaming the Project will cause those
@@ -218,17 +190,15 @@ public class SubjectAreaProjectRESTResource {
      * Delete a Project instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the Project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the Project will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Project to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -238,16 +208,14 @@ public class SubjectAreaProjectRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/projects/{guid}")
     public SubjectAreaOMASAPIResponse<Project> deleteProject(@PathVariable String serverName,
                                                              @PathVariable String userId,
-                                                             @PathVariable String guid,
-                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
-    ) {
-        return restAPI.deleteProject(serverName, userId, guid, isPurge);
+                                                             @PathVariable String guid
+                                                            ) {
+        return restAPI.deleteProject(serverName, userId, guid);
     }
 
     /**

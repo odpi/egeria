@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidentiality;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceClassificationStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -25,22 +25,22 @@ public class ConfidentialityMapper extends ClassificationMapper{
     private static final String className = ConfidentialityMapper.class.getName();
     private static final String typeName = "Confidentiality";
 
-    public ConfidentialityMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public ConfidentialityMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Confidentiality confidentiality = (Confidentiality)omasClassification;
 
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"steward",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"steward",omrsClassificationProperties,"");
         confidentiality.setSteward(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"notes",omrsClassificationProperties,"");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"notes",omrsClassificationProperties,"");
         confidentiality.setNotes(stringValue);
 
-        int intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
+        int intValue  = repositoryHelper.getIntProperty(genericHandler.getServiceName(),"confidence",omrsClassificationProperties,"");
         confidentiality.setConfidence(intValue);
-        intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"level",omrsClassificationProperties,"");
+        intValue  = repositoryHelper.getIntProperty(genericHandler.getServiceName(),"level",omrsClassificationProperties,"");
         confidentiality.setLevel(intValue);
 
         // map enums
@@ -69,22 +69,22 @@ public class ConfidentialityMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         Confidentiality confidentiality = (Confidentiality)omasClassification;
         if (confidentiality.getSteward()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"steward",confidentiality.getSteward(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"steward",confidentiality.getSteward(),"updateOMRSAttributes");
         }
 
         if (confidentiality.getSource()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"source",confidentiality.getSource(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"source",confidentiality.getSource(),"updateOMRSAttributes");
         }
 
         if (confidentiality.getNotes()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"notes",confidentiality.getNotes(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"notes",confidentiality.getNotes(),"updateOMRSAttributes");
         }
 
         if (confidentiality.getConfidence()!=null) {
-            repositoryHelper.addIntPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"confidence",confidentiality.getConfidence(),"updateOMRSAttributes");
+            repositoryHelper.addIntPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"confidence",confidentiality.getConfidence(),"updateOMRSAttributes");
         }
         if (confidentiality.getLevel()!=null) {
-            repositoryHelper.addIntPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"level",confidentiality.getLevel(),"updateOMRSAttributes");
+            repositoryHelper.addIntPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"level",confidentiality.getLevel(),"updateOMRSAttributes");
         }
         if (confidentiality.getStatus()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();

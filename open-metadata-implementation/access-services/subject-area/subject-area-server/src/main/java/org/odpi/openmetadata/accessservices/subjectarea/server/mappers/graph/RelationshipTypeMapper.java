@@ -28,6 +28,7 @@ public class RelationshipTypeMapper {
      * @param omasRelationshipType omasRelationshipType this is the type of relationship that is exposed in the RelationshipType as part of the OMAS API.
      *
      * @return relationship Type guid.
+     * @throws InvalidParameterException Invalid parameter error found
      */
     static public String mapOMASRelationshipTypeToOMRSRelationshipTypeGuid(String operation, RelationshipType omasRelationshipType) throws InvalidParameterException {
         String guid = null;

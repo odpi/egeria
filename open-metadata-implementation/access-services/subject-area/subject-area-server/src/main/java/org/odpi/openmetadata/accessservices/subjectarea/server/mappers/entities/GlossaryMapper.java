@@ -10,7 +10,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -28,12 +29,9 @@ import java.util.List;
 public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     private static final Logger log = LoggerFactory.getLogger(GlossaryMapper.class);
     private static final String className = GlossaryMapper.class.getName();
-    public static final String GLOSSARY = "Glossary";
-    public static final String OMRS_TAXONOMY_NAME = "Taxonomy";
-    public static final String OMRS_CANONICAL_VOCABULARY_NAME = "CanonicalVocabulary";
 
-    public GlossaryMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public GlossaryMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -51,10 +49,11 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
             for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification : omrsClassifications) {
                 boolean isTaxonomy = false;
                 boolean iscanonicalvocabulary = false;
-                if (omrsapiHelper.isTypeOf(OMRS_TAXONOMY_NAME, omrsClassification.getName())) {
+
+                if (repositoryHelper.isTypeOf(  genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
                     isTaxonomy = true;
                 }
-                if (omrsapiHelper.isTypeOf(OMRS_CANONICAL_VOCABULARY_NAME, omrsClassification.getName())) {
+                if (repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
                     iscanonicalvocabulary = true;
                 }
                 if (iscanonicalvocabulary && isTaxonomy) {
@@ -71,7 +70,7 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     }
 
     @Override
-    public EntityDetail map(Glossary node) {
+    public EntityDetail map(Glossary node) throws InvalidParameterException {
         return super.toEntityDetail(node);
     }
 
@@ -116,9 +115,9 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     protected boolean mapPrimitiveToNode(Glossary glossary, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = true;
-        if (propertyName.equals("language")) {
+        if (propertyName.equals( OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME)) {
             glossary.setLanguage(stringValue);
-        } else if (propertyName.equals("usage")) {
+        } else if (propertyName.equals(OpenMetadataAPIMapper.USAGE_PROPERTY_NAME)) {
             glossary.setUsage(stringValue);
         } else {
             foundProperty = false;
@@ -136,13 +135,13 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     protected void mapNodeToInstanceProperties(Glossary node, InstanceProperties instanceProperties) {
         Glossary glossary = (Glossary) node;
         if (glossary.getLanguage() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getLanguage(), "language");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getLanguage(), OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME);
         }
         if (glossary.getUsage() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), "usage");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataAPIMapper.USAGE_PROPERTY_NAME);
         }
         if (node.getName() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME);
         }
     }
 
@@ -157,16 +156,16 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
         if (existingNodeType == null) {
             existingNodeType = NodeType.Glossary;
         }
-        if (existingNodeType == NodeType.Glossary && omrsapiHelper.isTypeOf(OMRS_TAXONOMY_NAME, classificationName)) {
+        if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.Taxonomy);
             handled = true;
-        } else if (existingNodeType == NodeType.CanonicalGlossary && omrsapiHelper.isTypeOf(OMRS_TAXONOMY_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.CanonicalGlossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
             handled = true;
-        } else if (existingNodeType == NodeType.Glossary && omrsapiHelper.isTypeOf(OMRS_CANONICAL_VOCABULARY_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.CanonicalGlossary);
             handled = true;
-        } else if (existingNodeType == NodeType.Taxonomy && omrsapiHelper.isTypeOf(OMRS_CANONICAL_VOCABULARY_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.Taxonomy && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
             handled = true;
         } else {
@@ -178,6 +177,6 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
 
     @Override
     public String getTypeName() {
-        return GLOSSARY;
+        return OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
     }
 }

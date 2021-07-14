@@ -73,7 +73,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = categoryHandler.createCategory(userId, suppliedCategory);
+            response = categoryHandler.createCategory(userId, instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, methodName), suppliedCategory);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -281,17 +281,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * Delete a Category or SubjectAreaDefinition instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the category will not exist after the operation.
-     * when not successful the following Exception responses can occur
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid    guid of the category to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -299,10 +297,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String serverName, String userId, String guid) {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -312,7 +309,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.deleteCategory(userId, guid, isPurge);
+            response = handler.deleteCategory(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

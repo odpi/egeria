@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.SemanticAssignment;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -21,8 +21,8 @@ import java.util.Map;
 public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignment> {
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
 
-    public SemanticAssignmentMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public SemanticAssignmentMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**

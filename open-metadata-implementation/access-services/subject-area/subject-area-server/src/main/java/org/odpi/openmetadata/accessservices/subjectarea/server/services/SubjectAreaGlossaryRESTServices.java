@@ -265,17 +265,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * The deletion of a glossary is only allowed if there is no glossary content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the glossary will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -283,10 +281,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid) {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -296,7 +293,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.deleteGlossary(userId, guid, isPurge);
+            response = handler.deleteGlossary(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -391,7 +388,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.getTerms(userId, guid, findRequest, exactValue, ignoreCase);
+            response = handler.getTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName),  findRequest, exactValue, ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

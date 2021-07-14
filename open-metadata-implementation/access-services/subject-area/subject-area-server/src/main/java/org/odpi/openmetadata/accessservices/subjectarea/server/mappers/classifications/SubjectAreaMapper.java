@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +22,13 @@ public class SubjectAreaMapper extends ClassificationMapper{
     private static final String className = SubjectAreaMapper.class.getName();
     private static final String typeName = "SubjectArea";
 
-    public SubjectAreaMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public SubjectAreaMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         SubjectArea canonicalVocabulary = (SubjectArea)omasClassification;
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"name",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"name",omrsClassificationProperties,"");
         canonicalVocabulary.setName(stringValue);
         return SubjectArea.getPropertyNames();
     }
@@ -47,7 +47,7 @@ public class SubjectAreaMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         SubjectArea canonicalVocabulary = (SubjectArea)omasClassification;
         if (canonicalVocabulary.getName()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"name",canonicalVocabulary.getName(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"name",canonicalVocabulary.getName(),"updateOMRSAttributes");
         }
         return instanceProperties;
     }

@@ -293,7 +293,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * The deletion of a project is only allowed if there is no project content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -303,7 +303,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param serverName         name of the local UI server.
      * @param userId             user identifier
      * @param guid       guid of the project to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -315,8 +314,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
     public SubjectAreaOMASAPIResponse<Project> deleteProject(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteProject";
@@ -329,11 +327,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            if (isPurge) {
-                clients.projects().purge(userId, guid);
-            } else {
-                clients.projects().delete(userId, guid);
-            }
+            clients.projects().delete(userId, guid);
+
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

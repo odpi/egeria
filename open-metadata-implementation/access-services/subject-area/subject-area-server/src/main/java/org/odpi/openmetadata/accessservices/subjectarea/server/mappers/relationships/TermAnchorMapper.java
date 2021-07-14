@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 
 /**
@@ -14,8 +14,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 public class TermAnchorMapper extends RelationshipMapper<TermAnchor> {
     public static final String TERM_ANCHOR = "TermAnchor";
 
-    public TermAnchorMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public TermAnchorMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     @Override

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 /**
@@ -21,5 +22,5 @@ public interface INodeMapper<N extends Node> extends Mapper<EntityDetail, N> {
      * @param node a Subject Area OMAS Node
      * @return  an OMRS EntityDetail
      */
-     EntityDetail map(N node);
+     EntityDetail map(N node) throws InvalidParameterException;
 }

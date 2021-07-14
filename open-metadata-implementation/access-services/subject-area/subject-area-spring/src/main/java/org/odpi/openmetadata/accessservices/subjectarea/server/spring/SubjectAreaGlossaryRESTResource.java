@@ -188,7 +188,7 @@ public class SubjectAreaGlossaryRESTResource {
      * The deletion of a glossary is only allowed if there is no glossary content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -198,7 +198,6 @@ public class SubjectAreaGlossaryRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -206,15 +205,13 @@ public class SubjectAreaGlossaryRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/glossaries/{guid}")
     public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(@PathVariable String serverName,
                                                                @PathVariable String userId,
-                                                               @PathVariable String guid,
-                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteGlossary(serverName, userId, guid, isPurge);
+                                                               @PathVariable String guid){
+        return restAPI.deleteGlossary(serverName, userId, guid);
     }
 
     /**

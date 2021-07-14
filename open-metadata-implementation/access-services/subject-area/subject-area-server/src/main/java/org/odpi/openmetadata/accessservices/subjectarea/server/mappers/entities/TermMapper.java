@@ -6,7 +6,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceClassifications;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -26,8 +27,8 @@ public class TermMapper extends EntityDetailMapper<Term> {
     private static final String className = TermMapper.class.getName();
     public static final String GLOSSARY_TERM = "GlossaryTerm";
 
-    public TermMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public TermMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -42,7 +43,7 @@ public class TermMapper extends EntityDetailMapper<Term> {
     }
 
     @Override
-    public EntityDetail map(Term node) {
+    public EntityDetail map(Term node) throws InvalidParameterException {
         return toEntityDetail(node);
     }
 
@@ -108,7 +109,7 @@ public class TermMapper extends EntityDetailMapper<Term> {
         }
         final String classificationName = omasClassification.getClassificationName();
 
-        String sourceName = omrsapiHelper.getServiceName();
+        String sourceName = genericHandler.getServiceName();
         //TODO do additional properties for classification subtypes.
         if (repositoryHelper.isTypeOf(sourceName,classificationName,"Confidentiality")) {
             governanceClassifications.setConfidentiality((Confidentiality) omasClassification);

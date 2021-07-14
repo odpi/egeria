@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceClassificationStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -29,34 +29,34 @@ public class RetentionMapper extends ClassificationMapper{
     private static final String className = RetentionMapper.class.getName();
     private static final String typeName = "Retention";
 
-    public RetentionMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public RetentionMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Retention retention = (Retention) omasClassification;
 
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(), "steward", omrsClassificationProperties, "");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(), "steward", omrsClassificationProperties, "");
         retention.setSteward(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(), "source", omrsClassificationProperties, "");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(), "source", omrsClassificationProperties, "");
         retention.setSteward(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(), "notes", omrsClassificationProperties, "");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(), "notes", omrsClassificationProperties, "");
         retention.setNotes(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(), "associatedGUID", omrsClassificationProperties, "");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(), "associatedGUID", omrsClassificationProperties, "");
         retention.setAssociatedGUID(stringValue);
 
-        Date dateValue = repositoryHelper.getDateProperty(omrsapiHelper.getServiceName(), "archiveAfter", omrsClassificationProperties, "");
+        Date dateValue = repositoryHelper.getDateProperty(genericHandler.getServiceName(), "archiveAfter", omrsClassificationProperties, "");
         if (dateValue !=null) {
             retention.setArchiveAfter(dateValue.getTime());
         }
-        dateValue = repositoryHelper.getDateProperty(omrsapiHelper.getServiceName(), "deleteAfter", omrsClassificationProperties, "");
+        dateValue = repositoryHelper.getDateProperty(genericHandler.getServiceName(), "deleteAfter", omrsClassificationProperties, "");
         if (dateValue !=null) {
             retention.setDeleteAfter(dateValue.getTime());
         }
-        Integer intValue = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(), "confidence", omrsClassificationProperties, "");
+        Integer intValue = repositoryHelper.getIntProperty(genericHandler.getServiceName(), "confidence", omrsClassificationProperties, "");
         retention.setConfidence(intValue);
 
         Map<String, InstancePropertyValue> instancePropertyMap = omrsClassificationProperties.getInstanceProperties();
@@ -92,19 +92,19 @@ public class RetentionMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         Retention retention = (Retention)omasClassification;
         if (retention.getSteward()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"steward",retention.getSteward(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"steward",retention.getSteward(),"updateOMRSAttributes");
         }
 
         if (retention.getSource()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"source",retention.getSource(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"source",retention.getSource(),"updateOMRSAttributes");
         }
 
         if (retention.getNotes()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"notes",retention.getNotes(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"notes",retention.getNotes(),"updateOMRSAttributes");
         }
 
         if (retention.getAssociatedGUID()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"associatedGUID",retention.getAssociatedGUID(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"associatedGUID",retention.getAssociatedGUID(),"updateOMRSAttributes");
         }
 
         if (retention.getArchiveAfter()!=null) {

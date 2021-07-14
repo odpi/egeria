@@ -118,9 +118,6 @@ public class GlossaryFVT {
         System.out.println("Delete the glossary again");
         deleteGlossary(guid);
         //FVTUtils.validateNode(gotGlossary);
-        //TODO - delete a deletedGlossary should fail
-        System.out.println("Purge a glossary");
-        purgeGlossary(guid);
         System.out.println("Create glossary with the same name as a deleted one");
         glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
@@ -284,11 +281,6 @@ public class GlossaryFVT {
         createdGlossariesSet.add(restoredGlossary.getSystemAttributes().getGUID());
         System.out.println("Restored Glossary name is " + restoredGlossary.getName());
         return restoredGlossary;
-    }
-
-    public void purgeGlossary(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaGlossary.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
     }
 
     public List<Relationship> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
