@@ -18,18 +18,21 @@ in the metadata repository as shown in figure 1.
 ![Figure 1](asset-connection.png)
 > **Figure 1:** An asset with a connection
 
+An exception is thrown if an asset does not have a connection. 
 
-This connector is then cast to the CSV File Connector (`CSVFileConnector`).
-An exception is thrown if an asset does not have a connector.  Assets that are not CSV files
-will have a different connector and sp the casting to CSVFileConnector also results in an exception.
-The result is that a connector is returned for the first CSV file asset retrieved from the metadata repository.
+In the sample, the connector returned by the Asset consumer OMAS client is then cast to the CSV File Connector (`CSVFileConnector`).
+Assets that are not CSV files
+will have a different connector implementation and so the casting to CSVFileConnector also results in an exception.
+
+Assets that do not have a CSV File Connector are ignored.
+The result is that the sample method returns a connector for the first CSV file asset retrieved from the metadata repository.
 
 ```java
     /**
      * This method uses Asset Consumer OMAS to locate and create an Open Connector Framework (OCF) connector
      * instance.
      *
-     * @return connector to requested file
+     * @return connector to first CSVFile located in the catalog
      */
     private CSVFileStoreConnector getConnectorUsingMetadata()
     {
@@ -100,6 +103,11 @@ The sample code snippets come from this code sample:
 
 ### Supporting connections to assets with different levels of security
 
+It is possible that an asset can have multiple connections, each with different levels of
+security access encoded see (figure 2).  Egeria is able to determine which one to use by calling the
+`validateUserForAssetConnectionList` method of the
+[Server Security Metadata Connector](../../../open-metadata-implementation/common-services/metadata-security).
+
 
 ![Figure 2](multiple-asset-connections.png)
 > **Figure 2:** Multiple connections for an asset
@@ -107,14 +115,39 @@ The sample code snippets come from this code sample:
 
 ### What else links to the connection
 
+Open metadata is a large connected network (graph) of information.  The connector type and endpoint
+that a connection object links to are typically shared with many connections.
+This creates some interesting insight.
+
+For example, there is typically one connector type for each connector implementation.
+By retrieving the relationships from the connector type to the connections,
+it is possible to see the extent to which the connector is used.
+
+#### Connector Types
 
 ![Figure 3](uses-of-a-connector-implementation.png)
 > **Figure 3:** Uses of a connector implementation
 
+The connector types for Egeria's data store connectors are available in an open metadata archive
+called DataStoreConnectorTypes.json that can be loaded into the server.
+This approach can be used for all of your connector implementations to create the connector type objects
+in our metadata repository.  See the
+[Open Connector Archives](../../../open-metadata-resources/open-metadata-archives/open-connector-archives)
+for more detail.
+
+
+#### Endpoints
+
+The endpoints are typically linked to the software server that is called by the connector.
+By navigating from the Endpoint to the linked connections it is possible to trace the callers to
+the software server.
 
 
 ![Figure 4](connections-to-a-software-server.png)
 > **Figure 4:** Connections to a software server
+
+Software servers and endpoints are set up
+through the [IT Infrastructure OMAS](../../../open-metadata-implementation/access-services/it-infrastructure).
 
 
 ## Further Information
