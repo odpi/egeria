@@ -24,9 +24,15 @@ documentation and implementation examples.
 | Open Metadata Topic Connector | Connects to a topic on an external event bus such as Apache Kafka.| [OMRS Open Metadata Topic Connectors](../../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/open-metadata-topic-connector.md) | [Open Metadata Repository Services (OMRS)](../../../open-metadata-implementation/repository-services) | [open-metadata- topic-connectors](../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors) |
 
 
+## Writing your own connectors
+
 You can write your own connectors to integrate additional types of technology or extend the
 capabilities of Egeria - and if you think your connector is more generally useful,
 you could consider [contributing it to the Egeria project](../../../Community-Guide.md).
+
+
+* [Creating a connector to access the contents of an asset](connector-to-asset.md)
+* [Creating a connector to access a third party technology](connector-to-system.md)
 
 
 ----
