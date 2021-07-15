@@ -30,23 +30,14 @@ import java.util.Set;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.AVRO_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CSV_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DOCUMENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.JSON_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.KEYSTORE_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LOG_FILE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.MEDIA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -150,28 +141,16 @@ public class AssetContextHandler {
      */
     public RelationshipsContext buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildAssetContext";
-
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
         RelationshipsContext context = new RelationshipsContext();
 
-        final String typeDefName = entityDetail.getType().getTypeDefName();
-        switch (typeDefName) {
-            case AVRO_FILE:
-            case CSV_FILE:
-            case JSON_FILE:
-            case KEYSTORE_FILE:
-            case LOG_FILE:
-            case MEDIA_FILE:
-            case DOCUMENT:
-            case DATA_FILE:
-                context = buildDataFileContext(userId, entityDetail);
-                break;
-
-            case RELATIONAL_TABLE:
-                context = buildRelationalTableContext(userId, entityDetail);
-                break;
+        if (handlerHelper.isAsset(userId, entityDetail)) {
+            context = buildDataFileContext(userId, entityDetail);
         }
 
+        if (handlerHelper.isTable(userId, entityDetail)) {
+            context = buildRelationalTableContext(userId, entityDetail);
+        }
         return context;
     }
 

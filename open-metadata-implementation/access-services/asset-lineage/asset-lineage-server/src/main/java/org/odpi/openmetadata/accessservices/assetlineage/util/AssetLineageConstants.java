@@ -33,13 +33,6 @@ public final class AssetLineageConstants {
     public static final String TABULAR_COLUMN = "TabularColumn";
     public static final String ASSET = "Asset";
     public static final String DATA_FILE = "DataFile";
-    public static final String AVRO_FILE = "AvroFile";
-    public static final String CSV_FILE = "CSVFile";
-    public static final String JSON_FILE = "JSONFile";
-    public static final String KEYSTORE_FILE = "KeystoreFile";
-    public static final String LOG_FILE = "LogFile";
-    public static final String MEDIA_FILE = "MediaFile";
-    public static final String DOCUMENT = "Document";
     public static final String CONNECTION = "Connection";
     public static final String ENDPOINT = "Endpoint";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";

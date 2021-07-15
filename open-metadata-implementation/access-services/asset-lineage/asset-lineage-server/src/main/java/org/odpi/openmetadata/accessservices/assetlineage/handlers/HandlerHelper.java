@@ -451,7 +451,32 @@ public class HandlerHelper {
      * @return true if the entity is of type RelationalTable, Asset or subtype, false otherwise
      */
     public boolean isTableOrAsset(String serviceName, EntityDetail entityDetail) {
-        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), ASSET) ||
-                repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), RELATIONAL_TABLE);
+        return isAsset(serviceName, entityDetail) || isTable(serviceName, entityDetail);
+    }
+
+    /**
+     * Verifies if the entity is of type Asset or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type Asset or subtype, false otherwise
+     */
+    public boolean isAsset(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), ASSET);
+
+    }
+
+
+    /**
+     * Verifies if the entity is of type RelationalTable or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type RelationalTable or subtype, false otherwise
+     */
+    public boolean isTable(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), RELATIONAL_TABLE);
     }
 }
