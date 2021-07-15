@@ -33,9 +33,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
@@ -120,14 +122,15 @@ public class HandlerHelper {
      * @throws InvalidParameterException  the invalid parameter exception
      */
     Optional<Relationship> getUniqueRelationshipByType(String userId, String entityGUID, String relationshipTypeName, String entityTypeName) throws
-                                                                                                                                              OCFCheckedExceptionBase {
+                                                                                                                                             OCFCheckedExceptionBase {
         final String methodName = "getUniqueRelationshipsByType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
 
         String typeGuid = getTypeByName(userId, relationshipTypeName);
-        return Optional.of(repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName));
+        return Optional
+                .of(repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName));
     }
 
     /**
@@ -210,7 +213,7 @@ public class HandlerHelper {
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
     public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
-                                                 FindEntitiesParameters findEntitiesParameters)
+                                                           FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
@@ -425,5 +428,55 @@ public class HandlerHelper {
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
         invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
                 getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+    }
+
+    /**
+     * Return the entity detail in open lineage format
+     *
+     * @param entityDetail the entity detail
+     *
+     * @return the entity detail in open lineage format
+     */
+    public LineageEntity getLineageEntity(EntityDetail entityDetail) {
+        Converter converter = new Converter(repositoryHelper);
+        return converter.createLineageEntity(entityDetail);
+    }
+
+    /**
+     * Verifies if the entity is of type RelationalTable, Asset or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type RelationalTable, Asset or subtype, false otherwise
+     */
+    public boolean isTableOrAsset(String serviceName, EntityDetail entityDetail) {
+        return isAsset(serviceName, entityDetail) || isTable(serviceName, entityDetail);
+    }
+
+    /**
+     * Verifies if the entity is of type Asset or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type Asset or subtype, false otherwise
+     */
+    public boolean isAsset(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), ASSET);
+
+    }
+
+
+    /**
+     * Verifies if the entity is of type RelationalTable or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type RelationalTable or subtype, false otherwise
+     */
+    public boolean isTable(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), RELATIONAL_TABLE);
     }
 }

@@ -75,8 +75,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Create the event type object.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param topicGUID unique identifier of the owning topic
      * @param topicGUIDParameterName parameter supplying topicGUID
      * @param qualifiedName unique name for the event type - used in other configuration
@@ -99,8 +99,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public String createEventType(String              userId,
-                                  String              eventBrokerGUID,
-                                  String              eventBrokerName,
+                                  String              externalSourceGUID,
+                                  String              externalSourceName,
                                   String              topicGUID,
                                   String              topicGUIDParameterName,
                                   String              qualifiedName,
@@ -138,8 +138,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         final String eventTypeListGUIDParameterName = "eventTypeListGUID";
 
         String eventTypeListGUID = this.getEventTypeListGUID(userId,
-                                                             eventBrokerGUID,
-                                                             eventBrokerName,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              topicGUID,
                                                              topicGUIDParameterName,
                                                              qualifiedName,
@@ -165,8 +165,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         builder.setAnchors(userId, topicGUID, methodName);
 
         String eventTypeGUID = this.createBeanInRepository(userId,
-                                                           eventBrokerGUID,
-                                                           eventBrokerName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            typeGUID,
                                                            typeName,
                                                            qualifiedName,
@@ -182,8 +182,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             final String eventTypeGUIDParameterName = "eventTypeGUID";
 
             this.linkElementToElement(userId,
-                                      eventBrokerGUID,
-                                      eventBrokerName,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       eventTypeListGUID,
                                       eventTypeListGUIDParameterName,
                                       OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
@@ -204,8 +204,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Create a event type from a template.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param topicGUID unique identifier of the owning topic
      * @param topicGUIDParameterName parameter supplying topicGUID
      * @param templateGUID unique identifier of the metadata element to copy
@@ -221,8 +221,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createEventTypeFromTemplate(String userId,
-                                              String eventBrokerGUID,
-                                              String eventBrokerName,
+                                              String externalSourceGUID,
+                                              String externalSourceName,
                                               String topicGUID,
                                               String topicGUIDParameterName,
                                               String templateGUID,
@@ -243,8 +243,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         final String eventTypeListGUIDParameterName = "eventTypeListGUID";
 
         String eventTypeListGUID = this.getEventTypeListGUID(userId,
-                                                             eventBrokerGUID,
-                                                             eventBrokerName,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              topicGUID,
                                                              topicGUIDParameterName,
                                                              qualifiedName,
@@ -258,8 +258,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         String eventTypeGUID = this.createBeanFromTemplate(userId,
-                                                           eventBrokerGUID,
-                                                           eventBrokerName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            templateGUID,
                                                            templateGUIDParameterName,
                                                            OpenMetadataAPIMapper.EVENT_TYPE_TYPE_GUID,
@@ -275,8 +275,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
         final String eventTypeGUIDParameterName = "eventTypeGUID";
 
         this.linkElementToElement(userId,
-                                  eventBrokerGUID,
-                                  eventBrokerName,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   eventTypeListGUID,
                                   eventTypeListGUIDParameterName,
                                   OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
@@ -296,8 +296,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Update the event type.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param eventTypeGUID unique identifier for the event type to update
      * @param eventTypeGUIDParameterName parameter supplying the event type
      * @param qualifiedName unique name for the event type - used in other configuration
@@ -320,8 +320,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public void   updateEventType(String              userId,
-                                  String              eventBrokerGUID,
-                                  String              eventBrokerName,
+                                  String              externalSourceGUID,
+                                  String              externalSourceName,
                                   String              eventTypeGUID,
                                   String              eventTypeGUIDParameterName,
                                   String              qualifiedName,
@@ -378,8 +378,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         this.updateBeanInRepository(userId,
-                                    eventBrokerGUID,
-                                    eventBrokerName,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     eventTypeGUID,
                                     eventTypeGUIDParameterName,
                                     typeGUID,
@@ -394,8 +394,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Remove the metadata element representing a event types.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param eventTypeGUID unique identifier of the metadata element to remove
      * @param eventTypeGUIDParameterName parameter for eventTypeGUID
      * @param qualifiedName validating property
@@ -406,8 +406,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeEventType(String userId,
-                                String eventBrokerGUID,
-                                String eventBrokerName,
+                                String externalSourceGUID,
+                                String externalSourceName,
                                 String eventTypeGUID,
                                 String eventTypeGUIDParameterName,
                                 String qualifiedName,
@@ -416,8 +416,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    eventBrokerGUID,
-                                    eventBrokerName,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     eventTypeGUID,
                                     eventTypeGUIDParameterName,
                                     OpenMetadataAPIMapper.EVENT_TYPE_TYPE_GUID,
@@ -623,8 +623,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * Create/retrieve the event list for the topic.
      *
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the caller
-     * @param eventBrokerName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param topicGUID topic to retrieve from
      * @param topicGUIDParameterName parameter name or topicGUID
      * @param methodName calling method
@@ -636,8 +636,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     private String getEventTypeListGUID(String userId,
-                                        String eventBrokerGUID,
-                                        String eventBrokerName,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
                                         String topicGUID,
                                         String topicGUIDParameterName,
                                         String topicQualifiedName,
@@ -672,8 +672,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
             eventTypeListGUID = repositoryHandler.createEntity(userId,
                                                                OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_GUID,
                                                                OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                                               eventBrokerGUID,
-                                                               eventBrokerName,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                builder.getInstanceProperties(methodName),
                                                                builder.getEntityClassifications(),
                                                                builder.getInstanceStatus(),
@@ -684,8 +684,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                 final String eventTypeListGUIDParameterName = "eventTypeListGUID";
 
                 this.linkElementToElement(userId,
-                                          eventBrokerGUID,
-                                          eventBrokerName,
+                                          externalSourceGUID,
+                                          externalSourceName,
                                           topicGUID,
                                           topicGUIDParameterName,
                                           OpenMetadataAPIMapper.TOPIC_TYPE_NAME,

@@ -29,7 +29,7 @@ The result is that a logical flow of data emerges from the interaction.
 ![Figure 2](lineage-capture.png#pagewidth)
 > **Figure 2:** The lineage graph emerges
 
-## Lineage Capture
+## Lineage capture
 
 Since there is no over-arching controller, lineage capture involves contributions from many
 technologies that have to be stitched together to created the overall flow.

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.EventBrokerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -22,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
 @Tag(name="Data Manager OMAS",
-     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data manager " +
-                         "such as topic servers, content managers and file systems.",
+     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
+                         "such as database servers, event brokers, content managers and file systems.",
      externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
                                          url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
@@ -49,24 +48,22 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
-     * @param topicProperties properties to store
+     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics")
+    @PostMapping(path = "/topics")
 
-    public GUIDResponse createTopic(@PathVariable String          serverName,
-                                    @PathVariable String          userId,
-                                    @PathVariable String          eventBrokerGUID,
-                                    @PathVariable String          eventBrokerName,
-                                    @RequestBody  TopicProperties topicProperties)
+    public GUIDResponse createTopic(@PathVariable String           serverName,
+                                    @PathVariable String           userId,
+                                    @RequestParam boolean          eventBrokerIsHome,
+                                    @RequestBody  TopicRequestBody requestBody)
     {
-        return restAPI.createTopic(serverName, userId, eventBrokerGUID, eventBrokerName, topicProperties);
+        return restAPI.createTopic(serverName, userId, eventBrokerIsHome, requestBody);
     }
 
 
@@ -75,26 +72,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
+     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/from-template/{templateGUID}")
+    @PostMapping(path = "/topics/from-template/{templateGUID}")
 
-    public GUIDResponse createTopicFromTemplate(@PathVariable String             serverName,
-                                                @PathVariable String             userId,
-                                                @PathVariable String             eventBrokerGUID,
-                                                @PathVariable String             eventBrokerName,
-                                                @PathVariable String             templateGUID,
-                                                @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createTopicFromTemplate(@PathVariable String              serverName,
+                                                @PathVariable String              userId,
+                                                @PathVariable String              templateGUID,
+                                                @RequestParam boolean             eventBrokerIsHome,
+                                                @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createTopicFromTemplate(serverName, userId, eventBrokerGUID, eventBrokerName, templateGUID, templateProperties);
+        return restAPI.createTopicFromTemplate(serverName, userId, templateGUID, eventBrokerIsHome, requestBody);
     }
 
 
@@ -103,28 +98,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
      * @param topicGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param topicProperties new properties for this element
+     * @param requestBody new properties for this element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/{topicGUID}")
+    @PostMapping(path = "/topics/{topicGUID}")
 
-    public VoidResponse updateTopic(@PathVariable String          serverName,
-                                    @PathVariable String          userId,
-                                    @PathVariable String          eventBrokerGUID,
-                                    @PathVariable String          eventBrokerName,
-                                    @PathVariable String          topicGUID,
-                                    @RequestParam boolean         isMergeUpdate,
-                                    @RequestBody  TopicProperties topicProperties)
+    public VoidResponse updateTopic(@PathVariable String           serverName,
+                                    @PathVariable String           userId,
+                                    @PathVariable String           topicGUID,
+                                    @RequestParam boolean          isMergeUpdate,
+                                    @RequestBody  TopicRequestBody requestBody)
     {
-        return restAPI.updateTopic(serverName, userId, eventBrokerGUID, eventBrokerName, topicGUID, isMergeUpdate, topicProperties);
+        return restAPI.updateTopic(serverName, userId, topicGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -185,28 +176,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
      * @param topicGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source identifiers
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/{topicGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/topics/{topicGUID}/{qualifiedName}/delete")
 
-    public VoidResponse removeTopic(@PathVariable                  String          serverName,
-                                    @PathVariable                  String          userId,
-                                    @PathVariable                  String          eventBrokerGUID,
-                                    @PathVariable                  String          eventBrokerName,
-                                    @PathVariable                  String          topicGUID,
-                                    @PathVariable                  String          qualifiedName,
-                                    @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeTopic(@PathVariable String                    serverName,
+                                    @PathVariable String                    userId,
+                                    @PathVariable String                    topicGUID,
+                                    @PathVariable String                    qualifiedName,
+                                    @RequestBody  MetadataSourceRequestBody requestBody)
     {
-        return restAPI.removeTopic(serverName, userId, eventBrokerGUID, eventBrokerName, topicGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeTopic(serverName, userId, topicGUID, qualifiedName, requestBody);
     }
 
 
@@ -323,26 +310,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
+     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of the topic where the event type is located
-     * @param eventTypeProperties properties about the event type
+     * @param requestBody properties about the event type
      *
      * @return unique identifier of the new event type or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/{topicGUID}/event-types")
+    @PostMapping(path = "/topics/{topicGUID}/event-types")
 
-    public GUIDResponse createEventType(@PathVariable String              serverName,
-                                        @PathVariable String              userId,
-                                        @PathVariable String              eventBrokerGUID,
-                                        @PathVariable String              eventBrokerName,
-                                        @PathVariable String              topicGUID,
-                                        @RequestBody  EventTypeProperties eventTypeProperties)
+    public GUIDResponse createEventType(@PathVariable String               serverName,
+                                        @PathVariable String               userId,
+                                        @PathVariable String               topicGUID,
+                                        @RequestParam boolean              eventBrokerIsHome,
+                                        @RequestBody  EventTypeRequestBody requestBody)
     {
-        return restAPI.createEventType(serverName, userId, eventBrokerGUID, eventBrokerName, topicGUID, eventTypeProperties);
+        return restAPI.createEventType(serverName, userId,  topicGUID, eventBrokerIsHome, requestBody);
     }
 
 
@@ -351,28 +336,25 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the event type is located
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new event type or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/{topicGUID}/event-types/from-template/{templateGUID}")
+    @PostMapping(path = "/topics/{topicGUID}/event-types/from-template/{templateGUID}")
 
-    public GUIDResponse createEventTypeFromTemplate(@PathVariable String             serverName,
-                                                    @PathVariable String             userId,
-                                                    @PathVariable String             eventBrokerGUID,
-                                                    @PathVariable String             eventBrokerName,
-                                                    @PathVariable String             templateGUID,
-                                                    @PathVariable String             topicGUID,
-                                                    @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createEventTypeFromTemplate(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @PathVariable String              templateGUID,
+                                                    @PathVariable String              topicGUID,
+                                                    @RequestParam boolean             eventBrokerIsHome,
+                                                    @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createEventTypeFromTemplate(serverName, userId, eventBrokerGUID, eventBrokerName, templateGUID, topicGUID, templateProperties);
+        return restAPI.createEventTypeFromTemplate(serverName, userId, templateGUID, topicGUID, eventBrokerIsHome, requestBody);
     }
 
 
@@ -381,28 +363,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
      * @param eventTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param eventTypeProperties new properties for the metadata element
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/event-types/{eventTypeGUID}")
+    @PostMapping(path = "/topics/event-types/{eventTypeGUID}")
 
-    public VoidResponse updateEventType(@PathVariable String              serverName,
-                                        @PathVariable String              userId,
-                                        @PathVariable String              eventBrokerGUID,
-                                        @PathVariable String              eventBrokerName,
-                                        @PathVariable String              eventTypeGUID,
-                                        @RequestParam boolean             isMergeUpdate,
-                                        @RequestBody  EventTypeProperties eventTypeProperties)
+    public VoidResponse updateEventType(@PathVariable String               serverName,
+                                        @PathVariable String               userId,
+                                        @PathVariable String               eventTypeGUID,
+                                        @RequestParam boolean              isMergeUpdate,
+                                        @RequestBody  EventTypeRequestBody requestBody)
     {
-        return restAPI.updateEventType(serverName, userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, isMergeUpdate, eventTypeProperties);
+        return restAPI.updateEventType(serverName, userId, eventTypeGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -411,28 +389,24 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerGUID unique identifier of software server capability representing the owning event broker
-     * @param eventBrokerName unique name of software server capability representing the owning event broker
      * @param eventTypeGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody empty request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/event-brokers/{eventBrokerGUID}/{eventBrokerName}/topics/event-types/{eventTypeGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/topics/event-types/{eventTypeGUID}/{qualifiedName}/delete")
 
-    public VoidResponse removeEventType(@PathVariable                  String          serverName,
-                                        @PathVariable                  String          userId,
-                                        @PathVariable                  String          eventBrokerGUID,
-                                        @PathVariable                  String          eventBrokerName,
-                                        @PathVariable                  String          eventTypeGUID,
-                                        @PathVariable                  String          qualifiedName,
-                                        @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeEventType(@PathVariable String                    serverName,
+                                        @PathVariable String                    userId,
+                                        @PathVariable String                    eventTypeGUID,
+                                        @PathVariable String                    qualifiedName,
+                                        @RequestBody  MetadataSourceRequestBody requestBody)
     {
-        return restAPI.removeEventType(serverName, userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeEventType(serverName, userId, eventTypeGUID, qualifiedName, requestBody);
     }
 
 
@@ -506,10 +480,10 @@ public class EventBrokerResource
     @GetMapping(path = "/topics/{topicGUID}/event-types")
 
     public EventTypesResponse getEventTypesForTopic(@PathVariable String serverName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String topicGUID,
-                                                 @RequestParam int    startFrom,
-                                                 @RequestParam int    pageSize)
+                                                    @PathVariable String userId,
+                                                    @PathVariable String topicGUID,
+                                                    @RequestParam int    startFrom,
+                                                    @RequestParam int    pageSize)
     {
         return restAPI.getEventTypesForTopic(serverName, userId, topicGUID, startFrom, pageSize);
     }
@@ -562,5 +536,5 @@ public class EventBrokerResource
     {
         return restAPI.getEventTypeByGUID(serverName, userId, guid);
     }
-    
+
 }

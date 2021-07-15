@@ -40,6 +40,17 @@ public class DataFieldProperties extends SchemaAttributeProperties
 
 
     /**
+     * Copy/clone Constructor.
+     *
+     * @param template template object to copy.
+     */
+    public DataFieldProperties(SchemaAttributeProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

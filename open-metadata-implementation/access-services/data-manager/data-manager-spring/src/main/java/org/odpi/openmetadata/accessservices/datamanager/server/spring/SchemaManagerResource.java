@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * EventBrokerRESTServices is the server-side implementation of the Data Manager OMAS's
- * support for relational topics.  It matches the EventBrokerClient.
+ * SchemaManagerResource is the server-side implementation of the Data Manager OMAS's
+ * support for relational topics.  It matches the SchemaManagerClient.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
 @Tag(name="Data Manager OMAS",
-     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data manager " +
-                         "such as topic servers, content managers and file systems.",
+     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
+                         "such as database servers, event brokers, content managers and file systems.",
      externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
                                          url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
@@ -272,7 +272,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-types/{schemaTypeGUID}/update")
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}")
 
     public VoidResponse updateSchemaType(@PathVariable String                serverName,
                                          @PathVariable String                userId,
@@ -297,7 +297,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-types/{schemaTypeGUID}/remove")
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}/delete")
 
     public VoidResponse removeSchemaType(@PathVariable String                    serverName,
                                          @PathVariable String                    userId,
@@ -529,7 +529,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/schema-types/remove")
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/schema-types/delete")
 
     public VoidResponse clearSchemaTypes(@PathVariable String                    serverName,
                                          @PathVariable String                    userId,
@@ -554,7 +554,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/update")
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}")
 
     public VoidResponse updateSchemaAttribute(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
@@ -579,7 +579,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/remove")
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/delete")
 
     public VoidResponse removeSchemaAttribute(@PathVariable String                    serverName,
                                               @PathVariable String                    userId,
@@ -739,7 +739,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-elements/{schemaElementGUID}/calculated-value/remove")
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/calculated-value/delete")
 
     public VoidResponse clearCalculatedValue(@PathVariable String                    serverName,
                                              @PathVariable String                    userId,
@@ -818,7 +818,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-elements/{derivedElementGUID}/query-targets/{queryTargetGUID}/remove")
+    @PostMapping(path = "/schema-elements/{derivedElementGUID}/query-targets/{queryTargetGUID}/delete")
 
     public VoidResponse clearQueryTargetRelationship(@PathVariable String                    serverName,
                                                      @PathVariable String                    userId,
