@@ -2631,6 +2631,47 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Add the list of unique properties for the type to the supplied list and return the combined results.
+     *
+     * @param definedAttributes list of attributes defined for the typedef
+     * @param currentList current list of properties extracted from the subtypes
+     * @return accumulated list of properties.
+     */
+    protected List<String> getUniquePropertiesList(List<TypeDefAttribute>  definedAttributes,
+                                                   List<String>            currentList)
+    {
+        List<String>   newList = currentList;
+
+        if (newList == null)
+        {
+            newList = new ArrayList<>();
+        }
+
+        if (definedAttributes != null)
+        {
+            for (TypeDefAttribute  attribute : definedAttributes)
+            {
+                if (attribute != null)
+                {
+                    if (attribute.isUnique())
+                    {
+                        newList.add(attribute.getAttributeName());
+                    }
+                }
+            }
+        }
+
+        if (newList.isEmpty())
+        {
+            return null;
+        }
+
+        return newList;
+    }
+
+
+
+    /**
      * Throws a logic error exception when the repository helper is called with invalid parameters.
      * Normally this means the repository helper methods have been called in the wrong order.
      *

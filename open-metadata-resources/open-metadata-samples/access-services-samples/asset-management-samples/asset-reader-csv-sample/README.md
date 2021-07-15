@@ -25,7 +25,9 @@ The parameters are used to override the sample's default values.
         String  clientUserId = "erinoverview";
 ```
 
+----
 
+* [Return to asset management samples](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -49,12 +49,18 @@ public class FileManagerProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public String toString()
     {
-        return "FileSystemProperties{" +
-                "qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+        return "FileManagerProperties{" +
+                       "displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", version='" + getVersion() + '\'' +
+                       ", patchLevel='" + getPatchLevel() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

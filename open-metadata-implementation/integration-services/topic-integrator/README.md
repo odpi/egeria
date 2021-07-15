@@ -49,7 +49,7 @@ classification [method for defining the schema type](../../../open-metadata-publ
 The modules are as follows:
 
 * [topic-integrator-api](topic-integrator-api) - defines the interface for an integration
-connector that is supported by the Topic Manager Integrator OMIS.  This includes the implementation
+connector that is supported by the Topic Integrator OMIS.  This includes the implementation
 of the context that wraps the Data Manager OMAS's clients.
 
 * [topic-integrator-server](topic-integrator-server) - implements the context manager for
@@ -65,7 +65,8 @@ This integration service is paired with the [Data Manager](../../access-services
 Open Metadata Access Service (OMAS).
 
 ----
-Return to the [Integration Services](..)
+
+* Return to the [Integration Services](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

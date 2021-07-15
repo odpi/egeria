@@ -13,6 +13,12 @@ Details are provides as follows:
 * [Receiving events using Java](java-events)
 
 
+
+----
+
+* [Return to User Documentation](../../../docs/user)
+* [Return to Overview](../../..)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

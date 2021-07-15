@@ -55,6 +55,27 @@ public class APIParameterElement implements MetadataElement, Serializable
 
 
     /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public APIParameterElement(SchemaAttributeElement template)
+    {
+        if (template != null)
+        {
+            elementHeader = template.getElementHeader();
+
+            if (template.getProperties() != null)
+            {
+                properties = new APIParameterProperties(template.getProperties());
+            }
+
+            type = template.getType();
+        }
+    }
+
+
+    /**
      * Return the element header associated with the properties.
      *
      * @return element header object

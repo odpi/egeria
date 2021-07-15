@@ -11,6 +11,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * GlossaryCategoryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a GlossaryCategoryElement bean.
@@ -52,7 +54,7 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof GlossaryCategoryElement)
             {
@@ -91,7 +93,7 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

@@ -438,7 +438,7 @@ public interface APIManagerInterface
                                                                   PropertyServerException;
 
     /*
-     * A API Operation may support a header, a request and a response parameter list of operations depending on its capability
+     * An API Operation may support a header, a request and a response parameter list of depending on its capability
      */
 
     /**
@@ -451,6 +451,7 @@ public interface APIManagerInterface
      * @param apiManagerName unique name of software server capability representing the caller
      * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiOperationGUID unique identifier of an APIOperation
+     * @param parameterListType is this a header, request or response
      * @param properties properties about the API parameter list
      *
      * @return unique identifier of the new API parameter list
@@ -479,6 +480,7 @@ public interface APIManagerInterface
      * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the API where the API Operation is located
+     * @param parameterListType is this a header, request or response
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new API Parameter List

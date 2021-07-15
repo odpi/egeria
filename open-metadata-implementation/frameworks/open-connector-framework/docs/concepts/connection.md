@@ -3,9 +3,8 @@
 
 # Connection - part of the [Open Connector Framework (OCF)](../..)
 
-The Connection provides the set of properties needed to create an instance
-of a [connector](connector.md) used to access the contents of a specific
-[Asset](../../../../../open-metadata-implementation/access-services/docs/concepts/assets/README.md).
+The **Connection** provides the set of properties needed to create and initialize an instance
+of a [connector](connector.md).
 
 ## Inside a Connection
 
