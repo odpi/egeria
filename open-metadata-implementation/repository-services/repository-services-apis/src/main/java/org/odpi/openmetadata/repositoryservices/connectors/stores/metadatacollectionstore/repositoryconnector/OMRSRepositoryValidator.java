@@ -1541,8 +1541,8 @@ public interface OMRSRepositoryValidator
      * @param sourceName  source of the request (used for logging)
      * @param instance  instance to test
      * @param typeName  name of the type
-     * @param localMethodName  local method that deleted the error
-     * @return  boolean
+     * @param localMethodName  local method that is calling the method
+     * @return true if typeName is instance type or a supertype of it, otherwise false
      */
     boolean isATypeOf(String              sourceName,
                       InstanceAuditHeader instance,
