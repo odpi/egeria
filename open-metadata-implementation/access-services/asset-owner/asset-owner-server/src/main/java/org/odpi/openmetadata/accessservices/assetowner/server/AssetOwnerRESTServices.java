@@ -150,6 +150,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "deprecation")
     public GUIDResponse  addAssetToCatalog(String           serverName,
                                            String           userId,
                                            String           typeName,

@@ -720,7 +720,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateGUID(eventTypeGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/{2}?isMergeUpdate={3}";
 
         EventTypeRequestBody requestBody = new EventTypeRequestBody(properties);
 
@@ -732,7 +732,8 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                         requestBody,
                                         serverName,
                                         userId,
-                                        eventTypeGUID);
+                                        eventTypeGUID,
+                                        isMergeUpdate);
     }
 
 

@@ -82,6 +82,7 @@ public class FileProperties extends DataStoreProperties
      *
      * @return return string containing the property names and values
      */
+    @SuppressWarnings(value = "deprecation")
     @Override
     public String toString()
     {

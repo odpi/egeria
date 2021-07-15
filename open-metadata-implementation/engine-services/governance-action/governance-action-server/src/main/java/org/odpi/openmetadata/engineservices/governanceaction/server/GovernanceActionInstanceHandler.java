@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * GovernanceActionInstanceHandler retrieves information from the instance map for the
  * governance action engine service instances.  The instance map is thread-safe.  Instances are added
@@ -57,13 +59,15 @@ class GovernanceActionInstanceHandler extends OMESServiceInstanceHandler
                                                                                          ConnectorCheckedException,
                                                                                          ClassNotFoundException,
                                                                                          InstantiationException,
-                                                                                         IllegalAccessException
+                                                                                         IllegalAccessException,
+                                                                                         NoSuchMethodException,
+                                                                                         InvocationTargetException
     {
         ProviderReport providerReport = new ProviderReport();
         providerReport.setConnectorType(validateConnector(connectorProviderClassName, requiredConnectorInterface, serviceName));
 
         Class<?> connectorProviderClass = Class.forName(connectorProviderClassName);
-        Object   connectorProvider = connectorProviderClass.newInstance();
+        Object   connectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
         if (connectorProvider instanceof GovernanceActionServiceProviderBase)
         {

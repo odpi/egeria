@@ -80,10 +80,9 @@ It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-pro
 
 ## Implementation scenarios
 
-For further information on implementing OCF components:
+For further information on implementing can be found in the
+[Developer's Guide](../../../open-metadata-publication/website/developer-guide).
 
-* [Creating an OCF connector to access the contents of an asset](docs/design/connector-to-asset.md)
-* [Creating an OCF connector to access an underlying system](docs/design/connector-to-system.md)
 
 ## Open Metadata Types
 
