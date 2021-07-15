@@ -96,16 +96,31 @@ added to a Connection object used to hold the properties needed to create an ins
 Each connector has its own unique implementation that is structured around a simple
 lifecycle that is defined by the OCF.
 The OCF provides the interface for a connector
-called `org.odpi.openmetadata.frameworks.connectors.Connector`.
+called `org.odpi.openmetadata.frameworks.connectors.Connector` that has three methods: `initialize`, `start` and `disconnect`.
 
-This connector interface defines the basic lifecycle of a connector.  There are three calls.
+This connector interface supports the basic lifecycle of a connector.  There are three phases:
 
-* **initialize** - provides the connector with a unique instance identifier (for logging) and its configuration
+* **Initialization** - During this phase, the connector is passed the context in which it is to operate.
+  It should store this information.
+  
+  This phase is initiated by a call to the connector's `initialize` method,
+  which is called after the connector's constructor and provides the connector with a unique instance identifier (for logging) and its configuration
   stored in a [Connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connection.md).
-  The default implementation stores these values in protected variables called `connectorInstanceId` and 
-  `connectionProperties` respectively.
-* **start** - the connector is completely initialized and can start processing.
-* **disconnect** - the connector must stop processing and release all of its resources.
+  After `initialize` returns, there may be other calls to pass context to the connector.
+  For example, if the connector implements the `org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent`, an 
+  [audit log](../../../open-metadata-implementation/frameworks/audit-log-framework) is passed to the connector
+  
+* **Running** - the connector is completely initialized with its context and it can start processing.
+  
+  This phase is initiated by a call to the connector's `start` method.  At this point it should
+  create its client to any third party technology and begin processing.  It may also start up threads if
+  it needs to perform any background processing (such as listening for notifications).  If
+  the connector thrown an exception during start, Egeria knows the connector has a configuration
+  or operational issue and will report the error and move it to disconnected state.
+
+* **Disconnected** - the connector must stop processing and release all of its resources.
+  
+  This phase is initiated by a call to the connector's `disconnect` method.
 
 Depending on the type of connector you are writing, there may be additional initialization
 calls occurring between the `initialize` and the `start` method.  The connector may also support
@@ -113,8 +128,12 @@ additional methods for its normal operation that can be called between the `star
 
 The OCF also provides the base class for a connector
 called `org.odpi.openmetadata.frameworks.connectors.ConnectorBase`.
-The `ConnectorBase` base class manages the lifecycle state of the connector.  If
-you override any of these methods, be sure to call `super.xxx()` at the start of your implementation
+The `ConnectorBase` base class manages the lifecycle state of the connector.  
+For example, the default implementation of `initialize` in the `ConnectorBase` class stores the supplied
+unique instance identifier and connection values in protected variables called `connectorInstanceId` and 
+`connectionProperties` respectively. 
+If you override any of the  `initialize`, `start` or `disconnect` methods,
+be sure to call `super.xxx()` at the start of your implementation
 to call the appropriate super class method so that the state is properly maintained.
 
 ## Where to next?
