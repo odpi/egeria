@@ -195,9 +195,6 @@ public class CommonHandler {
         try {
             return repositoryHandler.getMetadataCollection().getEntityDetail(userId, guid);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
-            if(("" + e.getReportedHTTPCode()).startsWith("4")){
-                errorHandler.handleUnknownEntity(e, guid, entityTypeName, methodName, GUID_PARAMETER);
-            }
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
             errorHandler.handleUnknownEntity(e, guid, entityTypeName, methodName, GUID_PARAMETER);
