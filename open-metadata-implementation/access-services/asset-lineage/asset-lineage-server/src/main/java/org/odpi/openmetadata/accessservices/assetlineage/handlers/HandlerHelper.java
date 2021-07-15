@@ -33,9 +33,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
@@ -443,15 +443,15 @@ public class HandlerHelper {
     }
 
     /**
-     * Verifies if the entity is of type RelationalTable, DataFile or subtype
+     * Verifies if the entity is of type RelationalTable, Asset or subtype
      *
      * @param serviceName  the service name
      * @param entityDetail the entity detail
      *
-     * @return true if the entity is of type RelationalTable, DataFile or subtype, false otherwise
+     * @return true if the entity is of type RelationalTable, Asset or subtype, false otherwise
      */
-    public boolean isTableOrDataFileAsset(String serviceName, EntityDetail entityDetail) {
-        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), DATA_FILE) ||
+    public boolean isTableOrAsset(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), ASSET) ||
                 repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), RELATIONAL_TABLE);
     }
 }

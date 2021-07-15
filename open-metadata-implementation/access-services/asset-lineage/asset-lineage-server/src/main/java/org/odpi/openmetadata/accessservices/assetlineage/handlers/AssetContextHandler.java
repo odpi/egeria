@@ -364,7 +364,7 @@ public class AssetContextHandler {
      */
     public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
-        if (!handlerHelper.isTableOrDataFileAsset(userId, entityDetail)) {
+        if (!handlerHelper.isTableOrAsset(userId, entityDetail)) {
             return Optional.empty();
         }
 
