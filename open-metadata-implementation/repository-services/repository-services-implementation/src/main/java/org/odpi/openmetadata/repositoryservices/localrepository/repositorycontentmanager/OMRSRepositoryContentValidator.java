@@ -4698,7 +4698,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param instance instance to test
      * @param typeName name of the type
      * @param localMethodName local method that deleted the error
-     * @return boolean
+     * @return true if typeName is instance type or a supertype of it, otherwise false
      */
     @Override
     public boolean isATypeOf(String               sourceName,
