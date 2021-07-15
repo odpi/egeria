@@ -495,7 +495,6 @@ public class AssetCatalogHandler {
      */
     public List<Type> getSupportedTypes(String userId, String typeName) {
         if (typeName != null && !typeName.isEmpty()) {
-            System.out.println("with descentecececes");
             return getSupportedTypesWithDescendants(userId, typeName);
         }
 
