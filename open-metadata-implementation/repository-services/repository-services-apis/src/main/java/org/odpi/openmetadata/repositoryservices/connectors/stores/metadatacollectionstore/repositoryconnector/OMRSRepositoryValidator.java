@@ -1541,7 +1541,7 @@ public interface OMRSRepositoryValidator
      * @param sourceName  source of the request (used for logging)
      * @param instance  instance to test
      * @param typeName  name of the type
-     * @param localMethodName  local method that is calling the method
+     * @param localMethodName  local method that is calling isATypeOf
      * @return true if typeName is instance type or a supertype of it, otherwise false
      */
     boolean isATypeOf(String              sourceName,
