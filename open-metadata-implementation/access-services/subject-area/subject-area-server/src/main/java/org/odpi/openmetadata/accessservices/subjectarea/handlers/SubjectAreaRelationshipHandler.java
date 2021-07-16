@@ -90,7 +90,6 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                             restAPIName,
                                                                             genericHandler.getRepositoryHelper());
 
-
            String guid =  genericHandler.linkElementToElement(
                                  userId,
                                  null,
@@ -98,10 +97,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                  omrsRelationship.getEntityOneProxy().getGUID(),
                                  "end1.guid",
                                  proxy1TypeName,
-                                 end1TypeGuid,
+                                 omrsRelationship.getEntityTwoProxy().getGUID(),
                                  "end2.guid",
                                  proxy2TypeName,
-                                 end2TypeGuid,
+                                 omrsRelationship.getType().getTypeDefGUID(),
                                  omrsRelationship.getType().getTypeDefName(),
                                  instanceProperties,
                                  restAPIName);
