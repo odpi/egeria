@@ -48,6 +48,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
@@ -98,6 +99,7 @@ public class AssetContextHandler {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
+            case TABULAR_FILE_COLUMN:
             case TABULAR_COLUMN:
                 if (!isInternalTabularColumn(userId, entityDetail)) {
                     EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
@@ -191,7 +193,9 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
-        if(!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())){
+        boolean res = handlerHelper.isTypeOf("service", lineageEntity.getTypeDefName(), TABULAR_COLUMN);
+        System.out.println(lineageEntity.getTypeDefName() + " --£££££-- " + res);
+        if (!Arrays.asList(TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())) {
             return new HashMap<>();
         }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), TABULAR_COLUMN);

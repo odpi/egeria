@@ -28,8 +28,6 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +66,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CLASSIFICATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_COLUMN_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
@@ -270,7 +269,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Returns true if the vertex is null or doesn't have a valid guid
-     *
+     *x
      * @param column - The vertex to of the schema element
      */
     private boolean isColumnEmpty(Vertex column) {
@@ -375,7 +374,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             Iterator<Vertex> table = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
             return Optional.of(table.next());
         }
-        if (TABULAR_COLUMN.equalsIgnoreCase(asset.label())) {
+        if (TABULAR_COLUMN.equalsIgnoreCase(asset.label()) || TABULAR_FILE_COLUMN.equalsIgnoreCase(asset.label())) {
             Iterator<Vertex> dataFile = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).
                     or(hasLabel(P.within(DATA_FILE_AND_SUBTYPES)));
 

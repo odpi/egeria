@@ -147,6 +147,11 @@ public class HandlerHelper {
         return null;
     }
 
+    public boolean isTypeOf(String sourceName,
+             String actualTypeName,
+             String expectedTypeName) {
+        return repositoryHelper.isTypeOf(sourceName, actualTypeName, expectedTypeName);
+    }
 
     /**
      * Gets entity at the end.
