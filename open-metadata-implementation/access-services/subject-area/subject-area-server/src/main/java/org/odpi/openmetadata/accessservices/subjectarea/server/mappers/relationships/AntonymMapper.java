@@ -32,16 +32,16 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
     @Override
     protected void mapRelationshipToInstanceProperties(Antonym antonym, InstanceProperties instanceProperties) {
         if (antonym.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (antonym.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getExpression(), "expression");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
         }
         if (antonym.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (antonym.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (antonym.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
@@ -66,15 +66,15 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
             antonym.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("expression")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
             antonym.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             antonym.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             antonym.setSource(stringValue);
             foundProperty = true;
         }
@@ -84,7 +84,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
     @Override
     protected boolean mapEnumToRelationship(Antonym antonym, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             antonym.setStatus(status);
             foundProperty = true;

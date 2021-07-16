@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -75,13 +76,16 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 instanceProperties.setEffectiveFromTime(new Date());
                 omrsRelationship.setProperties(instanceProperties);
             }
-            String end1TypeGuid =  invalidParameterHandler.validateTypeName(relationship.getEnd1().getNodeTypeName(),
-                                                     relationship.getEnd1().getNodeTypeName(),
+            String proxy1TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(relationship.getEnd1().getNodeTypeName());
+            String proxy2TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(relationship.getEnd2().getNodeTypeName());
+
+            String end1TypeGuid =  invalidParameterHandler.validateTypeName(proxy1TypeName,
+                                                                            proxy1TypeName,
                                                      genericHandler.getServiceName(),
                                                      restAPIName,
                                                      genericHandler.getRepositoryHelper());
-            String end2TypeGuid =  invalidParameterHandler.validateTypeName(relationship.getEnd2().getNodeTypeName(),
-                                                                            relationship.getEnd2().getNodeTypeName(),
+            String end2TypeGuid =  invalidParameterHandler.validateTypeName(proxy2TypeName,
+                                                                            proxy2TypeName,
                                                                             genericHandler.getServiceName(),
                                                                             restAPIName,
                                                                             genericHandler.getRepositoryHelper());
@@ -93,10 +97,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                  null,
                                  omrsRelationship.getEntityOneProxy().getGUID(),
                                  "end1.guid",
-                                 relationship.getEnd1().getNodeTypeName(),
+                                 proxy1TypeName,
                                  end1TypeGuid,
                                  "end2.guid",
-                                 relationship.getEnd2().getNodeTypeName(),
+                                 proxy2TypeName,
                                  end2TypeGuid,
                                  omrsRelationship.getType().getTypeDefName(),
                                  instanceProperties,

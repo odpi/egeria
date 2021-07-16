@@ -2630,7 +2630,6 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
-
     /**
      * Walk the graph to locate the anchor for a comment.  Comments are attached to each other through various levels of nesting
      * and eventually anchored to a referenceable.   The referenceable is the anchor.  Care has to be taken because a
@@ -2642,7 +2641,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached anchor or null if there is no attached anchor
      *
-     * @throws PropertyServerException  there is a problem retrieving the  properties from the repositories
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private String getAnchorGUIDForComment(String userId,
@@ -2692,6 +2691,95 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+    /**
+     * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are connected directly to their anchor Glossary via a TermAnchor relationship.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the Glossary Term (it is assumed that the anchorGUID property of this instance is null)
+     * @param methodName calling method
+     *
+     * @return unique identifier of attached anchor or null if there is no attached anchor
+     *
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
+     */
+    private String getAnchorGUIDForGlossaryTerm(String userId,
+                                           String glossaryTermGUID,
+                                           String methodName) throws PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        /*
+         * Is the Glossary Term connected to anything?
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    glossaryTermGUID,
+                                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                                    methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy proxy = relationship.getEntityOneProxy();
+                    if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                    {
+                        return proxy.getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Walk the graph to locate the anchor for a Glossary Category.  Glossary Categories are connected directly to their anchor Glossary via a CategoryAnchor relationship.
+     *
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the Glossary Category (it is assumed that the anchorGUID property of this instance is null)
+     * @param methodName calling method
+     *
+     * @return unique identifier of attached anchor or null if there is no attached anchor
+     *
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
+     */
+    private String getAnchorGUIDForGlossaryCategory(String userId,
+                                                String glossaryCategoryGUID,
+                                                String methodName) throws PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        /*
+         * Is the Glossary Category connected to anything?
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    glossaryCategoryGUID,
+                                                                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                                    methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy proxy = relationship.getEntityOneProxy();
+                    if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                    {
+                        return proxy.getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * This method walks the relationships to determine if the entity identified by the targetGUID has an anchor.  It returns the GUID of
@@ -2758,7 +2846,14 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, methodName);
         }
-        //TODO include term anchor and category anchor here?
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
+        {
+            anchorGUID = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, methodName);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME))
+        {
+            anchorGUID = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, methodName);
+        }
 
         return anchorGUID;
     }

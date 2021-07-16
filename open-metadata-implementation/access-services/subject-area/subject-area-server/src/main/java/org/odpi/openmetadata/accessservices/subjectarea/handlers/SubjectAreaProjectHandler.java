@@ -286,42 +286,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         return response;
     }
 
-    private void replaceAttributes(Project currentProject, Project newProject) {
-        // copy over attributes
-        currentProject.setName(newProject.getName());
-        currentProject.setQualifiedName(newProject.getQualifiedName());
-        currentProject.setDescription(newProject.getDescription());
-        currentProject.setStartDate(newProject.getStartDate());
-        currentProject.setPlannedEndDate(newProject.getPlannedEndDate());
-        currentProject.setStatus(newProject.getStatus());
-        currentProject.setAdditionalProperties(newProject.getAdditionalProperties());
-    }
-
-    private void updateAttributes(Project currentProject, Project newProject) {
-        // copy over attributes if specified
-        if (newProject.getName() != null) {
-            currentProject.setName(newProject.getName());
-        }
-        if (newProject.getQualifiedName() != null) {
-            currentProject.setQualifiedName(newProject.getQualifiedName());
-        }
-        if (newProject.getDescription() != null) {
-            currentProject.setDescription(newProject.getDescription());
-        }
-        if (newProject.getStartDate() != null) {
-            currentProject.setStartDate(newProject.getStartDate());
-        }
-        if (newProject.getPlannedEndDate() != null) {
-            currentProject.setPlannedEndDate(newProject.getPlannedEndDate());
-        }
-        if (newProject.getStatus() != null) {
-            currentProject.setStatus(newProject.getStatus());
-        }
-        if (newProject.getAdditionalProperties() != null) {
-            currentProject.setAdditionalProperties(newProject.getAdditionalProperties());
-        }
-    }
-
     /**
      * Delete a Project instance
      * <p>

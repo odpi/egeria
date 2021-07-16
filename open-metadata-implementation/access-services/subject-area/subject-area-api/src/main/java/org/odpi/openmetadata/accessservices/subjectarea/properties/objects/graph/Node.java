@@ -53,7 +53,7 @@ public class Node implements Serializable, OmasObject {
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
     private Map<String, String> additionalProperties;
-    private Map<String, Object> extensionProperties;
+    private Map<String, Object> extendedProperties;
 
     /**
      * Node type
@@ -269,10 +269,10 @@ public class Node implements Serializable, OmasObject {
     // allow child classes to process classifications
     protected void processClassification(Classification classification) {
     }
+
     /**
      * Set the additional properties.
-     * The additional properties are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
-     * the open types and adds additional properties.
+     * The additional properties are OMRS attributes that exist in the Node
      *
      * These additional properties should be supplied on calls for this node - or they will be lost.
      * @param  additionalProperties the additional properties
@@ -284,13 +284,33 @@ public class Node implements Serializable, OmasObject {
     /**
      * Get the additional properties
      *
-     * The additional properties are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
-     * the open types and adds additional properties.
+     * The additional properties are OMRS attributes that exist in the Node.
      *
      * These additional properties should be supplied on calls for this node - or they will be lost.
      * @return the additional properties
      */
     public Map<String,String> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+    /**
+     * Get the extended properties.
+     *
+     * The extended properties. are OMRS attributes that exist in the Node.
+     *
+     * Extended properties should be supplied on calls for this node - or they will be lost.
+     * @return the extended properties
+     */
+    public Map<String, Object> getExtendedProperties() {
+        return extendedProperties;
+    }
+    /**
+     * Set the extended properties.
+     * The extended properties are OMRS attributes that come from subtypes
+     *
+     * These extended properties should be supplied on calls for this node - or they will be lost.
+     * @param  extendedProperties extended properties
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties) {
+        this.extendedProperties = extendedProperties;
     }
 }

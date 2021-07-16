@@ -629,51 +629,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         return currentClassificationNames;
     }
 
-    private void replaceAttributes(Term currentTerm, Term newTerm) {
-        currentTerm.setName(newTerm.getName());
-        currentTerm.setQualifiedName(newTerm.getQualifiedName());
-        currentTerm.setDescription(newTerm.getDescription());
-        currentTerm.setAbbreviation(newTerm.getAbbreviation());
-        currentTerm.setExamples(newTerm.getExamples());
-        currentTerm.setSummary(newTerm.getSummary());
-        currentTerm.setUsage(newTerm.getUsage());
-        currentTerm.setObjectIdentifier(newTerm.isObjectIdentifier());
-        currentTerm.setSpineAttribute(newTerm.isSpineAttribute());
-        currentTerm.setSpineObject(newTerm.isSpineObject());
-        currentTerm.setAdditionalProperties(newTerm.getAdditionalProperties());
-        currentTerm.setClassifications(newTerm.getClassifications());
-    }
-
-    private void updateAttributes(Term currentTerm, Term newTerm) {
-        if (newTerm.getName() != null) {
-            currentTerm.setName(newTerm.getName());
-        }
-        if (newTerm.getQualifiedName() != null) {
-            currentTerm.setQualifiedName(newTerm.getQualifiedName());
-        }
-        if (newTerm.getDescription() != null) {
-            currentTerm.setDescription(newTerm.getDescription());
-        }
-        if (newTerm.getUsage() != null) {
-            currentTerm.setUsage(newTerm.getUsage());
-        }
-        if (newTerm.getSummary() != null) {
-            currentTerm.setSummary(newTerm.getSummary());
-        }
-        if (newTerm.getAbbreviation() != null) {
-            currentTerm.setAbbreviation(newTerm.getAbbreviation());
-        }
-        if (newTerm.getAdditionalProperties() != null) {
-            currentTerm.setAdditionalProperties(newTerm.getAdditionalProperties());
-        }
-        if (newTerm.getExamples() != null) {
-            currentTerm.setExamples(newTerm.getExamples());
-        }
-
-        if (newTerm.getClassifications() != null) {
-            currentTerm.setClassifications(newTerm.getClassifications());
-        }
-    }
 
     /**
      * Delete a Term instance

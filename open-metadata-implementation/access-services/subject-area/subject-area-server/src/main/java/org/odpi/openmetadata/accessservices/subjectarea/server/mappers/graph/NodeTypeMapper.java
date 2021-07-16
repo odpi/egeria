@@ -39,4 +39,32 @@ public class NodeTypeMapper {
         }
         return OpenMetadataTypesArchiveAccessor.getInstance().getEntityDefByName(entityTypeName).getGUID();
     }
+    /**
+     * Map NodeType name to entity type name.
+     *
+     * The nodeType name is the name of the type of node that is exposed in the nodeType API. The subject Area OMAS needs to convert
+     * the node type nameinto a name of an entity type so it can be used to call omrs.
+     *
+     * The supplied NodeType nameis mapped to an EntityType name :
+     * <ul>
+     * <li> The NodeType name can match the EntityType name - e.g. Glossary </li>
+     * <li> The NodeType name may need to be renamed to the appropriate entity type  e.g. Term </li>
+     * <li> The NodeType name may map to en entity type with a classification  e.g. Taxonomy </li>
+     * </ul>
+     * @param nodeTypeName nodeType name this is the type of node that is exposed in the nodetype API
+     * @return entity Type name.
+     */
+    static public String  mapNodeTypeNameToEntityTypeName(String nodeTypeName) {
+        String entityTypeName =  nodeTypeName;
+        if ( nodeTypeName.equals("Term") || nodeTypeName.equals("Activity")) {
+            entityTypeName = "GlossaryTerm";
+        } else if ( nodeTypeName.equals("Category") ||  nodeTypeName.equals("SubjectAreaDefinition")) {
+            entityTypeName = "GlossaryCategory";
+        } else if ( nodeTypeName.equals("Taxonomy") ||  nodeTypeName.equals("CanonicalGlossary") ||  nodeTypeName.equals("TaxonomyAndCanonicalGlossary")) {
+            entityTypeName = "Glossary";
+        } else if ( nodeTypeName.equals("GlossaryProject")) {
+            entityTypeName = "Project";
+        }
+        return entityTypeName;
+    }
 }

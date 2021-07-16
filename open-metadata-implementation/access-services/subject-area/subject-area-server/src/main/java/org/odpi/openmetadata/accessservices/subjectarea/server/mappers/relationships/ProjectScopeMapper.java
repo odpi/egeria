@@ -55,7 +55,7 @@ public class ProjectScopeMapper extends RelationshipMapper<ProjectScope> {
     protected boolean mapPrimitiveToRelationship(ProjectScope projectScope, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             projectScope.setDescription(stringValue);
             foundProperty = true;
         }

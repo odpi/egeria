@@ -35,18 +35,18 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
     @Override
     protected void mapRelationshipToInstanceProperties(IsATypeOfDeprecated isATypeOfDeprecated, InstanceProperties instanceProperties) {
         if (isATypeOfDeprecated.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (isATypeOfDeprecated.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (isATypeOfDeprecated.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (isATypeOfDeprecated.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(isATypeOfDeprecated.getStatus().getOrdinal());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
         }
     }
 
@@ -64,15 +64,15 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
     protected boolean mapPrimitiveToRelationship(IsATypeOfDeprecated isATypeOfDeprecated, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             isATypeOfDeprecated.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             isATypeOfDeprecated.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             isATypeOfDeprecated.setSource(stringValue);
             foundProperty = true;
         }
@@ -82,7 +82,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
     @Override
     protected boolean mapEnumToRelationship(IsATypeOfDeprecated termIsATypeOFRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             termIsATypeOFRelationship.setStatus(status);
             foundProperty = true;

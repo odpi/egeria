@@ -2,9 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -165,10 +167,11 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
         omrsRelationship.setProperties(instanceProperties);
         mapRelationshipToInstanceProperties(omasRelationship, instanceProperties);
         String proxy1Guid = omasRelationship.getEnd1().getNodeGuid();
-        String proxy1TypeName = omasRelationship.getEnd1().getNodeTypeName();
+        String proxy1NodeTypeName = omasRelationship.getEnd1().getNodeTypeName();
+        String proxy1TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(proxy1NodeTypeName);
         InstanceType typeEnd1 = new InstanceType();
         typeEnd1.setTypeDefName(proxy1TypeName);
-        String proxy1TypeGuid =  new InvalidParameterHandler().validateTypeName(proxy1TypeName,
+        String proxy1TypeGuid = new InvalidParameterHandler().validateTypeName(proxy1TypeName,
                                                                                 proxy1TypeName,
                                                                                   genericHandler.getServiceName(),
                                                                                   "map end1 " +omasRelationship.getRelationshipType(),
@@ -176,7 +179,8 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
         typeEnd1.setTypeDefGUID(proxy1TypeGuid);
 
         String proxy2Guid = omasRelationship.getEnd2().getNodeGuid();
-        String proxy2TypeName = omasRelationship.getEnd2().getNodeTypeName();
+        String proxy2NodeTypeName = omasRelationship.getEnd2().getNodeTypeName();
+        String proxy2TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(proxy2NodeTypeName);
         String proxy2TypeGuid =  new InvalidParameterHandler().validateTypeName(proxy2TypeName,
                                                                                 proxy2TypeName,
                                                                                 genericHandler.getServiceName(),

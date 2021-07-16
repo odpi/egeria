@@ -31,21 +31,21 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
     @Override
     protected void mapRelationshipToInstanceProperties(ReplacementTerm replacementTerm, InstanceProperties properties) {
         if (replacementTerm.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (replacementTerm.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getExpression(), "expression");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
         }
         if (replacementTerm.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (replacementTerm.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (replacementTerm.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(replacementTerm.getStatus().getOrdinal());
-            properties.setProperty("status", enumPropertyValue);
+            properties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
         }
     }
 
@@ -61,19 +61,19 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
     protected boolean mapPrimitiveToRelationship(ReplacementTerm replacementTerm, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             replacementTerm.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("expression")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
             replacementTerm.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             replacementTerm.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             replacementTerm.setSource(stringValue);
             foundProperty = true;
         }
@@ -83,7 +83,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
     @Override
     protected boolean mapEnumToRelationship(ReplacementTerm replacementTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             replacementTerm.setStatus(status);
             foundProperty = true;

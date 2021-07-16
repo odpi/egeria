@@ -34,23 +34,23 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
     @Override
     protected void mapRelationshipToInstanceProperties(SemanticAssignment semanticAssignment, InstanceProperties properties) {
         if (semanticAssignment.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (semanticAssignment.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getExpression(), "expression");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
         }
         if (semanticAssignment.getConfidence() != null) {
-            SubjectAreaUtils.setIntegerPropertyInInstanceProperties(properties, semanticAssignment.getConfidence(), "confidence");
+            SubjectAreaUtils.setIntegerPropertyInInstanceProperties(properties, semanticAssignment.getConfidence(), OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME);
         }
         if (semanticAssignment.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (semanticAssignment.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
 
         Map<String, InstancePropertyValue> instancePropertyMap = properties.getInstanceProperties();
-        InstancePropertyValue instancePropertyValue = instancePropertyMap.get("status");
+        InstancePropertyValue instancePropertyValue = instancePropertyMap.get(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         if (instancePropertyValue != null) {
             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
             TermAssignmentStatus status = TermAssignmentStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -70,23 +70,23 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
     protected boolean mapPrimitiveToRelationship(SemanticAssignment semanticAssignment, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             semanticAssignment.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("expression")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
             semanticAssignment.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("confidence")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME)) {
             semanticAssignment.setConfidence((Integer) value);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             semanticAssignment.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             semanticAssignment.setSource(stringValue);
             foundProperty = true;
         }
@@ -96,7 +96,7 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
     @Override
     protected boolean mapEnumToRelationship(SemanticAssignment semanticAssignment, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermAssignmentStatus status = TermAssignmentStatus.valueOf(enumPropertyValue.getSymbolicName());
             semanticAssignment.setStatus(status);
             foundProperty = true;

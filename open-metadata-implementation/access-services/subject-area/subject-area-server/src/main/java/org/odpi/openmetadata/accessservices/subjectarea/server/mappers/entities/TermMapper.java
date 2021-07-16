@@ -58,16 +58,14 @@ public class TermMapper extends EntityDetailMapper<Term> {
     protected boolean mapPrimitiveToNode(Term term, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = true;
-        if (propertyName.equals("summary")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME)) {
             term.setSummary(stringValue);
-        } else if (propertyName.equals("abbreviation")) {
+        } else if (propertyName.equals(OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME)) {
             term.setAbbreviation(stringValue);
-        } else if (propertyName.equals("examples")) {
+        } else if (propertyName.equals(OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME)) {
             term.setExamples(stringValue);
-        } else if (propertyName.equals("usage")) {
+        } else if (propertyName.equals(OpenMetadataAPIMapper.USAGE_PROPERTY_NAME)) {
             term.setUsage(stringValue);
-        } else if (propertyName.equals("summary")) {
-            term.setSummary(stringValue);
         } else {
             foundProperty =false;
         }
@@ -81,19 +79,16 @@ public class TermMapper extends EntityDetailMapper<Term> {
     @Override
     protected void mapNodeToInstanceProperties(Term term, InstanceProperties instanceProperties) {
         if (term.getSummary()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), "summary");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME);
         }
         if (term.getAbbreviation()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getAbbreviation(), "abbreviation");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getAbbreviation(), OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME);
         }
         if (term.getExamples()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getExamples(), "examples");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getExamples(), OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME);
         }
         if (term.getUsage()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), "usage");
-        }
-        if (term.getSummary()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), "summary");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), OpenMetadataAPIMapper.USAGE_PROPERTY_NAME);
         }
         if (term.getName()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getName(), "displayName");

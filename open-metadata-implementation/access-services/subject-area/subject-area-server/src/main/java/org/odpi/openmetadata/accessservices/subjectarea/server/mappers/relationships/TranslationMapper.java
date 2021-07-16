@@ -30,21 +30,21 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
     @Override
     protected void mapRelationshipToInstanceProperties(Translation translation, InstanceProperties instanceProperties) {
         if (translation.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (translation.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getExpression(), "expression");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
         }
         if (translation.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (translation.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (translation.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(translation.getStatus().getOrdinal());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
         }
     }
 
@@ -60,19 +60,19 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
     protected boolean mapPrimitiveToRelationship(Translation translation, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             translation.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("expression")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
             translation.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             translation.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             translation.setSource(stringValue);
             foundProperty = true;
         }

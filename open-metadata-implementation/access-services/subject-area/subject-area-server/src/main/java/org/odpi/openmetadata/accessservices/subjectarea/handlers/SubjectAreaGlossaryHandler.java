@@ -287,32 +287,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         return response;
     }
 
-    private void replaceAttributes(Glossary currentGlossary, Glossary newGlossary) {
-        currentGlossary.setName(newGlossary.getName());
-        currentGlossary.setQualifiedName(newGlossary.getQualifiedName());
-        currentGlossary.setDescription(newGlossary.getDescription());
-        currentGlossary.setUsage(newGlossary.getUsage());
-        currentGlossary.setAdditionalProperties(newGlossary.getAdditionalProperties());
-    }
-
-    private void updateAttributes(Glossary oldGlossary, Glossary newGlossary) {
-        if (newGlossary.getName() != null) {
-            oldGlossary.setName(newGlossary.getName());
-        }
-        if (newGlossary.getQualifiedName() != null) {
-            oldGlossary.setQualifiedName(newGlossary.getQualifiedName());
-        }
-        if (newGlossary.getDescription() != null) {
-            oldGlossary.setDescription(newGlossary.getDescription());
-        }
-        if (newGlossary.getUsage() != null) {
-            oldGlossary.setUsage(newGlossary.getUsage());
-        }
-        if (newGlossary.getAdditionalProperties() != null) {
-            oldGlossary.setAdditionalProperties(newGlossary.getAdditionalProperties());
-        }
-    }
-
     /**
      * Delete a Glossary instance
      * <p>
@@ -468,17 +442,19 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                          methodName);
 
                 Set<Term> terms = new HashSet<>();
-                for (EntityDetail entity:entities) {
-                    SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
-                    if (termResponse.getRelatedHTTPCode() == 200) {
-                        terms.add(termResponse.results().get(0));
-                    } else {
-                        response = termResponse;
-                        break;
+                if (entities != null) {
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
+                        if (termResponse.getRelatedHTTPCode() == 200) {
+                            terms.add(termResponse.results().get(0));
+                        } else {
+                            response = termResponse;
+                            break;
+                        }
                     }
-                }
-                if( response.getRelatedHTTPCode() == 200) {
-                    response.addAllResults(terms);
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(terms);
+                    }
                 }
 
             } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
