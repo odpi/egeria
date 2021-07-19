@@ -6,6 +6,7 @@
 ## A
 
 * [Anchor](../../open-metadata-implementation/access-services/docs/concepts/anchor.md)
+* [Application Programming Interface (API)](basic-concepts/api.md)
 * [Archives for Open Metadata](../../open-metadata-resources/open-metadata-archives)
 * [Asset](../../open-metadata-implementation/access-services/docs/concepts/assets/README.md)
   * [Governance Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
@@ -58,9 +59,11 @@
 * [Engine Host](../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
 * [Enterprise Metadata Collection](../../open-metadata-implementation/repository-services/docs/enterprise-metadata-collection.md)
 * [Enterprise Repository Services Subsystem (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/enterprise-repository-services.md)
+* [Event](basic-concepts/event.md)
+   * [OMRS Event Descriptions](../../open-metadata-implementation/repository-services/docs/event-descriptions)
 * [Event Bus](../../open-metadata-implementation/admin-services/docs/concepts/event-bus.md)
+* [Event Broker](basic-concepts/event-broker.md)
 * [Event Management Services Subsystem (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/event-management-services.md)
-* [Events (OMRS)](../../open-metadata-implementation/repository-services/docs/event-descriptions)
 * [External Identifiers](external-identifiers)
 
 ## F
@@ -208,7 +211,7 @@
 * [Tagging](../../open-metadata-implementation/access-services/docs/concepts/attachments/tagging.md)
 * [Tool](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/tool.md)
 * Tombstone - see Memento
-* Topics
+* [Topic](basic-concepts/topic.md)
   * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
   * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.md)
