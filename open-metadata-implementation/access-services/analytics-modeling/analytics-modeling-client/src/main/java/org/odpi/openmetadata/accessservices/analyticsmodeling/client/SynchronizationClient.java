@@ -146,6 +146,8 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	public ResponseContainerAssets createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+        final String methodName = "createArtifact";
+        invalidParameterHandler.validateUserId(userId, methodName);
 		return restClient.createAssets(userId, serverCapability, artifact);
 	}
 
@@ -164,6 +166,8 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+        final String methodName = "updateArtifact";
+        invalidParameterHandler.validateUserId(userId, methodName);
 		return restClient.updateAssets(userId, serverCapability, artifact);
 	}
 	
@@ -182,6 +186,8 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String identifier)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
     {
+        final String methodName = "deleteArtifact";
+        invalidParameterHandler.validateUserId(userId, methodName);
 		return restClient.deleteAssets(userId, serverCapability, identifier);
 	}
 	
