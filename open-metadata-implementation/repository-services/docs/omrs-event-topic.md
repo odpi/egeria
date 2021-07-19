@@ -3,18 +3,21 @@
 
 # OMRS Event Topic
 
-The OMRS Topic is an event topic, typically hosted by Apache Kafka,
-that an open metadata repository cohort uses to synchronize metadata
+The OMRS Topic is a [topic](../../../open-metadata-publication/website/basic-concepts/topic.md)
+provided through an [event broker](../../../open-metadata-publication/website/basic-concepts/event-broker.md) (typically Apache Kafka)
+that an [open metadata repository cohort](open-metadata-repository-cohort.md) uses to synchronize metadata
 between metadata repositories.
+
 It is accessed by the Open Metadata Repository Services (OMRS)
-components through the OMRS Topic Connector.
+components through the [OMRS Topic Connector](component-descriptions/connectors/omrs-topic-connector.md).
 The OMRS Topic Connector is a pluggable OCF Connector
 that allows the use of different messaging infrastructures to
 support the OMRS Topic without affecting the implementation of the OMRS.
 
 ## OMRS Topic Events
 
-The OMRS Topic is used to send and receive OMRS Events.  There are three types of OMRS events that are sent/received on the OMRS Topic:
+The OMRS Topic is used to send and receive OMRS Events.
+There are three types of OMRS events that are sent/received on the OMRS Topic:
 
 * Registry Events - these are sent/received by the OMRS Cohort Registry.
 These are used to register and unregister members of an open metadata repository cohort.
