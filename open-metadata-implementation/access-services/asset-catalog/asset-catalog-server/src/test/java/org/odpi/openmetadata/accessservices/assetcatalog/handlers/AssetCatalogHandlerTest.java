@@ -562,7 +562,7 @@ public class AssetCatalogHandlerTest {
                 PAGE_SIZE)).thenReturn(mockEntities());
 
         List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
-        assertEquals(1, assetElements.size());
+        assertEquals(2, assetElements.size());
         assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
         assertEquals(ASSET_TYPE, assetElements.get(0).getType().getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
