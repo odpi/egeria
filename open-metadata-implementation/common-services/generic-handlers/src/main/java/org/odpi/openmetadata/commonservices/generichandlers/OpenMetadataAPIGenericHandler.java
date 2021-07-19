@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -168,6 +169,28 @@ public class OpenMetadataAPIGenericHandler<B>
     public OMRSRepositoryHelper getRepositoryHelper()
     {
         return repositoryHelper;
+    }
+
+
+    /**
+     * Return the type definition for the named type.
+     *
+     * @param suppliedTypeName caller's subtype (or null)
+     * @param defaultTypeName common super type
+     *
+     * @return type definition
+     */
+    public TypeDef getTypeDefByName(String suppliedTypeName,
+                                    String defaultTypeName)
+    {
+        String resultsTypeName = defaultTypeName;
+
+        if (suppliedTypeName != null)
+        {
+            resultsTypeName = suppliedTypeName;
+        }
+
+        return repositoryHelper.getTypeDefByName(serviceName, resultsTypeName);
     }
 
 
@@ -3039,13 +3062,138 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Validates that the unique property is not already in use.
+     *
+     * @param entityGUID existing entity (or null if this is a create)
+     * @param entityTypeGUID the unique identifier of type of the entity
+     * @param entityTypeName the unique name of the type of the entity
+     * @param uniqueParameterValue the value of the unique parameter
+     * @param uniqueParameterName the name of the unique parameter
+     * @param methodName calling method for exceptions and error messages
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void validateUniqueProperty(String                         entityGUID,
+                                       String                         entityTypeGUID,
+                                       String                         entityTypeName,
+                                       String                         uniqueParameterValue,
+                                       String                         uniqueParameterName,
+                                       String                         methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        List<String> propertyNames = new ArrayList<>();
+        propertyNames.add(uniqueParameterName);
+
+        /*
+         * An entity with the Memento classification set is ignored
+         */
+        List<EntityDetail> existingEntities = this.getEntitiesByValue(localServerUserId,
+                                                                      uniqueParameterValue,
+                                                                      uniqueParameterName,
+                                                                      entityTypeGUID,
+                                                                      entityTypeName,
+                                                                      propertyNames,
+                                                                      true,
+                                                                      null,
+                                                                      OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                                                      false,
+                                                                      supportedZones,
+                                                                      null,
+                                                                      0,
+                                                                      invalidParameterHandler.getMaxPagingSize(),
+                                                                      methodName);
+
+        if ((existingEntities != null) && (! existingEntities.isEmpty()))
+        {
+            if (entityGUID != null)
+            {
+                for (EntityDetail existingEntity : existingEntities)
+                {
+                    if ((existingEntity != null) && (! entityGUID.equals(existingEntity.getGUID())))
+                    {
+                        invalidParameterHandler.throwUniqueNameInUse(uniqueParameterValue,
+                                                                     uniqueParameterName,
+                                                                     entityTypeName,
+                                                                     serviceName,
+                                                                     methodName);
+                    }
+                }
+            }
+            else
+            {
+                invalidParameterHandler.throwUniqueNameInUse(uniqueParameterValue,
+                                                             uniqueParameterName,
+                                                             entityTypeName,
+                                                             serviceName,
+                                                             methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Validate that new properties fo an entity do not have unique properties that class with other instances.
+     *
+     * @param entityGUID unique identifier of the entity to be updated (or null for a new entity).
+     * @param entityTypeGUID the unique identifier of type of the entity
+     * @param entityTypeName the unique name of the type of the entity
+     * @param newProperties properties to test
+     * @param methodName calling method for exceptions and error messages
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void validateUniqueProperties(String             entityGUID,
+                                          String             entityTypeGUID,
+                                          String             entityTypeName,
+                                          InstanceProperties newProperties,
+                                          String             methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        InstanceProperties uniqueProperties = repositoryHelper.getUniqueProperties(serviceName,
+                                                                                   entityTypeName,
+                                                                                   newProperties);
+
+        if ((uniqueProperties != null) && (uniqueProperties.getPropertyCount() > 0))
+        {
+            Iterator<String> uniquePropertyNames = uniqueProperties.getPropertyNames();
+
+            if (uniquePropertyNames != null)
+            {
+                while (uniquePropertyNames.hasNext())
+                {
+                    String uniquePropertyName = uniquePropertyNames.next();
+
+                    if (uniquePropertyName != null)
+                    {
+                        /*
+                         * This code assumes that the unique property is a string - which is fine for all current open metadata types.
+                         */
+                        InstancePropertyValue uniquePropertyValue = uniqueProperties.getPropertyValue(uniquePropertyName);
+
+                        validateUniqueProperty(entityGUID,
+                                               entityTypeGUID,
+                                               entityTypeName,
+                                               uniquePropertyValue.valueAsString(),
+                                               uniquePropertyName, methodName);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * Validate that the user has permission to create a new entity
      *
      * @param userId           userId of user making request.
      * @param entityTypeGUID unique identifier of the type of entity to create
      * @param entityTypeName unique name of the type of entity to create
-     * @param uniqueParameterValue value of unique parameter (or null if no unique properties)
-     * @param uniqueParameterName name of unique parameter (or null if no unique properties)
      * @param newObjectBuilder builder to create new entity
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -3055,8 +3203,6 @@ public class OpenMetadataAPIGenericHandler<B>
     private void validateNewEntityRequest(String                         userId,
                                           String                         entityTypeGUID,
                                           String                         entityTypeName,
-                                          String                         uniqueParameterValue,
-                                          String                         uniqueParameterName,
                                           OpenMetadataAPIGenericBuilder  newObjectBuilder,
                                           String                         methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
@@ -3064,43 +3210,7 @@ public class OpenMetadataAPIGenericHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        if (uniqueParameterValue != null)
-        {
-            List<String> propertyNames = new ArrayList<>();
-            propertyNames.add(uniqueParameterName);
-
-            /*
-             * An entity with the Memento classification set is ignored
-             */
-            List<EntityDetail> existingBeans = this.getEntitiesByValue(userId,
-                                                                       uniqueParameterValue,
-                                                                       uniqueParameterName,
-                                                                       entityTypeGUID,
-                                                                       entityTypeName,
-                                                                       propertyNames,
-                                                                       true,
-                                                                       null,
-                                                                       null,
-                                                                       false,
-                                                                       supportedZones,
-                                                                       null,
-                                                                       0,
-                                                                       invalidParameterHandler.getMaxPagingSize(),
-                                                                       methodName);
-
-            if ((existingBeans != null) && (!existingBeans.isEmpty()))
-            {
-                /*
-                 * Throw exception containing details of the first non-null bean that
-                 * is found with a matching unique parameter value.
-                 */
-                invalidParameterHandler.throwUniqueNameInUse(uniqueParameterValue,
-                                                             uniqueParameterName,
-                                                             entityTypeName,
-                                                             serviceName,
-                                                             methodName);
-            }
-        }
+        validateUniqueProperties(null, entityTypeGUID, entityTypeName, newObjectBuilder.getInstanceProperties(methodName), methodName);
 
         if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
         {
@@ -4523,8 +4633,6 @@ public class OpenMetadataAPIGenericHandler<B>
         validateNewEntityRequest(userId,
                                  entityTypeGUID,
                                  entityTypeName,
-                                 uniqueParameterValue,
-                                 uniqueParameterName,
                                  propertyBuilder,
                                  methodName);
 
@@ -4704,8 +4812,6 @@ public class OpenMetadataAPIGenericHandler<B>
             validateNewEntityRequest(userId,
                                      entityTypeGUID,
                                      entityTypeName,
-                                     uniqueParameterValue,
-                                     uniqueParameterName,
                                      propertyBuilder,
                                      methodName);
 
@@ -4959,6 +5065,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         String nextQualifiedName = null;
                         if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
                         {
+
                             nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
                             int    nextQualifiedNameCount = 0;
 
@@ -5227,6 +5334,11 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   updateProperties,
                                                                   originalEntity.getProperties());
+
+            /*
+             * Validate that any changes to the unique properties do not clash with other entities.
+             */
+            validateUniqueProperties(entityGUID, entityTypeGUID, entityTypeName, newProperties, methodName);
 
             /*
              * There is an extra security check if the update is for an asset.

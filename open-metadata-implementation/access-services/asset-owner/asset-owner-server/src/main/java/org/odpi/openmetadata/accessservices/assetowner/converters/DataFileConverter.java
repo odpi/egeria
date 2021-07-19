@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * DataFileConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a DataFileElement bean.
@@ -44,6 +46,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
+    @SuppressWarnings(value = "deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -53,7 +56,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof FileElement)
             {
@@ -129,7 +132,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

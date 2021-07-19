@@ -12,7 +12,7 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations'
 }
 
-description = 'File Integrator OMIS with Spring'
+description = 'Catalog Integrator OMIS with Spring'
 
 java {
     withJavadocJar()

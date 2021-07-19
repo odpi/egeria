@@ -23,6 +23,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHos
 import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -416,9 +417,9 @@ public class EngineHostOperationalServices
         {
             try
             {
-                return (EngineServiceAdmin) Class.forName(engineServiceAdminClassName).newInstance();
+                return (EngineServiceAdmin) Class.forName(engineServiceAdminClassName).getDeclaredConstructor().newInstance();
             }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException error)
+            catch (ClassNotFoundException | InstantiationException | IllegalAccessException| NoSuchMethodException | InvocationTargetException error)
             {
                 auditLog.logException(methodName,
                                       EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceConfig.getEngineServiceName(),

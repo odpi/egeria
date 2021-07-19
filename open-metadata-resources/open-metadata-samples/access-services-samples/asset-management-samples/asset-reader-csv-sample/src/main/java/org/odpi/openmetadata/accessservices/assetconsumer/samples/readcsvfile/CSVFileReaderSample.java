@@ -111,7 +111,7 @@ public class CSVFileReaderSample
                              */
                             return (CSVFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
                             System.out.println("Unable to create connector for asset: " + assetGUID);
                         }
@@ -123,7 +123,7 @@ public class CSVFileReaderSample
                 System.out.println("The open metadata repositories do not have an asset definition for the requested file name " + fileName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created from metadata.  Error message is: " + error.getMessage());
         }
@@ -149,7 +149,7 @@ public class CSVFileReaderSample
 
             connector = (CSVFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created with Asset Consumer OMAS.");
         }
@@ -174,7 +174,7 @@ public class CSVFileReaderSample
 
             connector = (CSVFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created with OCF.");
         }
@@ -315,7 +315,7 @@ public class CSVFileReaderSample
         {
             System.out.println("The connector is unable to retrieve the requested record because the file is too short.");
         }
-        catch (Throwable exception)
+        catch (Exception exception)
         {
             System.out.println("Exception " + exception.getMessage());
         }
@@ -373,7 +373,7 @@ public class CSVFileReaderSample
 
             sample.run();
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
             System.exit(-1);

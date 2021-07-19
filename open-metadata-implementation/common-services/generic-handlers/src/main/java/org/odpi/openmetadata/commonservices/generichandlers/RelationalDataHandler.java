@@ -711,7 +711,7 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "deprecated")
+    @SuppressWarnings(value = "deprecation")
     public void updateGovernanceClassifications(String               userId,
                                                 String               elementGUID,
                                                 String               elementGUIDParameterName,
@@ -1554,7 +1554,7 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "deprecated")
+    @SuppressWarnings(value = "deprecation")
     public void updateDatabaseSchema(String              userId,
                                      String              databaseManagerGUID,
                                      String              databaseManagerName,
@@ -3073,6 +3073,9 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateGUID(databaseTableGUID, databaseTableGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        /*
+         * Data type needs to be set unless there is an external schema type in use.
+         */
         if (externalSchemaTypeGUID == null)
         {
             invalidParameterHandler.validateName(dataType, dataTypeParameterName, methodName);
@@ -3202,12 +3205,12 @@ public class RelationalDataHandler<DATABASE,
                 return null;
             }
 
-            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
-                                                                            externalSchemaTypeGUID,
-                                                                            dataType,
-                                                                            defaultValue,
-                                                                            fixedValue,
-                                                                            validValuesSetGUID);
+            SchemaTypeBuilder schemaTypeBuilder = databaseColumnHandler.getSchemaTypeBuilder(qualifiedName,
+                                                                                             externalSchemaTypeGUID,
+                                                                                             dataType,
+                                                                                             defaultValue,
+                                                                                             fixedValue,
+                                                                                             validValuesSetGUID);
 
             schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
@@ -3273,57 +3276,6 @@ public class RelationalDataHandler<DATABASE,
     }
 
 
-    /**
-     * Set up the schema type builder for the column's type.
-     *
-     * @param qualifiedName qualified name for the column
-     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
-     * @param dataType data type name - for stored values
-     * @param defaultValue string containing default value - for stored values
-     * @param fixedValue string containing a fixed value - for a literal
-     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
-     * @return filled out schema type builder
-     */
-    private SchemaTypeBuilder getSchemaTypeBuilder(String qualifiedName,
-                                                   String externalSchemaTypeGUID,
-                                                   String dataType,
-                                                   String defaultValue,
-                                                   String fixedValue,
-                                                   String validValuesSetGUID)
-    {
-        String schemaTypeGUID = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID;
-        String schemaTypeName = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
-
-        if (externalSchemaTypeGUID != null)
-        {
-            schemaTypeGUID = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_GUID;
-            schemaTypeName = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME;
-        }
-        else if (validValuesSetGUID != null)
-        {
-            schemaTypeGUID = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_GUID;
-            schemaTypeName = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME;
-        }
-        else if (fixedValue != null)
-        {
-            schemaTypeGUID = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_GUID;
-            schemaTypeName = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME;
-        }
-
-        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
-                                                                    schemaTypeGUID,
-                                                                    schemaTypeName,
-                                                                    repositoryHelper,
-                                                                    serviceName,
-                                                                    serverName);
-        schemaTypeBuilder.setDataType(dataType);
-        schemaTypeBuilder.setDefaultValue(defaultValue);
-        schemaTypeBuilder.setFixedValue(fixedValue);
-        schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
-        schemaTypeBuilder.setValidValuesSetGUID(validValuesSetGUID);
-
-        return schemaTypeBuilder;
-    }
 
 
     /**
@@ -3810,12 +3762,12 @@ public class RelationalDataHandler<DATABASE,
                                                                                        serviceName,
                                                                                        serverName);
 
-            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
-                                                                            externalSchemaTypeGUID,
-                                                                            dataType,
-                                                                            defaultValue,
-                                                                            fixedValue,
-                                                                            validValuesSetGUID);
+            SchemaTypeBuilder schemaTypeBuilder = databaseColumnHandler.getSchemaTypeBuilder(qualifiedName,
+                                                                                             externalSchemaTypeGUID,
+                                                                                             dataType,
+                                                                                             defaultValue,
+                                                                                             fixedValue,
+                                                                                             validValuesSetGUID);
 
 
             schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);

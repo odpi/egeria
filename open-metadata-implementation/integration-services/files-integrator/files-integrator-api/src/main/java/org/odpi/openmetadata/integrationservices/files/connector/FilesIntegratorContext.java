@@ -24,7 +24,6 @@ public class FilesIntegratorContext
     private String                 userId;
     private String                 fileServerCapabilityGUID;
     private String                 fileServerCapabilityName;
-    private boolean                fileServerCapabilityIsHome = true;
 
 
     /**
@@ -47,11 +46,6 @@ public class FilesIntegratorContext
         this.userId                   = userId;
         this.fileServerCapabilityGUID = fileServerCapabilityGUID;
         this.fileServerCapabilityName = fileServerCapabilityName;
-
-        if (fileServerCapabilityGUID == null)
-        {
-            fileServerCapabilityIsHome = false;
-        }
     }
 
 
@@ -577,7 +571,7 @@ public class FilesIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return client.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return client.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -596,7 +590,7 @@ public class FilesIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return client.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return client.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -617,7 +611,7 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, validValuesSetGUID);
+        return client.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, validValuesSetGUID);
     }
 
 
@@ -684,7 +678,7 @@ public class FilesIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return client.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -704,7 +698,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, schemaTypeOptionGUIDs);
+        return client.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, schemaTypeOptionGUIDs);
     }
 
 
@@ -712,6 +706,8 @@ public class FilesIntegratorContext
      * Create a new metadata element to represent a schema type.
      *
      * @param schemaTypeProperties properties about the schema type to store
+     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
      *
      * @return unique identifier of the new schema type
      *
@@ -725,7 +721,7 @@ public class FilesIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        return client.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
     }
 
 
@@ -746,7 +742,7 @@ public class FilesIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return client.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, templateGUID, templateProperties);
+        return client.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
     }
 
 
@@ -921,7 +917,7 @@ public class FilesIntegratorContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return client.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, schemaAttributeProperties);
+        return client.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, schemaAttributeProperties);
     }
 
 
@@ -944,13 +940,14 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, templateGUID, templateProperties);
+        return client.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, templateGUID, templateProperties);
     }
 
 
     /**
      * Connect a schema type to a schema attribute.
      *
+     * @param relationshipTypeName name of relationship to create
      * @param schemaAttributeGUID unique identifier of the schema attribute
      * @param schemaTypeGUID unique identifier of the schema type to connect
      *
@@ -958,17 +955,18 @@ public class FilesIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaType(String schemaAttributeGUID,
+    public void setupSchemaType(String relationshipTypeName,
+                                String schemaAttributeGUID,
                                 String schemaTypeGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        client.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, schemaTypeGUID);
+        client.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
     }
 
 
     /**
-     * Remove the type information from a schema attribute.
+     * Remove the linked schema types from a schema attribute.
      *
      * @param schemaAttributeGUID unique identifier of the schema attribute
      *
@@ -976,11 +974,11 @@ public class FilesIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaType(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearSchemaTypes(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        client.clearSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+        client.clearSchemaTypes(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
     }
 
 

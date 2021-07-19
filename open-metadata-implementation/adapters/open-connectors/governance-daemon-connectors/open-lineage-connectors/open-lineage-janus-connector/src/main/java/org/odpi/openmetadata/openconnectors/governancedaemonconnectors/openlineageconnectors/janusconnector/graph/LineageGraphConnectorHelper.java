@@ -134,7 +134,7 @@ public class LineageGraphConnectorHelper {
      * found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
-     * @param guid queried entity
+     * @param guid             queried entity
      * @param includeProcesses include processes
      *
      * @return graph in an Open Lineage specific format
@@ -144,7 +144,7 @@ public class LineageGraphConnectorHelper {
 
         Graph sourceGraph;
         List<Vertex> sourcesList;
-        if(ASSETS.contains(queriedVertex.label())) {
+        if (ASSETS.contains(queriedVertex.label())) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             sourceGraph = queryUltimateSource(guid, LINEAGE_MAPPING);
             sourcesList = querySources(guid, LINEAGE_MAPPING);
@@ -155,7 +155,7 @@ public class LineageGraphConnectorHelper {
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (!edgeLabelOptional.isPresent()) {
+        if (edgeLabelOptional.isEmpty()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -169,12 +169,12 @@ public class LineageGraphConnectorHelper {
     /**
      * Queries for ultimate source graph
      *
-     * @param guid queried entity
+     * @param guid      queried entity
      * @param edgeLabel edge type to traverse
      *
      * @return graph
      */
-    private Graph queryUltimateSource(String guid, String edgeLabel){
+    private Graph queryUltimateSource(String guid, String edgeLabel) {
         Graph sourceGraph = null;
         try {
             sourceGraph = (Graph)
@@ -197,12 +197,12 @@ public class LineageGraphConnectorHelper {
     /**
      * Query graph for sources
      *
-     * @param guid entity
+     * @param guid      entity
      * @param edgeLabel edge type to traverse
      *
      * @return sources
      */
-    private List<Vertex> querySources(String guid, String edgeLabel){
+    private List<Vertex> querySources(String guid, String edgeLabel) {
         List<Vertex> sourceList = null;
         try {
             sourceList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -227,7 +227,7 @@ public class LineageGraphConnectorHelper {
      * are found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
-     * @param guid queried entity
+     * @param guid             queried entity
      * @param includeProcesses include processes
      *
      * @return graph in an Open Lineage specific format
@@ -237,7 +237,8 @@ public class LineageGraphConnectorHelper {
 
         Graph destinationGraph;
         List<Vertex> destinationsList;
-        if(ASSETS.contains(queriedVertex.label())) {
+        String label = queriedVertex.label();
+        if (ASSETS.contains(label)) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             destinationGraph = queryUltimateDestination(guid, LINEAGE_MAPPING);
             destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
@@ -263,12 +264,12 @@ public class LineageGraphConnectorHelper {
     /**
      * Queries for ultimate destination graph
      *
-     * @param guid queried entity
+     * @param guid      queried entity
      * @param edgeLabel edge type to traverse
      *
      * @return graph
      */
-    private Graph queryUltimateDestination(String guid, String edgeLabel){
+    private Graph queryUltimateDestination(String guid, String edgeLabel) {
         Graph destinationGraph = null;
         try {
             destinationGraph = (Graph)
@@ -291,12 +292,12 @@ public class LineageGraphConnectorHelper {
     /**
      * Query graph for destinations
      *
-     * @param guid entity
+     * @param guid      entity
      * @param edgeLabel edge type to traverse
      *
      * @return sources
      */
-    private List<Vertex> queryDestinations(String guid, String edgeLabel){
+    private List<Vertex> queryDestinations(String guid, String edgeLabel) {
         List<Vertex> destinationList = null;
         try {
             destinationList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -321,7 +322,7 @@ public class LineageGraphConnectorHelper {
      * respectively. If no vertices are found, than DataFlow relationships are used for traversal. In case of columns,
      * DataFlow relationships are directly used
      *
-     * @param guid queried entity
+     * @param guid             queried entity
      * @param includeProcesses include processes
      *
      * @return graph in an Open Lineage specific format
@@ -329,8 +330,10 @@ public class LineageGraphConnectorHelper {
     public Optional<LineageVerticesAndEdges> endToEnd(String guid, boolean includeProcesses) {
         Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        Graph endToEndGraph ;
-        if(ASSETS.contains(queriedVertex.label())) {
+        Graph endToEndGraph;
+        String label = queriedVertex.label();
+
+        if (ASSETS.contains(label)) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             endToEndGraph = queryEndToEnd(guid, LINEAGE_MAPPING);
             if (endToEndGraph.vertices().hasNext()) {
@@ -339,7 +342,7 @@ public class LineageGraphConnectorHelper {
         }
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (!edgeLabelOptional.isPresent()) {
+        if (edgeLabelOptional.isEmpty()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -351,7 +354,7 @@ public class LineageGraphConnectorHelper {
     /**
      * Queries graph for end to end
      *
-     * @param guid queried entity
+     * @param guid      queried entity
      * @param edgeLabel edge type to traverse
      *
      * @return graph
@@ -612,7 +615,7 @@ public class LineageGraphConnectorHelper {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
         }
-        if (originalVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()){
+        if (originalVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()) {
             String qualifiedName = originalVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString();
             lineageVertex.setQualifiedName(qualifiedName);
         }
@@ -749,8 +752,7 @@ public class LineageGraphConnectorHelper {
     }
 
     private Set<LineageVertex> getLineageVerticesToRemove(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges,
-                                                          Set<LineageVertex> ultimateVertices,
-                                                          LineageVertex queriedVertex) {
+                                                          Set<LineageVertex> ultimateVertices, LineageVertex queriedVertex) {
         Set<LineageVertex> verticesToRemove = new HashSet<>();
         lineageVertices.stream().filter(lineageVertex -> isVertexToBeCondensed(lineageVertex, queriedVertex, ultimateVertices, lineageEdges))
                 .forEach(verticesToRemove::add);
@@ -930,7 +932,8 @@ public class LineageGraphConnectorHelper {
 
     private List<Vertex> getFolderVertices(GraphTraversalSource g, Object dataFileAssetId) {
         GraphTraversal<Vertex, Vertex> fileFolders =
-                g.V(dataFileAssetId).emit().repeat(bothE().otherV().simplePath()).until(inE(FOLDER_HIERARCHY).count().is(0)).or(hasLabel(FILE_FOLDER));
+                g.V(dataFileAssetId).emit().repeat(bothE().otherV().simplePath()).until(inE(FOLDER_HIERARCHY).count().is(0))
+                        .or(hasLabel(FILE_FOLDER));
         commitTransaction();
         List<Vertex> folderVertices = new ArrayList<>();
         while (fileFolders.hasNext()) {
@@ -1006,7 +1009,7 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
         commitTransaction();
         if (connection.hasNext()) {
-            return Optional.of( this.getDisplayNameForVertex(connection.next()) );
+            return Optional.of(this.getDisplayNameForVertex(connection.next()));
         }
         return Optional.empty();
     }
@@ -1031,7 +1034,8 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> transformationProject = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(COLLECTION));
         commitTransaction();
         if (transformationProject.hasNext()) {
-            properties.put(TRANSFORMATION_PROJECT_KEY, transformationProject.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(TRANSFORMATION_PROJECT_KEY,
+                    transformationProject.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
         return properties;
     }

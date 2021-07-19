@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErr
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SchemaAttributeHandler manages Schema Attribute objects.  It runs server-side in
@@ -245,7 +246,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                  methodName);
 
-        String parentAttributeTypeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String parentAttributeTypeName             = OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
         String parentAttributeRelationshipTypeGUID = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
         String parentAttributeRelationshipTypeName = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
 
@@ -253,25 +254,265 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         {
             if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
             {
-                parentAttributeTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+                parentAttributeTypeName             = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
                 parentAttributeRelationshipTypeGUID = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
                 parentAttributeRelationshipTypeName = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
             }
+
+            /*
+             * If the parent is set up with an anchor then this is propagated to the schema attribute
+             */
+            String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
+            if (anchorGUID != null)
+            {
+                schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
+            }
+
+            return this.createNestedSchemaAttribute(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    parentElementGUID,
+                                                    parentElementGUIDParameterName,
+                                                    parentAttributeTypeName,
+                                                    parentAttributeRelationshipTypeGUID,
+                                                    parentAttributeRelationshipTypeName,
+                                                    qualifiedName,
+                                                    qualifiedNameParameterName,
+                                                    schemaAttributeBuilder,
+                                                    methodName);
+
         }
+        else
+        {
+            /*
+             * Either the entity has not been returned or it has no type info in it
+             */
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        parentElementGUID,
+                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a new schema attribute with its type attached that is nested inside a complex schema type or a schema attribute.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param parentElementGUID unique identifier of the metadata element to connect the new schema attribute to
+     * @param parentElementGUIDParameterName parameter name supplying parentElementGUID
+     * @param qualifiedName unique identifier for this schema type
+     * @param qualifiedNameParameterName name of parameter supplying the qualified name
+     * @param displayName the stored display name property for the attribute
+     * @param description the stored description property associated with the attribute
+     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing a fixed value - for a literal
+     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
+     * @param formula String formula - for derived values
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this attribute in its parent type.
+     * @param minCardinality minimum number of repeating instances allowed for this attribute - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new schema attribute already linked to its parent
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createNestedSchemaAttribute(String               userId,
+                                              String               externalSourceGUID,
+                                              String               externalSourceName,
+                                              String               parentElementGUID,
+                                              String               parentElementGUIDParameterName,
+                                              String               qualifiedName,
+                                              String               qualifiedNameParameterName,
+                                              String               displayName,
+                                              String               description,
+                                              String               externalSchemaTypeGUID,
+                                              String               dataType,
+                                              String               defaultValue,
+                                              String               fixedValue,
+                                              String               validValuesSetGUID,
+                                              String               formula,
+                                              boolean              isDeprecated,
+                                              int                  elementPosition,
+                                              int                  minCardinality,
+                                              int                  maxCardinality,
+                                              boolean              allowsDuplicateValues,
+                                              boolean              orderedValues,
+                                              String               defaultValueOverride,
+                                              int                  sortOrder,
+                                              int                  minimumLength,
+                                              int                  length,
+                                              int                  significantDigits,
+                                              boolean              isNullable,
+                                              String               nativeJavaClass,
+                                              List<String>         aliases,
+                                              Map<String, String>  additionalProperties,
+                                              String               typeName,
+                                              Map<String, Object>  extendedProperties,
+                                              String               methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        /*
+         * Check that the type name requested for the schema attribute is valid.
+         */
+        String schemaAttributeTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String schemaAttributeTypeId   = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID;
+
+        if (typeName != null)
+        {
+            schemaAttributeTypeName = typeName;
+            schemaAttributeTypeId = invalidParameterHandler.validateTypeName(typeName,
+                                                                             OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                             serviceName,
+                                                                             methodName,
+                                                                             repositoryHelper);
+        }
+
+        /*
+         * Load up the builder objects.  The builders manage the properties of the metadata elements that make up the schema attribute,
+         * and the schemaTypeHandler manages the type.
+         */
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                   displayName,
+                                                                                   description,
+                                                                                   elementPosition,
+                                                                                   minCardinality,
+                                                                                   maxCardinality,
+                                                                                   isDeprecated,
+                                                                                   defaultValueOverride,
+                                                                                   allowsDuplicateValues,
+                                                                                   orderedValues,
+                                                                                   sortOrder,
+                                                                                   minimumLength,
+                                                                                   length,
+                                                                                   significantDigits,
+                                                                                   isNullable,
+                                                                                   nativeJavaClass,
+                                                                                   aliases,
+                                                                                   additionalProperties,
+                                                                                   schemaAttributeTypeId,
+                                                                                   schemaAttributeTypeName,
+                                                                                   extendedProperties,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   serverName);
+
+        /*
+         * The formula is set if the attribute is derived
+         */
+        if (formula != null)
+        {
+            schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
+        }
+
+        SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
+                                                                        externalSchemaTypeGUID,
+                                                                        dataType,
+                                                                        defaultValue,
+                                                                        fixedValue,
+                                                                        validValuesSetGUID);
+
+        schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
         return this.createNestedSchemaAttribute(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
                                                 parentElementGUID,
                                                 parentElementGUIDParameterName,
-                                                parentAttributeTypeName,
-                                                parentAttributeRelationshipTypeGUID,
-                                                parentAttributeRelationshipTypeName,
                                                 qualifiedName,
                                                 qualifiedNameParameterName,
                                                 schemaAttributeBuilder,
                                                 methodName);
     }
+
+
+    /**
+     * Set up the schema type builder for the column's type.
+     *
+     * @param qualifiedName qualified name for the column
+     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing a fixed value - for a literal
+     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
+     * @return filled out schema type builder
+     */
+    SchemaTypeBuilder getSchemaTypeBuilder(String qualifiedName,
+                                           String externalSchemaTypeGUID,
+                                           String dataType,
+                                           String defaultValue,
+                                           String fixedValue,
+                                           String validValuesSetGUID)
+    {
+        String schemaTypeGUID = OpenMetadataAPIMapper.STRUCT_SCHEMA_TYPE_TYPE_GUID;
+        String schemaTypeName = OpenMetadataAPIMapper.STRUCT_SCHEMA_TYPE_TYPE_NAME;
+
+        if (externalSchemaTypeGUID != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME;
+        }
+        else if (validValuesSetGUID != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME;
+        }
+        else if (fixedValue != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME;
+        }
+        else if (dataType != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
+        }
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":Type",
+                                                                    schemaTypeGUID,
+                                                                    schemaTypeName,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+        schemaTypeBuilder.setDataType(dataType);
+        schemaTypeBuilder.setDefaultValue(defaultValue);
+        schemaTypeBuilder.setFixedValue(fixedValue);
+        schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
+        schemaTypeBuilder.setValidValuesSetGUID(validValuesSetGUID);
+
+        return schemaTypeBuilder;
+    }
+
 
 
     /**
@@ -400,6 +641,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         return this.getSchemaAttributesForComplexSchemaType(userId,
                                                             schemaTypeGUID,
                                                             guidParameterName,
+                                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                             requiredClassificationName,
                                                             omittedClassificationName,
                                                             supportedZones,
@@ -433,6 +675,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     public List<SCHEMA_ATTRIBUTE> getSchemaAttributesForComplexSchemaType(String       userId,
                                                                           String       schemaTypeGUID,
                                                                           String       schemaTypeGUIDParameterName,
+                                                                          String       schemaAttributeTypeName,
                                                                           String       requiredClassificationName,
                                                                           String       omittedClassificationName,
                                                                           List<String> serviceSupportedZones,
@@ -444,13 +687,20 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String schemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
+        String typeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+
+        if (schemaAttributeTypeName != null)
+        {
+            typeName = schemaAttributeTypeName;
+        }
+
         List<EntityDetail>  entities = this.getAttachedEntities(userId,
                                                                 schemaTypeGUID,
                                                                 schemaTypeGUIDParameterName,
                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                typeName,
                                                                 requiredClassificationName,
                                                                 omittedClassificationName,
                                                                 false,
@@ -491,6 +741,76 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
 
     /**
+     * Returns a list of schema attributes that are linked to a parent schema element.  This may be a complex schema type or a
+     * schema attribute.  It is necessary to find out the type of the parent schema element to be sure which type of
+     * retrieval is needed.
+      *
+     * @param userId         String   userId of user making request.
+     * @param parentElementGUID String   unique id for parent schema element.
+     * @param parentElementGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName sub type of schema attribute or null
+     * @param startFrom   int      starting position for first returned element.
+     * @param pageSize    int      maximum number of elements to return on the call.
+     * @param methodName     calling method
+     *
+     * @return a schema attributes response
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<SCHEMA_ATTRIBUTE> getAttachedSchemaAttributes(String userId,
+                                                              String parentElementGUID,
+                                                              String parentElementGUIDParameterName,
+                                                              String schemaAttributeTypeName,
+                                                              int    startFrom,
+                                                              int    pageSize,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        EntityDetail parentEntity = this.getEntityFromRepository(userId,
+                                                                 parentElementGUID,
+                                                                 parentElementGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                 null,
+                                                                 null,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 methodName);
+
+        if ((parentEntity != null) && (parentEntity.getType() != null))
+        {
+            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
+            {
+                return this.getNestedSchemaAttributes(userId,
+                                                      parentElementGUID,
+                                                      parentElementGUIDParameterName,
+                                                      schemaAttributeTypeName,
+                                                      supportedZones,
+                                                      startFrom,
+                                                      pageSize,
+                                                      methodName);
+            }
+            else
+            {
+                return this.getSchemaAttributesForComplexSchemaType(userId,
+                                                                    parentElementGUID,
+                                                                    parentElementGUIDParameterName,
+                                                                    schemaAttributeTypeName,
+                                                                    null,
+                                                                    null,
+                                                                    supportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Returns a list of schema attributes that are linked to a schema attribute via the NestedSchemaAttribute relationship.
      * It validates the unique identifier of the parent schema attribute, and the visibility/security of any attached asset using the
      * supplied supported zones (needed for the calls from the OCF Metadata REST Services).
@@ -517,7 +837,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, supportedZones, startFrom, pageSize, methodName);
+        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, supportedZones, startFrom, pageSize, methodName);
     }
 
 
@@ -530,6 +850,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param userId         String   userId of user making request.
      * @param schemaAttributeGUID String   unique id for containing schema attribute.
      * @param schemaAttributeGUIDParameterName String name of the parameter supplying the guid.
+     * @param schemaAttributeTypeName subtype of schema attribute (or null)
      * @param serviceSupportedZones list of zone names for calling service
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
@@ -543,6 +864,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String       userId,
                                                             String       schemaAttributeGUID,
                                                             String       schemaAttributeGUIDParameterName,
+                                                            String       schemaAttributeTypeName,
                                                             List<String> serviceSupportedZones,
                                                             int          startFrom,
                                                             int          pageSize,
@@ -552,13 +874,20 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String nestedSchemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
+        String resultTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+
+        if (schemaAttributeTypeName != null)
+        {
+            resultTypeName = schemaAttributeTypeName;
+        }
+
         List<EntityDetail>  entities = this.getAttachedEntities(userId,
                                                                 schemaAttributeGUID,
                                                                 schemaAttributeGUIDParameterName,
                                                                 OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                 OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                resultTypeName,
                                                                 null,
                                                                 null,
                                                                 false,
@@ -607,6 +936,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 return getSchemaAttributesForComplexSchemaType(userId,
                                                                entity.getGUID(),
                                                                schemaTypeGUIDParameterName,
+                                                               schemaAttributeTypeName,
                                                                null,
                                                                null,
                                                                supportedZones,
@@ -1039,6 +1369,120 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
 
     /**
+     * Update the properties in a schema attribute.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param schemaAttributeGUID unique identifier of the metadata element to connect the new schema attribute to
+     * @param schemaAttributeGUIDParameterName parameter name supplying schemaAttributeGUID
+     * @param qualifiedName unique identifier for this schema type
+     * @param qualifiedNameParameterName name of parameter supplying the qualified name
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this column in its parent table.
+     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param extendedProperties properties from any subtype
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void   updateSchemaAttribute(String               userId,
+                                        String               externalSourceGUID,
+                                        String               externalSourceName,
+                                        String               schemaAttributeGUID,
+                                        String               schemaAttributeGUIDParameterName,
+                                        String               qualifiedName,
+                                        String               qualifiedNameParameterName,
+                                        String               displayName,
+                                        String               description,
+                                        boolean              isDeprecated,
+                                        int                  elementPosition,
+                                        int                  minCardinality,
+                                        int                  maxCardinality,
+                                        boolean              allowsDuplicateValues,
+                                        boolean              orderedValues,
+                                        String               defaultValueOverride,
+                                        int                  sortOrder,
+                                        int                  minimumLength,
+                                        int                  length,
+                                        int                  significantDigits,
+                                        boolean              isNullable,
+                                        String               nativeJavaClass,
+                                        List<String>         aliases,
+                                        Map<String, String>  additionalProperties,
+                                        Map<String, Object>  extendedProperties,
+                                        boolean              isMergeUpdate,
+                                        String               methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
+
+
+        /*
+         * Load up the builder objects.  The builders manage the properties of the metadata elements that make up the schema attribute,
+         * and the schemaTypeHandler manages the type.
+         */
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                   displayName,
+                                                                                   description,
+                                                                                   elementPosition,
+                                                                                   minCardinality,
+                                                                                   maxCardinality,
+                                                                                   isDeprecated,
+                                                                                   defaultValueOverride,
+                                                                                   allowsDuplicateValues,
+                                                                                   orderedValues,
+                                                                                   sortOrder,
+                                                                                   minimumLength,
+                                                                                   length,
+                                                                                   significantDigits,
+                                                                                   isNullable,
+                                                                                   nativeJavaClass,
+                                                                                   aliases,
+                                                                                   additionalProperties,
+                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                   extendedProperties,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   serverName);
+
+
+        this.updateSchemaAttribute(userId,
+                                   externalSourceGUID,
+                                   externalSourceName,
+                                   schemaAttributeGUID,
+                                   schemaAttributeGUIDParameterName,
+                                   schemaAttributeBuilder.getInstanceProperties(methodName),
+                                   isMergeUpdate,
+                                   methodName);
+    }
+
+    /**
      * Update a schema attribute
      *
      * @param userId                      calling user
@@ -1050,10 +1494,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateSchemaAttribute(String                userId,
-                                      String                externalSourceGUID,
-                                      String                externalSourceName,
-                                      String                schemaAttributeGUID,
+    public void updateSchemaAttribute(String             userId,
+                                      String             externalSourceGUID,
+                                      String             externalSourceName,
+                                      String             schemaAttributeGUID,
                                       InstanceProperties instanceProperties) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -1090,16 +1534,16 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateSchemaAttribute(String                userId,
-                                      String                externalSourceGUID,
-                                      String                externalSourceName,
-                                      String                schemaAttributeGUID,
-                                      String                schemaAttributeGUIDParameterName,
+    public void updateSchemaAttribute(String             userId,
+                                      String             externalSourceGUID,
+                                      String             externalSourceName,
+                                      String             schemaAttributeGUID,
+                                      String             schemaAttributeGUIDParameterName,
                                       InstanceProperties instanceProperties,
-                                      boolean               isMergeUpdate,
-                                      String                methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+                                      boolean            isMergeUpdate,
+                                      String             methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
@@ -1111,5 +1555,32 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     instanceProperties,
                                     isMergeUpdate,
                                     methodName);
+    }
+
+
+    /**
+     * Remove any links to schema types
+     *
+     * @param userId                      calling user
+     * @param externalSourceGUID          unique identifier of software server capability representing the caller
+     * @param externalSourceName          unique name of software server capability representing the caller
+     * @param schemaAttributeGUID         unique identifier of schema attribute
+     * @param schemaAttributeGUIDParameterName  parameter supplying schemaAttributeGUID
+     * @param methodName                  calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSchemaTypes(String             userId,
+                                  String             externalSourceGUID,
+                                  String             externalSourceName,
+                                  String             schemaAttributeGUID,
+                                  String             schemaAttributeGUIDParameterName,
+                                  String             methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        // todo retrieve relationships and remove those that link a schema attribute to its type(s)
     }
 }

@@ -3,11 +3,11 @@
 
 # Asset Consumer OMAS Java Client
 
-The Asset Consumer OMAS client interface supports the creation of
+The Asset Consumer OMAS Java client interface `AssetConsumer`  supports the creation of
 [connectors](../../../../../../frameworks/open-connector-framework/docs/concepts/connector.md) to access
 [assets](../../../../../docs/concepts/assets).  It also supports feedback and tagging of assets.
 
-There is a single client called `AssetConsumer`.  It has two constructors:
+It has two constructors:
 
 * No authentication embedded in the HTTP request - for test systems.
 * Basic authentication using a userId and password embedded in the HTTP request.
@@ -76,7 +76,7 @@ Retrieve additional information about the meaning of data associated with the as
 * [**get full description of meaning using a supplied search string**](get-meaning-by-name-with-java.md)
 * [**get full description of meaning using a glossary term guid**](get-meaning-with-java.md)
 * [**get a list of possible meanings for a term**](find-meanings-with-java.md)
-* [**get assets attached to a specific glossary term](get-assets-by-meaning-with-java.md)
+* [**get assets attached to a specific glossary term**](get-assets-by-meaning-with-java.md)
 
 Add an audit log message about the asset:
 
