@@ -31,7 +31,7 @@ public final class AssetLineageConstants {
     public static final String PORT_IMPLEMENTATION = "PortImplementation";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String TABULAR_COLUMN = "TabularColumn";
-    public static final String ASSET = "Asset";
+    public static final String DATA_STORE = "DataStore";
     public static final String DATA_FILE = "DataFile";
     public static final String CONNECTION = "Connection";
     public static final String ENDPOINT = "Endpoint";
