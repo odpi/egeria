@@ -10,23 +10,25 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
  * Response for request of the available databases. 
  *
  */
-public class DatabasesResponse extends AnalyticsModelingOMASAPIResponse{
+public class DatabasesResponse extends AnalyticsModelingOMASAPIResponse {
+
+	private List<ResponseContainerDatabase> data;
 
 	/**
 	 * Set list of databases as response content.
 	 * @param databases set as the response.
 	 */
     public void setDatabasesList(List<ResponseContainerDatabase> databases) {
-        this.setData(databases);
-    }
+		data = databases;
+	}
 
 	/**
 	 * Get list of databases as response content.
 	 * @return databases list.
 	 */
-    @SuppressWarnings("unchecked")
 	public List<ResponseContainerDatabase> getDatabasesList() {
-        return (List<ResponseContainerDatabase>) this.getData();
-    }
-}
+		return data;
+	}
 
+
+}
