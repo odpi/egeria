@@ -14,6 +14,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -267,9 +268,9 @@ public class IntegrationDaemonOperationalServices
         {
             try
             {
-                return (IntegrationContextManager) Class.forName(contextManagerClassName).newInstance();
+                return (IntegrationContextManager) Class.forName(contextManagerClassName).getDeclaredConstructor().newInstance();
             }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException error)
+            catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException error)
             {
                 auditLog.logException(methodName,
                                       IntegrationDaemonServicesAuditCode.INVALID_CONTEXT_MANAGER.
@@ -289,7 +290,7 @@ public class IntegrationDaemonOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       IntegrationDaemonServicesAuditCode.INVALID_CONTEXT_MANAGER.

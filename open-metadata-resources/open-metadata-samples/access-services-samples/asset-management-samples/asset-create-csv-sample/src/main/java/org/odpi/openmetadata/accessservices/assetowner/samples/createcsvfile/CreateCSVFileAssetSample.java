@@ -52,7 +52,7 @@ public class CreateCSVFileAssetSample
                                        "This is a new file asset created by the CreateCSVFileAssetSample.",
                                        fileName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The asset metadata can not be created.  Error message is: " + error.getMessage());
         }

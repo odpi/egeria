@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Creating an OCF connector to access a third party technology
+# Creating a connector to access a third party technology
 
 When you want to connect to a tool or system from an existing service, you need to create an open connector for that
 tool or system. For example, you might want to connect a new metadata repository into Egeria, or connect Egeria with
@@ -9,16 +9,16 @@ a new data processing engine.
 
 To write an open connector you need to complete four steps:
 
-1. Identify the properties for the [connection](../concepts/connection.md)
-1. Write the [connector provider](../concepts/connector-provider.md)
+1. Identify the properties for the [connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connection.md)
+1. Write the [connector provider](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector-provider.md)
 1. Understand the interface to which the connector needs to implement
-1. Write the [connector](../concepts/connector.md) itself
+1. Write the [connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector.md) itself
 
 All of the code you write to implement these should exist in its own module, and as illustrated by the examples could
 even be in its own independent code repository. Their implementation will have dependencies on Egeria's 
 
-* Open Connector Framework (OCF)
-* Audit Log Framework (ALF)
+* [Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework)
+* [Audit Log Framework (ALF)](../../../open-metadata-implementation/frameworks/audit-log-framework)
 * Specific interfaces used by the type of connector
  
 However there is no dependency on Egeria's OMAG Server Platform on these specific connector implementations
@@ -31,10 +31,10 @@ include a network address, protocol, and user credentials, but could also includ
 
 ## 2. Write the connector provider
 
-The [connector provider](../concepts/connector-provider.md) is a simple Java factory that implements the creation of
+The [connector provider](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector-provider.md) is a simple Java factory that implements the creation of
 the connector type it can instantiates using:
 
-- a GUID for the [connector type](../concepts/connector-type.md)
+- a GUID for the [connector type](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector-type.md)
 - a name for the connector type
 - a description of what the connector is for and how to configure it
 - the connector class it instantiates
@@ -80,25 +80,25 @@ Now that we have the _connector provider_ to instantiate our _connectors_, we ne
 actually need to do. For a service to use our connector, the connector must provide a set of methods that are relevant
 to that service.
 
-For example, the [Data Engine Proxy Services](../../../../governance-servers/data-engine-proxy-services) integrate
+For example, the [Data Engine Proxy Services](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services) integrate
 metadata from data engines with Egeria. To integrate DataStage with Egeria, we want our [DataStageConnector](https://github.com/odpi/egeria-connector-ibm-information-server/blob/master/datastage-adapter/src/main/java/org/odpi/egeria/connectors/ibm/datastage/dataengineconnector/DataStageConnector.java)
-to be used by the data engine proxy services. Therefore the connector needs to extend [DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java),
+to be used by the data engine proxy services. Therefore the connector needs to extend [DataEngineConnectorBase](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java),
 because this defines the methods needed by the data engine proxy services.
 
 Likewise, we want our [IGCOMRSRepositoryConnector](https://github.com/odpi/egeria-connector-ibm-information-server/blob/master/igc-adapter/src/main/java/org/odpi/egeria/connectors/ibm/igc/repositoryconnector/IGCOMRSRepositoryConnector.java)
 to integrate IGC with Egeria as a metadata repository. Therefore the connector needs to extend
-[OMRSRepositoryConnector](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java),
+[OMRSRepositoryConnector](../../../open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java),
 because this defines the methods needed to integrate with Open Metadata Repository Services (OMRS).
 
 How did we know to extend these base classes? The _connector provider_ implementations in the previous step each
-extended a base class specific to the type of connector they provide ([DataEngineConnectorProviderBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorProviderBase.java)
-and [OMRSRepositoryConnectorProviderBase](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnectorProviderBase.java)).
-These _connector_ base classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
-and [OMRSRepositoryConnector](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
+extended a base class specific to the type of connector they provide ([DataEngineConnectorProviderBase](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorProviderBase.java)
+and [OMRSRepositoryConnectorProviderBase](../../../open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnectorProviderBase.java)).
+These _connector_ base classes ([DataEngineConnectorBase](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
+and [OMRSRepositoryConnector](../../../open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
 are in the same package structure as those _connector provider_ base classes.
 
-In both cases, by extending the abstract classes ([DataEngineConnectorBase](../../../../governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
-and [OMRSRepositoryConnector](../../../../repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
+In both cases, by extending the abstract classes ([DataEngineConnectorBase](../../../open-metadata-implementation/governance-servers/data-engine-proxy-services/data-engine-proxy-connector/src/main/java/org/odpi/openmetadata/governanceservers/dataengineproxy/connectors/DataEngineConnectorBase.java)
+and [OMRSRepositoryConnector](../../../open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.java))
 our connector must implement the methods these abstract classes define. These general methods implement our services
 (Data Engine Proxy Services and OMRS), without needing to know anything about the underlying technology. Therefore, we
 can simply "plug-in" the underlying technology: any technology with a connector that implements these methods can run
@@ -124,12 +124,12 @@ Implement the connector by:
 
 For the first point, you can retrieve general connection information like:
 
-- the server address and protocol, by first retrieving the embedded [EndpointProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
+- the server address and protocol, by first retrieving the embedded [EndpointProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
     with `getEndpoint()`:
-    - retrieving the protocol by calling `getProtocol()` on the [EndpointProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
-    - retrieving the address by calling `getAddress()` on the [EndpointProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
-- the user Id, by calling `getUserId()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java)
-- the password, by calling either `getClearPassword()` or `getEncryptedPassword()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java),
+    - retrieving the protocol by calling `getProtocol()` on the [EndpointProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
+    - retrieving the address by calling `getAddress()` on the [EndpointProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/EndpointProperties.java)
+- the user Id, by calling `getUserId()` on the [ConnectionProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java)
+- the password, by calling either `getClearPassword()` or `getEncryptedPassword()` on the [ConnectionProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java),
     depending on what your underlying technology can handle
 
 Use these details to connect to and authenticate against your underlying technology, even when it is running on a
@@ -138,19 +138,14 @@ well before blindly operating on them.
 
 Retrieve additional properties by:
 
-- calling `getConfigurationProperties()` on the [ConnectionProperties](../../src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java),
+- calling `getConfigurationProperties()` on the [ConnectionProperties](../../../open-metadata-implementation/frameworks/open-connector-framework/src/main/java/org/odpi/openmetadata/frameworks/connectors/properties/ConnectionProperties.java),
     which returns a `Map<String, Object>`
 - calling `get(name)` against that `Map<>` with the name of each additional property of interest
 
 Implementation of the remaining points (2-3) will vary widely depending on the specific technology being used.
 
-## Further Information
-
-The [Developer Guide](../../../../../open-metadata-publication/website/developer-guide) provides more information on the specific types of connectors supported by Egeria.
-
-
 ----
-* [Return to OCF Overview](../..)
+* [Return to the Developer Guide](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

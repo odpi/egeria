@@ -56,6 +56,7 @@ public class CreateValidValuesSetTest
     private final static String  validValue2Usage                   = "TestValidValue2 usage";
     private final static String  validValue2Scope                   = "TestValidValue2 scope";
     private final static String  validValue2PreferredValue          = "TestValidValue2 preferredValue";
+    private final static String  validValue2NameUpdate              = "TestValidValue2 - updated";
 
     private final static String  searchString          = ".*Test.*";
 
@@ -466,6 +467,30 @@ public class CreateValidValuesSetTest
             }
 
             /*
+             * Check that not possible to create an element with the same qualified name.
+             */
+            try
+            {
+                client.createValidValueDefinition(userId,
+                                                  validValueSetGUID,
+                                                  validValue1Name,
+                                                  validValue1DisplayName,
+                                                  validValue1Description,
+                                                  validValue1Usage,
+                                                  validValue1Scope,
+                                                  validValue1PreferredValue,
+                                                  additionalProperties,
+                                                  null,
+                                                  null);
+
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(duplicate create of valid value definition allowed)");
+            }
+            catch (InvalidParameterException okResult)
+            {
+                // nothing to do
+            }
+
+            /*
              * Now do the second value
              */
             String validValue2GUID = client.createValidValueDefinition(userId,
@@ -605,6 +630,9 @@ public class CreateValidValuesSetTest
                                                          " elements)");
             }
 
+            /*
+             * Add the preferred value
+             */
             client.updateValidValue(userId,
                                     validValue2GUID,
                                     validValue2Name,
@@ -650,8 +678,123 @@ public class CreateValidValuesSetTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad isDeprecated from RetrieveUpdate of 2)");
             }
 
+
             /*
-             * By detaching the definition, then should only get value 1 back from the set membership request.
+             * Update value value 2 with valid value 1's qualified name - this should fail
+             */
+            try
+            {
+                client.updateValidValue(userId,
+                                        validValue2GUID,
+                                        validValue1Name,
+                                        validValue2DisplayName,
+                                        validValue2Description,
+                                        validValue2Usage,
+                                        validValue2Scope,
+                                        validValue2PreferredValue,
+                                        true,
+                                        null,
+                                        null,
+                                        null);
+
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Duplicate update allowed)");
+            }
+            catch (InvalidParameterException expectedResult)
+            {
+                // all ok
+            }
+
+            /*
+             * Valid value 2 should be exactly as it was
+             */
+            retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
+            retrievedDefinition = retrievedElement.getValidValueProperties();
+
+            if (! validValue2Name.equals(retrievedDefinition.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveUpdate of 2 after qualified name failed change)");
+            }
+            if (! validValue2DisplayName.equals(retrievedDefinition.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveUpdate of 2 after qualified name failed change)");
+            }
+            if (! validValue2Description.equals(retrievedDefinition.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveUpdate of 2 after qualified name failed change)");
+            }
+            if (! validValue2Usage.equals(retrievedDefinition.getUsage()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad usage from RetrieveUpdate of 2 after qualified name failed change)");
+            }
+            if (! validValue2Scope.equals(retrievedDefinition.getScope()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad scope from RetrieveUpdate of 2 after qualified name failed change)");
+            }
+            if (! validValue2PreferredValue.equals(retrievedDefinition.getPreferredValue()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad preferredValue from RetrieveUpdate of 2)");
+            }
+            if (! retrievedDefinition.getIsDeprecated())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad isDeprecated from RetrieveUpdate of 2)");
+            }
+
+
+            /*
+             * Update value value 2 with a new qualified name - this should work ok
+             */
+
+            client.updateValidValue(userId,
+                                        validValue2GUID,
+                                        validValue2NameUpdate,
+                                        validValue2DisplayName,
+                                        validValue2Description,
+                                        validValue2Usage,
+                                        validValue2Scope,
+                                        validValue2PreferredValue,
+                                        true,
+                                        null,
+                                        null,
+                                        null);
+
+            /*
+             * Valid value 2 should be updated
+             */
+            retrievedElement  = client.getValidValueByGUID(userId, validValue2GUID);
+            retrievedDefinition = retrievedElement.getValidValueProperties();
+
+            if (! validValue2NameUpdate.equals(retrievedDefinition.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! validValue2DisplayName.equals(retrievedDefinition.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! validValue2Description.equals(retrievedDefinition.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! validValue2Usage.equals(retrievedDefinition.getUsage()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad usage from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! validValue2Scope.equals(retrievedDefinition.getScope()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad scope from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! validValue2PreferredValue.equals(retrievedDefinition.getPreferredValue()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad preferredValue from RetrieveUpdate of 2 after qualified name change)");
+            }
+            if (! retrievedDefinition.getIsDeprecated())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad isDeprecated from RetrieveUpdate of 2 after qualified name change)");
+            }
+
+
+            /*
+             * By detaching definition 2, then should only get value 1 back from the set membership request.
              */
             client.detachValidValueFromSet(userId, validValueSetGUID, validValue2GUID);
 
@@ -733,7 +876,7 @@ public class CreateValidValuesSetTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

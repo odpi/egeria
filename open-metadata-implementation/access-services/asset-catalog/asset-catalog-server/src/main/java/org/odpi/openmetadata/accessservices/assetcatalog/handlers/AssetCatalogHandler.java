@@ -411,11 +411,6 @@ public class AssetCatalogHandler {
                         supportedZones,
                         serverUserName,
                         methodName);
-                // filter out the entities that are retrieved with the enterprise search.
-                // metadataCollection.findEntitiesByProperty includes in the search the subtypes of the provided type
-                if (!typesFilter.contains(entityDetail.getType().getTypeDefGUID())) {
-                    continue;
-                }
                 AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
                 searchResults.add(assetElements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {

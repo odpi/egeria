@@ -27,7 +27,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Exchange metadata with third party API Gateways.",
                             "https://egeria.odpi.org/open-metadata-implementation/integration-services/api-integrator/",
                             "Data Manager OMAS",
-                            PermittedSynchronization.BOTH_DIRECTIONS),
+                            PermittedSynchronization.FROM_THIRD_PARTY),
 
     TOPIC_INTEGRATOR_OMIS(4002,
                             "Topic Integrator",
@@ -36,7 +36,16 @@ public enum IntegrationServiceDescription implements Serializable
                             "Exchange metadata with third party event-based brokers.",
                             "https://egeria.odpi.org/open-metadata-implementation/integration-services/topic-integrator/",
                             "Data Manager OMAS",
-                            PermittedSynchronization.BOTH_DIRECTIONS),
+                            PermittedSynchronization.FROM_THIRD_PARTY),
+
+    DISPLAY_INTEGRATOR_OMIS(4003,
+                          "Display Integrator",
+                          "Display Integrator OMIS",
+                          "display-integrator",
+                          "Exchange metadata with applications that display data to users.",
+                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/display-integrator/",
+                          "Data Manager OMAS",
+                          PermittedSynchronization.FROM_THIRD_PARTY),
 
     DATABASE_INTEGRATOR_OMIS     (4004,
                                   "Database Integrator",
@@ -82,6 +91,15 @@ public enum IntegrationServiceDescription implements Serializable
                                       "https://egeria.odpi.org/open-metadata-implementation/integration-services/security-integrator/",
                                       "Security Manager OMAS",
                                       PermittedSynchronization.TO_THIRD_PARTY),
+
+    ANALYTICS_INTEGRATOR_OMIS(4009,
+                            "Analytics Integrator",
+                            "Analytics Integrator OMIS",
+                            "analytics-integrator",
+                            "Exchange metadata with third party analytics tools.",
+                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/analytics-integrator/",
+                            "Analytics Modeling OMAS",
+                            PermittedSynchronization.BOTH_DIRECTIONS),
     ;
 
     private static final long     serialVersionUID    = 1L;

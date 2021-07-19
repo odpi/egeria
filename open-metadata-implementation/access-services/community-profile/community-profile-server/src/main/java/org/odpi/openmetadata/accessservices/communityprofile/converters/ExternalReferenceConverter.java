@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * ExternalReferenceConverter generates an ExternalReferenceProperties bean from an ExternalReferenceProperties entity
@@ -75,7 +77,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof ExternalReferenceElement)
             {
@@ -124,7 +126,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
