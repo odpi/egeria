@@ -91,7 +91,6 @@ public class AssetContextHandler {
             case TABULAR_FILE_COLUMN:
                 if (!isInternalTabularColumn(userId, entityDetail)) {
                     EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
-
                     handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
                     context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),

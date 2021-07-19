@@ -269,7 +269,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     /**
      * Returns true if the vertex is null or doesn't have a valid guid
-     *x
+     *
      * @param column - The vertex to of the schema element
      */
     private boolean isColumnEmpty(Vertex column) {
