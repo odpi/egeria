@@ -173,14 +173,37 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                 if (instanceProperties.getEffectiveToTime() != null) {
                                     categorization.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
                                 }
+                                // TODO check error
                                 relationshipHandler.createRelationship(methodName, userId, TermCategorizationMapper.class, categorization);
-                                response = getTermByGuid(userId, createdTermGuid);
+
                                 if (response.getRelatedHTTPCode() != 200) {
                                     break;
                                 }
                             }
                         }
                     }
+                    // TODO set classifications
+                    EntityDetail entityDetail = termMapper.map(suppliedTerm);
+                    List<Classification> classifications =entityDetail.getClassifications();
+                    if (classifications != null) {
+                        for (Classification classification : classifications) {
+                            String classificationTypeName = classification.getName();
+                            TypeDef typeDef = genericHandler.getRepositoryHelper().getTypeDefByName(methodName, classificationTypeName);
+                            if (typeDef != null) {
+                                genericHandler.setClassificationInRepository(userId,
+                                                                             createdTermGuid,
+                                                                             "guid",
+                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                             typeDef.getGUID(),
+                                                                             classificationTypeName,
+                                                                             classification.getProperties(),
+                                                                             methodName);
+                            } else {
+                                //TODO Error invalid classification
+                            }
+                        }
+                    }
+                    response = getTermByGuid(userId, createdTermGuid);
                 }
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -296,7 +319,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
         // If no search criteria is supplied then we return all terms, this should not be too many
         try {
-            List<Term> foundTerms = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID, findRequest, exactValue, ignoreCase, TermMapper.class, methodName);
+            List<Term> foundTerms = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID, findRequest, exactValue, ignoreCase, TermMapper.class, methodName);
             if (foundTerms != null) {
                 for (Term term : foundTerms) {
                     setSummaryObjects(userId, term, methodName);

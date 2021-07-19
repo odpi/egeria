@@ -78,7 +78,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public GlossaryTermBuilder(String               qualifiedName,
+    public GlossaryTermBuilder(String        qualifiedName,
                         String               displayName,
                         String               description,
                         String               summary,

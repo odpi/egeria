@@ -146,13 +146,13 @@ public class TermFVT {
         Term term3 = createTermWithGovernanceClassifications(DEFAULT_TEST_TERM_NAME, glossaryGuid, governanceClassifications);
         FVTUtils.validateNode(term3);
         if (!governanceClassifications.getConfidence().getLevel().equals(term3.getGovernanceClassifications().getConfidence().getLevel())){
-            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned  as expected");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned as expected");
         }
         if (!governanceClassifications.getConfidentiality().getLevel().equals(term3.getGovernanceClassifications().getConfidentiality().getLevel())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned as expected");
         }
         if (!governanceClassifications.getRetention().getBasis().equals(term3.getGovernanceClassifications().getRetention().getBasis())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not returned  as expected");
+            throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not returned as expected");
         }
         if (!governanceClassifications.getCriticality().getLevel().equals(term3.getGovernanceClassifications().getCriticality().getLevel())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions criticality not returned  as expected. ");
@@ -186,7 +186,7 @@ public class TermFVT {
 
         System.out.println("create terms to find");
         Term termForFind1 = getTermForInput("abc",glossaryGuid);
-        termForFind1.setQualifiedName("yyy");
+        termForFind1.setDescription("yyy");
         termForFind1 = issueCreateTerm(termForFind1);
         FVTUtils.validateNode(termForFind1);
         Term termForFind2 = createTerm("yyy",glossaryGuid);
