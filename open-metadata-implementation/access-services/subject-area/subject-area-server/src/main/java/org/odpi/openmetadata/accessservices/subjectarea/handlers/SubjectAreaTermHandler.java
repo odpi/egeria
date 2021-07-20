@@ -613,21 +613,19 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
     private void addCategorizationRelationship(String userId, Term suppliedTerm, String methodName, String categoryGuid) throws SubjectAreaCheckedException, PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
 
-//        EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
-//                                                                           categoryGuid,
-//                                                                           "guid",
-//                                                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-//                                                                           null,
-//                                                                           null,
-//                                                                           false,
-//                                                                           null,
-//                                                                           methodName);
-//
-//
-//            Categorization categorization = new Categorization();
-//            categorization.getEnd1().setNodeGuid(entityDetail.getGUID());
-//            categorization.getEnd2().setNodeGuid(suppliedTerm.getSystemAttributes().getGUID());
-//            oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, termCategorizationMapper.map(categorization));
+        genericHandler.linkElementToElement(userId,
+                                            null,
+                                            null,
+                                            categoryGuid,
+                                            "guid end1",
+                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                            suppliedTerm.getSystemAttributes().getGUID(),
+                                            "guid end2",
+                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                            null,
+                                            methodName);
 
 
     }
@@ -787,19 +785,20 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                          false,
                                                                                          pageSize,
                                                                                          methodName);
-
-                Set<Category> categories = new HashSet<>();
-                for (EntityDetail entity : entities) {
-                    SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
-                    if (categoryResponse.getRelatedHTTPCode() == 200) {
-                        categories.add(categoryResponse.results().get(0));
-                    } else {
-                        response = categoryResponse;
-                        break;
+                if (entities != null) {
+                    Set<Category> categories = new HashSet<>();
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
+                        if (categoryResponse.getRelatedHTTPCode() == 200) {
+                            categories.add(categoryResponse.results().get(0));
+                        } else {
+                            response = categoryResponse;
+                            break;
+                        }
                     }
-                }
-                if (response.getRelatedHTTPCode() == 200) {
-                    response.addAllResults(categories);
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(categories);
+                    }
                 }
 
             } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {

@@ -130,7 +130,17 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                    categoryAnchorGuid,
                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME);
-
+                        // set subject area classification if required.
+                        if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
+                            genericHandler.setClassificationInRepository(userId,
+                                                                         createdCategoryGuid,
+                                                                         "guid",
+                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                         null,
+                                                                         methodName);
+                        }
 
                         if (suppliedCategory.getParentCategory() != null && suppliedCategory.getParentCategory().getGuid() != null) {
                             String parentCategoryGuid = suppliedCategory.getParentCategory().getGuid();
@@ -149,10 +159,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                            OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                                            OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME);
                             }
-
-                            response = getCategoryByGuid(userId, createdCategoryGuid);
                         }
                     }
+                    response = getCategoryByGuid(userId, createdCategoryGuid);
                 }
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -529,17 +538,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                          methodName);
 
                 Set<Term> terms = new HashSet<>();
-                for (EntityDetail entity : entities) {
-                    SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
-                    if (termResponse.getRelatedHTTPCode() == 200) {
-                        terms.add(termResponse.results().get(0));
-                    } else {
-                        response = termResponse;
-                        break;
+                if (CollectionUtils.isNotEmpty(entities)) {
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
+                        if (termResponse.getRelatedHTTPCode() == 200) {
+                            terms.add(termResponse.results().get(0));
+                        } else {
+                            response = termResponse;
+                            break;
+                        }
                     }
-                }
-                if (response.getRelatedHTTPCode() == 200) {
-                    response.addAllResults(terms);
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(terms);
+                    }
                 }
 
             } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -603,17 +614,19 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                          methodName);
 
                 Set<Category> categories = new HashSet<>();
-                for (EntityDetail entity : entities) {
-                    SubjectAreaOMASAPIResponse<Category> categoryResponse = getCategoryByGuid(userId, entity.getGUID());
-                    if (categoryResponse.getRelatedHTTPCode() == 200) {
-                        categories.add(categoryResponse.results().get(0));
-                    } else {
-                        response = categoryResponse;
-                        break;
+                if (CollectionUtils.isNotEmpty(entities)) {
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Category> categoryResponse = getCategoryByGuid(userId, entity.getGUID());
+                        if (categoryResponse.getRelatedHTTPCode() == 200) {
+                            categories.add(categoryResponse.results().get(0));
+                        } else {
+                            response = categoryResponse;
+                            break;
+                        }
                     }
-                }
-                if (response.getRelatedHTTPCode() == 200) {
-                    response.addAllResults(categories);
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(categories);
+                    }
                 }
 
             } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {

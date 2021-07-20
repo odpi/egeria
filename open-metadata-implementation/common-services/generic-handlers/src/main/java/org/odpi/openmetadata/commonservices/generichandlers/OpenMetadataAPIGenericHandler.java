@@ -2868,11 +2868,13 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param originalAnchorGUID the original anchor guid - may be null
      * @param methodName calling method
      *
+     * @return newAnchorGUID we derive the anchor from the the target element and then return it. Note this value can be null if there is no anchor.
+     *
      * @throws InvalidParameterException probably the type of the entity is not correct
      * @throws PropertyServerException there is a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
-    private void reEvaluateAnchorGUID(String targetGUID,
+    private String reEvaluateAnchorGUID(String targetGUID,
                                       String targetGUIDParameterName,
                                       String targetTypeName,
                                       String originalAnchorGUID,
@@ -2902,6 +2904,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, methodName);
             }
         }
+        return newAnchorGUID;
     }
 
 
@@ -7595,7 +7598,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                              methodName);
                 }
 
-                if (parentRelationship == null && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, startsWith, ignoreCase))
+                if (parentRelationship == null && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
                 {
                     results.add(relatedEntity);
                 }
@@ -11464,7 +11467,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two elements.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11521,9 +11526,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11595,9 +11600,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11654,9 +11659,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11716,6 +11721,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              methodName);
 
         String startingElementAnchorGUID = startingGUID;
+
+        String newStartingAnchorGUID = null;
+        String newAttachedAnchorGUID = null;
+
 
         if (startingElementAnchorEntity != null)
         {
@@ -11794,7 +11803,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 /*
                  * Now that this relationship is gone, the anchorGUID may now be wrong
                  */
-                this.reEvaluateAnchorGUID(startingGUID,
+                newStartingAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
                                           startingGUIDParameterName,
                                           startingElementTypeName,
                                           startingElementAnchorEntity.getGUID(),
@@ -11839,7 +11848,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 /*
                  * Now that this relationship is gone, the anchorGUID may now be wrong
                  */
-                this.reEvaluateAnchorGUID(attachedGUID,
+                newAttachedAnchorGUID = this.reEvaluateAnchorGUID(attachedGUID,
                                           attachedGUIDParameterName,
                                           attachedElementTypeName,
                                           attachedElementAnchorEntity.getGUID(),
@@ -11864,22 +11873,69 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
             /*
-             * If the attached element has the same anchor GUID as the starting element then the attached element should be deleted.
+             * If the attached element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
              */
-            if ((attachedElementAnchorEntity != null) && (startingElementAnchorEntity != null) &&
-                        (attachedElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+              if (attachedElementAnchorEntity != null && newAttachedAnchorGUID == null)
+              {
+                  try {
+                      this.deleteBeanInRepository(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  attachedGUID,
+                                                  attachedGUIDParameterName,
+                                                  attachedElementTypeGUID,
+                                                  attachedElementTypeName,
+                                                  null,
+                                                  null,
+                                                  attachedElementAnchorEntity,
+                                                  methodName);
+                  } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+                  {
+                      // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                      auditLog.logException(methodName,
+                                            GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                attachedGUID,
+                                                                                                                attachedElementTypeName,
+                                                                                                                attachedElementTypeGUID,
+                                                                                                                methodName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
+                                            error);
+
+                  }
+            }
+            /*
+             * If the starting element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
+             */
+            if (startingElementAnchorEntity != null && newStartingAnchorGUID == null)
             {
-                this.deleteBeanInRepository(userId,
+                final String startingElementTypeGUID = repositoryHelper.getTypeDefByName(methodName, startingElementTypeName).getGUID();
+                try
+                {
+                    this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
-                                            attachedGUID,
-                                            attachedGUIDParameterName,
-                                            attachedElementTypeGUID,
-                                            attachedElementTypeName,
+                                            startingGUID,
+                                            startingGUIDParameterName,
+                                            startingElementTypeGUID,
+                                            startingElementTypeName,
                                             null,
                                             null,
-                                            attachedElementAnchorEntity,
+                                            startingElementAnchorEntity,
                                             methodName);
+                } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+                {
+                    // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                    auditLog.logException(methodName,
+                                          GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                         startingGUID,
+                                                                                                                         startingElementTypeName,
+                                                                                                                         startingElementTypeGUID,
+                                                                                                                         methodName,
+                                                                                                                         error.getClass().getName(),
+                                                                                                                         error.getMessage()),
+                                          error);
+                }
             }
         }
     }
