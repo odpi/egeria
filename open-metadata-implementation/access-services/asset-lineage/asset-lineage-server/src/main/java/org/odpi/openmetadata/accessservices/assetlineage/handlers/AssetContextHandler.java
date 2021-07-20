@@ -88,6 +88,7 @@ public class AssetContextHandler {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
+            case TABULAR_COLUMN:
             case TABULAR_FILE_COLUMN:
                 if (!isInternalTabularColumn(userId, entityDetail)) {
                     EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
@@ -188,7 +189,7 @@ public class AssetContextHandler {
         String methodName = "isInternalTabularColumn";
 
         Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
-                TABULAR_FILE_COLUMN);
+                tabularColumn.getType().getTypeDefName());
         if (relationship.isEmpty()) {
             return false;
         }
