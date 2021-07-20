@@ -101,6 +101,10 @@ that uses a particular type of store within an Egeria [Metadata Server](../../..
   implements metadata exchange to the metadata repository within the 
   [SAS Viya Platform](https://support.sas.com/en/software/sas-viya.html).
   
+The definition of the connector interfaces for these connectors is
+defined in the [repository-services-api](../../../open-metadata-implementation/repository-services/repository-services-apis) module
+in the
+[org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore](https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/repository-services-apis/src/main/java/org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore) Java package.
 
 
 ## Open Discovery Services
@@ -123,7 +127,12 @@ along with a guide on how to write a discovery service.
 * [Sequential Discovery Pipeline](../../../open-metadata-implementation/adapters/open-connectors/discovery-service-connectors)
   runs nested discovery services in a sequence. 
   [More information on discovery pipelines](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-pipeline.md).
-      
+
+The definition of the connector interfaces for discovery services is
+defined in the [open-discovery-services](../../../open-metadata-implementation/frameworks/open-discovery-framework) module
+in the
+[org.odpi.openmetadata.frameworks.discovery](https://github.com/odpi/egeria/tree/master/open-metadata-implementation/frameworks/open-discovery-framework/src/main/java/org/odpi/openmetadata/frameworks/discovery) Java package.
+   
 
 ## Governance Action Services
 
@@ -153,6 +162,12 @@ hosted by the
 * [Origin Seeker Remediation Governance Action Service](origin-seeker-remediation-governance-action-service.md) walks
   backwards through the lineage mappings to discover the origin of the data.
 
+The definition of the connector interfaces for governance action services is
+defined in the [governance-action-framework](../../../open-metadata-implementation/frameworks/governance-action-framework) module
+in the
+[org.odpi.openmetadata.frameworks.governanceaction](https://github.com/odpi/egeria/tree/master/open-metadata-implementation/frameworks/governance-action-framework/src/main/java/org/odpi/openmetadata/frameworks/governanceaction) Java package.
+   
+
 
 ## Further information
 
@@ -163,7 +178,7 @@ hosted by the
 
 ----
 
-* [Return to the Connector Catalog](..)
+* [Return to the Connector Catalog](.)
 
 
 ----
