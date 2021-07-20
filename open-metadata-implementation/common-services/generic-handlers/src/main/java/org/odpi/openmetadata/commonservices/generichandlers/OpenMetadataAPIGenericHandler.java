@@ -7566,21 +7566,24 @@ public class OpenMetadataAPIGenericHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
-         RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+        int localStartFrom = 0;
+        RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
                                                                                                      userId,
                                                                                                      startingGUID,
                                                                                                      startingTypeName,
                                                                                                      relationshipTypeGUID,
                                                                                                      relationshipTypeName,
                                                                                                      null,  // we could get this passed in from the caller
-                                                                                                     startFrom,
+                                                                                                     localStartFrom,
                                                                                                      queryPageSize,
                                                                                                      selectionEnd,
                                                                                                      methodName);
+        // resultsToReturn is the subset of the filtered results to meets the requested startFrom
+        List<EntityDetail> resultsToReturn = new ArrayList<>();
+        // accumulate the total filtered results from 0 - so we can then honour the requested startFrom which is the index into the filtered results.
+        List<EntityDetail> totalFilteredResults = new ArrayList<>();
 
-        List<EntityDetail> results = new ArrayList<>();
-
-        while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || results.size() < queryPageSize))
+        while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
         {
             EntityDetail relatedEntity = relatedEntityIterator.getNext();
 
@@ -7598,20 +7601,24 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                              methodName);
                 }
 
-                if (parentRelationship == null && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
+                if (parentRelationship == null &&
+                        entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
                 {
-                    results.add(relatedEntity);
+                    totalFilteredResults.add(relatedEntity);
+                    if (totalFilteredResults.size() > startFrom) {
+                        resultsToReturn.add(relatedEntity);
+                    }
                 }
             }
         }
 
-        if (results.isEmpty())
+        if (resultsToReturn.isEmpty())
         {
             return null;
         }
         else
         {
-            return results;
+            return resultsToReturn;
         }
 
     }
