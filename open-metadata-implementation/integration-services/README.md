@@ -7,9 +7,15 @@ The integration services run in an [Integration Daemon](../admin-services/docs/c
 OMAG Server.  Each type of integration service focuses on metadata exchange with a particular
 type of third party technology.
 
-An integration service provides a specialist API for the [integration connectors](../governance-servers/integration-daemon-services/docs/integration-connector.md) that it manages along with a context manager
+![Figure 1](   ../governance-servers/integration-daemon-services/docs/integration-daemon-in-action.png)
+> **Figure 1:** The integration daemon manages the automatic exchange of open metadata between third party technologies and Metadata Access Points or Metadata Servers that
+are sharing this metadata across the Open Metadata Repository Cohorts that they are connected to
+
+Each integration service provides a specialist API for the [integration connectors](../governance-servers/integration-daemon-services/docs/integration-connector.md) that it manages along with a context manager
 implementation that is used to set up the integration
 connectors inside the integration daemon.
+
+![Figure 2](../governance-servers/integration-daemon-services/docs/inside-integration-daemon.png)
 
 The integration services available today are:
 
