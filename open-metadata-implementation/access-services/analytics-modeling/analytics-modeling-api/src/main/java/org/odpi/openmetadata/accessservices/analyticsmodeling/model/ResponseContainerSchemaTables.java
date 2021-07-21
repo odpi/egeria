@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Tables;
+
 /**
  * Response container for list of table names available in the schema.<br>
  * The container has following attributes:<br>
@@ -16,20 +18,20 @@ import java.util.List;
 
 public class ResponseContainerSchemaTables extends ResponseContainer {
 	
-	private static final String TABLES = "tables";
 	public static final String TYPE_TABLES = "tables";
+	
+	private Tables attributes = new Tables();
 
 	public ResponseContainerSchemaTables() {
 		super(TYPE_TABLES);
 	}
 	
 	public void setTablesList(List<String> value) {
-		setAttribute(TABLES, value);
+		attributes.setTables(value);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public List<String>  getTablesList() {
-		return (List<String>) getAttribute(TABLES);
+		return attributes.getTables();
 	}
 
 }

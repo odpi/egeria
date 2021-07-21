@@ -38,7 +38,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 
 	
 	private final String urlTemplateResource = "/servers/{0}/open-metadata/access-services/analytics-modeling/users/{1}/";
-	private final String urlTemplateSynchronization= urlTemplateResource + "sync?serverCapability={2}";
+	private final String urlTemplateSynchronization = urlTemplateResource + "sync?serverCapability={2}";
 
     /**
      * Constructor for no authentication with audit log.
@@ -273,7 +273,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "deleteAssets";
-		String url = serverPlatformURLRoot + urlTemplateSynchronization;
+		String url = serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}";
 		AnalyticsModelingOMASAPIResponse response =
 				callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, serverName, user, serverCapability, identifier);
 		

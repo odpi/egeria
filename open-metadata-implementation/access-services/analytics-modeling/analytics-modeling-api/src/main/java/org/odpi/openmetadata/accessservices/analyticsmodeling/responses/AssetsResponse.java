@@ -11,23 +11,26 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.responses;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 
 public class AssetsResponse extends AnalyticsModelingOMASAPIResponse {
 	
+	private List<ResponseContainerAssets> data;
+
 	/**
 	 * Set list of asset GUIDs.
 	 * @param assets GUIDs to set.
 	 */
     public void setAssetList(ResponseContainerAssets assets) {
-        this.setData(Arrays.asList(assets));
+        data = Arrays.asList(assets);
     }
 	/**
 	 * Get list of asset GUIDs.
 	 * @return list of asset GUIDs.
 	 */
     public ResponseContainerAssets getAssetList() {
-        return (this.getData() == null || this.getData().isEmpty()) ? null : (ResponseContainerAssets) this.getData().get(0);
+        return (data == null || data.isEmpty()) ? null : (ResponseContainerAssets) data.get(0);
     }
 }

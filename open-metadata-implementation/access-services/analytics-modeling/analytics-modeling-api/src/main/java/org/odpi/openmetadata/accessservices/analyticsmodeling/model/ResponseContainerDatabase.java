@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Database;
+
 /**
  * Response container for database.<br>
  * The container has following attributes:<br>
@@ -16,11 +18,10 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
  */
 public class ResponseContainerDatabase extends ResponseContainer {
 
-	private static final String DB_NAME = "name";
-	private static final String GUID = "guid";
-	private static final String DB_TYPE = "type";
-	private static final String DB_VERSION = "version";
 	public static final String TYPE_DATABASE = "database";
+	
+	
+	private Database attributes = new Database();
 
 	/**
 	 * Constructor defines 'database' type
@@ -34,42 +35,42 @@ public class ResponseContainerDatabase extends ResponseContainer {
 	 * @return database name.
 	 */
 	public String getDbName() {
-		return (String) getAttribute(DB_NAME);
+		return attributes.getName();
 	}
 	/**
 	 * Set database name.
 	 * @param value database name.
 	 */
 	public void setDbName(String value ) {
-		setAttribute(DB_NAME, value);
+		attributes.setName(value);
 	}
 	/**
 	 * Get global unique identifier of the database.
 	 * @return global unique identifier of the database.
 	 */
 	public String getGUID() {
-		return (String) getAttribute(GUID);
+		return attributes.getGuid();
 	}
 	/**
 	 * Set global unique identifier of the database.
 	 * @param value of the global unique identifier.
 	 */
 	public void setGUID(String value ) {
-		setAttribute(GUID, value);
+		attributes.setGuid(value);
 	}
 	/**
 	 * Get type defining vendor.
 	 * @return vendor of database.
 	 */
 	public String getDbType() {
-		return (String) getAttribute(DB_TYPE);
+		return attributes.getType();
 	}
 	/**
 	 * Set type defining vendor.
 	 * @param value database vendor.
 	 */
 	public void setDbType(String value ) {
-		setAttribute(DB_TYPE, value);
+		attributes.setType(value);
 	}
 	
 	/**
@@ -77,14 +78,13 @@ public class ResponseContainerDatabase extends ResponseContainer {
 	 * @return string version.
 	 */
 	public String getDbVersion() {
-		return (String) getAttribute(DB_VERSION);
+		return attributes.getVersion();
 	}
 	/**
 	 * Set version of the database.
 	 * @param value of database version.
 	 */
 	public void setDbVersion(String value ) {
-		setAttribute(DB_VERSION, value);
+		attributes.setVersion(value);
 	}
-
 }

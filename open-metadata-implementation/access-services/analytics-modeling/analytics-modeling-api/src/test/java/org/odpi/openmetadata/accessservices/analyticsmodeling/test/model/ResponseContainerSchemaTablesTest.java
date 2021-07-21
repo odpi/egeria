@@ -18,10 +18,10 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUti
 public class ResponseContainerSchemaTablesTest {
 	
 	String master = String.format("{%n" + 
+			"  \"type\" : \"tables\",%n" + 
 			"  \"attributes\" : {%n" + 
 			"    \"tables\" : [ \"A\", \"C\", \"B\" ]%n" + 
-			"  },%n" + 
-			"  \"type\" : \"tables\"%n" + 
+			"  }%n" + 
 			"}");
 
 	List<String> tables = Arrays.asList("A", "C", "B");

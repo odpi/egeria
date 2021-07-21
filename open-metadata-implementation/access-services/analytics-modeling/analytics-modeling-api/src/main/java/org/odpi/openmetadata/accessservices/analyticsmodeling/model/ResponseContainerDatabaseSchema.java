@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Schema;
+
 /**
  * Response container for Analytics Modeling schema representation.<br>
  * The container has following attributes:<br>
@@ -15,61 +17,62 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
  */
 public class ResponseContainerDatabaseSchema extends ResponseContainer {
 
-	private static final String CATALOG = "catalog";
-	private static final String SCHEMA_TYPE = "schemaType";
-	private static final String SCHEMA = "schema";
 	public static final String TYPE_SCHEMA = "schema";
+
+	private Schema attributes = new Schema();
 
 	/**
 	 * Constructor defines 'schema' type and sets schemaType to 'user'
 	 */
 	public ResponseContainerDatabaseSchema() {
 		super(TYPE_SCHEMA);
-		setAttribute(SCHEMA_TYPE, "user");
+		attributes.setSchemaType("user");
 	}
+	
 	/**
 	 * Get schema name.
 	 * @return schema name.
 	 */
 	public String getSchema() {
-		return (String) getAttribute(SCHEMA);
+		return attributes.getSchema();
 	}
 	/**
 	 * Set schema name.
 	 * @param name of the schema. 
 	 */
 	public void setSchema(String name ) {
-		setAttribute(SCHEMA, name);
+		attributes.setSchema(name);
 	}
 	/**
 	 * Get catalog name.
 	 * @return catalog name.
 	 */
 	public String getCatalog() {
-		return (String) getAttribute(CATALOG);
+		return attributes.getCatalog();
 	}
 	/**
 	 * Set catalog name.
 	 * @param value catalog name.
 	 */
 	public void setCatalog(String value) {
-		setAttribute(CATALOG, value);
+		attributes.setCatalog(value);
 	}
 	/**
 	 * Get schema type
 	 * @return schema type.
 	 */
 	public String getSchemaType() {
-		return (String) getAttribute(SCHEMA_TYPE);
+		return attributes.getSchemaType();
 	}
-	
+
+
 	/**
 	 * Build id based on names of catalog and schema.
 	 * @return id as "catalog/schema"
 	 */
 	public String buildId()  {
-		String catalog = getCatalog();
-		String schema = (String) getAttribute(SCHEMA);
+		String catalog = attributes.getCatalog();
+		String schema = attributes.getSchema();
 		if (catalog == null) {
 			return schema;
 		} else if (schema == null) {
