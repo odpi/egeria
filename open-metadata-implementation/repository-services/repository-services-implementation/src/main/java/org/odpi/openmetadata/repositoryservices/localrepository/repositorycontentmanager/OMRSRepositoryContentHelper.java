@@ -2222,11 +2222,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        if (pageSize == 0)
-        {
-            return fullResults;
-        }
-
         int fullResultsSize = fullResults.size();
 
         if (fromElement >= fullResultsSize)

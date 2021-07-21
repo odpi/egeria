@@ -204,8 +204,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                methodName);
             CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = categoryMapper.map(entityDetail);
-            setGlossary(userId, category, methodName);
-            setParentCategory(userId, category, methodName);
+            populateGlossarySummaryFromOMRS(userId, category, methodName);
+            populateParentCategoryFromOMRS(userId, category, methodName);
             response.addResult(category);
 
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | SubjectAreaCheckedException e) {
@@ -237,8 +237,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
 
             if (foundCategories != null) {
                 for (Category category : foundCategories) {
-                    setGlossary(userId, category, methodName);
-                    setParentCategory(userId, category, methodName);
+                    populateGlossarySummaryFromOMRS(userId, category, methodName);
+                    populateParentCategoryFromOMRS(userId, category, methodName);
                     response.addResult(category);
                 }
             }
@@ -249,10 +249,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         return response;
     }
 
-    private void setGlossary(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         InvalidParameterException {
+    private void populateGlossarySummaryFromOMRS(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             InvalidParameterException {
         final String guid = category.getSystemAttributes().getGUID();
         List<Relationship> relationships =
                         getRelationshipsForEntityByType(methodName,
@@ -275,14 +275,13 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 }
             }
         }
-        // return the Term without a Glossary summary as we have not got one.
     }
 
 
-    private void setParentCategory(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               InvalidParameterException {
+    private void populateParentCategoryFromOMRS(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            InvalidParameterException {
         final String currentCategoryGuid = category.getSystemAttributes().getGUID();
         List<EntityDetail> foundEntities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                       currentCategoryGuid,
@@ -296,7 +295,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                       0,
                                                                                       false,
                                                                                       false,
-                                                                                      0,
+                                                                                      maxPageSize,
                                                                                       methodName);
 
         if (CollectionUtils.isNotEmpty(foundEntities)) {
