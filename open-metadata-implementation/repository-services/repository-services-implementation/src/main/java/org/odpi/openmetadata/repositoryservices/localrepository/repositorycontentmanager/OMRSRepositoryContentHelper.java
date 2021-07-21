@@ -2222,6 +2222,12 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
+
+        if (pageSize == 0)
+        {
+            return fullResults;
+        }
+
         int fullResultsSize = fullResults.size();
 
         if (fromElement >= fullResultsSize)
@@ -2253,8 +2259,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             return fullResults;
         }
-
-
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
 
