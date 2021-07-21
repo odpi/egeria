@@ -1129,7 +1129,7 @@ public class PropertyHelper
      *
      * @param sourceName name of the calling repository or service
      * @param originatingMethodName method that called the repository validator
-     * @param localMethodName local method that deleted the error
+     * @param localMethodName local method that detected the error
      */
     private void throwHelperLogicError(String     sourceName,
                                        String     originatingMethodName,
@@ -1149,7 +1149,7 @@ public class PropertyHelper
      *
      * @param sourceName name of the calling repository or service
      * @param originatingMethodName method that called the repository validator
-     * @param localMethodName local method that deleted the error
+     * @param localMethodName local method that detected the error
      * @param unexpectedException unexpected exception caught by the helper logic
      */
     private void throwHelperLogicError(String     sourceName,

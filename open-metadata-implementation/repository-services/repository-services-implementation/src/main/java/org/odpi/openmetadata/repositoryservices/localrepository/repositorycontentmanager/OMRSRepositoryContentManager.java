@@ -3641,7 +3641,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      *
      * @param sourceName source of the request (used for logging)
      * @param originatingMethodName method that called the repository validator
-     * @param localMethodName local method that deleted the error
+     * @param localMethodName local method that detected the error
      */
     private void throwContentManagerLogicError(String     sourceName,
                                                String     originatingMethodName,
