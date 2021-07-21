@@ -35,6 +35,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 
     private AssetManagerClient           assetManagerClient;
     private CollaborationExchangeClient  collaborationExchangeClient;
+    private ConnectionExchangeClient     connectionExchangeClient;
     private DataAssetExchangeClient      dataAssetExchangeClient;
     private GlossaryExchangeClient       glossaryExchangeClient;
     private GovernanceExchangeClient     governanceExchangeClient;
@@ -116,6 +117,12 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                       restClient,
                                                                       maxPageSize,
                                                                       auditLog);
+
+        connectionExchangeClient = new ConnectionExchangeClient(partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                restClient,
+                                                                maxPageSize,
+                                                                auditLog);
 
         dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,
@@ -265,6 +272,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
             serviceSpecificConnector.setContext(new CatalogIntegratorContext(assetManagerClient,
                                                                              eventClient,
                                                                              collaborationExchangeClient,
+                                                                             connectionExchangeClient,
                                                                              dataAssetExchangeClient,
                                                                              glossaryExchangeClient,
                                                                              governanceExchangeClient,

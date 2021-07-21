@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.database.contextmanager;
 
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
@@ -31,9 +32,10 @@ import java.util.Map;
  */
 public class DatabaseIntegratorContextManager extends IntegrationContextManager
 {
-    private DatabaseManagerClient databaseManagerClient  = null;
-    private MetadataSourceClient  metadataSourceClient   = null;
-    private DataManagerRESTClient restClient             = null;
+    private DatabaseManagerClient   databaseManagerClient   = null;
+    private ConnectionManagerClient connectionManagerClient = null;
+    private MetadataSourceClient    metadataSourceClient    = null;
+    private DataManagerRESTClient   restClient              = null;
 
     /**
      * Default constructor
@@ -94,10 +96,16 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
         }
 
         databaseManagerClient = new DatabaseManagerClient(partnerOMASServerName,
-                                                          partnerOMASPlatformRootURL,
-                                                          restClient,
-                                                          maxPageSize,
-                                                          auditLog);
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize,
+                                                            auditLog);
+
+        connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
@@ -206,6 +214,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                                                        connectorId);
 
             serviceSpecificConnector.setContext(new DatabaseIntegratorContext(databaseManagerClient,
+                                                                              connectionManagerClient,
                                                                               dataManagerEventClient,
                                                                               localServerUserId,
                                                                               metadataSourceGUID,
