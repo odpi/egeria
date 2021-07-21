@@ -16,6 +16,7 @@ implementation that is used to set up the integration
 connectors inside the integration daemon.
 
 ![Figure 2](../governance-servers/integration-daemon-services/docs/inside-integration-daemon.png)
+> **Figure 2:** The integration services running in the integration daemon manage the integration connectors and supply them with a context that gives them access to the Egeria services they need.
 
 The integration services available today are:
 
