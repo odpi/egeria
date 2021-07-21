@@ -207,6 +207,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      * Update the metadata element representing a location.
      *
      * @param userId             calling user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationGUID       unique identifier of the metadata element to update
      * @param locationProperties new properties for this element
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -215,6 +216,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      */
     @Override
     public void updateLocation(String             userId,
+                               boolean            isMergeUpdate,
                                String             locationGUID,
                                LocationProperties locationProperties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -222,20 +224,27 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
     {
         final String methodName = "updateLocation";
         final String guidParameter = "locationGUID";
-        final String propertiesParameter = "templateProperties";
+        final String propertiesParameter = "locationProperties";
+        final String qualifiedNameParameter = "locationProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, guidParameter, methodName);
         invalidParameterHandler.validateObject(locationProperties, propertiesParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/update";
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(locationProperties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/update?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
                                         locationProperties,
                                         serverName,
                                         userId,
-                                        locationGUID);
+                                        locationGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -679,7 +688,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
-        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
@@ -695,7 +704,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,
-                                                                                pageSize);
+                                                                                validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -729,6 +738,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameter, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-name?startFrom={2}&pageSize={3}";
 
@@ -743,7 +753,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,
-                                                                                pageSize);
+                                                                                validatedPageSize);
 
         return restResult.getElementList();
     }

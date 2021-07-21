@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GlossaryTermStatusRequestBody describes the request body used to update a glossary term's status.
+ * ProcessStatusRequestBody describes the request body used to update a process's status.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

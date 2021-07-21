@@ -205,6 +205,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance location
      * @param suppliedTypeName type of location
      * @param extendedProperties  properties for a governance location subtype
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -220,6 +221,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  Map<String, String> additionalProperties,
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
+                                 boolean             isMergeUpdate,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -262,7 +264,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     typeGUID,
                                     typeName,
                                     locationBuilder.getInstanceProperties(methodName),
-                                    false,
+                                    isMergeUpdate,
                                     methodName);
     }
 
