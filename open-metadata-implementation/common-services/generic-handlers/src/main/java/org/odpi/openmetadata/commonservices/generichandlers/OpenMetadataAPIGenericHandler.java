@@ -7562,7 +7562,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        final String guidParameterName = "guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
