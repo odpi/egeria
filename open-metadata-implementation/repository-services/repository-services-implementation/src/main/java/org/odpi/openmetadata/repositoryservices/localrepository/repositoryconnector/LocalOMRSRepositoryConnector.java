@@ -54,6 +54,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * local repository.
      *
      * @param realLocalConnector connector to the local repository
+     * @param localRepositoryMode what is the mode of the local repository - affects how event mappers are treated
      * @param realEventMapper optional event mapper for local repository
      * @param outboundRepositoryEventManager event manager to call for outbound events.
      * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
