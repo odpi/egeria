@@ -105,7 +105,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
      * @param repositoryClient 
      * @param client to use for test.
      * @param userId for tests.
-     * @throws FVTUnexpectedCondition 
+     * @throws FVTUnexpectedCondition if the test case failed.
      */
     private static void testCreateArtifact(RepositoryService repositoryClient, SynchronizationClient client, String userId)
     		throws FVTUnexpectedCondition
@@ -130,7 +130,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
      * Method to test update artifact operation.
      * @param client to use for test.
      * @param userId for tests.
-     * @throws FVTUnexpectedCondition 
+     * @throws FVTUnexpectedCondition if the test case failed.
      */
     private static void testUpdateArtifact(RepositoryService repositoryClient, SynchronizationClient client, String userId)
     		throws FVTUnexpectedCondition
@@ -155,7 +155,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
      * Method to test delete artifact operation.
      * @param client to use for test.
      * @param userId for tests.
-     * @throws FVTUnexpectedCondition 
+     * @throws FVTUnexpectedCondition if the test case failed.
      */
     private static void testDeleteArtifact(SynchronizationClient client, String userId)
     		throws FVTUnexpectedCondition
@@ -180,7 +180,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 	 * @param fileName without extension, JSON extension is appended.
 	 * @param cls class to build.
 	 * @return object created from json file.
-	 * @throws IOException 
+	 * @throws IOException if input file cannot be read.
 	 */
 	public static <T extends Object> T readObjectJson(String folder, String fileName, Class<T> cls)
 			throws IOException

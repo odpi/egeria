@@ -139,7 +139,7 @@ public class RepositoryService {
 	 * @throws UserNotAuthorizedException in case of the error. 
 	 * @throws PagingErrorException in case of the error. 
 	 * @throws EntityNotKnownException in case of the error. 
-	 * @throws EntityNotDeletedException 
+	 * @throws EntityNotDeletedException  in case of the error.
 	 */
 	public void cleanRepository() 
 			throws InvalidParameterException, RepositoryErrorException, TypeErrorException, 
