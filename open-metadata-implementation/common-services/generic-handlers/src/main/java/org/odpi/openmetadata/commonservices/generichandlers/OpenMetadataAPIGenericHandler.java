@@ -2306,6 +2306,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * Is the attribute nested in another attribute?  Note that because schema attributes can be nested through multiple levels,
          * the retrieval of the parent needs to take account of which end the attributeGUID is connected to.
          */
+
         relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                            attributeGUID,
                                                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
@@ -7511,9 +7512,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * </ul>
      * Optionally if specified, the attached entity needs to
      * <ul>
-     * <li> not have a relationship to a unique parent entity via the attachedEntityWithoutRelationshipTypeName</li>
-     * <li> not have a relationship to a unique parent entity via the attachedEntityWithoutRelationshipTypeGUID</li>
-     * <li> not have a relationship to a unique parent entity where the parent is at the other end, the parent end is identified using parentAtEnd1</li>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeName</li>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeGUID</li>
+     * <li> not have a relationship to a unique parent entity where the parent is at the other end, the parent end is identified using attachedEntityParentAtEnd1</li>
      *</ul>
      *
      * @param userId       calling user
@@ -7523,9 +7524,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeName name of the type of relationship attaching the attached entity
      * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param attachedEntityWithoutRelationshipTypeName do not return attached entities that have this parent relationship at parentAtEnd1. If null this has not effect on the match.
-     * @param attachedEntityWithoutRelationshipTypeGUID do not return attached entities that have this parent relationship at parentAtEnd1. If null this has not effect on the match.
-     * @param parentAtEnd1 if the attached entity has a parent the entity will not be returned.
+     * @param attachedEntityFilterRelationshipTypeName do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has not effect on the match.
+     * @param attachedEntityFilterRelationshipTypeGUID do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has not effect on the match.
+     * @param attachedEntityParentAtEnd1 if the attached entity has a parent the entity will not be returned.
      * @param specificMatchPropertyNames list of property names to
      * @param searchCriteria text to search on
      * @param startFrom  index of the list to start from (0 for start)
@@ -7549,9 +7550,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String        relationshipTypeName,
                                                   String        relationshipTypeGUID,
                                                   int           selectionEnd,
-                                                  String        attachedEntityWithoutRelationshipTypeName,
-                                                  String        attachedEntityWithoutRelationshipTypeGUID,
-                                                  boolean       parentAtEnd1,
+                                                  String        attachedEntityFilterRelationshipTypeName,
+                                                  String        attachedEntityFilterRelationshipTypeGUID,
+                                                  boolean       attachedEntityParentAtEnd1,
                                                   Set<String>   specificMatchPropertyNames,
                                                   String        searchCriteria,
                                                   int           startFrom,
@@ -7572,7 +7573,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                                      startingTypeName,
                                                                                                      relationshipTypeGUID,
                                                                                                      relationshipTypeName,
-                                                                                                     null,  // we could get this passed in from the caller
+                                                                                                     null,
                                                                                                      localStartFrom,
                                                                                                      queryPageSize,
                                                                                                      selectionEnd,
@@ -7582,6 +7583,7 @@ public class OpenMetadataAPIGenericHandler<B>
         // accumulate the total filtered results from 0 - so we can then honour the requested startFrom which is the index into the filtered results.
         List<EntityDetail> totalFilteredResults = new ArrayList<>();
 
+        // iterate through the related entities applying the filter.
         while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
         {
             EntityDetail relatedEntity = relatedEntityIterator.getNext();
@@ -7589,17 +7591,18 @@ public class OpenMetadataAPIGenericHandler<B>
             if (relatedEntity != null)
             {
                 Relationship parentRelationship = null;
-                if (attachedEntityWithoutRelationshipTypeGUID != null && attachedEntityWithoutRelationshipTypeName != null)
+                // apply the filter if there is one
+                if (attachedEntityFilterRelationshipTypeGUID != null && attachedEntityFilterRelationshipTypeName != null)
                 {
                     parentRelationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                                              relatedEntity.getGUID(),
-                                                                                             startingTypeName,
-                                                                                             attachedEntityWithoutRelationshipTypeGUID,
-                                                                                             attachedEntityWithoutRelationshipTypeName,
-                                                                                             parentAtEnd1,
+                                                                                             relatedEntity.getType().getTypeDefName(),
+                                                                                             attachedEntityFilterRelationshipTypeGUID,
+                                                                                             attachedEntityFilterRelationshipTypeName,
+                                                                                             attachedEntityParentAtEnd1,
                                                                                              methodName);
                 }
-
+                // if there is a parentRelationship - this should not be included.
                 if (parentRelationship == null &&
                         entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
                 {

@@ -438,7 +438,7 @@ public class CategoryFVT {
         category.setParentCategory(parentCategorySummary);
         Category newCategory = issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+        System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
 
         return newCategory;
     }

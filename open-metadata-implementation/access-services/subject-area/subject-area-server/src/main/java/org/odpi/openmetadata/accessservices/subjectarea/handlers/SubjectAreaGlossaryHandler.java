@@ -515,12 +515,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                                                               2,      // get only the children
-                                                                               parentToCheckTypeName,
-                                                                               parentToCheckTypeGUID,
+                                                                               2,      // get only the category end
+                                                                               parentToCheckTypeName,  //set for onlyTop
+                                                                               parentToCheckTypeGUID,  //set for onlyTop
                                                                                false,
                                                                                specificMatchPropertyNames,
                                                                                searchCriteria,
