@@ -10,24 +10,27 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
  * OpenMetadataTypesArchiveWriter create a physical open metadata archive file for the supplied open metadata archives
  * encoded using Open Metadata Repository Services (OMRS) formats.
  */
-public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter {
+public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
+{
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
 
     /**
      * Default constructor
      */
-    public OpenMetadataTypesArchiveWriter() {
+    public OpenMetadataTypesArchiveWriter()
+    {
     }
 
 
     /**
      * Generates and writes out an open metadata archive containing all of the open metadata types.
      */
-    public void writeOpenMetadataTypesArchive() {
+    public void writeOpenMetadataTypesArchive()
+    {
         OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
 
         this.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
-                openMetadataTypesArchive.getOpenMetadataArchive());
+                                      openMetadataTypesArchive.getOpenMetadataArchive());
     }
 
 }

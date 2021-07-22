@@ -22,6 +22,7 @@ import java.util.Map;
 public class CatalogIntegratorContext
 {
     private static String collaborationExchangeServiceName  = "CollaborationExchangeService";
+    private static String connectionExchangeServiceName     = "ConnectionExchangeService";
     private static String dataAssetExchangeServiceName      = "DataAssetExchangeService";
     private static String glossaryExchangeServiceName       = "GlossaryExchangeService";
     private static String governanceExchangeServiceName     = "GovernanceExchangeService";
@@ -34,6 +35,7 @@ public class CatalogIntegratorContext
     private AssetManagerClient            assetManagerClient;
     private AssetManagerEventClient       eventClient;
     private CollaborationExchangeService  collaborationExchangeService;
+    private ConnectionExchangeService     connectionExchangeService;
     private DataAssetExchangeService      dataAssetExchangeService;
     private GlossaryExchangeService       glossaryExchangeService;
     private GovernanceExchangeService     governanceExchangeService;
@@ -51,6 +53,7 @@ public class CatalogIntegratorContext
     private boolean glossaryExchangeActive       = true;
     private boolean dataAssetExchangeActive      = false;
     private boolean collaborationExchangeActive  = false;
+    private boolean connectionExchangeActive     = false;
     private boolean infrastructureExchangeActive = false;
     private boolean lineageExchangeActive        = false;
     private boolean stewardshipExchangeActive    = false;
@@ -63,6 +66,7 @@ public class CatalogIntegratorContext
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
      * @param collaborationExchangeClient client for collaboration requests
+     * @param connectionExchangeClient client for connection requests
      * @param dataAssetExchangeClient client for data asset requests
      * @param glossaryExchangeClient client for glossary requests
      * @param governanceExchangeClient client for governance requests
@@ -82,6 +86,7 @@ public class CatalogIntegratorContext
     public CatalogIntegratorContext(AssetManagerClient           assetManagerClient,
                                     AssetManagerEventClient      eventClient,
                                     CollaborationExchangeClient  collaborationExchangeClient,
+                                    ConnectionExchangeClient     connectionExchangeClient,
                                     DataAssetExchangeClient      dataAssetExchangeClient,
                                     GlossaryExchangeClient       glossaryExchangeClient,
                                     GovernanceExchangeClient     governanceExchangeClient,
@@ -109,6 +114,13 @@ public class CatalogIntegratorContext
                                                                               assetManagerName,
                                                                               connectorName,
                                                                               auditLog);
+        this.connectionExchangeService  = new ConnectionExchangeService(connectionExchangeClient,
+                                                                        synchronizationDirection,
+                                                                        userId,
+                                                                        assetManagerGUID,
+                                                                        assetManagerName,
+                                                                        connectorName,
+                                                                        auditLog);
         this.dataAssetExchangeService  = new DataAssetExchangeService(dataAssetExchangeClient,
                                                                       synchronizationDirection,
                                                                       userId,
@@ -173,17 +185,21 @@ public class CatalogIntegratorContext
         {
             for (String exchangeServiceName : disabledExchangeServices)
             {
-                if (glossaryExchangeServiceName.equals(exchangeServiceName))
+                if (collaborationExchangeServiceName.equals(exchangeServiceName))
+                {
+                    collaborationExchangeActive = false;
+                }
+                else if (connectionExchangeServiceName.equals(exchangeServiceName))
+                {
+                    connectionExchangeActive = false;
+                }
+                else if (glossaryExchangeServiceName.equals(exchangeServiceName))
                 {
                     glossaryExchangeActive = false;
                 }
                 else if (dataAssetExchangeServiceName.equals(exchangeServiceName))
                 {
                     dataAssetExchangeActive = false;
-                }
-                else if (collaborationExchangeServiceName.equals(exchangeServiceName))
-                {
-                    collaborationExchangeActive = false;
                 }
                 else if (infrastructureExchangeServiceName.equals(exchangeServiceName))
                 {
@@ -403,6 +419,31 @@ public class CatalogIntegratorContext
         {
             throw new UserNotAuthorizedException(
                     CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(collaborationExchangeServiceName,
+                                                                                              integrationServiceName),
+                    this.getClass().getName(),
+                    methodName,
+                    userId);
+        }
+    }
+
+    /**
+     * Return the interface for exchanging connection information (connections, connector types, endpoints).
+     *
+     * @return connection exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public ConnectionExchangeService getConnectionExchangeService() throws UserNotAuthorizedException
+    {
+        final String methodName = "getConnectionExchangeService";
+
+        if (connectionExchangeActive)
+        {
+            return connectionExchangeService;
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(
+                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(connectionExchangeServiceName,
                                                                                               integrationServiceName),
                     this.getClass().getName(),
                     methodName,

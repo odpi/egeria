@@ -101,7 +101,7 @@ public class AnalyticsArtifactHandler {
 	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException in case of error.
 	 */
 	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
@@ -791,7 +791,7 @@ public class AnalyticsArtifactHandler {
 	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException in case of error.
 	 */
 	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
@@ -856,6 +856,10 @@ public class AnalyticsArtifactHandler {
 					IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
 					IdMap.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
 					methodName);
+			
+			if (refAssets == null) {
+				return;	// base module without dependent artifacts
+			}
 			
 			// select assets GUIDs referencing the asset with the GUID
 			List<String> filter = refAssets.stream().map(r->r.getEntityOneProxy().getGUID()).filter(g->!guid.equals(g)).collect(Collectors.toList());
@@ -1186,7 +1190,7 @@ public class AnalyticsArtifactHandler {
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
 	 * @throws AnalyticsModelingCheckedException in case of error.
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException in case of error.
 	 */
 	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException 
@@ -1244,6 +1248,7 @@ public class AnalyticsArtifactHandler {
 	 */
 	public List<EntityDetail> getArtifactAssets(String identifier) {
 		
+		String methodName = "getArtifactAssets";
 		// like "(SoftwareServerCapability)=name::(InformationView | DeployedReport)=identifier"
 		String pattern = ctx.getRepositoryHelper().getEndsWithRegex(")=" + identifier); 
 		
@@ -1255,9 +1260,14 @@ public class AnalyticsArtifactHandler {
 						IdMap.ASSET_TYPE_GUID,
 						IdMap.ASSET_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, "getArtifactAssets");
+						null, null, 0, 0, methodName);
+
 			if (ret != null) {
-				return ret;
+				// only objects from the requested server
+				return ret.stream()
+					.filter(entity->ctx.getRepositoryHelper()
+							.getStringProperty(ctx.getServerName(),	OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, entity.getProperties(), methodName)
+							.startsWith(ctx.getServerSoftwareCapability().getQualifiedName())).collect(Collectors.toList());
 			}
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
 			e.printStackTrace();
