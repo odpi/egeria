@@ -245,8 +245,8 @@ public class CategoryFVT {
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a mmm");
-        Category parentCategory = createCategoryWithGlossaryGuid("mmm", glossary.getSystemAttributes().getGUID());
+        System.out.println("Create a ttt");
+        Category parentCategory = createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
 
         Set<String> childGuids = new HashSet();
