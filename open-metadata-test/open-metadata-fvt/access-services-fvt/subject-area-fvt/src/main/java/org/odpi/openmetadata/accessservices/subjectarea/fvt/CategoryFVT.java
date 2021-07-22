@@ -265,7 +265,7 @@ public class CategoryFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 child categories");
         }
         FindRequest findRequest =new FindRequest();
-        findRequest.setSearchCriteria("mm3");
+        findRequest.setSearchCriteria("mm1");
         int count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
         if (count !=1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 child category, got " + count);
