@@ -250,8 +250,8 @@ public class CategoryFVT {
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
 
         Set<String> childGuids = new HashSet();
-        // create 20 children
-        for (int i=0;i<10;i++) {
+        // create 6 children
+        for (int i=0;i<3;i++) {
             Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);
             childGuids.add(cat1.getSystemAttributes().getGUID());
             Category cat2 =createCategoryWithParentGlossaryGuid("nn" + i, parentGuid, glossaryGuid);
@@ -261,8 +261,8 @@ public class CategoryFVT {
             childGuids.add(grandchild.getSystemAttributes().getGUID());
         }
 
-        if (getCategoryChildren(parentGuid).size() != 20) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 20 child categories");
+        if (getCategoryChildren(parentGuid).size() != 6) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 child categories");
         }
         FindRequest findRequest =new FindRequest();
         findRequest.setSearchCriteria("mm3");
@@ -274,6 +274,7 @@ public class CategoryFVT {
         if (count !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 glossary categories for mm3 including grandchild, got " + count);
         }
+        // we expect 0 back as there is only one top level category ttt
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
         if (count !=0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for mm3 not including grandchild, got " + count);
@@ -281,20 +282,30 @@ public class CategoryFVT {
 
         findRequest.setSearchCriteria("mm");
         count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
-        if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 child category, got " + count);
+        if (count !=3) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 3 child category, got " + count);
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
-        if (count !=21) {
-            // 1 mmm and its 10 mm1-10 children and then the first category has another 10 mm1-10 children
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 21 glossary categories for mm including grandchildren, got " + count);
+        if (count !=6) {
+            // 1 ttt and its mm1 mm2 mm3 children and then the first category has another 6 mm1 mm2 mm3 children
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 glossary categories for mm including grandchildren, got " + count);
         }
+        findRequest.setSearchCriteria("tt");
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
         if (count !=1) {
-            // should find mmm
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for mm* not including grandchildren, got " + count);
+            // should find ttt
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for tt* not including grandchildren, got " + count);
         }
-
+        // create more categories
+        for (int i=3;i<10;i++) {
+            Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat1.getSystemAttributes().getGUID());
+            Category cat2 =createCategoryWithParentGlossaryGuid("nn" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat2.getSystemAttributes().getGUID());
+            // create a grandchild of cat1 with the same name
+            Category grandchild =createCategoryWithParentGlossaryGuid("mm" + i, cat1.getSystemAttributes().getGUID(), glossaryGuid);
+            childGuids.add(grandchild.getSystemAttributes().getGUID());
+        }
         // issue with page size 5
         findRequest.setPageSize(5);
         List<Category> categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true);

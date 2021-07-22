@@ -7609,6 +7609,14 @@ public class OpenMetadataAPIGenericHandler<B>
                     totalFilteredResults.add(relatedEntity);
                     if (totalFilteredResults.size() > startFrom) {
                         resultsToReturn.add(relatedEntity);
+                        // TODO remove = here for debugging!!!!
+                        repositoryHandler.getUniqueParentRelationshipByType(userId,
+                                                                            relatedEntity.getGUID(),
+                                                                            relatedEntity.getType().getTypeDefName(),
+                                                                            attachedEntityFilterRelationshipTypeGUID,
+                                                                            attachedEntityFilterRelationshipTypeName,
+                                                                            attachedEntityParentAtEnd1,
+                                                                            methodName);
                     }
                 }
             }
