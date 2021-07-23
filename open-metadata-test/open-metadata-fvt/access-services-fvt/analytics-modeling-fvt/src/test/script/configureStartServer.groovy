@@ -91,7 +91,8 @@ if(postRC1.equals(200)) {
 
 // --- Enable OMAS - any errors here and we exit
 System.out.println("=== Enabling Analytics Modeling OMAS: " + serverMem + " ===");
-post2 = new URL(baseURL + "/open-metadata/users/" + user + "/servers/" + serverMem + "/access-services/analytics-modeling" ).openConnection()
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/analytics-modeling" ).openConnection()
+
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
