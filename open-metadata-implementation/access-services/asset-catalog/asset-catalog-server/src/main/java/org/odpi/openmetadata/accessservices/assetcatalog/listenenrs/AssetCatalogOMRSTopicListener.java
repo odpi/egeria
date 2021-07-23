@@ -3,17 +3,17 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.listenenrs;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
@@ -39,7 +39,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     private List<String>                supportedZones;
     private List<String>                supportedTypesForSearch;
     private AssetCatalogSearchPublisher publisher;
-    private AssetConverter              assetConverter;
+    private AssetCatalogConverter       converter;
 
     public AssetCatalogOMRSTopicListener(String serviceName,
                                          AuditLog auditLog,
@@ -57,7 +57,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             this.supportedZones = supportedZones;
             this.repositoryHelper = repositoryHelper;
             this.repositoryValidator = repositoryValidator;
-            this.assetConverter = new AssetConverter(serverName,repositoryHelper);
+            this.converter = new AssetCatalogConverter(serverName, repositoryHelper);
             this.supportedTypesForSearch = supportedTypesForSearch;
     }
 
@@ -91,8 +91,8 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             String assetType = getAssetType(entityDetail);
 
             if ( assetType != null ) {
-                org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter assetConverter
-                        = new org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter(entityDetail, null, repositoryHelper, serviceName, serverName);
+                AssetConverter assetConverter
+                        = new AssetConverter(entityDetail, null, repositoryHelper, serviceName, serverName);
                 Asset assetBean = assetConverter.getAssetBean();
 
                 if (assetBean == null || !this.inTheZone(assetBean.getZoneMembership())) {
@@ -104,7 +104,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             else if (  instanceEventType != null && supportedTypesForSearch!=null
                     && supportedTypesForSearch.contains(instanceEventType.getName()))
             {
-                AssetDescription assetDescription = assetConverter.getAssetDescription(entityDetail);
+                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
                 publisher.publishEvent(assetDescription);
             }
 
