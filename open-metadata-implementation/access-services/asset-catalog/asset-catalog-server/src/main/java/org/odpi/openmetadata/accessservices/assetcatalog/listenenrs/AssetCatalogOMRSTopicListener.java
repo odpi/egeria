@@ -86,13 +86,8 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
         EntityDetail entityDetail = instanceEvent.getEntity();
-        Relationship relationship = instanceEvent.getRelationship();
         try{
 
-            if( relationship != null )
-            {
-                publisher.publishEvent( relationship );
-            }
             String assetType = getAssetType(entityDetail);
 
             if ( assetType != null ) {
