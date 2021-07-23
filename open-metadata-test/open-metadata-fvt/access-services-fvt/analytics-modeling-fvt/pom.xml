@@ -45,57 +45,43 @@
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>analytics-modeling-api</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>analytics-modeling-client</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.odpi.egeria</groupId>
-			<artifactId>open-connector-framework</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>audit-log-framework</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
-			<artifactId>admin-services-api</artifactId>
+			<artifactId>open-connector-framework</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.odpi.egeria</groupId>
-			<artifactId>fvt-utilities</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>repository-services-apis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
-			<artifactId>asset-manager-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.odpi.egeria</groupId>
-			<artifactId>asset-manager-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.odpi.egeria</groupId>
 			<artifactId>repository-services-client</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>admin-services-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>fvt-utilities</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>generic-handlers</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
-
 
 		<!-- Integration Tests will depend on the assembly -->
 		<dependency>
