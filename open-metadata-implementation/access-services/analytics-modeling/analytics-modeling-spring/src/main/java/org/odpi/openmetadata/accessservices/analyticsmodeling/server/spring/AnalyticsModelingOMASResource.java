@@ -90,7 +90,6 @@ public class AnalyticsModelingOMASResource {
 	 * @param database	  data source id.
 	 * @param catalog	  of the db.
 	 * @param schema	  of the db.
-	 * @param request body.
 	 * @return Analytics Modeling response contains list of tables in the database schema.
 	 */
     @Operation(summary = "Get list of tables of a given database, catalog and schema")
@@ -100,8 +99,7 @@ public class AnalyticsModelingOMASResource {
             @PathVariable("userId") String userId,
 			@PathVariable("databaseGUID") String database,
 			@RequestParam(required = false) String catalog,
-			@RequestParam(required = true) String schema,
-			@RequestBody(required=false) Object request
+			@RequestParam(required = true) String schema
 			) 
 	{
 		return restAPI.getTables(serverName, userId, database, schema);

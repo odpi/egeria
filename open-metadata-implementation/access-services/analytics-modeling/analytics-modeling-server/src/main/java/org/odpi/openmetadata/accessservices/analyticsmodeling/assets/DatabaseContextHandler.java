@@ -100,6 +100,7 @@ public class DatabaseContextHandler {
      * @param pageSize	maximum number of results to return
 	 * @return list of database descriptors.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws UserNotAuthorizedException in case of an error.
 	 */
 	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize) 
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
@@ -148,7 +149,7 @@ public class DatabaseContextHandler {
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
-	 * @throws UserNotAuthorizedException 
+	 * @throws UserNotAuthorizedException in case of an error.
 	 */
 	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String userId, String guidDatabase, Integer startFrom, Integer pageSize) 
 			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {

@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class AssetElements extends Element {
+public class Elements extends Element {
 
-    private List<AssetElement> elements;
+    private List<AssetCatalogItemElement> elements;
 }

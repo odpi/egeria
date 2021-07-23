@@ -34,7 +34,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
             super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
                                            archiveBuilder.getOpenMetadataArchive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("error is " + error.toString());
         }
@@ -55,7 +55,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
 
             archiveWriter.writeOpenMetadataArchive();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.err.println("Exception: " + error.toString());
             System.exit(-1);

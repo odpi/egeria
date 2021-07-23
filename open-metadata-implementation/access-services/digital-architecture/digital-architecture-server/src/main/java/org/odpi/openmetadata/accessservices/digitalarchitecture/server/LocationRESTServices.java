@@ -158,6 +158,7 @@ public class LocationRESTServices
      *
      * @param serverName name of calling server
      * @param userId             calling user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationGUID       unique identifier of the metadata element to update
      * @param locationProperties new properties for this element
      * @return void or
@@ -168,6 +169,7 @@ public class LocationRESTServices
     public VoidResponse updateLocation(String             serverName,
                                        String             userId,
                                        String             locationGUID,
+                                       boolean            isMergeUpdate,
                                        LocationProperties locationProperties)
     {
         final String methodName = "updateLocation";
@@ -195,6 +197,7 @@ public class LocationRESTServices
                                        locationProperties.getAdditionalProperties(),
                                        locationProperties.getTypeName(),
                                        locationProperties.getExtendedProperties(),
+                                       isMergeUpdate,
                                        methodName);
             }
             else
