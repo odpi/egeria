@@ -12,8 +12,6 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.mo
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -42,7 +40,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 public class RepositoryService {
 
 
-    private final String context;
+    private static final String ODBC_TYPE = "odbc_type";
+    public static final String TYPE_SUFFIX = "_type";
+	private final String context;
     
     HashMap <String, String> uid2guid = new HashMap<>();
 
@@ -116,13 +116,13 @@ public class RepositoryService {
 	{
     	String method = "createReferencedColumn";
     	
-    	String columnQName = QualifiedNameUtils.buildQualifiedName(parentQName,
+    	String columnQName = buildQualifiedName(parentQName,
     			OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, columnName);
     	
         InstanceProperties properties = new EntityPropertiesBuilder(context, method, null)
-                .withStringProperty(Constants.QUALIFIED_NAME, columnQName)
-                .withStringProperty(Constants.DISPLAY_NAME, columnName)
-                .withIntegerProperty(Constants.POSITION, position)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, columnQName)
+                .withStringProperty(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, columnName)
+                .withIntegerProperty(OpenMetadataAPIMapper.POSITION_PROPERTY_NAME, position)
                 .build();
         
 		return client.addEntity(userId, OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID, 
@@ -198,12 +198,12 @@ public class RepositoryService {
 			PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, 
 			FunctionNotSupportedException, UserNotAuthorizedException 
 	{
-		String qualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.DATABASE, dbName);
+		String qualifiedName = buildQualifiedName("", OpenMetadataAPIMapper.DATABASE_TYPE_NAME, dbName);
         InstanceProperties properties = new EntityPropertiesBuilder(context, "createDatabaseEntity", null)
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
-                .withStringProperty(Constants.NAME, dbName)
-                .withStringProperty(Constants.TYPE, type)
-                .withStringProperty(Constants.VERSION, version)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName)
+                .withStringProperty(OpenMetadataAPIMapper.NAME_PROPERTY_NAME, dbName)
+                .withStringProperty(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME_DEP, type)
+                .withStringProperty(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME_DEP, version)
                 .build();
         
 		return client.addEntity(userId, OpenMetadataAPIMapper.DATABASE_TYPE_GUID, properties, null, InstanceStatus.ACTIVE);
@@ -217,10 +217,10 @@ public class RepositoryService {
 		String methodName = "createDatabaseSchemaEntity";
 		EntityDetail db = client.getEntityDetail(userId, guidDB);
 		String dbQName = getEntityQName(db, methodName);
-		String qualifiedName =  QualifiedNameUtils.buildQualifiedName(dbQName, OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, schemaName);
+		String qualifiedName = buildQualifiedName(dbQName, OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, schemaName);
         InstanceProperties properties = new EntityPropertiesBuilder(context, methodName, null)
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedName)
-                .withStringProperty(Constants.NAME, schemaName)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName)
+                .withStringProperty(OpenMetadataAPIMapper.NAME_PROPERTY_NAME, schemaName)
                 .build();
         
     	EntityDetail schema =  client.addEntity(userId, OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
@@ -249,9 +249,9 @@ public class RepositoryService {
 		String schemaQName = getEntityQName(schema, method);
 		
 		if (relationshipsRDBSchemaList == null || relationshipsRDBSchemaList.isEmpty()) {
-			String relationalSchemaQName =  QualifiedNameUtils.buildQualifiedName(schemaQName, OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME, tableName);
+			String relationalSchemaQName = buildQualifiedName(schemaQName, OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME, tableName);
 	        InstanceProperties properties = new EntityPropertiesBuilder(context, method, null)
-	                .withStringProperty(Constants.QUALIFIED_NAME, relationalSchemaQName)
+	                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, relationalSchemaQName)
 	                .build();
 			
         	EntityDetail relationalDBSchemaType = client.addEntity(userId, OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
@@ -267,11 +267,11 @@ public class RepositoryService {
 		Relationship relRDBSchema = relationshipsRDBSchemaList.get(0);
 		EntityDetail entityRDBSchema =  client.getEntityDetail(userId, relRDBSchema.getEntityTwoProxy().getGUID());
 				
-		String tableQName =  QualifiedNameUtils.buildQualifiedName(getEntityQName(entityRDBSchema, method), 
+		String tableQName = buildQualifiedName(getEntityQName(entityRDBSchema, method), 
 				OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, tableName);
         InstanceProperties properties = new EntityPropertiesBuilder(context, method, null)
-                .withStringProperty(Constants.QUALIFIED_NAME, tableQName)
-                .withStringProperty(Constants.DISPLAY_NAME, tableName)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, tableQName)
+                .withStringProperty(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, tableName)
                 .build();
 		
     	EntityDetail entityTable = client.addEntity(userId, OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID, properties, null, null);
@@ -289,11 +289,11 @@ public class RepositoryService {
 			ClassificationErrorException, StatusNotSupportedException, EntityProxyOnlyException
 	{
     	String method = "addColumn";
-    	String columnQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(tableEntity, method), Constants.RELATIONAL_COLUMN, columnName);
+    	String columnQName = buildQualifiedName(getEntityQName(tableEntity, method), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, columnName);
         InstanceProperties columnTypeProperties = new EntityPropertiesBuilder(context, method, null)
-                .withStringProperty(Constants.QUALIFIED_NAME, columnQName)
-                .withStringProperty(Constants.DISPLAY_NAME, columnName)
-                .withIntegerProperty(Constants.POSITION, position)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, columnQName)
+                .withStringProperty(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, columnName)
+                .withIntegerProperty(OpenMetadataAPIMapper.POSITION_PROPERTY_NAME, position)
                 .build();
         EntityDetail columnEntity = client.addEntity(userId, OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID, columnTypeProperties, null, null);
         
@@ -301,11 +301,11 @@ public class RepositoryService {
     			null, tableEntity.getGUID(), columnEntity.getGUID(), null);
 
     	if (dataType != null) {
-    		setColumnNoteLogProperty(columnEntity, Constants.ODBC_TYPE, dataType);
+    		setColumnNoteLogProperty(columnEntity, ODBC_TYPE, dataType);
     	}
     	
     	if (vendorType != null) {
-    		setColumnNoteLogProperty(columnEntity, Constants.TYPE, vendorType);
+    		setColumnNoteLogProperty(columnEntity, OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME_DEP, vendorType);
      	}
    	
         return columnEntity;
@@ -330,7 +330,7 @@ public class RepositoryService {
 		MapPropertyValue mpv = new MapPropertyValue();
 		mpv.setMapValues(ap);
 		InstanceProperties properties = columnTypeEntity.getProperties();
-		properties.setProperty(Constants.ADDITIONAL_PROPERTIES, mpv);
+		properties.setProperty(OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, mpv);
 		client.updateEntityProperties(userId, columnTypeEntity.getGUID(), properties);
 	}
     
@@ -353,10 +353,10 @@ public class RepositoryService {
 		String columnName = propertyUtils.getStringProperty(context, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
 				columnEntity.getProperties(), method);
 		
-        String columnTypeQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(columnEntity, method),
-        		Constants.RELATIONAL_COLUMN_TYPE, columnName + Constants.TYPE_SUFFIX );
+        String columnTypeQName = buildQualifiedName(getEntityQName(columnEntity, method),
+        		OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, columnName + TYPE_SUFFIX );
         InstanceProperties columnTypeProperties = new EntityPropertiesBuilder(context, "getColumnType", null)
-                .withStringProperty(Constants.QUALIFIED_NAME, columnTypeQName)
+                .withStringProperty(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, columnTypeQName)
                 .build();
         
         EntityDetail columnNoteLogEntity = client.addEntity(userId, OpenMetadataAPIMapper.NOTE_LOG_TYPE_GUID, columnTypeProperties,
@@ -367,4 +367,17 @@ public class RepositoryService {
     	
     	return columnNoteLogEntity;
 	}
+	
+	private static String buildQualifiedName(String parentQualifiedName, String typeName, String value) {
+		StringBuilder sb = new StringBuilder();
+		sb.append((parentQualifiedName == null || parentQualifiedName.isEmpty()) ? "" : (parentQualifiedName + "::"))
+		.append("(")
+		.append(typeName)
+		.append(")")
+		.append("=")
+		.append(value);
+		
+		return sb.toString();
+	}
+
 }
