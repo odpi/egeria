@@ -3,16 +3,20 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
+import org.odpi.openmetadata.accessservices.assetcatalog.listenenrs.AssetCatalogOMRSTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssetCatalogAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -58,6 +62,28 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
                     accessServiceConfigurationProperties.getAccessServiceName(), supportedTypesForSearch);
 
             this.serverName = instance.getServerName();
+
+            Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+
+            OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
+                    accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
+
+            AssetCatalogOMRSTopicListener omrsTopicListener = new AssetCatalogOMRSTopicListener(
+                    accessServiceConfigurationProperties.getAccessServiceName(),
+                    auditLog,
+                    outTopicConnector,
+                    repositoryConnector.getRepositoryHelper(),
+                    repositoryConnector.getRepositoryValidator(),
+                    serverName,
+                    supportedZones,
+                    supportedTypesForSearch
+                    );
+
+            super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
+                    serverName,
+                    enterpriseOMRSTopicConnector,
+                    omrsTopicListener,
+                    auditLog);
 
             auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         } catch (Exception error) {
