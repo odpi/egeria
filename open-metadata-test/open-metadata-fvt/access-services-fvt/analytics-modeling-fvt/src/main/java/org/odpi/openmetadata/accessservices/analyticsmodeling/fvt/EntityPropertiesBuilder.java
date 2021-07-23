@@ -19,7 +19,10 @@ public class EntityPropertiesBuilder {
 
 
     /**
-     * default constructor
+     * Default constructor.
+     * @param context the builder is called from.
+     * @param method the builder is called from.
+     * @param properties to build.
      */
     public EntityPropertiesBuilder(String context, String method, InstanceProperties properties) {
     	this.context = context;
