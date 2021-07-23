@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.topic.connector;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,33 +20,37 @@ import java.util.List;
  */
 public class TopicIntegratorContext
 {
-    private EventBrokerClient      client;
-    private DataManagerEventClient eventClient;
-    private String                 userId;
-    private String                 eventBrokerGUID;
-    private String                 eventBrokerName;
-    private boolean                eventBrokerIsHome = true;
+    private ConnectionManagerClient connectionManagerClient;
+    private EventBrokerClient       eventBrokerClient;
+    private DataManagerEventClient  eventClient;
+    private String                  userId;
+    private String                  eventBrokerGUID;
+    private String                  eventBrokerName;
+    private boolean                 eventBrokerIsHome = true;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param client client to map request to
+     * @param eventBrokerClient client to map request to
+     * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
      * @param eventBrokerGUID unique identifier of the software server capability for the event broker
      * @param eventBrokerName unique name of the software server capability for the event broker
      */
-    public TopicIntegratorContext(EventBrokerClient      client,
-                                  DataManagerEventClient eventClient,
-                                  String                 userId,
-                                  String                 eventBrokerGUID,
-                                  String                 eventBrokerName)
+    public TopicIntegratorContext(EventBrokerClient       eventBrokerClient,
+                                  ConnectionManagerClient connectionManagerClient,
+                                  DataManagerEventClient  eventClient,
+                                  String                  userId,
+                                  String                  eventBrokerGUID,
+                                  String                  eventBrokerName)
     {
-        this.client           = client;
-        this.eventClient      = eventClient;
-        this.userId           = userId;
-        this.eventBrokerGUID = eventBrokerGUID;
-        this.eventBrokerName = eventBrokerName;
+        this.eventBrokerClient       = eventBrokerClient;
+        this.connectionManagerClient = connectionManagerClient;
+        this.eventClient             = eventClient;
+        this.userId                  = userId;
+        this.eventBrokerGUID         = eventBrokerGUID;
+        this.eventBrokerName         = eventBrokerName;
     }
 
 
@@ -111,7 +117,7 @@ public class TopicIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return client.createTopic(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicProperties);
+        return eventBrokerClient.createTopic(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicProperties);
     }
 
 
@@ -132,7 +138,7 @@ public class TopicIntegratorContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return client.createTopicFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, templateProperties);
+        return eventBrokerClient.createTopicFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -153,7 +159,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        client.updateTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, isMergeUpdate, topicProperties);
+        eventBrokerClient.updateTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, isMergeUpdate, topicProperties);
     }
 
 
@@ -172,7 +178,7 @@ public class TopicIntegratorContext
                                                       UserNotAuthorizedException,
                                                       PropertyServerException
     {
-        client.publishTopic(userId, topicGUID);
+        eventBrokerClient.publishTopic(userId, topicGUID);
     }
 
 
@@ -191,7 +197,7 @@ public class TopicIntegratorContext
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        client.withdrawTopic(userId, topicGUID);
+        eventBrokerClient.withdrawTopic(userId, topicGUID);
     }
 
 
@@ -210,7 +216,7 @@ public class TopicIntegratorContext
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        client.removeTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, qualifiedName);
+        eventBrokerClient.removeTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, qualifiedName);
     }
 
 
@@ -234,7 +240,7 @@ public class TopicIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return client.findTopics(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findTopics(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -258,7 +264,7 @@ public class TopicIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return client.getTopicsByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getTopicsByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -279,7 +285,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return client.getTopicsForEventBroker(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
+        return eventBrokerClient.getTopicsForEventBroker(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
     }
 
 
@@ -298,7 +304,7 @@ public class TopicIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        return client.getTopicByGUID(userId, guid);
+        return eventBrokerClient.getTopicByGUID(userId, guid);
     }
 
 
@@ -323,7 +329,7 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createEventType(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicGUID, properties);
+        return eventBrokerClient.createEventType(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicGUID, properties);
     }
 
 
@@ -347,7 +353,7 @@ public class TopicIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return client.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, topicGUID, templateProperties);
+        return eventBrokerClient.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, topicGUID, templateProperties);
     }
 
 
@@ -368,7 +374,7 @@ public class TopicIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        client.updateEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, isMergeUpdate, properties);
+        eventBrokerClient.updateEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, isMergeUpdate, properties);
     }
 
 
@@ -387,7 +393,7 @@ public class TopicIntegratorContext
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        client.removeEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, qualifiedName);
+        eventBrokerClient.removeEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, qualifiedName);
     }
 
 
@@ -411,7 +417,7 @@ public class TopicIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.findEventTypes(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findEventTypes(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -434,7 +440,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return client.getEventTypesForEventSet(userId, eventSetGUID, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesForEventSet(userId, eventSetGUID, startFrom, pageSize);
     }
 
 
@@ -458,7 +464,7 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.getEventTypesForTopic(userId, topicGUID, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesForTopic(userId, topicGUID, startFrom, pageSize);
     }
 
 
@@ -482,7 +488,7 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.getEventTypesByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -501,7 +507,7 @@ public class TopicIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return client.getEventTypeByGUID(userId, guid);
+        return eventBrokerClient.getEventTypeByGUID(userId, guid);
     }
 
 
@@ -526,11 +532,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createPrimitiveSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createPrimitiveSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
         }
         else
         {
-            return client.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
+            return eventBrokerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
         }
     }
 
@@ -552,11 +558,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createLiteralSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createLiteralSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
         }
         else
         {
-            return client.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
+            return eventBrokerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
         }
     }
 
@@ -580,11 +586,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createEnumSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, validValuesSetGUID);
+            return eventBrokerClient.createEnumSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, validValuesSetGUID);
         }
         else
         {
-            return client.createEnumSchemaType(userId, null, null, schemaTypeProperties, validValuesSetGUID);
+            return eventBrokerClient.createEnumSchemaType(userId, null, null, schemaTypeProperties, validValuesSetGUID);
         }
     }
 
@@ -609,7 +615,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.getValidValueSetByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getValidValueSetByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -633,7 +639,7 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.findValidValueSet(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findValidValueSet(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -654,11 +660,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createStructSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createStructSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
         }
         else
         {
-            return client.createStructSchemaType(userId, null, null, schemaTypeProperties);
+            return eventBrokerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
         }
     }
 
@@ -681,11 +687,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createSchemaTypeChoice(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, schemaTypeOptionGUIDs);
+            return eventBrokerClient.createSchemaTypeChoice(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
         else
         {
-            return client.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
+            return eventBrokerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
     }
 
@@ -711,11 +717,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createMapSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            return eventBrokerClient.createMapSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
         }
         else
         {
-            return client.createMapSchemaType(userId, null, null, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            return eventBrokerClient.createMapSchemaType(userId, null, null, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
         }
     }
 
@@ -739,11 +745,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createSchemaTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, templateProperties);
         }
         else
         {
-            return client.createSchemaTypeFromTemplate(userId, null, null, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaTypeFromTemplate(userId, null, null, templateGUID, templateProperties);
         }
     }
 
@@ -766,7 +772,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        client.updateSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        eventBrokerClient.updateSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -783,7 +789,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.removeSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID);
+        eventBrokerClient.removeSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID);
     }
 
 
@@ -809,7 +815,7 @@ public class TopicIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return client.findSchemaType(userId, searchString, typeName, startFrom, pageSize);
+        return eventBrokerClient.findSchemaType(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -830,7 +836,7 @@ public class TopicIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
+        return eventBrokerClient.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
     }
 
 
@@ -856,7 +862,7 @@ public class TopicIntegratorContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return client.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
+        return eventBrokerClient.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -875,7 +881,7 @@ public class TopicIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getSchemaTypeByGUID(userId, schemaTypeGUID);
+        return eventBrokerClient.getSchemaTypeByGUID(userId, schemaTypeGUID);
     }
 
 
@@ -894,7 +900,7 @@ public class TopicIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.getSchemaTypeParent(userId, schemaTypeGUID);
+        return eventBrokerClient.getSchemaTypeParent(userId, schemaTypeGUID);
     }
 
 
@@ -921,11 +927,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, schemaAttributeProperties);
+            return eventBrokerClient.createSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, schemaAttributeProperties);
         }
         else
         {
-            return client.createSchemaAttribute(userId, null, null, schemaElementGUID, schemaAttributeProperties);
+            return eventBrokerClient.createSchemaAttribute(userId, null, null, schemaElementGUID, schemaAttributeProperties);
         }
     }
 
@@ -951,11 +957,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            return client.createSchemaAttributeFromTemplate(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, templateGUID, templateProperties);
         }
         else
         {
-            return client.createSchemaAttributeFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
         }
     }
 
@@ -979,11 +985,11 @@ public class TopicIntegratorContext
     {
         if (eventBrokerIsHome)
         {
-            client.setupSchemaType(userId, eventBrokerGUID, eventBrokerName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+            eventBrokerClient.setupSchemaType(userId, eventBrokerGUID, eventBrokerName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
         }
         else
         {
-            client.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+            eventBrokerClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
         }
     }
 
@@ -1001,7 +1007,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        client.clearSchemaTypes(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
+        eventBrokerClient.clearSchemaTypes(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
     }
 
 
@@ -1022,7 +1028,7 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        client.updateSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        eventBrokerClient.updateSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
     }
 
 
@@ -1039,7 +1045,7 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        client.removeSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
+        eventBrokerClient.removeSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
     }
 
 
@@ -1065,7 +1071,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
+        return eventBrokerClient.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -1088,7 +1094,7 @@ public class TopicIntegratorContext
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return client.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
+        return eventBrokerClient.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
     }
 
 
@@ -1114,7 +1120,7 @@ public class TopicIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
+        return eventBrokerClient.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -1133,6 +1139,554 @@ public class TopicIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+        return eventBrokerClient.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A Connection is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a connection.
+     *
+     * @param connectionProperties properties about the connection to store
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnection(ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return connectionManagerClient.createConnection(userId, eventBrokerGUID, eventBrokerName, false, connectionProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return connectionManagerClient.createConnectionFromTemplate(userId, eventBrokerGUID, eventBrokerName, false, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnection(String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        connectionManagerClient.updateConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, isMergeUpdate, connectionProperties);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection 
+     * @param connectorTypeGUID unique identifier of the connector type 
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupConnectorType(String  connectionGUID,
+                                   String  connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectionManagerClient.setupConnectorType(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param connectorTypeGUID unique identifier of the connector type  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConnectorType(String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.clearConnectorType(userId, eventBrokerGUID, eventBrokerName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEndpoint(String  connectionGUID,
+                              String  endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEndpoint(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEndpoint(String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        connectionManagerClient.clearEndpoint(userId, eventBrokerGUID, eventBrokerName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEmbeddedConnection(String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEmbeddedConnection(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEmbeddedConnection(String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        connectionManagerClient.clearEmbeddedConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAssetConnection(String  assetGUID,
+                                     String  assetSummary,
+                                     String  connectionGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.setupAssetConnection(userId, eventBrokerGUID, eventBrokerName, false, assetGUID, assetSummary, connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetConnection(String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        connectionManagerClient.clearAssetConnection(userId, eventBrokerGUID, eventBrokerName, assetGUID, connectionGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        connectionManagerClient.removeConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> findConnections(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return connectionManagerClient.findConnections(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> getConnectionsByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return connectionManagerClient.getConnectionsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectionElement getConnectionByGUID(String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.getConnectionByGUID(userId, connectionGUID);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an endpoint
+     *
+     * @param endpointProperties properties about the endpoint to store
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpoint(EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.createEndpoint(userId, eventBrokerGUID, eventBrokerName, false, endpointProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpointFromTemplate(String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return connectionManagerClient.createEndpointFromTemplate(userId, eventBrokerGUID, eventBrokerName, false, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param endpointGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateEndpoint(boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        connectionManagerClient.updateEndpoint(userId, eventBrokerGUID, eventBrokerName, isMergeUpdate, endpointGUID, endpointProperties);
+    }
+
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEndpoint(String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.removeEndpoint(userId, eventBrokerGUID, eventBrokerName, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> findEndpoints(String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return connectionManagerClient.findEndpoints(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoints created on behalf of the event broker.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsForEventBroker(int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsForDataManager(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointElement getEndpointByGUID(String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return connectionManagerClient.getEndpointByGUID(userId, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> findConnectorTypes(String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return connectionManagerClient.findConnectorTypes(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> getConnectorTypesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the connector type metadata element with the supplied unique identifier.
+     *
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectorTypeElement getConnectorTypeByGUID(String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
     }
 }

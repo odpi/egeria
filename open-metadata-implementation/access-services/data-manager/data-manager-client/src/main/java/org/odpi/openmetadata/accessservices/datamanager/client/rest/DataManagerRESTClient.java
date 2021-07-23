@@ -89,6 +89,163 @@ public class DataManagerRESTClient extends OCFRESTClient
     }
 
 
+
+    /**
+     * Issue a GET REST call that returns a ConnectionResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ConnectionResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectionResponse callMyConnectionGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ConnectionsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ConnectionsResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectionsResponse callMyConnectionsGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        ConnectionsResponse restResult = this.callGetRESTCall(methodName, ConnectionsResponse.class, urlTemplate,  params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ConnectorTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ConnectorTypeResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectorTypeResponse callMyConnectorTypeGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        ConnectorTypeResponse restResult = this.callGetRESTCall(methodName, ConnectorTypeResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ConnectorTypesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ConnectorTypesResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectorTypesResponse callMyConnectorTypesGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        ConnectorTypesResponse restResult = this.callGetRESTCall(methodName, ConnectorTypesResponse.class, urlTemplate,  params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a EndpointResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return EndpointResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public EndpointResponse callMyEndpointGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        EndpointResponse restResult = this.callGetRESTCall(methodName, EndpointResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a EndpointsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return EndpointsResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public EndpointsResponse callMyEndpointsGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        EndpointsResponse restResult = this.callGetRESTCall(methodName, EndpointsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a GET REST call that returns a DatabaseColumnResponse object.
      *
@@ -893,8 +1050,8 @@ public class DataManagerRESTClient extends OCFRESTClient
     public EventTypesResponse callEventTypesGetRESTCall(String    methodName,
                                                         String    urlTemplate,
                                                         Object... params) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         EventTypesResponse restResult = this.callGetRESTCall(methodName, EventTypesResponse.class, urlTemplate, params);
 
@@ -1314,10 +1471,10 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     public SchemaTypeResponse callSchemaTypeGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         SchemaTypeResponse restResult = this.callGetRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, params);
 

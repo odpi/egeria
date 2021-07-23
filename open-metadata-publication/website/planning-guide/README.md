@@ -106,14 +106,17 @@ Here is a suggested approach:
   work out which integration daemons you need and configure them to connect to the metadata server.
   Make sure the appropriate access services for these integration daemons are enabled in the metadata server.
 
-* If you want to use the discovery server or stewardship server then these can be connected to the
-  metadata server via the Discovery Engine and Stewardship Action access services respectively.
+* If you want to use the discovery or governance action services then these run in an Engine Host server and
+  connect to the
+  metadata server via the Discovery Engine and Governance Engine access services respectively.
   
 * Finally if you want to deploy the user interfaces, make sure you have at least one view server for the
   presentation server that hosts the UI application.
 
 Working through this exercise gives you an understanding of the Egeria technology that you need for
 your deployment and how it connects together.
+The [Solutions Guide](../solutions) describes different solutions that you can build with Egeria,
+how they work and the configuration that you will need.
 
 Follow [this link](../../../open-metadata-implementation/admin-services/docs/concepts)
 to learn more about the different types of servers.
@@ -166,7 +169,7 @@ and OMAG Servers.
 * Assign a separate user id for each of your servers and ensure they are
   defined in your user directory and are authorized users according to the
   metadata security connectors.
-  [more information](../../../open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.md)
+  [more information](../../../open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.md).
   
 * Consider where you need to have multiple versions of the same server running to give continuous
   availability

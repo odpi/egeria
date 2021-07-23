@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.database.connector;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,33 +20,37 @@ import java.util.List;
  */
 public class DatabaseIntegratorContext
 {
-    private DatabaseManagerClient  client;
-    private DataManagerEventClient eventClient;
-    private String                 userId;
-    private String                 databaseManagerGUID;
-    private String                 databaseManagerName;
+    private ConnectionManagerClient connectionManagerClient;
+    private DatabaseManagerClient   databaseManagerClient;
+    private DataManagerEventClient  eventClient;
+    private String                  userId;
+    private String                  databaseManagerGUID;
+    private String                  databaseManagerName;
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param client client to map request to
+     * @param databaseManagerClient client to managing database metadata
+     * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
      * @param databaseManagerGUID unique identifier of the software server capability for the database manager
      * @param databaseManagerName unique name of the software server capability for the database manager
      */
-    public DatabaseIntegratorContext(DatabaseManagerClient  client,
-                                     DataManagerEventClient eventClient,
-                                     String                 userId,
-                                     String                 databaseManagerGUID,
-                                     String                 databaseManagerName)
+    public DatabaseIntegratorContext(DatabaseManagerClient   databaseManagerClient,
+                                     ConnectionManagerClient connectionManagerClient,
+                                     DataManagerEventClient  eventClient,
+                                     String                  userId,
+                                     String                  databaseManagerGUID,
+                                     String                  databaseManagerName)
     {
-        this.client              = client;
-        this.eventClient         = eventClient;
-        this.userId              = userId;
-        this.databaseManagerGUID = databaseManagerGUID;
-        this.databaseManagerName = databaseManagerName;
+        this.databaseManagerClient   = databaseManagerClient;
+        this.eventClient             = eventClient;
+        this.userId                  = userId;
+        this.connectionManagerClient = connectionManagerClient;
+        this.databaseManagerGUID     = databaseManagerGUID;
+        this.databaseManagerName     = databaseManagerName;
     }
 
 
@@ -96,7 +102,7 @@ public class DatabaseIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.createDatabase(userId, databaseManagerGUID, databaseManagerName, databaseProperties);
+        return databaseManagerClient.createDatabase(userId, databaseManagerGUID, databaseManagerName, databaseProperties);
     }
 
 
@@ -117,7 +123,7 @@ public class DatabaseIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createDatabaseFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, templateProperties);
+        return databaseManagerClient.createDatabaseFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, templateProperties);
     }
 
 
@@ -136,7 +142,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        client.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseProperties);
+        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseProperties);
     }
 
 
@@ -155,7 +161,7 @@ public class DatabaseIntegratorContext
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        client.publishDatabase(userId, databaseGUID);
+        databaseManagerClient.publishDatabase(userId, databaseGUID);
     }
 
 
@@ -174,7 +180,7 @@ public class DatabaseIntegratorContext
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        client.withdrawDatabase(userId, databaseGUID);
+        databaseManagerClient.withdrawDatabase(userId, databaseGUID);
     }
 
 
@@ -193,7 +199,7 @@ public class DatabaseIntegratorContext
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName);
+        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName);
     }
 
 
@@ -217,7 +223,7 @@ public class DatabaseIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return client.findDatabases(userId, searchString, startFrom, pageSize);
+        return databaseManagerClient.findDatabases(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -241,7 +247,7 @@ public class DatabaseIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return client.getDatabasesByName(userId, name, startFrom, pageSize);
+        return databaseManagerClient.getDatabasesByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -262,7 +268,7 @@ public class DatabaseIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return client.getDatabasesForDatabaseManager(userId, databaseManagerGUID, databaseManagerName, startFrom, pageSize);
+        return databaseManagerClient.getDatabasesForDatabaseManager(userId, databaseManagerGUID, databaseManagerName, startFrom, pageSize);
     }
 
 
@@ -281,7 +287,7 @@ public class DatabaseIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return client.getDatabaseByGUID(userId, guid);
+        return databaseManagerClient.getDatabaseByGUID(userId, guid);
     }
 
 
@@ -306,7 +312,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseSchemaProperties);
+        return databaseManagerClient.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseSchemaProperties);
     }
 
 
@@ -329,7 +335,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createDatabaseSchemaFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseGUID, templateProperties);
+        return databaseManagerClient.createDatabaseSchemaFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseGUID, templateProperties);
     }
 
 
@@ -348,7 +354,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        client.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaProperties);
     }
 
 
@@ -367,7 +373,7 @@ public class DatabaseIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        client.publishDatabaseSchema(userId, databaseSchemaGUID);
+        databaseManagerClient.publishDatabaseSchema(userId, databaseSchemaGUID);
     }
 
 
@@ -386,7 +392,7 @@ public class DatabaseIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        client.withdrawDatabaseSchema(userId, databaseSchemaGUID);
+        databaseManagerClient.withdrawDatabaseSchema(userId, databaseSchemaGUID);
     }
 
 
@@ -405,7 +411,7 @@ public class DatabaseIntegratorContext
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        client.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName);
     }
 
 
@@ -429,7 +435,7 @@ public class DatabaseIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.findDatabaseSchemas(userId, searchString, startFrom, pageSize);
+        return databaseManagerClient.findDatabaseSchemas(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -452,7 +458,7 @@ public class DatabaseIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return client.getSchemasForDatabase(userId, databaseGUID, startFrom, pageSize);
+        return databaseManagerClient.getSchemasForDatabase(userId, databaseGUID, startFrom, pageSize);
     }
 
 
@@ -476,7 +482,7 @@ public class DatabaseIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getDatabaseSchemasByName(userId, name, startFrom, pageSize);
+        return databaseManagerClient.getDatabaseSchemasByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -495,7 +501,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        return client.getDatabaseSchemaByGUID(userId, guid);
+        return databaseManagerClient.getDatabaseSchemaByGUID(userId, guid);
     }
 
 
@@ -520,7 +526,7 @@ public class DatabaseIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseTableProperties);
+        return databaseManagerClient.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseTableProperties);
     }
 
 
@@ -543,7 +549,7 @@ public class DatabaseIntegratorContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return client.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return databaseManagerClient.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
     }
 
 
@@ -562,7 +568,7 @@ public class DatabaseIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        client.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableProperties);
     }
 
 
@@ -581,7 +587,7 @@ public class DatabaseIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        client.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, qualifiedName);
     }
 
 
@@ -605,7 +611,7 @@ public class DatabaseIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return client.findDatabaseTables(userId, searchString, startFrom, pageSize);
+        return databaseManagerClient.findDatabaseTables(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -628,7 +634,7 @@ public class DatabaseIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
+        return databaseManagerClient.getTablesForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
     }
 
 
@@ -652,7 +658,7 @@ public class DatabaseIntegratorContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return client.getDatabaseTablesByName(userId, name, startFrom, pageSize);
+        return databaseManagerClient.getDatabaseTablesByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -671,7 +677,7 @@ public class DatabaseIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.getDatabaseTableByGUID(userId, guid);
+        return databaseManagerClient.getDatabaseTableByGUID(userId, guid);
     }
 
 
@@ -692,7 +698,7 @@ public class DatabaseIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseViewProperties);
+        return databaseManagerClient.createDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseViewProperties);
     }
 
 
@@ -715,7 +721,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return client.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return databaseManagerClient.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
     }
 
 
@@ -734,7 +740,7 @@ public class DatabaseIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        client.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, databaseViewProperties);
+        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, databaseViewProperties);
     }
 
 
@@ -753,7 +759,7 @@ public class DatabaseIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        client.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, qualifiedName);
     }
 
 
@@ -777,7 +783,7 @@ public class DatabaseIntegratorContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return client.findDatabaseViews(userId, searchString, startFrom, pageSize);
+        return databaseManagerClient.findDatabaseViews(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -800,7 +806,7 @@ public class DatabaseIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
+        return databaseManagerClient.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
     }
 
 
@@ -824,7 +830,7 @@ public class DatabaseIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return client.getDatabaseViewsByName(userId, name, startFrom, pageSize);
+        return databaseManagerClient.getDatabaseViewsByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -843,7 +849,7 @@ public class DatabaseIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.getDatabaseViewByGUID(userId, guid);
+        return databaseManagerClient.getDatabaseViewByGUID(userId, guid);
     }
 
 
@@ -870,7 +876,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseColumnProperties);
+        return databaseManagerClient.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseColumnProperties);
     }
 
 
@@ -893,7 +899,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createDatabaseColumnFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseTableGUID, templateProperties);
+        return databaseManagerClient.createDatabaseColumnFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseTableGUID, templateProperties);
     }
 
 
@@ -912,7 +918,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnProperties);
     }
 
 
@@ -931,7 +937,7 @@ public class DatabaseIntegratorContext
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        client.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName);
     }
 
 
@@ -955,7 +961,7 @@ public class DatabaseIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-       return client.findDatabaseColumns(userId, searchString, startFrom, pageSize);
+       return databaseManagerClient.findDatabaseColumns(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -978,7 +984,7 @@ public class DatabaseIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return client.getColumnsForDatabaseTable(userId, databaseTableGUID, startFrom, pageSize);
+        return databaseManagerClient.getColumnsForDatabaseTable(userId, databaseTableGUID, startFrom, pageSize);
     }
 
 
@@ -1002,7 +1008,7 @@ public class DatabaseIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getDatabaseColumnsByName(userId, name, startFrom, pageSize);
+        return databaseManagerClient.getDatabaseColumnsByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -1021,7 +1027,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        return client.getDatabaseColumnByGUID(userId, guid);
+        return databaseManagerClient.getDatabaseColumnByGUID(userId, guid);
     }
 
 
@@ -1045,7 +1051,7 @@ public class DatabaseIntegratorContext
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        client.setPrimaryKeyOnColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databasePrimaryKeyProperties);
+        databaseManagerClient.setPrimaryKeyOnColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databasePrimaryKeyProperties);
     }
 
 
@@ -1062,7 +1068,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        client.removePrimaryKeyFromColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
+        databaseManagerClient.removePrimaryKeyFromColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
     }
 
 
@@ -1084,7 +1090,7 @@ public class DatabaseIntegratorContext
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
     {
-        client.addForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, databaseForeignKeyProperties);
+        databaseManagerClient.addForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, databaseForeignKeyProperties);
     }
 
 
@@ -1103,6 +1109,553 @@ public class DatabaseIntegratorContext
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        client.removeForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID);
+        databaseManagerClient.removeForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID);
+    }
+
+
+
+    /* =====================================================================================================================
+     * A Connection is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a connection.
+     *
+     * @param connectionProperties properties about the connection to store
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnection(ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return connectionManagerClient.createConnection(userId, databaseManagerGUID, databaseManagerName, false, connectionProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return connectionManagerClient.createConnectionFromTemplate(userId, databaseManagerGUID, databaseManagerName, false, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnection(String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        connectionManagerClient.updateConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID, isMergeUpdate, connectionProperties);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupConnectorType(String  connectionGUID,
+                                   String  connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectionManagerClient.setupConnectorType(userId, databaseManagerGUID, databaseManagerName, false, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConnectorType(String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.clearConnectorType(userId, databaseManagerGUID, databaseManagerName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEndpoint(String  connectionGUID,
+                              String  endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEndpoint(userId, databaseManagerGUID, databaseManagerName, false, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEndpoint(String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        connectionManagerClient.clearEndpoint(userId, databaseManagerGUID, databaseManagerName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEmbeddedConnection(String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEmbeddedConnection(userId, databaseManagerGUID, databaseManagerName, false, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEmbeddedConnection(String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        connectionManagerClient.clearEmbeddedConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAssetConnection(String  assetGUID,
+                                     String  assetSummary,
+                                     String  connectionGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.setupAssetConnection(userId, databaseManagerGUID, databaseManagerName, false, assetGUID, assetSummary, connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetConnection(String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        connectionManagerClient.clearAssetConnection(userId, databaseManagerGUID, databaseManagerName, assetGUID, connectionGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        connectionManagerClient.removeConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> findConnections(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return connectionManagerClient.findConnections(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> getConnectionsByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return connectionManagerClient.getConnectionsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectionElement getConnectionByGUID(String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.getConnectionByGUID(userId, connectionGUID);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an endpoint
+     *
+     * @param endpointProperties properties about the endpoint to store
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpoint(EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.createEndpoint(userId, databaseManagerGUID, databaseManagerName, false, endpointProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpointFromTemplate(String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return connectionManagerClient.createEndpointFromTemplate(userId, databaseManagerGUID, databaseManagerName, false, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param endpointGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateEndpoint(boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        connectionManagerClient.updateEndpoint(userId, databaseManagerGUID, databaseManagerName, isMergeUpdate, endpointGUID, endpointProperties);
+    }
+
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEndpoint(String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.removeEndpoint(userId, databaseManagerGUID, databaseManagerName, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> findEndpoints(String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return connectionManagerClient.findEndpoints(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of glossaries created on behalf of the named data manager.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsForDataManager(int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsForDataManager(userId, databaseManagerGUID, databaseManagerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointElement getEndpointByGUID(String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return connectionManagerClient.getEndpointByGUID(userId, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> findConnectorTypes(String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return connectionManagerClient.findConnectorTypes(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> getConnectorTypesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the connector type metadata element with the supplied unique identifier.
+     *
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectorTypeElement getConnectorTypeByGUID(String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
     }
 }
