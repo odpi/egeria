@@ -33,12 +33,12 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.A
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
-public class AssetConverter {
+public class AssetCatalogConverter {
 
     private String sourceName;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public AssetConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
+    public AssetCatalogConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
         this.sourceName = sourceName;
         this.repositoryHelper = repositoryHelper;
     }

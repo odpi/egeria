@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -82,7 +82,7 @@ public class RelationshipHandler {
                 methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+            AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
             return converter.convertRelationship(relationshipBetweenEntities);
         }
 
