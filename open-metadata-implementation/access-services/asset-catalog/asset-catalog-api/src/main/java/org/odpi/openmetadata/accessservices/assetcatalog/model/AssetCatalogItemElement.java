@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class AssetElement extends Element {
+public class AssetCatalogItemElement extends Element {
 
     /**
      * The context for an entity
