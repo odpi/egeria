@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -182,9 +183,14 @@ public class DataEngineProxyChangePoller implements Runnable {
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
             if (dataEngineProxyConfig.isEventsClientEnabled()) {
                 // If we are using the event-based interface, send the processes one-by-one rather than as an array
+                List<LineageMapping> lineageMappings = new ArrayList<>();
                 for (Process changedProcess : changedProcesses) {
+                    lineageMappings.addAll(changedProcess.getLineageMappings());
+                    changedProcess.setLineageMappings(new ArrayList<>());
                     dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(changedProcess));
+
                 }
+                dataEngineOMASClient.addLineageMappings(userId,lineageMappings);
             } else{
                 dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
             }
