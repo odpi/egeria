@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
@@ -33,12 +33,12 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.A
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
-public class AssetConverter {
+public class AssetCatalogConverter {
 
     private String sourceName;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public AssetConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
+    public AssetCatalogConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
         this.sourceName = sourceName;
         this.repositoryHelper = repositoryHelper;
     }
@@ -174,12 +174,12 @@ public class AssetConverter {
     /**
      * Add an element in the context. If the context is null, the current element becomes the root of the context
      *
-     * @param assetElement the context
+     * @param assetCatalogItemElement the context
      * @param entityDetail entity details of the new element
      */
-    public void addElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
-        AssetElements element = buildAssetElements(entityDetail);
+    public void addElement(AssetCatalogItemElement assetCatalogItemElement, EntityDetail entityDetail) {
+        List<Element> context = assetCatalogItemElement.getContext();
+        Elements element = buildAssetElements(entityDetail);
 
         if (context != null) {
             Element leaf = lastElementAdded(context.get(context.size() - 1));
@@ -187,18 +187,18 @@ public class AssetConverter {
         } else {
             List<Element> elements = new ArrayList<>();
             elements.add(element);
-            assetElement.setContext(elements);
+            assetCatalogItemElement.setContext(elements);
         }
     }
 
     /**
      * Returns the last node added in the context
      *
-     * @param assetElement given context
+     * @param assetCatalogItemElement given context
      * @return the last element
      */
-    public Element getLastNode(AssetElement assetElement) {
-        List<Element> context = assetElement.getContext();
+    public Element getLastNode(AssetCatalogItemElement assetCatalogItemElement) {
+        List<Element> context = assetCatalogItemElement.getContext();
 
         return CollectionUtils.isNotEmpty(context) ? lastElementAdded(context.get(context.size() - 1)) : null;
     }
@@ -218,16 +218,16 @@ public class AssetConverter {
     /**
      * Method use to add to the context of the given entity
      *
-     * @param assetElement asset element that contains the current context
+     * @param assetCatalogItemElement asset element that contains the current context
      * @param entityDetail entity details
      */
-    public void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
-        List<Element> context = assetElement.getContext();
+    public void addContextElement(AssetCatalogItemElement assetCatalogItemElement, EntityDetail entityDetail) {
+        List<Element> context = assetCatalogItemElement.getContext();
         if (context == null) {
             context = new ArrayList<>();
         }
         context.add(buildAssetElements(entityDetail));
-        assetElement.setContext(context);
+        assetCatalogItemElement.setContext(context);
     }
 
     /**
@@ -251,12 +251,12 @@ public class AssetConverter {
      * @param entityDetail entityDetails
      * @return an AssetElement object
      */
-    public AssetElements buildAssetElements(EntityDetail entityDetail) {
+    public Elements buildAssetElements(EntityDetail entityDetail) {
         if (entityDetail == null) {
             return null;
         }
 
-        AssetElements element = new AssetElements();
+        Elements element = new Elements();
         element.setGuid(entityDetail.getGUID());
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(extractProperties(entityDetail.getProperties()));

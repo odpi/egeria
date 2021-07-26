@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.asset;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -43,16 +43,16 @@ public class AssetController {
      * @throws InvalidParameterException if parameter validation fails
      */
     @GetMapping( path = "/search")
-    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria,
-                                            @RequestParam("types") List<String> types,
-                                            @RequestParam(name = "sequencingProperty", defaultValue = "displayName")
+    public List<Elements> searchAssets(@RequestParam("q") String searchCriteria,
+                                       @RequestParam("types") List<String> types,
+                                       @RequestParam(name = "sequencingProperty", defaultValue = "displayName")
                                                         String sequencingProperty,
-                                            @RequestParam(name = "sequencingOrder", defaultValue = "PROPERTY_ASCENDING")
+                                       @RequestParam(name = "sequencingOrder", defaultValue = "PROPERTY_ASCENDING")
                                                         SequencingOrder sequencingOrder,
-                                            @RequestParam(defaultValue="false")  boolean caseSensitive,
-                                            @RequestParam(defaultValue="false") boolean exactMatch,
-                                            @RequestParam(defaultValue="0") Integer from,
-                                            @RequestParam(defaultValue="10") Integer pageSize)
+                                       @RequestParam(defaultValue="false")  boolean caseSensitive,
+                                       @RequestParam(defaultValue="false") boolean exactMatch,
+                                       @RequestParam(defaultValue="0") Integer from,
+                                       @RequestParam(defaultValue="10") Integer pageSize)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
@@ -102,7 +102,7 @@ public class AssetController {
      * @throws InvalidParameterException if parameter validation fails
      */
     @GetMapping( value = "/{guid}/context")
-    public AssetElements getAssetContext(@PathVariable("guid") String guid)
+    public Elements getAssetContext(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getAssetContext(user, guid, "none");

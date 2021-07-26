@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInsta
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
@@ -301,7 +301,7 @@ public class AssetCatalogRESTService {
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssetElementsList(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
+            response.setElementsList(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
         } catch (UserNotAuthorizedException
                 | PagingErrorException
                 | TypeErrorException
@@ -344,9 +344,9 @@ public class AssetCatalogRESTService {
         try {
 
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            AssetElements assetElements = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
-            if (assetElements != null) {
-                response.setAsset(assetElements);
+            Elements elements = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
+            if (elements != null) {
+                response.setAsset(elements);
             }
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
