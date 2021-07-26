@@ -202,8 +202,9 @@ public class RelationshipsFVT {
             numberofrelationships = numberofrelationships + term1PagedRelationships.size();
             offset += 3;
         }
+
         if (term1relationshipcount != numberofrelationships) {
-            throw new SubjectAreaFVTCheckedException("Expected " + term1Relationships.size() + " got " + numberofrelationships);
+            throw new SubjectAreaFVTCheckedException("Expected " + term1Relationships.size() + " got " + numberofrelationships  );
         }
         Project project= projectFVT.createProject(DEFAULT_TEST_PROJECT_NAME );
         projectScopeFVT(project, term1);
@@ -1272,20 +1273,21 @@ public class RelationshipsFVT {
 
         // deletion of a term anchor deletes the Term - because the Term as an anchored object.
         // So we need to restore the Term before we can restore the term anchor relationship
+        // the restore of the Term will create a new TermAnchor relationship.
         subjectAreaTerm.restore(userId, termGuid);
 
-        System.out.println("Deleted TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
-        gotTermAnchorRelationship = subjectAreaRelationship.termAnchor().restore(this.userId, relationshipGuid);
-        FVTUtils.validateRelationship(gotTermAnchorRelationship);
-        System.out.println("Restored TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
-        subjectAreaRelationship.termAnchor().delete(this.userId, relationshipGuid);
-        //FVTUtils.validateLine(gotTermAnchorRelationship);
-        System.out.println("Deleted TermAnchor with relationshipGuid=" + relationshipGuid);
-
-        TermAnchor newTermAnchorRelationship = new TermAnchor();
-        newTermAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
-        newTermAnchorRelationship.getEnd2().setNodeGuid(termGuid);
-        FVTUtils.validateRelationship(subjectAreaRelationship.termAnchor().create(userId, newTermAnchorRelationship));
+//        System.out.println("Deleted TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
+//        gotTermAnchorRelationship = subjectAreaRelationship.termAnchor().restore(this.userId, relationshipGuid);
+//        FVTUtils.validateRelationship(gotTermAnchorRelationship);
+//        System.out.println("Restored TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
+//        subjectAreaRelationship.termAnchor().delete(this.userId, relationshipGuid);
+//        //FVTUtils.validateLine(gotTermAnchorRelationship);
+//        System.out.println("Deleted TermAnchor with relationshipGuid=" + relationshipGuid);
+//
+//        TermAnchor newTermAnchorRelationship = new TermAnchor();
+//        newTermAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
+//        newTermAnchorRelationship.getEnd2().setNodeGuid(termGuid);
+//        FVTUtils.validateRelationship(subjectAreaRelationship.termAnchor().create(userId, newTermAnchorRelationship));
     }
 
     private void categoryAnchorFVT(Category category) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1304,19 +1306,21 @@ public class RelationshipsFVT {
 
         // deletion of a category anchor deletes the Category - because the Category as an anchored object.
         // So we need to restore the Category before we can restore the category anchor relationship
+        // restoring the category should create a new Category anchor relationship.
         subjectAreaCategory.restore(userId, categoryGuid);
 
-        gotCategoryAnchorRelationship = subjectAreaRelationship.categoryAnchor().restore(this.userId, relationshipGuid);
-        FVTUtils.validateRelationship(gotCategoryAnchorRelationship);
-        System.out.println("Restored CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
-        subjectAreaRelationship.categoryAnchor().delete(this.userId, relationshipGuid);
-        //FVTUtils.validateLine(gotCategoryAnchorRelationship);
-        System.out.println("Deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
-
-        CategoryAnchor newCategoryAnchorRelationship = new CategoryAnchor();
-        newCategoryAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
-        newCategoryAnchorRelationship.getEnd2().setNodeGuid(categoryGuid);
-        FVTUtils.validateRelationship(subjectAreaRelationship.categoryAnchor().create(userId, newCategoryAnchorRelationship));
+//
+//        gotCategoryAnchorRelationship = subjectAreaRelationship.categoryAnchor().restore(this.userId, relationshipGuid);
+//        FVTUtils.validateRelationship(gotCategoryAnchorRelationship);
+//        System.out.println("Restored CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
+//        subjectAreaRelationship.categoryAnchor().delete(this.userId, relationshipGuid);
+//        //FVTUtils.validateLine(gotCategoryAnchorRelationship);
+//        System.out.println("Deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
+//
+//        CategoryAnchor newCategoryAnchorRelationship = new CategoryAnchor();
+//        newCategoryAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
+//        newCategoryAnchorRelationship.getEnd2().setNodeGuid(categoryGuid);
+//        FVTUtils.validateRelationship(subjectAreaRelationship.categoryAnchor().create(userId, newCategoryAnchorRelationship));
     }
 
     public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
