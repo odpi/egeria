@@ -327,11 +327,11 @@ public class CategoryFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for mm* including grandchildren, got " + count);
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
-        if (count !=1) {
-            // expect to find mmm
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for mm* not including grandchildren, got " + count);
+        if (count !=0) {
+            // expect to find no mm
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for mm* not including grandchildren, got " + count);
         }
-        // issue with page size 5, startingFrom 5
+        // test page size 5, startingFrom 5
         findRequest.setStartingFrom(5);
 
         categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
