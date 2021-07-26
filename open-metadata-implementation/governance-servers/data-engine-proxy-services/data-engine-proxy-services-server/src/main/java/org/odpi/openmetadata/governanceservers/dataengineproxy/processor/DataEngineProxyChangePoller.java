@@ -135,7 +135,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                 // Sleep for the poll interval before continuing with the next poll
                 Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
 
-            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e ) {
+            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e) {
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
@@ -181,19 +181,14 @@ public class DataEngineProxyChangePoller implements Runnable {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
-            if (dataEngineProxyConfig.isEventsClientEnabled()) {
-                // If we are using the event-based interface, send the processes one-by-one rather than as an array
-                List<LineageMapping> lineageMappings = new ArrayList<>();
-                for (Process changedProcess : changedProcesses) {
-                    lineageMappings.addAll(changedProcess.getLineageMappings());
-                    changedProcess.setLineageMappings(new ArrayList<>());
-                    dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(changedProcess));
-
-                }
-                dataEngineOMASClient.addLineageMappings(userId,lineageMappings);
-            } else{
-                dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
+            List<LineageMapping> lineageMappings = new ArrayList<>();
+            for (Process changedProcess : changedProcesses) {
+                // We split up the process details and lineage mappings into separate calls to achieve optimal processing in DE OMAS.
+                lineageMappings.addAll(changedProcess.getLineageMappings());
+                // TODO: Change the call to single process method in the client when ready.
+                dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(changedProcess));
             }
+            dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
