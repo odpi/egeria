@@ -253,7 +253,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 //
 
                     Project storedProject = response.head().get();
-                    checkReadOnly(methodName, storedProject, "update");
                     ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
 
                     EntityDetail suppliedEntity = projectMapper.map(suppliedProject);
@@ -315,11 +314,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         final String methodName = "deleteProject";
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         boolean issueDelete = false;        try {
-            response = getProjectByGuid(userId, guid);
-            if (response.head().isPresent()) {
-                Project currentProject = response.head().get();
-                checkReadOnly(methodName, currentProject, "delete");
-            }
             if (genericHandler.isBeanIsolated(userId,
                                               guid,
                                               OpenMetadataAPIMapper.PROJECT_TYPE_NAME,

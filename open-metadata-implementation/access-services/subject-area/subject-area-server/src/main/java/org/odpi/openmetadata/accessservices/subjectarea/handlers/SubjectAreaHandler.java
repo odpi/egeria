@@ -451,34 +451,6 @@ public abstract class SubjectAreaHandler {
             node.setQualifiedName(node.getName() + "@" + UUID.randomUUID().toString());
         }
     }
-    /**
-     * Check whether the node is readonly and throw and exception if it is
-     * @param methodName calling methodName
-     * @param node node to check
-     * @param operation operation being attempted
-     * @throws PropertyServerException exception thrown when the node is readonly
-     */
-    protected void checkReadOnly(String methodName, Node node, String operation ) throws PropertyServerException {
-        if (node.isReadOnly()) {
-            // reject
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_NODE.getMessageDefinition(operation, node.getNodeType().toString());
-            throw new PropertyServerException(messageDefinition, className , methodName);
-        }
-    }
-    /**
-     * Check whether the relationship is readonly and throw and exception if it is
-     * @param methodName calling methodName
-     * @param relationship relationship to check
-     * @param operation operation being attempted
-     * @throws PropertyServerException exception thrown when the relationship is readonly
-     */
-    protected void checkRelationshipReadOnly(String methodName, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship, String operation ) throws PropertyServerException {
-        if (relationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
-            // reject
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP.getMessageDefinition(operation, relationship.getType().getTypeDefName());
-            throw new PropertyServerException(messageDefinition, className , methodName);
-        }
-    }
 
     /**
      * Set the effectivity to and from dates date for a Node

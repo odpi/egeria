@@ -456,7 +456,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             response = getTermByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Term storedTerm = response.head().get();
-                checkReadOnly(methodName, storedTerm, "update");
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
 
                 EntityDetail suppliedEntity = termMapper.map(suppliedTerm);
@@ -680,10 +679,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         final String methodName = "deleteTerm";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            if (response.head().isPresent()) {
-                Term termToBeDeleted = response.head().get();
-                checkReadOnly(methodName, termToBeDeleted, "delete");
-            }
             genericHandler.deleteBeanInRepository(userId,
                                                   null,
                                                   null,

@@ -253,14 +253,6 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "Cannot continue with create with the supplied Categories, as they do not exist",
             "The system is unable to process the request as the Term create requires the supplied Categories to exist.",
             "Correct the code in the caller to create Terms specifying not categories opr existing categories."),
-    MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_NODE(400, "OMAS-SUBJECT-AREA-400-074",
-                                                       "Cannot continue with the {0} operation with the supplied Node - {1}, as it is read only",
-                                                       "The system is unable to process the request the modification request is not allowed on a read-only Node.",
-                                                       "Amend the code to not issue modification requests on a read-only Node."),
-    MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP(400, "OMAS-SUBJECT-AREA-400-075",
-                                                               "Cannot continue with the {0} operation with the supplied Relationship {1}, as it is read only",
-                                                               "The system is unable to process the request the modification request is not allowed on a read-only Relationship.",
-                                                               "Amend the code to not issue modification requests on a read-only Relationship."),
     INVALID_RELATIONSHIPTYPES_FOR_GRAPH(400, "OMAS-SUBJECT-AREA-400-076",
                                                                "Cannot continue with the {0} operation because an invalid relationship name {1} was supplied in the filter",
                                                                "The system is unable to process the request as it cannot identify the requested Relationship type.",
@@ -269,9 +261,6 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
                                                  "Cannot continue with the {0} operation because there is the Unknown relationship name {1} was supplied in the filter",
                                                  "The system is unable to process the request as it cannot identify the requested Unknown Relationship type.",
                                                  "Amend the code to supply only known Relationship Types for the graph operation."),
-
-
-
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",

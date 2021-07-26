@@ -189,9 +189,6 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             response = getRelationship(methodName, userId, clazz, relationshipGuid);
             R storedOMASRelationship = response.results().get(0);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship storedRelationship = mapper.map(storedOMASRelationship);
-
-            checkRelationshipReadOnly(methodName, storedRelationship, "update");
-
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate = mapper.map(relationship);
             relationshipToUpdate.setGUID(relationshipGuid);
 
@@ -277,8 +274,6 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                                 "guid",
                                                                                 mapper.getTypeName(),
                                                                                 restAPIName);
-
-            checkRelationshipReadOnly(methodName, oMRSRelationship, "delete");
 
             genericHandler.unlinkElementFromElement(userId,
                                                     false,

@@ -370,7 +370,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             response = getCategoryByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Category storedCategory = response.head().get();
-                checkReadOnly(methodName, storedCategory, "update");
                 CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
 
                 EntityDetail suppliedEntity = categoryMapper.map(suppliedCategory);
@@ -426,21 +425,16 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            response = getCategoryByGuid(userId, guid);
-            if (response.head().isPresent()) {
-                Category categoryToBeDeleted = response.head().get();
-                checkReadOnly(methodName, categoryToBeDeleted, "delete");
-            }
-            genericHandler.deleteBeanInRepository(userId,
-                                                  null,
-                                                  null,
-                                                  guid,
-                                                  "guid",
-                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                  null,
-                                                  null,
-                                                  methodName);
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      null,
+                                                      null,
+                                                      methodName);
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }

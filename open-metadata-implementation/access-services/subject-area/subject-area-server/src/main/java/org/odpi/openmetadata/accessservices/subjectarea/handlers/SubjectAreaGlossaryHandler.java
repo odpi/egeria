@@ -262,8 +262,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             response = getGlossaryByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Glossary currentGlossary = response.head().get();
-                checkReadOnly(methodName, currentGlossary, "update");
-
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail entityDetail = glossaryMapper.map(currentGlossary);
                 genericHandler.updateBeanInRepository(userId,
@@ -320,11 +318,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         boolean issueDelete = false;
         try {
-            response = getGlossaryByGuid(userId, guid);
-            Glossary currentGlossary = response.head().get();
-            if (response.head().isPresent()) {
-                checkReadOnly(methodName, currentGlossary, "delete");
-            }
             // if this is a not a purge then check there are no relationships before deleting,
             // otherwise the deletion could remove all anchored entities.
             if (genericHandler.isBeanIsolated(userId,
