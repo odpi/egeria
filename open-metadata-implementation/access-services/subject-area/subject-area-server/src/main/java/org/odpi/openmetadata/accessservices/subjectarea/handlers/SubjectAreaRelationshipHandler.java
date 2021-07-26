@@ -192,13 +192,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate = mapper.map(relationship);
             relationshipToUpdate.setGUID(relationshipGuid);
 
-            if (relationshipToUpdate.getProperties() != null || relationshipToUpdate.getProperties().getPropertyCount() == 0) {
-                // nothing to update.
-//                    // TODO may need to change this logic if effectivity updates can be made through this call.
-//                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.RELATIONSHIP_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES.getMessageDefinition();
-//                    throw new InvalidParameterException(messageDefinition, className, restAPIName, "properties", null);
-            } else {
-                genericHandler.updateRelationshipProperties(userId,
+            genericHandler.updateRelationshipProperties(userId,
                                                             null,  // local cohort.
                                                             null,
                                                             relationshipGuid,
@@ -207,7 +201,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                             !isReplace,
                                                             relationshipToUpdate.getProperties(),
                                                             methodName);
-            }
+
             Date requestedEffectiveFrom = relationship.getEffectiveFromTime() == null ? null : new Date(relationship.getEffectiveFromTime());
             Date requestedEffectiveTo = relationship.getEffectiveToTime() == null ? null : new Date(relationship.getEffectiveToTime());
             Date storedEffectiveFrom = storedRelationship.getProperties().getEffectiveFromTime();
