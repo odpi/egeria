@@ -21,6 +21,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -30,7 +32,10 @@ import java.util.*;
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
-    private static final String className = SubjectAreaGlossaryHandler.class.getName();
+    private static Class<SubjectAreaGlossaryHandler> clazz = SubjectAreaGlossaryHandler.class;
+    String className = clazz.getName();
+    private static final Logger log = LoggerFactory.getLogger(clazz);
+
 
     /**
      * Construct the Subject Area Glossary Handler
@@ -485,6 +490,16 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Boolean onlyTop, SubjectAreaCategoryHandler categoryHandler) {
         final String methodName = "getCategories";
+        if (log.isDebugEnabled()) {
+            String searchCriteria = "not set";
+            int startingFrom = 0;
+            if (findRequest != null) {
+                searchCriteria = findRequest.getSearchCriteria();
+                startingFrom = findRequest.getStartingFrom();
+            }
+
+            log.debug("==> " + methodName + ",userId=" + userId + ",guid=" + guid +",searchCriteria="+searchCriteria+",startingFrom="+startingFrom);
+        }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         Integer pageSize = findRequest.getPageSize();
         Integer requestedStartingFrom = findRequest.getStartingFrom();
@@ -498,6 +513,10 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> thisGlossaryResponse = getGlossaryByGuid(userId, guid);
         if (thisGlossaryResponse.getRelatedHTTPCode() == 200) {
             try {
+                if (log.isDebugEnabled()) {
+                    log.debug(methodName + ": got glossary guid " + guid );
+                }
+
                 Set<String>   specificMatchPropertyNames = new HashSet();
 
                 specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
@@ -509,6 +528,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 if (onlyTop) {
                     parentToCheckTypeGUID = OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID;
                     parentToCheckTypeName = OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME;
+                    if (log.isDebugEnabled()) {
+                        log.debug("parentToCheckTypeGUID="+parentToCheckTypeGUID+",parentToCheckTypeName=" + parentToCheckTypeName);
+                    }
                 }
 
 
@@ -521,7 +543,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                2,      // get only the category end
                                                                                parentToCheckTypeName,  //set for onlyTop
                                                                                parentToCheckTypeGUID,  //set for onlyTop
-                                                                               false,
+                                                                               true, // CategoryHierarchyLink end1 is the parent.
                                                                                specificMatchPropertyNames,
                                                                                searchCriteria,
                                                                                requestedStartingFrom,
@@ -530,17 +552,24 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                pageSize,
                                                                                methodName);
                 Set<Category> categories = new HashSet<>();
-                for (EntityDetail entity:entities) {
+                if(entities != null)
+                {
+                    for (EntityDetail entity : entities)
+                    {
                         SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
-                        if (categoryResponse.getRelatedHTTPCode() == 200) {
-                           categories.add(categoryResponse.results().get(0));
-                        } else {
+                        if (categoryResponse.getRelatedHTTPCode() == 200)
+                        {
+                            categories.add(categoryResponse.results().get(0));
+                        } else
+                        {
                             response = categoryResponse;
                             break;
                         }
-                }
-                if( response.getRelatedHTTPCode() == 200) {
-                    response.addAllResults(categories);
+                    }
+                    if (response.getRelatedHTTPCode() == 200)
+                    {
+                        response.addAllResults(categories);
+                    }
                 }
 
             } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {

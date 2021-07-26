@@ -3671,8 +3671,25 @@ public class RepositoryHandler
                                                                            relationshipTypeName,
                                                                            methodName);
 
+
+
             if (relationships != null)
             {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("getUniqueParentRelationshipByType relationships");
+                    for (Relationship relationship : relationships)
+                    {
+                        log.debug("relationship.getGUID()=" +
+                                          relationship.getGUID() +
+                                          "relationship.end1 guid=" +
+                                          relationship.getEntityOneProxy().getGUID() +
+                                          relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                          "relationship.end2 guid " +
+                                          relationship.getEntityTwoProxy().getGUID() +
+                                          relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+                    }
+                }
                 RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
                                                                                                userId,
                                                                                                startingEntityGUID,
@@ -3686,9 +3703,22 @@ public class RepositoryHandler
                 while (iterator.moreToReceive())
                 {
                     Relationship relationship = iterator.getNext();
-
                     if (relationship != null)
                     {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("getUniqueParentRelationshipByType while (iterator.moreToReceive()");
+                            log.debug("relationship.getGUID()=" +
+                                              relationship.getGUID() +
+                                              ", relationship.end1 guid=" +
+                                              relationship.getEntityOneProxy().getGUID() +
+                                              ",qualified name=" +
+                                              relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                              "relationship.end2 guid " +
+                                              relationship.getEntityTwoProxy().getGUID() +
+                                              ",qualified name=" +
+                                              relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+                        }
                         EntityProxy parentEntity;
 
                         if (parentAtEnd1)
@@ -3702,6 +3732,17 @@ public class RepositoryHandler
 
                         if ((parentEntity != null) && (! startingEntityGUID.equals(parentEntity.getGUID())))
                         {
+                            if (log.isDebugEnabled()) {
+                                log.debug("getUniqueParentRelationshipByType : returning relationship.getGUID()=" +
+                                                  relationship.getGUID() +
+                                                  "relationship.end1 guid=" +
+                                                  relationship.getEntityOneProxy().getGUID() +
+                                                  relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                                  "relationship.end2 guid " +
+                                                  relationship.getEntityTwoProxy().getGUID() +
+                                                  relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+
+                            }
                             return relationship;
                         }
                     }

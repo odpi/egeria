@@ -4220,7 +4220,10 @@ public class OpenMetadataAPIGenericHandler<B>
                         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                         {
                             // skip entities that are not visible to this user
-                            log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                            if (log.isDebugEnabled())
+                            {
+                                log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                            }
                         }
                     }
                 }
@@ -6573,7 +6576,10 @@ public class OpenMetadataAPIGenericHandler<B>
                     catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException nonAccessibleEntity)
                     {
                         // skip entities that are not visible to this user
-                        log.debug("Skipping entity", nonAccessibleEntity);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Skipping entity", nonAccessibleEntity);
+                        }
                     }
                 }
             }
@@ -6752,7 +6758,10 @@ public class OpenMetadataAPIGenericHandler<B>
                     catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException nonAccessibleEntity)
                     {
                         // skip entities that are not visible to this user
-                        log.debug("Skipping entity", nonAccessibleEntity);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Skipping entity", nonAccessibleEntity);
+                        }
                     }
                 }
             }
@@ -7139,7 +7148,10 @@ public class OpenMetadataAPIGenericHandler<B>
                 catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                 {
                     // skip entities that are not visible to this user
-                    log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    }
                 }
             }
         }
@@ -7255,7 +7267,10 @@ public class OpenMetadataAPIGenericHandler<B>
                 catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                 {
                     // skip entities that are not visible to this user
-                    log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    }
                 }
             }
         }
@@ -7587,7 +7602,20 @@ public class OpenMetadataAPIGenericHandler<B>
         while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
         {
             EntityDetail relatedEntity = relatedEntityIterator.getNext();
-
+            if (log.isDebugEnabled())
+            {
+                String displayName = "";
+                String qualifiedName = "";
+                if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null ) {
+                    if ( relatedEntity.getProperties().getInstanceProperties().get("displayName")!=null) {
+                        displayName = relatedEntity.getProperties().getInstanceProperties().get("displayName").toString();
+                    }
+                    if ( relatedEntity.getProperties().getInstanceProperties().get("qualifiedName")!=null) {
+                        qualifiedName = relatedEntity.getProperties().getInstanceProperties().get("qualifiedName").toString();
+                    }
+                }
+                log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
+            }
             if (relatedEntity != null)
             {
                 Relationship parentRelationship = null;
@@ -7601,22 +7629,21 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                              attachedEntityFilterRelationshipTypeName,
                                                                                              attachedEntityParentAtEnd1,
                                                                                              methodName);
+
+                    if (log.isDebugEnabled())
+                    {
+                        if (parentRelationship != null)
+                        {
+                            log.debug("getAttachedFilteredEntities - while found parent relationship  parentRelationship" + parentRelationship.getGUID());
+                        }
+                    }
                 }
                 // if there is a parentRelationship - this should not be included.
                 if (parentRelationship == null &&
-                        entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
-                {
+                        entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase)) {
                     totalFilteredResults.add(relatedEntity);
                     if (totalFilteredResults.size() > startFrom) {
                         resultsToReturn.add(relatedEntity);
-                        // TODO remove = here for debugging!!!!
-                        repositoryHandler.getUniqueParentRelationshipByType(userId,
-                                                                            relatedEntity.getGUID(),
-                                                                            relatedEntity.getType().getTypeDefName(),
-                                                                            attachedEntityFilterRelationshipTypeGUID,
-                                                                            attachedEntityFilterRelationshipTypeName,
-                                                                            attachedEntityParentAtEnd1,
-                                                                            methodName);
                     }
                 }
             }

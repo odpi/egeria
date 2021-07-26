@@ -274,6 +274,20 @@ public class CategoryFVT {
         if (count !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 glossary categories for mm3 including grandchild, got " + count);
         }
+        findRequest =new FindRequest();
+        // we expect 1 back as there is only one top level category ttt
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories, got " + count);
+        }
+        findRequest.setSearchCriteria("tt");
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            // should find ttt
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for tt* not including grandchildren, got " + count);
+        }
+        findRequest =new FindRequest();
+        findRequest.setSearchCriteria("mm1");
         // we expect 0 back as there is only one top level category ttt
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
         if (count !=0) {
@@ -287,15 +301,10 @@ public class CategoryFVT {
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
         if (count !=6) {
-            // 1 ttt and its mm1 mm2 mm3 children and then the first category has another 6 mm1 mm2 mm3 children
+            // 1 ttt and its mm0 mm1 mm2 children and then the first category has another 3 mm0 mm1 mm2 children
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 glossary categories for mm including grandchildren, got " + count);
         }
-        findRequest.setSearchCriteria("tt");
-        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
-        if (count !=1) {
-            // should find ttt
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for tt* not including grandchildren, got " + count);
-        }
+
         // create more categories
         for (int i=3;i<10;i++) {
             Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);

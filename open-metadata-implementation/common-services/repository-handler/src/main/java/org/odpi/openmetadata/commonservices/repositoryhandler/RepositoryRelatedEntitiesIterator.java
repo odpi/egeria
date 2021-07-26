@@ -6,8 +6,8 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,6 +24,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
     private String             relationshipTypeGUID;
     private String             relationshipTypeName;
     private int                selectionEnd = 0;
+    private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
 
 
     /**
@@ -86,7 +87,10 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              String            methodName)
     {
         this(repositoryHandler, userId, startingEntityGUID, startingEntityTypeName, relationshipTypeGUID, relationshipTypeName, sequencingPropertyName, startingFrom, pageSize, methodName);
-
+        if (log.isDebugEnabled())
+        {
+            log.debug("RepositoryRelatedEntitiesIterator :startingFrom=" + startingFrom + ",startingEntityGUID=" + startingEntityGUID);
+        }
         this.selectionEnd =  selectionEnd;
     }
 
@@ -135,7 +139,29 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
 
             if (entitiesCache != null)
             {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("RepositoryRelatedEntitiesIterator : moreToReceive() entitiesCache not null");
+                    for (EntityDetail entityDetail : entitiesCache)
+                    {
+                        String displayName = "";
+                        String qualifiedName = "";
+                        if (entityDetail.getProperties() != null && entityDetail.getProperties().getInstanceProperties() != null)
+                         {
+                             if ( entityDetail.getProperties().getInstanceProperties().get("displayName") !=null) {
+                                 displayName = entityDetail.getProperties().getInstanceProperties().get("displayName").toString();
+                             }
+                             if ( entityDetail.getProperties().getInstanceProperties().get("qualifiedName") !=null) {
+                                 qualifiedName = entityDetail.getProperties().getInstanceProperties().get("qualifiedName").toString();
+                             }
+                        }
+                        log.debug("Cached entity " + entityDetail.getGUID() + ",displayName=" + displayName + ",qualifiedName=" +qualifiedName );
+                    }
+                }
                 startingFrom = startingFrom + entitiesCache.size();
+                if (log.isDebugEnabled()) {
+                    log.debug("StartingFrom=" + startingFrom);
+                }
             }
         }
 
