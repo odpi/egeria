@@ -4272,6 +4272,8 @@ public class RepositoryHandler
 
         try
         {
+            // check each end is active prior to attempting the restore
+
             Relationship relationship = metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
             if (relationship != null)
             {

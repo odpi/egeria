@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -37,6 +38,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_PROJECT_NAME = "Test Project for relationships FVT";
     private SubjectAreaRelationshipClients subjectAreaRelationship = null;
     private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
+    private SubjectAreaNodeClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT = null;
     private TermFVT termFVT = null;
     private CategoryFVT catFVT = null;
@@ -50,6 +52,7 @@ public class RelationshipsFVT {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaRelationship = new SubjectAreaRelationship(client);
         subjectAreaCategory = new SubjectAreaCategoryClient(client);
+        subjectAreaTerm = new SubjectAreaTermClient<>(client);
         termFVT = new TermFVT(url, serverName, userId);
         catFVT = new CategoryFVT(url, serverName, userId);
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
@@ -1266,7 +1269,11 @@ public class RelationshipsFVT {
         // no update or replace as this relationship has no properties
 
         subjectAreaRelationship.termAnchor().delete(this.userId, relationshipGuid);
-        ///FVTUtils.validateLine(gotTermAnchorRelationship);
+
+        // deletion of a term anchor deletes the Term - because the Term as an anchored object.
+        // So we need to restore the Term before we can restore the term anchor relationship
+        subjectAreaTerm.restore(userId, termGuid);
+
         System.out.println("Deleted TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
         gotTermAnchorRelationship = subjectAreaRelationship.termAnchor().restore(this.userId, relationshipGuid);
         FVTUtils.validateRelationship(gotTermAnchorRelationship);
@@ -1294,6 +1301,11 @@ public class RelationshipsFVT {
         subjectAreaRelationship.categoryAnchor().delete(this.userId, relationshipGuid);
         //FVTUtils.validateLine(gotCategoryAnchorRelationship);
         System.out.println("Deleted CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
+
+        // deletion of a category anchor deletes the Category - because the Category as an anchored object.
+        // So we need to restore the Category before we can restore the category anchor relationship
+        subjectAreaCategory.restore(userId, categoryGuid);
+
         gotCategoryAnchorRelationship = subjectAreaRelationship.categoryAnchor().restore(this.userId, relationshipGuid);
         FVTUtils.validateRelationship(gotCategoryAnchorRelationship);
         System.out.println("Restored CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
