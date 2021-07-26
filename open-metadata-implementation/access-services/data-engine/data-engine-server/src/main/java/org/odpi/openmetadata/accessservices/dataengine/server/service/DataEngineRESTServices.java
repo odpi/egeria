@@ -1574,7 +1574,6 @@ public class DataEngineRESTServices {
         String qualifiedName = process.getQualifiedName();
         List<PortImplementation> portImplementations = process.getPortImplementations();
         List<PortAlias> portAliases = process.getPortAliases();
-        List<LineageMapping> lineageMappings = process.getLineageMappings();
         UpdateSemantic updateSemantic = process.getUpdateSemantic();
 
         GUIDResponse response = new GUIDResponse();
@@ -1605,9 +1604,6 @@ public class DataEngineRESTServices {
 
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
             upsertPortAliases(userId, serverName, portAliases, processGUID, response, externalSourceName);
-
-            FFDCResponseBase lineageMappingsResponse = new FFDCResponseBase();
-            addLineageMappings(userId, serverName, lineageMappings, lineageMappingsResponse, externalSourceName);
 
             log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
             response.setGUID(processGUID);

@@ -1358,7 +1358,6 @@ class DataEngineRESTServicesTest {
         process.setOwnerType(OwnerType.USER_ID);
         process.setPortImplementations(portImplementations);
         process.setPortAliases(portAliases);
-        process.setLineageMappings(lineageMappings);
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
         process.setCollection(collection);
 
