@@ -64,13 +64,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
         }
 
-
         @Override
         public void afterExecute(Runnable r, Throwable t) {
             super.afterExecute(r, t);
-
-            /* we don't care why the thread ended , we just restart it */
-            /* The thread will log on exit and on restart already, so no need to let anyone know */
+            /*/
+            This code is executed when the producer thread dies because an wasn't handled.
+            If the Exception was a checked Exception then t is null
+            If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
+             */
             initializeProducerAndProducerThread();
             if(KafkaOpenMetadataTopicConnector.this.isActive()) {
                 producerExecutor.execute(producerThread);
@@ -78,18 +79,21 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
     }
     
+    /* mock up a a SingleThreadProducer with an override for afterExecute */
     private class KafkaConsumerExecutor extends ThreadPoolExecutor {
         KafkaConsumerExecutor() {
             super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
         }
 
-
         @Override
         public void afterExecute(Runnable r, Throwable t) {
             super.afterExecute(r, t);
 
-            /* we don't care why the thread ended , we just restart it */
-            /* The thread will log on exit and on restart already, so no need to let anyone know */
+            /*/
+            This code is executed when the producer thread dies because an wasn't handled.
+            If the Exception was a checked Exception then t is null
+            If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
+             */
             initializeConsumerAndConsumerThread();
             if(KafkaOpenMetadataTopicConnector.this.isActive()) {
                 consumerExecutor.execute(consumerThread);
@@ -124,7 +128,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         consumerProperties.put(ENABLE_AUTO_COMMIT_PROPERTY, "true");
         consumerProperties.put("auto.commit.interval.ms", "1000");
         consumerProperties.put("session.timeout.ms", "30000");
-        consumerProperties.put("max.partition.fetch.bytes", 10485760);
+        consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("bring.up.retries", "10");
@@ -210,36 +214,38 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.egeriaConsumerPropertyName);
             copyProperties(propertiesObject, consumerEgeriaProperties);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
-            auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName,
-                                                                                                                                error.getClass().getName(),
-                                                                                                                                error.getMessage()));
+            if( auditLog != null)
+            {
+                auditLog.logMessage(actionDescription,
+                                    KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName, error.getClass().getName(),
+                                    error.getMessage()));
+            }
         }
     }
 
 
-    @SuppressWarnings("unchecked")
+    /**
+     * copies a Map<String, Object> to Map<String,String>
+     * @param propertiesObject a reference to an object that is a Map<String,Object>
+     * @param target a reference to a Map<String,String>
+     *
+     * @throws RuntimeException which is handled in the calling code.
+     */
+
     private void copyProperties(Object propertiesObject, Properties target)
     {
-        Map<String, Object> propertiesMap;
-        if (propertiesObject != null)
-        {
-            try
-            {
-                propertiesMap = (Map<String, Object>) propertiesObject;
+		Map<String, Object> propertiesMap;
+		if (propertiesObject != null)
+		{
+                propertiesMap = (Map<String, Object>) propertiesObject; //only casting the reference to the Map, not the actual Map
                 for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
                 {
-                    target.setProperty(entry.getKey(), (String) entry.getValue());
+                    target.setProperty(entry.getKey(), String.valueOf(entry.getValue()));
                 }
-            }
-            catch (Throwable error)
-            {
-                // Problem with properties
-            }
-        }
-    }
+		}
+	}
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -398,7 +404,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                                                                                                                     topicName,
                                                                                                                     command,
                                                                                                                     error.getMessage()),
-                                      error);
+                                                                                                                    error);
             }
         }
 
@@ -417,7 +423,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                                                                                                                     topicName,
                                                                                                                     command,
                                                                                                                     error.getMessage()),
-                                      error);
+                                                                                                                    error);
             }
 
         }
@@ -433,7 +439,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * @return int
      */
     int getNumberOfUnprocessedEvents() {
-        return incomingEventsList.size();
+    	return incomingEventsList.size();
     }
 
     private class KafkaStatusChecker {
