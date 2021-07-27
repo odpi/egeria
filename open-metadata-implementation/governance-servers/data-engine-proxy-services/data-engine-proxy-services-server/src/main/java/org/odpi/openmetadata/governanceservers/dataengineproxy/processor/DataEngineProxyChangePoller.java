@@ -183,11 +183,13 @@ public class DataEngineProxyChangePoller implements Runnable {
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
             List<LineageMapping> lineageMappings = new ArrayList<>();
             for (Process changedProcess : changedProcesses) {
-                // We split up the process details and lineage mappings into separate calls to achieve optimal processing in DE OMAS.
+                // We split up the process details (1) and lineage mappings (2) into separate calls to achieve optimal processing in DE OMAS.
                 lineageMappings.addAll(changedProcess.getLineageMappings());
                 // TODO: Change the call to single process method in the client when ready.
+                // (1) Send process details
                 dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(changedProcess));
             }
+            // (2) Send lineage mappings
             dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
