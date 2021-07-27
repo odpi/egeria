@@ -668,44 +668,6 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
 
 
     /**
-     * Step through the connections visible to this caller.
-     *
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<ConnectionElement> scanConnections(String userId,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String methodName = "scanConnections";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/scan?startFrom={2}&pageSize={3}";
-
-        ConnectionsResponse restResult = restClient.callConnectionsGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               startFrom,
-                                                                               validatedPageSize);
-
-        return restResult.getElementList();
-    }
-
-
-    /**
      * Retrieve the list of connection metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
@@ -833,6 +795,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param userId             calling user
+     * @param networkAddress     location of the endpoint
      * @param templateGUID       unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @return unique identifier of the new metadata element
@@ -842,6 +805,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
      */
     @Override
     public String createEndpointFromTemplate(String             userId,
+                                             String             networkAddress,
                                              String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -855,13 +819,14 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/from-template/{2}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/network-address/{2}/from-template/{3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
+                                                                  networkAddress,
                                                                   templateGUID);
 
         return restResult.getGUID();

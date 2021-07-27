@@ -581,7 +581,6 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the event broker
      * @param eventBrokerName unique name of software server capability representing the event broker
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param properties properties about the event type
      *
@@ -595,7 +594,6 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
     public String createEventType(String              userId,
                                   String              eventBrokerGUID,
                                   String              eventBrokerName,
-                                  boolean             eventBrokerIsHome,
                                   String              topicGUID,
                                   EventTypeProperties properties) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -611,7 +609,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/{2}/event-types?eventBrokerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/{2}/event-types";
 
         EventTypeRequestBody requestBody = new EventTypeRequestBody(properties);
 
@@ -623,8 +621,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  topicGUID,
-                                                                  eventBrokerIsHome);
+                                                                  topicGUID);
 
         return restResult.getGUID();
     }
@@ -636,7 +633,6 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
      * @param userId calling user
      * @param eventBrokerGUID unique identifier of software server capability representing the event broker
      * @param eventBrokerName unique name of software server capability representing the event broker
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param templateProperties properties that override the template
@@ -651,7 +647,6 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
     public String createEventTypeFromTemplate(String             userId,
                                               String             eventBrokerGUID,
                                               String             eventBrokerName,
-                                              boolean            eventBrokerIsHome,
                                               String             templateGUID,
                                               String             topicGUID,
                                               TemplateProperties templateProperties) throws InvalidParameterException,
@@ -668,7 +663,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateGUID(topicGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/{2}/event-types/from-template/{3}?eventBrokerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/{2}/event-types/from-template/{3}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -681,8 +676,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                   serverName,
                                                                   userId,
                                                                   topicGUID,
-                                                                  templateGUID,
-                                                                  eventBrokerIsHome);
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }

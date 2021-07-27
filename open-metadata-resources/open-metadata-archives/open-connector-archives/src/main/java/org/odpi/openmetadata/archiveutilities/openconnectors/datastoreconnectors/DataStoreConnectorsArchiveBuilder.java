@@ -8,8 +8,10 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 //import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.OpenConnectorArchiveBuilder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 
@@ -128,6 +130,19 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
 
         DataFolderProvider dataFolderProvider = new DataFolderProvider();
         connectorType = dataFolderProvider.getConnectorType();
+
+        super.addConnectorType(connectorType.getGUID(),
+                               connectorType.getQualifiedName(),
+                               connectorType.getDisplayName(),
+                               connectorType.getDescription(),
+                               connectorType.getConnectorProviderClassName(),
+                               connectorType.getRecognizedSecuredProperties(),
+                               connectorType.getRecognizedConfigurationProperties(),
+                               connectorType.getRecognizedAdditionalProperties(),
+                               connectorType.getAdditionalProperties());
+
+        KafkaOpenMetadataTopicProvider kafkaOpenMetadataTopicProvider = new KafkaOpenMetadataTopicProvider();
+        connectorType = kafkaOpenMetadataTopicProvider.getConnectorType();
 
         super.addConnectorType(connectorType.getGUID(),
                                connectorType.getQualifiedName(),
