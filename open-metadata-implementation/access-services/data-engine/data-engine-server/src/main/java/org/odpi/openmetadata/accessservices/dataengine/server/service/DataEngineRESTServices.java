@@ -553,7 +553,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (!isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
 
             deleteProcess(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());

@@ -929,7 +929,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void deleteProcesses_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+    void deleteProcess_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                     FunctionNotSupportedException {
         mockPortHandler("deletePort");
         mockSchemaTypeHandler("deleteSchemaType");
@@ -938,7 +938,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, PROCESS_QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
 
         EntityDetail mockedPort = mock(EntityDetail.class);
         when(mockedPort.getGUID()).thenReturn(GUID);
@@ -972,6 +972,7 @@ class DataEngineRESTServicesTest {
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedPort));
 
         DeleteRequestBody requestBody = getDeleteRequestBody();
+        requestBody.setGuid(PROCESS_GUID);
         dataEngineRESTServices.deleteProcess(USER, SERVER_NAME, requestBody);
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
