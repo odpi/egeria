@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataEngineRegistrationRequestBody.class, name = "dataEngine"),
                 @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "port"),
                 @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
-                @JsonSubTypes.Type(value = ProcessesRequestBody.class, name = "processes"),
+                @JsonSubTypes.Type(value = ProcessRequestBody.class, name = "process"),
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
                 @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "database"),
                 @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "table"),

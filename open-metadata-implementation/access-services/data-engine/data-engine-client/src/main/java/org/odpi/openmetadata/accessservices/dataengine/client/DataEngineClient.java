@@ -16,13 +16,12 @@ import java.util.List;
  * schemas and relationships.
  */
 public interface DataEngineClient {
-
     /**
-     * Create or update the processes, with all the ports, schema types and corresponding relationships including
-     * process hierarchy relationships.
+     * Create or update the process, with all the ports, schema types and corresponding relationships including
+     * the process hierarchy relationship.
      *
-     * @param userId    the name of the calling user
-     * @param processes list of processes
+     * @param userId  the name of the calling user
+     * @param process the process
      *
      * @return unique identifier of the process in the repository
      *
@@ -31,27 +30,28 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        ConnectorCheckedException;
+    String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException,
+                                                                        ConnectorCheckedException;
 
     /**
-     * Delete a list of processes
+     * Delete a process
      *
-     * @param userId         the name of the calling user
-     * @param qualifiedNames the qualified names of the processes to be deleted
-     * @param guids          the unique identifiers of the processes to be deleted
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the process to be deleted
+     * @param guid          the unique identifier of the process to be deleted
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                ConnectorCheckedException;
+    void deleteProcess(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException,
+                                                                                ConnectorCheckedException;
+
 
     /**
      * Create or update the software server capability entity

@@ -22,9 +22,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesDeleteRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -59,6 +57,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
     private static final String PROCESSES_DELETE_METHOD_NAME = "deleteProcesses";
+    private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
+    private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
     private static final String EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME = "createExternalDataEngine";
     private static final String SCHEMA_TYPE_METHOD_NAME = "createOrUpdateSchemaType";
@@ -133,38 +133,29 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         this.deleteSemantic = deleteSemantic;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws
-                                                                                        InvalidParameterException,
-                                                                                        PropertyServerException {
+    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException, PropertyServerException,
+                                                                               UserNotAuthorizedException {
+        invalidParameterHandler.validateUserId(userId, PROCESS_METHOD_NAME);
 
-        invalidParameterHandler.validateUserId(userId, PROCESSES_METHOD_NAME);
-
-        ProcessesRequestBody requestBody = new ProcessesRequestBody();
-        requestBody.setProcesses(processes);
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setProcess(process);
         requestBody.setExternalSourceName(externalSourceName);
 
-        return callProcessListPostRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(userId, PROCESS_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
-                                                                                                       PropertyServerException {
-        invalidParameterHandler.validateUserId(userId, PROCESSES_DELETE_METHOD_NAME);
+    public void deleteProcess(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, PROCESS_DELETE_METHOD_NAME);
 
-        ProcessesDeleteRequestBody requestBody = new ProcessesDeleteRequestBody();
-        requestBody.setQualifiedNames(qualifiedNames);
-        requestBody.setGuids(guids);
+        DeleteRequestBody requestBody = new DeleteRequestBody();
+        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setGuid(guid);
         requestBody.setExternalSourceName(externalSourceName);
         requestBody.setDeleteSemantic(deleteSemantic);
 
-        callVoidDeleteRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
+        callVoidDeleteRESTCall(userId, PROCESS_DELETE_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
     /**
@@ -253,7 +244,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME);
 
-        DeleteRequestBody requestBody  = getDeleteRequestBody(qualifiedName, guid);
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
     }
@@ -281,10 +272,10 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException{
+    public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_ALIAS_DELETE_METHOD_NAME);
 
-        DeleteRequestBody requestBody  = getDeleteRequestBody(qualifiedName, guid);
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, PORT_ALIAS_DELETE_METHOD_NAME, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
@@ -363,7 +354,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                          PropertyServerException {
         final String methodName = DATA_FILE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -462,14 +454,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
-    }
-
-    private List<String> callProcessListPostRESTCall(String userId, String methodName, String urlTemplate, ProcessesRequestBody requestBody,
-                                                     Object... params) throws PropertyServerException {
-        ProcessListResponse restResult = super.callPostRESTCall(methodName, ProcessListResponse.class, serverPlatformRootURL + urlTemplate,
-                requestBody, serverName, userId, params);
-
-        return restResult.getGUIDs();
     }
 
     private void callVoidDeleteRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
