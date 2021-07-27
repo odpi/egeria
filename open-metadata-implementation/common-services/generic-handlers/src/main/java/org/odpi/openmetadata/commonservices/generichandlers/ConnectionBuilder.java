@@ -77,6 +77,38 @@ public class ConnectionBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create constructor - when templating
+     *
+     * @param qualifiedName unique name for the connection
+     * @param displayName short display name for the connection
+     * @param description description of the connection
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    ConnectionBuilder(String               qualifiedName,
+                      String               displayName,
+                      String               description,
+                      OMRSRepositoryHelper repositoryHelper,
+                      String               serviceName,
+                      String               serverName)
+    {
+        super(qualifiedName,
+              null,
+              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+    }
+
+
+
+    /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method
