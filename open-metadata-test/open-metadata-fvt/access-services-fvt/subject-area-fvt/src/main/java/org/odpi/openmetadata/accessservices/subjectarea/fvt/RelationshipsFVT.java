@@ -161,8 +161,7 @@ public class RelationshipsFVT {
         isatypeofFVT(term1, term2);
         isATypeOfFVT(term1, term2);
         termCategorizationFVT(term1, cat1);
-        termAnchorFVT(term1);
-        categoryAnchorFVT(cat1);
+        // No TermAnchor or CategoryAnchor tests as these are anchor relationships that cannot be  modified directly in the subject Area API.
         createSomeTermRelationships(term1, term2, term3);
         term1relationshipcount = term1relationshipcount + 13;
         term2relationshipcount = term2relationshipcount + 12;
@@ -1256,72 +1255,6 @@ public class RelationshipsFVT {
         System.out.println("Deleted TermCategorization with userId=" + guid);
     }
 
-
-    private void termAnchorFVT(Term term) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        // No create for TermAnchor - because this OMAS cannot create a Term without a glossary
-        String termGuid = term.getSystemAttributes().getGUID();
-        String glossaryGuid = term.getGlossary().getGuid();
-        String relationshipGuid = term.getGlossary().getRelationshipguid();
-
-        TermAnchor gotTermAnchorRelationship = subjectAreaRelationship.termAnchor().getByGUID(this.userId, relationshipGuid);
-        FVTUtils.validateRelationship(gotTermAnchorRelationship);
-        System.out.println("Got TermAnchorRelationship " + gotTermAnchorRelationship);
-
-        // no update or replace as this relationship has no properties
-
-        subjectAreaRelationship.termAnchor().delete(this.userId, relationshipGuid);
-
-        // deletion of a term anchor deletes the Term - because the Term as an anchored object.
-        // So we need to restore the Term before we can restore the term anchor relationship
-        // the restore of the Term will create a new TermAnchor relationship.
-        subjectAreaTerm.restore(userId, termGuid);
-
-//        System.out.println("Deleted TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
-//        gotTermAnchorRelationship = subjectAreaRelationship.termAnchor().restore(this.userId, relationshipGuid);
-//        FVTUtils.validateRelationship(gotTermAnchorRelationship);
-//        System.out.println("Restored TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
-//        subjectAreaRelationship.termAnchor().delete(this.userId, relationshipGuid);
-//        //FVTUtils.validateLine(gotTermAnchorRelationship);
-//        System.out.println("Deleted TermAnchor with relationshipGuid=" + relationshipGuid);
-//
-//        TermAnchor newTermAnchorRelationship = new TermAnchor();
-//        newTermAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
-//        newTermAnchorRelationship.getEnd2().setNodeGuid(termGuid);
-//        FVTUtils.validateRelationship(subjectAreaRelationship.termAnchor().create(userId, newTermAnchorRelationship));
-    }
-
-    private void categoryAnchorFVT(Category category) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        // No create for CategoryAnchor - because this OMAS cannot create a Category without a glossary
-        String categoryGuid = category.getSystemAttributes().getGUID();
-        String glossaryGuid = category.getGlossary().getGuid();
-        String relationshipGuid = category.getGlossary().getRelationshipguid();
-        CategoryAnchor gotCategoryAnchorRelationship = subjectAreaRelationship.categoryAnchor().getByGUID(this.userId, relationshipGuid);
-        FVTUtils.validateRelationship(gotCategoryAnchorRelationship);
-        System.out.println("Got CategoryAnchorRelationship " + gotCategoryAnchorRelationship);
-        // no update as this relationship has no properties
-
-        subjectAreaRelationship.categoryAnchor().delete(this.userId, relationshipGuid);
-        //FVTUtils.validateLine(gotCategoryAnchorRelationship);
-        System.out.println("Deleted CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
-
-        // deletion of a category anchor deletes the Category - because the Category as an anchored object.
-        // So we need to restore the Category before we can restore the category anchor relationship
-        // restoring the category should create a new Category anchor relationship.
-        subjectAreaCategory.restore(userId, categoryGuid);
-
-//
-//        gotCategoryAnchorRelationship = subjectAreaRelationship.categoryAnchor().restore(this.userId, relationshipGuid);
-//        FVTUtils.validateRelationship(gotCategoryAnchorRelationship);
-//        System.out.println("Restored CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
-//        subjectAreaRelationship.categoryAnchor().delete(this.userId, relationshipGuid);
-//        //FVTUtils.validateLine(gotCategoryAnchorRelationship);
-//        System.out.println("Deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
-//
-//        CategoryAnchor newCategoryAnchorRelationship = new CategoryAnchor();
-//        newCategoryAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
-//        newCategoryAnchorRelationship.getEnd2().setNodeGuid(categoryGuid);
-//        FVTUtils.validateRelationship(subjectAreaRelationship.categoryAnchor().create(userId, newCategoryAnchorRelationship));
-    }
 
     public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Categorization termCategorization = new Categorization();
