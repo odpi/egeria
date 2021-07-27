@@ -146,7 +146,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                false,
