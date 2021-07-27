@@ -43,7 +43,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -55,7 +54,6 @@ public interface ConnectionManagerInterface
     String createConnection(String               userId,
                             String               dataManagerGUID,
                             String               dataManagerName,
-                            boolean              dataManagerIsHome,
                             ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
@@ -68,7 +66,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -81,7 +78,6 @@ public interface ConnectionManagerInterface
     String createConnectionFromTemplate(String             userId,
                                         String             dataManagerGUID,
                                         String             dataManagerName,
-                                        boolean            dataManagerIsHome,
                                         String             templateGUID,
                                         TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -118,7 +114,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the connection in the external data manager
      * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
@@ -129,7 +124,6 @@ public interface ConnectionManagerInterface
     void setupConnectorType(String  userId,
                             String  dataManagerGUID,
                             String  dataManagerName,
-                            boolean dataManagerIsHome,
                             String  connectionGUID,
                             String  connectorTypeGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
@@ -164,7 +158,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the connection in the external data manager
      * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
@@ -175,7 +168,6 @@ public interface ConnectionManagerInterface
     void setupEndpoint(String  userId,
                        String  dataManagerGUID,
                        String  dataManagerName,
-                       boolean dataManagerIsHome,
                        String  connectionGUID,
                        String  endpointGUID) throws InvalidParameterException,
                                                     UserNotAuthorizedException,
@@ -210,7 +202,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the virtual connection in the external data manager
      * @param position which order should this connection be processed
      * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
@@ -224,7 +215,6 @@ public interface ConnectionManagerInterface
     void setupEmbeddedConnection(String              userId,
                                  String              dataManagerGUID,
                                  String              dataManagerName,
-                                 boolean             dataManagerIsHome,
                                  String              connectionGUID,
                                  int                 position,
                                  String              displayName,
@@ -262,7 +252,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param assetGUID unique identifier of the asset
      * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
@@ -274,7 +263,6 @@ public interface ConnectionManagerInterface
     void setupAssetConnection(String  userId,
                               String  dataManagerGUID,
                               String  dataManagerName,
-                              boolean dataManagerIsHome,
                               String  assetGUID,
                               String  assetSummary,
                               String  connectionGUID) throws InvalidParameterException,
@@ -399,7 +387,6 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param endpointProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -411,7 +398,6 @@ public interface ConnectionManagerInterface
     String createEndpoint(String             userId,
                           String             dataManagerGUID,
                           String             dataManagerName,
-                          boolean            dataManagerIsHome,
                           EndpointProperties endpointProperties) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
@@ -424,9 +410,9 @@ public interface ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
+     * @param networkAddress location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param templateProperties descriptive properties that override the template
      *
      * @return unique identifier of the new metadata element
      *
@@ -437,7 +423,7 @@ public interface ConnectionManagerInterface
     String createEndpointFromTemplate(String             userId,
                                       String             dataManagerGUID,
                                       String             dataManagerName,
-                                      boolean            dataManagerIsHome,
+                                      String             networkAddress,
                                       String             templateGUID,
                                       TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
@@ -533,30 +519,6 @@ public interface ConnectionManagerInterface
                                              int    pageSize) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException;
-
-
-    /**
-     * Retrieve the list of endpoints created on behalf of the named data manager.
-     *
-     * @param userId calling user
-     * @param dataManagerGUID unique identifier of software server capability representing the caller
-     * @param dataManagerName unique name of software server capability representing the caller
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<EndpointElement> getEndpointsForDataManager(String userId,
-                                                     String dataManagerGUID,
-                                                     String dataManagerName,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
 
 
     /**

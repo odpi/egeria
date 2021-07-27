@@ -10,9 +10,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +87,11 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String findConnectorType(String        userId,
-                             ConnectorType connectorType,
-                             String        methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    private String findConnectorType(String        userId,
+                                     ConnectorType connectorType,
+                                     String        methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         final String guidParameterName      = "connectorType.getGUID";
         final String qualifiedNameParameter = "connectorType.getQualifiedName";
@@ -169,13 +169,13 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String saveConnectorType(String                 userId,
-                                    String                 externalSourceGUID,
-                                    String                 externalSourceName,
-                                    ConnectorType          connectorType,
-                                    String                 methodName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    String saveConnectorType(String                 userId,
+                             String                 externalSourceGUID,
+                             String                 externalSourceName,
+                             ConnectorType          connectorType,
+                             String                 methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         if (connectorType != null)
         {
@@ -195,6 +195,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                 connectorType.getRecognizedSecuredProperties(),
                                                 connectorType.getRecognizedConfigurationProperties(),
                                                 connectorType.getAdditionalProperties(),
+                                                null,
+                                                null,
                                                 methodName);
             }
             else
@@ -214,6 +216,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                          connectorType.getRecognizedSecuredProperties(),
                                          connectorType.getRecognizedConfigurationProperties(),
                                          connectorType.getAdditionalProperties(),
+                                         null,
+                                         null,
+                                         false,
                                          methodName);
 
                 return  existingConnectorType;
@@ -240,6 +245,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param recognizedSecuredProperties property name for securedProperties in a linked Connection object.
      * @param recognizedConfigurationProperties property name for configurationProperties in a linked Connection object.
      * @param additionalProperties name value pairs for values that are not formally defined in the type system
+     * @param suppliedTypeName name of the subtype for the endpoint or null for standard type
+     * @param extendedProperties any properties for a subtype
      * @param methodName calling method
      *
      * @return GUID for new connectorType
@@ -260,6 +267,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       List<String>        recognizedSecuredProperties,
                                       List<String>        recognizedConfigurationProperties,
                                       Map<String, String> additionalProperties,
+                                      String              suppliedTypeName,
+                                      Map<String, Object> extendedProperties,
                                       String              methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -267,6 +276,19 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         final String nameParameter = "qualifiedName";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+
+        String typeName = OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
 
         ConnectorTypeBuilder builder = new ConnectorTypeBuilder(qualifiedName,
                                                                 displayName,
@@ -276,9 +298,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 recognizedSecuredProperties,
                                                                 recognizedConfigurationProperties,
                                                                 additionalProperties,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
-                                                                null,
+                                                                typeGUID,
+                                                                typeName,
+                                                                extendedProperties,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -291,6 +313,66 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
+                                           typeGUID,
+                                           typeName,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           builder,
+                                           methodName);
+    }
+
+
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param qualifiedName unique name for the element - used in other configuration
+     * @param displayName short display name for the new element
+     * @param description description of the new element
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectorTypeFromTemplate(String userId,
+                                                  String externalSourceGUID,
+                                                  String externalSourceName,
+                                                  String templateGUID,
+                                                  String qualifiedName,
+                                                  String displayName,
+                                                  String description,
+                                                  String methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        ConnectorTypeBuilder builder = new ConnectorTypeBuilder(qualifiedName,
+                                                                displayName,
+                                                                description,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        return this.createBeanFromTemplate(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           templateGUID,
+                                           templateGUIDParameterName,
                                            OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                            qualifiedName,
@@ -366,6 +448,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                          recognizedSecuredProperties,
                                                          recognizedConfigurationProperties,
                                                          additionalProperties,
+                                                         null,
+                                                         null,
                                                          methodName);
         }
 
@@ -390,6 +474,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param recognizedSecuredProperties property name for securedProperties in a linked Connection object.
      * @param recognizedConfigurationProperties property name for configurationProperties in a linked Connection object.
      * @param additionalProperties name value pairs for values that are not formally defined in the type system
+     * @param suppliedTypeName name of the subtype for the endpoint or null for standard type
+     * @param extendedProperties any properties for a subtype
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -409,6 +496,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       List<String>        recognizedSecuredProperties,
                                       List<String>        recognizedConfigurationProperties,
                                       Map<String, String> additionalProperties,
+                                      String              suppliedTypeName,
+                                      Map<String, Object> extendedProperties,
+                                      boolean             isMergeUpdate,
                                       String              methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -416,6 +506,19 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         final String nameParameter = "qualifiedName";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+
+        String typeName = OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
 
         ConnectorTypeBuilder builder = new ConnectorTypeBuilder(qualifiedName,
                                                                 displayName,
@@ -425,9 +528,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 recognizedSecuredProperties,
                                                                 recognizedConfigurationProperties,
                                                                 additionalProperties,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
-                                                                null,
+                                                                typeGUID,
+                                                                typeName,
+                                                                extendedProperties,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -437,37 +540,164 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     connectorTypeGUID,
                                     connectorTypeGUIDParameterName,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                    typeGUID,
+                                    typeName,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    true,
+                                    isMergeUpdate,
                                     methodName);
     }
 
 
     /**
-     * Count the number of informal connectorTypes attached to a supplied entity.
+     * Remove the metadata element.  This will delete all elements anchored to it.
      *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param guid unique identifier of the metadata element to remove
+     * @param guidParameterName parameter supplying the guid
      * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public int countConnectorTypes(String userId,
-                                   String elementGUID,
-                                   String methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public void removeConnectorType(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String guid,
+                                    String guidParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        return this.countAttachments(userId,
-                                     elementGUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                     OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                     OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
-                                     methodName);
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    guid,
+                                    guidParameterName,
+                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                    null,
+                                    null,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findConnectorTypes(String userId,
+                                      String searchString,
+                                      String searchStringParameterName,
+                                      int    startFrom,
+                                      int    pageSize,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                              null,
+                              startFrom,
+                              pageSize,
+                              methodName);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified name, display name or connector provider class name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getConnectorTypesByName(String userId,
+                                           String name,
+                                           String nameParameterName,
+                                           int    startFrom,
+                                           int    pageSize,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.CONNECTOR_PROVIDER_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of guid
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getConnectorTypeByGUID(String userId,
+                                    String guid,
+                                    String guidParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        return this.getBeanFromRepository(userId,
+                                          guid,
+                                          guidParameterName,
+                                          OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                          methodName);
+
     }
 }

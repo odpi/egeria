@@ -84,6 +84,35 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     }
 
 
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectionManagerClient(String serverName,
+                                   String serverPlatformURLRoot,
+                                   String userId,
+                                   String password) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+
     /**
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
@@ -146,33 +175,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     }
 
 
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    public ConnectionManagerClient(String serverName,
-                                   String serverPlatformURLRoot,
-                                   String userId,
-                                   String password) throws InvalidParameterException
-    {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
-    }
-
-
     /* =====================================================================================================================
      * A Connection is the top level object for working with connectors
      */
@@ -183,7 +185,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionProperties properties about the connection to store
      *
      * @return unique identifier of the new connection
@@ -196,7 +197,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public String createConnection(String               userId,
                                    String               dataManagerGUID,
                                    String               dataManagerName,
-                                   boolean              dataManagerIsHome,
                                    ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -209,7 +209,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "?dataManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix;
 
         ConnectionRequestBody requestBody = new ConnectionRequestBody(connectionProperties);
 
@@ -220,8 +220,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  dataManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -233,7 +232,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -247,7 +245,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public String createConnectionFromTemplate(String             userId,
                                                String             dataManagerGUID,
                                                String             dataManagerName,
-                                               boolean            dataManagerIsHome,
                                                String             templateGUID,
                                                TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -263,7 +260,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/from-template/{2}?dataManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/from-template/{2}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -275,8 +272,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID,
-                                                                  dataManagerIsHome);
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }
@@ -344,7 +340,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the connection in the external data manager
      * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
@@ -356,7 +351,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public void setupConnectorType(String  userId,
                                    String  dataManagerGUID,
                                    String  dataManagerName,
-                                   boolean dataManagerIsHome,
                                    String  connectionGUID,
                                    String  connectorTypeGUID) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
@@ -370,7 +364,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}?dataManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -383,8 +377,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                         serverName,
                                         userId,
                                         connectionGUID,
-                                        connectorTypeGUID,
-                                        dataManagerIsHome);
+                                        connectorTypeGUID);
     }
 
 
@@ -441,7 +434,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the connection in the external data manager
      * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
@@ -453,7 +445,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public void setupEndpoint(String  userId,
                               String  dataManagerGUID,
                               String  dataManagerName,
-                              boolean dataManagerIsHome,
                               String  connectionGUID,
                               String  endpointGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
@@ -467,7 +458,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}?dataManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -480,8 +471,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                         serverName,
                                         userId,
                                         connectionGUID,
-                                        endpointGUID,
-                                        dataManagerIsHome);
+                                        endpointGUID);
     }
 
 
@@ -538,7 +528,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param connectionGUID unique identifier of the virtual connection in the external data manager
      * @param position which order should this connection be processed
      * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
@@ -553,7 +542,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public void setupEmbeddedConnection(String              userId,
                                         String              dataManagerGUID,
                                         String              dataManagerName,
-                                        boolean             dataManagerIsHome,
                                         String              connectionGUID,
                                         int                 position,
                                         String              displayName,
@@ -570,7 +558,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(embeddedConnectionGUID, embeddedConnectionGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/embedded-connections/{3}?dataManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/embedded-connections/{3}";
 
         EmbeddedConnectionRequestBody requestBody = new EmbeddedConnectionRequestBody();
 
@@ -586,8 +574,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                         serverName,
                                         userId,
                                         connectionGUID,
-                                        embeddedConnectionGUID,
-                                        dataManagerIsHome);
+                                        embeddedConnectionGUID);
     }
 
 
@@ -644,7 +631,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param assetGUID unique identifier of the asset
      * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
@@ -657,22 +643,21 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public void setupAssetConnection(String  userId,
                                      String  dataManagerGUID,
                                      String  dataManagerName,
-                                     boolean dataManagerIsHome,
                                      String  assetGUID,
                                      String  assetSummary,
                                      String  connectionGUID) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        final String methodName                          = "setupAssetConnection";
-        final String connectionGUIDParameterName         = "connectionGUID";
-        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID";
+        final String methodName                  = "setupAssetConnection";
+        final String connectionGUIDParameterName = "connectionGUID";
+        final String assetGUIDParameterName      = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, embeddedConnectionGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/connections/{3}?dataManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/connections/{3}";
 
         AssetConnectionRequestBody requestBody = new AssetConnectionRequestBody();
 
@@ -686,8 +671,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                         serverName,
                                         userId,
                                         assetGUID,
-                                        connectionGUID,
-                                        dataManagerIsHome);
+                                        connectionGUID);
     }
 
 
@@ -736,7 +720,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                         assetGUID,
                                         connectionGUID);
     }
-
 
 
     /**
@@ -857,8 +840,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
 
-
-
         ConnectionsResponse restResult = restClient.callMyConnectionsGetRESTCall(methodName,
                                                                                  urlTemplate,
                                                                                  serverName,
@@ -913,7 +894,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
      * @param endpointProperties properties about the endpoint to store
      *
      * @return unique identifier of the new endpoint
@@ -926,7 +906,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public String createEndpoint(String             userId,
                                  String             dataManagerGUID,
                                  String             dataManagerName,
-                                 boolean            dataManagerIsHome,
                                  EndpointProperties endpointProperties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -939,7 +918,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "?dataManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix;
 
         EndpointRequestBody requestBody = new EndpointRequestBody(endpointProperties);
 
@@ -950,8 +929,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  dataManagerIsHome);
+                                                                  userId);
 
         return restResult.getGUID();
     }
@@ -963,9 +941,9 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
      * @param userId calling user
      * @param dataManagerGUID unique identifier of software server capability representing the caller
      * @param dataManagerName unique name of software server capability representing the caller
-     * @param dataManagerIsHome ensure that only the data manager can update this element
+     * @param networkAddress location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param templateProperties descriptive properties that override the template
      *
      * @return unique identifier of the new endpoint
      *
@@ -977,7 +955,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
     public String createEndpointFromTemplate(String             userId,
                                              String             dataManagerGUID,
                                              String             dataManagerName,
-                                             boolean            dataManagerIsHome,
+                                             String             networkAddress,
                                              String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -987,13 +965,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "qualifiedName";
+        final String networkAddressParameterName = "networkAddress";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(networkAddress, networkAddressParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/from-template/{2}?dataManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/network-address/{2}/from-template/{3}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -1005,8 +985,8 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID,
-                                                                  dataManagerIsHome);
+                                                                  networkAddress,
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }
@@ -1201,55 +1181,6 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
 
     /**
-     * Retrieve the list of endpoints created on behalf of the named data manager.
-     *
-     * @param userId calling user
-     * @param dataManagerGUID unique identifier of software server capability representing the caller
-     * @param dataManagerName unique name of software server capability representing the caller
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<EndpointElement> getEndpointsForDataManager(String userId,
-                                                            String dataManagerGUID,
-                                                            String dataManagerName,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        final String methodName        = "getEndpointsForDataManager";
-        final String guidParameterName = "dataManagerGUID";
-        final String nameParameterName = "dataManagerName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataManagerGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(dataManagerName, nameParameterName, methodName);
-
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-data-managers/{2}/{3}?startFrom={4}&pageSize={5}";
-
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             dataManagerGUID,
-                                                                             dataManagerName,
-                                                                             startFrom,
-                                                                             validatedPageSize);
-
-        return restResult.getElementList();
-    }
-
-
-    /**
      * Retrieve the endpoint metadata element with the supplied unique identifier.
      *
      * @param userId calling user
@@ -1330,7 +1261,8 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
 
     /**
-     * Retrieve the list of connector type metadata elements with a matching qualified or display name.
+     * Retrieve the list of connector type metadata elements with a matching qualified name, display name or
+     * connector provider class name.
      * There are no wildcards supported on this request.
      *
      * @param userId calling user

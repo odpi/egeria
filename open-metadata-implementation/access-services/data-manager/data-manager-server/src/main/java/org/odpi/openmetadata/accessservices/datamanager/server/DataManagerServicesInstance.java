@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.datamanager.converters.*;
+import org.odpi.openmetadata.accessservices.datamanager.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -57,14 +58,18 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private SchemaAttributeHandler<SchemaAttributeElement,
                                    SchemaTypeElement>                        schemaAttributeHandler;
 
+    private ConnectionHandler<ConnectionElement>       connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private EndpointHandler<EndpointElement>           endpointHandler;
+
     private ValidValuesHandler<ValidValueSetElement,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean> validValuesHandler;
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean>                     validValuesHandler;
 
 
     /**
@@ -358,6 +363,48 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
+
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         ConnectionElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new ConnectorTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                               ConnectorTypeElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+        this.endpointHandler = new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                                                     EndpointElement.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
 
         this.validValuesHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
                                                            ValidValueSetElement.class,
@@ -655,6 +702,54 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return schemaAttributeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ConnectionElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectionHandler<ConnectionElement> getConnectionHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectionHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectionHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ConnectorTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectorTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectorTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing Endpoint objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EndpointHandler<EndpointElement> getEndpointHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return endpointHandler;
     }
 
 
