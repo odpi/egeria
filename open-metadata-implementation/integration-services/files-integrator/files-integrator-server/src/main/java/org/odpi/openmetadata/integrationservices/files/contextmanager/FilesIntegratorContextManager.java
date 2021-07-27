@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.files.contextmanager;
 
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
@@ -29,11 +30,11 @@ import java.util.Map;
  */
 public class FilesIntegratorContextManager extends IntegrationContextManager
 {
-    private FilesAndFoldersClient  filesAndFoldersClient  = null;
-    private MetadataSourceClient   metadataSourceClient   = null;
-
-    private DataManagerRESTClient restClient         = null;
-    private String                metadataSourceGUID = null;
+    private FilesAndFoldersClient   filesAndFoldersClient   = null;
+    private ConnectionManagerClient connectionManagerClient = null;
+    private MetadataSourceClient    metadataSourceClient    = null;
+    private DataManagerRESTClient   restClient              = null;
+    private String                  metadataSourceGUID      = null;
 
     /**
      * Default constructor
@@ -98,6 +99,12 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                           restClient,
                                                           maxPageSize,
                                                           auditLog);
+
+        connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
@@ -199,6 +206,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                        connectorId);
 
             serviceSpecificConnector.setContext(new FilesIntegratorContext(filesAndFoldersClient,
+                                                                           connectionManagerClient,
                                                                            dataManagerEventClient,
                                                                            localServerUserId,
                                                                            metadataSourceGUID,

@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Assets;
+
 /**
  * Response container for list of GUIDs.<br>
  * The container has following attributes:<br>
@@ -16,20 +18,20 @@ import java.util.List;
 
 public class ResponseContainerAssets extends ResponseContainer {
 	
-	private static final String ASSETS = "assets";
 	public static final String TYPE_ASSETS = "assets";
+	
+	Assets attributes = new Assets();
 
 	public ResponseContainerAssets() {
 		super(TYPE_ASSETS);
 	}
 	
 	public void setAssetsList(List<String> value) {
-		setAttribute(ASSETS, value);
+		attributes.setAssets(value);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<String>  getAssetsList() {
-		return (List<String>) getAttribute(ASSETS);
+		return attributes.getAssets();
 	}
 
 }

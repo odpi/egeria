@@ -27,8 +27,8 @@ public class AssetManagerOutTopicPublisher
      * @param outTopicAuditLog logging destination if anything goes wrong.
      */
     public AssetManagerOutTopicPublisher(AssetManagerOutTopicServerConnector outTopicServerConnector,
-                                         String                                 outTopicName, 
-                                         AuditLog                               outTopicAuditLog)
+                                         String                              outTopicName,
+                                         AuditLog                            outTopicAuditLog)
     {
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
