@@ -257,7 +257,6 @@ public interface APIManagerInterface
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiGUID unique identifier of an API
      * @param properties properties about the API Operation
      *
@@ -270,7 +269,6 @@ public interface APIManagerInterface
     String createAPIOperation(String                 userId,
                               String                 apiManagerGUID,
                               String                 apiManagerName,
-                              boolean                apiManagerIsHome,
                               String                 apiGUID,
                               APIOperationProperties properties) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
@@ -283,7 +281,6 @@ public interface APIManagerInterface
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiGUID unique identifier of the API where the API Operation is located
      * @param templateProperties properties that override the template
@@ -297,7 +294,6 @@ public interface APIManagerInterface
     String createAPIOperationFromTemplate(String             userId,
                                           String             apiManagerGUID,
                                           String             apiManagerName,
-                                          boolean            apiManagerIsHome,
                                           String             templateGUID,
                                           String             apiGUID,
                                           TemplateProperties templateProperties) throws InvalidParameterException,
@@ -449,7 +445,6 @@ public interface APIManagerInterface
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiOperationGUID unique identifier of an APIOperation
      * @param parameterListType is this a header, request or response
      * @param properties properties about the API parameter list
@@ -463,7 +458,6 @@ public interface APIManagerInterface
     String createAPIParameterList(String                     userId,
                                   String                     apiManagerGUID,
                                   String                     apiManagerName,
-                                  boolean                    apiManagerIsHome,
                                   String                     apiOperationGUID,
                                   APIParameterListType       parameterListType,
                                   APIParameterListProperties properties) throws InvalidParameterException,
@@ -477,7 +471,6 @@ public interface APIManagerInterface
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the API where the API Operation is located
      * @param parameterListType is this a header, request or response
@@ -492,7 +485,6 @@ public interface APIManagerInterface
     String createAPIParameterListFromTemplate(String               userId,
                                               String               apiManagerGUID,
                                               String               apiManagerName,
-                                              boolean              apiManagerIsHome,
                                               String               templateGUID,
                                               String               apiOperationGUID,
                                               APIParameterListType parameterListType,

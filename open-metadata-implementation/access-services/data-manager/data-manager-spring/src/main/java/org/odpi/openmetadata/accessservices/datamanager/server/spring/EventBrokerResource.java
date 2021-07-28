@@ -310,7 +310,6 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param requestBody properties about the event type
      *
@@ -324,10 +323,9 @@ public class EventBrokerResource
     public GUIDResponse createEventType(@PathVariable String               serverName,
                                         @PathVariable String               userId,
                                         @PathVariable String               topicGUID,
-                                        @RequestParam boolean              eventBrokerIsHome,
                                         @RequestBody  EventTypeRequestBody requestBody)
     {
-        return restAPI.createEventType(serverName, userId,  topicGUID, eventBrokerIsHome, requestBody);
+        return restAPI.createEventType(serverName, userId,  topicGUID, requestBody);
     }
 
 
@@ -351,10 +349,9 @@ public class EventBrokerResource
                                                     @PathVariable String              userId,
                                                     @PathVariable String              templateGUID,
                                                     @PathVariable String              topicGUID,
-                                                    @RequestParam boolean             eventBrokerIsHome,
                                                     @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createEventTypeFromTemplate(serverName, userId, templateGUID, topicGUID, eventBrokerIsHome, requestBody);
+        return restAPI.createEventTypeFromTemplate(serverName, userId, templateGUID, topicGUID, requestBody);
     }
 
 

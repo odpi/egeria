@@ -23,7 +23,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
 
     /**
      * Generates and writes out an open metadata archive containing all of the connector types
-     * describing the ODPi Egeria data store open connectors.
+     * describing the Egeria data store open connectors.
      */
     private void writeOpenMetadataArchive()
     {
@@ -34,7 +34,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
             super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
                                            archiveBuilder.getOpenMetadataArchive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("error is " + error.toString());
         }
@@ -55,7 +55,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
 
             archiveWriter.writeOpenMetadataArchive();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.err.println("Exception: " + error.toString());
             System.exit(-1);
