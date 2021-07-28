@@ -637,7 +637,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public void deleteEntity(String guid, Object version) {
         /*
-        * TODO need to take into account the version of the entity once
+        * TODO need to take into account the version of the entity once we have history
         * */
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
 
