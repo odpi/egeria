@@ -65,7 +65,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
 
 
     /**
-     * Create constructor
+     * Create constructor - when templating
      *
      * @param qualifiedName unique name for the glossary
      * @param displayName short display name for the glossary

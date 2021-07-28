@@ -306,7 +306,6 @@ public class APIManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param apiManagerIsHome should the API operation be marked as owned by the event broker so others can not update?
      * @param apiGUID unique identifier of the topic where the schema is located
      * @param requestBody properties about the API operation
      *
@@ -320,10 +319,9 @@ public class APIManagerResource
     public GUIDResponse createAPIOperation(@PathVariable String                  serverName,
                                            @PathVariable String                  userId,
                                            @PathVariable String                  apiGUID,
-                                           @RequestParam boolean                 apiManagerIsHome,
                                            @RequestBody  APIOperationRequestBody requestBody)
     {
-        return restAPI.createAPIOperation(serverName, userId, apiGUID, apiManagerIsHome, requestBody);
+        return restAPI.createAPIOperation(serverName, userId, apiGUID, requestBody);
     }
 
 
@@ -334,7 +332,6 @@ public class APIManagerResource
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiGUID unique identifier of the topic where the schema is located
-     * @param apiManagerIsHome should the API operation be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new API operation or
@@ -348,10 +345,9 @@ public class APIManagerResource
                                                        @PathVariable String              userId,
                                                        @PathVariable String              templateGUID,
                                                        @PathVariable String              apiGUID,
-                                                       @RequestParam boolean             apiManagerIsHome,
                                                        @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createAPIOperationFromTemplate(serverName, userId, templateGUID, apiGUID, apiManagerIsHome, requestBody);
+        return restAPI.createAPIOperationFromTemplate(serverName, userId, templateGUID, apiGUID, requestBody);
     }
 
 
@@ -520,7 +516,6 @@ public class APIManagerResource
      * @param userId calling user
      * @param apiOperationGUID unique identifier of the topic where the schema is located
      * @param parameterListType is this a header, request or response
-     * @param apiManagerIsHome should the API parameter list be marked as owned by the event broker so others can not update?
      * @param requestBody properties about the API parameter list
      *
      * @return unique identifier of the new API parameter list or
@@ -534,10 +529,9 @@ public class APIManagerResource
                                                @PathVariable String                      userId,
                                                @PathVariable String                      apiOperationGUID,
                                                @PathVariable APIParameterListType        parameterListType,
-                                               @RequestParam boolean                     apiManagerIsHome,
                                                @RequestBody  APIParameterListRequestBody requestBody)
     {
-        return restAPI.createAPIParameterList(serverName, userId, apiOperationGUID, parameterListType, apiManagerIsHome, requestBody);
+        return restAPI.createAPIParameterList(serverName, userId, apiOperationGUID, parameterListType, requestBody);
     }
 
 
@@ -549,7 +543,6 @@ public class APIManagerResource
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the topic where the schema is located
      * @param parameterListType is this a header, request or response
-     * @param apiManagerIsHome should the API parameter list be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new API parameter list or
@@ -564,10 +557,9 @@ public class APIManagerResource
                                                            @PathVariable String               templateGUID,
                                                            @PathVariable String               apiOperationGUID,
                                                            @PathVariable APIParameterListType parameterListType,
-                                                           @RequestParam boolean              apiManagerIsHome,
                                                            @RequestBody  TemplateRequestBody  requestBody)
     {
-        return restAPI.createAPIParameterListFromTemplate(serverName, userId, templateGUID, apiOperationGUID, parameterListType, apiManagerIsHome, requestBody);
+        return restAPI.createAPIParameterListFromTemplate(serverName, userId, templateGUID, apiOperationGUID, parameterListType, requestBody);
     }
 
 
