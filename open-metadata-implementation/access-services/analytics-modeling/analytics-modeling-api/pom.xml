@@ -58,6 +58,11 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-ut</artifactId>
+			<scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>

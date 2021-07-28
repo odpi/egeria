@@ -368,7 +368,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String badGuid = "BadGuid";
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
 				() -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO, null));
-		assertEquals(AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
+		assertEquals(AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(Constants.GUID, badGuid).getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(badGuid), "GUID should be in the message.");
