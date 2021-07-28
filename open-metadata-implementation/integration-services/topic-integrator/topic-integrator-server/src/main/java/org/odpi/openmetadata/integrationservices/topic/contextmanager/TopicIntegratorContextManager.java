@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.topic.contextmanager;
 
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
@@ -31,9 +32,10 @@ import java.util.Map;
  */
 public class TopicIntegratorContextManager extends IntegrationContextManager
 {
-    private EventBrokerClient     eventBrokerClient    = null;
-    private MetadataSourceClient  metadataSourceClient = null;
-    private DataManagerRESTClient restClient           = null;
+    private EventBrokerClient       eventBrokerClient       = null;
+    private ConnectionManagerClient connectionManagerClient = null;
+    private MetadataSourceClient    metadataSourceClient    = null;
+    private DataManagerRESTClient   restClient              = null;
 
     /**
      * Default constructor
@@ -98,6 +100,12 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                   restClient,
                                                   maxPageSize,
                                                   auditLog);
+
+        connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
@@ -206,6 +214,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                        connectorId);
 
             serviceSpecificConnector.setContext(new TopicIntegratorContext(eventBrokerClient,
+                                                                           connectionManagerClient,
                                                                            dataManagerEventClient,
                                                                            localServerUserId,
                                                                            metadataSourceGUID,

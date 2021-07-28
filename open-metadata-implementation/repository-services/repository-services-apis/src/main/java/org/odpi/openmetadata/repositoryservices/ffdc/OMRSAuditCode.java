@@ -792,21 +792,24 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NEW_TYPE_ADDED("OMRS-AUDIT-0301",
                    OMRSAuditLogRecordSeverity.TYPES,
                    "The local server has added a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",
-                   "The local server will be able to manage metadata instances of this type.",
-                   "No action required.  This message is for information only."),
+                   "The local server will be able to manage metadata instances of this type and version.",
+                   "Validate that this new type is expected and it is appropriate that the local repository supports it.  " +
+                           "Egeria supplied native repositories support all types, but other repositories and proxies to third party repositories may not."),
 
     NEW_TYPE_NOT_SUPPORTED("OMRS-AUDIT-0302",
                            OMRSAuditLogRecordSeverity.TYPES,
                            "The local server is unable to add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature",
                            "The local server will not be able to manage metadata instances of this type.",
-                           "No action needed.  This message is for information only."),
+                           "Validate that it is expected that this type is not supported by this repository.  " +
+                                   "Ensure that there is at least one repository in the cohort that does support this type if you need to " +
+                                   "store metadata of this type.  The Egeria supplied native repositories support all types."),
 
     TYPE_UPDATED("OMRS-AUDIT-0303",
                  OMRSAuditLogRecordSeverity.TYPES,
                  "The local server has updated an existing type called {0} with a unique identifier of {1} to version number of {2} using " +
                          "a patch from {3}",
                  "The local server will be able to manage metadata instances of this latest version of the type.",
-                 "No actions are required.  This message is for information only."),
+                 "No actions are required.  This message is for information only to record the level of type in use by the local repository."),
 
     TYPE_REMOVED("OMRS-AUDIT-0304",
                  OMRSAuditLogRecordSeverity.TYPES,
@@ -927,6 +930,41 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                   "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
                              "First check the caller to ensure it is working as expected.  " +
                              "Then investigate the source of the type and any other errors."),
+
+    TYPE_ALREADY_KNOWN("OMRS-AUDIT-0318",
+                 OMRSAuditLogRecordSeverity.TYPES,
+                 "The local server has recognized a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",
+                 "The local server already has knowledge of the new type and so it is able to store metadata of this type.",
+                 "No action is needed since you have a repository that has embedded support for the type."),
+
+
+    NEW_TYPE_CACHED_FOR_ENTERPRISE("OMRS-AUDIT-0319",
+                       OMRSAuditLogRecordSeverity.TYPES,
+                       "The local server does not have a local repository and so a new type called {0} with a unique identifier of {1} and a version number of {2} from {3} is just cached for information",
+                       "The local server stores a copy of this type for use in enterprise repository queries - typically from Open Metadata Access Services (OMASs).",
+                       "Validate that there is at least once repository in the cohort that supports the storing of this type if you wish to manage metadata of this type."),
+
+    TYPE_UPDATE_SKIPPED("OMRS-AUDIT-0320",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                        "A patch to the {0} ({1}) type definition was ignored because it is to be applied to the {2} version of the type and the patch is for version {3}",
+                        "The level of support for this type in the local repository remains at the current level.  This means that metadata instances " +
+                                "that use the later version of the type can not be stored in this repository.",
+                        "Validate that types are loading correctly in the server since this may indicate that a patch has been missed." +
+                                "If the repository is not able to support the updating of types, or can not support the later versions of this type then this message is expected.  " +
+                                "If there was an issue in the type loading then reload the type archives in the correct order to apply the intermediate " +
+                                "patches."),
+
+    UNKNOWN_TYPE_UPDATE_SKIPPED("OMRS-AUDIT-0321",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                        "A patch to the {0} ({1}) type definition from {2} was ignored because the local repository does not support this type",
+                        "The type remains unsupported in this repository.",
+                        "No action is required since this type is out of scope for this repository."),
+
+    UPDATED_TYPE_CACHED_FOR_ENTERPRISE("OMRS-AUDIT-0322",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                         "The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
+                         "The local server stores a copy of the updated type for use in enterprise repository queries - typically from Open Metadata Access Services (OMASs).",
+                         "Validate that there is at least once repository in the cohort that supports the storing of this version of the type if you wish to manage metadata of this type."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                           OMRSAuditLogRecordSeverity.ERROR,

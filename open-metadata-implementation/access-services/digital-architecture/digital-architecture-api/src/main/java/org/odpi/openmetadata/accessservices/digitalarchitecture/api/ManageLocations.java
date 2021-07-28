@@ -60,6 +60,7 @@ public interface ManageLocations
      * Update the metadata element representing a location.
      *
      * @param userId calling user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationGUID unique identifier of the metadata element to update
      * @param locationProperties new properties for this element
      *
@@ -68,6 +69,7 @@ public interface ManageLocations
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void updateLocation(String             userId,
+                        boolean            isMergeUpdate,
                         String             locationGUID,
                         LocationProperties locationProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,

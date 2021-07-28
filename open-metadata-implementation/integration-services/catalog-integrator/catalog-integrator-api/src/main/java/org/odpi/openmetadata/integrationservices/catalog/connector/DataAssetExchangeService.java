@@ -18,8 +18,7 @@ import java.util.Map;
 
 
 /**
- * DataAssetExchangeService is the context for managing data assets and associated elements such as schemas and
- * connections.
+ * DataAssetExchangeService is the context for managing data assets and associated elements such as schemas.
  */
 public class DataAssetExchangeService extends SchemaExchangeService
 {
@@ -280,7 +279,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+            dataAssetExchangeClient.withdrawDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
         }
         else
         {
@@ -491,7 +490,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param dataAssetGUID unique identifier of the requested metadata element
      *
      * @return matching metadata element
      *
@@ -502,10 +501,10 @@ public class DataAssetExchangeService extends SchemaExchangeService
     public DataAssetElement getDataAssetByGUID(String userId,
                                                String assetManagerGUID,
                                                String assetManagerName,
-                                               String openMetadataGUID) throws InvalidParameterException,
+                                               String dataAssetGUID) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, dataAssetGUID);
     }
 }

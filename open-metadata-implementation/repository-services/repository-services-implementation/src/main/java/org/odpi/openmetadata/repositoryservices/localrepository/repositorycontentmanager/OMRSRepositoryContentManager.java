@@ -169,6 +169,32 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
+     * An incoming patch for the type is not supported by the local repository and so it has not been processed into a TypeDef.
+     * This method converts it into the TypeDef and adds it to known types.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefPatch received patch
+     * @param methodName calling method
+     * @throws InvalidParameterException the original typeDef or typeDefPatch is null
+     * @throws PatchErrorException  the patch is either badly formatted, or does not apply to the supplied TypeDef
+     */
+    private void cacheUnsupportedTypeDef(String sourceName, TypeDefPatch typeDefPatch, String methodName) throws InvalidParameterException,
+                                                                                                                 PatchErrorException
+    {
+        TypeDef originalTypeDef = getTypeDefByName(typeDefPatch.getTypeDefName());
+
+        OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+
+        TypeDef updatedTypeDef = utilities.applyPatch(sourceName,
+                                                      originalTypeDef,
+                                                      typeDefPatch,
+                                                      methodName);
+
+        this.cacheTypeDef(sourceName, updatedTypeDef, false);
+    }
+
+
+    /**
      * Cache a lookup of the TypeDef's properties by their name, to the names of the TypeDefs in which a property by
      * that name is defined.
      *
@@ -2646,7 +2672,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                      * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
                      * be dynamically defined by the local repository.
                      */
-                    if (!metadataCollection.verifyTypeDef(localServerUserId, typeDef))
+                    if (! metadataCollection.verifyTypeDef(localServerUserId, typeDef))
                     {
                         metadataCollection.addTypeDef(sourceName, typeDef);
 
@@ -2655,6 +2681,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                                                               typeDef.getGUID(),
                                                                                               Long.toString(typeDef.getVersion()),
                                                                                               sourceName));
+                    }
+                    else
+                    {
+                        auditLog.logMessage(actionDescription,
+                                            OMRSAuditCode.TYPE_ALREADY_KNOWN.getMessageDefinition(typeDef.getName(),
+                                                                                                  typeDef.getGUID(),
+                                                                                                  Long.toString(typeDef.getVersion()),
+                                                                                                  sourceName));
                     }
 
                     /*
@@ -2669,6 +2703,12 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 /*
                  * No local repository so just cache for enterprise repository services.
                  */
+                auditLog.logMessage(actionDescription,
+                                    OMRSAuditCode.NEW_TYPE_CACHED_FOR_ENTERPRISE.getMessageDefinition(typeDef.getName(),
+                                                                                                      typeDef.getGUID(),
+                                                                                                      Long.toString(typeDef.getVersion()),
+                                                                                                      sourceName));
+
                 this.cacheTypeDef(sourceName, typeDef, false);
             }
         }
@@ -2999,6 +3039,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (metadataCollection != null)
             {
+                /*
+                 * There is a valid local repository
+                 */
                 TypeDef currentTypeDef = activeTypeDefNames.get(typeDefPatch.getTypeDefName());
 
                 if (currentTypeDef != null)
@@ -3013,7 +3056,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                          */
                         TypeDef updatedTypeDef = metadataCollection.updateTypeDef(localServerUserId, typeDefPatch);
 
-                        log.debug("Patch successfully applied:" + updatedTypeDef);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Patch successfully applied:" + updatedTypeDef);
+                        }
 
                         auditLog.logMessage(actionDescription,
                                             OMRSAuditCode.TYPE_UPDATED.getMessageDefinition(updatedTypeDef.getName(),
@@ -3023,20 +3069,66 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
                         this.cacheTypeDef(sourceName, updatedTypeDef, true);
                     }
+                    else if (currentTypeDef.getVersion() < typeDefPatch.getApplyToVersion())
+                    {
+                        /*
+                         * The patch is for a future version of the type.  This is potentially troublesome because it suggests that
+                         * a patch has been skipped.  This will not happen to the open types because they are managed in
+                         */
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Future patch skipped:" + typeDefPatch);
+                        }
+
+                        auditLog.logMessage(actionDescription,
+                                            OMRSAuditCode.TYPE_UPDATE_SKIPPED.getMessageDefinition(currentTypeDef.getName(),
+                                                                                                   currentTypeDef.getGUID(),
+                                                                                                   Long.toString(currentTypeDef.getVersion()),
+                                                                                                   Long.toString(typeDefPatch.getApplyToVersion())));
+
+                        this.cacheUnsupportedTypeDef(sourceName, typeDefPatch, methodName);
+                    }
+                    else if (log.isDebugEnabled())
+                    {
+                        log.debug("Back-level patch ignored:" + typeDefPatch);
+                    }
+                }
+                else
+                {
+                    /*
+                     * The local repository does not support the type as such the patch is ignored
+                     */
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Unsupported patch ignored:" + typeDefPatch);
+                    }
+
+                    auditLog.logMessage(actionDescription,
+                                        OMRSAuditCode.UNKNOWN_TYPE_UPDATE_SKIPPED.getMessageDefinition(typeDefPatch.getTypeDefName(),
+                                                                                                       typeDefPatch.getTypeDefGUID(),
+                                                                                                       sourceName));
+
+
+                    this.cacheUnsupportedTypeDef(sourceName, typeDefPatch, methodName);
                 }
             }
             else
             {
-                TypeDef originalTypeDef = getTypeDefByName(typeDefPatch.getTypeDefName());
+                /*
+                 * No local repository so just cache type for enterprise services
+                 */
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No local repository - patch cached in known types:" + typeDefPatch);
+                }
 
-                OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+                auditLog.logMessage(actionDescription,
+                                    OMRSAuditCode.UPDATED_TYPE_CACHED_FOR_ENTERPRISE.getMessageDefinition(typeDefPatch.getTypeDefName(),
+                                                                                                   typeDefPatch.getTypeDefGUID(),
+                                                                                                   Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                   sourceName));
 
-                TypeDef updatedTypeDef = utilities.applyPatch(sourceName,
-                                                              originalTypeDef,
-                                                              typeDefPatch,
-                                                              methodName);
-
-                this.cacheTypeDef(sourceName, updatedTypeDef, false);
+                this.cacheUnsupportedTypeDef(sourceName, typeDefPatch, methodName);
             }
         }
         catch (FunctionNotSupportedException  error)

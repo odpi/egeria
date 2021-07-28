@@ -2005,6 +2005,7 @@ public class OMRSRepositoryRESTServices
      * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
      * versions of an entity, set both the 'fromTime' and 'toTime' to null.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @param historyRangeRequest detailing the range of times and paging for the results
@@ -3588,6 +3589,7 @@ public class OMRSRepositoryRESTServices
      * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
      * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @param historyRangeRequest detailing the range of times and paging for the results
