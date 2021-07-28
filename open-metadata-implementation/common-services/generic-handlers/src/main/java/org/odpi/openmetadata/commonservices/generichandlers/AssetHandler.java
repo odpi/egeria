@@ -139,6 +139,30 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+    /**
+     * The externalSource identifier is supplied on the APIs that supply external source identifiers for two purposes.
+     * The first is the standard mechanism to control the ownership/provenance of the resulting elements.
+     * The second is to enable a relationship between an asset and the software server capability to be created.
+     * The externalSourceIsHome boolean determines whether the identifier is used to control ownership or not.
+     * The relationship is set up if the externalSourceGUID is not null.
+     *
+     * @param externalSourceIsHome use the external source GUID as the owner of this element
+     * @param externalSourceID supplied external source unique identifier/name
+     * @return externalSource
+     */
+    public String getExternalSourceID(boolean externalSourceIsHome,
+                                      String  externalSourceID)
+    {
+        if (externalSourceIsHome)
+        {
+            return externalSourceID;
+        }
+
+        return null;
+    }
+
+
     /**
      * Save any associated Connection.
      *
@@ -197,6 +221,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   properties,
                                   methodName);
     }
+
 
 
 
@@ -288,6 +313,52 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                methodName);
+    }
+
+
+    /**
+     * Link the asset to the associated software server capability if supplied.  This is called from outside of AssetHandler.
+     * The assetGUID and softwareServerCapabilityGUID are checked to ensure they are not null snd if all is well, the relationship is established.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param assetGUID unique identifier of the asset to connect the schema to
+     * @param assetGUIDParameterName parameter providing the assetGUID
+     * @param softwareServerCapabilityGUID identifier for schema Type object
+     * @param softwareServerCapabilityGUIDParameterName parameter providing the softwareServerCapabilityGUID
+     * @param methodName calling method
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public  void attachAssetToSoftwareServerCapability(String  userId,
+                                                       String  externalSourceGUID,
+                                                       String  externalSourceName,
+                                                       String  assetGUID,
+                                                       String  assetGUIDParameterName,
+                                                       String  softwareServerCapabilityGUID,
+                                                       String  softwareServerCapabilityGUIDParameterName,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        if ((assetGUID != null) && (softwareServerCapabilityGUID != null))
+        {
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      softwareServerCapabilityGUID,
+                                      softwareServerCapabilityGUIDParameterName,
+                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                      assetGUID,
+                                      assetGUIDParameterName,
+                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                      null,
+                                      methodName);
+        }
     }
 
 

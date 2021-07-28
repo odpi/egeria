@@ -14,6 +14,11 @@ classes `OMRSArchiveBuilder` and `OMRSArchiveHelper` found in the `repository-se
 
 The types for each release are managed in separate classes. For example:
  * `OpenMetadataTypesArchive` - new candidate types for current release 
+ * `OpenMetadataTypesArchive2_11` - approved types added for [2.11 release](../../../release-notes/release-notes-2-11.md)
+ * `OpenMetadataTypesArchive2_10` - approved types added for [2.10 release](../../../release-notes/release-notes-2-10.md)
+ * `OpenMetadataTypesArchive2_9` - approved types added for [2.9 release](../../../release-notes/release-notes-2-9.md)
+ * `OpenMetadataTypesArchive2_8` - approved types added for [2.8 release](../../../release-notes/release-notes-2-8.md)
+ * `OpenMetadataTypesArchive2_7` - approved types added for [2.7 release](../../../release-notes/release-notes-2-7.md)
  * `OpenMetadataTypesArchive2_6` - approved types added for [2.6 release](../../../release-notes/release-notes-2-6.md)
  * `OpenMetadataTypesArchive2_5` - approved types added for [2.5 release](../../../release-notes/release-notes-2-5.md)
  * `OpenMetadataTypesArchive2_4` - approved types added for [2.4 release](../../../release-notes/release-notes-2-4.md)
@@ -51,7 +56,12 @@ archive that your new archive depends on ...
 This approach is used in the `design-model-archives` that create archives with glossary and model content
 that follow the open metadata types.
 
-You can create a JSON formatted archive file containing the open metadata types by running the `OpenMetadataTypesArachiveWriter`.
+You can create a JSON formatted archive file containing the open metadata types by running the 
+[`OpenMetadataTypesArchiveWriterUtility`](../open-metadata-types-utility).
+
+----
+
+* [Return to Open Metadata Archives](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

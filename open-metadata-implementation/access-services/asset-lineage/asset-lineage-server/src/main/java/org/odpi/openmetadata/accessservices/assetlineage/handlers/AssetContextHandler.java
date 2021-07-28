@@ -144,7 +144,7 @@ public class AssetContextHandler {
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
         RelationshipsContext context = new RelationshipsContext();
 
-        if (handlerHelper.isAsset(userId, entityDetail)) {
+        if (handlerHelper.isDataStore(userId, entityDetail)) {
             context = buildDataFileContext(userId, entityDetail);
         }
 
@@ -343,7 +343,7 @@ public class AssetContextHandler {
      */
     public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
-        if (!handlerHelper.isTableOrAsset(userId, entityDetail)) {
+        if (!handlerHelper.isTableOrDataStore(userId, entityDetail)) {
             return Optional.empty();
         }
 

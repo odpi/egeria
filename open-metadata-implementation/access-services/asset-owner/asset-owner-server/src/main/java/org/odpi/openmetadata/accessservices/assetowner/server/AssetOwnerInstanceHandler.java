@@ -166,8 +166,8 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
     FilesAndFoldersHandler<FileSystemElement, FolderElement, FileElement> getFilesAndFoldersHandler(String userId,
                                                                                                     String serverName,
                                                                                                     String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                                 UserNotAuthorizedException,
-                                                                                                                                                 PropertyServerException
+                                                                                                                                        UserNotAuthorizedException,
+                                                                                                                                        PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,
@@ -194,17 +194,17 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws PropertyServerException error in the requested server
      */
     ValidValuesHandler<ValidValueElement,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean,
-            OpenMetadataAPIDummyBean> getValidValuesHandler(String userId,
-                                                            String serverName,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean> getValidValuesHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,
@@ -234,8 +234,8 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
     public DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> getDiscoveryAnalysisReportHandler(String userId,
                                                                                                      String serverName,
                                                                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                         PropertyServerException
     {
 
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
@@ -322,11 +322,11 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    public ConnectionHandler<OpenMetadataAPIDummyBean> getConnectionHandler(String userId,
-                                                                            String serverName,
-                                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    public ConnectionHandler<ConnectionElement> getConnectionHandler(String userId,
+                                                                     String serverName,
+                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,
@@ -352,11 +352,11 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    public ConnectorTypeHandler<OpenMetadataAPIDummyBean> getConnectorTypeHandler(String userId,
-                                                                                  String serverName,
-                                                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                                                      UserNotAuthorizedException,
-                                                                                                                      PropertyServerException
+    public ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,
@@ -382,11 +382,11 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    public EndpointHandler<OpenMetadataAPIDummyBean> getEndpointHandler(String userId,
-                                                                        String serverName,
-                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+    public EndpointHandler<EndpointElement> getEndpointHandler(String userId,
+                                                               String serverName,
+                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,

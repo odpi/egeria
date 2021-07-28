@@ -59,24 +59,25 @@ public class PropertyFacetBuilder extends ReferenceableBuilder
     @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
+        InstanceProperties instanceProperties = super.getInstanceProperties(methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SCHEMA_VERSION_PROPERTY_NAME,
-                                                                      schemaVersion,
-                                                                      methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                  OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  instanceProperties,
+                                                                  OpenMetadataAPIMapper.SCHEMA_VERSION_PROPERTY_NAME,
+                                                                  schemaVersion,
                                                                   methodName);
-        return properties;
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  instanceProperties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             instanceProperties,
+                                                                             OpenMetadataAPIMapper.PROPERTIES_PROPERTY_NAME,
+                                                                             properties,
+                                                                             methodName);
+        return instanceProperties;
     }
 }

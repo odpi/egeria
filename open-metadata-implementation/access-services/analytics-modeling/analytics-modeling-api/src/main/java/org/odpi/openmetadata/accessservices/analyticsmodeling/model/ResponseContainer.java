@@ -3,15 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Base class container for the generic data in a response.<br>
@@ -20,22 +18,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Id - identifier of the response data<br>
  * Type - set by subclass to identify content of the response.<br>
  * 
- * 
- *
  */
-@JsonAutoDetect(getterVisibility = NONE, setterVisibility = NONE, fieldVisibility = NONE)
+@JsonAutoDetect(getterVisibility=NONE, setterVisibility=NONE, fieldVisibility=ANY)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class ResponseContainer {
 
-	@JsonProperty("attributes")
-	private SortedMap<String, Object> attributes = new TreeMap<>();
-	@JsonProperty("id")
 	private String id;
-	@JsonProperty("type")
 	private final String type;
-	
+
+	/**
+	 * Default constructor required for serialization.
+	 */
+	ResponseContainer() {
+		type = null;
+	}
+
 	/**
 	 * Constructor defines type of response/data stored
 	 * @param type of the response.
@@ -66,23 +64,5 @@ public class ResponseContainer {
 	public String getType() {
 		return type;
 	}
-	/**
-	 * Get attribute value identified by name.
-	 * @param key attribute identifier
-	 * @return value of the requested attribute.
-	 */
-	protected Object getAttribute(String key) {
-		return attributes.get(key);
-	}
-
-	/**
-	 * Set attribute value identified by name.
-	 * @param key attribute identifier
-	 * @param value of the attribute to be set.
-	 */
-	protected void setAttribute(String key, Object value) {
-		this.attributes.put(key, value);
-	}
-
-
+	
 }

@@ -585,7 +585,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the API manager
      * @param apiManagerName unique name of software server capability representing the API manager
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiGUID unique identifier of the api where the API operation is located
      * @param properties properties about the API operation
      *
@@ -599,7 +598,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIOperation(String                 userId,
                                      String                 apiManagerGUID,
                                      String                 apiManagerName,
-                                     boolean                apiManagerIsHome,
                                      String                 apiGUID,
                                      APIOperationProperties properties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
@@ -613,7 +611,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateGUID(apiGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations?apiManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations";
 
         APIOperationRequestBody requestBody = new APIOperationRequestBody(properties);
 
@@ -625,8 +623,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  apiGUID,
-                                                                  apiManagerIsHome);
+                                                                  apiGUID);
 
         return restResult.getGUID();
     }
@@ -638,7 +635,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the API manager
      * @param apiManagerName unique name of software server capability representing the API manager
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiGUID unique identifier of the api where the API operation is located
      * @param templateProperties properties that override the template
@@ -653,7 +649,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIOperationFromTemplate(String             userId,
                                                  String             apiManagerGUID,
                                                  String             apiManagerName,
-                                                 boolean            apiManagerIsHome,
                                                  String             templateGUID,
                                                  String             apiGUID,
                                                  TemplateProperties templateProperties) throws InvalidParameterException,
@@ -672,7 +667,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations/from-template/{3}?apiManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}/api-operations/from-template/{3}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -685,8 +680,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                   serverName,
                                                                   userId,
                                                                   apiGUID,
-                                                                  templateGUID,
-                                                                  apiManagerIsHome);
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }
@@ -968,7 +962,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param apiOperationGUID unique identifier of an APIOperation
      * @param parameterListType is this a header, request or response
      * @param properties properties about the API parameter list
@@ -983,7 +976,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIParameterList(String                     userId,
                                          String                     apiManagerGUID,
                                          String                     apiManagerName,
-                                         boolean                    apiManagerIsHome,
                                          String                     apiOperationGUID,
                                          APIParameterListType       parameterListType,
                                          APIParameterListProperties properties) throws InvalidParameterException,
@@ -1002,7 +994,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateEnum(parameterListType, listTypeParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}/api-parameter-lists/{3}?apiManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}/api-parameter-lists/{3}";
 
         APIParameterListRequestBody requestBody = new APIParameterListRequestBody(properties);
 
@@ -1015,8 +1007,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                   serverName,
                                                                   userId,
                                                                   apiOperationGUID,
-                                                                  parameterListType,
-                                                                  apiManagerIsHome);
+                                                                  parameterListType);
 
         return restResult.getGUID();
     }
@@ -1028,7 +1019,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the API Operation where the API Parameter List is located
      * @param parameterListType is this a header, request or response
@@ -1044,7 +1034,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIParameterListFromTemplate(String               userId,
                                                      String               apiManagerGUID,
                                                      String               apiManagerName,
-                                                     boolean              apiManagerIsHome,
                                                      String               templateGUID,
                                                      String               apiOperationGUID,
                                                      APIParameterListType parameterListType,
@@ -1066,7 +1055,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}/api-parameter-lists/{3}/from-template/{4}?apiManagerIsHome={5}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/{2}/api-parameter-lists/{3}/from-template/{4}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -1080,8 +1069,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                   userId,
                                                                   apiOperationGUID,
                                                                   parameterListType,
-                                                                  templateGUID,
-                                                                  apiManagerIsHome);
+                                                                  templateGUID);
 
         return restResult.getGUID();
     }
@@ -1362,7 +1350,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the API parameter is nested underneath
      * @param apiParameterProperties properties for the API parameter
      *
@@ -1375,7 +1362,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIParameter(String                 userId,
                                      String                 apiManagerGUID,
                                      String                 apiManagerName,
-                                     boolean                apiManagerIsHome,
                                      String                 schemaElementGUID,
                                      APIParameterProperties apiParameterProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -1391,14 +1377,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateObject(apiParameterProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(apiParameterProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        if (apiManagerIsHome)
-        {
-            return super.createSchemaAttribute(userId, apiManagerGUID, apiManagerName, schemaElementGUID, getSchemaAttributeProperties(apiParameterProperties));
-        }
-        else
-        {
-            return super.createSchemaAttribute(userId, null, null, schemaElementGUID, getSchemaAttributeProperties(apiParameterProperties));
-        }
+        return super.createSchemaAttribute(userId, apiManagerGUID, apiManagerName, schemaElementGUID, getSchemaAttributeProperties(apiParameterProperties));
     }
 
 
@@ -1408,7 +1387,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the API parameter is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -1422,21 +1400,13 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public String createAPIParameterFromTemplate(String             userId,
                                                  String             apiManagerGUID,
                                                  String             apiManagerName,
-                                                 boolean            apiManagerIsHome,
                                                  String             schemaElementGUID,
                                                  String             templateGUID,
                                                  TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        if (apiManagerIsHome)
-        {
-            return super.createSchemaAttributeFromTemplate(userId, apiManagerGUID, apiManagerName, schemaElementGUID, templateGUID, templateProperties);
-        }
-        else
-        {
-            return super.createSchemaAttributeFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
-        }
+        return super.createSchemaAttributeFromTemplate(userId, apiManagerGUID, apiManagerName, schemaElementGUID, templateGUID, templateProperties);
     }
 
 
@@ -1446,7 +1416,6 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
-     * @param apiManagerIsHome should the API operation be marked as owned by the API manager so others can not update?
      * @param relationshipTypeName name of relationship to create
      * @param apiParameterGUID unique identifier of the API parameter
      * @param schemaTypeGUID unique identifier of the schema type to connect
@@ -1458,21 +1427,13 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     public void setupSchemaType(String  userId,
                                 String  apiManagerGUID,
                                 String  apiManagerName,
-                                boolean apiManagerIsHome,
                                 String  relationshipTypeName,
                                 String  apiParameterGUID,
                                 String  schemaTypeGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        if (apiManagerIsHome)
-        {
-            super.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
-        }
-        else
-        {
-            super.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
-        }
+        super.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
     }
 
 
