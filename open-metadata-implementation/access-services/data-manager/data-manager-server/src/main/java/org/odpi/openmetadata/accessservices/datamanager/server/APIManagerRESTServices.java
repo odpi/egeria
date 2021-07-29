@@ -7,7 +7,10 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElem
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListType;
+import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -20,6 +23,9 @@ import org.odpi.openmetadata.commonservices.generichandlers.APIOperationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIParameterListHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +42,7 @@ public class APIManagerRESTServices
     private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(APIManagerRESTServices.class),
                                                                                    instanceHandler.getServiceName());
 
-    private RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -44,6 +50,7 @@ public class APIManagerRESTServices
     public APIManagerRESTServices()
     {
     }
+
 
     /**
      * Create a new metadata element to represent a api.
@@ -63,9 +70,9 @@ public class APIManagerRESTServices
                                   boolean          apiManagerIsHome,
                                   APIRequestBody requestBody)
     {
-        final String methodName                   = "createAPI";
+        final String methodName                  = "createAPI";
         final String apiManagerGUIDParameterName = "apiManagerGUID";
-        final String apiGUIDParameterName       = "apiGUID";
+        final String apiGUIDParameterName        = "apiGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -89,78 +96,33 @@ public class APIManagerRESTServices
 
                 String apiGUID;
 
-                if (apiManagerIsHome)
-                {
-                    apiGUID = handler.createAssetInRepository(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
-                                                              requestBody.getAdditionalProperties(),
-                                                              typeName,
-                                                              requestBody.getExtendedProperties(),
-                                                              InstanceStatus.ACTIVE,
-                                                              methodName);
-
-                    if ((apiGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     apiManagerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     apiGUID,
-                                                     apiGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    apiGUID = handler.createAssetInRepository(userId,
-                                                              null,
-                                                              null,
-                                                              requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
-                                                              requestBody.getAdditionalProperties(),
-                                                              typeName,
-                                                              requestBody.getExtendedProperties(),
-                                                              InstanceStatus.ACTIVE,
-                                                              methodName);
-
-                    if ((apiGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     apiManagerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     apiGUID,
-                                                     apiGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
+                apiGUID = handler.createAssetInRepository(userId,
+                                                          handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                          handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                          requestBody.getQualifiedName(),
+                                                          requestBody.getDisplayName(),
+                                                          requestBody.getDescription(),
+                                                          requestBody.getAdditionalProperties(),
+                                                          typeName,
+                                                          requestBody.getExtendedProperties(),
+                                                          InstanceStatus.ACTIVE,
+                                                          methodName);
 
                 if (apiGUID != null)
                 {
-                    if (requestBody.getVendorProperties() != null)
-                    {
-                        handler.setVendorProperties(userId,
-                                                    apiGUID,
-                                                    requestBody.getVendorProperties(),
-                                                    methodName);
-                    }
+                    handler.attachAssetToSoftwareServerCapability(userId,
+                                                                  handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                                  handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                                  apiGUID,
+                                                                  apiGUIDParameterName,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  apiManagerGUIDParameterName,
+                                                                  methodName);
+
+                    handler.setVendorProperties(userId,
+                                                apiGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
 
                 response.setGUID(apiGUID);
@@ -201,11 +163,11 @@ public class APIManagerRESTServices
                                               boolean             apiManagerIsHome,
                                               TemplateRequestBody requestBody)
     {
-        final String methodName                   = "createAPIFromTemplate";
+        final String methodName                  = "createAPIFromTemplate";
         final String apiManagerGUIDParameterName = "apiManagerGUID";
-        final String apiGUIDParameterName       = "apiGUID";
-        final String templateGUIDParameterName    = "templateGUID";
-        final String qualifiedNameParameterName   = "qualifiedName";
+        final String apiGUIDParameterName        = "apiGUID";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -220,74 +182,28 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String apiGUID;
+                String apiGUID = handler.addAssetFromTemplate(userId,
+                                                              handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                              handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                              templateGUID,
+                                                              templateGUIDParameterName,
+                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                              requestBody.getQualifiedName(),
+                                                              qualifiedNameParameterName,
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getNetworkAddress(),
+                                                              methodName);
 
-                if (apiManagerIsHome)
-                {
-                    apiGUID = handler.addAssetFromTemplate(userId,
-                                                           requestBody.getExternalSourceGUID(),
-                                                           requestBody.getExternalSourceName(),
-                                                           templateGUID,
-                                                           templateGUIDParameterName,
-                                                           OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                           requestBody.getQualifiedName(),
-                                                           qualifiedNameParameterName,
-                                                           requestBody.getDisplayName(),
-                                                           requestBody.getDescription(),
-                                                           requestBody.getNetworkAddress(),
-                                                           methodName);
-
-                    if ((apiGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     apiManagerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     apiGUID,
-                                                     apiGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    apiGUID = handler.addAssetFromTemplate(userId,
-                                                           null,
-                                                           null,
-                                                           templateGUID,
-                                                           templateGUIDParameterName,
-                                                           OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                           requestBody.getQualifiedName(),
-                                                           qualifiedNameParameterName,
-                                                           requestBody.getDisplayName(),
-                                                           requestBody.getDescription(),
-                                                           requestBody.getNetworkAddress(),
-                                                           methodName);
-
-                    if ((apiGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     apiManagerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     apiGUID,
-                                                     apiGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
+                handler.attachAssetToSoftwareServerCapability(userId,
+                                                              handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                              handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                              apiGUID,
+                                                              apiGUIDParameterName,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              apiManagerGUIDParameterName,
+                                                              methodName);
 
                 response.setGUID(apiGUID);
             }
@@ -321,10 +237,10 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateAPI(String           serverName,
-                                  String           userId,
-                                  String           apiGUID,
-                                  boolean          isMergeUpdate,
+    public VoidResponse updateAPI(String         serverName,
+                                  String         userId,
+                                  String         apiGUID,
+                                  boolean        isMergeUpdate,
                                   APIRequestBody requestBody)
     {
         final String methodName = "updateAPI";
@@ -364,16 +280,12 @@ public class APIManagerRESTServices
                                     isMergeUpdate,
                                     methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                apiGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -586,16 +498,19 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            List<APIElement> apiAssets = handler.findAssets(userId,
-                                                            OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                            searchString,
-                                                            searchStringParameterName,
-                                                            startFrom,
-                                                            pageSize,
-                                                            methodName);
+            List<APIElement> apiElements = handler.findAssets(userId,
+                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                              searchString,
+                                                              searchStringParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              methodName);
 
-            response.setElementList(apiAssets);
+            /*
+             * Set up the vendor properties in the results before setting the results in the response object.
+             */
+            response.setElementList(this.setUpVendorProperties(userId, apiElements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -635,7 +550,7 @@ public class APIManagerRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         APIsResponse response = new APIsResponse();
-        AuditLog          auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {
@@ -643,16 +558,19 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            List<APIElement> apiAssets = handler.getAssetsByName(userId,
-                                                                 OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                                 name,
-                                                                 nameParameterName,
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 methodName);
+            List<APIElement> apiElements = handler.getAssetsByName(userId,
+                                                                   OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                   name,
+                                                                   nameParameterName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   methodName);
 
-            response.setElementList(apiAssets);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -702,18 +620,21 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            List<APIElement> apiAssets = handler.getAttachedElements(userId,
-                                                                     apiManagerGUID,
-                                                                     apiManagerGUIDParameterName,
-                                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName);
+            List<APIElement> apiElements = handler.getAttachedElements(userId,
+                                                                       apiManagerGUID,
+                                                                       apiManagerGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
-            response.setElementList(apiAssets);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -756,13 +677,16 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            APIElement apiAsset = handler.getBeanFromRepository(userId,
-                                                                guid,
-                                                                guidParameterName,
-                                                                OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                                methodName);
+            APIElement apiElement = handler.getBeanFromRepository(userId,
+                                                                  guid,
+                                                                  guidParameterName,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  methodName);
 
-            response.setElement(apiAsset);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElement(setUpVendorProperties(userId, apiElement, handler, methodName));
         }
         catch (Exception error)
         {
@@ -784,7 +708,6 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param apiManagerIsHome should the API operation be marked as owned by the event broker so others can not update?
      * @param apiGUID unique identifier of the topic where the schema is located
      * @param requestBody properties about the API operation
      *
@@ -796,7 +719,6 @@ public class APIManagerRESTServices
     public GUIDResponse createAPIOperation(String                  serverName,
                                            String                  userId,
                                            String                  apiGUID,
-                                           boolean                 apiManagerIsHome,
                                            APIOperationRequestBody requestBody)
     {
         final String methodName = "createAPIOperation";
@@ -815,50 +737,24 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String apiOperationGUID;
-
-                if (apiManagerIsHome)
-                {
-                    apiOperationGUID = handler.createAPIOperation(userId,
-                                                                  requestBody.getExternalSourceGUID(),
-                                                                  requestBody.getExternalSourceName(),
-                                                                  apiGUID,
-                                                                  apiGUIDParameterName,
-                                                                  requestBody.getQualifiedName(),
-                                                                  requestBody.getDisplayName(),
-                                                                  requestBody.getDescription(),
-                                                                  requestBody.getVersionNumber(),
-                                                                  requestBody.getIsDeprecated(),
-                                                                  requestBody.getAuthor(),
-                                                                  requestBody.getUsage(),
-                                                                  requestBody.getEncodingStandard(),
-                                                                  requestBody.getNamespace(),
-                                                                  requestBody.getAdditionalProperties(),
-                                                                  requestBody.getTypeName(),
-                                                                  requestBody.getExtendedProperties(),
-                                                                  methodName);
-                }
-                else
-                {
-                    apiOperationGUID = handler.createAPIOperation(userId,
-                                                                  null,
-                                                                  null,
-                                                                  apiGUID,
-                                                                  apiGUIDParameterName,
-                                                                  requestBody.getQualifiedName(),
-                                                                  requestBody.getDisplayName(),
-                                                                  requestBody.getDescription(),
-                                                                  requestBody.getVersionNumber(),
-                                                                  requestBody.getIsDeprecated(),
-                                                                  requestBody.getAuthor(),
-                                                                  requestBody.getUsage(),
-                                                                  requestBody.getEncodingStandard(),
-                                                                  requestBody.getNamespace(),
-                                                                  requestBody.getAdditionalProperties(),
-                                                                  requestBody.getTypeName(),
-                                                                  requestBody.getExtendedProperties(),
-                                                                  methodName);
-                }
+                String apiOperationGUID = handler.createAPIOperation(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     apiGUID,
+                                                                     apiGUIDParameterName,
+                                                                     requestBody.getQualifiedName(),
+                                                                     requestBody.getDisplayName(),
+                                                                     requestBody.getDescription(),
+                                                                     requestBody.getVersionNumber(),
+                                                                     requestBody.getIsDeprecated(),
+                                                                     requestBody.getAuthor(),
+                                                                     requestBody.getUsage(),
+                                                                     requestBody.getEncodingStandard(),
+                                                                     requestBody.getNamespace(),
+                                                                     requestBody.getAdditionalProperties(),
+                                                                     requestBody.getTypeName(),
+                                                                     requestBody.getExtendedProperties(),
+                                                                     methodName);
 
                 if (requestBody.getVendorProperties() != null)
                 {
@@ -889,7 +785,6 @@ public class APIManagerRESTServices
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiGUID unique identifier of the topic where the schema is located
-     * @param apiManagerIsHome should the API operation be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new API operation or
@@ -901,7 +796,6 @@ public class APIManagerRESTServices
                                                        String              userId,
                                                        String              templateGUID,
                                                        String              apiGUID,
-                                                       boolean             apiManagerIsHome,
                                                        TemplateRequestBody requestBody)
     {
         final String methodName = "createAPIOperationFromTemplate";
@@ -920,32 +814,16 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                if (apiManagerIsHome)
-                {
-                    response.setGUID(handler.createAPIOperationFromTemplate(userId,
-                                                                            requestBody.getExternalSourceGUID(),
-                                                                            requestBody.getExternalSourceName(),
-                                                                            apiGUID,
-                                                                            apiGUIDParameterName,
-                                                                            templateGUID,
-                                                                            requestBody.getQualifiedName(),
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            methodName));
-                }
-                else
-                {
-                    response.setGUID(handler.createAPIOperationFromTemplate(userId,
-                                                                            null,
-                                                                            null,
-                                                                            apiGUID,
-                                                                            apiGUIDParameterName,
-                                                                            templateGUID,
-                                                                            requestBody.getQualifiedName(),
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            methodName));
-                }
+                response.setGUID(handler.createAPIOperationFromTemplate(userId,
+                                                                        requestBody.getExternalSourceGUID(),
+                                                                        requestBody.getExternalSourceName(),
+                                                                        apiGUID,
+                                                                        apiGUIDParameterName,
+                                                                        templateGUID,
+                                                                        requestBody.getQualifiedName(),
+                                                                        requestBody.getDisplayName(),
+                                                                        requestBody.getDescription(),
+                                                                        methodName));
             }
             else
             {
@@ -1019,16 +897,12 @@ public class APIManagerRESTServices
                                            isMergeUpdate,
                                            methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                apiOperationGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -1149,7 +1023,10 @@ public class APIManagerRESTServices
                                                                            pageSize,
                                                                            methodName);
 
-            response.setElementList(elements);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1203,7 +1080,10 @@ public class APIManagerRESTServices
                                                                                 pageSize,
                                                                                 methodName);
 
-            response.setElementList(elements);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1253,7 +1133,10 @@ public class APIManagerRESTServices
 
             List<APIOperationElement> elements = handler.getAPIOperationsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
 
-            response.setElementList(elements);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1298,7 +1181,10 @@ public class APIManagerRESTServices
 
             APIOperationElement element = handler.getAPIOperationByGUID(userId, guid, apiOperationGUIDParameterName, methodName);
 
-            response.setElement(element);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1321,7 +1207,6 @@ public class APIManagerRESTServices
      * @param userId calling user
      * @param apiOperationGUID unique identifier of the topic where the schema is located
      * @param parameterListType is this a header, request or response
-     * @param apiManagerIsHome should the API parameter list be marked as owned by the event broker so others can not update?
      * @param requestBody properties about the API parameter list
      *
      * @return unique identifier of the new API parameter list or
@@ -1333,7 +1218,6 @@ public class APIManagerRESTServices
                                                String                      userId,
                                                String                      apiOperationGUID,
                                                APIParameterListType        parameterListType,
-                                               boolean                     apiManagerIsHome,
                                                APIParameterListRequestBody requestBody)
     {
         final String methodName = "createAPIParameterList";
@@ -1352,54 +1236,26 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String apiParameterListGUID;
-
-                if (apiManagerIsHome)
-                {
-                    apiParameterListGUID = handler.createAPIParameterList(userId,
-                                                                          requestBody.getExternalSourceGUID(),
-                                                                          requestBody.getExternalSourceName(),
-                                                                          apiOperationGUID,
-                                                                          apiOperationGUIDParameterName,
-                                                                          requestBody.getQualifiedName(),
-                                                                          requestBody.getDisplayName(),
-                                                                          requestBody.getDescription(),
-                                                                          requestBody.getVersionNumber(),
-                                                                          requestBody.getIsDeprecated(),
-                                                                          requestBody.getAuthor(),
-                                                                          requestBody.getUsage(),
-                                                                          requestBody.getEncodingStandard(),
-                                                                          requestBody.getNamespace(),
-                                                                          requestBody.getRequired(),
-                                                                          requestBody.getAdditionalProperties(),
-                                                                          requestBody.getTypeName(),
-                                                                          requestBody.getExtendedProperties(),
-                                                                          this.getRelationshipType(parameterListType),
-                                                                          methodName);
-                }
-                else
-                {
-                    apiParameterListGUID = handler.createAPIParameterList(userId,
-                                                                          null,
-                                                                          null,
-                                                                          apiOperationGUID,
-                                                                          apiOperationGUIDParameterName,
-                                                                          requestBody.getQualifiedName(),
-                                                                          requestBody.getDisplayName(),
-                                                                          requestBody.getDescription(),
-                                                                          requestBody.getVersionNumber(),
-                                                                          requestBody.getIsDeprecated(),
-                                                                          requestBody.getAuthor(),
-                                                                          requestBody.getUsage(),
-                                                                          requestBody.getEncodingStandard(),
-                                                                          requestBody.getNamespace(),
-                                                                          requestBody.getRequired(),
-                                                                          requestBody.getAdditionalProperties(),
-                                                                          requestBody.getTypeName(),
-                                                                          requestBody.getExtendedProperties(),
-                                                                          this.getRelationshipType(parameterListType),
-                                                                          methodName);
-                }
+                String apiParameterListGUID = handler.createAPIParameterList(userId,
+                                                                             requestBody.getExternalSourceGUID(),
+                                                                             requestBody.getExternalSourceName(),
+                                                                             apiOperationGUID,
+                                                                             apiOperationGUIDParameterName,
+                                                                             requestBody.getQualifiedName(),
+                                                                             requestBody.getDisplayName(),
+                                                                             requestBody.getDescription(),
+                                                                             requestBody.getVersionNumber(),
+                                                                             requestBody.getIsDeprecated(),
+                                                                             requestBody.getAuthor(),
+                                                                             requestBody.getUsage(),
+                                                                             requestBody.getEncodingStandard(),
+                                                                             requestBody.getNamespace(),
+                                                                             requestBody.getRequired(),
+                                                                             requestBody.getAdditionalProperties(),
+                                                                             requestBody.getTypeName(),
+                                                                             requestBody.getExtendedProperties(),
+                                                                             this.getRelationshipType(parameterListType),
+                                                                             methodName);
 
                 if (requestBody.getVendorProperties() != null)
                 {
@@ -1454,7 +1310,6 @@ public class APIManagerRESTServices
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the topic where the schema is located
      * @param parameterListType is this a header, request or response
-     * @param apiManagerIsHome should the API parameter list be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new API parameter list or
@@ -1467,7 +1322,6 @@ public class APIManagerRESTServices
                                                            String               templateGUID,
                                                            String               apiOperationGUID,
                                                            APIParameterListType parameterListType,
-                                                           boolean              apiManagerIsHome,
                                                            TemplateRequestBody  requestBody)
     {
         final String methodName = "createAPIParameterListFromTemplate";
@@ -1486,34 +1340,17 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                if (apiManagerIsHome)
-                {
-                    response.setGUID(handler.createAPIParameterListFromTemplate(userId,
-                                                                                requestBody.getExternalSourceGUID(),
-                                                                                requestBody.getExternalSourceName(),
-                                                                                apiOperationGUID,
-                                                                                apiOperationGUIDParameterName,
-                                                                                templateGUID,
-                                                                                requestBody.getQualifiedName(),
-                                                                                requestBody.getDisplayName(),
-                                                                                requestBody.getDescription(),
-                                                                                this.getRelationshipType(parameterListType),
-                                                                                methodName));
-                }
-                else
-                {
-                    response.setGUID(handler.createAPIParameterListFromTemplate(userId,
-                                                                                null,
-                                                                                null,
-                                                                                apiOperationGUID,
-                                                                                apiOperationGUIDParameterName,
-                                                                                templateGUID,
-                                                                                requestBody.getQualifiedName(),
-                                                                                requestBody.getDisplayName(),
-                                                                                requestBody.getDescription(),
-                                                                                this.getRelationshipType(parameterListType),
-                                                                                methodName));
-                }
+                response.setGUID(handler.createAPIParameterListFromTemplate(userId,
+                                                                            requestBody.getExternalSourceGUID(),
+                                                                            requestBody.getExternalSourceName(),
+                                                                            apiOperationGUID,
+                                                                            apiOperationGUIDParameterName,
+                                                                            templateGUID,
+                                                                            requestBody.getQualifiedName(),
+                                                                            requestBody.getDisplayName(),
+                                                                            requestBody.getDescription(),
+                                                                            this.getRelationshipType(parameterListType),
+                                                                            methodName));
             }
             else
             {
@@ -1545,10 +1382,10 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateAPIParameterList(String               serverName,
-                                               String               userId,
-                                               String               apiParameterListGUID,
-                                               boolean              isMergeUpdate,
+    public VoidResponse updateAPIParameterList(String                      serverName,
+                                               String                      userId,
+                                               String                      apiParameterListGUID,
+                                               boolean                     isMergeUpdate,
                                                APIParameterListRequestBody requestBody)
     {
         final String methodName = "updateAPIParameterList";
@@ -1588,16 +1425,12 @@ public class APIManagerRESTServices
                                                isMergeUpdate,
                                                methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                apiParameterListGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -1711,14 +1544,17 @@ public class APIManagerRESTServices
 
             APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            List<APIParameterListElement> topicSchemaAssets = handler.findAPIParameterLists(userId,
-                                                                                            searchString,
-                                                                                            searchStringParameterName,
-                                                                                            startFrom,
-                                                                                            pageSize,
-                                                                                            methodName);
+            List<APIParameterListElement> elements = handler.findAPIParameterLists(userId,
+                                                                                   searchString,
+                                                                                   searchStringParameterName,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
 
-            response.setElementList(topicSchemaAssets);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1765,14 +1601,17 @@ public class APIManagerRESTServices
 
             APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            List<APIParameterListElement> topicSchemaAssets = handler.getAPIParameterListsForOperation(userId,
-                                                                                                       apiOperationGUID,
-                                                                                                       apiOperationGUIDParameterName,
-                                                                                                       startFrom,
-                                                                                                       pageSize,
-                                                                                                       methodName);
+            List<APIParameterListElement> elements = handler.getAPIParameterListsForOperation(userId,
+                                                                                              apiOperationGUID,
+                                                                                              apiOperationGUIDParameterName,
+                                                                                              startFrom,
+                                                                                              pageSize,
+                                                                                              methodName);
 
-            response.setElementList(topicSchemaAssets);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1820,9 +1659,12 @@ public class APIManagerRESTServices
 
             APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            List<APIParameterListElement> topicSchemaAssets = handler.getAPIParameterListsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+            List<APIParameterListElement> elements = handler.getAPIParameterListsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
 
-            response.setElementList(topicSchemaAssets);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1865,9 +1707,12 @@ public class APIManagerRESTServices
 
             APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            APIParameterListElement topicSchemaAsset = handler.getAPIParameterListByGUID(userId, guid, apiParameterListGUIDParameterName, methodName);
+            APIParameterListElement element = handler.getAPIParameterListByGUID(userId, guid, apiParameterListGUIDParameterName, methodName);
 
-            response.setElement(topicSchemaAsset);
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1877,5 +1722,224 @@ public class APIManagerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<APIElement> setUpVendorProperties(String                   userId,
+                                                   List<APIElement>         retrievedResults,
+                                                   AssetHandler<APIElement> handler,
+                                                   String                   methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (APIElement apiElement : retrievedResults)
+            {
+                if (apiElement != null)
+                {
+                    setUpVendorProperties(userId, apiElement, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private APIElement setUpVendorProperties(String                   userId,
+                                             APIElement               element,
+                                             AssetHandler<APIElement> handler,
+                                             String                   methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            APIProperties apiProperties = element.getAPIProperties();
+
+            apiProperties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                          element.getElementHeader().getGUID(),
+                                                                          elementGUIDParameterName,
+                                                                          methodName));
+        }
+
+        return element;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<APIOperationElement> setUpVendorProperties(String                                   userId,
+                                                            List<APIOperationElement>                retrievedResults,
+                                                            APIOperationHandler<APIOperationElement> handler,
+                                                            String                                   methodName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (APIOperationElement apiElement : retrievedResults)
+            {
+                if (apiElement != null)
+                {
+                    setUpVendorProperties(userId, apiElement, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private APIOperationElement setUpVendorProperties(String                                   userId,
+                                                      APIOperationElement                      element,
+                                                      APIOperationHandler<APIOperationElement> handler,
+                                                      String                                   methodName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            APIOperationProperties apiProperties = element.getProperties();
+
+            apiProperties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                          element.getElementHeader().getGUID(),
+                                                                          elementGUIDParameterName,
+                                                                          methodName));
+        }
+
+        return element;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<APIParameterListElement> setUpVendorProperties(String                                           userId,
+                                                                List<APIParameterListElement>                    retrievedResults,
+                                                                APIParameterListHandler<APIParameterListElement> handler,
+                                                                String                                           methodName) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (APIParameterListElement apiElement : retrievedResults)
+            {
+                if (apiElement != null)
+                {
+                    setUpVendorProperties(userId, apiElement, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private APIParameterListElement setUpVendorProperties(String                                           userId,
+                                                          APIParameterListElement                          element,
+                                                          APIParameterListHandler<APIParameterListElement> handler,
+                                                          String                                           methodName) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            APIParameterListProperties apiProperties = element.getProperties();
+
+            apiProperties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                          element.getElementHeader().getGUID(),
+                                                                          elementGUIDParameterName,
+                                                                          methodName));
+        }
+
+        return element;
     }
 }

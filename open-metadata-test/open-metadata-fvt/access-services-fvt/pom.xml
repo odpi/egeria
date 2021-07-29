@@ -29,6 +29,7 @@
 
     <packaging>pom</packaging>
     <modules>
+        <module>analytics-modeling-fvt</module>
         <module>asset-consumer-fvt</module>
         <module>asset-manager-fvt</module>
         <module>asset-owner-fvt</module>

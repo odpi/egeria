@@ -3,10 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -1175,7 +1172,7 @@ public class AssetOwnerRESTServices
 
                 if (connection != null)
                 {
-                    ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+                    ConnectionHandler<ConnectionElement> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
                     connectionHandler.saveConnection(userId,
                                                      null,

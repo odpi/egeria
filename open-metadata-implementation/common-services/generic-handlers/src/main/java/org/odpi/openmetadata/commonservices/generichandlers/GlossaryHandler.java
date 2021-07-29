@@ -151,13 +151,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * The template defines additional classifications and relationships that should be added to the new glossary.
      *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
-     * glossary is deleted, any linked terms and categories are deleted as well.
+     * glossary is used as a template, any linked terms and categories are created as well.
      *
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the glossary - used in other configuration
-     * @param displayName short display name for the glossary
-     * @param description description of the governance glossary
+     * @param qualifiedName unique name for the new element - used in other configuration
+     * @param displayName short display name for the new element
+     * @param description description of the new element
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element

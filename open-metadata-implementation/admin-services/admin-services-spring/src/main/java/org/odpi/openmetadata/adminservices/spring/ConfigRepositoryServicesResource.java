@@ -427,7 +427,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Enable registration of server to an open metadata repository cohort using the default topic structure (SINGLE_TOPIC).
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
      *
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
@@ -450,7 +450,7 @@ public class ConfigRepositoryServicesResource
                                               @PathVariable                   String               cohortName,
                                               @RequestBody(required = false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.addCohortRegistration(userId, serverName, cohortName, CohortTopicStructure.SINGLE_TOPIC, additionalProperties);
+        return adminAPI.addCohortRegistration(userId, serverName, cohortName, CohortTopicStructure.DEDICATED_TOPICS, additionalProperties);
     }
 
 

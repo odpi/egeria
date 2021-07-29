@@ -325,7 +325,14 @@ public class APIIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createAPIOperation(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, apiGUID, apiOperationProperties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIOperation(userId, apiManagerGUID, apiManagerName, apiGUID, apiOperationProperties);
+        }
+        else
+        {
+            return client.createAPIOperation(userId, null, null, apiGUID, apiOperationProperties);
+        }
     }
 
 
@@ -348,7 +355,14 @@ public class APIIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return client.createAPIOperationFromTemplate(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, templateGUID, apiGUID, templateProperties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIOperationFromTemplate(userId, apiManagerGUID, apiManagerName, templateGUID, apiGUID, templateProperties);
+        }
+        else
+        {
+            return client.createAPIOperationFromTemplate(userId, null, null, templateGUID, apiGUID, templateProperties);
+        }
     }
 
 
@@ -508,7 +522,14 @@ public class APIIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return client.createAPIParameterList(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, apiOperationGUID, parameterListType, properties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIParameterList(userId, apiManagerGUID, apiManagerName, apiOperationGUID, parameterListType, properties);
+        }
+        else
+        {
+            return client.createAPIParameterList(userId, null, null, apiOperationGUID, parameterListType, properties);
+        }
     }
 
 
@@ -533,7 +554,14 @@ public class APIIntegratorContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return client.createAPIParameterListFromTemplate(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIParameterListFromTemplate(userId, apiManagerGUID, apiManagerName, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+        }
+        else
+        {
+            return client.createAPIParameterListFromTemplate(userId, null, null, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+        }
     }
 
 
@@ -690,7 +718,14 @@ public class APIIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.createAPIParameter(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, schemaElementGUID, apiParameterProperties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIParameter(userId, apiManagerGUID, apiManagerName, schemaElementGUID, apiParameterProperties);
+        }
+        else
+        {
+            return client.createAPIParameter(userId, null, null, schemaElementGUID, apiParameterProperties);
+        }
     }
 
 
@@ -713,7 +748,14 @@ public class APIIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return client.createAPIParameterFromTemplate(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, schemaElementGUID, templateGUID, templateProperties);
+        if (apiManagerIsHome)
+        {
+            return client.createAPIParameterFromTemplate(userId, apiManagerGUID, apiManagerName, schemaElementGUID, templateGUID, templateProperties);
+        }
+        else
+        {
+            return client.createAPIParameterFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
+        }
     }
 
 
@@ -734,7 +776,14 @@ public class APIIntegratorContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        client.setupSchemaType(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        if (apiManagerIsHome)
+        {
+            client.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        }
+        else
+        {
+            client.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        }
     }
 
 
@@ -833,10 +882,10 @@ public class APIIntegratorContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<APIParameterElement> getNestedAPIParameters(String parentElementGUID,
-                                                               int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return client.getNestedAPIParameters(userId, parentElementGUID, startFrom, pageSize);
     }
@@ -858,11 +907,11 @@ public class APIIntegratorContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<APIParameterElement> getAPIParametersByName(String name,
-                                                               String typeName,
-                                                               int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                            String typeName,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return client.getAPIParametersByName(userId, name, typeName, startFrom, pageSize);
     }

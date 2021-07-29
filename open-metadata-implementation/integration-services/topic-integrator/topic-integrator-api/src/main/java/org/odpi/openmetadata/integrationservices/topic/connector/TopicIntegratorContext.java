@@ -329,7 +329,14 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return eventBrokerClient.createEventType(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicGUID, properties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createEventType(userId, eventBrokerGUID, eventBrokerName, topicGUID, properties);
+        }
+        else
+        {
+            return eventBrokerClient.createEventType(userId, null, null, topicGUID, properties);
+        }
     }
 
 
@@ -353,7 +360,14 @@ public class TopicIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return eventBrokerClient.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, topicGUID, templateProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, topicGUID, templateProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createEventTypeFromTemplate(userId, null, null, templateGUID, topicGUID, templateProperties);
+        }
     }
 
 
@@ -1164,7 +1178,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, eventBrokerGUID, eventBrokerName, false, connectionProperties);
+        return connectionManagerClient.createConnection(userId, null, null, connectionProperties);
     }
 
 
@@ -1185,7 +1199,7 @@ public class TopicIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, eventBrokerGUID, eventBrokerName, false, templateGUID, templateProperties);
+        return connectionManagerClient.createConnectionFromTemplate(userId, null, null, templateGUID, templateProperties);
     }
 
 
@@ -1226,7 +1240,7 @@ public class TopicIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectionManagerClient.setupConnectorType(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.setupConnectorType(userId, null, null, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1264,7 +1278,7 @@ public class TopicIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.setupEndpoint(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, endpointGUID);
+        connectionManagerClient.setupEndpoint(userId, null, null, connectionGUID, endpointGUID);
     }
 
 
@@ -1308,7 +1322,7 @@ public class TopicIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        connectionManagerClient.setupEmbeddedConnection(userId, eventBrokerGUID, eventBrokerName, false, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+        connectionManagerClient.setupEmbeddedConnection(userId, null, null, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
     }
 
 
@@ -1348,7 +1362,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, eventBrokerGUID, eventBrokerName, false, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
     }
 
 
@@ -1470,15 +1484,16 @@ public class TopicIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, eventBrokerGUID, eventBrokerName, false, endpointProperties);
+        return connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
     }
 
 
     /**
      * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
      *
+     * @param networkAddress location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param templateProperties descriptive properties that override the template
      *
      * @return unique identifier of the new endpoint
      *
@@ -1486,12 +1501,13 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEndpointFromTemplate(String             templateGUID,
+    public String createEndpointFromTemplate(String             networkAddress,
+                                             String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, eventBrokerGUID, eventBrokerName, false, templateGUID, templateProperties);
+        return connectionManagerClient.createEndpointFromTemplate(userId, null, null, networkAddress, templateGUID, templateProperties);
     }
 
 
@@ -1581,27 +1597,6 @@ public class TopicIntegratorContext
                                                                             PropertyServerException
     {
         return connectionManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the list of endpoints created on behalf of the event broker.
-     *
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<EndpointElement> getEndpointsForEventBroker(int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        return connectionManagerClient.getEndpointsForDataManager(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
     }
 
 
