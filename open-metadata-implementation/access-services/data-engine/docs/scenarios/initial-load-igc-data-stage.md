@@ -13,16 +13,6 @@ describe the operations needed for creating the open metadata entities correspon
 Check [egeria-connector-ibm-information-server](https://github.com/odpi/egeria-connector-ibm-information-server#ibm-infosphere-information-server-connectors)
 for more details.
 
-Request to use is: 
-
-```
-POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
-```
-
-`ProcessListResponse` - response containing the guids of the created processes 
-and the guids of the failed processes with error message and status.
-
-
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
