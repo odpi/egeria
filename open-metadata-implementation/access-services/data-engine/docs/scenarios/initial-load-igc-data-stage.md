@@ -6,7 +6,7 @@
 [Initial load](../samples/initial-load/data-stage) use case shows the integration between 
 Data Engine OMAS and IBM Data Stage.
 
-The sample calls from [assets sample collection](../samples/collections/DataEngine-process_endpoints.postman_collection.json)
+The calls from [assets sample collection](../samples/collections/DataEngine-asset_endpoints.postman_collection.json)
 describe the operations needed for creating the open metadata entities corresponding to the Data Stage ETL job.
 
 >Note: Data Engine OMAS must have access to the IGC entities. 
