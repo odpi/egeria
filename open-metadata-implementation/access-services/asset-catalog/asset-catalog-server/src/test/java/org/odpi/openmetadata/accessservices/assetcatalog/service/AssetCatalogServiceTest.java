@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogE
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
@@ -258,7 +258,7 @@ public class AssetCatalogServiceTest {
     public void testSearchByType()
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase {
         SearchParameters searchParameters = mockSearchParams();
-        List<AssetElements> response = new ArrayList<>();
+        List<Elements> response = new ArrayList<>();
         response.add(mockTerm(FIRST_GUID));
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -275,12 +275,12 @@ public class AssetCatalogServiceTest {
                 SEARCH_CRITERIA,
                 searchParameters);
 
-        assertEquals(response.get(0).getGuid(), assetResponse.getAssetElementsList().get(0).getGuid());
+        assertEquals(response.get(0).getGuid(), assetResponse.getElementsList().get(0).getGuid());
     }
 
     @Test
     public void testBuildContext() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        AssetElements response = mockTerm(FIRST_GUID);
+        Elements response = mockTerm(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
                 SERVER_NAME,
@@ -299,10 +299,10 @@ public class AssetCatalogServiceTest {
         assertEquals(response.getGuid(), assetResponse.getAsset().getGuid());
     }
 
-    private AssetElements mockTerm(String guid) {
-        AssetElements assetElements = new AssetElements();
-        assetElements.setGuid(guid);
-        return assetElements;
+    private Elements mockTerm(String guid) {
+        Elements elements = new Elements();
+        elements.setGuid(guid);
+        return elements;
     }
 
     private SearchParameters mockSearchParams() {

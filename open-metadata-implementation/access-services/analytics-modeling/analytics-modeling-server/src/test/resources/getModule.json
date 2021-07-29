@@ -1,4 +1,6 @@
 {
+  "id" : "GOSALES_dbo",
+  "type" : "module",
   "attributes" : {
     "physicalDefinition" : {
       "identifier" : "physicalmodule",
@@ -291,7 +293,5 @@
         } ]
       } ]
     }
-  },
-  "id" : "GOSALES_dbo",
-  "type" : "module"
+  }
 }

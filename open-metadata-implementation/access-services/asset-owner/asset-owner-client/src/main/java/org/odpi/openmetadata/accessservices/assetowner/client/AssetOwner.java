@@ -5,12 +5,11 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectionResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -35,6 +35,7 @@ import java.util.Map;
 public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowledgeInterface,
                                                                     AssetOnboardingInterface,
                                                                     AssetClassificationInterface,
+                                                                    AssetConnectionManagementInterface,
                                                                     AssetReviewInterface,
                                                                     AssetDecommissioningInterface,
                                                                     AssetDuplicateManagementInterface
@@ -1193,6 +1194,1089 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     }
 
 
+
+    /*
+     * ==============================================
+     * AssetConnectionManagementInterface
+     * ==============================================
+     */
+
+
+
+    /**
+     * Create a new metadata element to represent a connection. Classifications can be added later to define the
+     * type of connection.
+     *
+     * @param userId             calling user
+     * @param connectionProperties properties to store
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createConnection(String               userId,
+                                   ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "createConnection";
+        final String nameParameter = "qualifiedName";
+        final String propertiesParameter = "connectionProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(connectionProperties, propertiesParameter, methodName);
+        invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), nameParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  connectionProperties,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new connection.
+     *
+     * @param userId             calling user
+     * @param templateGUID       unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createConnectionFromTemplate(String             userId,
+                                               String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "createConnectionFromTemplate";
+        final String nameParameter = "qualifiedName";
+        final String propertiesParameter = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.
+     *
+     * @param userId             calling user
+     * @param connectionGUID       unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for this element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateConnection(String               userId,
+                                 String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName = "updateConnection";
+        final String guidParameter = "connectionGUID";
+        final String propertiesParameter = "connectionProperties";
+        final String qualifiedNameParameter = "connectionProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
+        invalidParameterHandler.validateObject(connectionProperties, propertiesParameter, methodName);
+
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/update?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        connectionProperties,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the connection in the external asset manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupConnectorType(String userId,
+                                   String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "setupConnectorType";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String connectorTypeGUIDParameter = "connectorTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/connector-types/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the connection in the external asset manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearConnectorType(String userId,
+                                   String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "clearConnectorType";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String connectorTypeGUIDParameter = "connectorTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/connector-types/{3}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the connection in the external asset manager
+     * @param endpointGUID unique identifier of the endpoint in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupEndpoint(String userId,
+                              String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        final String methodName = "setupEndpoint";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String endpointGUIDParameter = "endpointGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/endpoints/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the connection in the external asset manager
+     * @param endpointGUID unique identifier of the endpoint in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearEndpoint(String userId,
+                              String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        final String methodName = "clearEndpoint";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String endpointGUIDParameter = "endpointGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/endpoints/{3}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the virtual connection in the external asset manager
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupEmbeddedConnection(String              userId,
+                                        String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "setupEmbeddedConnection";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String embeddedConnectionGUIDParameter = "embeddedConnectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(embeddedConnectionGUID, embeddedConnectionGUIDParameter, methodName);
+
+        EmbeddedConnectionRequestBody requestBody = new EmbeddedConnectionRequestBody();
+
+        requestBody.setPosition(position);
+        requestBody.setDisplayName(displayName);
+        requestBody.setArguments(arguments);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/embedded-connections/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the virtual connection in the external asset manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearEmbeddedConnection(String userId,
+                                        String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String methodName = "clearEmbeddedConnection";
+        final String connectionGUIDParameter = "connectionGUID";
+        final String embeddedConnectionGUIDParameter = "embeddedConnectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(embeddedConnectionGUID, embeddedConnectionGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/embedded-connections/{3}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID,
+                                        embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupAssetConnection(String userId,
+                                     String assetGUID,
+                                     String assetSummary,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String methodName = "setupAssetConnection";
+        final String assetGUIDParameter = "assetGUID";
+        final String connectionGUIDParameter = "connectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/connections/{3}";
+
+        StringRequestBody requestBody = new StringRequestBody();
+
+        requestBody.setString(assetSummary);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearAssetConnection(String userId,
+                                     String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String methodName = "clearAssetConnection";
+        final String assetGUIDParameter = "assetGUID";
+        final String connectionGUIDParameter = "connectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/connections/{3}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        connectionGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeConnection(String userId,
+                                 String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String   methodName = "removeConnection";
+        final String   guidParameter = "connectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        connectionGUID);
+    }
+
+
+
+    /**
+     * Retrieve the list of connection metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ConnectionElement> findConnections(String userId,
+                                                   String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "findConnections";
+        final String parameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/by-search-string" +
+                                             "?startFrom={2}&pageSize={3}";
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(parameterName);
+
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Step through the connections visible to this caller.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ConnectionElement> scanConnections(String userId,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "scanConnections";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/scan?startFrom={2}&pageSize={3}";
+
+        ConnectionsResponse restResult = restClient.callConnectionsGetRESTCall(methodName,
+                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               startFrom,
+                                                                               validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of connection metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ConnectionElement> getConnectionsByName(String userId,
+                                                        String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName = "getConnectionsByName";
+        final String nameParameter = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/by-name?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameter);
+
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the connection metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ConnectionElement getConnectionByGUID(String userId,
+                                                 String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String   methodName = "getConnectionByGUID";
+        final String   connectionGUIDParameter = "connectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}";
+
+        ConnectionResponse restResult = restClient.callMyConnectionGetRESTCall(methodName,
+                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               connectionGUID);
+        return restResult.getElement();
+    }
+
+
+
+
+    /**
+     * Create a new metadata element to represent a endpoint. Classifications can be added later to define the
+     * type of endpoint.
+     *
+     * @param userId             calling user
+     * @param endpointProperties properties to store
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createEndpoint(String             userId,
+                                 EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "createEndpoint";
+        final String nameParameter = "qualifiedName";
+        final String propertiesParameter = "endpointProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(endpointProperties, propertiesParameter, methodName);
+        invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), nameParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  endpointProperties,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new endpoint.
+     *
+     * @param userId             calling user
+     * @param templateGUID       unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createEndpointFromTemplate(String             userId,
+                                             String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "createEndpointFromTemplate";
+        final String nameParameter = "qualifiedName";
+        final String propertiesParameter = "templateProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.
+     *
+     * @param userId             calling user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointGUID       unique identifier of the metadata element to update
+     * @param endpointProperties new properties for this element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateEndpoint(String             userId,
+                               boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "updateEndpoint";
+        final String guidParameter = "endpointGUID";
+        final String propertiesParameter = "endpointProperties";
+        final String qualifiedNameParameter = "endpointProperties.qualifiedName";
+
+        if (isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, guidParameter, methodName);
+        invalidParameterHandler.validateObject(endpointProperties, propertiesParameter, methodName);
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/{2}/update?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        endpointProperties,
+                                        serverName,
+                                        userId,
+                                        endpointGUID,
+                                        isMergeUpdate);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeEndpoint(String userId,
+                               String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        final String   methodName = "removeEndpoint";
+        final String   guidParameter = "endpointGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, guidParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/{2}/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<EndpointElement> findEndpoints(String userId,
+                                               String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "findEndpoints";
+        final String parameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/by-search-string" +
+                                             "?startFrom={2}&pageSize={3}";
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(parameterName);
+
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<EndpointElement> getEndpointsByName(String userId,
+                                                    String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "getEndpointsByName";
+        final String nameParameter = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/by-name?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameter);
+
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public EndpointElement getEndpointByGUID(String userId,
+                                             String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   methodName = "getEndpointByGUID";
+        final String   endpointGUIDParameter = "endpointGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/endpoints/{2}";
+
+        EndpointResponse restResult = restClient.callEndpointGetRESTCall(methodName,
+                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         endpointGUID);
+        return restResult.getElement();
+    }
+    
+
+    /**
+     * Retrieve the list of connectorType metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ConnectorTypeElement> findConnectorTypes(String userId,
+                                                         String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "findConnectorTypes";
+        final String parameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connector-types/by-search-string" +
+                                             "?startFrom={2}&pageSize={3}";
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(parameterName);
+
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of connectorType metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ConnectorTypeElement> getConnectorTypesByName(String userId,
+                                                              String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "getConnectorTypesByName";
+        final String nameParameter = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connector-types/by-name?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameter);
+
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the connectorType metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ConnectorTypeElement getConnectorTypeByGUID(String userId,
+                                                       String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String   methodName = "getConnectorTypeByGUID";
+        final String   connectorTypeGUIDParameter = "connectorTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connector-types/{2}";
+
+        ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
+                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     connectorTypeGUID);
+        return restResult.getElement();
+    }
     /*
      * ==============================================
      * AssetReviewInterface

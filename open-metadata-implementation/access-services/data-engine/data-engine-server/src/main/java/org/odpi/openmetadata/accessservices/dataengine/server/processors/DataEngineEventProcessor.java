@@ -13,9 +13,8 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
@@ -193,18 +192,18 @@ public class DataEngineEventProcessor {
     }
 
     /**
-     * Process a {@link ProcessesEvent}
+     * Process a {@link ProcessEvent}
      *
      * @param dataEngineEvent the event to be processed
      */
-    public void processProcessesEvent(String dataEngineEvent) {
-        final String methodName = "processProcessesEvent";
+    public void processProcessEvent(String dataEngineEvent) {
+        final String methodName = "processProcessEvent";
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
+            ProcessEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessEvent.class);
 
-            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName, processesEvent.getProcesses(),
+            dataEngineRESTServices.upsertProcess(processesEvent.getUserId(), serverName, processesEvent.getProcess(),
                     processesEvent.getExternalSourceName());
         } catch (JsonProcessingException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
@@ -272,18 +271,18 @@ public class DataEngineEventProcessor {
     }
 
     /**
-     * Process a {@link ProcessesDeleteEvent} for deleting a list of processes
+     * Process a {@link DeleteEvent} for deleting a process
      *
      * @param dataEngineEvent the event to be processed
      */
-    public void processDeleteProcessesEvent(String dataEngineEvent) {
-        final String methodName = "processDeleteProcessesEvent";
+    public void processDeleteProcessEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteProcessEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            ProcessesDeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesDeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
 
-            dataEngineRESTServices.deleteProcesses(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
-                    deleteEvent.getGuids(), deleteEvent.getQualifiedNames(), deleteEvent.getDeleteSemantic());
+            dataEngineRESTServices.deleteProcess(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }

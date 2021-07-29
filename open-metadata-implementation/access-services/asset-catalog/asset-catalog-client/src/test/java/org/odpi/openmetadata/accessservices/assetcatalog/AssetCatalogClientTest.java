@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
@@ -215,7 +215,7 @@ public class AssetCatalogClientTest {
 
         AssetListResponse assetResponse = assetCatalog.searchByType(USER_ID, SEARCH_CRITERIA, searchParameters);
 
-        Assert.assertEquals(ASSET_ID, assetResponse.getAssetElementsList().get(0).getGuid());
+        Assert.assertEquals(ASSET_ID, assetResponse.getElementsList().get(0).getGuid());
     }
 
     @Test
@@ -264,7 +264,7 @@ public class AssetCatalogClientTest {
 
     private AssetListResponse mockAssetListResponse() {
         AssetListResponse assetResponse = new AssetListResponse();
-        assetResponse.setAssetElementsList(Collections.singletonList(mockTerm()));
+        assetResponse.setElementsList(Collections.singletonList(mockTerm()));
         return assetResponse;
     }
 
@@ -274,13 +274,13 @@ public class AssetCatalogClientTest {
         return assetResponse;
     }
 
-    private AssetElements mockTerm() {
-        AssetElements assetElements = new AssetElements();
-        assetElements.setGuid(ASSET_ID);
+    private Elements mockTerm() {
+        Elements elements = new Elements();
+        elements.setGuid(ASSET_ID);
         Type type = new Type();
         type.setName(ASSET_TYPE);
-        assetElements.setType(type);
-        return assetElements;
+        elements.setType(type);
+        return elements;
     }
 
     private RelationshipResponse mockRelationshipResponse() {

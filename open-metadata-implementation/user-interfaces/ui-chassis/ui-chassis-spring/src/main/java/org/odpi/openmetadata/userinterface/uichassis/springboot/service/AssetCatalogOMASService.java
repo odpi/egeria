@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
@@ -157,12 +157,12 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException there is a problem with the parameters
      */
-    public List<AssetElements> searchAssets(String user,
-                                            String searchCriteria,
-                                            SearchParameters searchParameters)
+    public List<Elements> searchAssets(String user,
+                                       String searchCriteria,
+                                       SearchParameters searchParameters)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
-            return assetCatalog.searchByType(user, searchCriteria, searchParameters).getAssetElementsList();
+            return assetCatalog.searchByType(user, searchCriteria, searchParameters).getElementsList();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error searching the assets by criteria %s", searchCriteria));
             throw e;
@@ -179,9 +179,9 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException there is a problem with the parameters
      */
-    public AssetElements getAssetContext(String userId,
-                                         String assetId,
-                                         String assetType)
+    public Elements getAssetContext(String userId,
+                                    String assetId,
+                                    String assetType)
             throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
             return assetCatalog.getAssetContext(userId, assetId, assetType).getAsset();

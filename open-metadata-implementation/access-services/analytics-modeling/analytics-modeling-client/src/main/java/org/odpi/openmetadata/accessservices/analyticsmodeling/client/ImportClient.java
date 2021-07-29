@@ -148,6 +148,8 @@ public class ImportClient implements AnalyticsModelingImport {
 	public List<ResponseContainerDatabase> getDatabases(String userId, int startFrom, int pageSize)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+		String method = "getDatabases";
+		invalidParameterHandler.validateUserId(userId, method);
 		return restClient.getDatabases(userId, startFrom, pageSize);
 	}
 
@@ -168,6 +170,9 @@ public class ImportClient implements AnalyticsModelingImport {
 	public List<ResponseContainerDatabaseSchema> getSchemas(String userId, String databaseGuid, int startFrom, int pageSize)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+		String method = "getSchemas";
+		invalidParameterHandler.validateUserId(userId, method);
+		invalidParameterHandler.validateGUID(databaseGuid, "databaseGuid", method);
 		return restClient.getSchemas(userId, databaseGuid, startFrom, pageSize);
 	}
 
@@ -188,6 +193,9 @@ public class ImportClient implements AnalyticsModelingImport {
 	public ResponseContainerSchemaTables getTables(String userId, String databaseGuid, String catalog, String schema)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+		String method = "getTables";
+		invalidParameterHandler.validateUserId(userId, method);
+		invalidParameterHandler.validateGUID(databaseGuid, "databaseGuid", method);
 		return restClient.getTables(userId, databaseGuid, catalog, schema);
 	}
 
@@ -209,6 +217,9 @@ public class ImportClient implements AnalyticsModelingImport {
 	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter request)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
+		String method = "getModule";
+		invalidParameterHandler.validateUserId(userId, method);
+		invalidParameterHandler.validateGUID(databaseGuid, "databaseGuid", method);
 		return restClient.getModule(userId, databaseGuid, catalog, schema, request);
 	}
 

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaA
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -18,6 +20,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.LoggerFactory;
@@ -99,13 +104,10 @@ public class SchemaManagerRESTServices
                                                                        requestBody.getExtendedProperties(),
                                                                        methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -157,31 +159,28 @@ public class SchemaManagerRESTServices
             if (requestBody != null)
             {
                 String schemaTypeGUID = handler.addLiteralSchemaType(userId,
-                                                                       requestBody.getExternalSourceGUID(),
-                                                                       requestBody.getExternalSourceName(),
-                                                                       requestBody.getQualifiedName(),
-                                                                       requestBody.getDisplayName(),
-                                                                       requestBody.getDescription(),
-                                                                       requestBody.getVersionNumber(),
-                                                                       requestBody.getIsDeprecated(),
-                                                                       requestBody.getAuthor(),
-                                                                       requestBody.getUsage(),
-                                                                       requestBody.getEncodingStandard(),
-                                                                       requestBody.getNamespace(),
-                                                                       requestBody.getDataType(),
-                                                                       requestBody.getFixedValue(),
-                                                                       requestBody.getAdditionalProperties(),
-                                                                       requestBody.getTypeName(),
-                                                                       requestBody.getExtendedProperties(),
-                                                                       methodName);
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     requestBody.getQualifiedName(),
+                                                                     requestBody.getDisplayName(),
+                                                                     requestBody.getDescription(),
+                                                                     requestBody.getVersionNumber(),
+                                                                     requestBody.getIsDeprecated(),
+                                                                     requestBody.getAuthor(),
+                                                                     requestBody.getUsage(),
+                                                                     requestBody.getEncodingStandard(),
+                                                                     requestBody.getNamespace(),
+                                                                     requestBody.getDataType(),
+                                                                     requestBody.getFixedValue(),
+                                                                     requestBody.getAdditionalProperties(),
+                                                                     requestBody.getTypeName(),
+                                                                     requestBody.getExtendedProperties(),
+                                                                     methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -254,13 +253,10 @@ public class SchemaManagerRESTServices
                                                                   requestBody.getExtendedProperties(),
                                                                   methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -314,13 +310,13 @@ public class SchemaManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             ValidValuesHandler<ValidValueSetElement,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean,
+                                      OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             response.setElementList(handler.getValidValueByName(userId, name, nameParameterName, startFrom, pageSize, methodName));
         }
@@ -438,13 +434,10 @@ public class SchemaManagerRESTServices
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -512,13 +505,10 @@ public class SchemaManagerRESTServices
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -592,13 +582,10 @@ public class SchemaManagerRESTServices
                                                                  requestBody.getExtendedProperties(),
                                                                  methodName);
 
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                schemaTypeGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            schemaTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -652,13 +639,13 @@ public class SchemaManagerRESTServices
             if (requestBody != null)
             {
                 String schemaTypeGUID = handler.createSchemaTypeFromTemplate(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 templateGUID,
-                                                                 requestBody.getQualifiedName(),
-                                                                 requestBody.getDisplayName(),
-                                                                 requestBody.getDescription(),
-                                                                 methodName);
+                                                                             requestBody.getExternalSourceGUID(),
+                                                                             requestBody.getExternalSourceName(),
+                                                                             templateGUID,
+                                                                             requestBody.getQualifiedName(),
+                                                                             requestBody.getDisplayName(),
+                                                                             requestBody.getDescription(),
+                                                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
             }
@@ -732,6 +719,14 @@ public class SchemaManagerRESTServices
                                          requestBody.getExtendedProperties(),
                                          isMergeUpdate,
                                          methodName);
+
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
+                {
+                    handler.setVendorProperties(userId,
+                                                schemaTypeGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
+                }
             }
             else
             {
@@ -847,7 +842,7 @@ public class SchemaManagerRESTServices
                                                                       pageSize,
                                                                       methodName);
 
-            response.setElementList(results);
+            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
         }
         catch (Exception error)
         {
@@ -892,11 +887,11 @@ public class SchemaManagerRESTServices
             SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
             SchemaTypeElement result = handler.getSchemaTypeForElement(userId,
-                                                                      parentElementGUID,
-                                                                      parentElementTypeName,
-                                                                      methodName);
+                                                                       parentElementGUID,
+                                                                       parentElementTypeName,
+                                                                       methodName);
 
-            response.setElement(result);
+            response.setElement(setUpVendorProperties(userId, result, handler, methodName));
         }
         catch (Exception error)
         {
@@ -952,7 +947,7 @@ public class SchemaManagerRESTServices
                                                                           pageSize,
                                                                           methodName);
 
-            response.setElementList(results);
+            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1000,7 +995,7 @@ public class SchemaManagerRESTServices
                                                              guidParameterName,
                                                              methodName);
 
-            response.setElement(result);
+            response.setElement(setUpVendorProperties(userId, result, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1133,7 +1128,7 @@ public class SchemaManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SchemaAttributeHandler<SchemaAttributeElement,
-                                   SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
+                                          SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1145,38 +1140,38 @@ public class SchemaManagerRESTServices
                 }
 
                 String schemaAttributeGUID = handler.createNestedSchemaAttribute(userId,
-                                                                            requestBody.getExternalSourceGUID(),
-                                                                            requestBody.getExternalSourceName(),
-                                                                            schemaElementGUID,
-                                                                            schemaElementGUIDParameterName,
-                                                                            requestBody.getQualifiedName(),
-                                                                            qualifiedNameParameterName,
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            requestBody.getExternalTypeGUID(),
-                                                                            requestBody.getDataType(),
-                                                                            requestBody.getDefaultValue(),
-                                                                            requestBody.getFixedValue(),
-                                                                            requestBody.getValidValuesSetGUID(),
-                                                                            null,
-                                                                            requestBody.getIsDeprecated(),
-                                                                            requestBody.getElementPosition(),
-                                                                            requestBody.getMinCardinality(),
-                                                                            requestBody.getMaxCardinality(),
-                                                                            requestBody.getAllowsDuplicateValues(),
-                                                                            requestBody.getOrderedValues(),
-                                                                            requestBody.getDefaultValueOverride(),
-                                                                            sortOrder,
-                                                                            requestBody.getMinimumLength(),
-                                                                            requestBody.getLength(),
-                                                                            requestBody.getPrecision(),
-                                                                            requestBody.getIsNullable(),
-                                                                            requestBody.getNativeJavaClass(),
-                                                                            requestBody.getAliases(),
-                                                                            requestBody.getAdditionalProperties(),
-                                                                            requestBody.getTypeName(),
-                                                                            requestBody.getExtendedProperties(),
-                                                                            methodName);
+                                                                                 requestBody.getExternalSourceGUID(),
+                                                                                 requestBody.getExternalSourceName(),
+                                                                                 schemaElementGUID,
+                                                                                 schemaElementGUIDParameterName,
+                                                                                 requestBody.getQualifiedName(),
+                                                                                 qualifiedNameParameterName,
+                                                                                 requestBody.getDisplayName(),
+                                                                                 requestBody.getDescription(),
+                                                                                 requestBody.getExternalTypeGUID(),
+                                                                                 requestBody.getDataType(),
+                                                                                 requestBody.getDefaultValue(),
+                                                                                 requestBody.getFixedValue(),
+                                                                                 requestBody.getValidValuesSetGUID(),
+                                                                                 null,
+                                                                                 requestBody.getIsDeprecated(),
+                                                                                 requestBody.getElementPosition(),
+                                                                                 requestBody.getMinCardinality(),
+                                                                                 requestBody.getMaxCardinality(),
+                                                                                 requestBody.getAllowsDuplicateValues(),
+                                                                                 requestBody.getOrderedValues(),
+                                                                                 requestBody.getDefaultValueOverride(),
+                                                                                 sortOrder,
+                                                                                 requestBody.getMinimumLength(),
+                                                                                 requestBody.getLength(),
+                                                                                 requestBody.getPrecision(),
+                                                                                 requestBody.getIsNullable(),
+                                                                                 requestBody.getNativeJavaClass(),
+                                                                                 requestBody.getAliases(),
+                                                                                 requestBody.getAdditionalProperties(),
+                                                                                 requestBody.getTypeName(),
+                                                                                 requestBody.getExtendedProperties(),
+                                                                                 methodName);
 
                 if ((schemaAttributeGUID != null) && (requestBody.getVendorProperties() != null))
                 {
@@ -1445,7 +1440,7 @@ public class SchemaManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SchemaAttributeHandler<SchemaAttributeElement,
-                                   SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
+                                          SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1483,6 +1478,11 @@ public class SchemaManagerRESTServices
                                               requestBody.getExtendedProperties(),
                                               isMergeUpdate,
                                               methodName);
+
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
+                {
+                    handler.setVendorProperties(userId, schemaAttributeGUID, requestBody.getVendorProperties(), methodName);
+                }
             }
             else
             {
@@ -1531,7 +1531,7 @@ public class SchemaManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SchemaAttributeHandler<SchemaAttributeElement,
-                                   SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
+                                          SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1616,7 +1616,7 @@ public class SchemaManagerRESTServices
                                                                                     pageSize,
                                                                                     methodName);
 
-                response.setElementList(results);
+                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
             }
         }
         catch (Exception error)
@@ -1673,8 +1673,7 @@ public class SchemaManagerRESTServices
                                                                                        pageSize,
                                                                                        methodName);
 
-            response.setElementList(results);
-
+            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1740,7 +1739,7 @@ public class SchemaManagerRESTServices
                                                                                          pageSize,
                                                                                          methodName);
 
-                response.setElementList(results);
+                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
             }
         }
         catch (Exception error)
@@ -1793,7 +1792,7 @@ public class SchemaManagerRESTServices
                                                                        null,
                                                                        methodName);
 
-            response.setElement(result);
+            response.setElement(setUpVendorProperties(userId, result, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2100,5 +2099,153 @@ public class SchemaManagerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<SchemaTypeElement> setUpVendorProperties(String                               userId,
+                                                          List<SchemaTypeElement>              retrievedResults,
+                                                          SchemaTypeHandler<SchemaTypeElement> handler,
+                                                          String                               methodName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (SchemaTypeElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private SchemaTypeElement setUpVendorProperties(String                               userId,
+                                                    SchemaTypeElement                    element,
+                                                    SchemaTypeHandler<SchemaTypeElement> handler,
+                                                    String                               methodName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            SchemaTypeProperties properties = element.getSchemaTypeProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<SchemaAttributeElement> setUpVendorProperties(String                                                            userId,
+                                                               List<SchemaAttributeElement>                                      retrievedResults,
+                                                               SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler,
+                                                               String                                                            methodName) throws InvalidParameterException,
+                                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                                    PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (SchemaAttributeElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private SchemaAttributeElement setUpVendorProperties(String                                                            userId,
+                                                         SchemaAttributeElement                                            element,
+                                                         SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler,
+                                                         String                                                            methodName) throws InvalidParameterException,
+                                                                                                                                              UserNotAuthorizedException,
+                                                                                                                                              PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            SchemaAttributeProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
     }
 }

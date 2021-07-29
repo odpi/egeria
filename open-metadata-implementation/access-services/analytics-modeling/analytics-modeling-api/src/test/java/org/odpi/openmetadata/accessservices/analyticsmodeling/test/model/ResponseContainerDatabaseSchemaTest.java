@@ -16,13 +16,13 @@ public class ResponseContainerDatabaseSchemaTest {
 	
 
 	String master = String.format("{%n" + 
+			"  \"id\" : \"GOSALES/sys\",%n" + 
+			"  \"type\" : \"schema\",%n" + 
 			"  \"attributes\" : {%n" + 
 			"    \"catalog\" : \"GOSALES\",%n" + 
 			"    \"schema\" : \"sys\",%n" + 
 			"    \"schemaType\" : \"user\"%n" + 
-			"  },%n" + 
-			"  \"id\" : \"GOSALES/sys\",%n" + 
-			"  \"type\" : \"schema\"%n" + 
+			"  }%n" + 
 			"}");
 		
 	@Test

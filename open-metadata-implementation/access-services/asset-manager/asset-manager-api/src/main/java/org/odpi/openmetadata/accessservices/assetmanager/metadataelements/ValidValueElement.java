@@ -116,9 +116,9 @@ public class ValidValueElement implements MetadataElement, Serializable
 
 
     /**
-     * Return details of the glossary
+     * Return details of the valid value
      *
-     * @return glossary properties
+     * @return  properties
      */
     public ValidValueProperties getValidValueProperties()
     {
@@ -127,9 +127,9 @@ public class ValidValueElement implements MetadataElement, Serializable
 
 
     /**
-     * Set up glossary properties
+     * Set up the valid value properties
      *
-     * @param validValueProperties glossary properties
+     * @param validValueProperties  properties
      */
     public void setValidValueProperties(ValidValueProperties validValueProperties)
     {
@@ -145,7 +145,7 @@ public class ValidValueElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "GlossaryElement{" +
+        return "ValidValueElement{" +
                        "elementHeader=" + elementHeader +
                        ", correlationHeaders=" + correlationHeaders +
                        ", validValueProperties=" + validValueProperties +
