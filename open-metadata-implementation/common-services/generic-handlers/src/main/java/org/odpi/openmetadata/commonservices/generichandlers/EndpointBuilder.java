@@ -69,6 +69,40 @@ class EndpointBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create constructor - when templating
+     *
+     * @param qualifiedName unique name for the endpoint
+     * @param displayName short display name for the endpoint
+     * @param description description of the endpoint
+     * @param networkAddress location of the resource
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    EndpointBuilder(String               qualifiedName,
+                    String               displayName,
+                    String               description,
+                    String               networkAddress,
+                    OMRSRepositoryHelper repositoryHelper,
+                    String               serviceName,
+                    String               serverName)
+    {
+        super(qualifiedName,
+              null,
+              OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
+              OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+        this.networkAddress = networkAddress;
+    }
+
+
+    /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method

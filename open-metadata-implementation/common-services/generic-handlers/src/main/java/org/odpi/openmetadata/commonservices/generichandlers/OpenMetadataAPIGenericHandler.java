@@ -3464,6 +3464,49 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Classify an element with the anchors classification.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName anchorGUID of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param anchorGUID unique identifier of the anchor
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addAnchorsClassification(String              userId,
+                                         String              beanGUID,
+                                         String              beanGUIDParameterName,
+                                         String              beanGUIDTypeName,
+                                         String              anchorGUID,
+                                         String              methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                           builder.getAnchorsProperties(anchorGUID, methodName),
+                                           false,
+                                           methodName);
+    }
+
+
+    /**
      * Add details of an update to the anchor entity in the latest change classification.
      *
      * @param anchorEntity the entity to update
@@ -3631,51 +3674,31 @@ public class OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = existingProperties;
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
-
-        if (summary != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
                                                                       summary,
                                                                       methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
-
-        if (abbreviation != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
                                                                       abbreviation,
                                                                       methodName);
-        }
-
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
-
         return properties;
     }
 
@@ -3713,135 +3736,133 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        if ((displayName != null) || (summary != null) || (description != null) || (abbreviation != null) || (usage != null))
+        EntityDetail glossaryTerm = this.getEntityByValue(localServerUserId,
+                                                          elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                          supplementaryPropertiesQualifiedNameParameterName,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                          qualifiedNamePropertyNamesList,
+                                                          methodName);
+
+        if (glossaryTerm == null)
         {
-            EntityDetail glossaryTerm = this.getEntityByValue(localServerUserId,
-                                                              elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
-                                                              supplementaryPropertiesQualifiedNameParameterName,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                              qualifiedNamePropertyNamesList,
-                                                              methodName);
+            String glossaryGUID = this.getSupplementaryPropertiesGlossary(methodName);
 
-            if (glossaryTerm == null)
+            if (glossaryGUID != null)
             {
-                String glossaryGUID = this.getSupplementaryPropertiesGlossary(methodName);
+                InstanceProperties glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                                    displayName,
+                                                                                                    summary,
+                                                                                                    description,
+                                                                                                    abbreviation,
+                                                                                                    usage,
+                                                                                                    methodName);
 
-                if (glossaryGUID != null)
+                /*
+                 * The glossary term is anchored to the element rather than the glossary.  This means that it deleted if/when
+                 * the element is deleted.
+                 */
+                List<Classification> initialClassifications = new ArrayList<>();
+                try
                 {
-                    InstanceProperties glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
-                                                                                                        displayName,
-                                                                                                        summary,
-                                                                                                        description,
-                                                                                                        abbreviation,
-                                                                                                        usage,
-                                                                                                        methodName);
+                    Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                          null,
+                                                                                          null,
+                                                                                          InstanceProvenanceType.LOCAL_COHORT,
+                                                                                          userId,
+                                                                                          OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                          ClassificationOrigin.ASSIGNED,
+                                                                                          null,
+                                                                                          repositoryHelper.addStringPropertyToInstance(
+                                                                                                  serviceName,
+                                                                                                  null,
+                                                                                                  OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                                                  elementGUID,
+                                                                                                  methodName));
+                    initialClassifications.add(classification);
 
-                    /*
-                     * The glossary term is anchored to the element rather than the glossary.  This means that it deleted if/when
-                     * the element is deleted.
-                     */
-                    List<Classification> initialClassifications = new ArrayList<>();
-                    try
-                    {
-                        Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                              null,
-                                                                                              null,
-                                                                                              InstanceProvenanceType.LOCAL_COHORT,
-                                                                                              userId,
-                                                                                              OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                                              ClassificationOrigin.ASSIGNED,
-                                                                                              null,
-                                                                                              repositoryHelper.addStringPropertyToInstance(
-                                                                                                      serviceName,
-                                                                                                      null,
-                                                                                                      OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
-                                                                                                      elementGUID,
-                                                                                                      methodName));
-                        initialClassifications.add(classification);
-
-                        classification = repositoryHelper.getNewClassification(serviceName,
-                                                                               null,
-                                                                               null,
-                                                                               InstanceProvenanceType.LOCAL_COHORT,
-                                                                               userId,
-                                                                               OpenMetadataAPIMapper.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
-                                                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                               ClassificationOrigin.ASSIGNED,
-                                                                               null,
-                                                                               null);
-                        initialClassifications.add(classification);
-                    }
-                    catch (TypeErrorException error)
-                    {
-                        throw new PropertyServerException(error);
-                    }
-
-                    String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
-                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                             null,
-                                                                             null,
-                                                                             glossaryTermProperties,
-                                                                             initialClassifications,
-                                                                             InstanceStatus.ACTIVE,
-                                                                             methodName);
-
-                    repositoryHandler.createRelationship(userId,
-                                                         OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                                         null,
-                                                         null,
-                                                         glossaryGUID,
-                                                         glossaryTermGUID,
-                                                         null,
-                                                         methodName);
-
-                    repositoryHandler.createRelationship(userId,
-                                                         OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
-                                                         null,
-                                                         null,
-                                                         elementGUID,
-                                                         glossaryTermGUID,
-                                                         null,
-                                                         methodName);
+                    classification = repositoryHelper.getNewClassification(serviceName,
+                                                                           null,
+                                                                           null,
+                                                                           InstanceProvenanceType.LOCAL_COHORT,
+                                                                           userId,
+                                                                           OpenMetadataAPIMapper.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
+                                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                           ClassificationOrigin.ASSIGNED,
+                                                                           null,
+                                                                           null);
+                    initialClassifications.add(classification);
                 }
+                catch (TypeErrorException error)
+                {
+                    throw new PropertyServerException(error);
+                }
+
+                String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         null,
+                                                                         null,
+                                                                         glossaryTermProperties,
+                                                                         initialClassifications,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         methodName);
+
+                repositoryHandler.createRelationship(userId,
+                                                     OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                     null,
+                                                     null,
+                                                     glossaryGUID,
+                                                     glossaryTermGUID,
+                                                     null,
+                                                     methodName);
+
+                repositoryHandler.createRelationship(userId,
+                                                     OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                                     null,
+                                                     null,
+                                                     elementGUID,
+                                                     glossaryTermGUID,
+                                                     null,
+                                                     methodName);
+            }
+        }
+        else
+        {
+            InstanceProperties glossaryTermProperties;
+
+            if (isMergeUpdate)
+            {
+                glossaryTermProperties = this.getSupplementaryInstanceProperties(glossaryTerm.getProperties(),
+                                                                                 displayName,
+                                                                                 summary,
+                                                                                 description,
+                                                                                 abbreviation,
+                                                                                 usage,
+                                                                                 methodName);
             }
             else
             {
-                InstanceProperties glossaryTermProperties;
-
-                if (isMergeUpdate)
-                {
-                    glossaryTermProperties = this.getSupplementaryInstanceProperties(glossaryTerm.getProperties(),
-                                                                                     displayName,
-                                                                                     summary,
-                                                                                     description,
-                                                                                     abbreviation,
-                                                                                     usage,
-                                                                                     methodName);
-                }
-                else
-                {
-                    glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
-                                                                                     displayName,
-                                                                                     summary,
-                                                                                     description,
-                                                                                     abbreviation,
-                                                                                     usage,
-                                                                                     methodName);
-                }
-
-                repositoryHandler.updateEntityProperties(userId,
-                                                         null,
-                                                         null,
-                                                         glossaryTerm.getGUID(),
-                                                         glossaryTerm,
-                                                         null,
-                                                         null,
-                                                         glossaryTermProperties,
-                                                         methodName);
+                glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
+                                                                                 displayName,
+                                                                                 summary,
+                                                                                 description,
+                                                                                 abbreviation,
+                                                                                 usage,
+                                                                                 methodName);
             }
+
+            repositoryHandler.updateEntityProperties(userId,
+                                                     null,
+                                                     null,
+                                                     glossaryTerm.getGUID(),
+                                                     glossaryTerm,
+                                                     null,
+                                                     null,
+                                                     glossaryTermProperties,
+                                                     methodName);
+
         }
     }
 
@@ -11623,7 +11644,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                       attachmentTypeGUID,
                                                                                       attachmentTypeName,
                                                                                       methodName);
-
 
         this.unlinkElementFromElement(userId,
                                       onlyCreatorPermitted,

@@ -12,12 +12,10 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesDeleteRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -215,19 +213,19 @@ public class DataEngineResource {
     }
 
     /**
-     * Create or update the Process entities with ports, schema types and all needed relationships
+     * Create or update the Process entity with ports, schema types and all needed relationships
      *
-     * @param serverName           name of server instance to call
-     * @param userId               the name of the calling user
-     * @param processesRequestBody properties of the process
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param processRequestBody properties of the process
      *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/processes")
-    public GUIDListResponse createOrUpdateProcesses(@PathVariable("userId") String userId,
-                                                    @PathVariable("serverName") String serverName,
-                                                    @RequestBody ProcessesRequestBody processesRequestBody) {
-        return restAPI.upsertProcesses(userId, serverName, processesRequestBody);
+    public GUIDResponse createOrUpdateProcess(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @RequestBody ProcessRequestBody processRequestBody) {
+        return restAPI.upsertProcess(userId, serverName, processRequestBody);
     }
 
     /**
@@ -240,10 +238,10 @@ public class DataEngineResource {
      * @return void response
      */
     @DeleteMapping(path = "/processes")
-    public VoidResponse deleteProcesses(@PathVariable("userId") String userId,
-                                        @PathVariable("serverName") String serverName,
-                                        @RequestBody ProcessesDeleteRequestBody requestBody) {
-        return restAPI.deleteProcesses(userId, serverName, requestBody);
+    public VoidResponse deleteProcess(@PathVariable("userId") String userId,
+                                      @PathVariable("serverName") String serverName,
+                                      @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteProcess(userId, serverName, requestBody);
     }
 
     /**

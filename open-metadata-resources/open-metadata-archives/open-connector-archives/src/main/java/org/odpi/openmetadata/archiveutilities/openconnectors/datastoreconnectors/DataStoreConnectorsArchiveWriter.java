@@ -23,7 +23,7 @@ public class DataStoreConnectorsArchiveWriter extends OMRSArchiveWriter
 
     /**
      * Generates and writes out an open metadata archive containing all of the connector types
-     * describing the ODPi Egeria data store open connectors.
+     * describing the Egeria data store open connectors.
      */
     private void writeOpenMetadataArchive()
     {
