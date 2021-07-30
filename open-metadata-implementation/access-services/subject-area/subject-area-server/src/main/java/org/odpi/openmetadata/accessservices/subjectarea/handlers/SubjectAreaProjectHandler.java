@@ -87,7 +87,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedProject);
-                ProjectBuilder builder = new ProjectBuilder(suppliedProject.getQualifiedName(),
+                ProjectBuilder builder = new ProjectBuilder(
+                                                            suppliedProject.getQualifiedName(),
+                                                            suppliedProject.getName(),
+                                                            suppliedProject.getDescription(),
                                                             suppliedProject.getStartDate(),
                                                             suppliedProject.getPlannedEndDate(),
                                                             suppliedProject.getStatus(),

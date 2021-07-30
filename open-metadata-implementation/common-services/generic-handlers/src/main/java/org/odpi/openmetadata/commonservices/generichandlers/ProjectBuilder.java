@@ -14,6 +14,8 @@ import java.util.Map;
  */
 public class ProjectBuilder extends ReferenceableBuilder
 {
+    private String name = null;
+    private String description = null;
     private Date startDate = null;
     private Date plannedEndDate = null;
     private String status = null;
@@ -23,8 +25,10 @@ public class ProjectBuilder extends ReferenceableBuilder
      * Create constructor
      *
      * @param qualifiedName unique name for the Project
+     * @param name name for the project
+     * @param description description of the glossary
      * @param startDate start date of the project
-     * @param plannedEndDate plannedend Date for the project
+     * @param plannedEndDate planned end Date for the project
      * @param status status of the project
      * @param additionalProperties additional properties for a Project
      * @param typeGUID unique identifier of this element's type
@@ -34,7 +38,10 @@ public class ProjectBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public ProjectBuilder(String        qualifiedName,
+    public ProjectBuilder(
+                   String               qualifiedName,
+                   String               name,
+                   String               description,
                    Date                 startDate,
                    Date                 plannedEndDate,
                    String               status,
@@ -54,7 +61,7 @@ public class ProjectBuilder extends ReferenceableBuilder
               repositoryHelper,
               serviceName,
               serverName);
-
+        this.name = name;
         this.startDate = startDate;
         this.plannedEndDate = plannedEndDate;
         this.status = status;
@@ -91,6 +98,18 @@ public class ProjectBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  name,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                       properties,
