@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -13,6 +15,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
@@ -166,13 +171,10 @@ public class EventBrokerRESTServices
 
                 if (topicGUID != null)
                 {
-                    if (requestBody.getVendorProperties() != null)
-                    {
-                        handler.setVendorProperties(userId,
-                                                    topicGUID,
-                                                    requestBody.getVendorProperties(),
-                                                    methodName);
-                    }
+                    handler.setVendorProperties(userId,
+                                                topicGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
 
                 response.setGUID(topicGUID);
@@ -232,74 +234,37 @@ public class EventBrokerRESTServices
 
             if (requestBody != null)
             {
-                String topicGUID;
+                String topicGUID = handler.addAssetFromTemplate(userId,
+                                                                handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceGUID()),
+                                                                handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceName()),
+                                                                templateGUID,
+                                                                templateGUIDParameterName,
+                                                                OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                                requestBody.getQualifiedName(),
+                                                                qualifiedNameParameterName,
+                                                                requestBody.getDisplayName(),
+                                                                requestBody.getDescription(),
+                                                                requestBody.getNetworkAddress(),
+                                                                methodName);
 
-                if (eventBrokerIsHome)
+                if ((topicGUID != null) && (requestBody.getExternalSourceGUID() != null))
                 {
-                    topicGUID = handler.addAssetFromTemplate(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              templateGUID,
-                                                              templateGUIDParameterName,
-                                                              OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                              requestBody.getQualifiedName(),
-                                                              qualifiedNameParameterName,
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
-                                                              requestBody.getNetworkAddress(),
-                                                              methodName);
-
-                    if ((topicGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     eventBrokerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     topicGUID,
-                                                     topicGUIDParameterName,
-                                                     OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceName()),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 eventBrokerGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 topicGUID,
+                                                 topicGUIDParameterName,
+                                                 OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 null,
+                                                 methodName);
                 }
-                else
-                {
-                    topicGUID = handler.addAssetFromTemplate(userId,
-                                                             null,
-                                                             null,
-                                                             templateGUID,
-                                                             templateGUIDParameterName,
-                                                             OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                             requestBody.getQualifiedName(),
-                                                             qualifiedNameParameterName,
-                                                             requestBody.getDisplayName(),
-                                                             requestBody.getDescription(),
-                                                             requestBody.getNetworkAddress(),
-                                                             methodName);
 
-                    if ((topicGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     eventBrokerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     topicGUID,
-                                                     topicGUIDParameterName,
-                                                     OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
 
                 response.setGUID(topicGUID);
             }
@@ -324,7 +289,7 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-      * @param topicGUID unique identifier of the metadata element to update
+     * @param topicGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with the existing properties of overlay them?
      * @param requestBody new properties for this element
      *
@@ -388,16 +353,12 @@ public class EventBrokerRESTServices
                                     isMergeUpdate,
                                     methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                topicGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -619,7 +580,7 @@ public class EventBrokerRESTServices
                                                                 pageSize,
                                                                 methodName);
 
-            response.setElementList(topicAssets);
+            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -676,7 +637,7 @@ public class EventBrokerRESTServices
                                                                      pageSize,
                                                                      methodName);
 
-            response.setElementList(topicAssets);
+            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -737,7 +698,7 @@ public class EventBrokerRESTServices
                                                                          pageSize,
                                                                          methodName);
 
-            response.setElementList(topicAssets);
+            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -786,7 +747,7 @@ public class EventBrokerRESTServices
                                                                     OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
                                                                     methodName);
 
-            response.setElement(topicAsset);
+            response.setElement(setUpVendorProperties(userId, topicAsset, handler, methodName));
         }
         catch (Exception error)
         {
@@ -808,7 +769,6 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of the topic where the schema is located
      * @param requestBody properties about the event type
      *
@@ -820,7 +780,6 @@ public class EventBrokerRESTServices
     public GUIDResponse createEventType(String               serverName,
                                         String               userId,
                                         String               topicGUID,
-                                        boolean              eventBrokerIsHome,
                                         EventTypeRequestBody requestBody)
     {
         final String methodName = "createEventType";
@@ -839,58 +798,29 @@ public class EventBrokerRESTServices
 
             if (requestBody != null)
             {
-                String eventTypeGUID;
+                String eventTypeGUID = handler.createEventType(userId,
+                                                               requestBody.getExternalSourceGUID(),
+                                                               requestBody.getExternalSourceName(),
+                                                               topicGUID,
+                                                               topicGUIDParameterName,
+                                                               requestBody.getQualifiedName(),
+                                                               requestBody.getDisplayName(),
+                                                               requestBody.getDescription(),
+                                                               requestBody.getVersionNumber(),
+                                                               requestBody.getIsDeprecated(),
+                                                               requestBody.getAuthor(),
+                                                               requestBody.getUsage(),
+                                                               requestBody.getEncodingStandard(),
+                                                               requestBody.getNamespace(),
+                                                               requestBody.getAdditionalProperties(),
+                                                               requestBody.getTypeName(),
+                                                               requestBody.getExtendedProperties(),
+                                                               methodName);
 
-                if (eventBrokerIsHome)
-                {
-                    eventTypeGUID = handler.createEventType(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
-                                                            topicGUID,
-                                                            topicGUIDParameterName,
-                                                            requestBody.getQualifiedName(),
-                                                            requestBody.getDisplayName(),
-                                                            requestBody.getDescription(),
-                                                            requestBody.getVersionNumber(),
-                                                            requestBody.getIsDeprecated(),
-                                                            requestBody.getAuthor(),
-                                                            requestBody.getUsage(),
-                                                            requestBody.getEncodingStandard(),
-                                                            requestBody.getNamespace(),
-                                                            requestBody.getAdditionalProperties(),
-                                                            requestBody.getTypeName(),
-                                                            requestBody.getExtendedProperties(),
-                                                            methodName);
-                }
-                else
-                {
-                    eventTypeGUID = handler.createEventType(userId,
-                                                            null,
-                                                            null,
-                                                            topicGUID,
-                                                            topicGUIDParameterName,
-                                                            requestBody.getQualifiedName(),
-                                                            requestBody.getDisplayName(),
-                                                            requestBody.getDescription(),
-                                                            requestBody.getVersionNumber(),
-                                                            requestBody.getIsDeprecated(),
-                                                            requestBody.getAuthor(),
-                                                            requestBody.getUsage(),
-                                                            requestBody.getEncodingStandard(),
-                                                            requestBody.getNamespace(),
-                                                            requestBody.getAdditionalProperties(),
-                                                            requestBody.getTypeName(),
-                                                            requestBody.getExtendedProperties(),
-                                                            methodName);
-                }
-
-                if (requestBody.getVendorProperties() != null)
-                {
-                    handler.setVendorProperties(userId,
-                                                topicGUID,
-                                                requestBody.getVendorProperties(),
-                                                methodName);
-                }
+                handler.setVendorProperties(userId,
+                                            eventTypeGUID,
+                                            requestBody.getVendorProperties(),
+                                            methodName);
 
                 response.setGUID(eventTypeGUID);
             }
@@ -913,7 +843,6 @@ public class EventBrokerRESTServices
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the schema is located
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new event type or
@@ -925,7 +854,6 @@ public class EventBrokerRESTServices
                                                     String              userId,
                                                     String              templateGUID,
                                                     String              topicGUID,
-                                                    boolean             eventBrokerIsHome,
                                                     TemplateRequestBody requestBody)
     {
         final String methodName = "createEventTypeFromTemplate";
@@ -944,32 +872,16 @@ public class EventBrokerRESTServices
 
             if (requestBody != null)
             {
-                if (eventBrokerIsHome)
-                {
-                    response.setGUID(handler.createEventTypeFromTemplate(userId,
-                                                                         requestBody.getExternalSourceGUID(),
-                                                                         requestBody.getExternalSourceName(),
-                                                                         topicGUID,
-                                                                         topicGUIDParameterName,
-                                                                         templateGUID,
-                                                                         requestBody.getQualifiedName(),
-                                                                         requestBody.getDisplayName(),
-                                                                         requestBody.getDescription(),
-                                                                         methodName));
-                }
-                else
-                {
-                    response.setGUID(handler.createEventTypeFromTemplate(userId,
-                                                                         null,
-                                                                         null,
-                                                                         topicGUID,
-                                                                         topicGUIDParameterName,
-                                                                         templateGUID,
-                                                                         requestBody.getQualifiedName(),
-                                                                         requestBody.getDisplayName(),
-                                                                         requestBody.getDescription(),
-                                                                         methodName));
-                }
+                response.setGUID(handler.createEventTypeFromTemplate(userId,
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     topicGUID,
+                                                                     topicGUIDParameterName,
+                                                                     templateGUID,
+                                                                     requestBody.getQualifiedName(),
+                                                                     requestBody.getDisplayName(),
+                                                                     requestBody.getDescription(),
+                                                                     methodName));
             }
             else
             {
@@ -1043,16 +955,12 @@ public class EventBrokerRESTServices
                                         isMergeUpdate,
                                         methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                eventTypeGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -1166,14 +1074,14 @@ public class EventBrokerRESTServices
 
             EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> topicSchemaAssets = handler.findEventTypes(userId,
-                                                                              searchString,
-                                                                              searchStringParameterName,
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              methodName);
+            List<EventTypeElement> eventTypes = handler.findEventTypes(userId,
+                                                                       searchString,
+                                                                       searchStringParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
-            response.setElementList(topicSchemaAssets);
+            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1221,14 +1129,14 @@ public class EventBrokerRESTServices
 
             EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> topicSchemaAssets = handler.getEventTypesForEventSet(userId,
-                                                                                        topicGUID,
-                                                                                        topicGUIDParameterName,
-                                                                                        startFrom,
-                                                                                        pageSize,
-                                                                                        methodName);
+            List<EventTypeElement> eventTypes = handler.getEventTypesForEventSet(userId,
+                                                                                 topicGUID,
+                                                                                 topicGUIDParameterName,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 methodName);
 
-            response.setElementList(topicSchemaAssets);
+            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1275,14 +1183,14 @@ public class EventBrokerRESTServices
 
             EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> topicSchemaAssets = handler.getEventTypesForTopic(userId,
-                                                                                     topicGUID,
-                                                                                     topicGUIDParameterName,
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     methodName);
+            List<EventTypeElement> eventTypes = handler.getEventTypesForTopic(userId,
+                                                                              topicGUID,
+                                                                              topicGUIDParameterName,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              methodName);
 
-            response.setElementList(topicSchemaAssets);
+            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1330,9 +1238,9 @@ public class EventBrokerRESTServices
 
             EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> topicSchemaAssets = handler.getEventTypesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+            List<EventTypeElement> eventTypes = handler.getEventTypesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
 
-            response.setElementList(topicSchemaAssets);
+            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1375,9 +1283,9 @@ public class EventBrokerRESTServices
 
             EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            EventTypeElement topicSchemaAsset = handler.getEventTypeByGUID(userId, guid, eventTypeGUIDParameterName, methodName);
+            EventTypeElement eventType = handler.getEventTypeByGUID(userId, guid, eventTypeGUIDParameterName, methodName);
 
-            response.setElement(topicSchemaAsset);
+            response.setElement(setUpVendorProperties(userId, eventType, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1387,5 +1295,151 @@ public class EventBrokerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<TopicElement> setUpVendorProperties(String                     userId,
+                                                     List<TopicElement>         retrievedResults,
+                                                     AssetHandler<TopicElement> handler,
+                                                     String                     methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (TopicElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private TopicElement setUpVendorProperties(String                     userId,
+                                               TopicElement               element,
+                                               AssetHandler<TopicElement> handler,
+                                               String                     methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            TopicProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<EventTypeElement> setUpVendorProperties(String                              userId,
+                                                         List<EventTypeElement>             retrievedResults,
+                                                         EventTypeHandler<EventTypeElement> handler,
+                                                         String                             methodName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (EventTypeElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private EventTypeElement setUpVendorProperties(String                             userId,
+                                                   EventTypeElement                   element,
+                                                   EventTypeHandler<EventTypeElement> handler,
+                                                   String                             methodName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            EventTypeProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
     }
 }

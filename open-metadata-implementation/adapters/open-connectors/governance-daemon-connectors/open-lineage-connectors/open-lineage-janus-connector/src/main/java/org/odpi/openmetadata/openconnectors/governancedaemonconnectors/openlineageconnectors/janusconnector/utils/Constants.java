@@ -21,6 +21,7 @@ public final class Constants {
     public static final String DEPLOYED_DB_SCHEMA_TYPE = "DeployedDatabaseSchema";
     public static final String DATABASE = "Database";
     public static final String TABULAR_COLUMN = "TabularColumn";
+    public static final String TABULAR_FILE_COLUMN = "TabularFileColumn";
     public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String DATA_FILE = "DataFile";

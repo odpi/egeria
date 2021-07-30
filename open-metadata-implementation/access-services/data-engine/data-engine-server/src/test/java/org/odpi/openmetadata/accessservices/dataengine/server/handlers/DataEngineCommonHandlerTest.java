@@ -18,13 +18,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -195,9 +195,13 @@ class DataEngineCommonHandlerTest {
         final String methodName = "upsertExternalRelationship";
 
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
-
         Relationship mockedRelationship = mock(Relationship.class);
+        EntityProxy firstEntityProxy = mockEntityProxy(FIRST_GUID);
+        EntityProxy secondEntityProxy = mockEntityProxy(SECOND_GUID);
+        when(mockedRelationship.getEntityOneProxy()).thenReturn(firstEntityProxy);
+        when(mockedRelationship.getEntityTwoProxy()).thenReturn(secondEntityProxy);
         when(mockedRelationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
+
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
                 RELATIONSHIP_TYPE_NAME, "findRelationship")).thenReturn(mockedRelationship);
 
@@ -250,6 +254,10 @@ class DataEngineCommonHandlerTest {
     void findRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         Relationship mockedRelationship = mock(Relationship.class);
+        EntityProxy firstEntityProxy = mockEntityProxy(FIRST_GUID);
+        EntityProxy secondEntityProxy = mockEntityProxy(SECOND_GUID);
+        when(mockedRelationship.getEntityOneProxy()).thenReturn(firstEntityProxy);
+        when(mockedRelationship.getEntityTwoProxy()).thenReturn(secondEntityProxy);
 
         String methodName = "findRelationship";
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
@@ -368,5 +376,12 @@ class DataEngineCommonHandlerTest {
 
         when(entityTypeDef.getName()).thenReturn(typeName);
         when(entityTypeDef.getGUID()).thenReturn(typeGUID);
+    }
+
+    private EntityProxy mockEntityProxy(String guid) {
+        EntityProxy entityProxy = mock(EntityProxy.class);
+        when(entityProxy.getGUID()).thenReturn(guid);
+
+        return entityProxy;
     }
 }

@@ -2737,11 +2737,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-    /* =====================================================
-     * Schema Attribute properties
-     */
-
-
     /**
      * Extract and delete the position property from the supplied instance properties.
      *

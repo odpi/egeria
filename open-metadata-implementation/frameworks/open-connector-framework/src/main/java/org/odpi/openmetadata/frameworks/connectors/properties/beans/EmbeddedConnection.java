@@ -57,6 +57,7 @@ public class EmbeddedConnection extends PropertyBase
 
         if (template != null)
         {
+            position = template.getPosition();
             displayName = template.getDisplayName();
             arguments = template.getArguments();
             embeddedConnection = template.getEmbeddedConnection();
@@ -179,10 +180,12 @@ public class EmbeddedConnection extends PropertyBase
     public String toString()
     {
         return "EmbeddedConnection{" +
-                "displayName='" + displayName + '\'' +
-                ", arguments=" + arguments +
-                ", embeddedConnection=" + embeddedConnection +
-                '}';
+                       "position=" + position +
+                       ", displayName='" + displayName + '\'' +
+                       ", arguments=" + arguments +
+                       ", embeddedConnection=" + embeddedConnection +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -199,14 +202,19 @@ public class EmbeddedConnection extends PropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof EmbeddedConnection))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
         EmbeddedConnection that = (EmbeddedConnection) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getArguments(), that.getArguments()) &&
-                Objects.equals(getEmbeddedConnection(), that.getEmbeddedConnection());
+        return position == that.position &&
+                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(arguments, that.arguments) &&
+                       Objects.equals(embeddedConnection, that.embeddedConnection);
     }
 
 
@@ -218,7 +226,6 @@ public class EmbeddedConnection extends PropertyBase
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getDisplayName(), getArguments(), getEmbeddedConnection());
+        return Objects.hash(super.hashCode(), position, displayName, arguments, embeddedConnection);
     }
 }

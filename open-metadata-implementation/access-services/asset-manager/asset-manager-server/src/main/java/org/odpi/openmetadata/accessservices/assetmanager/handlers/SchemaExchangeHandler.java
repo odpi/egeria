@@ -129,7 +129,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private void addCorrelationPropertiesToSchemaTypes(String                userId,
+    private void addCorrelationPropertiesToSchemaTypes(String                  userId,
                                                        String                  assetManagerGUID,
                                                        String                  assetManagerName,
                                                        List<SchemaTypeElement> results,
@@ -139,17 +139,17 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement glossary : results)
+            for (MetadataElement element : results)
             {
-                if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
+                if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
-                    glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                 glossary.getElementHeader().getGUID(),
-                                                                                 schemaTypeGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                                 assetManagerGUID,
-                                                                                 assetManagerName,
-                                                                                 methodName));
+                    element.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                element.getElementHeader().getGUID(),
+                                                                                schemaTypeGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                                assetManagerGUID,
+                                                                                assetManagerName,
+                                                                                methodName));
                 }
             }
         }

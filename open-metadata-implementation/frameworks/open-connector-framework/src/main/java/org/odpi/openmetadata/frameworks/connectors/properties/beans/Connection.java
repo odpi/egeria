@@ -440,30 +440,52 @@ public class Connection extends Referenceable
     public String toString()
     {
         return "Connection{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", connectorType=" + connectorType +
-                ", endpoint=" + endpoint +
-                ", userId='" + userId + '\'' +
-                ", configurationProperties=" + configurationProperties +
-                ", assetSummary='" + assetSummary + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", securityTags=" + getSecurityTags() +
-                ", searchKeywords=" + getSearchKeywords() +
-                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", connectorType=" + connectorType +
+                       ", endpoint=" + endpoint +
+                       ", userId='" + userId + '\'' +
+                       ", encryptedPassword='" + encryptedPassword + '\'' +
+                       ", clearPassword='" + clearPassword + '\'' +
+                       ", configurationProperties=" + configurationProperties +
+                       ", securedProperties=" + securedProperties +
+                       ", assetSummary='" + assetSummary + '\'' +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", meanings=" + meanings +
+                       ", securityTags=" + securityTags +
+                       ", searchKeywords=" + searchKeywords +
+                       ", latestChange='" + latestChange + '\'' +
+                       ", latestChangeDetails=" + latestChangeDetails +
+                       ", confidentialityGovernanceClassification=" + confidentialityGovernanceClassification +
+                       ", confidenceGovernanceClassification=" + confidenceGovernanceClassification +
+                       ", criticalityGovernanceClassification=" + criticalityGovernanceClassification +
+                       ", retentionGovernanceClassification=" + retentionGovernanceClassification +
+                       ", type=" + type +
+                       ", guid='" + guid + '\'' +
+                       ", url='" + url + '\'' +
+                       ", classifications=" + classifications +
+                       ", extendedProperties=" + extendedProperties +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", type=" + getType() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", URL='" + getURL() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

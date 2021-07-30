@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.model;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.MetadataModule;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.PhysicalModule;
 
 /**
  * Response container for Analytics Modeling module representation.<br>
@@ -15,9 +16,10 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Metad
  */
 public class ResponseContainerModule extends ResponseContainer {
 
-	private static final String PHYSICAL_DEFINITION = "physicalDefinition";
 	public static final String TYPE_MODULE = "module";
 
+	PhysicalModule attributes = new PhysicalModule();
+	
 	/**
 	 * Constructor defines 'module' type
 	 */
@@ -30,7 +32,7 @@ public class ResponseContainerModule extends ResponseContainer {
 	 * @param value module definition to set.
 	 */
 	public void setPhysicalModule(MetadataModule value) {
-		setAttribute(PHYSICAL_DEFINITION, value);
+		attributes.setModule(value);
 	}
 
 	/**
@@ -38,7 +40,7 @@ public class ResponseContainerModule extends ResponseContainer {
 	 * @return Analytics Modeling module.
 	 */
 	public MetadataModule  getPhysicalModule() {
-		return (MetadataModule) getAttribute(PHYSICAL_DEFINITION);
+		return attributes.getModule();
 	}
 
 

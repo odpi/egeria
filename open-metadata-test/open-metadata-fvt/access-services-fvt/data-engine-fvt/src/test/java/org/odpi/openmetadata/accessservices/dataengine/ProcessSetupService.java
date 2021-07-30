@@ -190,9 +190,9 @@ public class ProcessSetupService {
         lineageMappings.addAll(createLineageMappings(SECOND_STAGE_PROCESS_NAME, THIRD_STAGE_PROCESS_NAME,
                 SECOND_STAGE_OUTPUT_PORT_NAME, THIRD_STAGE_INPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(),
                 PortType.INPUT_PORT.getName(), databaseTableAttributeNames));
-        job.setLineageMappings(lineageMappings);
 
-        dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(job));
+        dataEngineOMASClient.createOrUpdateProcess(userId, job);
+        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
     }
 
     private PortAlias createPortAlias(String delegatesTo, PortType type) {
@@ -217,8 +217,8 @@ public class ProcessSetupService {
                 FIRST_STAGE_INPUT_PORT_NAME, FIRST_STAGE_OUTPUT_PORT_NAME, PortType.INPUT_PORT.getName(),
                 PortType.OUTPUT_PORT.getName(), csvHeaderAttributeNames));
 
-        firstStageProcess.setLineageMappings(lineageMappings);
-        dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(firstStageProcess));
+        dataEngineOMASClient.createOrUpdateProcess(userId, firstStageProcess);
+        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
     }
 
     private void createSecondStageProcess(String userId, DataEngineClient dataEngineOMASClient)
@@ -233,8 +233,9 @@ public class ProcessSetupService {
             LineageMapping lineageMapping = createLineageMapping(sourceName, targetName);
             lineageMappings.add(lineageMapping);
         });
-        secondStageProcess.setLineageMappings(lineageMappings);
-        dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(secondStageProcess));
+
+        dataEngineOMASClient.createOrUpdateProcess(userId, secondStageProcess);
+        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
     }
 
     private void createThirdStageProcess(String userId, DataEngineClient dataEngineOMASClient)
@@ -248,8 +249,8 @@ public class ProcessSetupService {
         lineageMappings.addAll(createLineageMappings(THIRD_STAGE_PROCESS_NAME, VIRTUAL, THIRD_STAGE_OUTPUT_PORT_NAME,
                 DATABASE, PortType.OUTPUT_PORT.getName(), PortType.INOUT_PORT.getName(), databaseTableAttributeNames));
 
-        thirdStageProcess.setLineageMappings(lineageMappings);
-        dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(thirdStageProcess));
+        dataEngineOMASClient.createOrUpdateProcess(userId, thirdStageProcess);
+        dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
     }
 
     private List<LineageMapping> createLineageMappings(String sourceProcessName, String targetProcessName, String sourcePort, String targetPort,
