@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOrigin;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
@@ -74,6 +75,12 @@ public class AssetConverter {
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
+        elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
+        elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
+        assetDescription.setElementOrigin(elementOrigin);
 
         return assetDescription;
     }
@@ -261,6 +268,12 @@ public class AssetConverter {
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(extractProperties(entityDetail.getProperties()));
         element.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
+        elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
+        elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
+        element.setElementOrigin(elementOrigin);
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             element.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -294,7 +307,6 @@ public class AssetConverter {
         if (CollectionUtils.isNotEmpty(entityProxy.getClassifications())) {
             asset.setClassifications(convertClassifications(entityProxy.getClassifications()));
         }
-
         return asset;
     }
 
