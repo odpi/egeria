@@ -7623,22 +7623,23 @@ public class OpenMetadataAPIGenericHandler<B>
         while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
         {
             EntityDetail relatedEntity = relatedEntityIterator.getNext();
-            if (log.isDebugEnabled())
-            {
-                String displayName = "";
-                String qualifiedName = "";
-                if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null ) {
-                    if ( relatedEntity.getProperties().getInstanceProperties().get("displayName")!=null) {
-                        displayName = relatedEntity.getProperties().getInstanceProperties().get("displayName").toString();
-                    }
-                    if ( relatedEntity.getProperties().getInstanceProperties().get("qualifiedName")!=null) {
-                        qualifiedName = relatedEntity.getProperties().getInstanceProperties().get("qualifiedName").toString();
-                    }
-                }
-                log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
-            }
+
             if (relatedEntity != null)
             {
+                if (log.isDebugEnabled())
+                {
+                    String displayName = "";
+                    String qualifiedName = "";
+                    if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null ) {
+                        if ( relatedEntity.getProperties().getInstanceProperties().get("displayName")!=null) {
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get("displayName").toString();
+                        }
+                        if ( relatedEntity.getProperties().getInstanceProperties().get("qualifiedName")!=null) {
+                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get("qualifiedName").toString();
+                        }
+                    }
+                    log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
+                }
                 Relationship parentRelationship = null;
                 // apply the filter if there is one
                 if (attachedEntityFilterRelationshipTypeGUID != null && attachedEntityFilterRelationshipTypeName != null)
@@ -7744,7 +7745,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase)
     {
-        if (searchCriteria != null && "".equals(searchCriteria.trim()))
+        if (searchCriteria == null || searchCriteria.trim().length() == 0)
         {
             // ignore the flags for an empty search criteria string - assume we want everything
             searchCriteria = ".*";
