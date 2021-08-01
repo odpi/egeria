@@ -207,7 +207,7 @@
         <swagger.version>2.1.10</swagger.version>
         <snakeyaml.version>1.29</snakeyaml.version>
         <groovy.version>3.0.8</groovy.version>
-        <jcl-over-slf4j.version>1.7.31</jcl-over-slf4j.version>
+        <jcl-over-slf4j.version>1.7.32</jcl-over-slf4j.version>
         <micrometer-registry-prometheus.version>1.7.1</micrometer-registry-prometheus.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
