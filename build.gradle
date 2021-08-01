@@ -76,7 +76,7 @@ allprojects {
     ext {
         logbackVersion = '1.2.3'
         jacksonVersion = '2.12.2'
-        nettyVersion = '4.1.65.Final'
+        nettyVersion = '4.1.66.Final'
         luceneVersion = '8.9.0'
         gremlinVersion = '3.4.11'
         groovyVersion = '3.0.7'
