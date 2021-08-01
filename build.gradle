@@ -81,7 +81,7 @@ allprojects {
         gremlinVersion = '3.4.11'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
-        springwebVersion = '5.3.8'
+        springwebVersion = '5.3.9'
         springdataVersion = '2.5.2'
         springldapVersion = '2.3.4.RELEASE'
         springsecurityVersion = '5.5.1'
