@@ -168,9 +168,9 @@
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.12</gremlin.version>
         <spring-security.version>5.5.1</spring-security.version>
-        <spring.version>5.3.8</spring.version>
         <spring-data.version>2.5.3</spring-data.version>
         <springdoc.version>1.5.10</springdoc.version>
+        <spring.version>5.3.9</spring.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
 	    <commons-text.version>1.9</commons-text.version>
