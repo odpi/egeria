@@ -203,7 +203,7 @@
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <classgraph.version>4.8.109</classgraph.version>
+        <classgraph.version>4.8.110</classgraph.version>
         <swagger.version>2.1.10</swagger.version>
         <snakeyaml.version>1.29</snakeyaml.version>
         <groovy.version>3.0.8</groovy.version>
