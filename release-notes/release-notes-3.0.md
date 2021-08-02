@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 3.0 (expected August 2021)
+# Release 3.0 (August 2021)
 
 Release 3.0 adds:
 * Requirement to build & run with Java 11 (LTS) or above
