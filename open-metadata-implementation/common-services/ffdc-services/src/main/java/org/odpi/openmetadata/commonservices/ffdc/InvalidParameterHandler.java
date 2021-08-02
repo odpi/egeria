@@ -307,7 +307,7 @@ public class InvalidParameterHandler
         if (pageSize > maxPagingSize)
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.MAX_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
-                                                                                                       Integer.toString(maxPagingSize),
+                                                                                                       pageSizeParameterName,
                                                                                                        methodName,
                                                                                                        Integer.toString(maxPagingSize)),
                                                 this.getClass().getName(),

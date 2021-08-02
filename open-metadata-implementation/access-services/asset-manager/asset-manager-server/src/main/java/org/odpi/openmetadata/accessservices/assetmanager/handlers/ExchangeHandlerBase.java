@@ -438,5 +438,18 @@ public class ExchangeHandlerBase
                                                                       isMergeUpdate,
                                                                       methodName);
         }
+        else if (! isMergeUpdate)
+        {
+            externalIdentifierHandler.maintainSupplementaryProperties(userId,
+                                                                      elementGUID,
+                                                                      elementQualifiedName,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      methodName);
+        }
     }
 }

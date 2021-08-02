@@ -78,11 +78,11 @@ class DataEngineResourceTest {
     }
 
     @Test
-    void testCreateProcesses() {
-        ProcessesRequestBody requestBody = new ProcessesRequestBody();
-        dataEngineResource.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
+    void testCreateProcess() {
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        dataEngineResource.createOrUpdateProcess(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineRestServices, times(1)).upsertProcesses(USER, SERVER_NAME, requestBody);
+        verify(dataEngineRestServices, times(1)).upsertProcess(USER, SERVER_NAME, requestBody);
     }
 
     @Test

@@ -147,16 +147,16 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createConnection(String              userId,
-                                   String              assetManagerGUID,
-                                   String              assetManagerName,
-                                   boolean             assetManagerIsHome,
-                                   String              connectionExternalIdentifier,
-                                   String              connectionExternalIdentifierName,
-                                   String              connectionExternalIdentifierUsage,
-                                   String              connectionExternalIdentifierSource,
-                                   KeyPattern          connectionExternalIdentifierKeyPattern,
-                                   Map<String, String> mappingProperties,
+    public String createConnection(String               userId,
+                                   String               assetManagerGUID,
+                                   String               assetManagerName,
+                                   boolean              assetManagerIsHome,
+                                   String               connectionExternalIdentifier,
+                                   String               connectionExternalIdentifierName,
+                                   String               connectionExternalIdentifierUsage,
+                                   String               connectionExternalIdentifierSource,
+                                   KeyPattern           connectionExternalIdentifierKeyPattern,
+                                   Map<String, String>  mappingProperties,
                                    ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -285,12 +285,12 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateConnection(String          userId,
-                                 String          assetManagerGUID,
-                                 String          assetManagerName,
-                                 String          connectorTypeGUID,
-                                 String          connectionExternalIdentifier,
-                                 boolean         isMergeUpdate,
+    public void updateConnection(String               userId,
+                                 String               assetManagerGUID,
+                                 String               assetManagerName,
+                                 String               connectorTypeGUID,
+                                 String               connectionExternalIdentifier,
+                                 boolean              isMergeUpdate,
                                  ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -1534,20 +1534,20 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateConnectorType(String          userId,
-                                    String          assetManagerGUID,
-                                    String          assetManagerName,
-                                    String          connectorTypeGUID,
-                                    String          connectorTypeExternalIdentifier,
-                                    boolean         isMergeUpdate,
+    public void updateConnectorType(String                  userId,
+                                    String                  assetManagerGUID,
+                                    String                  assetManagerName,
+                                    String                  connectorTypeGUID,
+                                    String                  connectorTypeExternalIdentifier,
+                                    boolean                 isMergeUpdate,
                                     ConnectorTypeProperties assetProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String methodName                  = "updateConnectorType";
-        final String connectorTypeGUIDParameterName      = "connectorTypeGUID";
-        final String propertiesParameterName     = "assetProperties";
-        final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
+        final String methodName                     = "updateConnectorType";
+        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
+        final String propertiesParameterName        = "assetProperties";
+        final String qualifiedNameParameterName     = "assetProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameterName, methodName);
