@@ -24,7 +24,9 @@ public enum OpenMetadataArchiveType implements Serializable
     CONTENT_PACK    (1, "ContentPack",
                         "A collection of metadata elements that define a standard or support a specific use case."),
     METADATA_EXPORT (2, "MetadataExport",
-                        "A collection of metadata elements that have been extracted from a specific open metadata repository.");
+                        "A collection of metadata elements that have been extracted from a specific open metadata repository to load into another."),
+    REPOSITORY_BACKUP (3, "RepositoryBackup",
+                     "A collection of metadata elements that have been extracted from a specific open metadata repository to server as a back up.");
 
     private static final long    serialVersionUID = 1L;
 
