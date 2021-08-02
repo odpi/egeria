@@ -380,7 +380,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     NO_INSTANCE_PROCESSOR("OMRS-AUDIT-0055",
                       OMRSAuditLogRecordSeverity.ERROR,
-                      "The Open Metadata Repository Services (OMRS) is not processing instance from the archive because it does not have a local repository",
+                      "The Open Metadata Repository Services (OMRS) is not processing instances from the archive because it does not have a local repository",
                       "The local server is not able to process metadata instances from the open metadata archive because it does not have a local repository.",
                       "If the instances from the open metadata archive are needed by the open metadata ecosystem, then load the open metadata archive into a Metadata Server " +
                               "or a Repository Proxy that connects to a third party repository that supports this type of metadata.  " +
