@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc.FileBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -79,7 +80,15 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
         try
         {
-            log.debug("Retrieving server configuration properties");
+            log.debug("Retrieving open metadata archive from file");
+
+            if (auditLog != null)
+            {
+                final String actionDescription = "Opening open metadata archive";
+
+                auditLog.logMessage(actionDescription,
+                                    FileBasedOpenMetadataArchiveStoreConnectorAuditCode.OPENING_FILE.getMessageDefinition(archiveStoreName));
+            }
 
             String configStoreFileContents = FileUtils.readFileToString(archiveStoreFile, "UTF-8");
 
@@ -90,10 +99,21 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
         catch (IOException ioException)
         {
             /*
-             * The config file is not found, create a new one ...
+             * The archive file is not found, create an empty one ...
              */
+            if (auditLog != null)
+            {
+                final String actionDescription = "Unable to open file";
 
-            log.debug("New server config Store", ioException);
+                auditLog.logException(actionDescription,
+                                      FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                        ioException.getClass().getName(),
+                                                                                                                        ioException.getMessage()),
+                                      ioException);
+            }
+
+
+            log.debug("Create empty archive", ioException);
 
             newOpenMetadataArchive = new OpenMetadataArchive();
         }

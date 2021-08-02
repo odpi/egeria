@@ -370,6 +370,22 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                       "The local server has completed the processing of the open metadata archive.",
                       "Verify that the expected content has loaded into the local repository."),
 
+    NO_TYPE_DEF_PROCESSOR("OMRS-AUDIT-0054",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The Open Metadata Repository Services (OMRS) is not processing type definitions from the archive because it does not have a type processor",
+                      "The local server is not able to process the open metadata archive because it is not a cohort member.",
+                      "If the type definitions from the open metadata archive are needed by the open metadata ecosystem, then load the open metadata archive into an " +
+                              "OMAG Server that is a Cohort Member.  " +
+                              "Detail of the different types of servers are found in the admin guide."),
+
+    NO_INSTANCE_PROCESSOR("OMRS-AUDIT-0055",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The Open Metadata Repository Services (OMRS) is not processing instance from the archive because it does not have a local repository",
+                      "The local server is not able to process metadata instances from the open metadata archive because it does not have a local repository.",
+                      "If the instances from the open metadata archive are needed by the open metadata ecosystem, then load the open metadata archive into a Metadata Server " +
+                              "or a Repository Proxy that connects to a third party repository that supports this type of metadata.  " +
+                              "Detail of the different types of servers are found in the admin guide."),
+
     REGISTERED_WITH_COHORT("OMRS-AUDIT-0060",
                            OMRSAuditLogRecordSeverity.COHORT,
                            "Registering with open metadata repository cohort {0} using metadata collection id {1}",
@@ -518,31 +534,6 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                     "configured, or that the jar file for the connector is not available in the " +
                                     "local server."),
 
-    CREATE_REGISTRY_FILE("OMRS-AUDIT-0115",
-                         OMRSAuditLogRecordSeverity.COHORT,
-                         "Creating new cohort registry store {0}",
-                         "The local server is creating a new cohort registry store. " +
-                                 "The local server should continue to operate correctly.",
-                         "Verify that the local server is connecting to the open metadata repository cohort for" +
-                                 "the first time."),
-
-    UNUSABLE_REGISTRY_FILE("OMRS-AUDIT-0116",
-                           OMRSAuditLogRecordSeverity.EXCEPTION,
-                           "Unable to write to cohort registry store {0}",
-                           "The local server can not write to the cohort registry store. " +
-                                   "This is a serious issue because the local server is not able to record its " +
-                                   "interaction with other servers in the cohort.",
-                           "Shutdown the local server and resolve the issue with the repository store."),
-
-    NULL_MEMBER_REGISTRATION("OMRS-AUDIT-0117",
-                             OMRSAuditLogRecordSeverity.ERROR,
-                             "Unable to read or write to cohort registry store {0} because registration information is null",
-                             "The local server can not manage a member registration in the cohort registry store because " +
-                                     "the registration information is null. " +
-                                     "This is a serious issue because the local server is not able to record its " +
-                                     "interaction with other servers in the cohort.",
-                             "Shutdown the local server and resolve the issue with the cohort registry."),
-
     MISSING_MEMBER_REGISTRATION("OMRS-AUDIT-0118",
                                 OMRSAuditLogRecordSeverity.ERROR,
                                 "Unable to process the {0} request for cohort {1} from cohort member {2} " +
@@ -553,49 +544,6 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                         "However, it may be the result of an earlier issue with the " +
                                         "local cohort registry store.",
                                 "Verify that there are no issues with writing to the cohort registry store."),
-
-    DUPLICATE_REGISTERED_MC_ID("OMRS-AUDIT-0119",
-                               OMRSAuditLogRecordSeverity.ACTION,
-                               "Metadata collection id {0} is being used by server {1} and server {2}",
-                               "The local server has detected a duplicate record in its cohort registry store.",
-                               "Verify that this is caused by the rename of a server."),
-
-    NULL_REGISTERED_MC_ID("OMRS-AUDIT-0120",
-                          OMRSAuditLogRecordSeverity.ACTION,
-                          "Server {0} has registered with a null metadata collection id",
-                          "The local server has detected an invalid record in its cohort registry store.",
-                          "Correct the configuration of the named server so that it has a valid metadata collection id."),
-
-    DUPLICATE_REGISTERED_SERVER_NAME("OMRS-AUDIT-0121",
-                                     OMRSAuditLogRecordSeverity.ACTION,
-                                     "Server name {0} is being used by metadata collection {1} and metadata collection {2}",
-                                     "The local server has identified a duplicate record in its cohort registry store.",
-                                     "This suggests that a server has been restarted with a different metadata collection id."),
-
-    NULL_REGISTERED_SERVER_NAME("OMRS-AUDIT-0122",
-                                OMRSAuditLogRecordSeverity.ACTION,
-                                "The server using metadata collection id {0} has registered with a null server name",
-                                "The local server has detected an suspicious record in its cohort registry store.",
-                                "Correct the configuration of the named server so that it has a valid server name."),
-
-
-    DUPLICATE_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0123",
-                                     OMRSAuditLogRecordSeverity.ACTION,
-                                     "Server name {0} with metadata collection id {1} is using the same server address of {2} as server name {3} with metadata collection id {4}",
-                                     "The local server has found a duplicate record in its cohort registry store.",
-                                     "This indicates that a server has been restarted with a different metadata collection id."),
-
-    NULL_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0124",
-                                OMRSAuditLogRecordSeverity.ACTION,
-                                "The server name {0} using metadata collection id {1} has registered with a null server address",
-                                "The local server has identified an suspicious record in its cohort registry store.",
-                                "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
-
-    NULL_REGISTERED_SERVER_CONNECTION("OMRS-AUDIT-0125",
-                                      OMRSAuditLogRecordSeverity.ACTION,
-                                      "The server name {0} using metadata collection id {1} has registered with a null server connection",
-                                      "The local server has found an suspicious record in its cohort registry store.",
-                                      "Correct the configuration of one of the named servers so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
 
     NULL_REGISTERED_MEMBER("OMRS-AUDIT-0126",
                            OMRSAuditLogRecordSeverity.ACTION,
