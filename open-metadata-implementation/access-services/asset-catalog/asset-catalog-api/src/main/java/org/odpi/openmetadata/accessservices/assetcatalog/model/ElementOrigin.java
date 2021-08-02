@@ -65,4 +65,15 @@ public class ElementOrigin {
      * @param instanceLicense - the license string.
      */
     private String instanceLicense;
+
+    /**
+     * The origin category of the element
+     * -- GETTER --
+     * Returns the origin category
+     * @return the value from the enum representing the origin category
+     * -- SETTER --
+     * Set up the origin category of the element
+     * @param originCategory - the origin category value
+     */
+    private ElementOriginCategory originCategory;
 }

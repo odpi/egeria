@@ -127,5 +127,5 @@ public class Element implements Serializable {
     private Map<String, String> additionalProperties;
     private List<Classification> classifications;
     private Element parentElement;
-    private ElementOrigin elementOrigin;
+    private ElementOrigin origin;
 }
