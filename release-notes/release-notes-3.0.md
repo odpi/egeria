@@ -22,7 +22,7 @@ See [Java](../developer-resources/languages/Java.md) for further information.
 
 ### Cohort members
 
-* The option added in release 2.11 to allow multiple topics per cohort now becomes the default in release 3.0 . See [open metadata repository cohort](../open-metadata-implementation/admin-services/docs/concepts/cohort-member.md
+* The option added in release 2.11 to allow multiple topics per cohort now becomes the default in release 3.0 . See [open metadata repository cohort](../open-metadata-implementation/admin-services/docs/concepts/cohort-member.md)
 
 ### Egeria UI
 * Passwords for the samples Coco Pharmaceuticals users changed to 'secret';
