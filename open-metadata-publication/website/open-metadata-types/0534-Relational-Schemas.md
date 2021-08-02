@@ -21,6 +21,8 @@ between **RelationalTable** (or **RelationalView**) and the **RelationalColumn**
 
 * The supertype of **RelationalTableType** has be changed to **ComplexSchemaType** rather than **TabularColumnType**
   since [TabularColumnType](0530-Tabular-Schemas.md) is now deprecated.
+* **DerivedRelationalColumn** has been replaced by [CalculatedValue](0512-Derived-Schema-Elements.md)
+and [DerivedSchemaTypeQueryTarget](0512-Derived-Schema-Elements.md).
 
 ----
 

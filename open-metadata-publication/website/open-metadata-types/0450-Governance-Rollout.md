@@ -11,7 +11,8 @@ A value that should be measured is documented using the
 **GovernanceMetric** entity.  It is linked to the appropriate
 [GovernanceDefinition](0401-Governance-Definitions.md)
 and can be linked to a [data set](0010-Base-Model.md) where the measurements are
-being gathered.
+being gathered.  Alternatively the measurements for a particular resource
+can be gathered and stored in a **GovernanceMeasurements** classification.
 
 Alternatively specific metadata elements can
 be associated with their measurements via the

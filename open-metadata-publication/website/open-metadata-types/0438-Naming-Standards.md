@@ -7,6 +7,11 @@ Naming standards provide means for classifying glossary terms to allow naming ru
 
 ![UML](0438-Naming-Standards.png#pagewidth)
 
+## Deprecated Types
+
+* **NamingConventionRule** - use **Modifier**
+
+----
 
 Return to [Area 4](Area-4-models.md).
 

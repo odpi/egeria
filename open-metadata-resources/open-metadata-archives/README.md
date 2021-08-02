@@ -7,13 +7,20 @@ The open metadata archives provide pre-canned content (open metadata types and i
 repository.  There are two main types of open metadata archive:
 
 * **Content packs** - read only metadata types and instances that are reusable in many organizations.
+  The type definitions for the [Open Metadata Types](../../open-metadata-publication/website/open-metadata-types)
+  are managed in a content pack.  They are also used for distributing standard glossaries or other types of definitions.
+  
 * **Metadata exports** - metadata exported from a specific open metadata repository that can act as a backup.
 It is read-write if loaded into an open metadata repository with the same metadata collection id as the originating
 repository, or read-only if loaded into a repository with a different metadata collection id.
 
+* **Repository backups** - used for creating a back up for an open metadata repository.
+
 Figure 1 shows a content pack being loaded into a metadata repository.  It is stored in the local repository
 and distributed around any connected cohorts.  These types of archives can be provided by the
 Egeria community and third party organizations.
+Notice that due to the distribution of this metadata across the cohorts, it is only necessary to load the archive into
+one of the servers.
 
 ![Figure 1](docs/open-metadata-archives-use-cases-1.png)
 > **Figure 1:** Loading a content pack
@@ -40,7 +47,7 @@ Open metadata archives are created through Java utilities.  There are two approa
 The Egeria supported utilities for open metadata archives described at the bottom of this page use this
 approach.
 
-* Metadata export archives are created by using the repository services clients to extract
+* Metadata export archives and repository back-ups are created by using the repository services clients to extract
 the metadata elements from a live repository and the to store them in the
 archive using the
 [repository services archive utilities](../../open-metadata-implementation/repository-services/repository-services-archive-utilities).
@@ -49,7 +56,7 @@ archive using the
 
 A metadata server's configuration document can list the
 archives to load each time the server is started.  This is useful if the server does not retain
-metadata through a server restart (like the in memory metadata repository).
+metadata through a server restart (like the in-memory metadata repository).
 Open metadata archives may also be loaded while the server is running using a REST API call.
 
 The archive is loaded once and its content is immediately available.
@@ -58,6 +65,12 @@ continues to be available after the server restarts.
 
 It does not matter how many times an archive is loaded, only one copy of the content is
 added to the repository.
+
+These Administration Guide articles describe how to load open metadata archives into a server:
+
+* [Configuring an open metadata archive in an OMAG Server](../../open-metadata-implementation/admin-services/docs/user/configuring-the-startup-archives.md)
+* [Adding an open metadata archive to a running OMAG Server](../../open-metadata-implementation/admin-services/docs/user/adding-archive-to-running-server.md)
+
 
 ## Inside an Open Metadata Archive
 
@@ -87,6 +100,9 @@ The archive loads in the following order:
   * Entities
   * Relationships
   * Classifications
+  
+More information about the design of the open metadata archives can be found in
+the [Open Metadata Repository Services (OMRS)](../../open-metadata-implementation/repository-services/docs/open-metadata-archive.md) design documentation.
 
 ## Supported utilities for open metadata archives
 
@@ -109,16 +125,6 @@ definitions for Egeria's data store connectors.
 manage common/standard model content from third parties.  It includes
 an example archive for the [Cloud Information Model (CIM)](https://cloudinformationmodel.org).
 
-----
-## Further information
-
-More information about the processing of open metadata archives can be found in the
-[repository services documentation](../../open-metadata-implementation/repository-services/docs/open-metadata-archive.md) module.
-
-In addition these Administration Guide articles may be of interest:
-
-* [Configuring an open metadata archive in an OMAG Server](../../open-metadata-implementation/admin-services/docs/user/configuring-the-startup-archives.md)
-* [Adding an open metadata archive to a running OMAG Server](../../open-metadata-implementation/admin-services/docs/user/adding-archive-to-running-server.md)
 
 ----
 * Return to [open-metadata-resources](..)
