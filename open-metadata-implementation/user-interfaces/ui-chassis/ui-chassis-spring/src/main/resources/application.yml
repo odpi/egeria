@@ -13,7 +13,7 @@ lineage-display-config:
         destinationNodeType: PrimaryCategory
         classificationProperty: categoryQualifiedName
     removeNodes:
-      - queriedNodeType: TabularColumn
+      - queriedNodeType: TabularFileColumn
         nodeTypesToRemove:
           - TabularSchemaType
 

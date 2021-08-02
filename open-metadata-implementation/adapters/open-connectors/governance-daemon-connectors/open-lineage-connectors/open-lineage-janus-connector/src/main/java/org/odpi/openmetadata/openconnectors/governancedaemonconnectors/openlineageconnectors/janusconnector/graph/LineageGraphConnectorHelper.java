@@ -61,6 +61,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.JSON_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KEYSTORE_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
@@ -512,6 +513,7 @@ public class LineageGraphConnectorHelper {
             case RELATIONAL_COLUMN:
                 return relationalColumnVerticalLineage(guid);
             case TABULAR_COLUMN:
+            case TABULAR_FILE_COLUMN:
                 return tabularColumnVerticalLineage(guid);
             default:
                 return Optional.empty();
@@ -845,6 +847,7 @@ public class LineageGraphConnectorHelper {
             Map<String, String> properties = new HashMap<>();
 
             switch (lineageVertex.getNodeType()) {
+                case TABULAR_FILE_COLUMN:
                 case TABULAR_COLUMN:
                     properties = getTabularColumnProperties(g, vertexId);
                     break;
@@ -882,7 +885,7 @@ public class LineageGraphConnectorHelper {
         List<String> types = new ArrayList<>();
         types.addAll(DATA_FILE_AND_SUBTYPES);
         types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
-                TABULAR_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS));
+                TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS));
         return types.contains(lineageVertex.getNodeType());
     }
 
@@ -1064,6 +1067,7 @@ public class LineageGraphConnectorHelper {
     private Optional<String> getEdgeLabelForDataFlow(Vertex vertex) {
         String label = vertex.label();
         switch (label) {
+            case TABULAR_FILE_COLUMN:
             case TABULAR_COLUMN:
             case RELATIONAL_COLUMN:
                 return Optional.of(EDGE_LABEL_COLUMN_DATA_FLOW);
