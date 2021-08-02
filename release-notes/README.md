@@ -41,7 +41,7 @@ Below are the release notes for the latest Egeria release:
   * Bug Fixes
   * Dependency updates
   * Additional notes including known issues
-
+  
 * [Release 2.10](release-notes-2-10.md) - June 2021
   * Changes to metadata types
   * Updates to Governance Program OMAS API

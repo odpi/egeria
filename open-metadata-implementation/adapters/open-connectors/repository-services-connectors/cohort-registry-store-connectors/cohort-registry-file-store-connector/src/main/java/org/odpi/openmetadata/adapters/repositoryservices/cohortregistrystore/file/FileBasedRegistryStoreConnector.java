@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc.FileBasedRegistryStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStoreConnectorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.CohortMembership;
@@ -94,7 +94,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 String actionDescription = "Saving Local Registration to Registry Store";
 
-                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
             }
 
             log.debug("Null local registration passed to saveLocalRegistration :(");
@@ -225,7 +225,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 String actionDescription = "Saving a Remote Registration to Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
             }
 
             log.debug("Null remote registration passed to saveRemoteRegistration :(");
@@ -286,7 +286,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 String actionDescription = "Retrieving Remote Registration from Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
             }
 
             log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
@@ -335,7 +335,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 {
                     String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-                    auditLog.logMessage(actionDescription, OMRSAuditCode.MISSING_MEMBER_REGISTRATION.getMessageDefinition(metadataCollectionId, registryStoreName));
+                    auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.MISSING_MEMBER_REGISTRATION.getMessageDefinition(metadataCollectionId, registryStoreName));
                 }
 
                 log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
@@ -347,7 +347,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
             }
 
             log.debug("Null metadataCollectionId passed to removeRemoteRegistration :(");
@@ -413,7 +413,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 String actionDescription = "Retrieving Cohort Registry Store Properties";
 
-                auditLog.logMessage(actionDescription, OMRSAuditCode.CREATE_REGISTRY_FILE.getMessageDefinition(registryStoreName));
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.CREATE_REGISTRY_FILE.getMessageDefinition(registryStoreName));
             }
 
             log.debug("New Cohort Registry Store", ioException);
@@ -449,7 +449,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 if ((testMember.getMetadataCollectionId() == null) || (testMember.getMetadataCollectionId().length() == 0))
                 {
-                    auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
+                    auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
                 }
                 else
                 {
@@ -458,7 +458,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                     if (duplicateMember != null)
                     {
                         auditLog.logMessage(actionDescription,
-                                            OMRSAuditCode.DUPLICATE_REGISTERED_MC_ID.getMessageDefinition(testMember.getMetadataCollectionId(),
+                                            FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_MC_ID.getMessageDefinition(testMember.getMetadataCollectionId(),
                                                                                                           testMember.getServerName(),
                                                                                                           duplicateMember.getServerName()),
                                            testMember.toString() + " " + duplicateMember.toString());
@@ -469,7 +469,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 if ((testMember.getServerName() == null) || (testMember.getServerName().length() == 0))
                 {
                     auditLog.logMessage(actionDescription,
-                                        OMRSAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),
+                                        FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),
                                         testMember.toString());
                 }
                 else
@@ -478,7 +478,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                     if (duplicateMember != null)
                     {
                         auditLog.logMessage(actionDescription,
-                                            OMRSAuditCode.DUPLICATE_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
+                                            FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
                                                                                                                 testMember.getMetadataCollectionId(),
                                                                                                                 duplicateMember.getMetadataCollectionId()),
                                            testMember.toString() + " " + duplicateMember.toString());
@@ -504,7 +504,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                         if (duplicateMember != null)
                         {
                             auditLog.logMessage(actionDescription,
-                                                OMRSAuditCode.DUPLICATE_REGISTERED_SERVER_ADDR.getMessageDefinition(testMember.getServerName(),
+                                                FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_ADDR.getMessageDefinition(testMember.getServerName(),
                                                                                 testMember.getMetadataCollectionId(),
                                                                                 serverAddress,
                                                                                 duplicateMember.getServerName(),
@@ -515,7 +515,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                     else
                     {
                         auditLog.logMessage(actionDescription,
-                                            OMRSAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
+                                            FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
                                                                                                            testMember.getMetadataCollectionId()),
                                             testMember.toString());
                     }
@@ -523,14 +523,14 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 else
                 {
                     auditLog.logMessage(actionDescription,
-                                        OMRSAuditCode.NULL_REGISTERED_SERVER_CONNECTION.getMessageDefinition(testMember.getServerName(),
+                                        FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_CONNECTION.getMessageDefinition(testMember.getServerName(),
                                                                                                              testMember.getMetadataCollectionId()),
                                        testMember.toString());
                 }
             }
             else
             {
-                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition());
+                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition());
             }
         }
     }
@@ -616,7 +616,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 String actionDescription = "Writing Cohort Registry Store Properties";
 
                 auditLog.logException(actionDescription,
-                                      OMRSAuditCode.UNUSABLE_REGISTRY_FILE.getMessageDefinition(registryStoreName),
+                                      FileBasedRegistryStoreConnectorAuditCode.UNUSABLE_REGISTRY_FILE.getMessageDefinition(registryStoreName),
                                       ioException);
             }
 
