@@ -36,7 +36,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
-            <version>3.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
