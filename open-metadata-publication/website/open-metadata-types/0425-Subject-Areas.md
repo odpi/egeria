@@ -75,9 +75,10 @@ The [Coco Pharmaceuticals case study](https://opengovernance.odpi.org/coco-pharm
 * **SubjectAreaGovernance** - use [GovernedBy](0401-Governance-Definitions.md) relationship instead.
 
 
-----
-Return to [Area 4](Area-4-models.md).
+---
 
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -21,7 +21,10 @@ The metadata repository can reflect these connection relationships using a **Vir
 ![UML](0205-Connection-Linkage.png#pagewidth)
 
 
-Return to [Area 2](Area-2-models.md).
+----
+
+* Return to [Area 2](Area-2-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

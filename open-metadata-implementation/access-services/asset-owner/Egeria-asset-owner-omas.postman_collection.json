@@ -66,7 +66,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"class\"       : \"NewCSVFileAssetRequestBody\",\n\t\"displayName\" : \"My CSV File\",\n\t\"description\" : \"This is a test CSV file description added with Postman.\",\n\t\"fullPath\"    : \"home/my-table.csv\"\n}",
+					"raw": "{\n\t\"class\"       : \"NewCSVFileAssetRequestBody\",\n\t\"displayName\" : \"My CSV File\",\n\t\"description\" : \"This is a test CSV file description added with Postman.\",\n\t\"fullPath\"    : \"home/my-file.csv\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,6 +226,31 @@
 				"method": "GET",
 				"header": [],
 				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Universe (root)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
 					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{guid}}",
 					"host": [
 						"{{baseURL}}"
@@ -241,6 +266,33 @@
 						"{{user}}",
 						"assets",
 						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset's Connection",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{guid}}/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-owner",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{guid}}",
+						"connection"
 					]
 				}
 			},
@@ -326,6 +378,41 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\"class\" :\"SchemaTypeProperties\",\n\"versionNumber\" : \"v1.0\",\n\"author\":\"Employee Dept\",\n\"usage\" : \"Employee DB Schema\",\n\"encodingStandard\":\"utf8\",\n\"namespace\" : \"Employee Repository\",\n\"displayName\" : \"Schema for Employee DB\",\n\"description\" : \"Employee Repository Employee Details \",\n\"qualifiedName\" :\"E_EmployeeSchema\",\n\"typeName\":\"RelationalDBSchemaType\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}/schemas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"schemas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Simple SchemaType",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" :\"PrimitiveSchemaTypeProperties\",\n    \"displayName\" : \"Schema for Simple Table\",\n    \"description\" : \"Employee Details \",\n    \"qualifiedName\" :\"ListOfValues\",\n    \"typeName\":\"PrimitiveSchemaType\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

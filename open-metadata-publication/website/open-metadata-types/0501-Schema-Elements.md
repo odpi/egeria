@@ -13,7 +13,10 @@ top-level name of a schema and also the types of any fields nested in it.
 ![UML](0501-Schema-Elements.png#pagewidth)
 
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

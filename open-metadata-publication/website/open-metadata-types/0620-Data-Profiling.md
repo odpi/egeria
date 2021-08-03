@@ -9,7 +9,10 @@ in the asset and summarizes their characteristics.
 ![UML](0620-Data-Profiling.png#pagewidth)
 
 
-Return to [Area 6](Area-6-models.md).
+---
+
+* Return to [Area 6](Area-6-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
