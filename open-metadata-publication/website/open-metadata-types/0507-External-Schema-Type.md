@@ -20,6 +20,17 @@ where the database schema resides.
 **LinkedExternalSchemaType** is linked to a SchemaElement to
 enable it to be linked to both an **ExternalSchemaType** and a **SchemaAttribute**.
 
+## Deprecated Types
+
+The following types are replaced by the attributes in [SchemaAttribute](0505-Schema-Attributes.md).
+
+* **BoundedSchemaType**
+* **BoundedSchemaElementType**
+* **ArraySchemaType**
+* **SetSchemaType**
+
+----
+
 Return to [Area 5](Area-5-models.md).
 
 ----

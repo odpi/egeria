@@ -15,6 +15,11 @@ show which are significant for lineage.
 ![UML](0750-Data-Passing.png#pagewidth)
 
 
+## Deprecated Types
+
+* **ProcessInput**
+* **ProcessOutput**
+
 Return to [Area 7](Area-7-models.md).
 
 ----

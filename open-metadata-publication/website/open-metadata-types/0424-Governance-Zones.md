@@ -21,6 +21,10 @@ the performance of the asset processing since the classification flows with the 
 There is more information on governance zones
 [here](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones).
 
+## Deprecated Types
+
+* **ZoneGovernance** - use [GovernedBy](0401-Governance-Definitions.md).
+
 Return to [Area 4](Area-4-models.md).
 
 ----

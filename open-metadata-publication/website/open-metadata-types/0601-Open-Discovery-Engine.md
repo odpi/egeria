@@ -33,6 +33,11 @@ connections of the open discovery services embedded within it.
 
 ![UML](0601-Open-Discovery-Engine.png#pagewidth)
 
+## Deprecated Types
+
+* **SupportedDiscoveryService** - Use [SupportedGovernanceService](0461-Governance-Engines.md).
+
+----
 
 Return to [Area 6](Area-6-models.md).
 

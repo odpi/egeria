@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -180,18 +181,18 @@ public class DataEngineProxyChangePoller implements Runnable {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
-            if (dataEngineProxyConfig.isEventsClientEnabled()) {
-                // If we are using the event-based interface, send the processes one-by-one rather than as an array
-                for (Process changedProcess : changedProcesses) {
-                    dataEngineOMASClient.createOrUpdateProcesses(userId, Collections.singletonList(changedProcess));
-                }
-            } else{
-                dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
+            List<LineageMapping> lineageMappings = new ArrayList<>();
+            for (Process changedProcess : changedProcesses) {
+                // We split up the process details (1) and lineage mappings (2) into separate calls to achieve optimal processing in DE OMAS.
+                lineageMappings.addAll(changedProcess.getLineageMappings());
+                // (1) Send process details
+                dataEngineOMASClient.createOrUpdateProcess(userId, changedProcess);
             }
+            // (2) Send lineage mappings
+            dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
-
     private void upsertProcessHierarchies(Date changesLastSynced,
                                           Date changesCutoff) throws
             InvalidParameterException,

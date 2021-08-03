@@ -76,7 +76,7 @@ public class OpenMetadataArchiveTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(OpenMetadataArchiveType.CONTENT_PACK);
+            jsonString = objectMapper.writeValueAsString(OpenMetadataArchiveType.REPOSITORY_BACKUP);
         }
         catch (Throwable  exc)
         {
@@ -85,7 +85,7 @@ public class OpenMetadataArchiveTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, OpenMetadataArchiveType.class) == OpenMetadataArchiveType.CONTENT_PACK);
+            assertTrue(objectMapper.readValue(jsonString, OpenMetadataArchiveType.class) == OpenMetadataArchiveType.REPOSITORY_BACKUP);
         }
         catch (Throwable  exc)
         {
