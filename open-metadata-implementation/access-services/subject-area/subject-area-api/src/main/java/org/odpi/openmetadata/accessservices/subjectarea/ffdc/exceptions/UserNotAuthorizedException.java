@@ -42,7 +42,7 @@ public class UserNotAuthorizedException extends SubjectAreaCheckedException {
     public UserNotAuthorizedException(ExceptionMessageDefinition messageDefinition,
                                       String className,
                                       String actionDescription,
-                                      Throwable caughtError,
+                                      Exception caughtError,
                                       String userId) {
         super(messageDefinition, className, actionDescription, caughtError);
         this.userId = userId;
