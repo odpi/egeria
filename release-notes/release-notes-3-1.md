@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 3.0 (August 2021)
+# Release 3.1 (expected September 2021)
 
 Release 3.0 adds:
 * Requirement to build & run with Java 11 (LTS) or above
@@ -10,30 +10,29 @@ Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
 
-### Java 11 
+### Open Metadata Types
 
-As of Release 3.0 of Egeria, Java 11 is **required** to build and run Egeria.
+The following changes have been made to the open metadata types:
 
-Egeria will not build/run/be supported on Java 8. Developers are now able to use Java 11 only functionality.
+* New types for modeling data processing purposes.
+  See new type descriptions in models [0485](../open-metadata-publication/website/open-metadata-types/0485-Data-Processing-Purposes.md).
 
-Java releases beyond Java 11 up to the current release have some informal testing, and we do build verification on the current release (currently 16). 
+* The following types have been deprecated: **BoundedSchemaType**, **BoundedSchemaElementType**,
+  **ArraySchemaType** and **SetSchemaType**.
+  See description in model [0507](../open-metadata-publication/website/open-metadata-types/0507-External-Schema-Type.md).
 
-See [Java](../developer-resources/languages/Java.md) for further information.
+* The **ServerEndpoint** relationship can now connector to any **ITInfrastructure** elements, not just **SoftwareServers**.
+  See description in model [0040](../open-metadata-publication/website/open-metadata-types/0040-Software-Servers.md).
 
-### Cohort members
-
-* The option added in release 2.11 to allow multiple topics per cohort now becomes the default in release 3.0 . See [open metadata repository cohort](../open-metadata-implementation/admin-services/docs/concepts/cohort-member.md)
 
 ### Egeria UI
 * Passwords for the samples Coco Pharmaceuticals users changed to 'secret';
+
 
 ### Known Issues
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or alternatively Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
 
-### Other changes
-* Dependencies have been updated
-* Bug Fixes
 
 # Further Help and Support
 

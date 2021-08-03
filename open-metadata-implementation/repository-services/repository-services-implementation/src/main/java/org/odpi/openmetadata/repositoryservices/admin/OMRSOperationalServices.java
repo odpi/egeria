@@ -428,12 +428,14 @@ public class OMRSOperationalServices
          */
         if (localRepositoryConnector != null)
         {
-            archiveManager.setLocalRepository(localRepositoryContentManager,
+            archiveManager.setLocalRepository(localMetadataCollectionId,
+                                              localRepositoryContentManager,
                                               localRepositoryConnector.getIncomingInstanceEventProcessor());
         }
         else
         {
-            archiveManager.setLocalRepository(localRepositoryContentManager,
+            archiveManager.setLocalRepository(localMetadataCollectionId,
+                                              localRepositoryContentManager,
                                               null);
         }
 
