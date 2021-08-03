@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "50d71b46-d513-48b7-9d59-d46c48cb7e4f",
+		"name": "Egeria-integration-daemon-services",
+		"description": "This collection calls the services implemented by the Integration Daemon OMAG Server.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Integration Daemon Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/status",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"status"
+					]
+				},
+				"description": "Retrieves the status of the connectors running in the Integration Daemon"
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Connector with Files Integrator OMIS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-services",
+						"files-integrator",
+						"users",
+						"{{user}}",
+						"validate-connector",
+						"org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider"
+					]
+				},
+				"description": "Checks that the supplied connector provider class name produces a connector that will run in the integration service.\n\nTo check another connector replace `org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider` with the qualified class name of the connector's provider."
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh All integration Services",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"refresh"
+					]
+				},
+				"description": "Refreshes all Integration Connectors running in an integration daemon"
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh specific integration service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"integration-services",
+						"files-integrator",
+						"refresh"
+					]
+				},
+				"description": "Restarts the requested Integration Service"
+			},
+			"response": []
+		},
+		{
+			"name": "Restart specific integration service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/restart",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"integration-services",
+						"files-integrator",
+						"restart"
+					]
+				},
+				"description": "Restarts the requested Integration Service"
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve the connector type for a connector",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"integration-services",
+						"files-integrator",
+						"users",
+						"{{user}}",
+						"validate-connector",
+						"org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider"
+					]
+				},
+				"description": "Restarts the requested Integration Service"
+			},
+			"response": []
+		}
+	]
+}

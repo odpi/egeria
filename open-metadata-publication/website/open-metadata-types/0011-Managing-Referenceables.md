@@ -39,10 +39,9 @@ the elements that were copied from it.
 * [Using templates](../cataloging-assets/templated-cataloging.md)
 
 ----
-Return to [Area 0](Area-0-models.md).
 
-
-
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

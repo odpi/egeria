@@ -27,7 +27,10 @@ that runs in a [View Server](../../../open-metadata-implementation/admin-service
 
 ![UML](0057-Integration-Capabilities.png#pagewidth)
 
-Return to [Area 0](Area-0-models.md).
+----
+
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

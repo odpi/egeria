@@ -12,7 +12,10 @@ when each record/instance/row/object in the data needs a different metadata clas
 ![UML](0550-Instance-Metadata.png#pagewidth)
 
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

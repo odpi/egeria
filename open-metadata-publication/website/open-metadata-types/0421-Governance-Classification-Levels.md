@@ -29,13 +29,10 @@ the values are used in.
 * **GovernanceConfidentialityLevel** - use **GovernanceClassificationLevel**.
 
 
-----
+---
 
-
-Return to [Area 4](Area-4-models.md).
-
-
-
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -31,7 +31,10 @@ connections.
 ![UML](0655-Asset-Deduplication.png#pagewidth)
 
 
-Return to [Area 6](Area-6-models.md).
+---
+
+* Return to [Area 6](Area-6-models.md).
+* Return to [Overview](.).
 
 
 ----

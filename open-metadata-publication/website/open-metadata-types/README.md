@@ -79,7 +79,7 @@ It also supports **qualifiedName** and **additionalProperties** because they are
 inherited from **Referenceable**.  **OpenMetadataRoot** does not have any attributes defined
 so **Asset** gets nothing from it.
 
-The fragment on the right-hand side of figure 3 comes from mode [0011](0011-Managing-Referenceables.md).
+The fragment on the right-hand side of figure 3 comes from model [0011](0011-Managing-Referenceables.md).
 It shows the classification called **Template** that can be connected to a **Referenceable**.
 Since **Referenceable** is already defined in model 0010, it is shown without the white box
 where the attributes are show (called the "attribute container" in UML parlance).
@@ -112,7 +112,7 @@ and more consistent than their predecessors.
 
 ## Index of open metadata types
 
-### Attribute Type Definitions
+#### Attribute Type Definitions
 
 These are the types defined for attributes (properties) in the open metadata types
 
@@ -137,7 +137,7 @@ These are the types defined for attributes (properties) in the open metadata typ
 * array<string>
 * array<int>
 
-### Type Definitions
+#### Type Definitions
 
 Below are the open metadata types in alphabetical order.
 The link takes you to the UML model and description page for the type.
