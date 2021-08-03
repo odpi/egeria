@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * The class is used in the DataEngineFVT in order to generate a job process containing stages, port implementations with
- * their schemas and attributes. It creates virtual assets fora CSV file with 4 columns and a database table with the same
+ * their schemas and attributes. It creates virtual assets for a CSV file with 4 columns and a database table with the same
  * number of columns. The process contains 3 stages which read from the CSV, rename the columns, then write the values into a
  * database table.
  * The class also helps the setup with creating an external data engine using a SoftwareServerCapability object.

@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,6 @@ public class RepositoryService {
     private static final String QUALIFIED_NAME = "qualifiedName";
 
     private static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
-    private static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
     private static final String LINEAGE_MAPPING_TYPE_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
 
     private static final int PAGE_SIZE = 100;
@@ -123,17 +123,42 @@ public class RepositoryService {
     }
 
     /**
-     * Find a software server capability by using the search criteria given as parameter in a call to the
-     * LocalRepositoryServicesClient
+     * Find an entity by using the search criteria given as parameter in a call to the LocalRepositoryServicesClient
      *
+     * @param typeGuid guid of expected type
      * @param searchCriteria the property value used to search and identify the software server capability
+     *
      * @return a list of EntityDetails that contain the found software server capability
      */
-    public List<EntityDetail> findSoftwareServerCapabilityByPropertyValue(String searchCriteria) throws UserNotAuthorizedException,
+    public List<EntityDetail> findEntityByPropertyValue(String typeGuid, String searchCriteria) throws UserNotAuthorizedException,
             FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
             TypeErrorException, PagingErrorException {
 
-        return client.findEntitiesByPropertyValue(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, searchCriteria, 0,
-                null, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
+        return client.findEntitiesByPropertyValue(userId, typeGuid, searchCriteria, 0, null,
+                null, null, null, SequencingOrder.ANY, PAGE_SIZE);
+    }
+
+    /**
+     * Extract the entity at the other end of a relationship. Disregard edge orientation
+     *
+     * @param startEntityGuid guid of known entity
+     * @param targetEntityTypeGuid guid of expected type
+     *
+     * @return a list of EntityDetails that contain the found software server capability
+     */
+    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String targetEntityTypeGuid) throws
+            UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException,
+            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        List<String> entityTypeGuids = new ArrayList<>();
+        entityTypeGuids.add(targetEntityTypeGuid);
+
+        List<EntityDetail> relatedEntities = client.getRelatedEntities(userId, startEntityGuid, entityTypeGuids,
+                0, null, null, null, null,
+                SequencingOrder.ANY, 0);
+        return relatedEntities.stream()
+                .filter(ed -> ed.getType().getTypeDefGUID().equals(targetEntityTypeGuid))
+                .collect(Collectors.toList());
+
     }
 }
