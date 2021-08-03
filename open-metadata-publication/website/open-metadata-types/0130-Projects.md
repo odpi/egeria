@@ -24,7 +24,11 @@ as well as images (see [0015 Linked Media Types](0015-Linked-Media-Types.md) in 
 The description attribute should be used instead of the scopeDescription in ProjectScope; the 
 scopeDescription attribute has been deprecated.  
 
-Return to [Area 1](Area-1-models.md).
+----
+
+* Return to [Area 1](Area-1-models.md).
+* Return to [Overview](.).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

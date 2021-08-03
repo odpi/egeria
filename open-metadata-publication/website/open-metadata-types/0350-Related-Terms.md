@@ -33,7 +33,10 @@ For example, this relationship would be use to say that "Cat" ISA "Animal".
 * **ValidValue** is a relationship that shows the validValue term represents one of the valid values that could be assigned to a data item that has the meaning described in the **validValueFor** term.
 
 
-Return to [Area 3](Area-3-models.md).
+----
+
+* Return to [Area 3](Area-3-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

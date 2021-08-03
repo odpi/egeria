@@ -15,7 +15,10 @@ Model 0565 shows the definition of a generic model element.
 
 ![UML](0565-Design-Model-Elements.png#pagewidth)
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

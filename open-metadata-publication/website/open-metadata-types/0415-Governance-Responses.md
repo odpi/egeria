@@ -23,8 +23,10 @@ There are three main types of policy:
 * The [Governance Program OMAS](../../../open-metadata-implementation/access-services/governance-program)
   provides support for defining governance policies through its **GovernancePolicyMakingInterface**. 
 
-----
-Return to [Area 4](Area-4-models.md).
+---
+
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

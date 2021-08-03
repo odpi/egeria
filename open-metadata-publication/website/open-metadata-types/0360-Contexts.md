@@ -14,7 +14,10 @@ The **ContextDefinition** classification indicates that the term describes a con
 Glossary Terms that are relevant in that context are linked to the context definition term using the UsedInContext relationship.
 
 
-Return to [Area 3](Area-3-models.md).
+----
+
+* Return to [Area 3](Area-3-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

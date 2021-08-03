@@ -20,9 +20,10 @@ The **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** types
   offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
   This change makes the document schemas consistent with other types of schema.
 
-----
+---
 
 * Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
