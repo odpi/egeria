@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 /**
  * Mapping methods to map between the categoryHierarchyLink and the equivalent omrs Relationship.
@@ -13,8 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 public class CategoryHierarchyLinkMapper extends RelationshipMapper<CategoryHierarchyLink> {
     public static final String CATEGORY_HIERARCHY_LINK = "CategoryHierarchyLink";
 
-    public CategoryHierarchyLinkMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public CategoryHierarchyLinkMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**

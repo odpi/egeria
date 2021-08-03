@@ -69,12 +69,12 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     }
 
     @Override
-    public void delete(String userId, String guid, boolean isPurge) throws InvalidParameterException,
+    public void delete(String userId, String guid) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        final String urlTemplate = BASE_URL + "/%s?isPurge=" + Boolean.toString(isPurge);
-        client.deleteRESTCall(userId, guid, getMethodInfo("delete(isPurge=" + isPurge + ")"), getParameterizedType(), urlTemplate);
+        final String urlTemplate = BASE_URL + "/%s";
+        client.deleteRESTCall(userId, guid, getMethodInfo("delete()"), getParameterizedType(), urlTemplate);
     }
 
     @Override

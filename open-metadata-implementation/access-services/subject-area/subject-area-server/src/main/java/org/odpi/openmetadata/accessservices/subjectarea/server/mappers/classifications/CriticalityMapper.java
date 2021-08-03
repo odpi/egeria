@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.CriticalityLevel;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -27,23 +27,23 @@ public class CriticalityMapper extends ClassificationMapper{
     private static final String className = CriticalityMapper.class.getName();
     private static final String typeName = "Criticality";
 
-    public CriticalityMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public CriticalityMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Criticality criticality = (Criticality)omasClassification;
 
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"steward",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"steward",omrsClassificationProperties,"");
         criticality.setSteward(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"source",omrsClassificationProperties,"");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"source",omrsClassificationProperties,"");
         criticality.setSource(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"notes",omrsClassificationProperties,"");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"notes",omrsClassificationProperties,"");
         criticality.setNotes(stringValue);
 
-        Integer intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
+        Integer intValue  = repositoryHelper.getIntProperty(genericHandler.getServiceName(),"confidence",omrsClassificationProperties,"");
         criticality.setConfidence(intValue);
 
         Map<String, InstancePropertyValue> instancePropertyMap = omrsClassificationProperties.getInstanceProperties();
@@ -70,15 +70,15 @@ public class CriticalityMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         Criticality criticality = (Criticality)omasClassification;
         if (criticality.getSteward()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"steward",criticality.getSteward(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"steward",criticality.getSteward(),"updateOMRSAttributes");
         }
 
         if (criticality.getSource()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"source",criticality.getSource(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"source",criticality.getSource(),"updateOMRSAttributes");
         }
 
         if (criticality.getNotes()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"notes",criticality.getNotes(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"notes",criticality.getNotes(),"updateOMRSAttributes");
         }
 
         if (criticality.getConfidence()!=null) {
