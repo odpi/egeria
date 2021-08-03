@@ -21,6 +21,7 @@ If the archive is stored as JSON in a file, it can be loaded into a running serv
 as follows.
 The file should be specified either as a fully qualified path name
 or as a path name relative to the start up directory of the OMAG Server Platform.
+Note the file name should not have any quotes around its name.
 
 ```
 POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/open-metadata-archives/file
@@ -42,9 +43,11 @@ This option can be used when the open metadata archives are not stored in a file
 file format from the default JSON is required.
 
 
+
 ----
 
 * Return to [Operating an OMAG Server](operating-omag-server.md)
+* See also [Configuring the load of an archive at server start up](configuring-the-startup-archives.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

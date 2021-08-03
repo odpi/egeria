@@ -42,7 +42,7 @@ that the governance program has a positive effect.
 
 ![UML Packages](area-4-governance-overview.png#pagewidth)
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

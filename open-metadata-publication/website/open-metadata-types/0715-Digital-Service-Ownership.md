@@ -8,8 +8,10 @@
 ![UML](0715-Digital-Service-Ownership.png#pagewidth)
 
 
-Return to [Area 7](Area-7-models.md).
+---
 
+* Return to [Area 7](Area-7-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -11,7 +11,10 @@ than the [Data Passing](0750-Data-Passing.md) relationships.
 ![UML](0770-Lineage-Mapping.png#pagewidth)
 
 
-Return to [Area 7](Area-7-models.md).
+---
+
+* Return to [Area 7](Area-7-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

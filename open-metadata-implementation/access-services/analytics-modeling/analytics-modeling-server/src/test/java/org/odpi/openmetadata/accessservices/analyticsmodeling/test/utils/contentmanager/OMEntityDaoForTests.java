@@ -72,21 +72,6 @@ public class OMEntityDaoForTests extends OMEntityDao {
                                                                         entity.getStatus());
     }
     
-    public void deleteEntity(EntityDetail entity) throws AnalyticsModelingCheckedException {
-    	InstanceType instanceType = entity.getType();
-    	try {
-			enterpriseConnector.getMetadataCollection().deleteEntity(Constants.ANALYTICS_MODELING_USER_ID,
-					instanceType.getTypeDefGUID(), instanceType.getTypeDefName(), entity.getGUID());
-		} catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException
-				| FunctionNotSupportedException | UserNotAuthorizedException ex) {
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.DELETE_ENTITY_EXCEPTION.getMessageDefinition("QName", getEntityQName(entity)),
-					this.getClass().getSimpleName(),
-					"deleteEntity",
-					ex);
-		}
-    }
-
     /**
      * Returns the newly created relationship between 2 entities with the specified properties
      *
@@ -96,7 +81,7 @@ public class OMEntityDaoForTests extends OMEntityDao {
      * @param entityOneGUID        giud of the first end of the relationship
      * @param entityTwoGUID        giud of the second end of the relationship
      * @return the created relationship
-     * @throws AnalyticsModelingCheckedException 
+     * @throws AnalyticsModelingCheckedException in case of error
      */
     private Relationship addRelationship(String metadataCollectionId,
                                          String typeName,

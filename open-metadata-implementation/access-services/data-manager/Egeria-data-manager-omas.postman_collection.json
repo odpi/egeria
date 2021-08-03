@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "45761482-82ad-4ce1-8a51-d0b898bb4cd2",
+		"name": "Egeria-data-manager-omas",
+		"description": "Calls to the REST API of the Data Manager OMAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a data file",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DataFileRequestBody\",\n\t\"qualifiedName\" : \"/Users/mandy-chessell/CloudStation/Drive/Code/JavaTest/ruey.csv\",\n    \"displayName\" : \"freddy.csv\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/filesystems/data-files",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"filesystems",
+						"data-files"
+					]
+				},
+				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a data file using a template",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"TemplateRequestBody\",\n\t\"qualifiedName\" : \"/Users/mandy-chessell/CloudStation/Drive/Code/JavaTest/copyCat23.csv\",\n    \"displayName\" : \"copyCat2.csv\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/filesystems/data-files/from-template/{{templateGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"filesystems",
+						"data-files",
+						"from-template",
+						"{{templateGUID}}"
+					]
+				},
+				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a database manager",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DatabaseManagerRequestBody\",\n\t\"qualifiedName\" : \"MyDBMS\",\n    \"displayName\" : \"MyDBMS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/metadata-sources/database-managers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"metadata-sources",
+						"database-managers"
+					]
+				},
+				"description": "Create a SoftwareServerCapability entity to represent the Asset Manager."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a database",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DatabaseProperties\",\n\t\"qualifiedName\" : \"MyDBMS.MyDB\",\n    \"displayName\" : \"MyDB\",\n    \"databaseImportedFrom\" : \"ImportSource\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"database-managers",
+						"{{external_source_guid}}",
+						"{{external_source_name}}",
+						"databases"
+					]
+				},
+				"description": "Create an Asset entity to represent the Database."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a database schema",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DatabaseSchemaProperties\",\n\t\"qualifiedName\" : \"MyDBMS.MyDB.Schema1a\",\n    \"displayName\" : \"MyDB.Schema1\",\n    \"zoneMembership\" : [ \"quarantine\" ],\n    \"owner\" : \"dba\",\n    \"ownerCategory\" : \"USER_ID\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/{{databaseGUID}}/schemas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"database-managers",
+						"{{external_source_guid}}",
+						"{{external_source_name}}",
+						"databases",
+						"{{databaseGUID}}",
+						"schemas"
+					]
+				},
+				"description": "Create a Schema Attribute entity to represent the Database Table."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a database table",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DatabaseTableProperties\",\n\t\"qualifiedName\" : \"MyDBMS.MyDB.Schema1.TableB\",\n    \"displayName\" : \"MyDB.Schema1.TableB\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/schemas/{{databaseSchemaGUID}}/tables",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"database-managers",
+						"{{external_source_guid}}",
+						"{{external_source_name}}",
+						"databases",
+						"schemas",
+						"{{databaseSchemaGUID}}",
+						"tables"
+					]
+				},
+				"description": "Create a Schema Attribute entity to represent the Database Table."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a database column",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DatabaseColumnProperties\",\n\t\"qualifiedName\" : \"MyDBMS.MyDB.Schema1.TableA.Column2\",\n    \"displayName\" : \"MyDB.Schema1.TableA.Column2\",\n    \"dataType\" : \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/schemas/tables/{{databaseTableGUID}}/columns",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"database-managers",
+						"{{external_source_guid}}",
+						"{{external_source_name}}",
+						"databases",
+						"schemas",
+						"tables",
+						"{{databaseTableGUID}}",
+						"columns"
+					]
+				},
+				"description": "Create a Schema Attribute entity to represent the Database Table."
+			},
+			"response": []
+		},
+		{
+			"name": "GetDatabaseByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/by-name/MyDBMS.MyDB?startFrom=0&pageSize=1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"databases",
+						"by-name",
+						"MyDBMS.MyDB"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDatabaseByGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/{{databaseGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"databases",
+						"{{databaseGUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDatabaseSchemaByGUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/schemas/{{databaseSchemaGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"databases",
+						"schemas",
+						"{{databaseSchemaGUID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

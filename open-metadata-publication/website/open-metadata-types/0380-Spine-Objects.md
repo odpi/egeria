@@ -26,7 +26,10 @@ Note that a term may be a spine object and/or a spine attribute and/or an object
 The following relationship is deprecated, use IsATypeOfRelationship instead: 
 * **TermISATYPEOFRelationship** - Deprecated is a term relationship between two SpineObjects saying that one is the subtype (specialisation) of the other.
 
-Return to [Area 3](Area-3-models.md).
+----
+
+* Return to [Area 3](Area-3-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

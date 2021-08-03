@@ -9,7 +9,10 @@ It contains a single property, `categoryQualifiedName` which represents the qual
 ![UML](0335-Primary-Category.png#pagewidth)
 
 
-Return to [Area 3](Area-3-models.md).
+----
+
+* Return to [Area 3](Area-3-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
