@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c3affe9a-344d-49d5-9ee2-4fe56f557b6f",
+		"_postman_id": "a17668f4-5f3c-471f-94f3-b20427cabc83",
 		"name": "Egeria-admin-services-operational",
 		"description": "Requests for configuring an OMAG Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -113,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "filename",
+					"raw": "content-packs/DataStoreConnectorTypes.json",
 					"options": {
 						"raw": {
 							"language": "text"
@@ -238,6 +238,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

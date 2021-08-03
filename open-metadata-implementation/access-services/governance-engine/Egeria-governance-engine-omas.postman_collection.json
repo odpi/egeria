@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "23f71964-54f6-4fff-af8b-c2d5bb1e6c2f",
+		"name": "Egeria-governance-engine-omas",
+		"description": "Requests for configuring an OMAG Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Governance Action",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-actions/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-actions",
+						"{{guid}}"
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the names of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Governance Actions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-actions?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-actions"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the names of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Active Governance Actions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-actions/active?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-actions",
+						"active"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the names of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Out Topic Connection",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/topics/out-topic-connection/1111",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"topics",
+						"out-topic-connection",
+						"1111"
+					]
+				},
+				"description": "Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the details of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Governance Action Process",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"NewGovernanceActionProcessRequestBody\",\n    \"processStatus\" : \"ACTIVE\",\n    \"properties\" : {\n            \"class\" : \"GovernanceActionProcessProperties\",\n            \"qualifiedName\" : \"Process1\",\n            \"displayName\" : \"Process1\",\n            \"description\" : \"description\",\n            \"technicalName\" : \"technicalName\",\n            \"technicalDescription\" : \"technicalDescription\",\n            \"owner\" : \"{{user}}\",\n            \"ownerCategory\" : \"USER_ID\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-action-processes/new",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-action-processes",
+						"new"
+					]
+				},
+				"description": "Add an asset definition for a CSV file"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Governance Action Processes by name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"Process1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-action-processes/by-name?startFrom=0&pageSize=10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-action-processes",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Return a list of assets with the requested name."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Governance Action Processes by search string",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*P.*\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-action-processes/by-search-string?startFrom=0&pageSize=10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-action-processes",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Return a list of assets with the requested search string in their name, qualified name or description."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Governance Action Process By GUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-action-processes/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-action-processes",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Governance Action Type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"GovernanceActionTypeProperties\",\n    \"qualifiedName\" : \"Step-1\",\n    \"displayName\" : \"Step-1\",\n    \"description\" : \"description\",\n    \"owner\" : \"{{user}}\",\n    \"ownerCategory\" : \"USER_ID\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-engine/users/{{user}}/governance-action-types/new",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"governance-engine",
+						"users",
+						"{{user}}",
+						"governance-action-types",
+						"new"
+					]
+				},
+				"description": "Add an asset definition for a CSV file"
+			},
+			"response": []
+		},
+		{
+			"name": "Create a CSV file with schema",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"NewCSVFileAssetRequestBody\", \n    \"displayName\" : \"AIS data for January 2015 zone 1\", \n    \"description\": \"TBA .\", \n    \"fullPath\": \"file://Users/davidradley/testplatforms/usaf/files/AIS_2015_01_Zone06.csv\", \n    \"columnHeaders\": [\"MMSI\", \"BaseDateTime\", \"LAT\", \"LON\", \"SOG\", \"COG\", \"Heading\", \"VesselName\", \"IMO\", \"CallSign\", \"VesselType\", \"Status\", \"Length\", \"Width\", \"Draft\", \"Cargo\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/data-files/csv",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"asset-owner",
+						"users",
+						"{{user}}",
+						"assets",
+						"data-files",
+						"csv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schema Attributes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"asset-owner",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"schemas",
+						"{{guid}}",
+						"schema-attributes"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

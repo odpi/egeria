@@ -8,7 +8,10 @@ defined in a data class.
 
 ![UML](0625-Data-Class-Discovery.png#pagewidth)
 
-Return to [Area 6](Area-6-models.md).
+---
+
+* Return to [Area 6](Area-6-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

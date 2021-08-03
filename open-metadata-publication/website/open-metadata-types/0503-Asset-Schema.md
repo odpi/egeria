@@ -17,7 +17,10 @@ a template which will copy the schema structure from the template asset to the n
 ![UML](0503-Asset-Schema.png#pagewidth)
 
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
