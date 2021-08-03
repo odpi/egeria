@@ -563,8 +563,16 @@ public class AssetCatalogHandlerTest {
 
         List<Elements> elements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
         assertEquals(2, elements.size());
-        assertEquals(FIRST_GUID, elements.get(0).getGuid());
-        assertEquals(ASSET_TYPE, elements.get(0).getType().getName());
+        if (FIRST_GUID.equals(elements.get(0).getGuid()))
+        {
+            assertEquals(FIRST_GUID, elements.get(0).getGuid());
+            assertEquals(ASSET_TYPE, elements.get(0).getType().getName());
+        }
+        else
+        {
+            assertEquals(FIRST_GUID, elements.get(1).getGuid());
+            assertEquals(ASSET_TYPE, elements.get(1).getType().getName());
+        }
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(), searchParams.getPageSize(), methodName);
         verify(invalidParameterHandler, times(1)).validateObject(searchParams, "searchParameter", methodName);

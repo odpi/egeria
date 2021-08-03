@@ -289,26 +289,6 @@ public interface ManageConnections
 
 
     /**
-     * Step through the connections visible to this caller.
-     *
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<ConnectionElement> scanConnections(String userId,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
      * Retrieve the list of asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
@@ -376,6 +356,7 @@ public interface ManageConnections
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param userId calling user
+     * @param networkAddress     location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -386,6 +367,7 @@ public interface ManageConnections
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createEndpointFromTemplate(String             userId,
+                                      String             networkAddress,
                                       String             templateGUID,
                                       TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,

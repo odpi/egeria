@@ -1141,7 +1141,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, connectionProperties);
+        return connectionManagerClient.createConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionProperties);
     }
 
 
@@ -1162,7 +1162,7 @@ public class FilesIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, templateGUID, templateProperties);
+        return connectionManagerClient.createConnectionFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
     }
 
 
@@ -1203,7 +1203,7 @@ public class FilesIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectionManagerClient.setupConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.setupConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1241,7 +1241,7 @@ public class FilesIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.setupEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, connectionGUID, endpointGUID);
+        connectionManagerClient.setupEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, endpointGUID);
     }
 
 
@@ -1285,7 +1285,7 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        connectionManagerClient.setupEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+        connectionManagerClient.setupEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
     }
 
 
@@ -1325,7 +1325,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, assetGUID, assetSummary, connectionGUID);
     }
 
 
@@ -1447,15 +1447,16 @@ public class FilesIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, endpointProperties);
+        return connectionManagerClient.createEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, endpointProperties);
     }
 
 
     /**
      * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
      *
+     * @param networkAddress location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param templateProperties descriptive properties that override the template
      *
      * @return unique identifier of the new endpoint
      *
@@ -1463,12 +1464,13 @@ public class FilesIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEndpointFromTemplate(String             templateGUID,
+    public String createEndpointFromTemplate(String             networkAddress,
+                                             String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, false, templateGUID, templateProperties);
+        return connectionManagerClient.createEndpointFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, networkAddress, templateGUID, templateProperties);
     }
 
 

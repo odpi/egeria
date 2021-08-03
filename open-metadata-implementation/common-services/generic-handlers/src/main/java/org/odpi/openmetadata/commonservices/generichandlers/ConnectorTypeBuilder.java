@@ -74,6 +74,37 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create constructor - when templating
+     *
+     * @param qualifiedName unique name for the connector type
+     * @param displayName short display name for the connector type
+     * @param description description of the connector type
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    ConnectorTypeBuilder(String               qualifiedName,
+                         String               displayName,
+                         String               description,
+                         OMRSRepositoryHelper repositoryHelper,
+                         String               serviceName,
+                         String               serverName)
+    {
+        super(qualifiedName,
+              null,
+              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+    }
+
+
+    /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method

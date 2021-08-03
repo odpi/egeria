@@ -11,7 +11,8 @@ A value that should be measured is documented using the
 **GovernanceMetric** entity.  It is linked to the appropriate
 [GovernanceDefinition](0401-Governance-Definitions.md)
 and can be linked to a [data set](0010-Base-Model.md) where the measurements are
-being gathered.
+being gathered.  Alternatively the measurements for a particular resource
+can be gathered and stored in a **GovernanceMeasurements** classification.
 
 Alternatively specific metadata elements can
 be associated with their measurements via the
@@ -20,7 +21,10 @@ be associated with their measurements via the
 
 ![UML](0450-Governance-Rollout.png#pagewidth)
 
-Return to [Area 4](Area-4-models.md).
+---
+
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

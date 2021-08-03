@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
 import java.util.ArrayList;
@@ -28,9 +29,10 @@ import java.util.List;
  */
 public class OMRSArchiveManager
 {
+    private String                                  localMetadataCollectionId   = null;
     private List<OpenMetadataArchiveStoreConnector> openMetadataArchiveStores   = new ArrayList<>();
     private OMRSRepositoryContentManager            repositoryContentManager    = null;
-    private OMRSInstanceEventProcessorInterface     localInstanceEventProcessor = null;
+    private LocalOMRSInstanceEventProcessor         localInstanceEventProcessor = null;
 
 
     /*
@@ -90,9 +92,11 @@ public class OMRSArchiveManager
      * @param repositoryContentManager typeDef processor for the local repository
      * @param instanceProcessor  instance processor for the local repository
      */
-    public void setLocalRepository(OMRSRepositoryContentManager              repositoryContentManager,
-                                   OMRSInstanceEventProcessorInterface       instanceProcessor)
+    public void setLocalRepository(String                           localMetadataCollectionId,
+                                   OMRSRepositoryContentManager     repositoryContentManager,
+                                   LocalOMRSInstanceEventProcessor  instanceProcessor)
     {
+        this.localMetadataCollectionId = localMetadataCollectionId;
         this.repositoryContentManager = repositoryContentManager;
         this.localInstanceEventProcessor = instanceProcessor;
 
@@ -325,6 +329,12 @@ public class OMRSArchiveManager
                 }
             }
         }
+        else
+        {
+            final String actionDescription = "Processing type definitions from archive";
+
+            auditLog.logMessage(actionDescription, OMRSAuditCode.NO_TYPE_DEF_PROCESSOR.getMessageDefinition());
+        }
 
         return typeCount;
     }
@@ -355,7 +365,6 @@ public class OMRSArchiveManager
 
         if (instanceProcessor != null)
         {
-            String                 sourceName                 = OMRSAuditingComponent.ARCHIVE_MANAGER.getComponentName();
             String                 homeMetadataCollectionId   = archiveProperties.getArchiveGUID();
             String                 archiveName                = archiveProperties.getArchiveName();
             String                 originatorServerType       = OpenMetadataArchiveType.CONTENT_PACK.getName();
@@ -373,7 +382,11 @@ public class OMRSArchiveManager
                 provenanceType       = InstanceProvenanceType.EXPORT_ARCHIVE;
                 originatorServerType = OpenMetadataArchiveType.METADATA_EXPORT.getName();
             }
-
+            else if (archiveProperties.getArchiveType() == OpenMetadataArchiveType.REPOSITORY_BACKUP)
+            {
+                provenanceType       = InstanceProvenanceType.LOCAL_COHORT;
+                originatorServerType = OpenMetadataArchiveType.REPOSITORY_BACKUP.getName();
+            }
 
             if (entities != null)
             {
@@ -381,7 +394,8 @@ public class OMRSArchiveManager
                 {
                     if (entity != null)
                     {
-                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                        this.setInstanceAuditHeader(localMetadataCollectionId,
+                                                    homeMetadataCollectionId,
                                                     archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
@@ -389,18 +403,34 @@ public class OMRSArchiveManager
                                                     originatorLicense,
                                                     entity);
 
-                        instanceProcessor.processNewEntityEvent(archiveId,
-                                                                homeMetadataCollectionId,
-                                                                archiveName,
-                                                                originatorServerType,
-                                                                originatorOrganizationName,
-                                                                entity);
+                        /*
+                         * There is no need to support delete in archive because the elements are
+                         * reference copies and can be deleted from the receiving repositories.
+                         */
+                        if (entity.getVersion() == 1L)
+                        {
+                            instanceProcessor.processNewEntityEvent(archiveId,
+                                                                    homeMetadataCollectionId,
+                                                                    archiveName,
+                                                                    originatorServerType,
+                                                                    originatorOrganizationName,
+                                                                    entity);
+                        }
+                        else
+                        {
+                            instanceProcessor.processUpdatedEntityEvent(archiveId,
+                                                                        homeMetadataCollectionId,
+                                                                        archiveName,
+                                                                        originatorServerType,
+                                                                        originatorOrganizationName,
+                                                                        null,
+                                                                        entity);
+                        }
 
                         instanceCount++;
                     }
                 }
             }
-
 
             if (relationships != null)
             {
@@ -408,7 +438,8 @@ public class OMRSArchiveManager
                 {
                     if (relationship != null)
                     {
-                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                        this.setInstanceAuditHeader(localMetadataCollectionId,
+                                                    homeMetadataCollectionId,
                                                     archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
@@ -416,12 +447,29 @@ public class OMRSArchiveManager
                                                     originatorLicense,
                                                     relationship);
 
-                        instanceProcessor.processNewRelationshipEvent(archiveId,
-                                                                      homeMetadataCollectionId,
-                                                                      archiveName,
-                                                                      originatorServerType,
-                                                                      originatorOrganizationName,
-                                                                      relationship);
+                        /*
+                         * There is no need to support delete in archive because the elements are
+                         * reference copies and can be deleted from the receiving repositories.
+                         */
+                        if (relationship.getVersion() == 1L)
+                        {
+                            instanceProcessor.processNewRelationshipEvent(archiveId,
+                                                                          homeMetadataCollectionId,
+                                                                          archiveName,
+                                                                          originatorServerType,
+                                                                          originatorOrganizationName,
+                                                                          relationship);
+                        }
+                        else
+                        {
+                            instanceProcessor.processUpdatedRelationshipEvent(archiveId,
+                                                                              homeMetadataCollectionId,
+                                                                              archiveName,
+                                                                              originatorServerType,
+                                                                              originatorOrganizationName,
+                                                                              null,
+                                                                              relationship);
+                        }
 
                         instanceCount ++;
                     }
@@ -437,7 +485,8 @@ public class OMRSArchiveManager
                     {
                         Classification classification = classificationEntityExtension.getClassification();
 
-                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                        this.setInstanceAuditHeader(localMetadataCollectionId,
+                                                    homeMetadataCollectionId,
                                                     archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
@@ -448,13 +497,25 @@ public class OMRSArchiveManager
                         classificationEntityExtension.setClassification(classification);
 
                         // Todo
-                        /* new method required
-                        instanceProcessor.processNewClassificationEvent(archiveId,
-                                                                        homeMetadataCollectionId,
-                                                                        originatorServerName,
-                                                                        originatorServerType,
-                                                                        originatorOrganizationName,
-                                                                        classificationEntityExtension);
+                        /* new methods required
+                        if (classification.getVersion() == 1L)
+                        {
+                            instanceProcessor.processNewClassificationEvent(archiveId,
+                                                                            homeMetadataCollectionId,
+                                                                            originatorServerName,
+                                                                            originatorServerType,
+                                                                            originatorOrganizationName,
+                                                                            classificationEntityExtension);
+                        }
+                        else
+                        {
+                            instanceProcessor.processUpdatedClassificationEvent(archiveId,
+                                                                                homeMetadataCollectionId,
+                                                                                originatorServerName,
+                                                                                originatorServerType,
+                                                                                originatorOrganizationName,
+                                                                                classificationEntityExtension);
+                        }
 
                         instanceCount ++;
                         */
@@ -462,14 +523,24 @@ public class OMRSArchiveManager
                 }
             }
         }
+        else
+        {
+            final String actionDescription = "Processing instances from archive";
+
+            auditLog.logMessage(actionDescription, OMRSAuditCode.NO_INSTANCE_PROCESSOR.getMessageDefinition());
+        }
 
         return instanceCount;
     }
 
 
     /**
-     * Set up the header of an archive instance.
+     * Set up the header of an archive instance.  The header information from the archive
+     * is used in the instance header unless it is set up explicitly in an export archive.
+     * The local metadata collection Id is set in the replicatedBy attribute to enable this
+     * repository to send out refresh events about this archive.
      *
+     * @param localMetadataCollectionId metadata collection Id of the local repository
      * @param metadataCollectionId home metadata collection id
      * @param metadataConnectionName name of the metadata collection
      * @param originatorName originator name
@@ -478,7 +549,8 @@ public class OMRSArchiveManager
      * @param originatorLicense any license info
      * @param instance instance to fill in
      */
-    private void setInstanceAuditHeader(String                 metadataCollectionId,
+    private void setInstanceAuditHeader(String                 localMetadataCollectionId,
+                                        String                 metadataCollectionId,
                                         String                 metadataConnectionName,
                                         String                 originatorName,
                                         Date                   creationTime,
@@ -517,8 +589,13 @@ public class OMRSArchiveManager
             {
                 instance.setInstanceLicense(originatorLicense);
             }
+
+            if (instance.getReplicatedBy() == null)
+            {
+                instance.setReplicatedBy(localMetadataCollectionId);
+            }
         }
-        else /* assume this is a content pack and set up instances consistently */
+        else if (provenanceType == InstanceProvenanceType.CONTENT_PACK)
         {
             instance.setMetadataCollectionId(metadataCollectionId);
             instance.setMetadataCollectionName(metadataConnectionName);
@@ -526,6 +603,15 @@ public class OMRSArchiveManager
             instance.setCreateTime(creationTime);
             instance.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
             instance.setInstanceLicense(originatorLicense);
+            instance.setReplicatedBy(localMetadataCollectionId);
+        }
+
+        /*
+         * The first version is 1 not 0.
+         */
+        if (instance.getVersion() == 0L)
+        {
+            instance.setVersion(1L);
         }
     }
 }

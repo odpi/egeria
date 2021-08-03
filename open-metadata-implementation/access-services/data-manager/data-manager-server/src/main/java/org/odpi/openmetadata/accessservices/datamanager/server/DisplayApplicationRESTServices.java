@@ -4,6 +4,10 @@
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DataContainerProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.QueryProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ReportProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.FormProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -15,6 +19,9 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.DisplayDataContainerHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +40,7 @@ public class DisplayApplicationRESTServices
     private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DisplayApplicationRESTServices.class),
                                                                                    instanceHandler.getServiceName());
 
-    private RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
+    private RESTExceptionHandler  restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -60,14 +67,14 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createForm(String           serverName,
-                                   String           userId,
-                                   boolean          applicationIsHome,
+    public GUIDResponse createForm(String          serverName,
+                                   String          userId,
+                                   boolean         applicationIsHome,
                                    FormRequestBody requestBody)
     {
         final String methodName                   = "createForm";
         final String applicationGUIDParameterName = "applicationGUID";
-        final String formGUIDParameterName       = "formGUID";
+        final String formGUIDParameterName        = "formGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -89,80 +96,33 @@ public class DisplayApplicationRESTServices
                     typeName = requestBody.getTypeName();
                 }
 
-                String formGUID;
-
-                if (applicationIsHome)
-                {
-                    formGUID = handler.createAssetInRepository(userId,
-                                                               requestBody.getExternalSourceGUID(),
-                                                               requestBody.getExternalSourceName(),
-                                                               requestBody.getQualifiedName(),
-                                                               requestBody.getDisplayName(),
-                                                               requestBody.getDescription(),
-                                                               requestBody.getAdditionalProperties(),
-                                                               typeName,
-                                                               requestBody.getExtendedProperties(),
-                                                               InstanceStatus.ACTIVE,
-                                                               methodName);
-
-                    if ((formGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     formGUID,
-                                                     formGUIDParameterName,
-                                                     OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    formGUID = handler.createAssetInRepository(userId,
-                                                               null,
-                                                               null,
-                                                               requestBody.getQualifiedName(),
-                                                               requestBody.getDisplayName(),
-                                                               requestBody.getDescription(),
-                                                               requestBody.getAdditionalProperties(),
-                                                               typeName,
-                                                               requestBody.getExtendedProperties(),
-                                                               InstanceStatus.ACTIVE,
-                                                               methodName);
-
-                    if ((formGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     formGUID,
-                                                     formGUIDParameterName,
-                                                     OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
+                String formGUID = handler.createAssetInRepository(userId,
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                  requestBody.getQualifiedName(),
+                                                                  requestBody.getDisplayName(),
+                                                                  requestBody.getDescription(),
+                                                                  requestBody.getAdditionalProperties(),
+                                                                  typeName,
+                                                                  requestBody.getExtendedProperties(),
+                                                                  InstanceStatus.ACTIVE,
+                                                                  methodName);
 
                 if (formGUID != null)
                 {
-                    if (requestBody.getVendorProperties() != null)
-                    {
-                        handler.setVendorProperties(userId,
-                                                    formGUID,
-                                                    requestBody.getVendorProperties(),
-                                                    methodName);
-                    }
+                    handler.attachAssetToSoftwareServerCapability(userId,
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                  formGUID,
+                                                                  formGUIDParameterName,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  applicationGUIDParameterName,
+                                                                  methodName);
+
+                    handler.setVendorProperties(userId,
+                                                formGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
 
                 response.setGUID(formGUID);
@@ -222,73 +182,30 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String formGUID;
+                String formGUID = handler.addAssetFromTemplate(userId,
+                                                               handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                               handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                               templateGUID,
+                                                               templateGUIDParameterName,
+                                                               OpenMetadataAPIMapper.FORM_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                               requestBody.getQualifiedName(),
+                                                               qualifiedNameParameterName,
+                                                               requestBody.getDisplayName(),
+                                                               requestBody.getDescription(),
+                                                               requestBody.getNetworkAddress(),
+                                                               methodName);
 
-                if (applicationIsHome)
+                if (formGUID != null)
                 {
-                    formGUID = handler.addAssetFromTemplate(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
-                                                            templateGUID,
-                                                            templateGUIDParameterName,
-                                                            OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                            requestBody.getQualifiedName(),
-                                                            qualifiedNameParameterName,
-                                                            requestBody.getDisplayName(),
-                                                            requestBody.getDescription(),
-                                                            requestBody.getNetworkAddress(),
-                                                            methodName);
-
-                    if ((formGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     formGUID,
-                                                     formGUIDParameterName,
-                                                     OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    formGUID = handler.addAssetFromTemplate(userId,
-                                                            null,
-                                                            null,
-                                                            templateGUID,
-                                                            templateGUIDParameterName,
-                                                            OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                            requestBody.getQualifiedName(),
-                                                            qualifiedNameParameterName,
-                                                            requestBody.getDisplayName(),
-                                                            requestBody.getDescription(),
-                                                            requestBody.getNetworkAddress(),
-                                                            methodName);
-
-                    if ((formGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     formGUID,
-                                                     formGUIDParameterName,
-                                                     OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.attachAssetToSoftwareServerCapability(userId,
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                  formGUID,
+                                                                  formGUIDParameterName,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  applicationGUIDParameterName,
+                                                                  methodName);
                 }
 
                 response.setGUID(formGUID);
@@ -366,16 +283,12 @@ public class DisplayApplicationRESTServices
                                     isMergeUpdate,
                                     methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId,
+                                                formGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
             }
             else
@@ -593,7 +506,7 @@ public class DisplayApplicationRESTServices
                                                               pageSize,
                                                               methodName);
 
-            response.setElementList(formAssets);
+            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -650,7 +563,7 @@ public class DisplayApplicationRESTServices
                                                                    pageSize,
                                                                    methodName);
 
-            response.setElementList(formAssets);
+            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -711,7 +624,7 @@ public class DisplayApplicationRESTServices
                                                                        pageSize,
                                                                        methodName);
 
-            response.setElementList(formAssets);
+            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -760,7 +673,7 @@ public class DisplayApplicationRESTServices
                                                                   OpenMetadataAPIMapper.FORM_TYPE_NAME,
                                                                   methodName);
 
-            response.setElement(formAsset);
+            response.setElement(setUpVendorProperties(userId, formAsset, handler, methodName));
         }
         catch (Exception error)
         {
@@ -786,9 +699,9 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createReport(String           serverName,
-                                     String           userId,
-                                     boolean          applicationIsHome,
+    public GUIDResponse createReport(String            serverName,
+                                     String            userId,
+                                     boolean           applicationIsHome,
                                      ReportRequestBody requestBody)
     {
         final String methodName                   = "createReport";
@@ -857,69 +770,33 @@ public class DisplayApplicationRESTServices
                     extendedProperties = null;
                 }
 
-                String reportGUID;
+                String reportGUID = handler.createAssetInRepository(userId,
+                                                                    handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                    handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    typeName,
+                                                                    extendedProperties,
+                                                                    InstanceStatus.ACTIVE,
+                                                                    methodName);
 
-                if (applicationIsHome)
+                if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
                 {
-                    reportGUID = handler.createAssetInRepository(userId,
-                                                                 requestBody.getExternalSourceGUID(),
-                                                                 requestBody.getExternalSourceName(),
-                                                                 requestBody.getQualifiedName(),
-                                                                 requestBody.getDisplayName(),
-                                                                 requestBody.getDescription(),
-                                                                 requestBody.getAdditionalProperties(),
-                                                                 typeName,
-                                                                 extendedProperties,
-                                                                 InstanceStatus.ACTIVE,
-                                                                 methodName);
-
-                    if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     reportGUID,
-                                                     reportGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    reportGUID = handler.createAssetInRepository(userId,
-                                                                 null,
-                                                                 null,
-                                                                 requestBody.getQualifiedName(),
-                                                                 requestBody.getDisplayName(),
-                                                                 requestBody.getDescription(),
-                                                                 requestBody.getAdditionalProperties(),
-                                                                 typeName,
-                                                                 extendedProperties,
-                                                                 InstanceStatus.ACTIVE,
-                                                                 methodName);
-
-                    if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     reportGUID,
-                                                     reportGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 applicationGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 reportGUID,
+                                                 reportGUIDParameterName,
+                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 null,
+                                                 methodName);
                 }
 
                 if (reportGUID != null)
@@ -990,73 +867,35 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String reportGUID;
+                String reportGUID = handler.addAssetFromTemplate(userId,
+                                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                 templateGUID,
+                                                                 templateGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                 requestBody.getQualifiedName(),
+                                                                 qualifiedNameParameterName,
+                                                                 requestBody.getDisplayName(),
+                                                                 requestBody.getDescription(),
+                                                                 requestBody.getNetworkAddress(),
+                                                                 methodName);
 
-                if (applicationIsHome)
+                if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
                 {
-                    reportGUID = handler.addAssetFromTemplate(userId,
-                                                              requestBody.getExternalSourceGUID(),
-                                                              requestBody.getExternalSourceName(),
-                                                              templateGUID,
-                                                              templateGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                              requestBody.getQualifiedName(),
-                                                              qualifiedNameParameterName,
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
-                                                              requestBody.getNetworkAddress(),
-                                                              methodName);
-
-                    if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     reportGUID,
-                                                     reportGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    reportGUID = handler.addAssetFromTemplate(userId,
-                                                              null,
-                                                              null,
-                                                              templateGUID,
-                                                              templateGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                              requestBody.getQualifiedName(),
-                                                              qualifiedNameParameterName,
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
-                                                              requestBody.getNetworkAddress(),
-                                                              methodName);
-
-                    if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     reportGUID,
-                                                     reportGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 applicationGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 reportGUID,
+                                                 reportGUIDParameterName,
+                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 null,
+                                                 methodName);
                 }
 
                 response.setGUID(reportGUID);
@@ -1176,16 +1015,9 @@ public class DisplayApplicationRESTServices
                                     isMergeUpdate,
                                     methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId, reportGUID, requestBody.getVendorProperties(), methodName);
                 }
             }
             else
@@ -1403,7 +1235,7 @@ public class DisplayApplicationRESTServices
                                                                   pageSize,
                                                                   methodName);
 
-            response.setElementList(reportAssets);
+            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1460,7 +1292,7 @@ public class DisplayApplicationRESTServices
                                                                        pageSize,
                                                                        methodName);
 
-            response.setElementList(reportAssets);
+            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1502,7 +1334,7 @@ public class DisplayApplicationRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ReportsResponse response = new ReportsResponse();
-        AuditLog          auditLog = null;
+        AuditLog        auditLog = null;
 
         try
         {
@@ -1521,7 +1353,7 @@ public class DisplayApplicationRESTServices
                                                                            pageSize,
                                                                            methodName);
 
-            response.setElementList(reportAssets);
+            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1570,7 +1402,7 @@ public class DisplayApplicationRESTServices
                                                                       OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
                                                                       methodName);
 
-            response.setElement(reportAsset);
+            response.setElement(setUpVendorProperties(userId, reportAsset, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1625,69 +1457,33 @@ public class DisplayApplicationRESTServices
                     typeName = requestBody.getTypeName();
                 }
 
-                String queryGUID;
+                String queryGUID = handler.createAssetInRepository(userId,
+                                                                   handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                   handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                   requestBody.getQualifiedName(),
+                                                                   requestBody.getDisplayName(),
+                                                                   requestBody.getDescription(),
+                                                                   requestBody.getAdditionalProperties(),
+                                                                   typeName,
+                                                                   requestBody.getExtendedProperties(),
+                                                                   InstanceStatus.ACTIVE,
+                                                                   methodName);
 
-                if (applicationIsHome)
+                if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
                 {
-                    queryGUID = handler.createAssetInRepository(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                requestBody.getQualifiedName(),
-                                                                requestBody.getDisplayName(),
-                                                                requestBody.getDescription(),
-                                                                requestBody.getAdditionalProperties(),
-                                                                typeName,
-                                                                requestBody.getExtendedProperties(),
-                                                                InstanceStatus.ACTIVE,
-                                                                methodName);
-
-                    if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     queryGUID,
-                                                     queryGUIDParameterName,
-                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    queryGUID = handler.createAssetInRepository(userId,
-                                                                null,
-                                                                null,
-                                                                requestBody.getQualifiedName(),
-                                                                requestBody.getDisplayName(),
-                                                                requestBody.getDescription(),
-                                                                requestBody.getAdditionalProperties(),
-                                                                typeName,
-                                                                requestBody.getExtendedProperties(),
-                                                                InstanceStatus.ACTIVE,
-                                                                methodName);
-
-                    if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     queryGUID,
-                                                     queryGUIDParameterName,
-                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 applicationGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 queryGUID,
+                                                 queryGUIDParameterName,
+                                                 OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 null,
+                                                 methodName);
                 }
 
                 if (queryGUID != null)
@@ -1758,73 +1554,35 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String queryGUID;
+                String queryGUID = handler.addAssetFromTemplate(userId,
+                                                                handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                                handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                                templateGUID,
+                                                                templateGUIDParameterName,
+                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                requestBody.getQualifiedName(),
+                                                                qualifiedNameParameterName,
+                                                                requestBody.getDisplayName(),
+                                                                requestBody.getDescription(),
+                                                                requestBody.getNetworkAddress(),
+                                                                methodName);
 
-                if (applicationIsHome)
+                if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
                 {
-                    queryGUID = handler.addAssetFromTemplate(userId,
-                                                             requestBody.getExternalSourceGUID(),
-                                                             requestBody.getExternalSourceName(),
-                                                             templateGUID,
-                                                             templateGUIDParameterName,
-                                                             OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                             requestBody.getQualifiedName(),
-                                                             qualifiedNameParameterName,
-                                                             requestBody.getDisplayName(),
-                                                             requestBody.getDescription(),
-                                                             requestBody.getNetworkAddress(),
-                                                             methodName);
-
-                    if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     requestBody.getExternalSourceName(),
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     queryGUID,
-                                                     queryGUIDParameterName,
-                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    queryGUID = handler.addAssetFromTemplate(userId,
-                                                             null,
-                                                             null,
-                                                             templateGUID,
-                                                             templateGUIDParameterName,
-                                                             OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                             requestBody.getQualifiedName(),
-                                                             qualifiedNameParameterName,
-                                                             requestBody.getDisplayName(),
-                                                             requestBody.getDescription(),
-                                                             requestBody.getNetworkAddress(),
-                                                             methodName);
-
-                    if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
-                    {
-                        handler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     requestBody.getExternalSourceGUID(),
-                                                     applicationGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                     queryGUID,
-                                                     queryGUIDParameterName,
-                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                     null,
-                                                     methodName);
-                    }
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 applicationGUIDParameterName,
+                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 queryGUID,
+                                                 queryGUIDParameterName,
+                                                 OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 null,
+                                                 methodName);
                 }
 
                 response.setGUID(queryGUID);
@@ -1902,16 +1660,9 @@ public class DisplayApplicationRESTServices
                                     isMergeUpdate,
                                     methodName);
 
-                if (requestBody.getVendorProperties() == null)
+                if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
+                    handler.setVendorProperties(userId, queryGUID, requestBody.getVendorProperties(), methodName);
                 }
             }
             else
@@ -2109,7 +1860,7 @@ public class DisplayApplicationRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         QueriesResponse response = new QueriesResponse();
-        AuditLog          auditLog = null;
+        AuditLog        auditLog = null;
 
         try
         {
@@ -2126,7 +1877,7 @@ public class DisplayApplicationRESTServices
                                                                 pageSize,
                                                                 methodName);
 
-            response.setElementList(queryAssets);
+            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2183,7 +1934,7 @@ public class DisplayApplicationRESTServices
                                                                      pageSize,
                                                                      methodName);
 
-            response.setElementList(queryAssets);
+            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2244,7 +1995,7 @@ public class DisplayApplicationRESTServices
                                                                          pageSize,
                                                                          methodName);
 
-            response.setElementList(queryAssets);
+            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2293,7 +2044,7 @@ public class DisplayApplicationRESTServices
                                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
                                                                     methodName);
 
-            response.setElement(queryAsset);
+            response.setElement(setUpVendorProperties(userId, queryAsset, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2542,18 +2293,6 @@ public class DisplayApplicationRESTServices
                                             requestBody.getVendorProperties(),
                                             isMergeUpdate,
                                             methodName);
-
-                if (requestBody.getVendorProperties() == null)
-                {
-                    if (!isMergeUpdate)
-                    {
-                        // todo delete vendor properties
-                    }
-                }
-                else
-                {
-                    // todo update vendor properties
-                }
             }
             else
             {
@@ -2671,7 +2410,7 @@ public class DisplayApplicationRESTServices
                                                                              pageSize,
                                                                              methodName);
 
-            response.setElementList(elements);
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2723,7 +2462,7 @@ public class DisplayApplicationRESTServices
                                                                                  pageSize,
                                                                                  methodName);
 
-            response.setElementList(elements);
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2772,7 +2511,7 @@ public class DisplayApplicationRESTServices
 
             List<DataContainerElement> elements = handler.getDataContainersByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(elements);
+            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2816,7 +2555,7 @@ public class DisplayApplicationRESTServices
 
             DataContainerElement element = handler.getDataContainerByGUID(userId, guid, methodName);
 
-            response.setElement(element);
+            response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2826,5 +2565,300 @@ public class DisplayApplicationRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<FormElement> setUpFormVendorProperties(String                    userId,
+                                                        List<FormElement>         retrievedResults,
+                                                        AssetHandler<FormElement> handler,
+                                                        String                    methodName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (FormElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private FormElement setUpVendorProperties(String                    userId,
+                                              FormElement               element,
+                                              AssetHandler<FormElement> handler,
+                                              String                    methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            FormProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
+    }
+
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<ReportElement> setUpReportVendorProperties(String                      userId,
+                                                            List<ReportElement>         retrievedResults,
+                                                            AssetHandler<ReportElement> handler,
+                                                            String                      methodName) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (ReportElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private ReportElement setUpVendorProperties(String                      userId,
+                                                ReportElement               element,
+                                                AssetHandler<ReportElement> handler,
+                                                String                      methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            ReportProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
+    }
+
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<QueryElement> setUpQueryVendorProperties(String                     userId,
+                                                          List<QueryElement>         retrievedResults,
+                                                          AssetHandler<QueryElement> handler,
+                                                          String                     methodName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (QueryElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private QueryElement setUpVendorProperties(String                     userId,
+                                               QueryElement               element,
+                                               AssetHandler<QueryElement> handler,
+                                               String                     methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            QueryProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved elements.
+     *
+     * @param userId calling user
+     * @param retrievedResults results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<DataContainerElement> setUpVendorProperties(String                                           userId,
+                                                             List<DataContainerElement>                    retrievedResults,
+                                                             DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler,
+                                                             String                                           methodName) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
+    {
+        if (retrievedResults != null)
+        {
+            for (DataContainerElement element : retrievedResults)
+            {
+                if (element != null)
+                {
+                    setUpVendorProperties(userId, element, handler, methodName);
+                }
+            }
+        }
+
+        return retrievedResults;
+    }
+
+
+    /**
+     * Set up the vendor properties in the retrieved element.
+     *
+     * @param userId calling user
+     * @param element results from the repositories
+     * @param handler handler used to retrieve the vendor properties
+     * @param methodName calling method
+     *
+     * @return updated results
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private DataContainerElement setUpVendorProperties(String                                                               userId,
+                                                       DataContainerElement                                                 element,
+                                                       DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler,
+                                                       String                                                               methodName) throws InvalidParameterException,
+                                                                                                                                               UserNotAuthorizedException,
+                                                                                                                                               PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if (element != null)
+        {
+            DataContainerProperties properties = element.getProperties();
+
+            properties.setVendorProperties(handler.getVendorProperties(userId,
+                                                                       element.getElementHeader().getGUID(),
+                                                                       elementGUIDParameterName,
+                                                                       methodName));
+        }
+
+        return element;
     }
 }

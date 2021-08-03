@@ -45,9 +45,10 @@ These are the software server capabilities defined in the open types:
    * [Governance Action Engine](0461-Governance-Engines.md)  
    * [Open Discovery Engine](0601-Open-Discovery-Engine.md)  
 
+----
 
-
-Return to [Area 0](Area-0-models.md).
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

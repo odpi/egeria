@@ -52,7 +52,9 @@ ODF discovery services use connectors from the
 to connect to the data assets and access the known
 metadata about them. 
 
-Return to [Overview](README.md).
+----
+
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

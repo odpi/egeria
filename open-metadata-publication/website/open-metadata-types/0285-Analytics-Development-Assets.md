@@ -5,7 +5,10 @@
 
 ![UML](0285-Analytics-Development-Assets.png#pagewidth)
 
-Return to [Area 2](Area-2-models.md).
+----
+
+* Return to [Area 2](Area-2-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

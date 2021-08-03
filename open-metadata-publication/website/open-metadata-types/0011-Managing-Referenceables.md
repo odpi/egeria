@@ -28,16 +28,20 @@ This is useful to help trace where information has come from and to help underst
 potential impact cause by a change to the template if this change also needs to be made to
 the elements that were copied from it.
 
+## Deprecated Types
+
+* **LastAttachment** - use LatestChange instead
+* **LastAttachmentLink** - use LatestChange instead
+
 ## More information
 
 * [Cataloguing assets](../cataloging-assets)
 * [Using templates](../cataloging-assets/templated-cataloging.md)
 
 ----
-Return to [Area 0](Area-0-models.md).
 
-
-
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

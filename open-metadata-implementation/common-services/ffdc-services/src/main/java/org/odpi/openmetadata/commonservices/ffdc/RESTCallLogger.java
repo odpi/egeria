@@ -39,11 +39,18 @@ public class RESTCallLogger
                                      String userId,
                                      String methodName)
     {
-        RESTCallToken token = new RESTCallToken(serviceName, serverName, userId, methodName);
+        if (log.isDebugEnabled())
+        {
+            RESTCallToken token = new RESTCallToken(serviceName, serverName, userId, methodName);
 
-        log.debug(token.getRESTCallStartText());
+            log.debug(token.getRESTCallStartText());
 
-        return token;
+            return token;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -56,13 +63,16 @@ public class RESTCallLogger
     public void logRESTCallReturn(RESTCallToken  token,
                                   String         response)
     {
-        if (token != null)
+        if (log.isDebugEnabled())
         {
-            log.debug(token.getRESTCallReturnText(response));
-        }
-        else
-        {
-            log.debug(serviceName + ":" + " returned with response " + response);
+            if (token != null)
+            {
+                log.debug(token.getRESTCallReturnText(response));
+            }
+            else
+            {
+                log.debug(serviceName + ":" + " returned with response " + response);
+            }
         }
     }
 }

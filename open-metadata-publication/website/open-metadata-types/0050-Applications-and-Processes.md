@@ -9,7 +9,14 @@ They are deployed onto a server as a [SoftwareServerCapability](0042-Software-Se
 
 ![UML](0050-Applications-and-Processes.png#pagewidth)
 
-Return to [Area 0](Area-0-models.md).
+## Deprecated Types
+
+The **RuntimeForProcess** relationship is superfluous - use [ServerAssetUse](0045-Servers-and-Assets.md) since **Application** is a [SoftwareServerCapability](0042-Software-Server-Capabilities.md).
+
+---
+
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -7,7 +7,20 @@ import org.odpi.openmetadata.accessservices.assetowner.converters.*;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBeanConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.DataFieldHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.DiscoveryAnalysisReportHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -50,9 +63,9 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
     private AnnotationHandler<Annotation>                           annotationHandler;
     private DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
 
-    private ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
-    private ConnectorTypeHandler<OpenMetadataAPIDummyBean> connectorTypeHandler;
-    private EndpointHandler<OpenMetadataAPIDummyBean>      endpointHandler;
+    private ConnectionHandler<ConnectionElement>       connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private EndpointHandler<EndpointElement>           endpointHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -238,11 +251,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                                                    publishZones,
                                                                                    auditLog);
 
-        OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummyConverter =
-                new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
-
-        this.connectionHandler = new ConnectionHandler<>(dummyConverter,
-                                                         OpenMetadataAPIDummyBean.class,
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         ConnectionElement.class,
                                                          serviceName,
                                                          serverName,
                                                          invalidParameterHandler,
@@ -255,8 +265,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                          publishZones,
                                                          auditLog);
 
-        this.connectorTypeHandler = new ConnectorTypeHandler<>(dummyConverter,
-                                                               OpenMetadataAPIDummyBean.class,
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new ConnectorTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ConnectorTypeElement.class,
                                                                serviceName,
                                                                serverName,
                                                                invalidParameterHandler,
@@ -269,8 +279,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                                publishZones,
                                                                auditLog);
 
-        this.endpointHandler = new EndpointHandler<>(dummyConverter,
-                                                     OpenMetadataAPIDummyBean.class,
+        this.endpointHandler = new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                                                     EndpointElement.class,
                                                      serviceName,
                                                      serverName,
                                                      invalidParameterHandler,
@@ -442,7 +452,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ConnectionHandler<OpenMetadataAPIDummyBean> getConnectionHandler() throws PropertyServerException
+    ConnectionHandler<ConnectionElement> getConnectionHandler() throws PropertyServerException
     {
         final String methodName = "getConnectionHandler";
 
@@ -458,7 +468,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ConnectorTypeHandler<OpenMetadataAPIDummyBean> getConnectorTypeHandler() throws PropertyServerException
+    ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler() throws PropertyServerException
     {
         final String methodName = "getConnectorTypeHandler";
 
@@ -474,7 +484,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    EndpointHandler<OpenMetadataAPIDummyBean> getEndpointHandler() throws PropertyServerException
+    EndpointHandler<EndpointElement> getEndpointHandler() throws PropertyServerException
     {
         final String methodName = "getEndpointHandler";
 
