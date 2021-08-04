@@ -6,6 +6,7 @@ import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesC
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
@@ -21,7 +22,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.EntityPropertyFindRequest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,19 +146,30 @@ public class RepositoryService {
      *
      * @return a list of EntityDetails that contain the found software server capability
      */
-    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String targetEntityTypeGuid) throws
-            UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException,
+    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String targetEntityTypeGuid)
+            throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        List<String> entityTypeGuids = new ArrayList<>();
-        entityTypeGuids.add(targetEntityTypeGuid);
 
-        List<EntityDetail> relatedEntities = client.getRelatedEntities(userId, startEntityGuid, entityTypeGuids,
-                0, null, null, null, null,
-                SequencingOrder.ANY, 0);
-        return relatedEntities.stream()
-                .filter(ed -> ed.getType().getTypeDefGUID().equals(targetEntityTypeGuid))
-                .collect(Collectors.toList());
+        List<Relationship> relationships = client.getRelationshipsForEntity(userId, startEntityGuid, null,
+                0, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
 
+        return relationships.stream().map(
+                r -> startEntityGuid.equals(r.getEntityOneProxy().getGUID()) ? r.getEntityTwoProxy() : r.getEntityOneProxy()
+        ).filter(
+                ep -> ep.getType().getTypeDefGUID().equals(targetEntityTypeGuid)
+        ).map(
+                EntityProxy::getGUID
+        ).map(
+                guid -> {
+                    try {
+                        return client.getEntityDetail(userId, guid);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+        ).collect(Collectors.toList());
     }
+
 }
