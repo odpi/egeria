@@ -37,7 +37,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "2.11";
+    private static final String                  archiveVersion     = "3.1";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -145,7 +145,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive2_10 previousTypes = new OpenMetadataTypesArchive2_10(archiveBuilder);
+        OpenMetadataTypesArchive2_11 previousTypes = new OpenMetadataTypesArchive2_11(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -155,44 +155,25 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-        update0010BaseModel();
-        update0050ApplicationsAndProcesses();
-        update0380SubjectArea();
-        update04xxGovernanceDefinitions();
-        update0530TabularSchema();
-        update0531DocumentSchema();
-        update0534RelationalSchema();
-        update0535EventSchemas();
-        update0536APISchemas();
-        update0537DisplaySchemas();
+        update0040SoftwareServers();
+        add0485DataProcessingPurposes();
+        update0507ObsoleteDefinitions();
+
     }
 
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Mark deprecated field in Asset
-     */
-    private void update0010BaseModel()
+    private void update0040SoftwareServers()
     {
-        this.archiveBuilder.addTypeDefPatch(updateAsset());
+        this.archiveBuilder.addTypeDefPatch(updateServerEndpointRelationship());
     }
 
-    /**
-     * Deprecate the ownership properties - use Ownership classification instead
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateAsset()
+
+    private TypeDefPatch updateServerEndpointRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "Asset";
+        final String typeName = "ServerEndpoint";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -200,137 +181,164 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
 
         /*
+         * Update end 1.
+         */
+        final String                     end1EntityType               = "ITInfrastructure";
+        final String                     end1AttributeName            = "servers";
+        final String                     end1AttributeDescription     = "Server supporting this endpoint.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    end1Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+
+    private void add0485DataProcessingPurposes()
+    {
+        this.archiveBuilder.addEntityDef(getDataProcessingDescriptionEntity());
+        this.archiveBuilder.addEntityDef(getDataProcessingPurposeEntity());
+        this.archiveBuilder.addEntityDef(getDataProcessingActionEntity());
+
+        this.archiveBuilder.addRelationshipDef(this.getPermittedProcessingRelationship());
+        this.archiveBuilder.addRelationshipDef(this.getApprovedPurposeRelationship());
+        this.archiveBuilder.addRelationshipDef(this.getDetailedProcessingActionsRelationship());
+        this.archiveBuilder.addRelationshipDef(this.getDataProcessingSpecificationRelationship());
+        this.archiveBuilder.addRelationshipDef(this.getDataProcessingTargetRelationship());
+    }
+
+
+    private EntityDef getDataProcessingDescriptionEntity()
+    {
+        final String guid = "685f91fb-c74b-437b-a9b6-c5e557c6d3b2";
+
+        final String name            = "DataProcessingDescription";
+        final String description     = "A detailed description of the effect of some data processing.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Referenceable";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "owner";
-        final String attribute1Description     = "Deprecated Attribute. Person, team or engine responsible for this type of action. Use Ownership classification";
+        final String attribute1Name            = "displayName";
+        final String attribute1Description     = "Name of the data processing description.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "ownerType";
-        final String attribute2Description     = "Deprecated Attribute. Type of element representing the owner. Use Ownership classification";
+
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Brief description of the data processing description.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "zoneMembership";
-        final String attribute3Description     = "Deprecated Attribute. The list of zones that this asset belongs to. Use AssetZoneMembership classification";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "latestChange";
-        final String attribute4Description     = "Deprecated Attribute. Description of the last change to the asset's metadata. Use LatestChange classification";
-        final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
-                                                                attribute3Description,
-                                                                attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
 
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
 
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Add new data managers
-     */
-    private void update0050ApplicationsAndProcesses()
+    private EntityDef getDataProcessingPurposeEntity()
     {
+        final String guid = "9062df4c-9f4a-4012-a67a-968d7a3f4bcf";
 
-        this.archiveBuilder.addEntityDef(addAPIManagerEntity());
-        this.archiveBuilder.addEntityDef(addEventBrokerEntity());
-    }
-
-
-
-    /**
-     * This new subtype of software server capability for API managers.
-     *
-     * @return entity definition
-     */
-    private EntityDef addAPIManagerEntity()
-    {
-        final String guid            = "283a127d-3acd-4d64-b558-1fce9db9a35b";
-        final String name            = "APIManager";
-        final String description     = "A capability that manages callable APIs.";
+        final String name            = "DataProcessingPurpose";
+        final String description     = "Expected outcome, service or value from processing.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = "GovernanceDefinition";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
 
+        return entityDef;
     }
 
 
-
-    /**
-     * This new subtype of software server capability for Event Brokers.
-     *
-     * @return entity definition
-     */
-    private EntityDef addEventBrokerEntity()
+    private EntityDef getDataProcessingActionEntity()
     {
-        final String guid            = "309dfc3c-663b-4732-957b-e4a084436314";
-        final String name            = "EventBroker";
-        final String description     = "A capability that supports event-based services, typically around topics.";
+        final String guid = "7f53928f-9148-4710-ad37-47633f33cb08";
+
+        final String name            = "DataProcessingAction";
+        final String description     = "Description of the processing on a single target item.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = "Referenceable";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "displayName";
+        final String attribute1Description     = "Name of the processing action.";
+        final String attribute1DescriptionGUID = null;
+
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Brief description of the processing action.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0380SubjectArea()
-
+    private RelationshipDef getPermittedProcessingRelationship()
     {
-        this.archiveBuilder.addRelationshipDef(addIsATypeOfRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateTermIsATypeOfRelationship());
-    }
+        final String guid = "b472a2ec-f419-4d3f-86fb-e9d97365f961";
 
-    /**
-     * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
-     * @return RelationshipDef
-     */
-    private RelationshipDef addIsATypeOfRelationship()
-    {
-        final String guid            = "9b6a91b5-a339-4245-b208-040805f95a75";
-        final String name            = "IsATypeOfRelationship";
-        final String description     = "Defines an inheritance relationship between two spine objects.";
+        final String name            = "PermittedProcessing";
+        final String description     = "Relationship relates data processing descriptions with purposes (outcomes).";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -347,9 +355,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GlossaryTerm";
-        final String                     end1AttributeName            = "Inherited";
-        final String                     end1AttributeDescription     = "Inherited (Subtypes) for this object.";
+        final String                     end1EntityType               = "DataProcessingPurpose";
+        final String                     end1AttributeName            = "supportedPurposes";
+        final String                     end1AttributeDescription     = "The supported outcomes from the processing.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -364,9 +372,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GlossaryTerm";
-        final String                     end2AttributeName            = "InheritedFrom";
-        final String                     end2AttributeDescription     = "Inherited from type (Supertypes) for this object.";
+        final String                     end2EntityType               = "DataProcessingDescription";
+        final String                     end2AttributeName            = "permittedProcessing";
+        final String                     end2AttributeDescription     = "The description of the processing that is permitted for the purposes.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -377,95 +385,16 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "status";
-        final String attribute2Description     = "The status of or confidence in the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for the relationship.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
         return relationshipDef;
-
-    }
-    /**
-     * Deprecate the TermIsATypeOfRelationship - use IsATypeOfRelationship
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateTermIsATypeOfRelationship()
-    {
-        final String typeName = "TermISATypeOFRelationship";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * A variety of changes to improve consistency and flexibility of the governance definitions
-     */
-    private void update04xxGovernanceDefinitions()
-    {
-
-        this.archiveBuilder.addEntityDef(addThreatEntity());
-
-        this.archiveBuilder.addRelationshipDef(addGovernanceDefinitionScopeRelationship());
-
     }
 
 
-    /**
-     * This relationships allows the scope of a governance definition to be set up.
-     *
-     * @return  relationship definition
-     */
-    private RelationshipDef addGovernanceDefinitionScopeRelationship()
+    private RelationshipDef getApprovedPurposeRelationship()
     {
-        final String guid            = "3845b5cc-8c85-462f-b7e6-47472a568793";
-        final String name            = "GovernanceDefinitionScope";
-        final String description     = "Link between a scope - such as a digital service, infrastructure element or organization - and a governance definition.";
+        final String guid = "33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3";
+
+        final String name            = "ApprovedPurpose";
+        final String description     = "Relationship identifying the proposes that processes/people have permission to process data for.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -483,8 +412,8 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "Referenceable";
-        final String                     end1AttributeName            = "definitionAppliesTo";
-        final String                     end1AttributeDescription     = "Elements defining the scope that the governance definition applies to.";
+        final String                     end1AttributeName            = "approvedForPurposes";
+        final String                     end1AttributeDescription     = "The people/processes that have permission to process data.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -499,9 +428,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceDefinition";
-        final String                     end2AttributeName            = "associatedGovernanceDefinitions";
-        final String                     end2AttributeDescription     = "Governance definitions for this scope.";
+        final String                     end2EntityType               = "DataProcessingPurpose";
+        final String                     end2AttributeName            = "approvedPurposes";
+        final String                     end2AttributeDescription     = "The purposes (outcomes) that the people/processes have permission for.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -516,531 +445,258 @@ public class OpenMetadataTypesArchive
     }
 
 
-
-    /**
-     * This new subtype of governance driver is to document a specific threat.
-     *
-     * @return entity definition
-     */
-    private EntityDef addThreatEntity()
+    private RelationshipDef getDetailedProcessingActionsRelationship()
     {
-        final String guid            = "4ca51fdf-9b70-46b1-bdf6-8860429e78d8";
-        final String name            = "Threat";
-        final String description     = "A description of a specific threat.";
+        final String guid = "0ac0e793-6727-45d2-9403-06bd19d9ce2e";
+
+        final String name            = "DetailedProcessingActions";
+        final String description     = "Relationship identifying the individual actions in a data processing description.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GovernanceDriver";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * The TabularColumnType only allows for a column to be primitive - could be a literal - so deprecate.
-     * Add TabularFileColumn to be able to distinguish between a tabular column in a file and a relational column
-     */
-    private void update0530TabularSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateTabularColumnType());
-        this.archiveBuilder.addEntityDef(addTabularFileColumnEntity());
-    }
-
-    private TypeDefPatch deprecateTabularColumnType()
-    {
-        final String typeName = "TabularColumnType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * This new subtype of TabularColumn is to document a column in a tabular file.  This is to allow a distinction between
-     * a tabular column in a file and a relational database column.
-     *
-     * @return entity definition
-     */
-    private EntityDef addTabularFileColumnEntity()
-    {
-        final String guid            = "af6265e7-5f58-4a9c-9ae7-8d4284be62bd";
-        final String name            = "TabularFileColumn";
-        final String description     = "A column in a tabular file.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "TabularColumn";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Deprecate the specialist SchemaTypes for documents since the offer little value.
-     */
-    private void update0531DocumentSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(deprecateSimpleDocumentType());
-        this.archiveBuilder.addTypeDefPatch(deprecateStructDocumentType());
-        this.archiveBuilder.addTypeDefPatch(deprecateMapDocumentType());
-    }
-
-    private TypeDefPatch deprecateSimpleDocumentType()
-    {
-        final String typeName = "SimpleDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateStructDocumentType()
-    {
-        final String typeName = "StructDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateMapDocumentType()
-    {
-        final String typeName = "MapDocumentType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Change superclass of RelationshipTableType to be ComplexSchemaType
-     */
-    private void update0534RelationalSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateRelationalTableTypeEntity());
-    }
-
-
-    private TypeDefPatch updateRelationalTableTypeEntity()
-    {
-        final String typeName = "RelationalTableType";
-
-        final String superTypeName = "ComplexSchemaType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * A variety of changes to improve definition of EventType schemas
-     */
-    private void update0535EventSchemas()
-    {
-        this.archiveBuilder.addEntityDef(addEventTypeListEntity());
-        this.archiveBuilder.addEntityDef(addEventSchemaAttributeEntity());
-    }
-
-
-    /**
-     * This new subtype of schema type choice for events to make searching easier.
-     *
-     * @return entity definition
-     */
-    private EntityDef addEventTypeListEntity()
-    {
-        final String guid            = "77ccda3d-c4c6-464c-a424-4b2cb27ac06c";
-        final String name            = "EventTypeList";
-        final String description     = "A list of event types that flow on a topic.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SchemaTypeChoice";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
-    }
-
-
-    /**
-     * This new subtype of schema attribute for events to make searching easier.
-     *
-     * @return entity definition
-     */
-    private EntityDef addEventSchemaAttributeEntity()
-    {
-        final String guid            = "5be4ee8f-4d0c-45cd-a411-22a468950342";
-        final String name            = "EventSchemaAttribute";
-        final String description     = "A data field in an event type.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SchemaAttribute";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * A variety of changes to improve definition of API schemas
-     */
-    private void update0536APISchemas()
-    {
-
-        this.archiveBuilder.addEntityDef(addAPIParameterListEntity());
-        this.archiveBuilder.addEntityDef(addAPIParameterEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateAPIOperation());
-    }
-
-
-
-    /**
-     * This new subtype of schema type that describes a list of parameters for an API.
-     *
-     * @return entity definition
-     */
-    private EntityDef addAPIParameterListEntity()
-    {
-        final String guid            = "ba167b12-969f-49d3-8bea-d04228d9a44b";
-        final String name            = "APIParameterList";
-        final String description     = "A list of parameters for an API.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "ComplexSchemaType";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
 
         /*
-         * Build the attributes
+         * Set up end 1.
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
+        final String                     end1EntityType               = "DataProcessingDescription";
+        final String                     end1AttributeName            = "parentProcessingDescriptions";
+        final String                     end1AttributeDescription     = "The aggregating processing descriptions.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        final String attribute2Name            = "required";
-        final String attribute2Description     = "Is this parameter list required when calling the API.";
-        final String attribute2DescriptionGUID = null;
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
 
-        entityDef.setPropertiesDefinition(properties);
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataProcessingAction";
+        final String                     end2AttributeName            = "dataProcessingActions";
+        final String                     end2AttributeDescription     = "The individual actions that make up the data processing description.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        return entityDef;
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
 
 
-
-
-    /**
-     * This new subtype of SchemaAttribute is used for describing a data value that is part of a API definition.
-     *
-     * @return entity definition
-     */
-    private EntityDef addAPIParameterEntity()
+    private RelationshipDef getDataProcessingSpecificationRelationship()
     {
-        final String guid            = "10277b13-509c-480e-9829-bc16d0eafc53";
-        final String name            = "APIParameter";
-        final String description     = "A data value that is part of a API definition.";
+        final String guid = "1dfdec0f-f206-4db7-bac8-ec344205fb3c";
+
+        final String name            = "DataProcessingSpecification";
+        final String description     = "Relationship identifying the processing being performed by processes or people.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
 
         /*
-         * Build the attributes
+         * Set up end 1.
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "dataProcessingElements";
+        final String                     end1AttributeDescription     = "The people/processes performing the processing.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        final String attribute3Name            = "parameterType";
-        final String attribute3Description     = "What type of parameter is it";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
 
-        entityDef.setPropertiesDefinition(properties);
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataProcessingDescription";
+        final String                     end2AttributeName            = "dataProcessingDescriptions";
+        final String                     end2AttributeDescription     = "The description of the processing.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        return entityDef;
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
 
 
-    /**
-     * This change means that APIOperation inherits from ComplexSchemaType rather than SchemaType.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateAPIOperation()
+    private RelationshipDef getDataProcessingTargetRelationship()
     {
+        final String guid = "6ad18aa4-f5fc-47e7-99e1-80acfc536c9a";
+
+        final String name            = "DataProcessingTarget";
+        final String description     = "Relationship identifying the actions being performed on data.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
         /*
-         * Create the Patch
+         * Set up end 1.
          */
-        final String typeName = "APIOperation";
+        final String                     end1EntityType               = "DataProcessingAction";
+        final String                     end1AttributeName            = "dataProcessingActions";
+        final String                     end1AttributeDescription     = "Actions being performed on the data.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        final String superTypeName = "ComplexSchemaType";
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
 
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "dataProcessingTarget";
+        final String                     end2AttributeDescription     = "The data that is being acted upon.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
-        return typeDefPatch;
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
 
-    /**
-     * A variety of changes to improve definition of schemas that represent displayed data
-     */
-    private void update0537DisplaySchemas()
+    private void update0507ObsoleteDefinitions()
     {
-
-        this.archiveBuilder.addEntityDef(addDisplayDataSchemaTypeEntity());
-        this.archiveBuilder.addEntityDef(addDisplayDataContainerEntity());
-        this.archiveBuilder.addEntityDef(addDisplayDataFieldEntity());
-        this.archiveBuilder.addEntityDef(addQuerySchemaTypeEntity());
-        this.archiveBuilder.addEntityDef(addQueryDataContainerEntity());
-        this.archiveBuilder.addEntityDef(addQueryDataFieldEntity());
+        this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaType());
+        this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaElementType());
+        this.archiveBuilder.addTypeDefPatch(deprecateArraySchemaType());
+        this.archiveBuilder.addTypeDefPatch(deprecateSetSchemaType());
     }
 
 
-
     /**
-     * This new subtype of schema type that describes a report or form.
+     * Deprecate the BoundedSchemaType
      *
-     * @return entity definition
+     * @return patch
      */
-    private EntityDef addDisplayDataSchemaTypeEntity()
+    private TypeDefPatch deprecateBoundedSchemaType()
     {
-        final String guid            = "2f5796f5-3fac-4501-9d0d-207aa8620d16";
-        final String name            = "DisplayDataSchemaType";
-        final String description     = "A structure describing data that is to be displayed.";
-        final String descriptionGUID = null;
+        final String typeName = "BoundedSchemaType";
 
-        final String superTypeName = "ComplexSchemaType";
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
     }
-
 
     /**
-     * This new subtype of schema type that describes a list of parameters for an API.
+     * Deprecate the BoundedSchemaType
      *
-     * @return entity definition
+     * @return patch
      */
-    private EntityDef addDisplayDataContainerEntity()
+    private TypeDefPatch deprecateBoundedSchemaElementType()
     {
-        final String guid            = "f2a4ff99-1954-48c0-8081-92d1a4dfd910";
-        final String name            = "DisplayDataContainer";
-        final String description     = "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.";
-        final String descriptionGUID = null;
+        final String typeName = "BoundedSchemaElementType";
 
-        final String superTypeName = "SchemaAttribute";
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
-
+        return typeDefPatch;
     }
-
 
     /**
-     * This new subtype of schema type that describes a list of parameters for an API.
+     * Deprecate the BoundedSchemaType
      *
-     * @return entity definition
+     * @return patch
      */
-    private EntityDef addDisplayDataFieldEntity()
+    private TypeDefPatch deprecateArraySchemaType()
     {
-        final String guid            = "46f9ea33-996e-4c62-a67d-803df75ef9d4";
-        final String name            = "DisplayDataField";
-        final String description     = "A data display field.";
-        final String descriptionGUID = null;
+        final String typeName = "ArraySchemaType";
 
-        final String superTypeName = "SchemaAttribute";
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute2Name            = "inputField";
-        final String attribute2Description     = "Is this data field accepting new  data from the end user or not.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return typeDefPatch;
     }
-
 
     /**
-     * This new subtype of schema type that describes a report or form.
+     * Deprecate the BoundedSchemaType
      *
-     * @return entity definition
+     * @return patch
      */
-    private EntityDef addQuerySchemaTypeEntity()
+    private TypeDefPatch deprecateSetSchemaType()
     {
-        final String guid            = "4d11bdbb-5d4a-488b-9f16-bf1e34d34dd9";
-        final String name            = "QuerySchemaType";
-        final String description     = "A structure describing data that being queried and formatted to support a user display or report.";
-        final String descriptionGUID = null;
+        final String typeName = "SetSchemaType";
 
-        final String superTypeName = "ComplexSchemaType";
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
     }
 
-
-    /**
-     * This new subtype of schema attribute that describes a field in an information view.
-     *
-     * @return entity definition
-     */
-    private EntityDef addQueryDataContainerEntity()
-    {
-        final String guid            = "b55c2740-2d41-4433-a099-596c8e9b7bf6";
-        final String name            = "QueryDataContainer";
-        final String description     = "A grouping of display data fields (and nested containers) for a query.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SchemaAttribute";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
-
-
-    /**
-     * This new subtype of schema attribute that describes a field in an information view.
-     *
-     * @return entity definition
-     */
-    private EntityDef addQueryDataFieldEntity()
-    {
-        final String guid            = "0eb92215-52b1-4fac-92e7-ff02ff385a68";
-        final String name            = "QueryDataField";
-        final String description     = "A data field that is returned by a query.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SchemaAttribute";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
 }
 

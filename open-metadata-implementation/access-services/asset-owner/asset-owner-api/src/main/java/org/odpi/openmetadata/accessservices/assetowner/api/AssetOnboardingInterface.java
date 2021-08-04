@@ -247,6 +247,7 @@ public interface AssetOnboardingInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     void addConnectionToAsset(String        userId,
                               String        assetGUID,
                               String        assetSummary,

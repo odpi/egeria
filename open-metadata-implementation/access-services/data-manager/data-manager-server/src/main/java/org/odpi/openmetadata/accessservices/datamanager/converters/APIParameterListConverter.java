@@ -4,14 +4,14 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListType;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -37,72 +37,47 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Return the converted bean.  This is a special method used for schema types since they are stored
-     * as a collection of instances.  For external schema types and map elements, both the GUID and the bean are returned to
-     * allow the consuming OMAS to choose whether it is returning GUIDs of the linked to schema or the schema type bean itself.
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
-     * @param schemaRootHeader header of the schema element that holds the root information
-     * @param schemaTypeTypeName name of type of the schema type to create
-     * @param instanceProperties properties describing the schema type
-     * @param schemaRootClassifications classifications from the schema root entity
-     * @param attributeCount number of attributes (for a complex schema type)
-     * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
-     * @param externalSchemaTypeGUID unique identifier of the external schema type
-     * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
-     * @param mapFromSchemaTypeGUID unique identifier of the mapFrom schema type
-     * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param mapToSchemaTypeGUID unique identifier of the mapTo schema type
-     * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that could be the type for this attribute
-     * @param schemaTypeOptions list of schema types that could be the type for this attribute
-     * @param queryTargetRelationships list of relationships to schema types that contain data values used to derive the schema type value(s)
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    @Override
-    public B getNewSchemaTypeBean(Class<B>             beanClass,
-                                  InstanceHeader       schemaRootHeader,
-                                  String               schemaTypeTypeName,
-                                  InstanceProperties   instanceProperties,
-                                  List<Classification> schemaRootClassifications,
-                                  int                  attributeCount,
-                                  String               validValueSetGUID,
-                                  String               externalSchemaTypeGUID,
-                                  B                    externalSchemaType,
-                                  String               mapFromSchemaTypeGUID,
-                                  B                    mapFromSchemaType,
-                                  String               mapToSchemaTypeGUID,
-                                  B                    mapToSchemaType,
-                                  List<String>         schemaTypeOptionGUIDs,
-                                  List<B>              schemaTypeOptions,
-                                  List<Relationship>   queryTargetRelationships,
-                                  String               methodName) throws PropertyServerException
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
     {
+        final String thisMethodName = "getNewComplexBean";
+
         try
         {
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof APIParameterListElement)
             {
-                if ((schemaRootHeader != null) && (instanceProperties != null))
+                if (primaryEntity != null)
                 {
                     /*
-                     * The schema type has many different subtypes.
+                     * The API Parameter List has many different subtypes.
                      * This next piece of logic sorts out which type of schema bean to create.
                      */
                     APIParameterListElement bean = (APIParameterListElement) returnBean;
 
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaRootHeader, schemaRootClassifications, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
 
                     APIParameterListProperties properties = new APIParameterListProperties();
 
-                    InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
+                    InstanceProperties propertiesCopy = new InstanceProperties(primaryEntity.getProperties());
 
                     properties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     properties.setDescription(this.removeDescription(propertiesCopy));
@@ -123,7 +98,50 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
 
                     bean.setProperties(properties);
 
-                    bean.setParameterCount(attributeCount);
+                    if (relationships != null)
+                    {
+                        int parameterCount = 0;
+
+                        for (Relationship relationship : relationships)
+                        {
+                            if (relationship != null)
+                            {
+                                EntityProxy endOne = relationship.getEntityOneProxy();
+                                if (repositoryHelper.isTypeOf(serviceName,
+                                                              endOne.getType().getTypeDefName(),
+                                                              OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME))
+                                {
+                                    if (repositoryHelper.isTypeOf(serviceName,
+                                                                  relationship.getType().getTypeDefName(),
+                                                                  OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                                    {
+                                        bean.setParameterListType(APIParameterListType.HEADER);
+                                    }
+                                    else if (repositoryHelper.isTypeOf(serviceName,
+                                                                       relationship.getType().getTypeDefName(),
+                                                                       OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                                    {
+                                        bean.setParameterListType(APIParameterListType.REQUEST);
+                                    }
+                                    else if (repositoryHelper.isTypeOf(serviceName,
+                                                                       relationship.getType().getTypeDefName(),
+                                                                       OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                                    {
+                                        bean.setParameterListType(APIParameterListType.RESPONSE);
+                                    }
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName,
+                                                                   endOne.getType().getTypeDefName(),
+                                                                   OpenMetadataAPIMapper.API_PARAMETER_TYPE_NAME))
+                                {
+                                    parameterCount ++;
+                                }
+                            }
+                        }
+
+                        bean.setParameterCount(parameterCount);
+
+                    }
 
                     return returnBean;
                 }
@@ -133,11 +151,12 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
                 }
             }
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
         return null;
     }
+
 }

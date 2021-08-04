@@ -82,7 +82,7 @@ public class SubjectAreaAdmin extends AccessServiceAdmin {
                                 accessServiceConfig.toString());
         } catch (OMAGConfigurationErrorException error) {
             throw error;
-        } catch (Throwable error) {
+        } catch (Exception error) {
             auditLog.logException(actionDescription,
                                   SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getClass().getName(), error.getMessage()),
                                   accessServiceConfig.toString(),

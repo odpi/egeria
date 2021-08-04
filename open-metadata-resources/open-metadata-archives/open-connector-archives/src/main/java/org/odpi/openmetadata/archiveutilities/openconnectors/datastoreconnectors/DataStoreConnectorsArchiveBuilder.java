@@ -8,8 +8,10 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 //import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.OpenConnectorArchiveBuilder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 
@@ -26,7 +28,7 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "acdc5637-92a7-4926-b47b-a3d407546f89";
-    private static final String                  archiveRootName    = "DataStoreConnectors";
+    private static final String                  archiveRootName    = "DataStoreConnectorTypes";
     private static final String                  archiveName        = "Data Store Open Connector Types";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Connector type definitions for data store connectors that follow the Open " +
@@ -128,6 +130,19 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
 
         DataFolderProvider dataFolderProvider = new DataFolderProvider();
         connectorType = dataFolderProvider.getConnectorType();
+
+        super.addConnectorType(connectorType.getGUID(),
+                               connectorType.getQualifiedName(),
+                               connectorType.getDisplayName(),
+                               connectorType.getDescription(),
+                               connectorType.getConnectorProviderClassName(),
+                               connectorType.getRecognizedSecuredProperties(),
+                               connectorType.getRecognizedConfigurationProperties(),
+                               connectorType.getRecognizedAdditionalProperties(),
+                               connectorType.getAdditionalProperties());
+
+        KafkaOpenMetadataTopicProvider kafkaOpenMetadataTopicProvider = new KafkaOpenMetadataTopicProvider();
+        connectorType = kafkaOpenMetadataTopicProvider.getConnectorType();
 
         super.addConnectorType(connectorType.getGUID(),
                                connectorType.getQualifiedName(),

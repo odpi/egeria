@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.files.connector;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * FilesIntegratorContext provides a wrapper around the Data Manager OMAS clients.
@@ -19,39 +21,37 @@ import java.util.List;
  */
 public class FilesIntegratorContext
 {
-    private FilesAndFoldersClient  client;
-    private DataManagerEventClient eventClient;
-    private String                 userId;
-    private String                 fileServerCapabilityGUID;
-    private String                 fileServerCapabilityName;
-    private boolean                fileServerCapabilityIsHome = true;
+    private ConnectionManagerClient connectionManagerClient;
+    private FilesAndFoldersClient   filesAndFoldersClient;
+    private DataManagerEventClient  eventClient;
+    private String                  userId;
+    private String                  fileServerCapabilityGUID;
+    private String                  fileServerCapabilityName;
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param client client to map request to
+     * @param filesAndFoldersClient client to map request to
+     * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
      * @param fileServerCapabilityGUID unique identifier of the software server capability for the file manager (or null)
      * @param fileServerCapabilityName unique name of the software server capability for the file manager (or null)
      */
-    public FilesIntegratorContext(FilesAndFoldersClient  client,
-                                  DataManagerEventClient eventClient,
-                                  String                 userId,
-                                  String                 fileServerCapabilityGUID,
-                                  String                 fileServerCapabilityName)
+    public FilesIntegratorContext(FilesAndFoldersClient   filesAndFoldersClient,
+                                  ConnectionManagerClient connectionManagerClient,
+                                  DataManagerEventClient  eventClient,
+                                  String                  userId,
+                                  String                  fileServerCapabilityGUID,
+                                  String                  fileServerCapabilityName)
     {
-        this.client                   = client;
+        this.filesAndFoldersClient    = filesAndFoldersClient;
+        this.connectionManagerClient  = connectionManagerClient;
         this.eventClient              = eventClient;
         this.userId                   = userId;
         this.fileServerCapabilityGUID = fileServerCapabilityGUID;
         this.fileServerCapabilityName = fileServerCapabilityName;
-
-        if (fileServerCapabilityGUID == null)
-        {
-            fileServerCapabilityIsHome = false;
-        }
     }
 
 
@@ -106,7 +106,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return client.createNestedFolders(userId, fileServerCapabilityGUID, fileServerCapabilityName, parentGUID, pathName);
+        return filesAndFoldersClient.createNestedFolders(userId, fileServerCapabilityGUID, fileServerCapabilityName, parentGUID, pathName);
     }
 
 
@@ -125,7 +125,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.attachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
+        filesAndFoldersClient.attachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
     }
 
 
@@ -144,7 +144,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.detachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
+        filesAndFoldersClient.detachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
     }
 
 
@@ -169,7 +169,7 @@ public class FilesIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.addDataFileToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileProperties, connectorProviderName);
+        return filesAndFoldersClient.addDataFileToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileProperties, connectorProviderName);
     }
 
 
@@ -194,7 +194,7 @@ public class FilesIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return client.addDataFileToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return filesAndFoldersClient.addDataFileToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
     }
 
 
@@ -215,7 +215,7 @@ public class FilesIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        client.updateDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, isMergeUpdate, dataFileProperties);
+        filesAndFoldersClient.updateDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, isMergeUpdate, dataFileProperties);
     }
 
 
@@ -234,7 +234,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        client.archiveDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, archiveProperties);
+        filesAndFoldersClient.archiveDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, archiveProperties);
     }
 
 
@@ -253,7 +253,7 @@ public class FilesIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        client.deleteDataFileFromCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, fullPathname);
+        filesAndFoldersClient.deleteDataFileFromCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, fullPathname);
     }
 
 
@@ -280,7 +280,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.addDataFolderToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileFolderProperties, connectorProviderName);
+        return filesAndFoldersClient.addDataFolderToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileFolderProperties, connectorProviderName);
     }
 
 
@@ -305,7 +305,7 @@ public class FilesIntegratorContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return client.addDataFolderToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return filesAndFoldersClient.addDataFolderToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
     }
 
 
@@ -326,7 +326,7 @@ public class FilesIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        client.updateDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, isMergeUpdate, fileFolderProperties);
+        filesAndFoldersClient.updateDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, isMergeUpdate, fileFolderProperties);
     }
 
 
@@ -345,7 +345,7 @@ public class FilesIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        client.archiveDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, archiveProperties);
+        filesAndFoldersClient.archiveDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, archiveProperties);
     }
 
 
@@ -365,7 +365,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        client.attachDataFileAssetToFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
+        filesAndFoldersClient.attachDataFileAssetToFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
     }
 
 
@@ -386,7 +386,7 @@ public class FilesIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        client.detachDataFileAssetFromFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
+        filesAndFoldersClient.detachDataFileAssetFromFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
     }
 
 
@@ -405,7 +405,7 @@ public class FilesIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.getFolderByGUID(userId, folderGUID);
+        return filesAndFoldersClient.getFolderByGUID(userId, folderGUID);
     }
 
 
@@ -424,7 +424,7 @@ public class FilesIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.getFolderByPathName(userId, pathName);
+        return filesAndFoldersClient.getFolderByPathName(userId, pathName);
     }
 
 
@@ -447,7 +447,7 @@ public class FilesIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getTopLevelFolders(userId, fileSystemGUID, startFrom, pageSize);
+        return filesAndFoldersClient.getTopLevelFolders(userId, fileSystemGUID, startFrom, pageSize);
     }
 
 
@@ -470,7 +470,7 @@ public class FilesIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return client.getNestedFolders(userId, parentFolderGUID, startFrom, pageSize);
+        return filesAndFoldersClient.getNestedFolders(userId, parentFolderGUID, startFrom, pageSize);
     }
 
 
@@ -493,7 +493,7 @@ public class FilesIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getTopLevelDataFiles(userId, fileSystemGUID, startFrom, pageSize);
+        return filesAndFoldersClient.getTopLevelDataFiles(userId, fileSystemGUID, startFrom, pageSize);
     }
 
 
@@ -516,7 +516,7 @@ public class FilesIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.getFolderFiles(userId, folderGUID, startFrom, pageSize);
+        return filesAndFoldersClient.getFolderFiles(userId, folderGUID, startFrom, pageSize);
     }
 
 
@@ -535,7 +535,7 @@ public class FilesIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return client.getFileByGUID(userId, fileGUID);
+        return filesAndFoldersClient.getFileByGUID(userId, fileGUID);
     }
 
 
@@ -554,7 +554,7 @@ public class FilesIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return client.getFileByPathName(userId, pathName);
+        return filesAndFoldersClient.getFileByPathName(userId, pathName);
     }
 
 
@@ -577,7 +577,7 @@ public class FilesIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return client.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return filesAndFoldersClient.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -596,7 +596,7 @@ public class FilesIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return client.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return filesAndFoldersClient.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -617,7 +617,7 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, validValuesSetGUID);
+        return filesAndFoldersClient.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, validValuesSetGUID);
     }
 
 
@@ -641,7 +641,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.getValidValueSetByName(userId, name, startFrom, pageSize);
+        return filesAndFoldersClient.getValidValueSetByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -665,7 +665,7 @@ public class FilesIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.findValidValueSet(userId, searchString, startFrom, pageSize);
+        return filesAndFoldersClient.findValidValueSet(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -684,7 +684,7 @@ public class FilesIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties);
+        return filesAndFoldersClient.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
     }
 
 
@@ -704,7 +704,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, schemaTypeOptionGUIDs);
+        return filesAndFoldersClient.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, schemaTypeOptionGUIDs);
     }
 
 
@@ -712,6 +712,8 @@ public class FilesIntegratorContext
      * Create a new metadata element to represent a schema type.
      *
      * @param schemaTypeProperties properties about the schema type to store
+     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
      *
      * @return unique identifier of the new schema type
      *
@@ -725,7 +727,7 @@ public class FilesIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        return filesAndFoldersClient.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
     }
 
 
@@ -746,7 +748,7 @@ public class FilesIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return client.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, templateGUID, templateProperties);
+        return filesAndFoldersClient.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
     }
 
 
@@ -768,7 +770,7 @@ public class FilesIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        client.updateSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        filesAndFoldersClient.updateSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -785,7 +787,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.removeSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID);
+        filesAndFoldersClient.removeSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID);
     }
 
 
@@ -811,7 +813,7 @@ public class FilesIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return client.findSchemaType(userId,  searchString, typeName, startFrom, pageSize);
+        return filesAndFoldersClient.findSchemaType(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -832,7 +834,7 @@ public class FilesIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
+        return filesAndFoldersClient.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
     }
 
 
@@ -858,7 +860,7 @@ public class FilesIntegratorContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return client.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
+        return filesAndFoldersClient.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -877,7 +879,7 @@ public class FilesIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getSchemaTypeByGUID(userId, schemaTypeGUID);
+        return filesAndFoldersClient.getSchemaTypeByGUID(userId, schemaTypeGUID);
     }
 
 
@@ -896,7 +898,7 @@ public class FilesIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.getSchemaTypeParent(userId, schemaTypeGUID);
+        return filesAndFoldersClient.getSchemaTypeParent(userId, schemaTypeGUID);
     }
 
 
@@ -921,7 +923,7 @@ public class FilesIntegratorContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return client.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, schemaAttributeProperties);
+        return filesAndFoldersClient.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, schemaAttributeProperties);
     }
 
 
@@ -944,13 +946,14 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileServerCapabilityIsHome, schemaElementGUID, templateGUID, templateProperties);
+        return filesAndFoldersClient.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, templateGUID, templateProperties);
     }
 
 
     /**
      * Connect a schema type to a schema attribute.
      *
+     * @param relationshipTypeName name of relationship to create
      * @param schemaAttributeGUID unique identifier of the schema attribute
      * @param schemaTypeGUID unique identifier of the schema type to connect
      *
@@ -958,17 +961,18 @@ public class FilesIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaType(String schemaAttributeGUID,
+    public void setupSchemaType(String relationshipTypeName,
+                                String schemaAttributeGUID,
                                 String schemaTypeGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        client.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, schemaTypeGUID);
+        filesAndFoldersClient.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
     }
 
 
     /**
-     * Remove the type information from a schema attribute.
+     * Remove the linked schema types from a schema attribute.
      *
      * @param schemaAttributeGUID unique identifier of the schema attribute
      *
@@ -976,11 +980,11 @@ public class FilesIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaType(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearSchemaTypes(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        client.clearSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+        filesAndFoldersClient.clearSchemaTypes(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
     }
 
 
@@ -1001,7 +1005,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        client.updateSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        filesAndFoldersClient.updateSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
     }
 
 
@@ -1018,7 +1022,7 @@ public class FilesIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        client.removeSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+        filesAndFoldersClient.removeSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
     }
 
 
@@ -1044,7 +1048,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
+        return filesAndFoldersClient.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -1067,7 +1071,7 @@ public class FilesIntegratorContext
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return client.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
+        return filesAndFoldersClient.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
     }
 
 
@@ -1093,7 +1097,7 @@ public class FilesIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
+        return filesAndFoldersClient.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -1112,6 +1116,535 @@ public class FilesIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+        return filesAndFoldersClient.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A Connection is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a connection.
+     *
+     * @param connectionProperties properties about the connection to store
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnection(ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return connectionManagerClient.createConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return connectionManagerClient.createConnectionFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnection(String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        connectionManagerClient.updateConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, isMergeUpdate, connectionProperties);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param connectorTypeGUID unique identifier of the connector type  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupConnectorType(String  connectionGUID,
+                                   String  connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectionManagerClient.setupConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param connectorTypeGUID unique identifier of the connector type  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConnectorType(String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.clearConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEndpoint(String  connectionGUID,
+                              String  endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEndpoint(String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        connectionManagerClient.clearEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEmbeddedConnection(String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEmbeddedConnection(String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        connectionManagerClient.clearEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAssetConnection(String  assetGUID,
+                                     String  assetSummary,
+                                     String  connectionGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.setupAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, assetGUID, assetSummary, connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetConnection(String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        connectionManagerClient.clearAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, assetGUID, connectionGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        connectionManagerClient.removeConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> findConnections(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return connectionManagerClient.findConnections(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> getConnectionsByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return connectionManagerClient.getConnectionsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectionElement getConnectionByGUID(String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.getConnectionByGUID(userId, connectionGUID);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an endpoint
+     *
+     * @param endpointProperties properties about the endpoint to store
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpoint(EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.createEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, endpointProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     *
+     * @param networkAddress location of the endpoint
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties descriptive properties that override the template
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpointFromTemplate(String             networkAddress,
+                                             String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return connectionManagerClient.createEndpointFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, networkAddress, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param endpointGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateEndpoint(boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        connectionManagerClient.updateEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, isMergeUpdate, endpointGUID, endpointProperties);
+    }
+
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEndpoint(String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.removeEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> findEndpoints(String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return connectionManagerClient.findEndpoints(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointElement getEndpointByGUID(String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return connectionManagerClient.getEndpointByGUID(userId, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> findConnectorTypes(String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return connectionManagerClient.findConnectorTypes(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> getConnectorTypesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the connector type metadata element with the supplied unique identifier.
+     *
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectorTypeElement getConnectorTypeByGUID(String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
     }
 }

@@ -32,9 +32,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesDeleteRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
@@ -65,14 +63,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
@@ -517,28 +512,26 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create or update the processes with ports, schema types and lineage mappings
+     * Create or update the process with ports, schema types and lineage mappings
      *
-     * @param userId               the name of the calling user
-     * @param serverName           name of server instance to call
-     * @param processesRequestBody properties of the processes
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processRequestBody properties of the process
      *
-     * @return a list unique identifiers (GUIDs) of the created/updated processes
+     * @return a list unique identifiers (GUIDs) of the created/updated process
      */
-    public ProcessListResponse upsertProcesses(String userId, String serverName, ProcessesRequestBody processesRequestBody) {
-        final String methodName = "upsertProcesses";
-
-        ProcessListResponse response = new ProcessListResponse();
-
+    public GUIDResponse upsertProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
+        final String methodName = "upsertProcess";
+        GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, processesRequestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, processRequestBody, methodName)) return response;
 
-            if (CollectionUtils.isEmpty(processesRequestBody.getProcesses())) {
-                restExceptionHandler.handleMissingValue("processes", methodName);
+            Process process = processRequestBody.getProcess();
+            if (process == null) {
+                restExceptionHandler.handleMissingValue("process", methodName);
                 return response;
             }
-
-            return upsertProcesses(userId, serverName, processesRequestBody.getProcesses(), processesRequestBody.getExternalSourceName());
+            return upsertProcess(userId, serverName, process, processRequestBody.getExternalSourceName());
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
@@ -546,7 +539,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Delete a list of processes, with the associated port implementations, port aliases and lineage mappings
+     * Delete a process, with the associated port implementations, port aliases and lineage mappings
      *
      * @param userId      the name of the calling user
      * @param serverName  name of server instance to call
@@ -554,15 +547,15 @@ public class DataEngineRESTServices {
      *
      * @return void response
      */
-    public VoidResponse deleteProcesses(String userId, String serverName, ProcessesDeleteRequestBody requestBody) {
-        final String methodName = "deleteProcesses";
+    public VoidResponse deleteProcess(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteProcess";
 
         VoidResponse response = new VoidResponse();
 
         try {
-            if (!isDeleteProcessesRequestBodyValid(userId, serverName, requestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
 
-            deleteProcesses(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuids(), requestBody.getQualifiedNames(),
+            deleteProcess(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -570,51 +563,12 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    /**
-     * Delete a list of processes, with the associated port implementations, port aliases and lineage mappings.
-     *
-     * @param userId             the name of the calling user
-     * @param serverName         the server name
-     * @param externalSourceName the unique name of the external source
-     * @param guids              the unique identifiers of the processes
-     * @param qualifiedNames     the qualified names of the processes
-     * @param deleteSemantic     the delete semantic
-     *
-     * @throws InvalidParameterException     the bean properties are invalid
-     * @throws UserNotAuthorizedException    user not authorized to issue this request
-     * @throws PropertyServerException       problem accessing the property server
-     * @throws FunctionNotSupportedException the repository does not support this call.
-     * @throws EntityNotDeletedException     the entity could not be deleted
-     */
-    public void deleteProcesses(String userId, String serverName, String externalSourceName, List<String> guids, List<String> qualifiedNames,
-                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                      FunctionNotSupportedException, EntityNotDeletedException {
-        final String methodName = "deleteProcesses";
-        if (CollectionUtils.isNotEmpty(qualifiedNames)) {
-            for (String qualifiedName : qualifiedNames) {
-                Optional<String> processGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, PROCESS_TYPE_NAME);
-                if (processGUIDOptional.isPresent()) {
-                    deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
-                } else {
-                    throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
-                }
-            }
-        }
-
-        if (CollectionUtils.isNotEmpty(guids)) {
-            for (String guid : guids) {
-                deleteProcess(userId, serverName, externalSourceName, guid, deleteSemantic);
-            }
-        }
-    }
-
-    private void deleteProcess(String userId, String serverName, String externalSourceName, String processGUID, DeleteSemantic deleteSemantic) throws
-                                                                                                                                               InvalidParameterException,
-                                                                                                                                               UserNotAuthorizedException,
-                                                                                                                                               PropertyServerException,
-                                                                                                                                               FunctionNotSupportedException,
-                                                                                                                                               EntityNotDeletedException {
+    public void deleteProcess(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                              DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
+                                                                    FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deleteProcess";
+
+        String processGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PROCESS_TYPE_NAME, methodName);
 
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
@@ -837,55 +791,6 @@ public class DataEngineRESTServices {
                 restExceptionHandler.captureExceptions(response, error, methodName);
             }
         });
-    }
-
-    /**
-     * @param userId             the name of the calling user
-     * @param serverName         name of server instance to call
-     * @param processes          list of processes to be created
-     * @param externalSourceName the unique name of the external source
-     *
-     * @return a list unique identifiers (GUIDs) of the created/updated processes
-     */
-    public ProcessListResponse upsertProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
-        final String methodName = "upsertProcesses";
-
-        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processes);
-
-        Predicate<? super Process> hasPortImplementationsPredicate = process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
-        Map<Boolean, List<Process>> partitionedProcesses = processes.parallelStream().collect(partitioningBy(hasPortImplementationsPredicate));
-
-        List<GUIDResponse> createdProcesses = new ArrayList<>();
-        List<GUIDResponse> failedProcesses = new ArrayList<>();
-        Consumer<Process> processConsumer = process ->
-        {
-            GUIDResponse guidResponse = upsertProcess(userId, serverName, process, externalSourceName);
-            if (guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value()) {
-                String processGUID = guidResponse.getGUID();
-                process.setGUID(processGUID);
-                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
-                if (updateStatusResponse.getRelatedHTTPCode() != 200) {
-                    captureException(updateStatusResponse, guidResponse);
-                }
-                createdProcesses.add(guidResponse);
-            } else {
-                failedProcesses.add(guidResponse);
-            }
-        };
-
-        partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
-        // processes that have port aliases can not be processed in parallel, as multiple processes can define the same port alias
-        partitionedProcesses.get(Boolean.FALSE).forEach(processConsumer);
-
-        ProcessListResponse response = new ProcessListResponse();
-        response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
-        handleFailedProcesses(response, failedProcesses);
-
-        addProcessHierarchyRelationships(userId, serverName, processes, response, externalSourceName);
-
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
-        return response;
     }
 
     /**
@@ -1494,7 +1399,7 @@ public class DataEngineRESTServices {
                                                                                                                                                 UserNotAuthorizedException,
                                                                                                                                                 EntityNotDeletedException {
         Optional<String> entityGUIDOptional = Optional.ofNullable(guid);
-        if (!entityGUIDOptional.isPresent()) {
+        if (entityGUIDOptional.isEmpty()) {
             entityGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, entityTypeName);
         }
         if (entityGUIDOptional.isPresent()) {
@@ -1515,26 +1420,12 @@ public class DataEngineRESTServices {
         }
 
         Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, oldSchemaTypeQualifiedName, SCHEMA_TYPE_TYPE_NAME);
-        if (!schemaTypeGUID.isPresent()) {
+        if (schemaTypeGUID.isEmpty()) {
             return;
         }
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.SOFT);
-    }
-
-    private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
-        response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
-        failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
-    }
-
-    private void captureException(FFDCResponseBase initialResponse, FFDCResponseBase response) {
-        response.setExceptionErrorMessage(initialResponse.getExceptionErrorMessage());
-        response.setExceptionClassName(initialResponse.getExceptionClassName());
-        response.setExceptionSystemAction(initialResponse.getExceptionSystemAction());
-        response.setExceptionUserAction(initialResponse.getExceptionUserAction());
-        response.setRelatedHTTPCode(initialResponse.getRelatedHTTPCode());
-        response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
     public VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
@@ -1566,7 +1457,7 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created process
      */
-    private GUIDResponse upsertProcess(String userId, String serverName, Process process, String externalSourceName) {
+    public GUIDResponse upsertProcess(String userId, String serverName, Process process, String externalSourceName) {
         final String methodName = "upsertProcess";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, process);
@@ -1574,7 +1465,6 @@ public class DataEngineRESTServices {
         String qualifiedName = process.getQualifiedName();
         List<PortImplementation> portImplementations = process.getPortImplementations();
         List<PortAlias> portAliases = process.getPortAliases();
-        List<LineageMapping> lineageMappings = process.getLineageMappings();
         UpdateSemantic updateSemantic = process.getUpdateSemantic();
 
         GUIDResponse response = new GUIDResponse();
@@ -1584,7 +1474,7 @@ public class DataEngineRESTServices {
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
-            if (!processEntity.isPresent()) {
+            if (processEntity.isEmpty()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
                 processGUID = processEntity.get().getGUID();
@@ -1606,7 +1496,10 @@ public class DataEngineRESTServices {
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
             upsertPortAliases(userId, serverName, portAliases, processGUID, response, externalSourceName);
 
-            addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
+            if (response.getRelatedHTTPCode() == HttpStatus.OK.value()) {
+                processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.ACTIVE, externalSourceName);
+                addProcessHierarchyRelationships(userId, serverName, process, processGUID, response, externalSourceName);
+            }
 
             log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
             response.setGUID(processGUID);
@@ -1633,7 +1526,7 @@ public class DataEngineRESTServices {
         String collectionGUID;
         String collectionQualifiedName = collection.getQualifiedName();
         Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
-        if (!collectionEntity.isPresent()) {
+        if (collectionEntity.isEmpty()) {
             collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
         } else {
             collectionGUID = collectionEntity.get().getGUID();
@@ -1641,28 +1534,23 @@ public class DataEngineRESTServices {
         return collectionGUID;
     }
 
-    private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,
+    private void addProcessHierarchyRelationships(String userId, String serverName, Process process, String processGUID, GUIDResponse response,
                                                   String externalSourceName) {
         final String methodName = "addProcessHierarchyRelationships";
 
-        // add the ProcessHierarchy relationships only for successfully created processes
-        processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
-            List<ParentProcess> parentProcesses = process.getParentProcesses();
-            String processGUID = process.getGUID();
-            if (CollectionUtils.isNotEmpty(parentProcesses)) {
-                try {
-                    DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-                    for (ParentProcess parentProcess : parentProcesses) {
-                        processHandler.upsertProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
-                    }
-                } catch (Exception error) {
-                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
-                    restExceptionHandler.captureExceptions(response, error, methodName);
+        List<ParentProcess> parentProcesses = process.getParentProcesses();
+        if (CollectionUtils.isNotEmpty(parentProcesses)) {
+            try {
+                DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+                for (ParentProcess parentProcess : parentProcesses) {
+                    processHandler.upsertProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                 }
+            } catch (Exception error) {
+                log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
+                restExceptionHandler.captureExceptions(response, error, methodName);
             }
-        });
+        }
     }
-
     private void addProcessCollectionRelationship(String userId, String serverName, String processGUID, String collectionGUID,
                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                                     UserNotAuthorizedException {
@@ -1784,18 +1672,6 @@ public class DataEngineRESTServices {
             return true;
         }
         return false;
-    }
-
-    private boolean isDeleteProcessesRequestBodyValid(String userId, String serverName, ProcessesDeleteRequestBody requestBody,
-                                                      String methodName) throws
-                                                                         InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return false;
-
-        if (CollectionUtils.isEmpty(requestBody.getQualifiedNames()) && CollectionUtils.isEmpty(requestBody.getGuids())) {
-            restExceptionHandler.handleMissingValue("qualifiedNames", methodName);
-            return false;
-        }
-        return true;
     }
 
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {

@@ -15,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * ContactMethodConverter generates a ContactMethodProperties bean from a ContactMethodProperties entity.
  */
@@ -57,7 +59,7 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof ContactMethodElement)
             {
@@ -98,7 +100,7 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

@@ -62,6 +62,15 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                               "No action is required now but this message can be useful to understand why a particular relationship " +
                                       "has been removed."),
 
+    UNABLE_TO_DELETE_UNANCHORED_BEAN("OMAG-GENERIC-HANDLERS-0006",
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          "The Open Metadata Service {0} has deleted a relationship, resulting in entity {1} of type {2} ({3}) losing its anchor." +
+                                   "An attempt was made to delete this unanchored entity, which failed. " +
+                                  " The resulting exception was {5} with error message {6}",
+                          "The server attempted to delete an entity that had lost its anchor. As the relationship was successfully deleted, the call succeeds. ",
+                          "This message is to highlight that an entity has lost its anchor, and a delete was attempted on it, but failed. " +
+                                  "An administrator should assess what is required for the entity, and either delete it or supply a new anchor for it."),
+
     ;
 
     private String                     logMessageId;

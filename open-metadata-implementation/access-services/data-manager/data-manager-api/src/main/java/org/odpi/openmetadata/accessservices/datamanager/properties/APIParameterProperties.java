@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -48,6 +49,32 @@ public class APIParameterProperties extends SchemaAttributeProperties
             parameterType = template.getParameterType();
         }
     }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public APIParameterProperties(SchemaAttributeProperties template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            if (getExtendedProperties() != null)
+            {
+                Map<String, Object> extendedProperties = getExtendedProperties();
+
+                parameterType = extendedProperties.get("parameterType").toString();
+
+                extendedProperties.remove("parameterType");
+
+                super.setExtendedProperties(extendedProperties);
+            }
+        }
+    }
+
 
     /**
      * Return the type of parameter - for example for REST APIs, is it a PathVariable or a RequestParameter?

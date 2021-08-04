@@ -949,7 +949,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "\"filename\""
+													"raw": "content-packs/DataStoreConnectorTypes.json"
 												},
 												"url": {
 													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-metadata-archives/file",
@@ -965,6 +965,30 @@
 														"{{server}}",
 														"open-metadata-archives",
 														"file"
+													]
+												},
+												"description": "Add the file name for an open Metadata Archive that should be loaded each time the server starts."
+											},
+											"response": []
+										},
+										{
+											"name": "Remove open metadata archive start up list",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-metadata-archives",
+													"host": [
+														"{{baseURL}}"
+													],
+													"path": [
+														"open-metadata",
+														"admin-services",
+														"users",
+														"{{user}}",
+														"servers",
+														"{{server}}",
+														"open-metadata-archives"
 													]
 												},
 												"description": "Add the file name for an open Metadata Archive that should be loaded each time the server starts."

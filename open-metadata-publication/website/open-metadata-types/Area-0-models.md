@@ -29,7 +29,7 @@ Infrastructure, Process, Referenceable, Server and Host.
 
 ![UML Packages](area-0-basic-types-and-infrastructure-overview.png#pagewidth)
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

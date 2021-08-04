@@ -38,7 +38,7 @@ public class FunctionNotSupportedException extends SubjectAreaCheckedException
     public FunctionNotSupportedException(ExceptionMessageDefinition messageDefinition,
                                    String                     className,
                                    String                     actionDescription,
-                                   Throwable                  caughtError)
+                                   Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }

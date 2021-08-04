@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.topic.connector;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
@@ -11,40 +12,61 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
- * TopicIntegratorContext is the context for cataloging topics from an event manager server.
+ * TopicIntegratorContext is the context for cataloging topics from an event broker server.
  */
 public class TopicIntegratorContext
 {
-    private EventBrokerClient      client;
-    private DataManagerEventClient eventClient;
-    private String                 userId;
-    private String                 eventManagerGUID;
-    private String                 eventManagerName;
-
+    private ConnectionManagerClient connectionManagerClient;
+    private EventBrokerClient       eventBrokerClient;
+    private DataManagerEventClient  eventClient;
+    private String                  userId;
+    private String                  eventBrokerGUID;
+    private String                  eventBrokerName;
+    private boolean                 eventBrokerIsHome = true;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param client client to map request to
+     * @param eventBrokerClient client to map request to
+     * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
-     * @param eventManagerGUID unique identifier of the software server capability for the event manager
-     * @param eventManagerName unique name of the software server capability for the event manager
+     * @param eventBrokerGUID unique identifier of the software server capability for the event broker
+     * @param eventBrokerName unique name of the software server capability for the event broker
      */
-    public TopicIntegratorContext(EventBrokerClient client,
-                                  DataManagerEventClient eventClient,
-                                  String                 userId,
-                                  String                 eventManagerGUID,
-                                  String                 eventManagerName)
+    public TopicIntegratorContext(EventBrokerClient       eventBrokerClient,
+                                  ConnectionManagerClient connectionManagerClient,
+                                  DataManagerEventClient  eventClient,
+                                  String                  userId,
+                                  String                  eventBrokerGUID,
+                                  String                  eventBrokerName)
     {
-        this.client           = client;
-        this.eventClient      = eventClient;
-        this.userId           = userId;
-        this.eventManagerGUID = eventManagerGUID;
-        this.eventManagerName = eventManagerName;
+        this.eventBrokerClient       = eventBrokerClient;
+        this.connectionManagerClient = connectionManagerClient;
+        this.eventClient             = eventClient;
+        this.userId                  = userId;
+        this.eventBrokerGUID         = eventBrokerGUID;
+        this.eventBrokerName         = eventBrokerName;
+    }
+
+
+    /* ========================================================
+     * Set up whether topic/event metadata is owned by the event broker
+     */
+
+
+    /**
+     * Set up the flag that controls the ownership of metadata created for this Event Broker. Default is true.
+     *
+     * @param eventBrokerIsHome should the topic metadata be marked as owned by the event broker so others can not update?
+     */
+    public void setEventBrokerIsHome(boolean eventBrokerIsHome)
+    {
+        this.eventBrokerIsHome = eventBrokerIsHome;
     }
 
 
@@ -54,8 +76,7 @@ public class TopicIntegratorContext
 
 
     /**
-     * Register a listener object that will be passed each of the events published by
-     * the Data Manager OMAS.
+     * Register a listener object that will be passed each of the events published by the Data Manager OMAS.
      *
      * @param listener listener object
      *
@@ -84,7 +105,6 @@ public class TopicIntegratorContext
     /**
      * Create a new metadata element to represent a topic.
      *
-     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param topicProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -93,19 +113,17 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createTopic(boolean         eventBrokerIsHome,
-                              TopicProperties topicProperties) throws InvalidParameterException,
+    public String createTopic(TopicProperties topicProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return client.createTopic(userId, eventManagerGUID, eventManagerName, eventBrokerIsHome, topicProperties);
+        return eventBrokerClient.createTopic(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicProperties);
     }
 
 
     /**
      * Create a new metadata element to represent a topic using an existing metadata element as a template.
      *
-     * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -115,13 +133,12 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createTopicFromTemplate(boolean            eventBrokerIsHome,
-                                          String             templateGUID,
+    public String createTopicFromTemplate(String             templateGUID,
                                           TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return client.createTopicFromTemplate(userId, eventManagerGUID, eventManagerName, eventBrokerIsHome, templateGUID, templateProperties);
+        return eventBrokerClient.createTopicFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -142,7 +159,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        client.updateTopic(userId, eventManagerGUID, eventManagerName, topicGUID, isMergeUpdate, topicProperties);
+        eventBrokerClient.updateTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, isMergeUpdate, topicProperties);
     }
 
 
@@ -161,7 +178,7 @@ public class TopicIntegratorContext
                                                       UserNotAuthorizedException,
                                                       PropertyServerException
     {
-        client.publishTopic(userId, topicGUID);
+        eventBrokerClient.publishTopic(userId, topicGUID);
     }
 
 
@@ -180,7 +197,7 @@ public class TopicIntegratorContext
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        client.withdrawTopic(userId, topicGUID);
+        eventBrokerClient.withdrawTopic(userId, topicGUID);
     }
 
 
@@ -199,7 +216,7 @@ public class TopicIntegratorContext
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        client.removeTopic(userId, eventManagerGUID, eventManagerName, topicGUID, qualifiedName);
+        eventBrokerClient.removeTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, qualifiedName);
     }
 
 
@@ -223,7 +240,7 @@ public class TopicIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return client.findTopics(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findTopics(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -247,7 +264,7 @@ public class TopicIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return client.getTopicsByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getTopicsByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -268,7 +285,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return client.getTopicsForEventBroker(userId, eventManagerGUID, eventManagerName, startFrom, pageSize);
+        return eventBrokerClient.getTopicsForEventBroker(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
     }
 
 
@@ -287,7 +304,7 @@ public class TopicIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        return client.getTopicByGUID(userId, guid);
+        return eventBrokerClient.getTopicByGUID(userId, guid);
     }
 
 
@@ -298,7 +315,6 @@ public class TopicIntegratorContext
     /**
      * Create a new metadata element to represent a event type.
      *
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param properties properties about the event type
      *
@@ -308,13 +324,19 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEventType(boolean             eventBrokerIsHome,
-                                  String              topicGUID,
+    public String createEventType(String              topicGUID,
                                   EventTypeProperties properties) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createEventType(userId, eventManagerGUID, eventManagerName, eventBrokerIsHome, topicGUID, properties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createEventType(userId, eventBrokerGUID, eventBrokerName, topicGUID, properties);
+        }
+        else
+        {
+            return eventBrokerClient.createEventType(userId, null, null, topicGUID, properties);
+        }
     }
 
 
@@ -322,7 +344,6 @@ public class TopicIntegratorContext
     /**
      * Create a new metadata element to represent a event type using an existing metadata element as a template.
      *
-     * @param eventBrokerIsHome should the event type be marked as owned by the event broker so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the event type is located
      * @param templateProperties properties that override the template
@@ -333,14 +354,20 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEventTypeFromTemplate(boolean            eventBrokerIsHome,
-                                              String             templateGUID,
+    public String createEventTypeFromTemplate(String             templateGUID,
                                               String             topicGUID,
                                               TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return client.createEventTypeFromTemplate(userId, eventManagerGUID, eventManagerName, eventBrokerIsHome, templateGUID, topicGUID, templateProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, topicGUID, templateProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createEventTypeFromTemplate(userId, null, null, templateGUID, topicGUID, templateProperties);
+        }
     }
 
 
@@ -361,7 +388,7 @@ public class TopicIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        client.updateEventType(userId, eventManagerGUID, eventManagerName, eventTypeGUID, isMergeUpdate, properties);
+        eventBrokerClient.updateEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, isMergeUpdate, properties);
     }
 
 
@@ -380,7 +407,7 @@ public class TopicIntegratorContext
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        client.removeEventType(userId, eventManagerGUID, eventManagerName, eventTypeGUID, qualifiedName);
+        eventBrokerClient.removeEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, qualifiedName);
     }
 
 
@@ -404,7 +431,7 @@ public class TopicIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.findEventTypes(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findEventTypes(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -427,7 +454,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return client.getEventTypesForEventSet(userId, eventSetGUID, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesForEventSet(userId, eventSetGUID, startFrom, pageSize);
     }
 
 
@@ -451,7 +478,7 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.getEventTypesForTopic(userId, topicGUID, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesForTopic(userId, topicGUID, startFrom, pageSize);
     }
 
 
@@ -475,7 +502,7 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.getEventTypesByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getEventTypesByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -494,7 +521,7 @@ public class TopicIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return client.getEventTypeByGUID(userId, guid);
+        return eventBrokerClient.getEventTypeByGUID(userId, guid);
     }
 
 
@@ -505,7 +532,6 @@ public class TopicIntegratorContext
     /**
      * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -514,19 +540,24 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createPrimitiveSchemaType(boolean                       eventManagerIsHome,
-                                            PrimitiveSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+    public String createPrimitiveSchemaType(PrimitiveSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return client.createPrimitiveSchemaType(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createPrimitiveSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a schema type that has a fixed value.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -535,19 +566,24 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createLiteralSchemaType(boolean                     eventManagerIsHome,
-                                          LiteralSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+    public String createLiteralSchemaType(LiteralSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return client.createLiteralSchemaType(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createLiteralSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
      * @param validValuesSetGUID unique identifier of the valid values set to used
      *
@@ -557,13 +593,19 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createEnumSchemaType(boolean                  eventManagerIsHome,
-                                       EnumSchemaTypeProperties schemaTypeProperties,
+    public String createEnumSchemaType(EnumSchemaTypeProperties schemaTypeProperties,
                                        String                   validValuesSetGUID) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return client.createEnumSchemaType(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties, validValuesSetGUID);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createEnumSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, validValuesSetGUID);
+        }
+        else
+        {
+            return eventBrokerClient.createEnumSchemaType(userId, null, null, schemaTypeProperties, validValuesSetGUID);
+        }
     }
 
 
@@ -587,7 +629,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.getValidValueSetByName(userId, name, startFrom, pageSize);
+        return eventBrokerClient.getValidValueSetByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -611,14 +653,13 @@ public class TopicIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.findValidValueSet(userId, searchString, startFrom, pageSize);
+        return eventBrokerClient.findValidValueSet(userId, searchString, startFrom, pageSize);
     }
 
 
     /**
      * Create a new metadata element to represent a schema type.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -627,19 +668,24 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createStructSchemaType(boolean                    eventManagerIsHome,
-                                         StructSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+    public String createStructSchemaType(StructSchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return client.createStructSchemaType(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createStructSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -648,21 +694,28 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaTypeChoice(boolean                    eventManagerIsHome,
-                                         SchemaTypeChoiceProperties schemaTypeProperties,
+    public String createSchemaTypeChoice(SchemaTypeChoiceProperties schemaTypeProperties,
                                          List<String>               schemaTypeOptionGUIDs) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaTypeChoice(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties, schemaTypeOptionGUIDs);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createSchemaTypeChoice(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, schemaTypeOptionGUIDs);
+        }
+        else
+        {
+            return eventBrokerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a schema type.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaTypeProperties properties about the schema type to store
+     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
      *
      * @return unique identifier of the new schema type
      *
@@ -670,21 +723,26 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createMapSchemaType(boolean                 eventManagerIsHome,
-                                      MapSchemaTypeProperties schemaTypeProperties,
+    public String createMapSchemaType(MapSchemaTypeProperties schemaTypeProperties,
                                       String                  mapFromSchemaTypeGUID,
                                       String                  mapToSchemaTypeGUID) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.createMapSchemaType(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createMapSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        }
+        else
+        {
+            return eventBrokerClient.createMapSchemaType(userId, null, null, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -694,13 +752,19 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaTypeFromTemplate(boolean            eventManagerIsHome,
-                                               String             templateGUID,
+    public String createSchemaTypeFromTemplate(String             templateGUID,
                                                TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return client.createSchemaTypeFromTemplate(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, templateGUID, templateProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createSchemaTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, templateProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createSchemaTypeFromTemplate(userId, null, null, templateGUID, templateProperties);
+        }
     }
 
 
@@ -722,7 +786,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        client.updateSchemaType(userId, eventManagerGUID, eventManagerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        eventBrokerClient.updateSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -739,7 +803,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.removeSchemaType(userId, eventManagerGUID, eventManagerName, schemaTypeGUID);
+        eventBrokerClient.removeSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID);
     }
 
 
@@ -765,7 +829,7 @@ public class TopicIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return client.findSchemaType(userId, searchString, typeName, startFrom, pageSize);
+        return eventBrokerClient.findSchemaType(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -786,7 +850,7 @@ public class TopicIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
+        return eventBrokerClient.getSchemaTypeForElement(userId, parentElementGUID, parentElementTypeName);
     }
 
 
@@ -812,7 +876,7 @@ public class TopicIntegratorContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return client.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
+        return eventBrokerClient.getSchemaTypeByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -831,7 +895,7 @@ public class TopicIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getSchemaTypeByGUID(userId, schemaTypeGUID);
+        return eventBrokerClient.getSchemaTypeByGUID(userId, schemaTypeGUID);
     }
 
 
@@ -850,7 +914,7 @@ public class TopicIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return client.getSchemaTypeParent(userId, schemaTypeGUID);
+        return eventBrokerClient.getSchemaTypeParent(userId, schemaTypeGUID);
     }
 
 
@@ -861,7 +925,6 @@ public class TopicIntegratorContext
     /**
      * Create a new metadata element to represent a schema attribute.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is nested underneath
      * @param schemaAttributeProperties properties for the schema attribute
      *
@@ -871,20 +934,25 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttribute(boolean                   eventManagerIsHome,
-                                        String                    schemaElementGUID,
+    public String createSchemaAttribute(String                    schemaElementGUID,
                                         SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return client.createSchemaAttribute(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaElementGUID, schemaAttributeProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, schemaAttributeProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createSchemaAttribute(userId, null, null, schemaElementGUID, schemaAttributeProperties);
+        }
     }
 
 
     /**
      * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
      *
-     * @param eventManagerIsHome should the schema element be marked as owned by the event manager so others can not update?
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
@@ -895,20 +963,27 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttributeFromTemplate(boolean            eventManagerIsHome,
-                                                    String             schemaElementGUID,
+    public String createSchemaAttributeFromTemplate(String             schemaElementGUID,
                                                     String             templateGUID,
                                                     TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return client.createSchemaAttributeFromTemplate(userId, eventManagerGUID, eventManagerName, eventManagerIsHome, schemaElementGUID, templateGUID, templateProperties);
+        if (eventBrokerIsHome)
+        {
+            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, templateGUID, templateProperties);
+        }
+        else
+        {
+            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
+        }
     }
 
 
     /**
      * Connect a schema type to a schema attribute.
      *
+     * @param relationshipTypeName name of relationship to create
      * @param schemaAttributeGUID unique identifier of the schema attribute
      * @param schemaTypeGUID unique identifier of the schema type to connect
      *
@@ -916,17 +991,25 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaType(String schemaAttributeGUID,
+    public void setupSchemaType(String relationshipTypeName,
+                                String schemaAttributeGUID,
                                 String schemaTypeGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        client.setupSchemaType(userId, eventManagerGUID, eventManagerName, schemaAttributeGUID, schemaTypeGUID);
+        if (eventBrokerIsHome)
+        {
+            eventBrokerClient.setupSchemaType(userId, eventBrokerGUID, eventBrokerName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        }
+        else
+        {
+            eventBrokerClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        }
     }
 
 
     /**
-     * Remove the type information from a schema attribute.
+     * Remove the linked schema types from a schema attribute.
      *
      * @param schemaAttributeGUID unique identifier of the schema attribute
      *
@@ -934,11 +1017,11 @@ public class TopicIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSchemaType(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearSchemaTypes(String schemaAttributeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        client.clearSchemaType(userId, eventManagerGUID, eventManagerName, schemaAttributeGUID);
+        eventBrokerClient.clearSchemaTypes(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
     }
 
 
@@ -959,7 +1042,7 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        client.updateSchemaAttribute(userId, eventManagerGUID, eventManagerName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        eventBrokerClient.updateSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
     }
 
 
@@ -976,7 +1059,7 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        client.removeSchemaAttribute(userId, eventManagerGUID, eventManagerName, schemaAttributeGUID);
+        eventBrokerClient.removeSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
     }
 
 
@@ -1002,7 +1085,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return client.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
+        return eventBrokerClient.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
     }
 
 
@@ -1025,7 +1108,7 @@ public class TopicIntegratorContext
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return client.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
+        return eventBrokerClient.getNestedAttributes(userId, parentSchemaElementGUID, startFrom, pageSize);
     }
 
 
@@ -1051,7 +1134,7 @@ public class TopicIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return client.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
+        return eventBrokerClient.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
     }
 
 
@@ -1070,6 +1153,535 @@ public class TopicIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+        return eventBrokerClient.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A Connection is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a connection.
+     *
+     * @param connectionProperties properties about the connection to store
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnection(ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return connectionManagerClient.createConnectionFromTemplate(userId, null, null, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnection(String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        connectionManagerClient.updateConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, isMergeUpdate, connectionProperties);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection 
+     * @param connectorTypeGUID unique identifier of the connector type 
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupConnectorType(String  connectionGUID,
+                                   String  connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectionManagerClient.setupConnectorType(userId, null, null, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param connectorTypeGUID unique identifier of the connector type  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConnectorType(String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.clearConnectorType(userId, eventBrokerGUID, eventBrokerName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEndpoint(String  connectionGUID,
+                              String  endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEndpoint(userId, null, null, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection  
+     * @param endpointGUID unique identifier of the endpoint  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEndpoint(String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        connectionManagerClient.clearEndpoint(userId, eventBrokerGUID, eventBrokerName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEmbeddedConnection(String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEmbeddedConnection(userId, null, null, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection  
+     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEmbeddedConnection(String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        connectionManagerClient.clearEmbeddedConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAssetConnection(String  assetGUID,
+                                     String  assetSummary,
+                                     String  connectionGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetConnection(String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        connectionManagerClient.clearAssetConnection(userId, eventBrokerGUID, eventBrokerName, assetGUID, connectionGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        connectionManagerClient.removeConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> findConnections(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return connectionManagerClient.findConnections(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> getConnectionsByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return connectionManagerClient.getConnectionsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectionElement getConnectionByGUID(String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.getConnectionByGUID(userId, connectionGUID);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an endpoint
+     *
+     * @param endpointProperties properties about the endpoint to store
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpoint(EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     *
+     * @param networkAddress location of the endpoint
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties descriptive properties that override the template
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpointFromTemplate(String             networkAddress,
+                                             String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return connectionManagerClient.createEndpointFromTemplate(userId, null, null, networkAddress, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param endpointGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateEndpoint(boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        connectionManagerClient.updateEndpoint(userId, eventBrokerGUID, eventBrokerName, isMergeUpdate, endpointGUID, endpointProperties);
+    }
+
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEndpoint(String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.removeEndpoint(userId, eventBrokerGUID, eventBrokerName, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> findEndpoints(String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return connectionManagerClient.findEndpoints(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return connectionManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointElement getEndpointByGUID(String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return connectionManagerClient.getEndpointByGUID(userId, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> findConnectorTypes(String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return connectionManagerClient.findConnectorTypes(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> getConnectorTypesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the connector type metadata element with the supplied unique identifier.
+     *
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectorTypeElement getConnectorTypeByGUID(String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
     }
 }

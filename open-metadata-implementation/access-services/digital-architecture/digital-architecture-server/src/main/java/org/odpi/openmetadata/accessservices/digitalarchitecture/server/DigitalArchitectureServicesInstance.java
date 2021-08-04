@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
+import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.ReferenceDataAssetConverter;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureErrorCode;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -28,6 +27,10 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
 
 
     private AssetHandler<ReferenceDataAssetElement>  assetHandler;
+
+    private ConnectionHandler<ConnectionElement>       connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private EndpointHandler<EndpointElement>           endpointHandler;
 
     private LocationHandler<LocationElement>  locationHandler;
 
@@ -93,6 +96,48 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
                                                publishZones,
                                                auditLog);
 
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         ConnectionElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new ConnectorTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                               ConnectorTypeElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+        this.endpointHandler = new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                                                     EndpointElement.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
+
         this.locationHandler = new LocationHandler<>(new LocationConverter<>(repositoryHelper, serviceName, serverName),
                                                      LocationElement.class,
                                                      serviceName,
@@ -153,6 +198,53 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
         return assetHandler;
     }
 
+
+    /**
+     * Return the handler for managing ConnectionElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectionHandler<ConnectionElement> getConnectionHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectionHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectionHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ConnectorTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectorTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectorTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing Endpoint objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EndpointHandler<EndpointElement> getEndpointHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return endpointHandler;
+    }
 
     /**
      * Return the handler for managing locations.

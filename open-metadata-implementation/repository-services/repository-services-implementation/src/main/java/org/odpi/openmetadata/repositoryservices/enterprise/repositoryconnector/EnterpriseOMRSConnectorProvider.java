@@ -61,6 +61,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      *                                      connected open metadata repositories.
      * @param enterpriseMetadataCollectionName name of the combined metadata collection covered by the connected open
      *                                        metadata repositories.  Used for messages.
+     * @param localMetadataCollectionId metadata collection id of local repository
      */
     public EnterpriseOMRSConnectorProvider(OMRSConnectorManager         connectorManager,
                                            OMRSRepositoryContentManager repositoryContentManager,

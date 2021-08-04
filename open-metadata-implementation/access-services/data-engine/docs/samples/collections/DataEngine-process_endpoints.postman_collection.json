@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4087cfd5-3e70-40dc-b4a7-956c4a46ee14",
+		"_postman_id": "35d2fd44-da51-4fa2-aeeb-f455ba5d8dad",
 		"name": "DataEngine - process endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -276,7 +276,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n            \"displayName\": \"CopyColumns\",\n            \"name\": \"CopyColumns\",\n            \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n            \"owner\": \"Platform User\",\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"displayName\": \"CopyColumns\",\n        \"name\": \"CopyColumns\",\n        \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n        \"owner\": \"Platform User\",\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -476,7 +476,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n            \"displayName\": \"CopyColumnsFlow\",\n            \"name\": \"CopyColumnsFlow\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n        \"displayName\": \"CopyColumnsFlow\",\n        \"name\": \"CopyColumnsFlow\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -726,7 +726,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -826,7 +826,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow::(process)=CopyColumns\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -848,7 +848,7 @@
 			"response": []
 		},
 		{
-			"name": "4.1. Create Processes - CopyColumns&CopyColumnFlow",
+			"name": "4.1. Create Process - CopyColumns",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -876,7 +876,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n            \"displayName\": \"CopyColumns\",\n            \"name\": \"CopyColumns\",\n            \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n            \"owner\": \"Platform User\",\n            \"portImplementations\": [\n                {\n                    \"displayName\": \"NamesFileInputPort\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"type\": \"INPUT_PORT\",\n                    \"schema\": {\n                        \"displayName\": \"NamesFileInputSchema\",\n                        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n                        \"author\": \"Platform User\",\n                        \"columns\": [\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                                \"displayName\": \"Last\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0,\n                                \"dataType\": \"VARCHAR\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                                \"displayName\": \"First\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 1,\n                                \"dataType\": \"VARCHAR\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                                \"displayName\": \"Id\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 2,\n                                \"dataType\": \"INTEGER\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                                \"displayName\": \"Location\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 3,\n                                \"dataType\": \"INTEGER\"\n                            }\n                        ]\n                    }\n                },\n                {\n                    \"displayName\": \"EmplnameFileOutputPort\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"type\": \"OUTPUT_PORT\",\n                    \"schema\": {\n                        \"displayName\": \"EmplnameFileOutputSchema\",\n                        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n                        \"author\": \"Platform User\",\n                        \"columns\": [\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                                \"displayName\": \"EMPID\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                                \"displayName\": \"FNAME\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                                \"displayName\": \"LOCID\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                                \"displayName\": \"LNAME\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            }\n                        ]\n                    }\n                }\n            ],\n            \"lineageMappings\": [\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n                }\n            ],\n            \"updateSemantic\": \"REPLACE\",\n            \"parentProcesses\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n                    \"containmentType\": \"OWNED\"\n                }\n            ]\n        },\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n            \"displayName\": \"CopyColumnsFlow\",\n            \"name\": \"CopyColumnsFlow\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\",\n            \"portAliases\": [\n                {\n                    \"displayName\": \"ReadInputFilePortAlias\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                    \"type\": \"INPUT_PORT\"\n                },\n                {\n                    \"displayName\": \"WriteOutputFilePortAlias\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                    \"type\": \"OUTPUT_PORT\"\n                }\n            ],\n            \"lineageMappings\": [],\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"displayName\": \"CopyColumns\",\n        \"name\": \"CopyColumns\",\n        \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n        \"owner\": \"Platform User\",\n        \"portImplementations\": [\n            {\n                \"displayName\": \"NamesFileInputPort\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"INPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"NamesFileInputSchema\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                            \"displayName\": \"Last\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0,\n                            \"dataType\": \"VARCHAR\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                            \"displayName\": \"First\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 1,\n                            \"dataType\": \"VARCHAR\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                            \"displayName\": \"Id\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 2,\n                            \"dataType\": \"INTEGER\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                            \"displayName\": \"Location\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 3,\n                            \"dataType\": \"INTEGER\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"displayName\": \"EmplnameFileOutputPort\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"OUTPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"EmplnameFileOutputSchema\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                            \"displayName\": \"EMPID\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                            \"displayName\": \"FNAME\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                            \"displayName\": \"LOCID\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                            \"displayName\": \"LNAME\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        }\n                    ]\n                }\n            }\n        ],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -898,7 +898,107 @@
 			"response": []
 		},
 		{
-			"name": "4.2. Delete Processes CopyColumns&CopyColumnFlow",
+			"name": "4.2 Add lineage mappings for CopyColumns",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n        },\n        {\n            \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n        },\n        {\n            \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n        },\n        {\n            \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"lineage-mappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3. Create Process - CopyColumnFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n        \"displayName\": \"CopyColumnsFlow\",\n        \"name\": \"CopyColumnsFlow\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"portAliases\": [\n            {\n                \"displayName\": \"ReadInputFilePortAlias\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                \"type\": \"INPUT_PORT\"\n            },\n            {\n                \"displayName\": \"WriteOutputFilePortAlias\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                \"type\": \"OUTPUT_PORT\"\n            }\n        ],\n        \"lineageMappings\": [],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.4. Delete Process CopyColumns",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -926,7 +1026,57 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"(process)=CopyColumnsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.5. Delete Process CopyColumnsFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -976,7 +1126,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n            \"displayName\": \"CopyColumnsFlow-high-level\",\n            \"name\": \"CopyColumnsFlow-high level\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\",\n            \"lineageMappings\": [\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow-high-level\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow-high-level\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv\"\n                }\n            ],\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n        \"displayName\": \"CopyColumnsFlow-high-level\",\n        \"name\": \"CopyColumnsFlow-high level\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"collection\": {\n            \"qualifiedName\": \"(transformation-project)=Transformation_Project\",\n            \"name\": \"CopyColumnsFlow-transformation-project\"\n        },\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
@@ -992,6 +1142,56 @@
 						"users",
 						"{{user-id}}",
 						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.2 Add lineage mappings for CopyColumnsFlow-high-level process",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::schema\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow-high-level\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow-high-level\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::schema\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"lineage-mappings"
 					]
 				}
 			},
@@ -1026,7 +1226,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow-high-level\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",

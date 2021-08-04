@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +30,5 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString(callSuper = true)
 public class AssetListResponse extends AssetCatalogOMASAPIResponse {
 
-    private List<AssetElements> assetElementsList = new ArrayList<>();
+    private List<Elements> elementsList = new ArrayList<>();
 }

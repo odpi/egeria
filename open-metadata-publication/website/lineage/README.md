@@ -15,29 +15,42 @@ This includes details of the processing along the way.  It is used both to under
 ## The lineage graph
 
 Lineage is typically envisaged as a graph showing processes interacting with different data stores.  
+Some processes copy data from one store to another.  Other processes may retrieve data
+from multiple stores and combine them to produce a new value that is stored in another store.
+The result is that a logical flow of data emerges from the interaction. 
+
 Figure 1 shows some examples of different types of processes and data stores.
+
+On the left here is an Apache Spark job that reads from a file, looks up a value in an Apache Hive table,
+makes a calculation and writes the results to an Apache Kafka topic.
+On the right, an API is called that invokes a microservice.  The microservice updates a data store.
+This data store is also loaded by an ETL job and any changes to it are copied to other stores via
+a data replication service.  This second example illustrates that the data in the data store
+may have come from two sources, either the API caller or the data sources used by the ETL job.
 
 
 ![Figure 1](lineage-examples.png#pagewidth)
 > **Figure 1:** Examples of processes
 
+As the importance of lineage is understood, it is becoming common that individual technologies
+provide a lineage view of their processing similar to figure 1.  This is very useful to the immediate users of that technology.
+However from an enterprise perspective these technologies do not run in isolation.
+Enterprises need to be able to link the lineage from these technologies together to to show how data flows from
+its original sources to its ultimate destinations.
 
-Some processes copy data from one store to another.  Other processes may retrieve data
-from multiple stores and combine them to produce a new value that is stored in another store.
-The result is that a logical flow of data emerges from the interaction. 
+Figure 2 shows a flow of data through multiple technologies.  It begins with a Relational Database (RDB).
+This is read by an ETL job that writes all or some of its contents to an Apache Hive table.
+An Apache Spark job is initiated through an API that reads from the Apache Hive table
+and invokes an Apache Airflow DAG (process) that writes the information into an Apache Avro file
+and an event to an Apache Kafka topic. 
+
 
 ![Figure 2](lineage-capture.png#pagewidth)
 > **Figure 2:** The lineage graph emerges
 
-## Lineage Capture
-
-Since there is no over-arching controller, lineage capture involves contributions from many
-technologies that have to be stitched together to created the overall flow.
-
-Each technology contributes what they know to open metadata
-and the open metadata services stitch it together.  The stitching process is a mixture of automated matching and
-human stewardship.  Consistency in naming and use of open metadata types increases the
-effectiveness of the stitching process.
+You can also imagine that this flow is only a part of something much bigger.  For example,
+what is responsible for maintaining the data in the relational database?  Which technologies are
+consuming the events in the Apache Kafka topic.  Lineage graphs can get very large.
 
 Figure 3 abstracts the example shown in figure 2.  From this you can see that the flow is not a simple
 progression from left to right.  API calls can pass data in either direction for example. 
@@ -50,84 +63,94 @@ then storing the results back into the same system.  Other stores act as a conso
 data from many systems and then distributing to multiple downstream stores.  So the graph also involves
 loops and fan-in-fan-out structures.
 
+## Lineage management
 
-## Lineage mapping
+Figure 4 shows Egeria's architecture for lineage.  There are three parts to it:
 
-The [LineageMapping](../open-metadata-types/0770-Lineage-Mapping.md) relationship is used to link
-metadata elements from one process/data store (collectively known as [Assets](../cataloging-assets)).
+* **Lineage capture** - through the [Integration Daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md)
+and [Data Engine Proxy](../../../open-metadata-implementation/admin-services/docs/concepts/data-engine-proxy.md) servers,
+metadata about data sources and the processing around them is captured and shared through
+open metadata.
 
-For critical processes, an organization may need to trace the journey of a particular data field
-as it flows between processes and data stores.  For this to work, lineage needs to capture details of the inner
-workings of processes as well the parameters of APIs and schemas of data stores.
-However, not all technologies support this level of and so the lineage graph is often a mixture of
-different levels of detail.
+* **Stewardship** - the lineage information each of the technologies is linked together.
+Where the naming of data sources and processes is consistent, this assembling of the
+lineage graph is automatic.  However, experience shows that if it can be different, it will be different.
+Many technologies make there own choices in naming and so governance action services along with
+human stewardship is required to match and link the graph together.  The governance action
+services run in the [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
+server.  They automatically add the relationships between the lineage contributions from each technology
+which may need to be verified by a human steward.  The human steward may also add relationships where there is no
+well known pattern that can be encoded in a governance action services.
 
-Figure 4 shows the lineage mapping between processes.
-This shows the flow of control between processes but no details about the
-processing inside the processes.
+* **Preservation and Use** - Once the lineage graphs are assembled, the lineage can be viewed an analysed.
+This may be through standard open metadata queries.
+Since the lineage data is large, lineage may also be automatically captured and stored in
+the [Open Lineage Server](../../../open-metadata-implementation/admin-services/docs/concepts/open-lineage-server.md) server.
+This captures and optimizes the lineage graphs for quick retrieval and analysis.
+Its presence allows lineage data to be regularly archived
+from the operational open metadata ecosystem.  This is particularly important in regulated industries
+where lineage for critical reports may need to be kept for many years.
 
-![Figure 4](lineage-mapping-process-to-process.png)
-> **Figure 4:** Lineage mapping between processes
+The three parts of the lineage architecture are summarized in figure 4.
 
-Figure 5 shows lineage mapping between ports on the processes.  This detail is useful for
-more complex processes where different subsets of data fields are received and sent by the
-process through different interfaces.
+![Figure 4](lineage-architecture.png#pagewidth)
+> **Figure 4:** The lineage architecture showing the three phases of (1) lineage capture, 
+(2) stewardship to stitch the lineage contributions together and finally (3) its preservation and use
 
-![Figure 5](lineage-mapping-port-to-port.png)
-> **Figure 5:** Lineage mapping between ports
+## Open Lineage
 
-Figure 6 shows detailed mapping between data fields.  This level of lineage means that it is possible to
-trace what is happening with specific data fields.
+[Open Lineage](https://github.com/OpenLineage/OpenLineage) is a sister open source project to Egeria that is also part of the
+[LF AI and Data Foundation](https://lfaidata.foundation/).  It defines a standard for lineage produced by data processing
+engine as well as a collection point for this lineage data.
 
-![Figure 6](lineage-mapping-data-fields.png)
-> **Figure 6:** Lineage mapping between the data fields
+Egeria has work in progress to capture lineage from any technology using the open lineage standard
+Figure 5 shows Apache Airflow and Apache Spark producing open lineage events that are picked up
+by Egeria and distributed to different tools and catalogs that are linked into the open metadata ecosystem.
 
-Figure 7 shows lineage across multiple technologies where the lineage mapping is done at different levels
-of detail.
+![Figure 5](inbound-open-lineage.png)
+> **Figure 5:** Inbound open lineage capture for distributing within the open metadata ecosystem
 
-![Figure 7](complex-lineage-mapping.png#pagewidth)
-> **Figure 7:** Lineage mapping between the data fields
+There are also other data catalogs, for example, [Marquez](https://marquezproject.github.io/marquez/)
+another of Egeria's sister projects at the LF AI and Data, also listens for open lineage events.
+Egeria's outbound open lineage support will publish lineage information that has been collected
+via other lineage capture mechanisms to the open lineage consumers.  Thus, lineage information
+passes both ways between the open lineage world and the open metadata ecosystem.
 
-## Lineage capture for Dynamic landscapes
+![Figure 6](outbound-open-lineage.png)
+> **Figure 6:** Outbound open lineage distribution to other open lineage consumers
 
-In some situations, particularly when working with files, there are data sources that only
-have an existence for a short period of time.
+Figure 7 shows the open lineage integration connectors running in the
+[Lineage Integrator OMIS](../../../open-metadata-implementation/integration-services/lineage-integrator)
+within the Integration Daemon.
 
-When an asset is deleted from the open metadata repositories, all of its
-relationships with other elements are also deleted.
-This includes the lineage relationships.
-So we do not want to delete the asset if it is needed for lineage.
-Similarly if we just leave it unchanged, it suggests that there is a file in the landing area
-which would be confusing to users of the catalog.
+![Figure 7](open-lineage-implementation.png)
+> **Figure 7:** Open lineage implementation showing the inbound and outbound integration connectors
+hosted by the Lineage Integrator OMIS running in an Integration Daemon.
 
-It is possible to move assets out of the
-[governance zones](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones) where
-active users are working with assets.  This ensures the assets are no longer
-visible to these users.  However it also means they are not visible for the lineage graph either.
+## Summary
 
-There is an option to mark assets as deleted whilst sill keeping them in the
-active governance zones.
-This involves adding the [Memento](../open-metadata-types/0010-Base-Model.md) 
-classification to the asset.  With this classification in place, the
-asset is only returned on lineage queries.
+Egeria's lineage support is comprehensive both in its capability and reach.
+Since the lineage is an integral part of the open metadata type system, metadata captured
+for lineage is useful for other purposes such as governance and quality management.
+Similarly, metadata captured to support a data catalog becomes part of the lineage graph.
 
-The Memento classification is set in APIs such as the
-`archiveDataFileInCatalog()` methods on the 
-[Data Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/data-manager)
-and
-[Files Integrator Open Metadata Integration Service (OMIS)](../../../open-metadata-implementation/integration-services/files-integrator).
+By using open metadata, metadata is captured once and used for many purposes.
 
 ## Further reading
 
-* [Modeling technology using open metadata types](../modelling-technology)
-* [File Lineage solutions using Egeria](../solutions/file-lineage)
+* [Lineage representation](lineage-representation.md) using Open Metadata Types
+* [File Lineage solution using Egeria](../solutions/file-lineage)
 
 APIs for capturing lineage
 * [Asset Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/asset-manager)
-* [Lineage Integrator Open Metadata Integration Server (OMIS)](../../../open-metadata-implementation/integration-services/lineage-integrator)
+* [Open Metadata Integration Services (OMISs)](../../../open-metadata-implementation/integration-services)
 
 APIs for retrieving lineage
 * [Open Lineage Services](../../../open-metadata-implementation/governance-servers/open-lineage-services)
+* [Asset Owner](../../../open-metadata-implementation/access-services/asset-owner) and
+[Asset Consumer](../../../open-metadata-implementation/access-services/asset-consumer) through the
+[Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

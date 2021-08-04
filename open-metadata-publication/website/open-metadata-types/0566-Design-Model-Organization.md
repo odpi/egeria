@@ -13,7 +13,10 @@ related groups.  These groups can themselves be organized into a hierarchy.
 
 ![UML](0566-Design-Model-Organization.png#pagewidth)
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

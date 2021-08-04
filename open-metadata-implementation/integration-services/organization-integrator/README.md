@@ -29,7 +29,8 @@ This integration service is paired with the [Community Profile](../../access-ser
 Open Metadata Access Service (OMAS).
 
 ----
-Return to the [Integration Services](..)
+
+* Return to the [Integration Services](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

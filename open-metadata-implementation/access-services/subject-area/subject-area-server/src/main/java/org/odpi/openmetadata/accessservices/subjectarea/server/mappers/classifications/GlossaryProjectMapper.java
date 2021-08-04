@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +23,8 @@ public class GlossaryProjectMapper extends ClassificationMapper{
     private static final String className = GlossaryProjectMapper.class.getName();
     private static final String typeName = "GlossaryProject";
 
-    public GlossaryProjectMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public GlossaryProjectMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {

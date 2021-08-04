@@ -45,9 +45,10 @@ activity of the individual or team
 (or IT infrastructure - see [ITProfile](0117-IT-Profiles.md)).
 This includes crowd-sourcing and project participation.
 
+----
 
-
-Return to [Area 1](Area-1-models.md).
+* Return to [Area 1](Area-1-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

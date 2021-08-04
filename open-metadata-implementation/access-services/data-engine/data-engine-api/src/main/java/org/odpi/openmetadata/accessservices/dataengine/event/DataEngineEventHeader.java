@@ -31,12 +31,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LineageMappingsEvent.class, name = "LineageMappingsEvent"),
         @JsonSubTypes.Type(value = PortAliasEvent.class, name = "PortAliasEvent"),
         @JsonSubTypes.Type(value = PortImplementationEvent.class, name = "PortImplementationEvent"),
-        @JsonSubTypes.Type(value = ProcessesEvent.class, name = "ProcessesEvent"),
+        @JsonSubTypes.Type(value = ProcessEvent.class, name = "ProcessEvent"),
         @JsonSubTypes.Type(value = ProcessListEvent.class, name = "ProcessListEvent"),
         @JsonSubTypes.Type(value = SchemaTypeEvent.class, name = "SchemaTypeEvent"),
         @JsonSubTypes.Type(value = ProcessHierarchyEvent.class, name = "ProcessHierarchyEvent"),
         @JsonSubTypes.Type(value = DeleteEvent.class, name = "DeleteEvent"),
-        @JsonSubTypes.Type(value = ProcessesDeleteEvent.class, name = "ProcessesDeleteEvent"),
         @JsonSubTypes.Type(value = DatabaseEvent.class, name = "DatabaseEvent"),
         @JsonSubTypes.Type(value = RelationalTableEvent.class, name = "RelationalTableEvent"),
         @JsonSubTypes.Type(value = DataFileEvent.class, name = "DataFileEvent")

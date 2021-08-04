@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -561,10 +561,18 @@ public class AssetCatalogHandlerTest {
                 SequencingOrder.ANY,
                 PAGE_SIZE)).thenReturn(mockEntities());
 
-        List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
-        assertEquals(1, assetElements.size());
-        assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
-        assertEquals(ASSET_TYPE, assetElements.get(0).getType().getName());
+        List<Elements> elements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
+        assertEquals(2, elements.size());
+        if (FIRST_GUID.equals(elements.get(0).getGuid()))
+        {
+            assertEquals(FIRST_GUID, elements.get(0).getGuid());
+            assertEquals(ASSET_TYPE, elements.get(0).getType().getName());
+        }
+        else
+        {
+            assertEquals(FIRST_GUID, elements.get(1).getGuid());
+            assertEquals(ASSET_TYPE, elements.get(1).getType().getName());
+        }
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(), searchParams.getPageSize(), methodName);
         verify(invalidParameterHandler, times(1)).validateObject(searchParams, "searchParameter", methodName);
@@ -604,10 +612,10 @@ public class AssetCatalogHandlerTest {
         mockEntityDetails(FIRST_GUID);
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
-        AssetElements assetElements = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
+        Elements elements = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
 
-        assertEquals(FIRST_GUID, assetElements.getGuid());
-        assertEquals(ASSET_TYPE, assetElements.getType().getName());
+        assertEquals(FIRST_GUID, elements.getGuid());
+        assertEquals(ASSET_TYPE, elements.getType().getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
     }
 

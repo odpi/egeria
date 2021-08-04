@@ -8,7 +8,10 @@ Design patterns document proven approaches to solving well known problems.
 ![UML](0595-Design-Patterns.png#pagewidth)
 
 
-Return to [Area 5](Area-5-models.md).
+---
+
+* Return to [Area 5](Area-5-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -241,7 +241,7 @@ public class OpenMetadataAPIMapper
 
     public static final String VIRTUAL_CONTAINER_TYPE_GUID               = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
     public static final String VIRTUAL_CONTAINER_TYPE_NAME               = "VirtualContainer";
-    /* Host */
+    /* Virtual container */
 
     public static final String OPERATING_PLATFORM_TYPE_GUID              = "bd96a997-8d78-42f6-adf7-8239bc98501c";
     public static final String OPERATING_PLATFORM_TYPE_NAME              = "OperatingPlatform";
@@ -252,7 +252,7 @@ public class OpenMetadataAPIMapper
     public static final String BYTE_ORDERING_PROPERTY_NAME_DEP           = "endianness";    /* from OperatingPlatform entity */
 
     public static final String ENDIANNESS_ENUM_TYPE_GUID                 = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
-    public static final String ENDIANNESS_ENUM_TYPE_NAME                 = "Endianness";              /* from Area 1 */
+    public static final String ENDIANNESS_ENUM_TYPE_NAME                 = "Endianness";                            /* from Area 1 */
 
     public static final String HOST_OPERATING_PLATFORM_TYPE_GUID         = "b9179df5-6e23-4581-a8b0-2919e6322b12";  /* from Area 0 */
     public static final String HOST_OPERATING_PLATFORM_TYPE_NAME         = "HostOperatingPlatform";
@@ -459,6 +459,14 @@ public class OpenMetadataAPIMapper
     public static final String USER_IDENTITY_TYPE_GUID                   = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
     public static final String USER_IDENTITY_TYPE_NAME                   = "UserIdentity";
     /* Referenceable */
+
+    public static final String PROJECT_TYPE_GUID                         = "0799569f-0c16-4a1f-86d9-e2e89568f7fd";
+    public static final String PROJECT_TYPE_NAME                         = "Project";   /* from Area 1 */
+    /* Project */
+
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_GUID      = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_NAME      = "ProjectScope";   /* from Area 1 */
+    /* Project Scope*/
 
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID   = "01664609-e777-4079-b543-6baffe910ff1";   /* from Area 1 */
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME   = "ProfileIdentity";
@@ -853,7 +861,7 @@ public class OpenMetadataAPIMapper
     public static final String COHORT_MEMBER_TYPE_NAME               = "CohortMember";
     /* SoftwareServerCapability */
 
-    public static final String EVENT_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
+    public static final String PROTOCOL_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
 
     public static final String DEPLOYED_API_TYPE_GUID                    = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
     public static final String DEPLOYED_API_TYPE_NAME                    = "DeployedAPI";
@@ -875,9 +883,28 @@ public class OpenMetadataAPIMapper
     public static final String SUBSCRIBER_LIST_TYPE_GUID                 = "69751093-35f9-42b1-944b-ba6251ff513d";  /* from Area 2 */
     public static final String SUBSCRIBER_LIST_TYPE_NAME                 = "SubscriberList";
     /* DataSet */
+
     public static final String TOPIC_SUBSCRIBERS_TYPE_GUID               = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";  /* from Area 2 */
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
     /* End1 = SubscriberList; End 2 = Topic */
+
+    public static final String INFORMATION_VIEW_TYPE_GUID                = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
+    public static final String INFORMATION_VIEW_TYPE_NAME                = "InformationView";
+    /* DataSet */
+
+    public static final String FORM_TYPE_GUID                            = "8078e3d1-0c63-4ace-aafa-68498b39ccd6";  /* from Area 2 */
+    public static final String FORM_TYPE_NAME                            = "Form";
+    /* DataSet */
+
+    public static final String DEPLOYED_REPORT_TYPE_GUID                 = "e9077f4f-955b-4d7b-b1f7-12ee769ff0c3";  /* from Area 2 */
+    public static final String DEPLOYED_REPORT_TYPE_NAME                 = "DeployedReport";
+    /* DataSet */
+
+    public static final String ID_PROPERTY_NAME                          = "id";                                    /* from DeployedReport entity */
+    public static final String CREATED_TIME_PROPERTY_NAME                = "createdTime";                            /* from DeployedReport entity */
+    public static final String LAST_MODIFIED_TIME_PROPERTY_NAME          = "lastModifiedTime";                      /* from DeployedReport entity */
+    public static final String LAST_MODIFIER_PROPERTY_NAME               = "lastModifier";                          /* from DeployedReport entity */
+
 
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID     = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME     = "DeployedSoftwareComponent";
@@ -1019,8 +1046,7 @@ public class OpenMetadataAPIMapper
 
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_GUID         = "43be51a9-2d19-4044-b399-3ba36af10929";
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_NAME         = "GlossaryProject";   /* from Area 3 */
-    /* Project */
-
+    /* GlossaryProject */
 
     public static final String REFERENCEABLE_TO_MEANING_TYPE_GUID                = "e6670973-645f-441a-bec7-6f5570345b92";
     public static final String REFERENCEABLE_TO_MEANING_TYPE_NAME                = "SemanticAssignment";

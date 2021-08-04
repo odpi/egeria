@@ -69,7 +69,7 @@ public class InvalidParameterException extends SubjectAreaCheckedException {
     public InvalidParameterException(ExceptionMessageDefinition messageDefinition,
                                      String className,
                                      String actionDescription,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String invalidPropertyName,
                                      String invalidPropertyValue) {
         super(messageDefinition, className, actionDescription, caughtError);

@@ -328,7 +328,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     {
         if (metadataCollection == null)
         {
-            final String      methodName = "getMetadataCollection";
+            final String methodName = "getMetadataCollection";
 
             throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(serverName),
                     this.getClass().getName(),

@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
 @Tag(name="Data Manager OMAS",
-        description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers.",
-        externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager"))
+     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
+                         "such as database servers, event brokers, content managers and file systems.",
+     externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
+                                         url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
 public class DataManagerOMASResource
 {
@@ -105,7 +106,7 @@ public class DataManagerOMASResource
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
      *
      * @return unique identifier of the database manager's software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -127,7 +128,7 @@ public class DataManagerOMASResource
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
      *
      * @return unique identifier of the database manager's software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -149,7 +150,7 @@ public class DataManagerOMASResource
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
      *
      * @return unique identifier of the database manager's software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -163,6 +164,50 @@ public class DataManagerOMASResource
                                           @RequestBody  EventBrokerRequestBody requestBody)
     {
         return restAPI.createEventBrokerInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about the applications tha manage business processes and interactions with users.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/applications")
+
+    public GUIDResponse createApplication(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @RequestBody  ApplicationRequestBody requestBody)
+    {
+        return restAPI.createApplicationInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about a data processing engine such as a reporting engine.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/data-processing-engines")
+
+    public GUIDResponse createDataProcessingEngine(@PathVariable String                          serverName,
+                                                   @PathVariable String                          userId,
+                                                   @RequestBody  DataProcessingEngineRequestBody requestBody)
+    {
+        return restAPI.createDataProcessingEngineInCatalog(serverName, userId, requestBody);
     }
 
 

@@ -431,7 +431,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
                 eventBean = objectMapper.readValue(event, OMRSEventBean.class);
             }
-            catch (Throwable   exception)
+            catch (Exception   exception)
             {
                 if (auditLog != null)
                 {

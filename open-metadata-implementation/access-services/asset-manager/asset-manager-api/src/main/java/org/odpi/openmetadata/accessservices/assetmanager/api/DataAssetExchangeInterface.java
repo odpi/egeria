@@ -29,9 +29,6 @@ import java.util.Map;
  *           <li>APIs</li>
  *       </ul>
  *     </li>
- *     <li>ConnectorTypes - the types of open connectors that can be used to access the asset.</li>
- *     <li>Connections - the connections used to create connector instances that can access the asset.</li>
- *     <li>Endpoints - the network information needed to access the asset.</li>
  *     <li>Schema - description of structure of data </li>
  *     <li>
  *       <ul>

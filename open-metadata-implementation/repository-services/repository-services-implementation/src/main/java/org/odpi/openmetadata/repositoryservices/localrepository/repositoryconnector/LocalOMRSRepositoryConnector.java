@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -40,7 +39,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      */
     private OMRSTypeDefManager                  typeDefManager;
     private OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
-    private OMRSInstanceEventProcessor          incomingInstanceEventProcessor   = null;
+    private LocalOMRSInstanceEventProcessor     incomingInstanceEventProcessor   = null;
     private OMRSInstanceRetrievalEventProcessor instanceRetrievalEventProcessor  = null;
     private OMRSRepositoryEventManager          outboundRepositoryEventManager;
     private OMRSRepositoryEventExchangeRule     saveExchangeRule;
@@ -54,6 +53,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * local repository.
      *
      * @param realLocalConnector connector to the local repository
+     * @param localRepositoryMode what is the mode of the local repository - affects how event mappers are treated
      * @param realEventMapper optional event mapper for local repository
      * @param outboundRepositoryEventManager event manager to call for outbound events.
      * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
@@ -354,6 +354,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
     }
 
+
     /**
      * Set up the unique Id for this metadata collection.
      *
@@ -519,7 +520,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * @return OMRSInstanceEventProcessor for the local repository.
      */
     @Override
-    public OMRSInstanceEventProcessor getIncomingInstanceEventProcessor()
+    public LocalOMRSInstanceEventProcessor getIncomingInstanceEventProcessor()
     {
         return incomingInstanceEventProcessor;
     }

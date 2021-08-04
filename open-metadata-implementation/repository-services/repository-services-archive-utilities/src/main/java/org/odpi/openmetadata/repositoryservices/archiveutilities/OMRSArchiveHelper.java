@@ -1069,46 +1069,6 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
 
     /**
-     * Return the list of valid properties for the instance
-     *
-     * @param definedAttributes list of attributes defined for the typedef
-     * @param currentList current list of properties extracted from the subtypes
-     * @return accumulated list of properties.
-     */
-    private List<String>  getUniquePropertiesList(List<TypeDefAttribute>  definedAttributes,
-                                                  List<String>            currentList)
-    {
-        List<String>   newList = currentList;
-
-        if (newList == null)
-        {
-            newList = new ArrayList<>();
-        }
-
-        if (definedAttributes != null)
-        {
-            for (TypeDefAttribute  attribute : definedAttributes)
-            {
-                if (attribute != null)
-                {
-                    if (attribute.isUnique())
-                    {
-                        newList.add(attribute.getAttributeName());
-                    }
-                }
-            }
-        }
-
-        if (newList.isEmpty())
-        {
-            return null;
-        }
-
-        return newList;
-    }
-
-
-    /**
      * Return an instance properties that only contains the properties that uniquely identify the entity.
      * This is used when creating entity proxies.
      *

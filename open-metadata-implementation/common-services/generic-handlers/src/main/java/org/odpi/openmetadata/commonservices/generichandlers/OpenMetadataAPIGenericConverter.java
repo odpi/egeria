@@ -81,7 +81,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and a that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -2584,6 +2584,94 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the id property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeId(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the createdTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeCreatedTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeCreatedTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.CREATED_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the createdTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeLastModifiedTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeLastModifiedTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.LAST_MODIFIED_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the lastModifier property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeLastModifier(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.LAST_MODIFIER_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the author property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -2603,7 +2691,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
-
 
 
     /**
@@ -2648,11 +2735,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
-
-
-    /* =====================================================
-     * Schema Attribute properties
-     */
 
 
     /**

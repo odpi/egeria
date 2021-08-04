@@ -32,63 +32,43 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 	ADD_RELATIONSHIP_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-001", 
 			"Relationship {0} could not be added.",
-			"The system is unable to process the request.", 
-			"Verify the topic event."),
+			"The system is unable to create relationship.", 
+			"Review the exception cause and retry to create the relationship."),
 	GET_ENTITY_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-002", 
 			"Entity matching criteria [{0}={1}] could not be fetched.",
-			"The system is unable to process the request.", 
-			"Verify the topic event."),
+			"The system is unable to fetch entity with requested property.", 
+			"Review the exception cause and retry to fetch the entity."),
 	GET_RELATIONSHIP_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-003", 
 			"Relationship {0} for entity {1} could not be fetched.",
-			"The system is unable to process the request.", 
-			"Verify the topic event."),
+			"The system is unable to fetch relationship for entity.", 
+			"Review the exception cause and retry to fetch the relationship."),
 	SERVICE_NOT_INITIALIZED(
 			"OMAS-ANALYTICS-MODELING-004",
 			"The access service has not been initialized for server {0} and can not support REST API calls",
 			"The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
 			"If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
-	BAD_CONFIG(
-			"OMAS-ANALYTICS-MODELING-005",
-			"The Analytics Modeling Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
-			"The access service has not been passed valid configuration.",
-			"Correct the configuration and restart the service."),
 	ENTITY_NOT_FOUND_EXCEPTION(404,
 			"OMAS-ANALYTICS-MODELING-006", 
-			"The entity matching criteria [{0}={1}] was not found.",
-			"The system is unable to process the request.", 
-			"Correct the request payload submitted."),
-
+			"The entity with GUID = {1} was not found.",
+			"The system is unable to find entity with the requested GUID.", 
+			"Review the exception cause and confirm the requested entity exists."),
 	INCORRECT_MODEL_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-007", 
 			"The model for entity {0} is not correct: {1}",
-			"The system is unable to process the request.", 
+			"The system is unable to process the model.", 
 			"Correct the metadata model."),
-
-	DELETE_ENTITY_EXCEPTION(
-			"OMAS-ANALYTICS-MODELING-008",
-			"Entity matching criteria [{0}={1}] could not be deleted.",
-			"The system is unable to process the request.",
-			"Verify the topic event."),
-	NULL_TOPIC_CONNECTOR(400, 
-			"OMAS-ANALYTICS-MODELING-009",
-			"Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
-			"The local server will not connect to the cohort.",
-			"The connection to the connector is configured in the server configuration.  "
-					+ "Review previous error messages to determine the precise error in the "
-					+ "start up configuration. "
-					+ "Correct the configuration and reconnect the server to the cohort. "),
 	SCHEMA_UNKNOWN(403, 
 			"OMAS-ANALYTICS-MODELING-010", 
 			"Requested schema {0} does not exist.",
-			"The system is unable to process the request.",
-			"Refresh data."),
+			"The system is unable to find requested schema.",
+			"Review the exception cause and confirm the schema exists."),
 	UPDATE_PROPERTY_EXCEPTION( 
 			"OMAS-ANALYTICS-MODELING-011", 
-			"Propertyies for entity {0} can not be updated with properties {1}.",
-			"The system is unable to process the request.",
-			"Refresh data."),
+			"Propertyies for entity {0} can not be updated with values {1}.",
+			"The system is unable to update properties.",
+			"Review the exception cause to fix problem and retry to update properties."),
 	CLASSIFICATION_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-012", 
 			"Classification for entity {0} failed set classification {1}.",
@@ -98,105 +78,92 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
     		"OMAS-ANALYTICS-MODELING-0013",
             "Unable to initialize the connection to topic {0} in the Analytics Modeling Open Metadata Access Service (OMAS) instance for server {1} ",
             "The connection to Analytics Modeling topic could not be initialized.",
-            "Review the exception and resolve the configuration. "),
+            "Review the exception and resolve the connection topic problem."),
     SERVICE_INSTANCE_FAILURE(
 			"OMAS-ANALYTICS-MODELING-014",
 			"The access service can't find instance for server {0}, user {1}, operation {2}.",
-			"The system is unable to process the request.",
-            "Review the exception and resolve the configuration. "),
+			"The system is unable to complete operation on the server.",
+            "Review the exception and resolve the server configuration. "),
     INVALID_REQUEST_PARAMER(400,
 			"OMAS-ANALYTICS-MODELING-015",
 			"The request parameter {0} has invalid value.",
-			"The system is unable to process the request.",
+			"The system is unable to process the request due to invalid parameter.",
             "Verify parameter value."),
 	FAILED_FETCH_DATABASES(
 			"OMAS-ANALYTICS-MODELING-016", 
 			"Databases could not be fetched.",
-			"The system is unable to process the request.", 
+			"The system failed to find databases.", 
 			"Review the exception to resolve the issue."),
 	FAILED_FETCH_DATABASE_SCHEMAS(
 			"OMAS-ANALYTICS-MODELING-017", 
 			"Schemas for database {0} could not be fetched.",
-			"The system is unable to process the request.", 
-			"Review the exception to resolve the issue."),
-	FAILED_FIND_DATABASE_SCHEMA(
-			"OMAS-ANALYTICS-MODELING-018", 
-			"Schema {0} for database {1} could not be found.",
-			"The system is unable to process the request.", 
-			"Review the exception to resolve the issue."),
-	FAILED_FETCH_SCHEMAS_TABLES(
-			"OMAS-ANALYTICS-MODELING-019", 
-			"Tables for schemas {0} of the database {1} could not be fetched.",
-			"The system is unable to process the request.", 
-			"Review the exception to resolve the issue."),
+			"The system is unable to fetch schemas for database.", 
+			"Review the exception to resolve the issue and validate database GUID."),
 	UNEXPECTED_CLASS(
 			"OMAS-ANALYTICS-MODELING-020", 
-			"Unexpected class {0} of the AnalyticsMetadata.",
-			"The system is unable to process the request.", 
-			"Fix data in repository."),
+			"Unexpected class {0} of the AnalyticsMetadata for entity {1}.",
+			"The system is unable to create bean for the unexpected class.", 
+			"Fix data in repository. Provide correct class for the entity."),
 	FAILED_CREATE_BEAN(
 			"OMAS-ANALYTICS-MODELING-021", 
 			"Failed to create bean of class {0} of the AnalyticsMetadata.",
-			"The system is unable to process the request.", 
+			"The system is unable to create bean for the requested class.", 
 			"Fix data in repository or class path."),
 	MISSING_BEAN_CLASS(
 			"OMAS-ANALYTICS-MODELING-022", 
-			"Java class of the AnalyticsMetadata is not defined.",
-			"The system is unable to process the request.", 
-			"Fix data in repository."),
+			"Java class of the AnalyticsMetadata is not defined for entity {0}.",
+			"The system is unable to create bean without defined class.", 
+			"Fix data in repository. Define class for entity."),
 	MISSING_BEAN_PROPERTIES(
 			"OMAS-ANALYTICS-MODELING-023", 
 			"Entity {0} of the AnalyticsMetadata is missing properties.",
-			"The system is unable to process the request.", 
-			"Fix data in repository."),
-	INCORRECT_ARTIFACT_DEFINITION(
-			"OMAS-ANALYTICS-MODELING-024", 
-			"Definition of Analytics artifact cannot be parsed: {0}.",
-			"The system is unable to process the request.",
-			"Fix the definition."),
+			"The system is unable process entity without properties.", 
+			"Fix data in repository. Define entity properties."),
 	FAILED_CREATE_ARTIFACT(
 			"OMAS-ANALYTICS-MODELING-025", 
 			"Failed to create analytics artifact.",
-			"The system is unable to process the request.",
-			"Review the exception to resolve the issue."),
+			"The system is unable to create assets for analytics artifact.",
+			"Review the exception to resolve the issue. Verify artifact definition."),
 	FAILED_CREATE_SERVER_CAPABILITY(
 			"OMAS-ANALYTICS-MODELING-026", 
 			"User {0} failed to create server capability {1}. Cause: {2}",
-			"The system is unable to process the request.",
-			"Review the exception to resolve the issue."),
+			"The system is unable to create server capability.",
+			"Review the exception to resolve the issue with the server capability."),
 	FAILED_UPDATE_ARTIFACT(
 			"OMAS-ANALYTICS-MODELING-027", 
 			"User {0} failed to update artifact {1}. Cause: {2}",
-			"The system is unable to process the request.",
-			"Review the exception to resolve the issue and repeat request to fix artifact."),
+			"The system is unable update assets.",
+			"Review the exception to resolve the issue and repeat request to fix assets for the artifact."),
 	FAILED_DELETE_ARTIFACT(
 			"OMAS-ANALYTICS-MODELING-028", 
-			"User {0} failed to delete asset {1}. Cause: {2}",
-			"The system is unable to process the request.",
-			"Review the exception to resolve the issue and repeat request to fix artifact."),
+			"User {0} failed to delete analytics artifact {1}. Cause: {2}",
+			"The system is unable to delete asset for the artifact.",
+			"Review the exception to resolve the issue and repeat request to remove assets for the artifact."),
     FAIL_REST_CALL(
 			"OMAS-ANALYTICS-MODELING-029", 
 			"Rest call {0} failed. Cause: {1}",
-			"The system is unable to process the request.",
+			"The client is unable to make the REST request.",
 			"Review the exception to resolve the issue and repeat request."),
     UNAUTHORIZED_USER (
 			"OMAS-ANALYTICS-MODELING-030", 
 			"User {0} is not authorized to perform operation: {1}",
-			"The system is unable to process the request.",
+			"The system is unable to process the unauthorized request.",
 			"Review the user permissions to resolve the issue and repeat request."),
-    UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
+	FAILED_UPDATE_UNKNOWN_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-031", 
+			"User {0} failed to update artifact {1}. The artifact is unknown.",
+			"The system is unable to update unknown artifact.",
+			"Confirm the artifact exists."),
+	
+	
+    UNEXPECTED_EXCEPTION(400,
+    		"OMAS-ANALYTICS-MODELING-500",
             "An unexpected {0} exception was caught by {1}; error message was {2}",
             "The system is unable to process the request and has returned an exception to the caller.",
-            "Review the error message.  Also look up its full message definition which includes the system action " +
-                    "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
-                    "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
-                    "caller is a valid client of this server and is operating correctly."), 
-
-	UNKNOWN_ERROR(
-			"OMAS-ANALYTICS-MODELING-500", 
-			"Server failed to execute request with unknown reason.",
-			"The system is unable to process the request.", 
-			"Report the error to administrator.");
+            "Review the error message. Also look up its full message definition which includes the system action " +
+                    "and user action. This is most likely to describe the correct action to take to resolve the error. " +
+                    "If that does not help, look for other diagnostics created at the same time. Also validate that the " +
+                    "caller is a valid client of this server and is operating correctly.");
 	
 	private static final long    serialVersionUID = 1L;
 

@@ -7,11 +7,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +23,11 @@ import java.util.*;
 abstract public class ClassificationMapper {
     private static final Logger log = LoggerFactory.getLogger( ClassificationMapper.class);
     private static final String className = ClassificationMapper.class.getName();
+    protected final OpenMetadataAPIGenericHandler genericHandler;
     protected final OMRSRepositoryHelper repositoryHelper;
-    protected final OMRSAPIHelper omrsapiHelper;
-    protected ClassificationMapper(OMRSAPIHelper omrsapiHelper) {
-        this.omrsapiHelper= omrsapiHelper;
-        this.repositoryHelper = omrsapiHelper.getOMRSRepositoryHelper();
+    protected ClassificationMapper(OpenMetadataAPIGenericHandler genericHandler){
+        this.genericHandler = genericHandler;
+        this.repositoryHelper = genericHandler.getRepositoryHelper();
     }
     /**
      * @param omrsClassification - the supplied omrs classification
@@ -142,7 +141,7 @@ abstract public class ClassificationMapper {
      * @return true if type is correct otherwise false.
      */
     protected boolean isTypeCorrect(String actualTypeName) {
-        return this.repositoryHelper.isTypeOf(this.omrsapiHelper.getServiceName(),actualTypeName,getTypeName());
+        return this.repositoryHelper.isTypeOf(genericHandler.getServiceName(),actualTypeName,getTypeName());
     }
 
     /**

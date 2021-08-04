@@ -11,7 +11,7 @@ third party asset management system and the open metadata ecosystem.
 This involves:
 * the transformation of metadata structures and names from the third party's APIs
 to the open metadata APIs and types.
-* the mapping of identifiers from the third.
+* the mapping of identifiers from the third party technology.
 
 ## Module Implementation
 
@@ -35,7 +35,8 @@ Open Metadata Access Service (OMAS).
 
 
 ----
-Return to the [Integration Services](..)
+
+* Return to the [Integration Services](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -249,7 +249,7 @@ public class DataEngineCommonHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         Optional<Relationship> relationship = findRelationship(userId, firstGUID, secondGUID, firstEntityTypeName, relationshipTypeName);
-        if (!relationship.isPresent()) {
+        if (relationship.isEmpty()) {
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName,
@@ -268,6 +268,7 @@ public class DataEngineCommonHandler {
 
     /**
      * Find out if the relationship is already stored in the repository.
+     * It will search for relationships that have the source firstGUID and target secondGUID
      *
      * @param userId               the name of the calling user
      * @param firstGUID            the unique identifier of the entity at first end
@@ -292,8 +293,19 @@ public class DataEngineCommonHandler {
         invalidParameterHandler.validateName(secondGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
-        return Optional.ofNullable(repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID, firstEntityTypeName, secondGUID,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
+        Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID, firstEntityTypeName,
+                secondGUID, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
+
+        if (relationshipBetweenEntities == null) {
+            return Optional.empty();
+        }
+
+        if (firstGUID.equalsIgnoreCase(relationshipBetweenEntities.getEntityOneProxy().getGUID())
+                && secondGUID.equalsIgnoreCase(relationshipBetweenEntities.getEntityTwoProxy().getGUID())) {
+            return Optional.of(relationshipBetweenEntities);
+        }
+
+        return Optional.empty();
     }
 
     /**

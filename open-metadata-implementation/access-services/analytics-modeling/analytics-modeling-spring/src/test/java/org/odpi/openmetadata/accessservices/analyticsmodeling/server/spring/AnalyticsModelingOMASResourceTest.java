@@ -68,7 +68,7 @@ public class AnalyticsModelingOMASResourceTest {
 	@Test
 	void getTables() {
 		when(restAPI.getTables(SERVER_NAME, USER, GUID, SCHEMA)).thenReturn(null);
-		resource.getTables(SERVER_NAME, USER, GUID, null, SCHEMA, null);
+		resource.getTables(SERVER_NAME, USER, GUID, null, SCHEMA);
 		verify(restAPI, times(1)).getTables(SERVER_NAME, USER, GUID, SCHEMA);
 	}
 
@@ -165,7 +165,7 @@ public class AnalyticsModelingOMASResourceTest {
 		when(restAPI.getInvalidParameterHandler()).thenReturn(invalidParameterHandler);
 		doCallRealMethod().when(restAPI).validateUrlParameters(null, USER, GUID, DATABASE_GUID, null, null, "getTables");
 		
-		AnalyticsModelingOMASAPIResponse response =	resource.getTables(null, USER, GUID, CATALOG, SCHEMA, null);
+		AnalyticsModelingOMASAPIResponse response =	resource.getTables(null, USER, GUID, CATALOG, SCHEMA);
 		
 		assertTrue(response instanceof ErrorResponse);
 		ErrorResponse errResponse = (ErrorResponse)response;

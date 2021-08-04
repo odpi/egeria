@@ -8,7 +8,7 @@ technologies so that they can actively share and consume metadata from each othe
 
 It focuses on providing five types of integration interfaces.
 
-* Java interfaces for small integration components called connectors
+* Java interfaces for small integration components called **connectors**
   that translate between third party APIs and open metadata APIs.
   These connectors are hosted in the Egeria servers and support the active exchange of
   metadata with these technologies. 

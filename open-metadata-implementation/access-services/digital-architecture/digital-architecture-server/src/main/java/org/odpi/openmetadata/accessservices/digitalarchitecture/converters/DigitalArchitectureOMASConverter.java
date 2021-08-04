@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -120,6 +121,52 @@ public abstract class DigitalArchitectureOMASConverter<B> extends OpenMetadataAP
     }
 
 
+
+    /**
+     * Extract the properties from the entity or relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            return elementHeader;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Extract the classifications from the entity.
      *
@@ -227,6 +274,44 @@ public abstract class DigitalArchitectureOMASConverter<B> extends OpenMetadataAP
             {
                 return results;
             }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>    beanClass,
+                                      EntityProxy entityProxy,
+                                      String      methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
         }
 
         return null;
