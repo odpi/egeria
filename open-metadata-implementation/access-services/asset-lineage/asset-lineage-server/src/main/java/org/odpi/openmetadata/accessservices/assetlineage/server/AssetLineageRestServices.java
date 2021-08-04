@@ -297,7 +297,7 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         return response;

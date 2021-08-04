@@ -44,7 +44,7 @@ public class OpenLineageRestServices {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
             log.debug(debugMessage, e);
         }catch (Exception e) {
-            openLineageExceptionHandler.captureThrowable(response, e, methodName);
+            openLineageExceptionHandler.captureExceptions(response, e, methodName);
             log.debug(debugMessage, e);
         }
         return response;
@@ -70,7 +70,7 @@ public class OpenLineageRestServices {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
             log.debug(debugMessage, e);
         }catch (Exception e) {
-            openLineageExceptionHandler.captureThrowable(response, e, methodName);
+            openLineageExceptionHandler.captureExceptions(response, e, methodName);
             log.debug(debugMessage, e);
         }
         return response;
