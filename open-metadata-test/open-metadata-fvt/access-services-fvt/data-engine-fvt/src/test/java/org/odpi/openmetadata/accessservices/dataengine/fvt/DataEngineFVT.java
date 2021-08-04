@@ -146,6 +146,7 @@ public class DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
+        processSetupService.createExternalDataEngine(userId, dataEngineClient);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
 
         // assert Database
@@ -182,6 +183,8 @@ public class DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
+        processSetupService.createExternalDataEngine(userId, dataEngineClient);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
         RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
 
         // assert Relational Table
@@ -197,7 +200,7 @@ public class DataEngineFVT {
         assertEquals(relationalTable.getDescription(),
                 relationalTableAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
 
-        // assert Relational DB Schema Type and Deployed Database Schema
+        // assert Relational DB Schema Type
         List<EntityDetail> relationalSchemas = repositoryService
                 .getRelatedEntities(relationalTableAsEntityDetail.getGUID(), RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID);
         if (relationalSchemas == null || relationalSchemas.isEmpty()) {
@@ -205,17 +208,8 @@ public class DataEngineFVT {
         }
         assertEquals(1, relationalSchemas.size());
         EntityDetail relationalDbSchemaAsEntityDetail = relationalSchemas.get(0);
-
-        List<EntityDetail> deployedSchemas = repositoryService
-                .getRelatedEntities(relationalTableAsEntityDetail.getGUID(), DEPLOYED_DATABASE_SCHEMA_TYPE_GUID);
-        if (deployedSchemas == null || deployedSchemas.isEmpty()) {
-            fail();
-        }
-        assertEquals(1, deployedSchemas.size());
-        EntityDetail deployedDbSchemaTypeAsEntityDetail = deployedSchemas.get(0);
-
-        assertEquals("SchemaOf:" + relationalDbSchemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
-                deployedDbSchemaTypeAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals("SchemaOf:" + database.getQualifiedName() + ":schema",
+                relationalDbSchemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
 
         // assert Relational Columns
         List<EntityDetail> relationalColumns = repositoryService
@@ -239,6 +233,7 @@ public class DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
+        processSetupService.createExternalDataEngine(userId, dataEngineClient);
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
 
         // assert Data File
@@ -262,7 +257,7 @@ public class DataEngineFVT {
         }
         assertEquals(1, tabularSchemas.size());
         EntityDetail tabularSchemaTypeAsEntityDetail = tabularSchemas.get(0);
-        assertEquals("Schema", tabularSchemaTypeAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals("Schema", tabularSchemaTypeAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(dataFileAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString() + "::schema",
                 tabularSchemaTypeAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
 
