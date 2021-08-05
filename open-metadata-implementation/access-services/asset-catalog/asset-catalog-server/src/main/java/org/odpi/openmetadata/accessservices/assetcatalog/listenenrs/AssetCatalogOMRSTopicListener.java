@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicLi
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
@@ -74,20 +75,62 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
         }
 
         if (instanceEvent == null) {
-            log.debug("Ignored instance event - null originator");
+            log.debug("Ignored instance event - null OMRSInstanceEvent");
             return;
         }
 
         OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
 
         if (instanceEventOriginator == null) {
+            log.debug("Ignored instance event - null OMRSEventOriginator");
             return;
         }
 
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
         EntityDetail entityDetail = instanceEvent.getEntity();
+        Relationship relationship = instanceEvent.getRelationship();
+
         try{
 
+            switch (instanceEventType) {
+                case UPDATED_ENTITY_EVENT:
+                    EntityDetail originalEntity = instanceEvent.getOriginalEntity();
+                    processEntityDetail(entityDetail);
+                    break;
+                case NEW_ENTITY_EVENT:
+                case DELETED_ENTITY_EVENT:
+                case CLASSIFIED_ENTITY_EVENT:
+                case RECLASSIFIED_ENTITY_EVENT:
+                case DECLASSIFIED_ENTITY_EVENT:
+                    processEntityDetail(entityDetail);
+                    break;
+                case NEW_RELATIONSHIP_EVENT :
+                case UPDATED_RELATIONSHIP_EVENT:
+                case DELETED_RELATIONSHIP_EVENT:
+                    processRelationshipEvent(relationship);
+                    break;
+            }
+
+        } catch (Exception e) {
+            log.error("An exception occurred while processing OMRSTopic event: \n " + instanceEvent, e);
+            logExceptionToAudit(instanceEvent, e);
+        }
+
+    }
+
+    /**
+     *
+     * @param relationship the relationship to be processed
+     */
+    private void processRelationshipEvent(Relationship relationship){
+
+    }
+
+    /**
+     *
+     * @param entityDetail the entityDetail to be processed
+     */
+    private void processEntityDetail(EntityDetail entityDetail){
             String assetType = getAssetType(entityDetail);
 
             if ( assetType != null ) {
@@ -101,17 +144,15 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 }
                 publisher.publishEvent(assetBean);
             }
-            else if (  instanceEventType != null && supportedTypesForSearch!=null
-                    && supportedTypesForSearch.contains(instanceEventType.getName()))
-            {
-                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
-                publisher.publishEvent(assetDescription);
-            }
 
-        } catch (Exception e) {
-            log.error("An exception occurred while processing OMRSTopic event: \n " + instanceEvent, e);
-            logExceptionToAudit(instanceEvent, e);
-        }
+
+//            if (  instanceEventType != null && supportedTypesForSearch!=null
+//                    && supportedTypesForSearch.contains(instanceEventType.getName()))
+//            {
+//                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
+//                publisher.publishEvent(assetDescription);
+//            }
+
     }
 
     /**
