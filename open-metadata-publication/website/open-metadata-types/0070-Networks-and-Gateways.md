@@ -10,8 +10,10 @@ where the gateways onto the Internet.
 
 ![UML](0070-Networks-and-Gateways.png#pagewidth)
 
+----
 
-Return to [Area 0](Area-0-models.md).
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -6,9 +6,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOriginCategory;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOrigin;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
@@ -16,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -74,6 +77,13 @@ public class AssetCatalogConverter {
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
+        elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
+        elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
+        elementOrigin.setOriginCategory(this.getElementOriginCategory(entityDetail.getInstanceProvenanceType()));
+        assetDescription.setOrigin(elementOrigin);
 
         return assetDescription;
     }
@@ -261,6 +271,13 @@ public class AssetCatalogConverter {
         element.setType(convertInstanceType(entityDetail.getType()));
         element.setProperties(extractProperties(entityDetail.getProperties()));
         element.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
+        elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
+        elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
+        elementOrigin.setOriginCategory(this.getElementOriginCategory(entityDetail.getInstanceProvenanceType()));
+        element.setOrigin(elementOrigin);
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
             element.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -294,7 +311,6 @@ public class AssetCatalogConverter {
         if (CollectionUtils.isNotEmpty(entityProxy.getClassifications())) {
             asset.setClassifications(convertClassifications(entityProxy.getClassifications()));
         }
-
         return asset;
     }
 
@@ -345,5 +361,33 @@ public class AssetCatalogConverter {
     private String mapToString(Map<String, Object> map) {
         return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
+    }
+
+    /**
+     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
+     *
+     * @param instanceProvenanceType value from the repository services
+     * @return ElementOrigin enum
+     */
+    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType) {
+        if (instanceProvenanceType != null) {
+            switch (instanceProvenanceType) {
+                case DEREGISTERED_REPOSITORY:
+                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
+                case EXTERNAL_SOURCE:
+                    return ElementOriginCategory.EXTERNAL_SOURCE;
+                case EXPORT_ARCHIVE:
+                    return ElementOriginCategory.EXPORT_ARCHIVE;
+                case LOCAL_COHORT:
+                    return ElementOriginCategory.LOCAL_COHORT;
+                case CONTENT_PACK:
+                    return ElementOriginCategory.CONTENT_PACK;
+                case CONFIGURATION:
+                    return ElementOriginCategory.CONFIGURATION;
+                case UNKNOWN:
+                    return ElementOriginCategory.UNKNOWN;
+            }
+        }
+        return ElementOriginCategory.UNKNOWN;
     }
 }

@@ -10,7 +10,10 @@ stored as an annotation.
 
 ![UML](0630-Semantic-Discovery.png#pagewidth)
 
-Return to [Area 6](Area-6-models.md).
+---
+
+* Return to [Area 6](Area-6-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

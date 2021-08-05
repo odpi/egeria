@@ -28,7 +28,7 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "acdc5637-92a7-4926-b47b-a3d407546f89";
-    private static final String                  archiveRootName    = "DataStoreConnectors";
+    private static final String                  archiveRootName    = "DataStoreConnectorTypes";
     private static final String                  archiveName        = "Data Store Open Connector Types";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Connector type definitions for data store connectors that follow the Open " +

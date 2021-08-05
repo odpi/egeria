@@ -10,7 +10,9 @@ The model below shows how this relationship is captured.
 
 ![UML](0045-Servers-and-Assets.png#pagewidth)
 
-Return to [Area 0](Area-0-models.md).
+----
+
+* Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

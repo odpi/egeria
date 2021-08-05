@@ -140,7 +140,7 @@ public class InMemoryRepositoryTest {
         repositoryConnector.start();
         localRepositoryEventManager.start();
         localOMRSRepositoryConnector.start();
-        new OMRSArchiveManager(null, auditLog).setLocalRepository(localRepositoryContentManager, localRepositoryEventManager);
+        new OMRSArchiveManager(null, auditLog).setLocalRepository("testLocalMetadataCollectionId", localRepositoryContentManager, null);
 
         return localOMRSRepositoryConnector;
     }

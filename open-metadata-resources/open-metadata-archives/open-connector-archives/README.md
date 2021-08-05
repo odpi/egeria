@@ -3,10 +3,17 @@
 
 # Open Connector Archives
 
-The open connector archives provides utility functions
+The open connector archives module provides utility functions
 for building open metadata archives of definitions relating to
 connectors that follow the 
 [Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework).
+
+Specifically the **DataStoreConnectorsArchiveBuilder** creates an
+open metadata archive of connector types for the data store connectors provided by Egeria.
+
+----
+
+* Return to [Open Metadata Archives](..)
 
 
 ----

@@ -91,7 +91,7 @@ of detail.
 ![Figure 8](complex-lineage-mapping.png#pagewidth)
 > **Figure 8:** Lineage mapping between the data fields
 
-#### Lineage representation for dynamic landscapes
+## Lineage representation for dynamic landscapes
 
 In some situations, particularly when working with files, there are data sources that only
 have an existence for a short period of time.
@@ -123,7 +123,6 @@ and
 ## Further reading
 
 * [Modeling technology using open metadata types](../modelling-technology)
-* [File Lineage solutions using Egeria](../solutions/file-lineage)
 
 APIs for capturing lineage
 * [Asset Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/asset-manager)

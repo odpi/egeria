@@ -44,7 +44,7 @@ get access to the data assets.
 
 ![UML Packages](area-2-assets-overview.png#pagewidth)
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

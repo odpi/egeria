@@ -66,8 +66,8 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case PORT_IMPLEMENTATION_EVENT:
                             dataEngineEventProcessor.processPortImplementationEvent(dataEngineEvent);
                             break;
-                        case PROCESSES_EVENT:
-                            dataEngineEventProcessor.processProcessesEvent(dataEngineEvent);
+                        case PROCESS_EVENT:
+                            dataEngineEventProcessor.processProcessEvent(dataEngineEvent);
                             break;
                         case SCHEMA_TYPE_EVENT:
                             dataEngineEventProcessor.processSchemaTypeEvent(dataEngineEvent);
@@ -75,8 +75,8 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case PROCESS_HIERARCHY_EVENT:
                             dataEngineEventProcessor.processProcessHierarchyEvent(dataEngineEvent);
                             break;
-                        case DELETE_PROCESSES_EVENT:
-                            dataEngineEventProcessor.processDeleteProcessesEvent(dataEngineEvent);
+                        case DELETE_PROCESS_EVENT:
+                            dataEngineEventProcessor.processDeleteProcessEvent(dataEngineEvent);
                             break;
                         case DELETE_PORT_IMPLEMENTATION_EVENT:
                             dataEngineEventProcessor.processDeletePortImplementationEvent(dataEngineEvent);

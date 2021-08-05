@@ -11,7 +11,10 @@ Software servers often use a software server platform to provide many of the ser
 The [OMAG Server Platform](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md)
 is an example of a software server platform.
 
-Return to [Area 0](Area-0-models.md).
+----
+
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

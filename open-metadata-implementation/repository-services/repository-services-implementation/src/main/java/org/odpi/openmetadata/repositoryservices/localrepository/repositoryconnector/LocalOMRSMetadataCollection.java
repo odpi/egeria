@@ -5006,7 +5006,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         if (relationship != null)
         {
             setLocalProvenanceThroughoutRelationship(relationship);
-            relationship.setReplicatedBy(metadataCollectionId);
 
             /*
              * OK to send out
