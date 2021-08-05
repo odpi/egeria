@@ -40,7 +40,7 @@ public class UnrecognizedGUIDException extends GuidOrientatedException {
     public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
                                      String className,
                                      String actionDescription,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
     }

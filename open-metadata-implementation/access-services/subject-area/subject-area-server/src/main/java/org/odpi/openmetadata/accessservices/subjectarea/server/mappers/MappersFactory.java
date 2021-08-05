@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Supplier;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 /**
  * Factory class for {@link SubjectAreaMapper} classes */
@@ -18,9 +18,9 @@ public class MappersFactory {
 
     /**
      * @param packagesToScan - search packages for finding classes placed by annotation {@link SubjectAreaMapper}
-     * @param omrsApiHelper - {@link OMRSAPIHelper}
+     * @param genericHandler - {@link OpenMetadataAPIGenericHandler}
      **/
-    public MappersFactory(final OMRSAPIHelper omrsApiHelper, String... packagesToScan) {
+    public MappersFactory(final OpenMetadataAPIGenericHandler genericHandler, String... packagesToScan) {
         Set<String> packages = new HashSet<>(Arrays.asList(packagesToScan));
         packages.add(SUBJECT_AREA_PACKAGE);
 
@@ -28,9 +28,9 @@ public class MappersFactory {
         Set<Class<?>> mappersClasses = reflections.getTypesAnnotatedWith(SubjectAreaMapper.class);
         for (Class<?> mapperClass : mappersClasses) {
             try {
-                Constructor<?> ctor = mapperClass.getDeclaredConstructor(OMRSAPIHelper.class);
+                Constructor<?> ctor = mapperClass.getDeclaredConstructor(OpenMetadataAPIGenericHandler.class);
                 ctor.setAccessible(true);
-                final Object mapper = ctor.newInstance(omrsApiHelper);
+                final Object mapper = ctor.newInstance(genericHandler);
                 mappers.put(mapperClass, () -> mapper);
             } catch (NoSuchMethodException
                     | IllegalAccessException
@@ -48,10 +48,11 @@ public class MappersFactory {
      *  The constructor uses the current package to scan "org.odpi.openmetadata.accessservices.subjectarea";"
      *  to search for classes placed by annotation {@link SubjectAreaMapper}.
      *
-     * @param omrsApiHelper - {@link OMRSAPIHelper}
+     * @param genericHandler - {@link OpenMetadataAPIGenericHandler}
      */
-    public MappersFactory(final OMRSAPIHelper omrsApiHelper) {
-        this(omrsApiHelper, SUBJECT_AREA_PACKAGE);
+    public MappersFactory(final OpenMetadataAPIGenericHandler genericHandler){
+
+        this(genericHandler, SUBJECT_AREA_PACKAGE);
     }
 
     /**

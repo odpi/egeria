@@ -2,10 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -21,12 +25,12 @@ import java.util.Map;
  * Static mapping methods to map between the relationship and the equivalent generated OMRSRelationshipBean
  */
 public abstract class RelationshipMapper<R extends Relationship> implements IRelationshipMapper<R> {
-    protected final OMRSAPIHelper omrsapiHelper;
+    protected final OpenMetadataAPIGenericHandler genericHandler;
     protected final OMRSRepositoryHelper repositoryHelper;
 
-    public RelationshipMapper(OMRSAPIHelper omrsapiHelper) {
-        this.omrsapiHelper = omrsapiHelper;
-        this.repositoryHelper = omrsapiHelper.getOMRSRepositoryHelper();
+    public RelationshipMapper(OpenMetadataAPIGenericHandler genericHandler) {
+        this.genericHandler = genericHandler;
+        this.repositoryHelper = genericHandler.getRepositoryHelper();
     }
 
     public R map(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship) {
@@ -39,9 +43,9 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
             if (guid1 != null) {
                 end1.setNodeGuid(guid1);
             }
-            Map<String, InstancePropertyValue> map =  proxy1.getUniqueProperties().getInstanceProperties();
-            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue)map.get("qualifiedName");
-            if (qualifiedNamePropertyValue !=null) {
+            Map<String, InstancePropertyValue> map = proxy1.getUniqueProperties().getInstanceProperties();
+            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
+            if (qualifiedNamePropertyValue != null) {
                 end1.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
             }
 
@@ -53,9 +57,9 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
             if (guid2 != null) {
                 end2.setNodeGuid(guid2);
             }
-            Map<String, InstancePropertyValue> map =  proxy2.getUniqueProperties().getInstanceProperties();
-            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue)map.get("qualifiedName");
-            if (qualifiedNamePropertyValue !=null) {
+            Map<String, InstancePropertyValue> map = proxy2.getUniqueProperties().getInstanceProperties();
+            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
+            if (qualifiedNamePropertyValue != null) {
                 end2.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
             }
         }
@@ -126,7 +130,7 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      * Map the instance properties to the relationship
      * This method should be overridden by subclasses to map the properties to the relationship.
      *
-     * @param relationship               relationship to be updated
+     * @param relationship       relationship to be updated
      * @param instanceProperties properties to use for the update
      */
     protected void mapInstancePropertiesToRelationship(R relationship, InstanceProperties instanceProperties) {
@@ -135,7 +139,7 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
     /**
      * map the effectivity dates from the relationship to the InstanceProperties
      *
-     * @param relationship               relationship
+     * @param relationship       relationship
      * @param instanceProperties instance properties to update
      */
     private void mapRelationshipEffectivityToInstanceProperties(R relationship, InstanceProperties instanceProperties) {
@@ -150,27 +154,52 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
     }
 
     /**
-     * Map omasRelationship to the omrs omasRelationship equivalent
+     * Map omasRelationship to the omrs relationship equivalent
      *
      * @param omasRelationship supplied omasRelationship
-     * @return omrs omasRelationship equivalent
+     * @return omrs relationship equivalent
      */
-    public org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R omasRelationship) {
+    public org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship map(R omasRelationship) throws InvalidParameterException {
+
+
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship();
         InstanceProperties instanceProperties = new InstanceProperties();
         omrsRelationship.setProperties(instanceProperties);
         mapRelationshipToInstanceProperties(omasRelationship, instanceProperties);
         String proxy1Guid = omasRelationship.getEnd1().getNodeGuid();
+        String proxy1NodeTypeName = omasRelationship.getEnd1().getNodeTypeName();
+        String proxy1TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(proxy1NodeTypeName);
+        InstanceType typeEnd1 = new InstanceType();
+        typeEnd1.setTypeDefName(proxy1TypeName);
+        String proxy1TypeGuid = new InvalidParameterHandler().validateTypeName(proxy1TypeName,
+                                                                                proxy1TypeName,
+                                                                                  genericHandler.getServiceName(),
+                                                                                  "map end1 " +omasRelationship.getRelationshipType(),
+                                                                                genericHandler.getRepositoryHelper());
+        typeEnd1.setTypeDefGUID(proxy1TypeGuid);
+
         String proxy2Guid = omasRelationship.getEnd2().getNodeGuid();
+        String proxy2NodeTypeName = omasRelationship.getEnd2().getNodeTypeName();
+        String proxy2TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(proxy2NodeTypeName);
+        String proxy2TypeGuid =  new InvalidParameterHandler().validateTypeName(proxy2TypeName,
+                                                                                proxy2TypeName,
+                                                                                genericHandler.getServiceName(),
+                                                                                "map end2 " +omasRelationship.getRelationshipType(),
+                                                                                genericHandler.getRepositoryHelper());
+
+        InstanceType typeEnd2 = new InstanceType();
+        typeEnd2.setTypeDefName(proxy2TypeName);
+        typeEnd2.setTypeDefGUID(proxy2TypeGuid);
 
         EntityProxy proxy1 = new EntityProxy();
         proxy1.setGUID(proxy1Guid);
+
         omrsRelationship.setEntityOneProxy(proxy1);
         EntityProxy proxy2 = new EntityProxy();
         proxy2.setGUID(proxy2Guid);
         omrsRelationship.setEntityTwoProxy(proxy2);
         String typeName = getTypeName();
-        TypeDef typedef = omrsapiHelper.getOMRSRepositoryHelper().getTypeDefByName(omrsapiHelper.getServiceName(), typeName);
+        TypeDef typedef = repositoryHelper.getTypeDefByName(genericHandler.getServiceName(), typeName);
         InstanceType type = new InstanceType();
         type.setTypeDefName(typedef.getName());
         type.setTypeDefGUID(typedef.getGUID());
@@ -200,14 +229,20 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      */
     @Override
     public String getTypeDefGuid() {
-        return omrsapiHelper.getTypeDefGUID(getTypeName());
+        String guid = null;
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(genericHandler.getServiceName(),
+                                                            getTypeName());
+        if (typeDef != null) {
+            guid = typeDef.getGUID();
+        }
+        return guid;
     }
 
     /**
      * Map an omrs primitive property to a Subject Area relationship property.
      * The child class is expected to override this method if the type has primitive properties
      *
-     * @param relationship         the relationship to be updated
+     * @param relationship the relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
      * @return true if it was a property we were expecting , otherwise false;
@@ -221,7 +256,7 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      * Map an omrs enum property to a Subject Area relationship property.
      * The child class is expected to override this method if the type has enum properties
      *
-     * @param relationship              the relationship to be updated
+     * @param relationship      the relationship to be updated
      * @param propertyName      the omrs property name
      * @param enumPropertyValue the omrs enum property value
      * @return true if it was a property we were expecting , otherwise false;
@@ -247,7 +282,7 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      * Map the supplied relationship to omrs InstanceProperties.
      * This method should be overridden to populate the instance properties
      *
-     * @param omasRelationship               supplied relationship
+     * @param omasRelationship   supplied relationship
      * @param instanceProperties equivalent instance properties to the relationship
      */
     protected void mapRelationshipToInstanceProperties(R omasRelationship, InstanceProperties instanceProperties) {

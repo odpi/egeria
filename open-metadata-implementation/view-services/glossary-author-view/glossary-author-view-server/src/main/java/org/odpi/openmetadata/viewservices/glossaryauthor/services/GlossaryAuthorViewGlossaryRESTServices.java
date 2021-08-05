@@ -308,7 +308,6 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param serverName name of the local UI server.
      * @param userId     user identifier
      * @param guid       guid of the glossary to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -320,8 +319,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
     public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
                                                               ) {
 
         final String methodName = "deleteGlossary";
@@ -334,12 +332,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            clients.glossaries().delete(userId, guid);
 
-            if (isPurge) {
-                clients.glossaries().purge(userId, guid);
-            } else {
-                clients.glossaries().delete(userId, guid);
-            }
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

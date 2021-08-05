@@ -15,10 +15,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -26,12 +24,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 
 /**
@@ -47,11 +43,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * Construct the Subject Area Category Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper omrs API helper
-     * @param maxPageSize   maximum page size
+     * @param genericHandler generic handler
+     * @param maxPageSize    maximum page size
      */
-    public SubjectAreaCategoryHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaCategoryHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
     }
 
     /**
@@ -70,8 +66,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <p>
      * Failure to create the Categories classifications, link to its glossary or its icon, results in the create failing and the category being deleted
      *
-     * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param suppliedCategory category to create
+     * @param userId              unique identifier for requesting user, under which the request is performed
+     * @param relationshipHandler relationship handler
+     * @param suppliedCategory    category to create
      * @return response, when successful contains the created category.
      * when not successful the following Exception responses can occur
      * <ul>
@@ -80,7 +77,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> createCategory(String userId, Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse<Category> createCategory(String userId, SubjectAreaRelationshipHandler relationshipHandler, Category suppliedCategory) {
         final String methodName = "createCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         String createdCategoryGuid = null;
@@ -94,57 +91,83 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedCategory);
-                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
-                EntityDetail categoryEntityDetail = categoryMapper.map(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
-
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
-                InstanceProperties instanceProperties = categoryEntityDetail.getProperties();
-                if (instanceProperties == null) {
-                    instanceProperties = new InstanceProperties();
-                }
-                if (instanceProperties.getEffectiveFromTime() == null) {
-                    instanceProperties.setEffectiveFromTime(new Date());
-                    categoryEntityDetail.setProperties(instanceProperties);
-                }
-                createdCategoryGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, categoryEntityDetail);
-                if (createdCategoryGuid != null) {
+                GlossaryCategoryBuilder builder = new GlossaryCategoryBuilder(suppliedCategory.getQualifiedName(),
+                                                                              suppliedCategory.getName(),
+                                                                              suppliedCategory.getDescription(),
+                                                                              genericHandler.getRepositoryHelper(),
+                                                                              genericHandler.getServiceName(),
+                                                                              genericHandler.getServerName());
+                createdCategoryGuid = genericHandler.createBeanInRepository(userId,
+                                                                            null,
+                                                                            null,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                            null,
+                                                                            null,
+                                                                            builder,
+                                                                            methodName);
+                if (response.getRelatedHTTPCode() == 200) {
+
+                    // set effectivity dates if required
+                    setNodeEffectivity(userId,
+                                       suppliedCategory,
+                                       methodName,
+                                       createdCategoryGuid,
+                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
-                    // we expect that the created category has a from time of now or the supplied value.
-                    // set the relationship from value to the same
-                    categoryAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                    if (instanceProperties.getEffectiveToTime() != null) {
-                        categoryAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
-                    }
-                    CategoryAnchorMapper anchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
-                    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = anchorMapper.map(categoryAnchor);
-                    oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
-                }
+                    SubjectAreaOMASAPIResponse<CategoryAnchor> categoryAnchorResponse = relationshipHandler.createRelationship(methodName, userId, CategoryAnchorMapper.class, categoryAnchor);
+                    if (categoryAnchorResponse.getRelatedHTTPCode() == 200) {
+                        CategoryAnchor createdCategoryAnchor = categoryAnchorResponse.results().get(0);
+                        String categoryAnchorGuid = createdCategoryAnchor.getGuid();
+                        setRelationshipEffectivity(userId,
+                                                   suppliedCategory,  // copy effectivity from the node
+                                                   methodName,
+                                                   categoryAnchorGuid,
+                                                   OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME);
+                        // set subject area classification if required.
+                        if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
+                            genericHandler.setClassificationInRepository(userId,
+                                                                         createdCategoryGuid,
+                                                                         "guid",
+                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                         null,
+                                                                         methodName);
+                        }
 
-                if (suppliedCategory.getParentCategory() != null && suppliedCategory.getParentCategory().getGuid() != null) {
-                    String parentCategoryGuid = suppliedCategory.getParentCategory().getGuid();
-                    CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
-                    categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
-                    categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
-                    // we expect that the created category has a from time of now or the supplied value.
-                    // set the relationship from value to the same
-                    categoryHierarchyLink.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                    if (instanceProperties.getEffectiveToTime() != null) {
-                        categoryHierarchyLink.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+                        if (suppliedCategory.getParentCategory() != null && suppliedCategory.getParentCategory().getGuid() != null) {
+                            String parentCategoryGuid = suppliedCategory.getParentCategory().getGuid();
+                            CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
+                            categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
+                            categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
+                            SubjectAreaOMASAPIResponse<CategoryHierarchyLink> categoryHierarchyLinkResponse =
+                                    relationshipHandler.createRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
+                            if (categoryHierarchyLinkResponse.getRelatedHTTPCode() == 200) {
+                                CategoryHierarchyLink createdCategoryHierarchyLink = categoryHierarchyLinkResponse.results().get(0);
+                                String categoryHierarchyLinkGuid = createdCategoryHierarchyLink.getGuid();
+                                setRelationshipEffectivity(userId,
+                                                           suppliedCategory,  // copy effectivity from the node
+                                                           methodName,
+                                                           categoryHierarchyLinkGuid,
+                                                           OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                           OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME);
+                            }
+                        }
                     }
-                    CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
-                    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
-                    oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
+                    response = getCategoryByGuid(userId, createdCategoryGuid);
                 }
-                response = getCategoryByGuid(userId, createdCategoryGuid);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             //if the entity is created, but subsequently an error occurred while creating the relationship
             if (createdCategoryGuid != null) {
-                deleteCategory(userId, createdCategoryGuid, false);
-                deleteCategory(userId, createdCategoryGuid, true);
+                deleteCategory(userId, createdCategoryGuid);
             }
             response.setExceptionInfo(e, className);
         }
@@ -170,14 +193,21 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, CATEGORY_TYPE_NAME, methodName);
-            if (entityDetail.isPresent()) {
-                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
-                Category category = categoryMapper.map(entityDetail.get());
-                setGlossary(userId, category, methodName);
-                setParentCategory(userId, category, methodName);
-                response.addResult(category);
-            }
+            EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
+                                                                               guid,
+                                                                               "guid",
+                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               null,
+                                                                               methodName);
+            CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
+            Category category = categoryMapper.map(entityDetail);
+            populateGlossarySummaryFromOMRS(userId, category, methodName);
+            populateParentCategoryFromOMRS(userId, category, methodName);
+            response.addResult(category);
+
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException | SubjectAreaCheckedException e) {
             response.setExceptionInfo(e, className);
         }
@@ -203,12 +233,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Category> foundCategories = findNodes(userId, CATEGORY_TYPE_NAME, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
+            List<Category> foundCategories = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
 
             if (foundCategories != null) {
                 for (Category category : foundCategories) {
-                    setGlossary(userId, category, methodName);
-                    setParentCategory(userId, category, methodName);
+                    populateGlossarySummaryFromOMRS(userId, category, methodName);
+                    populateParentCategoryFromOMRS(userId, category, methodName);
                     response.addResult(category);
                 }
             }
@@ -219,45 +249,74 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         return response;
     }
 
-    private void setGlossary(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         InvalidParameterException {
+    private void populateGlossarySummaryFromOMRS(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             InvalidParameterException {
         final String guid = category.getSystemAttributes().getGUID();
-        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, CATEGORY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME, methodName);
+        List<Relationship> relationships =
+                        getRelationshipsForEntityByType(methodName,
+                                                        userId,
+                                                        guid,
+                                                        new FindRequest(),
+                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID ,
+                                                        OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME
+                                                       );
+
         if (CollectionUtils.isNotEmpty(relationships)) {
-            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : relationships) {
-                CategoryAnchorMapper categotyAnchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
-                CategoryAnchor termAnchor = categotyAnchorMapper.map(relationship);
-                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
+            for (Relationship relationship : relationships) {
+                CategoryAnchor categoryAnchor = (CategoryAnchor)relationship;
+                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, categoryAnchor);
                 if (glossarySummary != null) {
                     category.setGlossary(glossarySummary);
                     break;
                 }
             }
         }
-        // return the Term without a Glossary summary as we have not got one.
     }
 
 
-    private void setParentCategory(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException {
+    private void populateParentCategoryFromOMRS(String userId, Category category, String methodName) throws SubjectAreaCheckedException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            InvalidParameterException {
         final String currentCategoryGuid = category.getSystemAttributes().getGUID();
-        List<EntityDetail> foundEntities = oMRSAPIHelper.callGetEntitiesForRelationshipEnd2(
-                methodName, userId, currentCategoryGuid, CATEGORY_TYPE_NAME, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME);
+        List<EntityDetail> foundEntities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                      currentCategoryGuid,
+                                                                                      "guid",
+                                                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                      OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                                                      OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                                                      1,      // get only the parent
+                                                                                      null,
+                                                                                      null,
+                                                                                      0,
+                                                                                      false,
+                                                                                      false,
+                                                                                      maxPageSize,
+                                                                                      methodName);
+
         if (CollectionUtils.isNotEmpty(foundEntities)) {
             for (EntityDetail entity : foundEntities) {
                 String entityGUID = entity.getGUID();
-                List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(
-                        userId, entityGUID, CATEGORY_TYPE_NAME, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, methodName);
-                for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : relationships) {
-                    String parentGuid = relationship.getEntityOneProxy().getGUID();
-                    String childGuid = relationship.getEntityTwoProxy().getGUID();
+                List<Relationship> relationships =
+                        getRelationshipsForEntityByType(methodName,
+                                                        userId,
+                                                        entityGUID,
+                                                        new FindRequest(),
+                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME
+                                                       );
+                for (Relationship relationship : relationships) {
+                    String parentGuid = relationship.getEnd1().getNodeGuid();
+                    String childGuid = relationship.getEnd2().getNodeGuid();
                     if (entityGUID.equals(parentGuid) && currentCategoryGuid.equals(childGuid)) {
-                        CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
                         CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
-                        CategoryHierarchyLink link = hierarchyMapper.map(relationship);
+                        CategoryHierarchyLink link = (CategoryHierarchyLink)relationship;
                         Category parentCategory = categoryMapper.map(entity);
                         category.setParentCategory(SubjectAreaUtils.extractCategorySummaryFromCategory(parentCategory, link));
                     }
@@ -283,7 +342,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
-        return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest);
+        return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME );
     }
 
     /**
@@ -308,57 +367,35 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-
             response = getCategoryByGuid(userId, guid);
             if (response.head().isPresent()) {
-                Category currentCategory = response.head().get();
-                checkReadOnly(methodName, currentCategory, "update");
-                if (isReplace)
-                    // copy over attributes
-                    replaceAttributes(currentCategory, suppliedCategory);
-                else
-                    updateAttributes(currentCategory, suppliedCategory);
+                Category storedCategory = response.head().get();
+                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
 
-                Long categoryFromTime = suppliedCategory.getEffectiveFromTime();
-                Long categoryToTime = suppliedCategory.getEffectiveToTime();
-                currentCategory.setEffectiveFromTime(categoryFromTime);
-                currentCategory.setEffectiveToTime(categoryToTime);
-
-                CategoryMapper mapper = mappersFactory.get(CategoryMapper.class);
-                EntityDetail entityDetail = mapper.map(currentCategory);
-                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, entityDetail);
+                EntityDetail suppliedEntity = categoryMapper.map(suppliedCategory);
+                EntityDetail storedEntity = categoryMapper.map(storedCategory);
+                genericHandler.updateBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      suppliedEntity.getProperties(),
+                                                      !isReplace,
+                                                      methodName);
+                setNodeEffectivity(userId,
+                                   suppliedCategory,
+                                   methodName,
+                                   guid,
+                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
                 response = getCategoryByGuid(userId, guid);
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
-    }
-
-    private void replaceAttributes(Category currentCategory, Category newCategory) {
-        currentCategory.setName(newCategory.getName());
-        currentCategory.setQualifiedName(newCategory.getQualifiedName());
-        currentCategory.setDescription(newCategory.getDescription());
-        currentCategory.setAdditionalProperties(newCategory.getAdditionalProperties());
-        //TODO handle classifications
-    }
-
-    private void updateAttributes(Category currentCategory, Category newTerm) {
-        // copy over attributes if specified
-        if (newTerm.getName() != null) {
-            currentCategory.setName(newTerm.getName());
-        }
-        if (newTerm.getQualifiedName() != null) {
-            currentCategory.setQualifiedName(newTerm.getQualifiedName());
-        }
-        if (newTerm.getDescription() != null) {
-            currentCategory.setDescription(newTerm.getDescription());
-        }
-
-        if (newTerm.getAdditionalProperties() != null) {
-            currentCategory.setAdditionalProperties(newTerm.getAdditionalProperties());
-        }
-        //TODO handle classifications
     }
 
     /**
@@ -374,7 +411,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * @param userId  userId under which the request is performed
      * @param guid    guid of the category to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * n not successful the following Exception responses can occur
      * <ul>
@@ -382,26 +418,24 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String userId, String guid) {
         final String methodName = "deleteCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
-
         try {
-            if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, CATEGORY_TYPE_NAME, guid);
-            } else {
-                response = getCategoryByGuid(userId, guid);
-                if (response.head().isPresent()) {
-                    Category currentCategory = response.head().get();
-                    checkReadOnly(methodName, currentCategory, "delete");
-                }
-                oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, CATEGORY_TYPE_NAME, guid);
-            }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+                genericHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      "guid",
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      null,
+                                                      null,
+                                                      methodName);
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -428,9 +462,14 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
+            genericHandler.getRepositoryHandler().restoreEntity(userId,
+                                                                null,
+                                                                null,
+                                                                guid,
+                                                                methodName);
+
             response = getCategoryByGuid(userId, guid);
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (UserNotAuthorizedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }
 
@@ -445,7 +484,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param searchCriteria String expression to match the categorized Term property values.
      * @param exactValue     a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
      * @param ignoreCase     a boolean, which when set means that case will be ignored, if not set that case will be respected
-     * @param startingFrom   the starting element number for this set of results.  This is used when retrieving elements
      * @param termHandler    term handler
      * @param startingFrom   initial position in the stored list.
      * @param pageSize       maximum number of definitions to return on this call.
@@ -460,55 +498,58 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategorizedTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
         if (startingFrom == null) {
             startingFrom = 0;
         }
-        // this is used to track getting all the pages of all the data from the start
-        // We use this to issue calls to get all the data so we can then apply the filter.
-        Integer unfilteredStartingFrom = 0;
-
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            List<Term> filteredTerms = new ArrayList<>();
-            boolean continueGettingTerms = true;
-            while (continueGettingTerms) {
-                SubjectAreaOMASAPIResponse<Term> childTermsResponse = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, unfilteredStartingFrom, pageSize);
-                if (childTermsResponse.results() != null && childTermsResponse.results().size() > 0) {
-                   // we now have results. We need to filter those results then apply the requested startingFrom
+            try {
+                Set<String> specificMatchPropertyNames = new HashSet();
 
-                    for (Term term : childTermsResponse.results()) {
-                        // this term to the results if it matches the search criteria and we have not already got a page of results to return
-                        if (termMatchSearchCriteria(term, searchCriteria, exactValue, ignoreCase) ) {
-                            filteredTerms.add(term);
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                         2,      // get only the children
+                                                                                         specificMatchPropertyNames,
+                                                                                         searchCriteria,
+                                                                                         startingFrom,
+                                                                                         !exactValue,
+                                                                                         ignoreCase,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Term> terms = new HashSet<>();
+                if (CollectionUtils.isNotEmpty(entities)) {
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
+                        if (termResponse.getRelatedHTTPCode() == 200) {
+                            terms.add(termResponse.results().get(0));
+                        } else {
+                            response = termResponse;
+                            break;
                         }
+                    }
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(terms);
                     }
                 }
 
-                if (childTermsResponse.results().size() < pageSize || filteredTerms.size() >= startingFrom + pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingTerms = false;
-                } else {
-                    // issue another call to get another page of terms
-                    unfilteredStartingFrom = unfilteredStartingFrom + pageSize;
-                }
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-            // we have a list of filteredTerms , we need to slice out the page we need to return to the user based on their requested startingFrom
-
-            if (filteredTerms.size() > startingFrom) {
-                // we have something to return
-                int endingAt = startingFrom + pageSize;
-                if (filteredTerms.size() < startingFrom + pageSize) {
-                    // if there is not a page worth - then calculate the ending index of the list.
-                    endingAt = filteredTerms.size();
-                }
-                response.addAllResults(filteredTerms.subList(startingFrom, endingAt));
-            }
-
         }
-
         return response;
     }
 
@@ -533,41 +574,57 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
         if (startingFrom == null) {
             startingFrom = 0;
         }
-
         SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
-            String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
+            try {
+                Set<String> specificMatchPropertyNames = new HashSet();
 
-            List<Category> categoriesToReturn = new ArrayList<>();
-            // we have more to get, bump up the startingFrom and get the next page
-            boolean continueGettingCategories = true;
-            while (continueGettingCategories) {
-                SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
-                if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
-                    for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                        // this category to the results if it is not the parent category and it matches the search criteria
-                        if (categoryMatchSearchCriteria(relatedCategory, searchCriteria, exactValue, ignoreCase) &&
-                                !parentCategoryGuid.equals(relatedCategory.getSystemAttributes().getGUID()) &&
-                                categoriesToReturn.size() < pageSize) {
-                            categoriesToReturn.add(relatedCategory);
+                // specify the names of string attributes for this type that we want to match against
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
+                                                                                         guid,
+                                                                                         "guid",
+                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                                                         2,      // get only the children
+                                                                                         specificMatchPropertyNames,
+                                                                                         searchCriteria,
+                                                                                         startingFrom,
+                                                                                         !exactValue,
+                                                                                         ignoreCase,
+                                                                                         pageSize,
+                                                                                         methodName);
+
+                Set<Category> categories = new HashSet<>();
+                if (CollectionUtils.isNotEmpty(entities)) {
+                    for (EntityDetail entity : entities) {
+                        SubjectAreaOMASAPIResponse<Category> categoryResponse = getCategoryByGuid(userId, entity.getGUID());
+                        if (categoryResponse.getRelatedHTTPCode() == 200) {
+                            categories.add(categoryResponse.results().get(0));
+                        } else {
+                            response = categoryResponse;
+                            break;
                         }
                     }
+                    if (response.getRelatedHTTPCode() == 200) {
+                        response.addAllResults(categories);
+                    }
                 }
-                if (relatedCategoriesResponse.results().size() < pageSize || categoriesToReturn.size() == pageSize) {
-                    // we have a page to return or the last get returned less than a page.
-                    continueGettingCategories = false;
-                } else {
-                    // issue another call to get another page of terms
-                    startingFrom = startingFrom + pageSize;
-                }
+
+            } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                response.setExceptionInfo(e, className);
             }
-            response.addAllResults(categoriesToReturn);
         }
 
         return response;

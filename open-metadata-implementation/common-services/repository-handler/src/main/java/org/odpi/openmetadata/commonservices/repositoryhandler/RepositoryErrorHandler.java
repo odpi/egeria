@@ -185,6 +185,12 @@ public class RepositoryErrorHandler
             return;
         }
 
+        InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
+
+        if ((instanceHeader.getInstanceProvenanceType() != null))
+        {
+            instanceProvenanceType = instanceHeader.getInstanceProvenanceType();
+        }
         /*
          * The instance is owned by some sort of external process.  This means we need to be fussy about the external identifiers of the caller.
          */
@@ -192,16 +198,6 @@ public class RepositoryErrorHandler
         {
             if (! externalSourceGUID.equals(instanceHeader.getMetadataCollectionId()))
             {
-                /*
-                 * Subject Area OMAS manufactures entities that do not fill out the provenance information.
-                 */
-                InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
-
-                if ((instanceHeader.getInstanceProvenanceType() != null))
-                {
-                    instanceProvenanceType = instanceHeader.getInstanceProvenanceType();
-                }
-
                 throw new UserNotAuthorizedException(
                         RepositoryHandlerErrorCode.WRONG_EXTERNAL_SOURCE.getMessageDefinition(methodName,
                                                                                               externalSourceGUID,
@@ -218,16 +214,6 @@ public class RepositoryErrorHandler
         }
         else /* local cohort caller updating a non-local entity */
         {
-            /*
-             * Subject Area OMAS manufactures entities that do not fill out the provenance information.
-             */
-            InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
-
-            if ((instanceHeader.getInstanceProvenanceType() != null))
-            {
-                instanceProvenanceType = instanceHeader.getInstanceProvenanceType();
-            }
-
             throw new UserNotAuthorizedException(
                     RepositoryHandlerErrorCode.LOCAL_CANNOT_CHANGE_EXTERNAL.getMessageDefinition(methodName,
                                                                                                  instanceHeader.getType().getTypeDefCategory().getName(),
@@ -238,7 +224,7 @@ public class RepositoryErrorHandler
                                                                                                  userId),
                         this.getClass().getName(),
                         methodName,
-                    userId);
+                        userId);
 
         }
     }
