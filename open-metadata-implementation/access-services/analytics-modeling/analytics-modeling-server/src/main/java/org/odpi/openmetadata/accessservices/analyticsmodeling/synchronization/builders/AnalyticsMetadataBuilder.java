@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.b
 
 import java.util.Map;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
 
 public class AnalyticsMetadataBuilder extends SchemaAttributeBuilder {

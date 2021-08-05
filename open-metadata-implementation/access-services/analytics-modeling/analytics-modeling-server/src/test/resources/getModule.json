@@ -9,6 +9,9 @@
         "property" : [ {
           "name" : "guid",
           "value" : "DataSource@GOSALES.dbo"
+        }, {
+          "name" : "GlossaryTerm",
+          "value" : "{\"displayName\":\"Go Sales\"}"
         } ],
         "schema" : "dbo",
         "catalog" : "GOSALES",
@@ -17,6 +20,9 @@
           "property" : [ {
             "name" : "guid",
             "value" : "Table@Date"
+          }, {
+            "name" : "GlossaryTerm",
+            "value" : "{\"displayName\":\"Calendar\"}"
           } ],
           "name" : "Date",
           "tableItem" : [ {
@@ -24,6 +30,9 @@
               "property" : [ {
                 "name" : "guid",
                 "value" : "Column@DateKey"
+              }, {
+                "name" : "GlossaryTerm",
+                "value" : "{\"description\":\"Primary key for Date used in sales orders.\",\"displayName\":\"Date Key\",\"summary\":\"Primary key for Date.\"}"
               } ],
               "name" : "DateKey",
               "vendorType" : "INT32",

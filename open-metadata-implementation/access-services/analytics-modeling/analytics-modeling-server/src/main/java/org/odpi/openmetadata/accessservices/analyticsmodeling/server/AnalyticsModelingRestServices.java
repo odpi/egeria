@@ -177,7 +177,7 @@ public class AnalyticsModelingRestServices {
 
 			ModuleResponse response = new ModuleResponse();
 			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, methodName)
-					.getModule(databaseGuid, catalog, schema, request);
+					.getModule(userId, databaseGuid, catalog, schema, request);
 			response.setModule(module);
 			ret = response;
 		} catch (Exception e) {

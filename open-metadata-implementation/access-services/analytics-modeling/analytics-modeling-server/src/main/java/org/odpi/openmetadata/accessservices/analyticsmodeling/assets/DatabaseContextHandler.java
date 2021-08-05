@@ -12,27 +12,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The class builds data content of the Analytics Modeling OMAS responses.<br>
@@ -62,8 +71,10 @@ public class DatabaseContextHandler {
 									Object, 
 									Object> relationalDataHandler;
 	
+	private GlossaryTermHandler<GlossaryTerm> handlerGlossaryTerm;
+	
 	private OMEntityDao omEntityDao;
-	private InvalidParameterHandler invalidParameterHandler;
+	private ExecutionContext ctx;
 	
 	
 	private static HashMap<String, String> mapTypes = new HashMap<>();
@@ -75,11 +86,19 @@ public class DatabaseContextHandler {
 	public DatabaseContextHandler(
 		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler, 
 		OMEntityDao omEntityDao, 
-		InvalidParameterHandler invalidParameterHandler) {
+		ExecutionContext ctx) {
 		
 		this.relationalDataHandler = relationalDataHandler;
 		this.omEntityDao = omEntityDao;
-		this.invalidParameterHandler = invalidParameterHandler;
+		this.ctx = ctx;
+		
+		handlerGlossaryTerm = new GlossaryTermHandler<>(
+				new GlossaryTermConverter(ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName()),
+				GlossaryTerm.class, ctx.getServiceName(), ctx.getServerName(),
+				ctx.getInvalidParameterHandler(), ctx.getRepositoryHandler(), ctx.getRepositoryHelper(),
+				ctx.getLocalServerUserId(), ctx.getSecurityVerifier(), 
+				ctx.getSupportedZones(), ctx.getDefaultZones(), ctx.getPublishZones(), 
+				ctx.getAuditLog());
 	}
 	
 	/**
@@ -157,7 +176,7 @@ public class DatabaseContextHandler {
 		String methodName = "getDatabaseSchemas";
 		setContext(methodName);
 		
-		invalidParameterHandler.validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
+		ctx.getInvalidParameterHandler().validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
 		
 		try {
 			Database db = relationalDataHandler.getDatabaseByGUID(userId, guidDatabase, methodName);
@@ -216,7 +235,7 @@ public class DatabaseContextHandler {
 		String context = "getSchemaTables";
 		setContext(context);
 
-		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
+		ctx.getInvalidParameterHandler().validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
 
@@ -266,6 +285,7 @@ public class DatabaseContextHandler {
 
 	/**
 	 * Build Analytics Modeling module for database schema
+	 * @param userId for the request.
 	 * @param databaseGuid of the module
 	 * @param catalog of the module
 	 * @param schema of the module
@@ -274,11 +294,12 @@ public class DatabaseContextHandler {
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
+	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
 			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getModule";
-		invalidParameterHandler.validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
+		ctx.initialize(userId);
+		ctx.getInvalidParameterHandler().validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
 		setContext(context);
 
 		ResponseContainerModule ret = new ResponseContainerModule();
@@ -305,6 +326,7 @@ public class DatabaseContextHandler {
 		ds.setName(catalog + "." + ds.getSchema());
 		ds.setTable(buildTables(databaseGuid, schemaEntity, filter));
 		ds.addProperty(Constants.GUID, schemaEntity.getGUID());
+		processGlossaryTerms(schemaEntity, ds);
 		return ds;
 	}
 
@@ -364,11 +386,67 @@ public class DatabaseContextHandler {
 
 		ret.setTableItem(items);
 
+		processGlossaryTerms(entityTable, ret);
+		
 		processPrimaryKeys(ret, items);
 		
 		processForeignKeys(ret, items);
 
 		return ret;
+	}
+
+	private void processGlossaryTerms(EntityDetail entity, BaseObjectType object)
+	{
+		String methodName = "processGlossaryTerms"; 
+		try {
+			RepositoryHandler handler = ctx.getRepositoryHandler();
+			List<Relationship> relationships = handler.getRelationshipsByType(ctx.getUserId(), 
+					entity.getGUID(), entity.getType().getTypeDefName(),
+					OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+					OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+					methodName);
+
+			if (relationships == null || relationships.isEmpty()) {
+				return;
+			}
+			
+			for (Relationship r : relationships) {
+				GlossaryTerm term = handlerGlossaryTerm.getTerm(ctx.getUserId(), r.getEntityTwoProxy().getGUID(), Constants.GUID, methodName);
+				String value = buildGlossaryTerm(term);
+				
+				if (value != null) {
+					object.addProperty(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME, value);
+				}
+			}
+		} catch (UserNotAuthorizedException | PropertyServerException 
+				| org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+			// report warning with business terms
+		}
+	}
+
+	private String buildGlossaryTerm(GlossaryTerm term) {
+		Map<String, String> json;
+		if (term.getName() != null) {
+			json = new TreeMap<>();
+			json.put(Constants.DISPLAY_NAME, term.getName());
+		} else {
+			return null;
+		}
+		// long description 
+		if (term.getDescription() != null) {
+			json.put(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, term.getDescription());
+		}
+		// short description
+		if (term.getSummary() != null) {
+			json.put(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME, term.getSummary());
+		}
+		
+		try {
+			return new ObjectMapper().writeValueAsString(json);
+		} catch (JsonProcessingException e) {
+			// log warning in context
+			return null;
+		}
 	}
 
 	private void processPrimaryKeys(Table ret, List<TableItem> items) {
@@ -559,6 +637,8 @@ public class DatabaseContextHandler {
 			// column is useless without data type information
 			return null;
 		}
+		
+		processGlossaryTerms(columnEntity, tableColumn);
 
 		return item;
 	}
@@ -657,7 +737,4 @@ public class DatabaseContextHandler {
 	private int getEntityIntProperty(EntityDetail entity, String name) {
 		return entity == null ? null : omEntityDao.getEntityIntProperty(entity, name);
 	}
-
-
-	
 }
