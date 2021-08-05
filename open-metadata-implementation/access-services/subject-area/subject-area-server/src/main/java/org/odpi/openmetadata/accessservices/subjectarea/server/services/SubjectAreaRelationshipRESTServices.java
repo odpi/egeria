@@ -102,7 +102,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the HAS A relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete, the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -112,12 +112,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteTermHasARelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
     }
 
     /**
@@ -137,7 +137,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<HasA> restoreTermHasARelationship(String serverName, String userId, String guid) {
@@ -220,7 +220,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Related term relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -230,12 +230,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(String serverName, String userId, String guid, boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(String serverName, String userId, String guid) {
         String restAPIName = "deleteRelatedTerm";
-        return deleteRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, guid);
     }
 
     /**
@@ -255,7 +255,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> restoreRelatedTerm(String serverName, String userId, String guid) {
@@ -339,7 +339,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Synonym relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -349,12 +349,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Synonym> deleteSynonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Synonym> deleteSynonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteSynonymRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, SynonymMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, SynonymMapper.class, guid);
     }
 
     /**
@@ -374,7 +374,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Synonym> restoreSynonym(String serverName, String userId, String guid) {
@@ -457,7 +457,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Antonym relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -467,12 +467,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Antonym> deleteAntonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Antonym> deleteAntonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteAntonymRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, AntonymMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, AntonymMapper.class, guid);
     }
 
     /**
@@ -493,7 +493,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> FunctionNotSupportedException        Function is not supported.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Antonym> restoreAntonym(String serverName, String userId, String guid) {
@@ -576,7 +576,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Translation relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -586,12 +586,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Translation> deleteTranslationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Translation> deleteTranslationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteTranslationRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TranslationMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TranslationMapper.class, guid);
     }
 
     /**
@@ -611,7 +611,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Translation> restoreTranslation(String serverName, String userId, String guid) {
@@ -694,7 +694,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the UsedInContext relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -704,12 +704,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContextRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContextRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteUsedInContextRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, guid);
     }
 
     /**
@@ -729,7 +729,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> restoreUsedInContext(String serverName, String userId, String guid) {
@@ -813,7 +813,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the PreferredTerm relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -823,12 +823,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTermRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTermRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deletePreferredTermRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, guid);
     }
 
     /**
@@ -848,7 +848,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> restorePreferredTerm(String serverName, String userId, String guid) {
@@ -932,7 +932,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ValidValue relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -942,12 +942,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValueRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValueRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteValidValueRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, ValidValueMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ValidValueMapper.class, guid);
     }
 
     /**
@@ -967,7 +967,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<ValidValue> restoreValidValue(String serverName, String userId, String guid) {
@@ -1050,7 +1050,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ReplacementTerm relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1060,12 +1060,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTerm(String serverName, String userId, String guid) {
         String restAPIName = "deleteReplacementTerm";
-        return deleteRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, guid);
     }
 
     /**
@@ -1085,7 +1085,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
@@ -1169,7 +1169,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TypedBy relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1179,12 +1179,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTypedByRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTypedByRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteTermTypedByRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
     }
 
     /**
@@ -1204,7 +1204,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTypedByRelationship(String serverName, String userId, String guid) {
@@ -1288,7 +1288,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Isa relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1298,12 +1298,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> deleteIsARelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<IsA> deleteIsARelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteIsARelationship";
-        return deleteRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
     }
 
     /**
@@ -1323,7 +1323,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<IsA> restoreIsARelationship(String serverName, String userId, String guid) {
@@ -1350,6 +1350,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> createIsATypeOfDeprecated(String serverName, String userId, IsATypeOfDeprecated IsATypeOfDeprecated) {
         String restAPIName = "createIsATypeOfDeprecated";
         return createRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated);
@@ -1370,6 +1371,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> getIsATypeOfDeprecated(String serverName, String userId, String guid) {
         String restAPIName = "getIsATypeOfDeprecated";
         return getRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
@@ -1396,6 +1398,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> updateIsATypeOfDeprecated(String serverName, String userId, String guid, IsATypeOfDeprecated IsATypeOfDeprecated, boolean isReplace) {
         String restAPIName = "updateIsATypeOfDeprecated";
         return updateRelationship(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipDeprecatedMapper.class, IsATypeOfDeprecated, isReplace);
@@ -1407,7 +1410,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1417,12 +1420,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteIsATypeOfDeprecatedRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    @Deprecated
+    public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteIsATypeOfDeprecatedRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteIsATypeOfDeprecatedRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
     }
 
     /**
@@ -1443,9 +1447,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
+    @Deprecated
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> restoreIsATypeOfDeprecated(String serverName, String userId, String guid) {
         String restAPIName = "restoreIsATypeOfDeprecated";
         return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipDeprecatedMapper.class, guid);
@@ -1527,7 +1532,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsATypeOf relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1537,12 +1542,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIIsATypeOf(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIIsATypeOf(String serverName, String userId, String guid) {
         String restAPIName = "deleteIsATypeOf";
-        return deleteRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, IsATypeOfMapper.class, guid);
     }
 
     /**
@@ -1562,7 +1567,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> restoreIsATypeOf(String serverName, String userId, String guid) {
@@ -1648,7 +1653,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermCategorizationRelationship relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1658,12 +1663,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorizationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorizationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteTermCategorizationRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
     }
 
     /**
@@ -1689,32 +1694,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         return restoreRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
     }
 
-    /**
-     * Create a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     * Terms created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
-     * Term. This method is to allow glossaries to be associated with Terms that have not been created via the Subject Area OMAS or to recreate
-     * the TermAnchor relationship if it has been purged.
-     * <p>
-     *
-     * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                 userId under which the request is performed
-     * @param termAnchorRelationship the TermAnchorRelationship relationship
-     * @return response, when successful contains the created termAnchorRelationship relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchorRelationship(String serverName, String userId, TermAnchor termAnchorRelationship) {
-        String restAPIName = "createTermAnchorRelationship";
-        return createRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, termAnchorRelationship);
-    }
+    // No modification of CategoryAnchor exists, because this is an anchoring relationship
 
     /**
      * Get a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1735,100 +1715,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         String restAPIName = "getTermAnchorRelationship";
         return getRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
     }
+    // No modification of CategoryAnchor exists, because this is an anchoring relationship
 
-    /**
-     * Update a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId               userId under which the request is performed
-     * @param guid       guid of the TermAnchor relationship
-     * @param termAnchor the termAnchor relationship
-     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated termAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchorRelationship(String serverName, String userId, String guid, TermAnchor termAnchor, Boolean isReplace) {
-        String restAPIName = "updateTermCategorizationRelationship";
-        return updateRelationship(serverName, restAPIName, userId, guid, TermAnchorMapper.class, termAnchor, isReplace);
-    }
-
-    /**
-     * Delete a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermAnchorRelationship relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response for a soft delete the response contains the deleted relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchorRelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteTermAnchorRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid, isPurge);
-    }
-
-    /**
-     * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     * <p>
-     * Restore allows the deleted TermAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the Term Anchor Relationship to delete
-     * @return response which when successful contains the restored TermAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchorRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreTermAnchorRelationship";
-        return restoreRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
-    }
-
-    /**
-     * Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
-     * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS.
-     * <p>
-     *
-     * @param serverName                 serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                     userId under which the request is performed
-     * @param categoryAnchorRelationship the CategoryAnchorRelationship relationship
-     * @return response, when successful contains the created categoryAnchorRelationship relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchorRelationship(String serverName, String userId, CategoryAnchor categoryAnchorRelationship) {
-        String restAPIName = "createCategoryAnchorRelationship";
-        return createRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, categoryAnchorRelationship);
-    }
 
     /**
      * Get a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1848,75 +1736,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchorRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getCategoryAnchorRelationship";
         return getRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
-    }
-
-    /**
-     * Update a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows Categories to be owned by a Glossary.
-     * <p>
-     *
-     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId               userId under which the request is performed
-     * @param guid       guid of the CategoryAnchor relationship
-     * @param categoryAnchor the categoryAnchor relationship
-     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated categoryAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchorRelationship(String serverName, String userId, String guid, CategoryAnchor categoryAnchor, Boolean isReplace) {
-        String restAPIName = "updateTermCategorizationRelationship";
-        return updateRelationship(serverName, restAPIName, userId, guid, CategoryAnchorMapper.class, categoryAnchor, isReplace);
-    }
-
-    /**
-     * Delete a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the CategoryAnchorRelationship relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response for a soft delete the response contains the deleted relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchorRelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteCategoryAnchorRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid, isPurge);
-    }
-
-    /**
-     * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     * <p>
-     * Restore allows the deleted CategoryAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the Category Anchor Relationship to delete
-     * @return response which when successful contains the restored CategoryAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchorRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreCategoryAnchorRelationship";
-        return restoreRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
     }
 
     /**
@@ -1995,7 +1814,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ProjectScope relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -2005,12 +1824,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScopeRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScopeRelationship(String serverName, String userId, String guid) {
         String restAPIName = "deleteProjectScopeRelationship";
-        return deleteRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, guid);
     }
 
     /**
@@ -2030,7 +1849,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScopeRelationship(String serverName, String userId, String guid) {
@@ -2102,7 +1921,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the CategoryHierarchyLink relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -2111,9 +1930,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(String serverName, String userId, String guid) {
         String restAPIName = "deleteCategoryHierarchyLink";
-        return deleteRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
     }
 
     /**

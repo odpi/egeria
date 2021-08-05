@@ -186,17 +186,15 @@ public class SubjectAreaCategoryRESTResource {
      * Delete a Category or SubjectAreaDefinition instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the category will not exist after the operation.
-     * when not successful the following Exception responses can occur
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param guid       guid of the category to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -210,9 +208,9 @@ public class SubjectAreaCategoryRESTResource {
     @DeleteMapping(path = "/users/{userId}/categories/{guid}")
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(@PathVariable String serverName,
                                                                @PathVariable String userId,
-                                                               @PathVariable String guid,
-                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteCategory(serverName, userId, guid, isPurge);
+                                                               @PathVariable String guid
+                                                              ) {
+        return restAPI.deleteCategory(serverName, userId, guid);
     }
 
     /**

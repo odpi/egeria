@@ -202,49 +202,14 @@ public interface SubjectAreaClient<T> {
      *
      * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    void delete(String userId, String guid, boolean isPurge) throws InvalidParameterException,
+    void delete(String userId, String guid) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException;
-
-    /**
-     * Purge a Glossary Artifact.
-     *
-     * @param guid    unique identifier of the Glossary Artifact.
-     * @param userId  unique identifier for requesting user, under which the request is performed.
-     *
-     * @throws PropertyServerException    something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    default void purge(String userId, String guid) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
-    {
-        delete(userId, guid, true);
-    }
-
-    /**
-     * Soft delete a Glossary Artifact.
-     *
-     * @param guid    unique identifier of the Glossary Artifact.
-     * @param userId  unique identifier for requesting user, under which the request is performed.
-     *
-     * @throws PropertyServerException    something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    default void delete(String userId, String guid) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
-    {
-        delete(userId, guid, false);
-    }
 
     /**
      * Restore of a soft deleted Glossary Artifact.

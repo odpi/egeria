@@ -41,7 +41,7 @@ public class EntityNotDeletedException extends GuidOrientatedException {
     public EntityNotDeletedException(ExceptionMessageDefinition messageDefinition,
                                      String className,
                                      String actionDescription,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String guid) {
         super(messageDefinition, className, actionDescription, caughtError, guid);
     }

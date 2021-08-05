@@ -158,7 +158,7 @@ public class SubjectAreaPublisher
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector";
 
@@ -193,7 +193,7 @@ public class SubjectAreaPublisher
         {
             jsonString = objectMapper.writeValueAsString(event);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             log.error("Unable to create event payload: " + error.toString());
         }
