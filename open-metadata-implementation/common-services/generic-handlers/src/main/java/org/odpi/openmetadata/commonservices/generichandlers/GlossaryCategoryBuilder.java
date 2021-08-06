@@ -62,7 +62,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    GlossaryCategoryBuilder(String               qualifiedName,
+    public GlossaryCategoryBuilder(String        qualifiedName,
                             String               displayName,
                             String               description,
                             OMRSRepositoryHelper repositoryHelper,

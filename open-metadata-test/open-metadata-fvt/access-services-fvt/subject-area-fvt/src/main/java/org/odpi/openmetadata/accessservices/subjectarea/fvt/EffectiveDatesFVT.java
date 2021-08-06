@@ -100,7 +100,7 @@ public class EffectiveDatesFVT
     private void checkTermGlossaryEffectivity(Glossary glossary, Term term) throws SubjectAreaFVTCheckedException {
         if (term.getGlossary()==null) {
             // error always expect a glossary
-            throw new SubjectAreaFVTCheckedException("ERROR: Term expected no associated future Glossary");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term expected associated future Glossary");
         }
         Long glossaryFrom =glossary.getEffectiveFromTime();
         Long termGlossaryFrom =term.getGlossary().getFromEffectivityTime();

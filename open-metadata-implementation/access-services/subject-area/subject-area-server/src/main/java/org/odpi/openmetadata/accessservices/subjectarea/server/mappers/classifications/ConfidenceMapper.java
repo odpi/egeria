@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidence;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidenceLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceClassificationStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -27,20 +27,20 @@ public class ConfidenceMapper extends ClassificationMapper{
     private static final String className = ConfidenceMapper.class.getName();
     private static final String typeName = "Confidence";
 
-    public ConfidenceMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public ConfidenceMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Confidence confidence = (Confidence)omasClassification;
 
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"steward",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"steward",omrsClassificationProperties,"");
         confidence.setSteward(stringValue);
 
-        stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"notes",omrsClassificationProperties,"");
+        stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"notes",omrsClassificationProperties,"");
         confidence.setNotes(stringValue);
 
-        Integer intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
+        Integer intValue  = repositoryHelper.getIntProperty(genericHandler.getServiceName(),"confidence",omrsClassificationProperties,"");
         confidence.setConfidence(intValue);
 
         // map enums
@@ -76,15 +76,15 @@ public class ConfidenceMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         Confidence confidence = (Confidence)omasClassification;
         if (confidence.getSteward()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"steward",confidence.getSteward(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"steward",confidence.getSteward(),"updateOMRSAttributes");
         }
 
         if (confidence.getSource()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"source",confidence.getSource(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"source",confidence.getSource(),"updateOMRSAttributes");
         }
 
         if (confidence.getNotes()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"notes",confidence.getNotes(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"notes",confidence.getNotes(),"updateOMRSAttributes");
         }
 
         if (confidence.getConfidence()!=null) {

@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Create processes
+# Create a process
 
-Create a list of Process, with port implementations, port aliases and lineage mappings.
+Create a Process, with port implementations and port aliases.
 For each port, it creates the associated schema type and columns.
 
 Check [create-port-implementation](create-port-implementation.md), [create-port-alias](create-port-alias.md) 
@@ -16,7 +16,7 @@ More examples can be found in the
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/processes
 
 {
-    "processes": [
+    "process": 
         {
             "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns",
             "displayName": "CopyColumns",
@@ -127,90 +127,8 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
                     }
                 }
             ],
-            "lineageMappings": [
-                {
-                    "sourceAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id"
-                },
-                {
-                    "sourceAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First"
-                },
-                {
-                    "sourceAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last"
-                },
-                {
-                    "sourceAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location",
-                    "targetAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID",
-                    "targetAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME",
-                    "targetAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME",
-                    "targetAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME"
-                },
-                {
-                    "sourceAttribute": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID",
-                    "targetAttribute": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID"
-                }
-            ],
-            "updateSemantic": "REPLACE",
-            "parentProcesses": [
-                {
-                    "qualifiedName": "(process)=CopyColumsFlow",
-                    "containmentType": "OWNED"
-                }
-            ]
-        },
-        {
-            "qualifiedName": "(process)=CopyColumsFlow",
-            "displayName": "CopyColumnsFlow",
-            "name": "CopyColumnsFlow",
-            "description": "CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).",
-            "owner": "Platform User",
-            "portAliases": [
-                {
-                    "displayName": "ReadInputFilePortAlias",
-                    "qualifiedName": "(process)=CopyColumsFlow::(port)=ReadInputFilePortAlias",
-                    "updateSemantic": "REPLACE",
-                    "delegatesTo": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputPort",
-                    "type": "INPUT_PORT"
-                },
-                {
-                    "displayName": "WriteOutputFilePortAlias",
-                    "qualifiedName": "(process)=CopyColumsFlow::(port)=WriteOutputFilePortAlias",
-                    "updateSemantic": "REPLACE",
-                    "delegatesTo": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort",
-                    "type": "OUTPUT_PORT"
-                }
-            ],
-            "lineageMappings": [],
             "updateSemantic": "REPLACE"
         }
-    ],
     "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
@@ -218,9 +136,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
 `externalSourceName` - qualifiedName of the external data engine tool.
  Note that you need to register the data engine tool with [register-data-engine-tool](register-data-engine-tool.md) 
  before creating any process.
-`GUIDListResponse` - response containing the list of created processes GUIDs and
-the list of failed processes GUId, with status and error message if failing.
-
+`GUIDResponse` - response containing the unique identifiers of the created process, with status and error message if failing.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

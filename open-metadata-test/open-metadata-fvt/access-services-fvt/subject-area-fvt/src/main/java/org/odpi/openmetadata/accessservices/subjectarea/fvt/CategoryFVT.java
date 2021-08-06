@@ -135,10 +135,6 @@ public class CategoryFVT {
         if (children.size() != 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 Categories as the child has been deleted " + children.size());
         }
-        purgeCategory(categoryChild.getSystemAttributes().getGUID());
-        if (children.size() != 0) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 Categories as the child has been purged " + children.size());
-        }
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName + " " + DEFAULT_TEST_CATEGORY_NAME_UPDATED);
@@ -161,8 +157,6 @@ public class CategoryFVT {
         System.out.println("Delete the category1");
         deleteCategory(guid);
         //FVTUtils.validateNode(gotCategory);
-        System.out.println("Purge a category1");
-        purgeCategory(gotCategory.getSystemAttributes().getGUID());
         // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
         System.out.println("Create a category with a parent category");
         Category category3 = createCategoryWithParentGlossaryGuid(serverName + " " + DEFAULT_TEST_CATEGORY_NAME3, category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
@@ -251,13 +245,13 @@ public class CategoryFVT {
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a mmm");
-        Category parentCategory = createCategoryWithGlossaryGuid("mmm", glossary.getSystemAttributes().getGUID());
+        System.out.println("Create a ttt");
+        Category parentCategory = createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
 
         Set<String> childGuids = new HashSet();
-        // create 20 children
-        for (int i=0;i<10;i++) {
+        // create 6 children
+        for (int i=0;i<3;i++) {
             Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);
             childGuids.add(cat1.getSystemAttributes().getGUID());
             Category cat2 =createCategoryWithParentGlossaryGuid("nn" + i, parentGuid, glossaryGuid);
@@ -267,11 +261,11 @@ public class CategoryFVT {
             childGuids.add(grandchild.getSystemAttributes().getGUID());
         }
 
-        if (getCategoryChildren(parentGuid).size() != 20) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 20 child categories");
+        if (getCategoryChildren(parentGuid).size() != 6) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 child categories");
         }
         FindRequest findRequest =new FindRequest();
-        findRequest.setSearchCriteria("mm3");
+        findRequest.setSearchCriteria("mm1");
         int count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
         if (count !=1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 child category, got " + count);
@@ -280,6 +274,21 @@ public class CategoryFVT {
         if (count !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 glossary categories for mm3 including grandchild, got " + count);
         }
+        findRequest =new FindRequest();
+        // we expect 1 back as there is only one top level category ttt
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories, got " + count);
+        }
+        findRequest.setSearchCriteria("tt");
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            // should find ttt
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for tt* not including grandchildren, got " + count);
+        }
+        findRequest =new FindRequest();
+        findRequest.setSearchCriteria("mm1");
+        // we expect 0 back as there is only one top level category ttt
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
         if (count !=0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for mm3 not including grandchild, got " + count);
@@ -287,20 +296,25 @@ public class CategoryFVT {
 
         findRequest.setSearchCriteria("mm");
         count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
-        if (count !=10) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 child category, got " + count);
+        if (count !=3) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 3 child category, got " + count);
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
-        if (count !=21) {
-            // 1 mmm and its 10 mm1-10 children and then the first category has another 10 mm1-10 children
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 21 glossary categories for mm including grandchildren, got " + count);
-        }
-        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
-        if (count !=1) {
-            // should find mmm
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for mm* not including grandchildren, got " + count);
+        if (count !=6) {
+            // 1 ttt and its mm0 mm1 mm2 children and then the first category has another 3 mm0 mm1 mm2 children
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 glossary categories for mm including grandchildren, got " + count);
         }
 
+        // create more categories
+        for (int i=3;i<10;i++) {
+            Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat1.getSystemAttributes().getGUID());
+            Category cat2 =createCategoryWithParentGlossaryGuid("nn" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat2.getSystemAttributes().getGUID());
+            // create a grandchild of cat1 with the same name
+            Category grandchild =createCategoryWithParentGlossaryGuid("mm" + i, cat1.getSystemAttributes().getGUID(), glossaryGuid);
+            childGuids.add(grandchild.getSystemAttributes().getGUID());
+        }
         // issue with page size 5
         findRequest.setPageSize(5);
         List<Category> categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true);
@@ -313,11 +327,11 @@ public class CategoryFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for mm* including grandchildren, got " + count);
         }
         count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
-        if (count !=1) {
-            // expect to find mmm
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for mm* not including grandchildren, got " + count);
+        if (count !=0) {
+            // expect to find no mm
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for mm* not including grandchildren, got " + count);
         }
-        // issue with page size 5, startingFrom 5
+        // test page size 5, startingFrom 5
         findRequest.setStartingFrom(5);
 
         categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
@@ -444,7 +458,7 @@ public class CategoryFVT {
         category.setParentCategory(parentCategorySummary);
         Category newCategory = issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+        System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
 
         return newCategory;
     }
@@ -509,11 +523,6 @@ public class CategoryFVT {
         createdCategoriesSet.add(guid);
         System.out.println("restored Category name is " + restoredCategory.getName());
         return restoredCategory;
-    }
-
-    public void purgeCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaCategory.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
     }
 
     public List<Relationship> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

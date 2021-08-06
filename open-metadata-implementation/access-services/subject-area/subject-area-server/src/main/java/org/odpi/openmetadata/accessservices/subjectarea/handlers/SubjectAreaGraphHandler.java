@@ -11,12 +11,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.RelationshipTypeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph.NodeTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,11 +37,11 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Construct the Subject Area Graph Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper omrs API helper
-     * @param maxPageSize   maximum page size
+     * @param genericHandler    generic handler
+     * @param maxPageSize       maximum page size
      */
-    public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaGraphHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
     }
 
     /**
@@ -96,8 +96,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                 level = 3;
             }
 
-            InstanceGraph instanceGraph = oMRSAPIHelper.callGetEntityNeighbourhood(
-                    methodName,
+            InstanceGraph instanceGraph = genericHandler.getRepositoryHandler().getEntityNeighborhood(
                     userId,
                     guid,
                     getEntityGuids(nodeFilterStr),
@@ -105,8 +104,9 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                     requestedInstanceStatus,
                     null,
                     asOfTime,
-                    level
-                                                                                  );
+                    level,
+                    methodName);
+
             Graph graph = new Graph();
             graph.setRootNodeGuid(guid);
             graph.setNodeFilter(nodeFilterStr);

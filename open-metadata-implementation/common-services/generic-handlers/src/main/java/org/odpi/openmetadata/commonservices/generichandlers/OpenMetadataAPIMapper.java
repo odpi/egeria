@@ -241,7 +241,7 @@ public class OpenMetadataAPIMapper
 
     public static final String VIRTUAL_CONTAINER_TYPE_GUID               = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
     public static final String VIRTUAL_CONTAINER_TYPE_NAME               = "VirtualContainer";
-    /* Host */
+    /* Virtual container */
 
     public static final String OPERATING_PLATFORM_TYPE_GUID              = "bd96a997-8d78-42f6-adf7-8239bc98501c";
     public static final String OPERATING_PLATFORM_TYPE_NAME              = "OperatingPlatform";
@@ -252,7 +252,7 @@ public class OpenMetadataAPIMapper
     public static final String BYTE_ORDERING_PROPERTY_NAME_DEP           = "endianness";    /* from OperatingPlatform entity */
 
     public static final String ENDIANNESS_ENUM_TYPE_GUID                 = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
-    public static final String ENDIANNESS_ENUM_TYPE_NAME                 = "Endianness";              /* from Area 1 */
+    public static final String ENDIANNESS_ENUM_TYPE_NAME                 = "Endianness";                            /* from Area 1 */
 
     public static final String HOST_OPERATING_PLATFORM_TYPE_GUID         = "b9179df5-6e23-4581-a8b0-2919e6322b12";  /* from Area 0 */
     public static final String HOST_OPERATING_PLATFORM_TYPE_NAME         = "HostOperatingPlatform";
@@ -459,6 +459,14 @@ public class OpenMetadataAPIMapper
     public static final String USER_IDENTITY_TYPE_GUID                   = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
     public static final String USER_IDENTITY_TYPE_NAME                   = "UserIdentity";
     /* Referenceable */
+
+    public static final String PROJECT_TYPE_GUID                         = "0799569f-0c16-4a1f-86d9-e2e89568f7fd";
+    public static final String PROJECT_TYPE_NAME                         = "Project";   /* from Area 1 */
+    /* Project */
+
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_GUID      = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
+    public static final String PROJECT_SCOPE_RELATIONSHIP_TYPE_NAME      = "ProjectScope";   /* from Area 1 */
+    /* Project Scope*/
 
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID   = "01664609-e777-4079-b543-6baffe910ff1";   /* from Area 1 */
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME   = "ProfileIdentity";
@@ -1038,8 +1046,7 @@ public class OpenMetadataAPIMapper
 
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_GUID         = "43be51a9-2d19-4044-b399-3ba36af10929";
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_NAME         = "GlossaryProject";   /* from Area 3 */
-    /* Project */
-
+    /* GlossaryProject */
 
     public static final String REFERENCEABLE_TO_MEANING_TYPE_GUID                = "e6670973-645f-441a-bec7-6f5570345b92";
     public static final String REFERENCEABLE_TO_MEANING_TYPE_NAME                = "SemanticAssignment";

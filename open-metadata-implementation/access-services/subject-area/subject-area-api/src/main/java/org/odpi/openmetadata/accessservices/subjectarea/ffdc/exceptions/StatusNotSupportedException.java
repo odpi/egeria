@@ -36,7 +36,7 @@ public class StatusNotSupportedException extends SubjectAreaCheckedException {
     public StatusNotSupportedException(ExceptionMessageDefinition messageDefinition,
                                        String className,
                                        String actionDescription,
-                                       Throwable caughtError) {
+                                       Exception caughtError) {
         super(messageDefinition, className, actionDescription, caughtError);
     }
 }
