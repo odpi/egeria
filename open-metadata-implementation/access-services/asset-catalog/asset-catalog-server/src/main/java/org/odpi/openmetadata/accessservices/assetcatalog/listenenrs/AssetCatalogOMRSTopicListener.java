@@ -94,9 +94,6 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 
             switch (instanceEventType) {
                 case UPDATED_ENTITY_EVENT:
-                    EntityDetail originalEntity = instanceEvent.getOriginalEntity();
-                    processEntityDetail(entityDetail);
-                    break;
                 case NEW_ENTITY_EVENT:
                 case DELETED_ENTITY_EVENT:
                 case CLASSIFIED_ENTITY_EVENT:
@@ -123,7 +120,8 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship the relationship to be processed
      */
     private void processRelationshipEvent(Relationship relationship){
-
+        log.info("relationships");
+        publisher.publishEvent(relationship);
     }
 
     /**
@@ -143,15 +141,12 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                     return;
                 }
                 publisher.publishEvent(assetBean);
+            }else if (  supportedTypesForSearch!=null
+                    && supportedTypesForSearch.contains(entityDetail.getType().getTypeDefName()))
+            {
+                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
+                publisher.publishEvent(assetDescription);
             }
-
-
-//            if (  instanceEventType != null && supportedTypesForSearch!=null
-//                    && supportedTypesForSearch.contains(instanceEventType.getName()))
-//            {
-//                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
-//                publisher.publishEvent(assetDescription);
-//            }
 
     }
 
