@@ -119,7 +119,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
-        return assetCatalogConverter.getAssetDescription(entityByGUID);
+        return assetCatalogConverter.getAssetCatalogBean(entityByGUID);
     }
 
     /**
@@ -323,7 +323,7 @@ public class AssetCatalogHandler {
                     methodName);
         }
 
-        return getAssetDescriptionsAfterValidation(methodName, linkingEntities.getEntities());
+        return getAssetCatalogBeansAfterValidation(methodName, linkingEntities.getEntities());
     }
 
     /**
@@ -356,7 +356,7 @@ public class AssetCatalogHandler {
                     methodName);
         }
 
-        return getAssetDescriptionsAfterValidation(methodName, entities);
+        return getAssetCatalogBeansAfterValidation(methodName, entities);
     }
 
     /**
@@ -497,7 +497,7 @@ public class AssetCatalogHandler {
         return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
-    private List<AssetCatalogBean> getAssetDescriptionsAfterValidation(String methodName,
+    private List<AssetCatalogBean> getAssetCatalogBeansAfterValidation(String methodName,
                                                                        List<EntityDetail> entities)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         List<AssetCatalogBean> result = new ArrayList<>();
@@ -511,7 +511,7 @@ public class AssetCatalogHandler {
                     serverUserName,
                     methodName);
 
-            result.add(assetCatalogConverter.getAssetDescription(asset));
+            result.add(assetCatalogConverter.getAssetCatalogBean(asset));
         }
         return result;
     }
