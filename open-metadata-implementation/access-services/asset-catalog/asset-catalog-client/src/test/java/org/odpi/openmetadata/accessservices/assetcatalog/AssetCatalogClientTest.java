@@ -6,20 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.util.ReflectionUtils;
@@ -67,30 +58,30 @@ public class AssetCatalogClientTest {
 
     @Test
     public void testGetAssetDetails() throws Exception {
-        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+        AssetCatalogResponse response = mockAssetDescriptionResponse();
 
-        when(connector.callGetRESTCall(eq("getAssetDetails"), eq(AssetDescriptionResponse.class), anyString(), eq(SERVER_NAME),
-                eq(USER_ID), eq(response.getAssetDescription().getGuid()), eq(ASSET_TYPE))).thenReturn(response);
+        when(connector.callGetRESTCall(eq("getAssetDetails"), eq(AssetCatalogResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), eq(response.getAssetCatalogBean().getGuid()), eq(ASSET_TYPE))).thenReturn(response);
 
-        AssetDescriptionResponse assetDetails = assetCatalog.getAssetDetails(USER_ID,
-                response.getAssetDescription().getGuid(),
+        AssetCatalogResponse assetDetails = assetCatalog.getAssetDetails(USER_ID,
+                response.getAssetCatalogBean().getGuid(),
                 ASSET_TYPE);
 
-        Assert.assertEquals(response.getAssetDescription().getGuid(), assetDetails.getAssetDescription().getGuid());
+        Assert.assertEquals(response.getAssetCatalogBean().getGuid(), assetDetails.getAssetCatalogBean().getGuid());
     }
 
     @Test
     public void testGetAssetUniverse() throws Exception {
-        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+        AssetCatalogResponse response = mockAssetDescriptionResponse();
 
-        when(connector.callGetRESTCall(eq("getAssetUniverse"), eq(AssetDescriptionResponse.class), anyString(), eq(SERVER_NAME),
-                eq(USER_ID), eq(response.getAssetDescription().getGuid()), eq(ASSET_TYPE))).thenReturn(response);
+        when(connector.callGetRESTCall(eq("getAssetUniverse"), eq(AssetCatalogResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), eq(response.getAssetCatalogBean().getGuid()), eq(ASSET_TYPE))).thenReturn(response);
 
-        AssetDescriptionResponse assetDetails = assetCatalog.getAssetUniverse(USER_ID,
-                response.getAssetDescription().getGuid(),
+        AssetCatalogResponse assetDetails = assetCatalog.getAssetUniverse(USER_ID,
+                response.getAssetCatalogBean().getGuid(),
                 ASSET_TYPE);
 
-        Assert.assertEquals(response.getAssetDescription().getGuid(), assetDetails.getAssetDescription().getGuid());
+        Assert.assertEquals(response.getAssetCatalogBean().getGuid(), assetDetails.getAssetCatalogBean().getGuid());
     }
 
     @Test
@@ -142,21 +133,21 @@ public class AssetCatalogClientTest {
 
     @Test
     public void testGetLinkingAssets() throws Exception {
-        AssetDescriptionListResponse response = mockAssetDescriptionListResponse();
+        AssetCatalogListResponse response = mockAssetDescriptionListResponse();
 
         when(connector.callGetRESTCall(eq("getLinkingAssets"),
-                eq(AssetDescriptionListResponse.class),
+                eq(AssetCatalogListResponse.class),
                 anyString(),
                 eq(SERVER_NAME),
                 eq(USER_ID),
                 eq(ASSET_ID),
                 eq(SECOND_ASSET_ID))).thenReturn(response);
 
-        AssetDescriptionListResponse assetDescriptionListResponse = assetCatalog.getLinkingAssets(USER_ID,
+        AssetCatalogListResponse assetCatalogListResponse = assetCatalog.getLinkingAssets(USER_ID,
                 ASSET_ID,
                 SECOND_ASSET_ID);
 
-        Assert.assertEquals(ASSET_ID, assetDescriptionListResponse.getAssetDescriptionList().get(0).getGuid());
+        Assert.assertEquals(ASSET_ID, assetCatalogListResponse.getAssetCatalogBeanList().get(0).getGuid());
     }
 
     @Test
@@ -181,11 +172,11 @@ public class AssetCatalogClientTest {
 
     @Test
     public void testGetAssetsFromNeighborhood() throws Exception {
-        AssetDescriptionListResponse response = mockAssetDescriptionListResponse();
+        AssetCatalogListResponse response = mockAssetDescriptionListResponse();
         SearchParameters searchParameters = mockSearchParameters();
 
         when(connector.callPostRESTCall(eq("getAssetsFromNeighborhood"),
-                eq(AssetDescriptionListResponse.class),
+                eq(AssetCatalogListResponse.class),
                 anyString(),
                 eq(searchParameters),
                 eq(SERVER_NAME),
@@ -193,11 +184,11 @@ public class AssetCatalogClientTest {
                 eq(ASSET_ID)
                 )).thenReturn(response);
 
-        AssetDescriptionListResponse assetsFromNeighborhood = assetCatalog.getAssetsFromNeighborhood(USER_ID,
+        AssetCatalogListResponse assetsFromNeighborhood = assetCatalog.getAssetsFromNeighborhood(USER_ID,
                 ASSET_ID,
                 searchParameters);
 
-        Assert.assertEquals(ASSET_ID, assetsFromNeighborhood.getAssetDescriptionList().get(0).getGuid());
+        Assert.assertEquals(ASSET_ID, assetsFromNeighborhood.getAssetCatalogBeanList().get(0).getGuid());
     }
 
     @Test
@@ -313,38 +304,38 @@ public class AssetCatalogClientTest {
     }
 
 
-    private AssetDescriptionListResponse mockAssetDescriptionListResponse() {
-        AssetDescriptionListResponse expectedResponse = new AssetDescriptionListResponse();
+    private AssetCatalogListResponse mockAssetDescriptionListResponse() {
+        AssetCatalogListResponse expectedResponse = new AssetCatalogListResponse();
         expectedResponse.setRelatedHTTPCode(200);
 
-        AssetDescription assetDescription = mockAssetDescription();
-        expectedResponse.setAssetDescriptionList(Collections.singletonList(assetDescription));
+        AssetCatalogBean assetCatalogBean = mockAssetDescription();
+        expectedResponse.setAssetCatalogBeanList(Collections.singletonList(assetCatalogBean));
 
         return expectedResponse;
     }
 
-    private AssetDescriptionResponse mockAssetDescriptionResponse() {
-        AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
+    private AssetCatalogResponse mockAssetDescriptionResponse() {
+        AssetCatalogResponse expectedResponse = new AssetCatalogResponse();
         expectedResponse.setRelatedHTTPCode(200);
 
-        AssetDescription assetDescription = mockAssetDescription();
-        expectedResponse.setAssetDescription(assetDescription);
+        AssetCatalogBean assetCatalogBean = mockAssetDescription();
+        expectedResponse.setAssetCatalogBean(assetCatalogBean);
 
         return expectedResponse;
     }
 
-    private AssetDescription mockAssetDescription() {
-        AssetDescription assetDescription = new AssetDescription();
+    private AssetCatalogBean mockAssetDescription() {
+        AssetCatalogBean assetCatalogBean = new AssetCatalogBean();
 
-        assetDescription.setGuid(ASSET_ID);
+        assetCatalogBean.setGuid(ASSET_ID);
         Type type = new Type();
         type.setName(ASSET_TYPE);
-        assetDescription.setType(type);
+        assetCatalogBean.setType(type);
 
-        assetDescription.setClassifications(mockClassifications());
-        assetDescription.setRelationships(mockRelationships());
+        assetCatalogBean.setClassifications(mockClassifications());
+        assetCatalogBean.setRelationships(mockRelationships());
 
-        return assetDescription;
+        return assetCatalogBean;
     }
 
     private List<Relationship> mockRelationships() {

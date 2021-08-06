@@ -6,12 +6,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Connection;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -110,12 +106,12 @@ public class AssetCatalogHandler {
      * @param userId        user identifier that issues the call
      * @param assetGUID     the asset identifier
      * @param assetTypeName the asset type name
-     * @return AssetDescription that contains the core properties of the entity and additional properties
+     * @return AssetCatalogBean that contains the core properties of the entity and additional properties
      * @throws InvalidParameterException  is thrown by the OMAS when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public AssetDescription getEntityDetails(String userId, String assetGUID, String assetTypeName)
+    public AssetCatalogBean getEntityDetails(String userId, String assetGUID, String assetTypeName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "getEntityDetails";
@@ -296,7 +292,7 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetDescription> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
+    public List<AssetCatalogBean> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getIntermediateAssets";
@@ -341,7 +337,7 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
@@ -501,10 +497,10 @@ public class AssetCatalogHandler {
         return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
-    private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
+    private List<AssetCatalogBean> getAssetDescriptionsAfterValidation(String methodName,
                                                                        List<EntityDetail> entities)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        List<AssetDescription> result = new ArrayList<>();
+        List<AssetCatalogBean> result = new ArrayList<>();
 
         for (EntityDetail asset : entities) {
 

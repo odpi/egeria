@@ -2,14 +2,8 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -35,7 +29,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
+    AssetCatalogResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch asset's header, classification, properties and relationships
@@ -47,7 +41,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
+    AssetCatalogResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch the relationships for a specific asset
@@ -87,7 +81,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionListResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
+    AssetCatalogListResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return a sub-graph of relationships that connect two assets
@@ -111,7 +105,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionListResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
+    AssetCatalogListResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return a list of assets matching the search criteria without the full context

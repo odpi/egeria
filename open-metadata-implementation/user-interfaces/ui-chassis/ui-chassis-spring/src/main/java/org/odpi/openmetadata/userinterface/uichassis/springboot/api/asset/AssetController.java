@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.asset;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
@@ -88,7 +88,7 @@ public class AssetController {
      * @throws InvalidParameterException if parameter validation fails
      */
     @GetMapping( value = "/{guid}")
-    public AssetDescription getAsset(@PathVariable("guid") String guid)
+    public AssetCatalogBean getAsset(@PathVariable("guid") String guid)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName( );
         return assetCatalogOMASService.getAssetDetails(user, guid, "none");
