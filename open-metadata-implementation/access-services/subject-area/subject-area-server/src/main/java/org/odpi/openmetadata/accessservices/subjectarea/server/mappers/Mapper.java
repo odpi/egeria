@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 
 public interface Mapper<OMRS extends InstanceAuditHeader, OMAS extends OmasObject> {
@@ -19,7 +20,7 @@ public interface Mapper<OMRS extends InstanceAuditHeader, OMAS extends OmasObjec
      * @param omasObject a Subject Area OMAS object
      * @return  an OMRS object
      */
-    OMRS map(OMAS omasObject);
+    OMRS map(OMAS omasObject) throws InvalidParameterException;
 
     /**
      * get the Guid

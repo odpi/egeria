@@ -7,6 +7,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSInstanceEventProcessor;
 
 
 /**
@@ -63,7 +64,7 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      *
      * @return OMRSInstanceEventProcessor for the local repository.
      */
-    OMRSInstanceEventProcessor getIncomingInstanceEventProcessor();
+    LocalOMRSInstanceEventProcessor getIncomingInstanceEventProcessor();
 
 
     /**

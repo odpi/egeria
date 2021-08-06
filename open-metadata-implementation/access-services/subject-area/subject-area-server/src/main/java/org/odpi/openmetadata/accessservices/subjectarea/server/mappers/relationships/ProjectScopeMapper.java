@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -16,8 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class ProjectScopeMapper extends RelationshipMapper<ProjectScope> {
     public static final String PROJECT_SCOPE = "ProjectScope";
 
-    public ProjectScopeMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public ProjectScopeMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ProjectScopeMapper extends RelationshipMapper<ProjectScope> {
     protected boolean mapPrimitiveToRelationship(ProjectScope projectScope, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             projectScope.setDescription(stringValue);
             foundProperty = true;
         }

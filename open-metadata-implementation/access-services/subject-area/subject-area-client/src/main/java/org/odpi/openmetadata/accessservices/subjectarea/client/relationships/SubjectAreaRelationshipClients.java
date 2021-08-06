@@ -94,6 +94,7 @@ public interface SubjectAreaRelationshipClients {
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
      * when working with IsaTypeOfDeprecated objects
      */
+    @Deprecated
     SubjectAreaRelationshipClient<IsATypeOfDeprecated> isaTypeOfDeprecated();
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})

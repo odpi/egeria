@@ -23,10 +23,16 @@ with details of the classification
 the values are used in.
 
 
-Return to [Area 4](Area-4-models.md).
+
+## Deprecated types
+
+* **GovernanceConfidentialityLevel** - use **GovernanceClassificationLevel**.
 
 
+---
 
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

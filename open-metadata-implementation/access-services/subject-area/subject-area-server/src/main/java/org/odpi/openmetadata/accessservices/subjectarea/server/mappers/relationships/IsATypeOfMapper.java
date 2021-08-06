@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsATypeOf;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,8 +18,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
     private static final String IS_A_TYPE_OF_RELATIONSHIP = "IsATypeOfRelationship";
 
-    public IsATypeOfMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public IsATypeOfMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -31,18 +31,18 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
     @Override
     protected void mapRelationshipToInstanceProperties(IsATypeOf isATypeOf, InstanceProperties instanceProperties) {
         if (isATypeOf.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (isATypeOf.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (isATypeOf.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (isATypeOf.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(isATypeOf.getStatus().getOrdinal());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
         }
     }
 
@@ -58,15 +58,15 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
     protected boolean mapPrimitiveToRelationship(IsATypeOf isATypeOf, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             isATypeOf.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             isATypeOf.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             isATypeOf.setSource(stringValue);
             foundProperty = true;
         }
@@ -76,7 +76,7 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
     @Override
     protected boolean mapEnumToRelationship(IsATypeOf isATypeOf, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals( OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             isATypeOf.setStatus(status);
             foundProperty = true;

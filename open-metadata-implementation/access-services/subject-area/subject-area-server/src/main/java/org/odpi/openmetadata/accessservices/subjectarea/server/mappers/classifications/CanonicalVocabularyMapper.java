@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +22,13 @@ public class CanonicalVocabularyMapper extends ClassificationMapper{
     private static final String className = CanonicalVocabularyMapper.class.getName();
     private static final String typeName = "CanonicalVocabulary";
 
-    public CanonicalVocabularyMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public CanonicalVocabularyMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         CanonicalVocabulary canonicalVocabulary = (CanonicalVocabulary)omasClassification;
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"scope",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"scope",omrsClassificationProperties,"");
         canonicalVocabulary.setScope(stringValue);
         return CanonicalVocabulary.getPropertyNames();
     }
@@ -47,7 +47,7 @@ public class CanonicalVocabularyMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         CanonicalVocabulary canonicalVocabulary = (CanonicalVocabulary)omasClassification;
         if (canonicalVocabulary.getScope()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"scope",canonicalVocabulary.getScope(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,"scope",canonicalVocabulary.getScope(),"updateOMRSAttributes");
         }
         return instanceProperties;
     }

@@ -19,8 +19,11 @@ The **OperatingPlatform** is an informational structure to describe the
 operating system of the host.
 Many hosts could have the same operating platform.
 
+----
 
-Return to [Area 0](Area-0-models.md).
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

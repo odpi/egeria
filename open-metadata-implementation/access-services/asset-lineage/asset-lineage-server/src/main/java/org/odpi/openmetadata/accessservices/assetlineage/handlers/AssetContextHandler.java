@@ -19,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +38,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_FILE_COLUMN;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -89,9 +89,9 @@ public class AssetContextHandler {
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
+            case TABULAR_FILE_COLUMN:
                 if (!isInternalTabularColumn(userId, entityDetail)) {
                     EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
-
                     handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
                     context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
@@ -165,7 +165,7 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
-        if (!Arrays.asList(TABULAR_COLUMN, RELATIONAL_COLUMN).contains(lineageEntity.getTypeDefName())) {
+        if (!handlerHelper.isTabularColumn(userId, lineageEntity.getTypeDefName())) {
             return new HashMap<>();
         }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), TABULAR_COLUMN);
@@ -189,7 +189,7 @@ public class AssetContextHandler {
         String methodName = "isInternalTabularColumn";
 
         Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
-                TABULAR_COLUMN);
+                tabularColumn.getType().getTypeDefName());
         if (relationship.isEmpty()) {
             return false;
         }

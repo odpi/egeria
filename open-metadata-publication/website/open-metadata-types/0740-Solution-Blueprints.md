@@ -8,7 +8,10 @@
 ![UML](0740-Solution-Blueprints.png#pagewidth)
 
 
-Return to [Area 7](Area-7-models.md).
+---
+
+* Return to [Area 7](Area-7-models.md).
+* Return to [Overview](.).
 
 
 ----

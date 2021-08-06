@@ -38,6 +38,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
@@ -149,7 +150,6 @@ public class HandlerHelper {
         }
         return null;
     }
-
 
     /**
      * Gets entity at the end.
@@ -478,5 +478,17 @@ public class HandlerHelper {
      */
     public boolean isTable(String serviceName, EntityDetail entityDetail) {
         return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), RELATIONAL_TABLE);
+    }
+
+    /**
+     * Verifies if the entity is of type TabularColumn or subtype
+     *
+     * @param serviceName  the service name
+     * @param typeName type of the entity
+     *
+     * @return true if the entity is of type TabularColumn or subtype, false otherwise
+     */
+    public boolean isTabularColumn(String serviceName, String typeName) {
+        return repositoryHelper.isTypeOf(serviceName, typeName, TABULAR_COLUMN);
     }
 }

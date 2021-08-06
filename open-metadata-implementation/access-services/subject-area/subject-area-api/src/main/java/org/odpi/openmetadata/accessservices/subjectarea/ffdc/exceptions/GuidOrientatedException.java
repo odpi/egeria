@@ -41,7 +41,7 @@ public class GuidOrientatedException extends SubjectAreaCheckedException {
     public GuidOrientatedException(ExceptionMessageDefinition messageDefinition,
                                    String className,
                                    String actionDescription,
-                                   Throwable caughtError,
+                                   Exception caughtError,
                                    String guid) {
         super(messageDefinition, className, actionDescription, caughtError);
         this.guid = guid;

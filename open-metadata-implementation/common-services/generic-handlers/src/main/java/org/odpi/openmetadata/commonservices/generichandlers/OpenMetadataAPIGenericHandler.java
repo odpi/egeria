@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -171,6 +172,15 @@ public class OpenMetadataAPIGenericHandler<B>
         return repositoryHelper;
     }
 
+    /**
+     * Return the repository handler for this server.
+     *
+     * @return repository handler object
+     */
+    public RepositoryHandler getRepositoryHandler()
+    {
+        return repositoryHandler;
+    }
 
     /**
      * Return the type definition for the named type.
@@ -202,6 +212,16 @@ public class OpenMetadataAPIGenericHandler<B>
     public String getServiceName()
     {
         return serviceName;
+    }
+
+    /**
+     * Return the name of this server.
+     *
+     * @return string name
+     */
+    public String getServerName()
+    {
+        return serverName;
     }
 
 
@@ -391,7 +411,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateClassificationEffectivityDates(String userId,
+    public void updateClassificationEffectivityDates(String userId,
                                                         String externalSourceGUID,
                                                         String externalSourceName,
                                                         String beanGUID,
@@ -506,7 +526,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateBeanEffectivityDates(String userId,
+    public void updateBeanEffectivityDates(String userId,
                                               String externalSourceGUID,
                                               String externalSourceName,
                                               String beanGUID,
@@ -612,7 +632,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    protected void updateRelationshipEffectivityDates(String userId,
+    public void updateRelationshipEffectivityDates(String userId,
                                                       String externalSourceGUID,
                                                       String externalSourceName,
                                                       String relationshipGUID,
@@ -863,7 +883,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem with the repositories
      * @throws UserNotAuthorizedException the user is not allowed to update the security tags
      */
-    void removeClassificationFromRepository(String userId,
+    public void removeClassificationFromRepository(String userId,
                                             String beanGUID,
                                             String beanGUIDParameterName,
                                             String beanGUIDTypeName,
@@ -1752,7 +1772,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return anchorGUID or null
      */
-    String getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
+    public String getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
                                                   String       methodName)
     {
         /*
@@ -2286,6 +2306,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * Is the attribute nested in another attribute?  Note that because schema attributes can be nested through multiple levels,
          * the retrieval of the parent needs to take account of which end the attributeGUID is connected to.
          */
+
         relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                            attributeGUID,
                                                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
@@ -2610,7 +2631,6 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
-
     /**
      * Walk the graph to locate the anchor for a comment.  Comments are attached to each other through various levels of nesting
      * and eventually anchored to a referenceable.   The referenceable is the anchor.  Care has to be taken because a
@@ -2622,7 +2642,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @return unique identifier of attached anchor or null if there is no attached anchor
      *
-     * @throws PropertyServerException  there is a problem retrieving the  properties from the repositories
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private String getAnchorGUIDForComment(String userId,
@@ -2672,6 +2692,95 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+    /**
+     * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are connected directly to their anchor Glossary via a TermAnchor relationship.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the Glossary Term (it is assumed that the anchorGUID property of this instance is null)
+     * @param methodName calling method
+     *
+     * @return unique identifier of attached anchor or null if there is no attached anchor
+     *
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
+     */
+    private String getAnchorGUIDForGlossaryTerm(String userId,
+                                           String glossaryTermGUID,
+                                           String methodName) throws PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        /*
+         * Is the Glossary Term connected to anything?
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    glossaryTermGUID,
+                                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                                    methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy proxy = relationship.getEntityOneProxy();
+                    if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                    {
+                        return proxy.getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Walk the graph to locate the anchor for a Glossary Category.  Glossary Categories are connected directly to their anchor Glossary via a CategoryAnchor relationship.
+     *
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the Glossary Category (it is assumed that the anchorGUID property of this instance is null)
+     * @param methodName calling method
+     *
+     * @return unique identifier of attached anchor or null if there is no attached anchor
+     *
+     * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
+     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
+     */
+    private String getAnchorGUIDForGlossaryCategory(String userId,
+                                                String glossaryCategoryGUID,
+                                                String methodName) throws PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        /*
+         * Is the Glossary Category connected to anything?
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    glossaryCategoryGUID,
+                                                                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                                    methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy proxy = relationship.getEntityOneProxy();
+                    if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                    {
+                        return proxy.getGUID();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * This method walks the relationships to determine if the entity identified by the targetGUID has an anchor.  It returns the GUID of
@@ -2738,6 +2847,14 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, methodName);
         }
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
+        {
+            anchorGUID = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, methodName);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME))
+        {
+            anchorGUID = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, methodName);
+        }
 
         return anchorGUID;
     }
@@ -2752,11 +2869,13 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param originalAnchorGUID the original anchor guid - may be null
      * @param methodName calling method
      *
+     * @return newAnchorGUID we derive the anchor from the the target element and then return it. Note this value can be null if there is no anchor.
+     *
      * @throws InvalidParameterException probably the type of the entity is not correct
      * @throws PropertyServerException there is a problem with the repository
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
-    private void reEvaluateAnchorGUID(String targetGUID,
+    private String reEvaluateAnchorGUID(String targetGUID,
                                       String targetGUIDParameterName,
                                       String targetTypeName,
                                       String originalAnchorGUID,
@@ -2786,6 +2905,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, methodName);
             }
         }
+        return newAnchorGUID;
     }
 
 
@@ -4121,7 +4241,10 @@ public class OpenMetadataAPIGenericHandler<B>
                         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                         {
                             // skip entities that are not visible to this user
-                            log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                            if (log.isDebugEnabled())
+                            {
+                                log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                            }
                         }
                     }
                 }
@@ -5899,7 +6022,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Remove any entity if it is anchored to the anchor entity
+     * Remove an entity if it is anchored to the anchor entity
      *
      * @param anchorEntity entity anchor to match against
      * @param potentialAnchoredEntity entity to validate
@@ -5908,7 +6031,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem in the repository services
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
-    private void deleteAnchoredEntity(EntityDetail anchorEntity,
+    public void deleteAnchoredEntity(EntityDetail anchorEntity,
                                       EntityProxy  potentialAnchoredEntity,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -6124,7 +6247,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private void deleteBeanInRepository(String       userId,
+    public void deleteBeanInRepository(String       userId,
                                         String       externalSourceGUID,
                                         String       externalSourceName,
                                         String       entityGUID,
@@ -6208,6 +6331,44 @@ public class OpenMetadataAPIGenericHandler<B>
         }
     }
 
+    /**
+     * Is the bean isolated - i.e. has no relationships.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of object to update
+     * @param entityTypeName unique name of the entity's type
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repository.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public boolean isBeanIsolated(String       userId,
+                                  String       entityGUID,
+                                  String       entityTypeName,
+                                  String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        boolean isIsolated = true;
+        /*
+         * Retrieve the first relationship, if there is one then we have relationships.
+         */
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       entityGUID,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       methodName);
+
+        if (iterator.moreToReceive())
+        {
+            isIsolated = false;
+        }
+        return isIsolated;
+    }
 
     /**
      * Return the elements of the requested type indirectly attached to an entity identified by the starting GUID via the listed relationship
@@ -6436,7 +6597,10 @@ public class OpenMetadataAPIGenericHandler<B>
                     catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException nonAccessibleEntity)
                     {
                         // skip entities that are not visible to this user
-                        log.debug("Skipping entity", nonAccessibleEntity);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Skipping entity", nonAccessibleEntity);
+                        }
                     }
                 }
             }
@@ -6615,7 +6779,10 @@ public class OpenMetadataAPIGenericHandler<B>
                     catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException nonAccessibleEntity)
                     {
                         // skip entities that are not visible to this user
-                        log.debug("Skipping entity", nonAccessibleEntity);
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Skipping entity", nonAccessibleEntity);
+                        }
                     }
                 }
             }
@@ -7002,7 +7169,10 @@ public class OpenMetadataAPIGenericHandler<B>
                 catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                 {
                     // skip entities that are not visible to this user
-                    log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    }
                 }
             }
         }
@@ -7118,7 +7288,10 @@ public class OpenMetadataAPIGenericHandler<B>
                 catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
                 {
                     // skip entities that are not visible to this user
-                    log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                    }
                 }
             }
         }
@@ -7278,8 +7451,319 @@ public class OpenMetadataAPIGenericHandler<B>
 
         return null;
     }
+    /**
+     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
+     *
+     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
+     * <ul>
+     * <li> with the relationship relationshipTypeName</li>
+     * <li> the relationship relationshipTypeGUID</li>
+     * <li> be at this end of the relationship.</li>
+     * <li> it is visible to the calling user </li>
+     * </ul>
+     * <p>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
+     *</ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
+     * </ul>
+     *
+     * @param userId       calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param relationshipTypeName name of the type of relationship attaching the attached entity
+     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param specificMatchPropertyNames list of property names to
+     * @param searchCriteria text to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
+     * @param ignoreCase if set ignore case on the match, if not set then case must match
+     * @param queryPageSize requested page size
+     * @param methodName   calling method
+     * @return List of attached entities
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
 
+    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
+                                                          String        startingGUID,
+                                                          String        startingGUIDParameterName,
+                                                          String        startingTypeName,
+                                                          String        relationshipTypeName,
+                                                          String        relationshipTypeGUID,
+                                                          int           selectionEnd,
+                                                          Set<String>   specificMatchPropertyNames,
+                                                          String        searchCriteria,
+                                                          int           startFrom,
+                                                          boolean       startsWith,
+                                                          boolean       ignoreCase,
+                                                          int           queryPageSize ,
+                                                          String        methodName) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        return getAttachedFilteredEntities(userId,
+                                           startingGUID,
+                                           startingGUIDParameterName,
+                                           startingTypeName,
+                                           relationshipTypeName,
+                                           relationshipTypeGUID,
+                                           selectionEnd,
+                                           null,
+                                           null,
+                                           true,
+                                           specificMatchPropertyNames,
+                                           searchCriteria,
+                                           startFrom,
+                                           startsWith,
+                                           ignoreCase,
+                                           queryPageSize,
+                                           methodName);
+    }
 
+    /**
+     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
+     *
+     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
+     * <ul>
+     * <li> with the relationship relationshipTypeName</li>
+     * <li> the relationship relationshipTypeGUID</li>
+     * <li> be at this end of the relationship.</li>
+     * <li> it is visible to the calling user </li>
+     * </ul>
+     * <p>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
+     *</ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
+     * </ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeName</li>
+     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeGUID</li>
+     * <li> not have a relationship to a unique parent entity where the parent is at the other end, the parent end is identified using attachedEntityParentAtEnd1</li>
+     *</ul>
+     *
+     * @param userId       calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param relationshipTypeName name of the type of relationship attaching the attached entity
+     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param attachedEntityFilterRelationshipTypeName do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has not effect on the match.
+     * @param attachedEntityFilterRelationshipTypeGUID do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has not effect on the match.
+     * @param attachedEntityParentAtEnd1 if the attached entity has a parent the entity will not be returned.
+     * @param specificMatchPropertyNames list of property names to
+     * @param searchCriteria text to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
+     * @param ignoreCase if set ignore case on the match, if not set then case must match
+     * @param queryPageSize requested page size
+     * @param methodName   calling method
+     * @return List of attached entities
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+
+    /*
+     * Note this method has parameters that are bing used by callers. If you need more options (e.g. to specify asOfTime or to limit on classification or around zones) then overload this method.
+     */
+    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
+                                                  String        startingGUID,
+                                                  String        startingGUIDParameterName,
+                                                  String        startingTypeName,
+                                                  String        relationshipTypeName,
+                                                  String        relationshipTypeGUID,
+                                                  int           selectionEnd,
+                                                  String        attachedEntityFilterRelationshipTypeName,
+                                                  String        attachedEntityFilterRelationshipTypeGUID,
+                                                  boolean       attachedEntityParentAtEnd1,
+                                                  Set<String>   specificMatchPropertyNames,
+                                                  String        searchCriteria,
+                                                  int           startFrom,
+                                                  boolean       startsWith,
+                                                  boolean       ignoreCase,
+                                                  int           queryPageSize ,
+                                                  String        methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+        int localStartFrom = 0;
+        RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                                     userId,
+                                                                                                     startingGUID,
+                                                                                                     startingTypeName,
+                                                                                                     relationshipTypeGUID,
+                                                                                                     relationshipTypeName,
+                                                                                                     null,
+                                                                                                     localStartFrom,
+                                                                                                     queryPageSize,
+                                                                                                     selectionEnd,
+                                                                                                     methodName);
+        // resultsToReturn is the subset of the filtered results to meets the requested startFrom
+        List<EntityDetail> resultsToReturn = new ArrayList<>();
+        // accumulate the total filtered results from 0 - so we can then honour the requested startFrom which is the index into the filtered results.
+        List<EntityDetail> totalFilteredResults = new ArrayList<>();
+
+        // iterate through the related entities applying the filter.
+        while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
+        {
+            EntityDetail relatedEntity = relatedEntityIterator.getNext();
+
+            if (relatedEntity != null)
+            {
+                if (log.isDebugEnabled())
+                {
+                    String displayName = "";
+                    String qualifiedName = "";
+                    if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null ) {
+                        if ( relatedEntity.getProperties().getInstanceProperties().get("displayName")!=null) {
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get("displayName").toString();
+                        }
+                        if ( relatedEntity.getProperties().getInstanceProperties().get("qualifiedName")!=null) {
+                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get("qualifiedName").toString();
+                        }
+                    }
+                    log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
+                }
+                Relationship parentRelationship = null;
+                // apply the filter if there is one
+                if (attachedEntityFilterRelationshipTypeGUID != null && attachedEntityFilterRelationshipTypeName != null)
+                {
+                    parentRelationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
+                                                                                             relatedEntity.getGUID(),
+                                                                                             relatedEntity.getType().getTypeDefName(),
+                                                                                             attachedEntityFilterRelationshipTypeGUID,
+                                                                                             attachedEntityFilterRelationshipTypeName,
+                                                                                             attachedEntityParentAtEnd1,
+                                                                                             methodName);
+
+                    if (log.isDebugEnabled())
+                    {
+                        if (parentRelationship != null)
+                        {
+                            log.debug("getAttachedFilteredEntities - while found parent relationship  parentRelationship" + parentRelationship.getGUID());
+                        }
+                    }
+                }
+                // if there is a parentRelationship - this should not be included.
+                if (parentRelationship == null &&
+                        entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase)) {
+                    totalFilteredResults.add(relatedEntity);
+                    if (totalFilteredResults.size() > startFrom) {
+                        resultsToReturn.add(relatedEntity);
+                    }
+                }
+            }
+        }
+
+        if (resultsToReturn.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return resultsToReturn;
+        }
+
+    }
+
+    /**
+     * Check whether the attribute values, associated with the supplied attribute names, in the supplied entity match the search criteria. This text match is influenced by the
+     * exactValue and ignoreCase flags.
+     *
+     * @param entity entity to check
+     * @param attributeNames attribute names to check the value of - these are expected to be attributes that hold text values; if they will be ignored
+     * @param searchCriteria literal text search criteria
+     * @param exactValue when set match exactly otherwise look for matches starting with this text
+     * @param ignoreCase when set ignore the case, otherwise do a case sensitive match.
+     * @return true for match otherwise false
+     */
+
+    protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase)
+    {
+        if (attributeNames == null) return true; // TODO maybe this should be an error
+        if (searchCriteria == null) return true; // nothing specific to match so it all matches
+
+        String regexedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
+        boolean isMatch = false;
+        InstanceProperties matchProperties = entity.getProperties();
+        Iterator<String> propertyNames = matchProperties.getPropertyNames();
+
+        if (propertyNames != null)
+        {
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+                if (attributeNames.contains(propertyName))
+                {
+                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
+
+                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
+                    if (ipCat == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
+                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        {
+                            String currentValue = (String) ppv.getPrimitiveValue();
+                            if (currentValue != null && currentValue.matches(regexedSearchCriteria))
+                            {
+                                isMatch = true;
+                            }
+                        }
+                        // TODO if there are no valid string attributes throw an error?
+                    }
+                }
+            }
+        }
+        return isMatch;
+    }
+
+    /**
+     * Take a literal string supplied in searchCriteria and augment it with extra content for the regex engine to process.
+     * 2 flags exactValue and ignoreCase are supplied that determine the nature of the regex expression that is created.
+     *
+     * @param searchCriteria text literal use as the basis of the match, if this empty then match everything ignoring the flags.
+     * @param exactValue the exactValue flag when set means to exactly match the streing, otehrwise it looks for srings starting with the searchCriteria.
+     * @param ignoreCase if set ignore the case on the match, if not set then the case must match.
+     * @return a regex expression created to match implement the supplied searchCriteria and flags.
+     */
+    protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase)
+    {
+        if (searchCriteria == null || searchCriteria.trim().length() == 0)
+        {
+            // ignore the flags for an empty search criteria string - assume we want everything
+            searchCriteria = ".*";
+        } else
+        {
+            // lose any leading and trailing blanks
+            searchCriteria = searchCriteria.trim();
+            if (exactValue)
+            {
+                searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
+            } else
+            {
+                searchCriteria = repositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
+            }
+        }
+
+        return searchCriteria;
+    }
     /**
      * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
      *
@@ -7741,7 +8225,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property names to look in (or null to search any string property)
      * @param exactValueMatch should the value be treated as a literal or a RegEx?
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param queryPageSize maximum number of values to return
      * @param methodName calling method
      * @return configured iterator
@@ -8185,7 +8669,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8235,7 +8719,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8284,7 +8768,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8334,7 +8818,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8471,7 +8955,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8527,7 +9011,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8584,7 +9068,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8641,7 +9125,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8720,7 +9204,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8798,7 +9282,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -8925,7 +9409,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -8981,7 +9465,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9037,7 +9521,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9093,7 +9577,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9167,7 +9651,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9241,7 +9725,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param queryPageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9395,7 +9879,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9576,7 +10060,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
      *
@@ -9628,7 +10112,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9682,7 +10166,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch does the value need to match exactly?
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9819,7 +10303,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9850,7 +10334,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9912,7 +10396,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -9943,7 +10427,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
      * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10042,7 +10526,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10098,7 +10582,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
      *
@@ -10161,8 +10645,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachingGUID             unique id of the entity for the element that is being attached
      * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
      * @param attachingElementTypeName  type name of the attaching element's entity
-     * @param relationshipTypeGUID        unique identifier of type of the relationship to create
-     * @param relationshipTypeName        unique name of type of the relationship to create
+     * @param relationshipTypeGUID      unique identifier of type of the relationship to create
+     * @param relationshipTypeName      unique name of type of the relationship to create
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
      * @param methodName                calling method
      *
@@ -11049,7 +11533,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two elements.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11106,9 +11592,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11179,9 +11665,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11238,9 +11724,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a relationship between two specified elements.  If the attaching element is anchored to the same anchor as the starting element, it is
-     * unlinked from all other elements and deleted. This can cause a cascading effect if the anchored elements are organized in a hierarchy such
-     * as a schema or a comment conversation.
+     * Removes a relationship between two specified elements.  If after the relationship is deleted, one of the ends has now
+     * lost it's anchor, then that entity is deleted. Anchored entities should not be left unanchored. This can cause a cascading effect
+     * if the anchored elements are organized in a hierarchy, such as a schema or a comment conversation.
      *
      * @param userId                    userId of user making request
      * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
@@ -11300,6 +11786,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              methodName);
 
         String startingElementAnchorGUID = startingGUID;
+
+        String newStartingAnchorGUID = null;
+        String newAttachedAnchorGUID = null;
+
 
         if (startingElementAnchorEntity != null)
         {
@@ -11378,7 +11868,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 /*
                  * Now that this relationship is gone, the anchorGUID may now be wrong
                  */
-                this.reEvaluateAnchorGUID(startingGUID,
+                newStartingAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
                                           startingGUIDParameterName,
                                           startingElementTypeName,
                                           startingElementAnchorEntity.getGUID(),
@@ -11423,7 +11913,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 /*
                  * Now that this relationship is gone, the anchorGUID may now be wrong
                  */
-                this.reEvaluateAnchorGUID(attachedGUID,
+                newAttachedAnchorGUID = this.reEvaluateAnchorGUID(attachedGUID,
                                           attachedGUIDParameterName,
                                           attachedElementTypeName,
                                           attachedElementAnchorEntity.getGUID(),
@@ -11448,22 +11938,69 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
             /*
-             * If the attached element has the same anchor GUID as the starting element then the attached element should be deleted.
+             * If the attached element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
              */
-            if ((attachedElementAnchorEntity != null) && (startingElementAnchorEntity != null) &&
-                        (attachedElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+              if (attachedElementAnchorEntity != null && newAttachedAnchorGUID == null)
+              {
+                  try {
+                      this.deleteBeanInRepository(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  attachedGUID,
+                                                  attachedGUIDParameterName,
+                                                  attachedElementTypeGUID,
+                                                  attachedElementTypeName,
+                                                  null,
+                                                  null,
+                                                  attachedElementAnchorEntity,
+                                                  methodName);
+                  } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+                  {
+                      // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                      auditLog.logException(methodName,
+                                            GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                attachedGUID,
+                                                                                                                attachedElementTypeName,
+                                                                                                                attachedElementTypeGUID,
+                                                                                                                methodName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
+                                            error);
+
+                  }
+            }
+            /*
+             * If the starting element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
+             */
+            if (startingElementAnchorEntity != null && newStartingAnchorGUID == null)
             {
-                this.deleteBeanInRepository(userId,
+                final String startingElementTypeGUID = repositoryHelper.getTypeDefByName(methodName, startingElementTypeName).getGUID();
+                try
+                {
+                    this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
-                                            attachedGUID,
-                                            attachedGUIDParameterName,
-                                            attachedElementTypeGUID,
-                                            attachedElementTypeName,
+                                            startingGUID,
+                                            startingGUIDParameterName,
+                                            startingElementTypeGUID,
+                                            startingElementTypeName,
                                             null,
                                             null,
-                                            attachedElementAnchorEntity,
+                                            startingElementAnchorEntity,
                                             methodName);
+                } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+                {
+                    // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                    auditLog.logException(methodName,
+                                          GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                         startingGUID,
+                                                                                                                         startingElementTypeName,
+                                                                                                                         startingElementTypeGUID,
+                                                                                                                         methodName,
+                                                                                                                         error.getClass().getName(),
+                                                                                                                         error.getMessage()),
+                                          error);
+                }
             }
         }
     }

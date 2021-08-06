@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 
 
 /**
@@ -18,11 +18,11 @@ public class SubjectAreaConfigHandler extends SubjectAreaHandler {
      * Construct the Subject Area Config Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper           omrs API helper
+     * @param genericHandler          generic handler
      * @param maxPageSize             maximum page size
      */
-    public SubjectAreaConfigHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
-        super(oMRSAPIHelper, maxPageSize);
+    public SubjectAreaConfigHandler(OpenMetadataAPIGenericHandler genericHandler, int maxPageSize) {
+        super(genericHandler, maxPageSize);
     }
 
     /**
