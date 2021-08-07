@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOriginCategory;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
@@ -52,30 +52,30 @@ public class AssetCatalogConverter {
      * @param entityDetail entityDetails object
      * @return Asset Description object
      */
-    public AssetDescription getAssetDescription(EntityDetail entityDetail) {
-        AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGuid(entityDetail.getGUID());
+    public AssetCatalogBean getAssetCatalogBean(EntityDetail entityDetail) {
+        AssetCatalogBean assetCatalogBean = new AssetCatalogBean();
+        assetCatalogBean.setGuid(entityDetail.getGUID());
 
-        assetDescription.setCreatedBy(entityDetail.getCreatedBy());
-        assetDescription.setCreateTime(entityDetail.getCreateTime());
-        assetDescription.setUpdatedBy(entityDetail.getUpdatedBy());
-        assetDescription.setUpdateTime(entityDetail.getUpdateTime());
-        assetDescription.setVersion(entityDetail.getVersion());
+        assetCatalogBean.setCreatedBy(entityDetail.getCreatedBy());
+        assetCatalogBean.setCreateTime(entityDetail.getCreateTime());
+        assetCatalogBean.setUpdatedBy(entityDetail.getUpdatedBy());
+        assetCatalogBean.setUpdateTime(entityDetail.getUpdateTime());
+        assetCatalogBean.setVersion(entityDetail.getVersion());
 
         if (entityDetail.getType() != null && entityDetail.getType().getTypeDefName() != null) {
-            assetDescription.setType(convertInstanceType(entityDetail.getType()));
+            assetCatalogBean.setType(convertInstanceType(entityDetail.getType()));
         }
 
-        assetDescription.setUrl(entityDetail.getInstanceURL());
+        assetCatalogBean.setUrl(entityDetail.getInstanceURL());
         if (entityDetail.getStatus() != null && entityDetail.getStatus().getName() != null) {
-            assetDescription.setStatus(entityDetail.getStatus().getName());
+            assetCatalogBean.setStatus(entityDetail.getStatus().getName());
         }
 
-        assetDescription.setProperties(extractProperties(entityDetail.getProperties()));
-        assetDescription.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
+        assetCatalogBean.setProperties(extractProperties(entityDetail.getProperties()));
+        assetCatalogBean.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
 
         if (CollectionUtils.isNotEmpty(entityDetail.getClassifications())) {
-            assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
+            assetCatalogBean.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
         ElementOrigin elementOrigin = new ElementOrigin();
         elementOrigin.setSourceServer(sourceName);
@@ -83,9 +83,9 @@ public class AssetCatalogConverter {
         elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
         elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
         elementOrigin.setOriginCategory(this.getElementOriginCategory(entityDetail.getInstanceProvenanceType()));
-        assetDescription.setOrigin(elementOrigin);
+        assetCatalogBean.setOrigin(elementOrigin);
 
-        return assetDescription;
+        return assetCatalogBean;
     }
 
     /**
