@@ -52,7 +52,7 @@ public class AssetCatalogConverter {
      * @param entityDetail entityDetails object
      * @return Asset Description object
      */
-    public AssetCatalogBean getAssetDescription(EntityDetail entityDetail) {
+    public AssetCatalogBean getAssetCatalogBean(EntityDetail entityDetail) {
         AssetCatalogBean assetCatalogBean = new AssetCatalogBean();
         assetCatalogBean.setGuid(entityDetail.getGUID());
 
