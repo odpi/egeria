@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.listenenrs;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
@@ -144,7 +144,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             }else if (  supportedTypesForSearch!=null
                     && supportedTypesForSearch.contains(entityDetail.getType().getTypeDefName()))
             {
-                AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
+                AssetCatalogBean assetDescription = converter.getAssetCatalogBean(entityDetail);
                 publisher.publishEvent(assetDescription);
             }
 
