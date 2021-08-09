@@ -2222,11 +2222,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        if (pageSize == 0)
-        {
-            return fullResults;
-        }
-
         int fullResultsSize = fullResults.size();
 
         if (fromElement >= fullResultsSize)
@@ -2254,15 +2249,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
         }
 
-        if ((fromElement == 0) && (pageSize > fullResultsSize))
+        if ((fromElement == 0) && (pageSize == 0 || pageSize > fullResultsSize))
         {
             return fullResults;
         }
-
-
-
-        int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
-
+        int toIndex = fullResultsSize;
+        
+        if (pageSize != 0)
+        {
+          toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        }
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
     }
 

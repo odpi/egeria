@@ -3,7 +3,7 @@
 
 # Delete processes
 
-[Delete a process](../../data-engine-server/docs/scenarios/delete-processes.md) 
+[Delete a process](../../data-engine-server/docs/scenarios/delete-process.md) 
 with the associated ports and process port relationships.
 
 ----

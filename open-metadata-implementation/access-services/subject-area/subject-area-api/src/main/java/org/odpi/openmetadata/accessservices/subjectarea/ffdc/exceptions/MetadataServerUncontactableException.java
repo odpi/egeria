@@ -36,7 +36,7 @@ public class MetadataServerUncontactableException extends SubjectAreaCheckedExce
     public MetadataServerUncontactableException(ExceptionMessageDefinition messageDefinition,
                                                 String className,
                                                 String actionDescription,
-                                                Throwable caughtError) {
+                                                Exception caughtError) {
         super(messageDefinition, className, actionDescription, caughtError);
     }
 }

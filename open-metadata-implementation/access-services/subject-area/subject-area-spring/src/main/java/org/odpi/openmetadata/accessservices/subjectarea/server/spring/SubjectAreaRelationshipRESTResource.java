@@ -107,7 +107,6 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the HAS A relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -119,10 +118,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/has-as/{guid}")
     public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
-                                                                       @PathVariable String guid,
-                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
-    ) {
-        return restAPI.deleteTermHasARelationship(serverName, userId, guid, isPurge);
+                                                                       @PathVariable String guid
+                                                                      ) {
+        return restAPI.deleteTermHasARelationship(serverName, userId, guid);
     }
 
     /**
@@ -223,7 +221,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Related term relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -235,10 +233,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/related-terms/{guid}")
     public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(@PathVariable String serverName,
                                                                      @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                     @PathVariable String guid
+                                                                    
     ) {
-        return restAPI.deleteRelatedTerm(serverName, userId, guid, isPurge);
+        return restAPI.deleteRelatedTerm(serverName, userId, guid);
     }
 
     /**
@@ -341,7 +339,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Synonym relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -353,10 +351,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/synonyms/{guid}")
     public SubjectAreaOMASAPIResponse<Synonym> deleteSynonymRelationship(@PathVariable String serverName,
                                                                          @PathVariable String userId,
-                                                                         @PathVariable String guid,
-                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                         @PathVariable String guid
+                                                                        
     ) {
-        return restAPI.deleteSynonymRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteSynonymRelationship(serverName, userId, guid);
     }
 
     /**
@@ -459,7 +457,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Antonym relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -471,10 +469,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/antonyms/{guid}")
     public SubjectAreaOMASAPIResponse<Antonym> deleteAntonymRelationship(@PathVariable String serverName,
                                                                          @PathVariable String userId,
-                                                                         @PathVariable String guid,
-                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                         @PathVariable String guid
+                                                                        
     ) {
-        return restAPI.deleteAntonymRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteAntonymRelationship(serverName, userId, guid);
     }
 
     /**
@@ -577,7 +575,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Translation relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -589,10 +587,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/translations/{guid}")
     public SubjectAreaOMASAPIResponse<Translation> deleteTranslationRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
-                                                                                 @PathVariable String guid,
-                                                                                 @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                 @PathVariable String guid
+                                                                                
     ) {
-        return restAPI.deleteTranslationRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteTranslationRelationship(serverName, userId, guid);
     }
 
     /**
@@ -695,7 +693,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the UsedInContext relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -707,10 +705,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/used-in-contexts/{guid}")
     public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContextRelationship(@PathVariable String serverName,
                                                                                      @PathVariable String userId,
-                                                                                     @PathVariable String guid,
-                                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                     @PathVariable String guid
+                                                                                    
     ) {
-        return restAPI.deleteUsedInContextRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteUsedInContextRelationship(serverName, userId, guid);
     }
 
     /**
@@ -813,7 +811,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the PreferredTerm relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -825,10 +823,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/preferred-terms/{guid}")
     public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTermRelationship(@PathVariable String serverName,
                                                                                      @PathVariable String userId,
-                                                                                     @PathVariable String guid,
-                                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                     @PathVariable String guid
+                                                                                    
     ) {
-        return restAPI.deletePreferredTermRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deletePreferredTermRelationship(serverName, userId, guid);
     }
 
     /**
@@ -933,7 +931,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ValidValue relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -945,10 +943,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/valid-values/{guid}")
     public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValueRelationship(@PathVariable String serverName,
                                                                                @PathVariable String userId,
-                                                                               @PathVariable String guid,
-                                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                               @PathVariable String guid
+                                                                              
     ) {
-        return restAPI.deleteValidValueRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteValidValueRelationship(serverName, userId, guid);
     }
 
     /**
@@ -1051,7 +1049,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the ReplacementTerm relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1063,10 +1061,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTermRelationship(@PathVariable String serverName,
                                                                                          @PathVariable String userId,
-                                                                                         @PathVariable String guid,
-                                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                         @PathVariable String guid
+                                                                                        
     ) {
-        return restAPI.deleteReplacementTerm(serverName, userId, guid, isPurge);
+        return restAPI.deleteReplacementTerm(serverName, userId, guid);
     }
 
     /**
@@ -1169,7 +1167,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermTypedByRelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1181,10 +1179,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/typed-bys/{guid}")
     public SubjectAreaOMASAPIResponse<TypedBy> deleteTypedByRelationship(@PathVariable String serverName,
                                                                          @PathVariable String userId,
-                                                                         @PathVariable String guid,
-                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                         @PathVariable String guid
+                                                                        
     ) {
-        return restAPI.deleteTermTypedByRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteTermTypedByRelationship(serverName, userId, guid);
     }
 
     /**
@@ -1286,7 +1284,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsARelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1298,9 +1296,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/is-as/{guid}")
     public SubjectAreaOMASAPIResponse<IsA> deleteTermIsARelationship(@PathVariable String serverName,
                                                                      @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteIsARelationship(serverName, userId, guid, isPurge);
+                                                                     @PathVariable String guid
+                                                                    ) {
+        return restAPI.deleteIsARelationship(serverName, userId, guid);
     }
 
     /**
@@ -1403,7 +1401,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermIsATypeOfRelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1415,9 +1413,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-of-deprecateds/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOfDeprecated> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                            @PathVariable String userId,
-                                                                                           @PathVariable String guid,
-                                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteIsATypeOfDeprecatedRelationship(serverName, userId, guid, isPurge);
+                                                                                           @PathVariable String guid
+                                                                                          ) {
+        return restAPI.deleteIsATypeOfDeprecatedRelationship(serverName, userId, guid);
     }
 
     /**
@@ -1527,7 +1525,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the IsATypeOf relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1539,9 +1537,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsATypeOf(@PathVariable String serverName,
                                                                              @PathVariable String userId,
-                                                                             @PathVariable String guid,
-                                                                             @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteIIsATypeOf(serverName, userId, guid, isPurge);
+                                                                             @PathVariable String guid
+                                                                            ) {
+        return restAPI.deleteIIsATypeOf(serverName, userId, guid);
     }
 
     /**
@@ -1647,7 +1645,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the TermCategorizationRelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1659,9 +1657,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/term-categorizations/{guid}")
     public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorizationRelationship(@PathVariable String serverName,
                                                                                            @PathVariable String userId,
-                                                                                           @PathVariable String guid,
-                                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTermCategorizationRelationship(serverName, userId, guid, isPurge);
+                                                                                           @PathVariable String guid
+                                                                                          ) {
+        return restAPI.deleteTermCategorizationRelationship(serverName, userId, guid);
     }
 
     /**
@@ -1687,30 +1685,8 @@ public class SubjectAreaRelationshipRESTResource {
         return restAPI.restoreTermCategorizationRelationship(serverName, userId, guid);
     }
 
-    /**
-     * Create a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     * Terms created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
-     * Term. This method is to allow glossaries to be associated with Terms that have not been created via the Subject Area OMAS or to recreate
-     * the TermAnchor relationship if it has been purged.
-     * <p>
-     *
-     * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                 userId under which the request is performed
-     * @param termAnchorRelationship the TermAnchorRelationship
-     * @return response, when successful contains the created termAnchorRelationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PostMapping(path = "/users/{userId}/relationships/term-anchor")
-    public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchor(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @RequestBody TermAnchor termAnchorRelationship) {
-        return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
-    }
+    // No modification of TermAnchor exists, because this is an anchoring relationship
+
 
     /**
      * Get a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1734,102 +1710,8 @@ public class SubjectAreaRelationshipRESTResource {
 
     }
 
-    /**
-     * Update a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId               userId under which the request is performed
-     * @param guid       guid of the TermAnchor relationship
-     * @param termAnchor the termAnchor relationship
-     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated termAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PutMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchorRelationship(@PathVariable String serverName,
-                                                                                       @PathVariable String userId,
-                                                                                       @PathVariable String guid,
-                                                                                       @RequestBody TermAnchor termAnchor,
-                                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
-    ) {
-        return restAPI.updateTermAnchorRelationship(serverName, userId, guid, termAnchor, isReplace);
-    }
+    // No modification of CategoryAnchor exists, because this is an anchoring relationship
 
-    /**
-     * Delete a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermAnchorRelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response for a soft delete the response contains the deleted relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @DeleteMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchorRelationship(@PathVariable String serverName,
-                                                                               @PathVariable String userId,
-                                                                               @PathVariable String guid,
-                                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTermAnchorRelationship(serverName, userId, guid, isPurge);
-    }
-
-    /**
-     * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
-     * <p>
-     * Restore allows the deleted TermAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the Term Anchor Relationship to delete
-     * @return response which when successful contains the restored TermAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PostMapping(path = "/users/{userId}/relationships/term-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchorRelationship(@PathVariable String serverName,
-                                                                                @PathVariable String userId,
-                                                                                @PathVariable String guid) {
-        return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
-    }
-
-    /**
-     * Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
-     * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS or to recreate
-     * the CategoryAnchor relationship if it has been purged.
-     * <p>
-     *
-     * @param serverName                 serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                     userId under which the request is performed
-     * @param categoryAnchorRelationship the CategoryAnchorRelationship
-     * @return response, when successful contains the created categoryAnchorRelationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PostMapping(path = "/users/{userId}/relationships/category-anchor")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchor(@PathVariable String serverName,
-                                                                           @PathVariable String userId,
-                                                                           @RequestBody CategoryAnchor categoryAnchorRelationship) {
-        return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
-    }
 
     /**
      * Get a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1850,80 +1732,6 @@ public class SubjectAreaRelationshipRESTResource {
                                                                         @PathVariable String userId,
                                                                         @PathVariable String guid) {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
-    }
-
-    /**
-     * Update a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows Categories to be owned by a Glossary.
-     * <p>
-     *
-     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId               userId under which the request is performed
-     * @param guid       guid of the CategoryAnchor relationship
-     * @param categoryAnchor the categoryAnchor relationship
-     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated categoryAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PutMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchor(@PathVariable String serverName,
-                                                                           @PathVariable String userId,
-                                                                           @PathVariable String guid,
-                                                                           @RequestBody CategoryAnchor categoryAnchor,
-                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
-    ) {
-        return restAPI.updateCategoryAnchorRelationship(serverName, userId, guid, categoryAnchor, isReplace);
-    }
-
-    /**
-     * Delete a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the CategoryAnchorRelationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
-     * @return response for a soft delete the response contains the deleted relationship
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @DeleteMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchor(@PathVariable String serverName,
-                                                                           @PathVariable String userId,
-                                                                           @PathVariable String guid,
-                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
-    ) {
-        return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid, isPurge);
-    }
-
-    /**
-     * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
-     * <p>
-     * Restore allows the deleted CategoryAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the Category Anchor Relationship to delete
-     * @return response which when successful contains the restored CategoryAnchor
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    @PostMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchor(@PathVariable String serverName,
-                                                                            @PathVariable String userId,
-                                                                            @PathVariable String guid) {
-        return restAPI.restoreCategoryAnchorRelationship(serverName, userId, guid);
     }
 
     /**
@@ -2002,7 +1810,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the Project scope relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -2014,9 +1822,9 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/project-scopes/{guid}")
     public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScopeRelationship(@PathVariable String serverName,
                                                                                    @PathVariable String userId,
-                                                                                   @PathVariable String guid,
-                                                                                   @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteProjectScopeRelationship(serverName, userId, guid, isPurge);
+                                                                                   @PathVariable String guid
+                                                                                  ) {
+        return restAPI.deleteProjectScopeRelationship(serverName, userId, guid);
     }
 
     /**
@@ -2137,7 +1945,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the CategoryHierarchyLink relationship to delete
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -2149,10 +1957,10 @@ public class SubjectAreaRelationshipRESTResource {
     @DeleteMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(@PathVariable String serverName,
                                                                                          @PathVariable String userId,
-                                                                                         @PathVariable String guid,
-                                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                         @PathVariable String guid
+                                                                                        
     ) {
-        return restAPI.deleteCategoryHierarchyLink(serverName, userId, guid, isPurge);
+        return restAPI.deleteCategoryHierarchyLink(serverName, userId, guid);
     }
 
     /**
