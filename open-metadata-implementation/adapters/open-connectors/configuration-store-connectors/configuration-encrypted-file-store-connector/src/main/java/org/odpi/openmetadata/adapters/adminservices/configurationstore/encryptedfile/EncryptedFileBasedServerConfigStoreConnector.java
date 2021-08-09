@@ -284,6 +284,10 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             String textAfter1stIndex = templateString.substring(firstIndex + 3);
             secondIndex = textAfter1stIndex.indexOf(INSERT_FOR_FILENAME_TEMPLATE);
         }
+        if (log.isDebugEnabled()) {
+            log.debug("templateString " + templateString +",firstIndex="+ firstIndex+",secondIndex="+ secondIndex);
+        }
+
         try {
             if (firstIndex != -1 && secondIndex == -1) {
                 // only one insert
@@ -319,6 +323,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                     // remove post and add secondPartOfTemplate then we have the matching filenames
                     for (String folderName : folderNames) {
                         String fileName = folderName.substring(0, folderName.length() - restOfFolderName.length()) + secondPartOfTemplate;
+
                         File f =  new File(fileName);
                         if (f.exists() && !f.isDirectory()) {
                             fileNames.add(fileName);
@@ -334,6 +339,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 // take the serverName from the first insert and then look for its presence in the second insert position.
                 // we need to find the parent folder name of the folder with the insert in and list those folders so we can match on them
                 //      - go back to the last slash
+
                 int lastSlashIndex = firstPartOfTemplate.lastIndexOf('/');
                 //      look for the next slash
                 int nextSlashIndex = -1;
@@ -342,11 +348,13 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                     nextSlashIndex = nextSlashIndex + lastSlashIndex + 1;
                 }
                 Stream<Path> listOfFolders = Files.list(Paths.get(templateString.substring(0, lastSlashIndex )));
+
                 String pre = templateString.substring(0, firstIndex);
                 String restOfFolderName = "";
                 if (nextSlashIndex > firstIndex) {
                     restOfFolderName = templateString.substring(firstIndex + 3, nextSlashIndex);
                 }
+
                 final String post = restOfFolderName;
                 int postLength = post.length();
                 Set<String> matchedFolderNames = listOfFolders.map(x -> x.toString())
@@ -362,6 +370,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 if (lastSlashIndexFromWholeTemplate >= nextSlashIndex) {
                     for (String matchedFolderName : matchedFolderNames) {
                         String serverName = matchedFolderName.substring(firstIndex , matchedFolderName.length() - postLength);
+                        if (log.isDebugEnabled()) {
+                            log.debug("serverName " + serverName);
+                        }
                         serverNames.add(serverName);
                     }
                 }
@@ -372,7 +383,13 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                         log.debug("getFileNames with 2 inserts testing fileName " + fileName );
                     }
                     File f =  new File(fileName);
+                    if (log.isDebugEnabled()) {
+                        log.debug("see if fileName " + fileName + " exists" );
+                    }
                     if (f.exists() && !f.isDirectory()) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("fileName " + fileName + " exists");
+                        }
                         fileNames.add(fileName);
                     }
                 }
@@ -389,6 +406,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * check whether the supplied string starts and ends with the pre and post strings
      *
      * @param stringToTest string to test
+     * @param stringToTest string to test
      * @param pre          must start with this string - can be empty
      * @param post         must end with this starting - can be empty
      * @return whether the folder name starts and ends with the supplied strings.
@@ -396,9 +414,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     private boolean doesStringStartAndEndMatch(String stringToTest, String pre, String post) {
         if (log.isDebugEnabled()) {
             log.debug("doesStringStartAndEndMatch " + stringToTest +",pre="+ pre+",post="+ post);
-
         }
-        System.err.println("doesStringStartAndEndMatch " + stringToTest +",pre="+ pre+",post="+ post);
         boolean isMatch = false;
         if (stringToTest.startsWith(pre) && stringToTest.endsWith(post)) {
             isMatch = true;
