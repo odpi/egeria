@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses;
+package org.odpi.openmetadata.accessservices.assetcatalog.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,8 +16,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetDescriptionResponse is the response structure used on the Asset Catalog OMAS REST API calls that returns a
- * list of asset description object as a response.
+ * AssetCatalogBean object holds properties that are used for displaying details of an asset-catalog bean, plus the properties
+ * and classifications ans relationships.
+ * Also the connection to asset is available in this object.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,8 +26,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
-public class AssetDescriptionListResponse extends AssetCatalogOMASAPIResponse implements Serializable {
+@ToString(callSuper = true)
+public class AssetCatalogBean extends Element implements Serializable {
 
-    private List<AssetDescription> assetDescriptionList;
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The list of relationships
+     * -- GETTER --
+     * Returns the list of available relationships
+     * @return the list of relationships
+     * -- SETTER --
+     * Set up the list of relationships
+     * @param relationships of the element
+     */
+    private List<Relationship> relationships;
 }
