@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -52,6 +53,8 @@ public class DataEngineFVT {
     private static final String RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID = "f20f5f45-1afb-41c1-9a09-34d8812626a4";
     private static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID = "eab811ec-556a-45f1-9091-bc7ac8face0f";
     private static final String TABULAR_SCHEMA_TYPE_TYPE_GUID = "248975ec-8019-4b8a-9caf-084c8b724233";
+    private static final String PROCESS_TYPE_GUID = "d8f33bd7-afa9-4a11-a8c7-07dcec83c050";
+    private static final String OWNERSHIP_CLASSIFICATION_TYPE_GUID = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
 
     private static final String DESCRIPTION = "description";
     private static final String NAME = "name";
@@ -66,6 +69,10 @@ public class DataEngineFVT {
     private static final String DATABASE_VERSION = "databaseVersion";
     private static final String INSTANCE = "instance";
     private static final String IMPORTED_FROM = "importedFrom";
+    private static final String OWNER = "owner";
+
+    private static final String DATA_ENGINE = "DataEngine";
+    private static final String ADMIN = "admin";
 
     public DataEngineFVT() {
         HttpHelper.noStrictSSL();
@@ -86,7 +93,6 @@ public class DataEngineFVT {
 
         List<EntityDetail> entityDetails = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                 softwareServerCapability.getQualifiedName());
-
         if (entityDetails == null || entityDetails.isEmpty()) {
             fail();
         }
@@ -121,8 +127,12 @@ public class DataEngineFVT {
             String previousAttribute = null;
             for (int i = 0; i < attributes.size() - 1; i++) {
                 String currentAttribute = attributes.get(i);
-                String entityGUID = repositoryService.findEntityGUIDByQualifiedName(currentAttribute);
-                List<Relationship> relationships = repositoryService.findRelationshipsByGUID(entityGUID);
+                EntityDetail entityDetail = repositoryService.findEntityByQualifiedName(currentAttribute);
+                validateCurrentAttribute(currentAttribute, entityDetail);
+
+                List<Relationship> relationships = repositoryService.findLineageMappingRelationshipsByGUID(entityDetail.getGUID());
+                validateLineageMappingRelationships(previousAttribute, currentAttribute, relationships);
+
                 List<String> lineageMappingOtherProxyQualifiedName =
                         repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
                 List<String> expectedLineageMappings = new ArrayList<>();
@@ -136,6 +146,72 @@ public class DataEngineFVT {
                 previousAttribute = currentAttribute;
             }
         }
+    }
+
+    private void validateCurrentAttribute(String currentAttribute, EntityDetail entityDetail) {
+        assertEquals(currentAttribute, entityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(currentAttribute + "_displayName", entityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(DATA_ENGINE, entityDetail.getMetadataCollectionName());
+        assertEquals(ADMIN, entityDetail.getCreatedBy());
+    }
+
+    private void validateLineageMappingRelationships(String previousAttribute, String currentAttribute, List<Relationship> relationships) {
+        assertEquals(previousAttribute == null ? 1 : 2, relationships.size());
+        assertEquals(currentAttribute,
+                relationships.get(0).getEntityOneProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        if(previousAttribute != null) {
+            assertEquals(previousAttribute,
+                    relationships.get(1).getEntityOneProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+            assertEquals(currentAttribute,
+                    relationships.get(1).getEntityTwoProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void verifyProcessAndUpdate(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
+
+        List<EntityDetail> processes = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
+        if (processes == null || processes.isEmpty()) {
+            fail();
+        }
+
+        assertEquals(1, processes.size());
+        EntityDetail processAsEntityDetail = processes.get(0);
+        assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(process.getName(), processAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(process.getDescription(), processAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(process.getOwner(), getOwnership(processAsEntityDetail));
+
+        //update process
+        String newSuffix = "-new";
+        process.setDisplayName(process.getDisplayName() + newSuffix);
+        process.setName(process.getName() + newSuffix);
+        process.setDescription(process.getDescription() + newSuffix);
+
+        Process updatedProcess = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, process);
+
+        List<EntityDetail> updatedProcesses =
+                repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, updatedProcess.getQualifiedName());
+        if (updatedProcesses == null || updatedProcesses.isEmpty()) {
+            fail();
+        }
+
+        assertEquals(1, updatedProcesses.size());
+        EntityDetail updatedProcessAsEntityDetail = updatedProcesses.get(0);
+        assertEquals(updatedProcess.getDisplayName(),
+                updatedProcessAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(updatedProcess.getName(),
+                updatedProcessAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(updatedProcess.getDescription(),
+                updatedProcessAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
     }
 
     @ParameterizedTest
@@ -274,6 +350,13 @@ public class DataEngineFVT {
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(dataFile.getColumns().get(0).getDescription(),
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+    }
+
+    private String getOwnership(EntityDetail entityDetail){
+        return entityDetail.getClassifications().stream()
+                .filter(c -> c.getType().getTypeDefGUID().equals(OWNERSHIP_CLASSIFICATION_TYPE_GUID))
+                .map(c -> c.getProperties().getPropertyValue(OWNER).valueAsString())
+                .findFirst().orElse(null);
     }
 
 }

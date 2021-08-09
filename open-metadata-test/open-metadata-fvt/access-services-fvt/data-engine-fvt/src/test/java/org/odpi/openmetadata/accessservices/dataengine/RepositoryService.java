@@ -80,22 +80,22 @@ public class RepositoryService {
      * @param entityGUID the GUID of the entity
      * @return the list of relationships in which the entity is involved
      */
-    public List<Relationship> findRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException, EntityNotKnownException,
-            FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
-            TypeErrorException, PagingErrorException {
+    public List<Relationship> findLineageMappingRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException,
+            EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         return client.getRelationshipsForEntity(userId, entityGUID, LINEAGE_MAPPING_TYPE_GUID, 0,
                 null, null, null, SequencingOrder.ANY, PAGE_SIZE);
     }
 
     /**
-     * Based on a searchCriteria the method searches for an entity GUID which has the qualified name equal to the search
+     * Based on a searchCriteria the method searches for an entity which has the qualified name equal to the search
      * criteria. The search is done through a LocalRepositoryServicesClient call.
      *
      * @param entityValue the search criteria used to search for a qualified name
-     * @return the GUID of the first found object
+     * @return entity detail
      */
-    public String findEntityGUIDByQualifiedName(String entityValue) throws UserNotAuthorizedException, FunctionNotSupportedException,
+    public EntityDetail findEntityByQualifiedName(String entityValue) throws UserNotAuthorizedException, FunctionNotSupportedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         InstanceProperties matchProperties = new InstanceProperties();
 
@@ -117,9 +117,9 @@ public class RepositoryService {
                 MatchCriteria.ANY, 0, null, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
 
         if (entityDetails == null || entityDetails.isEmpty()) {
-            return "";
+            return null;
         }
-        return entityDetails.get(0).getGUID();
+        return entityDetails.get(0);
     }
 
     /**

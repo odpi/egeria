@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +72,12 @@ public class ProcessSetupService {
 
     private final Map<String, List<String>> jobProcessLineageMappingsProxies = new HashMap<>();
 
+    private final String SIMPLE_PROCESS_QUALIFIED_NAME = "simple-process-qualified-name";
+    private final String SIMPLE_PROCESS_DISPLAY_NAME = "simple-process-display-name";
+    private final String SIMPLE_PROCESS_NAME = "simple-process-name";
+    private final String SIMPLE_PROCESS_DESCRIPTION = "simple-process-description";
+    private final String SIMPLE_PROCESS_OWNER = "simple-process-owner";
+
     public ProcessSetupService() {
         csvToDatabase.put("last", "surname");
         csvToDatabase.put("location", "locid");
@@ -118,6 +123,33 @@ public class ProcessSetupService {
         softwareServerCapability.setSource(SOURCE);
         dataEngineOMASClient.createExternalDataEngine(userId, softwareServerCapability);
         return softwareServerCapability;
+    }
+
+    /**
+     * Creates a simple process or updates one.
+     *
+     * @param userId           the user which creates the data engine
+     * @param dataEngineClient the data engine client that is used to create the external data engine
+     * @param process          null to create a simple process, or the instance to update
+     * @return process
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public Process createOrUpdateSimpleProcess(String userId, DataEngineClient dataEngineClient, Process process)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(process == null) {
+            process = new Process();
+            process.setQualifiedName(SIMPLE_PROCESS_QUALIFIED_NAME);
+            process.setDisplayName(SIMPLE_PROCESS_DISPLAY_NAME);
+            process.setName(SIMPLE_PROCESS_NAME);
+            process.setDescription(SIMPLE_PROCESS_DESCRIPTION);
+            process.setOwner(SIMPLE_PROCESS_OWNER);
+        }
+        dataEngineClient.createOrUpdateProcess(userId, process);
+        return process;
     }
 
     /** Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
