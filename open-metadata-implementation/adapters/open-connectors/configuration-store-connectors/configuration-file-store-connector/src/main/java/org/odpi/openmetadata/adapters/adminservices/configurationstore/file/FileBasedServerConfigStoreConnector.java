@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,9 +32,14 @@ import java.util.stream.Stream;
 public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase implements OMAGServerConfigStoreRetrieveAll
 {
     /*
+     * This is the insert string using in the file name template
+     */
+    private static final String INSERT_FOR_FILENAME_TEMPLATE = "{0}";
+    /*
      * This is the name of the configuration file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilenameTemplate = "data/servers/{0}/config/{0}.config";
+    private static final String DEFAULT_FILENAME_TEMPLATE    = "./data/servers/" +INSERT_FOR_FILENAME_TEMPLATE + "/config/" +INSERT_FOR_FILENAME_TEMPLATE + ".config";
+
 
     /*
      * Variables used in writing to the file.
@@ -84,7 +90,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         }
         if (configStoreTemplateName == null)
         {
-            configStoreTemplateName = defaultFilenameTemplate;
+            configStoreTemplateName = DEFAULT_FILENAME_TEMPLATE;
         }
         return configStoreTemplateName;
     }
@@ -178,62 +184,102 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      * @return the set of server configurations present in this OMAG Server Config store
      */
     @Override
-    public Set<OMAGServerConfig> retrieveAllServerConfigs()
-    {
+    public Set<OMAGServerConfig> retrieveAllServerConfigs() {
         final String methodName = "retrieveAllServerConfigs";
         Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
-
-        try (Stream<Path> list = Files.list(Paths.get(".")))
-        {
-            // we need to use the configStoreTemplateName to pick up any files that match this shape.
-            // this template might have inserts in
-
-            String templateString = getStoreTemplateName();
-            Set<String> fileNames = list.map(x -> x.toString())
-                    .filter(f -> isFileNameAConfig(f, templateString)).collect(Collectors.toSet());
-
-            for (String fileName:fileNames)
-            {
-                configStoreName=fileName;
-                OMAGServerConfig config = retrieveServerConfig();
-                omagServerConfigSet.add(config);
-            }
+        String templateString = getStoreTemplateName();
+        Set<String> fileNames = getFileNames(templateString, methodName);
+        for (String fileName : fileNames) {
+            configStoreName = fileName;
+            OMAGServerConfig config = retrieveServerConfig();
+            omagServerConfigSet.add(config);
         }
-        catch (IOException e)
-        {
+
+        return omagServerConfigSet;
+    }
+
+    /**
+     * Get filenames from the file system that match the store template.
+     * Only supports 1 or 2 inserts in the template and they need to be in different url segments.
+     * When a file is matched on the file system, the match for the insert is the serverName.
+     *
+     * @param methodName callers name for diagnostics
+     * @return set of filenames fro the file System that match the template
+     */
+    protected Set<String> getFileNames(String templateString, String methodName) {
+        if (isTemplateValid(templateString)  ) {
+            // no inserts .... bad template supplied - error
+            throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE.getMessageDefinition(templateString),
+                                          this.getClass().getName(),
+                                          methodName);
+        }
+
+        Set<String> fileNames = new HashSet<>();
+
+        int firstIndex = templateString.indexOf(INSERT_FOR_FILENAME_TEMPLATE);
+        int secondIndex = -1;
+        if (firstIndex != -1 && templateString.length() > firstIndex + 3) {
+            secondIndex = templateString.substring(firstIndex + 3).indexOf(INSERT_FOR_FILENAME_TEMPLATE);
+        }
+        try {
+            if (firstIndex != -1 && secondIndex == -1) {
+                // only one insert
+                String firstPartOfTemplate = templateString.substring(0, firstIndex);
+                String secondPartOfTemplate = templateString.substring(firstIndex + 3);
+
+                Stream<Path> list = Files.list(Paths.get(firstPartOfTemplate));
+                Set<String> serverNames = list.map(x -> x.getFileName().toString())
+                        .collect(Collectors.toSet());
+                for (String serverName : serverNames) {
+                    String fileName = firstPartOfTemplate + serverName + secondPartOfTemplate;
+                    fileNames.add(fileName);
+                }
+
+            } else {
+                secondIndex = firstIndex + 3 + secondIndex;
+                // 2 inserts - the first must be a folder name. hopefully the file name is not pathological with 2 inserts in the same segment.
+                String firstPartOfTemplate = templateString.substring(0, firstIndex);
+                String secondPartOfTemplate = templateString.substring(firstIndex + 3, secondIndex);
+                String thirdPartOfTemplate = templateString.substring(secondIndex + 3);
+                // take the serverName from the first insert and then look for its presence in the second insert position.
+                Stream<Path> list = Files.list(Paths.get(firstPartOfTemplate));
+                Set<String> serverNames = list.map(x -> x.getFileName().toString())
+                        .collect(Collectors.toSet());
+                for (String serverName : serverNames) {
+                    String fileName = firstPartOfTemplate + serverName + secondPartOfTemplate + serverName + thirdPartOfTemplate;
+                    fileNames.add(fileName);
+                }
+            }
+        } catch (IOException e) {
             throw new OCFRuntimeException(DocStoreErrorCode.CONFIG_RETRIEVE_ALL_ERROR.getMessageDefinition(e.getClass().getName(), e.getMessage(), configStoreName),
                                           this.getClass().getName(),
                                           methodName, e);
         }
-        return omagServerConfigSet;
+        return fileNames;
     }
-
 
     /**
-     * Check whether the file name is an OMAG Server configuration name by checking it against the template.
-     *
-     * @param textToCheck filename to check
-     * @param templateString string containing the template to fill out
-     *
-     * @return true if the supplied file name is a valid configuration file name
+     * Check whether the template string is valid.
+     * @param templateString string to check
+     * @return a falg indicating whether valid.
      */
-    static boolean isFileNameAConfig(String textToCheck, String templateString)
-    {
-        boolean isConfig= false;
-        MessageFormat mf = new MessageFormat(templateString);
+    private boolean isTemplateValid(String templateString) {
+        boolean isValid = true;
+        StringTokenizer st = new StringTokenizer(templateString, INSERT_FOR_FILENAME_TEMPLATE);
+        int tokenCount = st.countTokens();
+        if (tokenCount == 0 || tokenCount > 2) {
+            isValid = false;
+        }
+        // check for more than one insert in a segment- the logic does not handle this.
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            if (token.lastIndexOf("/") == -1) {
+                isValid = false;
+            }
+        }
 
-        try
-        {
-            mf.parse(textToCheck);
-            isConfig = true;
-        }
-        catch (ParseException e)
-        {
-            // the template did not successfully parse the file name, so is not a config file.
-        }
-        return isConfig;
+        return isValid;
     }
-
 
     /**
      * Close the config file
