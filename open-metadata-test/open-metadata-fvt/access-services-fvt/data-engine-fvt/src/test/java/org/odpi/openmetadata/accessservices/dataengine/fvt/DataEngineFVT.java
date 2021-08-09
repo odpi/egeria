@@ -131,8 +131,6 @@ public class DataEngineFVT {
                 validateCurrentAttribute(currentAttribute, entityDetail);
 
                 List<Relationship> relationships = repositoryService.findLineageMappingRelationshipsByGUID(entityDetail.getGUID());
-                validateLineageMappingRelationships(previousAttribute, currentAttribute, relationships);
-
                 List<String> lineageMappingOtherProxyQualifiedName =
                         repositoryService.getLineageMappingsProxiesQualifiedNames(relationships, currentAttribute);
                 List<String> expectedLineageMappings = new ArrayList<>();
@@ -153,18 +151,6 @@ public class DataEngineFVT {
         assertEquals(currentAttribute + "_displayName", entityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(DATA_ENGINE, entityDetail.getMetadataCollectionName());
         assertEquals(ADMIN, entityDetail.getCreatedBy());
-    }
-
-    private void validateLineageMappingRelationships(String previousAttribute, String currentAttribute, List<Relationship> relationships) {
-        assertEquals(previousAttribute == null ? 1 : 2, relationships.size());
-        assertEquals(currentAttribute,
-                relationships.get(0).getEntityOneProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-        if(previousAttribute != null) {
-            assertEquals(previousAttribute,
-                    relationships.get(1).getEntityOneProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-            assertEquals(currentAttribute,
-                    relationships.get(1).getEntityTwoProxy().getUniqueProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-        }
     }
 
     @ParameterizedTest
