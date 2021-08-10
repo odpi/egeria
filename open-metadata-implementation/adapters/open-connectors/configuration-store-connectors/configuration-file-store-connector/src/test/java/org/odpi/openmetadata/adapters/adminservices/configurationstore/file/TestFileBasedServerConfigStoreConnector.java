@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile;
+package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -13,11 +13,11 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestEncryptedFileBasedServerConfigStoreConnector {
+public class TestFileBasedServerConfigStoreConnector {
     @Test
     void testGetConfigsPathName() {
 
-        EncryptedFileBasedServerConfigStoreConnector connector = new EncryptedFileBasedServerConfigStoreConnector();
+        FileBasedServerConfigStoreConnector connector = new FileBasedServerConfigStoreConnector();
         String templateString = "src/test/resources/test1/data/servers/{0}/config/{0}.config";
         Set<String> fileNames = connector.getFileNames(templateString, "testMethod");
         assertEquals(1, fileNames.size());
