@@ -432,41 +432,6 @@ public class RESTExceptionHandler
         response.setExceptionProperties(exceptionProperties);
     }
 
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response
-     * @param methodName calling method
-     */
-    public  void captureThrowable(FFDCResponse response,
-                                  Throwable    error,
-                                  String       methodName)
-    {
-        this.captureExceptions(response, error, methodName, null);
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response
-     * @param methodName calling method
-     * @param auditLog log location for recording an unexpected exception
-     */
-    @Deprecated
-    public  void captureThrowable(FFDCResponse response,
-                                  Throwable    error,
-                                  String       methodName,
-                                  AuditLog     auditLog)
-    {
-        this.captureExceptions(response, error, methodName, auditLog);
-    }
-
-
     /**
      * Set the exception information into the response.
      *
@@ -475,7 +440,7 @@ public class RESTExceptionHandler
      * @param methodName calling method
      */
     public  void captureExceptions(FFDCResponse response,
-                                   Throwable    error,
+                                   Exception    error,
                                    String       methodName)
     {
         this.captureExceptions(response, error, methodName, null);
@@ -491,7 +456,7 @@ public class RESTExceptionHandler
      * @param auditLog log location for recording an unexpected exception
      */
     public  void captureExceptions(FFDCResponse response,
-                                   Throwable    error,
+                                   Exception    error,
                                    String       methodName,
                                    AuditLog     auditLog)
     {
