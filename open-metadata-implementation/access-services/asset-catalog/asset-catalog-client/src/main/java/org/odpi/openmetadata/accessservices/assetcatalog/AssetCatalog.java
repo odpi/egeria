@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
@@ -73,15 +73,15 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getAssetDetails(String userId,
-                                                        String assetGUID,
-                                                        String assetType)
+    public AssetCatalogResponse getAssetDetails(String userId,
+                                                String assetGUID,
+                                                String assetType)
             throws InvalidParameterException, PropertyServerException {
         String methodName = "getAssetDetails";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetCatalogResponse response = callGetRESTCall(methodName, AssetCatalogResponse.class,
                 serverPlatformURLRoot + BASE_PATH + ASSET_DETAILS, serverName, userId, assetGUID, assetType);
 
         detectExceptions(response);
@@ -92,15 +92,15 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getAssetUniverse(String userId,
-                                                         String assetGUID,
-                                                         String assetType)
+    public AssetCatalogResponse getAssetUniverse(String userId,
+                                                 String assetGUID,
+                                                 String assetType)
             throws InvalidParameterException, PropertyServerException {
         String methodName = "getAssetUniverse";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetCatalogResponse response = callGetRESTCall(methodName, AssetCatalogResponse.class,
                 serverPlatformURLRoot + BASE_PATH + ASSET_UNIVERSE, serverName, userId, assetGUID, assetType);
 
         detectExceptions(response);
@@ -157,15 +157,15 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionListResponse getLinkingAssets(String userId,
-                                                         String startAssetGUID,
-                                                         String endAssetGUID)
+    public AssetCatalogListResponse getLinkingAssets(String userId,
+                                                     String startAssetGUID,
+                                                     String endAssetGUID)
             throws InvalidParameterException, PropertyServerException {
         String methodName = "getLinkingAssets";
 
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
-        AssetDescriptionListResponse response = callGetRESTCall(methodName, AssetDescriptionListResponse.class,
+        AssetCatalogListResponse response = callGetRESTCall(methodName, AssetCatalogListResponse.class,
                 serverPlatformURLRoot + BASE_PATH + LINKING_ASSET, serverName,
                 userId, startAssetGUID, endAssetGUID);
 
@@ -197,15 +197,15 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionListResponse getAssetsFromNeighborhood(String userId,
-                                                                  String assetGUID,
-                                                                  SearchParameters searchParameters)
+    public AssetCatalogListResponse getAssetsFromNeighborhood(String userId,
+                                                              String assetGUID,
+                                                              SearchParameters searchParameters)
             throws InvalidParameterException, PropertyServerException {
         String methodName = "getAssetsFromNeighborhood";
 
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
-        AssetDescriptionListResponse response = callPostRESTCall(methodName, AssetDescriptionListResponse.class,
+        AssetCatalogListResponse response = callPostRESTCall(methodName, AssetCatalogListResponse.class,
                 serverPlatformURLRoot + BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, searchParameters, serverName, userId, assetGUID);
 
         detectExceptions(response);
