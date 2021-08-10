@@ -426,9 +426,10 @@ public class DatabaseContextHandler {
 
 	private String buildGlossaryTerm(GlossaryTerm term) {
 		Map<String, String> json;
-		if (term.getName() != null) {
+		if (term.getName() != null && term.getGuid() != null) {
 			json = new TreeMap<>();
 			json.put(Constants.DISPLAY_NAME, term.getName());
+			json.put(OpenMetadataAPIMapper.GUID_PROPERTY_NAME, term.getGuid());
 		} else {
 			return null;
 		}
