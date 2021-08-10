@@ -406,7 +406,6 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * check whether the supplied string starts and ends with the pre and post strings
      *
      * @param stringToTest string to test
-     * @param stringToTest string to test
      * @param pre          must start with this string - can be empty
      * @param post         must end with this starting - can be empty
      * @return whether the folder name starts and ends with the supplied strings.
