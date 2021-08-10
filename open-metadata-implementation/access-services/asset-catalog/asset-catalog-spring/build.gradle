@@ -8,10 +8,13 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-server')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-core'
     implementation 'javax.validation:validation-api'
     implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
