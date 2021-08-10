@@ -112,7 +112,7 @@ public class DinoViewRESTServices {
         }
         catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
 
@@ -185,7 +185,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -275,7 +275,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -364,7 +364,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
 
@@ -454,7 +454,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -542,7 +542,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -631,7 +631,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -719,7 +719,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
 
@@ -809,7 +809,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -901,7 +901,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -994,7 +994,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
@@ -1085,7 +1085,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1173,7 +1173,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1261,7 +1261,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1375,7 +1375,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1465,7 +1465,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1556,7 +1556,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1645,7 +1645,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1737,7 +1737,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1828,7 +1828,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -1925,7 +1925,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -2018,7 +2018,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -2112,7 +2112,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -2206,7 +2206,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -2303,7 +2303,7 @@ public class DinoViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }

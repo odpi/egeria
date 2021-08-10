@@ -112,7 +112,7 @@ public class RexViewRESTServices {
         }
         catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -167,7 +167,7 @@ public class RexViewRESTServices {
                 restExceptionHandler.captureUserNotAuthorizedException(response, error);
             }
             catch (Exception exception) {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             /*
@@ -186,7 +186,7 @@ public class RexViewRESTServices {
                 RexExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
             }
             catch (Exception exception) {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
 
@@ -264,7 +264,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             /*
@@ -286,7 +286,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
         }
@@ -360,7 +360,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             /*
@@ -383,7 +383,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
@@ -457,7 +457,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             try
@@ -484,7 +484,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
@@ -559,7 +559,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             try
@@ -587,7 +587,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
@@ -668,7 +668,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             try
@@ -694,7 +694,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
 
@@ -775,7 +775,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
             try {
@@ -803,7 +803,7 @@ public class RexViewRESTServices {
             }
             catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
