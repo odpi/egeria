@@ -51,7 +51,7 @@ public class AssetCatalogSearchPublisher {
         }
         catch (Exception  e)
         {
-            log.error("Unable to publish new asset event: " + event.toString(), e);
+            log.error("Unable to publish new asset event", e);
         }
     }
 }
