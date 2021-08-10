@@ -32,8 +32,8 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
                         "Review the full stack trace in the logs to troubleshoot further. Then retry the request."),
 
     CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE(400, "FILE-DOC-STORE-400-002 ",
-                                                       "Unable to retrieve the encrypted configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments ",
-                                                       "The system was unable to retrieve the encrypted configuration files as the template was invalid.",
+                                                       "Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments.",
+                                                       "The system was unable to retrieve the configuration files as the template was invalid.",
                                                        "Either use the default store template or specify a valid template.")
     ;
 
