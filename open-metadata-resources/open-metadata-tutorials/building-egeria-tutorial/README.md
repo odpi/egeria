@@ -11,7 +11,7 @@ code from [GitHub](https://github.com/) and building it so that you can run it
 on your local machine.  
 
 Once you have [downloaded Egeria](task-downloading-egeria-source.md), you can also use
-[docker-compose](../lab-infrastructure-guide/running-docker-compose.md) to 
+[Kubernetes](../lab-infrastructure-guide/running-kubernetes.md) to 
 start the lab infrastructure for the [Hands-on Labs](../../open-metadata-labs).
 This does not require you to build Egeria.
 

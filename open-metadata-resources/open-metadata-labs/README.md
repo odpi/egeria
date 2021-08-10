@@ -20,15 +20,10 @@ as the basis of a workbook for using Egeria within a specific organization.
 
 ## Running the Labs
 
-There are three main ways to set up the software to run these labs.  These are listed below.
+There are two main ways to set up the software to run these labs.  These are listed below.
 They each create exactly the same environment that supports the labs. 
 
-The easiest option is listed first ...
-
-* [Using Docker Compose](../open-metadata-tutorials/lab-infrastructure-guide/running-docker-compose.md) to run them in a
-self-contained environment on your own system.
-* [Using Kubernetes](../open-metadata-tutorials/lab-infrastructure-guide/running-kubernetes.md) to run them in a more
-flexible, possibly public cloud self-contained environment.
+* [Using Kubernetes](../open-metadata-tutorials/lab-infrastructure-guide/running-kubernetes.md) to run them in a flexible, self-contained environment - locally or in the cloud.
 * [Using your own local environment directly](../open-metadata-tutorials/lab-infrastructure-guide/running-natively.md).
 
 Once the software is in place, you then go to the `JupyterLab` browser window 
