@@ -11,15 +11,11 @@ import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInsta
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
@@ -88,7 +84,7 @@ public class AssetCatalogServiceTest {
     @Test
     public void testGetAssetDetailsByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        AssetDescription response = mockAssetDescription(FIRST_GUID);
+        AssetCatalogBean response = mockAssetDescription(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
                 SERVER_NAME,
@@ -99,18 +95,18 @@ public class AssetCatalogServiceTest {
                 .getEntityDetails(USER, FIRST_GUID, ASSET_TYPE))
                 .thenReturn(response);
 
-        AssetDescriptionResponse assetDetailsByGUID = assetCatalogRESTService.getAssetDetailsByGUID(SERVER_NAME,
+        AssetCatalogResponse assetDetailsByGUID = assetCatalogRESTService.getAssetDetailsByGUID(SERVER_NAME,
                 USER,
                 FIRST_GUID,
                 ASSET_TYPE);
-        assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetDescription().getGuid());
-        assertEquals(response.getGuid(), assetDetailsByGUID.getAssetDescription().getGuid());
-        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetDescription().getType().getName());
+        assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetCatalogBean().getGuid());
+        assertEquals(response.getGuid(), assetDetailsByGUID.getAssetCatalogBean().getGuid());
+        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetCatalogBean().getType().getName());
     }
 
     @Test
     public void testGetAssetUniverseByGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        AssetDescription response = mockAssetDescription(FIRST_GUID);
+        AssetCatalogBean response = mockAssetDescription(FIRST_GUID);
 
         when(instanceHandler.getAssetCatalogHandler(USER,
                 SERVER_NAME,
@@ -121,14 +117,14 @@ public class AssetCatalogServiceTest {
                 .getEntityDetails(USER, FIRST_GUID, ASSET_TYPE))
                 .thenReturn(response);
 
-        AssetDescriptionResponse assetDetailsByGUID = assetCatalogRESTService.getAssetUniverseByGUID(SERVER_NAME,
+        AssetCatalogResponse assetDetailsByGUID = assetCatalogRESTService.getAssetUniverseByGUID(SERVER_NAME,
                 USER,
                 FIRST_GUID,
                 ASSET_TYPE);
-        assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetDescription().getGuid());
-        assertEquals(response.getGuid(), assetDetailsByGUID.getAssetDescription().getGuid());
-        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetDescription().getType().getName());
-        assertNotNull(assetDetailsByGUID.getAssetDescription().getRelationships());
+        assertEquals(FIRST_GUID, assetDetailsByGUID.getAssetCatalogBean().getGuid());
+        assertEquals(response.getGuid(), assetDetailsByGUID.getAssetCatalogBean().getGuid());
+        assertEquals(response.getType().getName(), assetDetailsByGUID.getAssetCatalogBean().getType().getName());
+        assertNotNull(assetDetailsByGUID.getAssetCatalogBean().getRelationships());
     }
 
 
@@ -188,7 +184,7 @@ public class AssetCatalogServiceTest {
 
     @Test
     public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-        List<AssetDescription> response = new ArrayList<>();
+        List<AssetCatalogBean> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -200,12 +196,12 @@ public class AssetCatalogServiceTest {
                 .getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID))
                 .thenReturn(response);
 
-        AssetDescriptionListResponse assetDescriptionListResponse = assetCatalogRESTService.getLinkingAssets(SERVER_NAME,
+        AssetCatalogListResponse assetCatalogListResponse = assetCatalogRESTService.getLinkingAssets(SERVER_NAME,
                 USER,
                 FIRST_GUID,
                 SECOND_GUID);
 
-        assertEquals(response.get(0).getGuid(), assetDescriptionListResponse.getAssetDescriptionList().get(0).getGuid());
+        assertEquals(response.get(0).getGuid(), assetCatalogListResponse.getAssetCatalogBeanList().get(0).getGuid());
     }
 
     @Test
@@ -234,7 +230,7 @@ public class AssetCatalogServiceTest {
     public void testGetAssetsFromNeighborhood()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
         SearchParameters searchParameters = mockSearchParams();
-        List<AssetDescription> response = new ArrayList<>();
+        List<AssetCatalogBean> response = new ArrayList<>();
         response.add(mockAssetDescription(FIRST_GUID));
 
         when(instanceHandler.getAssetCatalogHandler(USER,
@@ -246,12 +242,12 @@ public class AssetCatalogServiceTest {
                 .getEntitiesFromNeighborhood(SERVER_NAME, USER, FIRST_GUID, searchParameters))
                 .thenReturn(response);
 
-        AssetDescriptionListResponse assetsFromNeighborhood = assetCatalogRESTService.getAssetsFromNeighborhood(SERVER_NAME,
+        AssetCatalogListResponse assetsFromNeighborhood = assetCatalogRESTService.getAssetsFromNeighborhood(SERVER_NAME,
                 USER,
                 FIRST_GUID,
                 searchParameters);
 
-        assertEquals(response.get(0).getGuid(), assetsFromNeighborhood.getAssetDescriptionList().get(0).getGuid());
+        assertEquals(response.get(0).getGuid(), assetsFromNeighborhood.getAssetCatalogBeanList().get(0).getGuid());
     }
 
     @Test
@@ -318,14 +314,14 @@ public class AssetCatalogServiceTest {
         return classification;
     }
 
-    private AssetDescription mockAssetDescription(String guid) {
-        AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGuid(guid);
+    private AssetCatalogBean mockAssetDescription(String guid) {
+        AssetCatalogBean assetCatalogBean = new AssetCatalogBean();
+        assetCatalogBean.setGuid(guid);
         Type type = new Type();
         type.setName(ASSET_TYPE);
-        assetDescription.setType(type);
-        assetDescription.setRelationships(Collections.singletonList(mockRelationshipResponse()));
-        return assetDescription;
+        assetCatalogBean.setType(type);
+        assetCatalogBean.setRelationships(Collections.singletonList(mockRelationshipResponse()));
+        return assetCatalogBean;
     }
 
     private Relationship mockRelationshipResponse() {

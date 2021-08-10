@@ -5,13 +5,8 @@ package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -52,10 +47,10 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/asset-details/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
-                                                       @PathVariable("userId") String userId,
-                                                       @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                       @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
+    public AssetCatalogResponse getAssetDetail(@PathVariable("serverName") String serverName,
+                                               @PathVariable("userId") String userId,
+                                               @PathVariable("assetGUID") @NotBlank String assetGUID,
+                                               @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetDetailsByGUID(serverName, userId, assetGUID, assetType);
     }
 
@@ -70,10 +65,10 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/asset-universe/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
-                                                         @PathVariable("userId") String userId,
-                                                         @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                         @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
+    public AssetCatalogResponse getAssetUniverse(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
+                                                 @PathVariable("assetGUID") @NotBlank String assetGUID,
+                                                 @RequestParam(name = "assetType", required = false) @NotNull String assetType) {
         return assetService.getAssetUniverseByGUID(serverName, userId, assetGUID, assetType);
     }
 
@@ -132,10 +127,10 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/linking-assets/from/{assetGUID}/to/{endAssetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionListResponse getLinkingAssets(@PathVariable("serverName") String serverName,
-                                                         @PathVariable("userId") String userId,
-                                                         @PathVariable("assetGUID") @NotBlank String startAssetGUID,
-                                                         @PathVariable("endAssetGUID") @NotBlank String endAssetGUID) {
+    public AssetCatalogListResponse getLinkingAssets(@PathVariable("serverName") String serverName,
+                                                     @PathVariable("userId") String userId,
+                                                     @PathVariable("assetGUID") @NotBlank String startAssetGUID,
+                                                     @PathVariable("endAssetGUID") @NotBlank String endAssetGUID) {
         return assetService.getLinkingAssets(serverName, userId, startAssetGUID, endAssetGUID);
     }
 
@@ -168,10 +163,10 @@ public class AssetCatalogEntityResource {
      */
     @PostMapping(path = "/assets-from-neighborhood/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionListResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
-                                                                  @PathVariable("userId") String userId,
-                                                                  @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                                  @RequestBody SearchParameters searchParameters) {
+    public AssetCatalogListResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
+                                                              @PathVariable("userId") String userId,
+                                                              @PathVariable("assetGUID") @NotBlank String assetGUID,
+                                                              @RequestBody SearchParameters searchParameters) {
         return assetService.getAssetsFromNeighborhood(serverName, userId, assetGUID, searchParameters);
     }
 
