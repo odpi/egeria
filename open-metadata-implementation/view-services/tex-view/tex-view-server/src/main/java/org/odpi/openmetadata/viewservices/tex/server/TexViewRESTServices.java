@@ -99,7 +99,7 @@ public class TexViewRESTServices {
         }
         catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -154,7 +154,7 @@ public class TexViewRESTServices {
             }
             catch ( Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
 
 
@@ -178,7 +178,7 @@ public class TexViewRESTServices {
             }
             catch ( Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+                restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
         }
         else
