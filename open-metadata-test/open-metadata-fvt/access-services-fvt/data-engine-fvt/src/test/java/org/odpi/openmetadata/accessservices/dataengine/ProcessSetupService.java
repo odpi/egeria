@@ -30,6 +30,7 @@ import java.util.Map;
  * The class also helps the setup with creating an external data engine using a SoftwareServerCapability object.
  */
 public class ProcessSetupService {
+
     private static final String DISPLAY_NAME_SUFFIX = "displayName";
     private static final String SEPARATOR = "_";
     private static final String ATTRIBUTE = "attribute";
@@ -161,14 +162,15 @@ public class ProcessSetupService {
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    public List<Process> createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         createVirtualAssets(userId, dataEngineOMASClient);
 
-        createFirstStageProcess(userId, dataEngineOMASClient);
-        createSecondStageProcess(userId, dataEngineOMASClient);
-        createThirdStageProcess(userId, dataEngineOMASClient);
-
-        createJobProcess(userId, dataEngineOMASClient);
+        List<Process> processes = new ArrayList<>();
+        processes.add(createFirstStageProcess(userId, dataEngineOMASClient));
+        processes.add(createSecondStageProcess(userId, dataEngineOMASClient));
+        processes.add(createThirdStageProcess(userId, dataEngineOMASClient));
+        processes.add(createJobProcess(userId, dataEngineOMASClient));
+        return processes;
     }
 
     private List<String> getLineageMappingAttributesForColumn(String name) {
@@ -185,7 +187,7 @@ public class ProcessSetupService {
         return lineageAttributes;
     }
 
-    private void createVirtualAssets(String userId, DataEngineClient dataEngineOMASClient)
+    public void createVirtualAssets(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         List<Attribute> csvAttributes = createAttributes(csvHeaderAttributeNames, VIRTUAL, CSV, PortType.INOUT_PORT);
         SchemaType csvSchemaType = createSchemaType(VIRTUAL, CSV, csvAttributes);
@@ -196,14 +198,14 @@ public class ProcessSetupService {
         dataEngineOMASClient.createOrUpdateSchemaType(userId, dbSchemaType);
     }
 
-    private LineageMapping createLineageMapping(String sourceName, String targetName) {
+    public LineageMapping createLineageMapping(String sourceName, String targetName) {
         LineageMapping lineageMapping = new LineageMapping();
         lineageMapping.setSourceAttribute(sourceName);
         lineageMapping.setTargetAttribute(targetName);
         return lineageMapping;
     }
 
-    private void createJobProcess(String userId, DataEngineClient dataEngineOMASClient)
+    private Process createJobProcess(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process job = new Process();
         String name = getJobProcessName();
@@ -225,6 +227,7 @@ public class ProcessSetupService {
 
         dataEngineOMASClient.createOrUpdateProcess(userId, job);
         dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        return job;
     }
 
     private PortAlias createPortAlias(String delegatesTo, PortType type) {
@@ -237,7 +240,7 @@ public class ProcessSetupService {
         return portAlias;
     }
 
-    private void createFirstStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+    private Process createFirstStageProcess(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process firstStageProcess = createStageProcess(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME, FIRST_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, csvHeaderAttributeNames);
@@ -251,9 +254,10 @@ public class ProcessSetupService {
 
         dataEngineOMASClient.createOrUpdateProcess(userId, firstStageProcess);
         dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        return firstStageProcess;
     }
 
-    private void createSecondStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+    private Process createSecondStageProcess(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process secondStageProcess = createStageProcess(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, SECOND_STAGE_OUTPUT_PORT_NAME,
                 csvHeaderAttributeNames, databaseTableAttributeNames);
@@ -268,9 +272,10 @@ public class ProcessSetupService {
 
         dataEngineOMASClient.createOrUpdateProcess(userId, secondStageProcess);
         dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        return secondStageProcess;
     }
 
-    private void createThirdStageProcess(String userId, DataEngineClient dataEngineOMASClient)
+    private Process createThirdStageProcess(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         Process thirdStageProcess = createStageProcess(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_INPUT_PORT_NAME, THIRD_STAGE_OUTPUT_PORT_NAME,
                 databaseTableAttributeNames, databaseTableAttributeNames);
@@ -283,6 +288,7 @@ public class ProcessSetupService {
 
         dataEngineOMASClient.createOrUpdateProcess(userId, thirdStageProcess);
         dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+        return thirdStageProcess;
     }
 
     private List<LineageMapping> createLineageMappings(String sourceProcessName, String targetProcessName, String sourcePort, String targetPort,

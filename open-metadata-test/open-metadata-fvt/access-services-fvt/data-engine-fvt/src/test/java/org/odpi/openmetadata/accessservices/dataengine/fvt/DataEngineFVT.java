@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
@@ -119,7 +120,10 @@ public class DataEngineFVT {
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         processSetupService.createExternalDataEngine(userId, dataEngineClient);
-        processSetupService.createJobProcessWithContent(userId, dataEngineClient);
+        List<Process> processes = processSetupService.createJobProcessWithContent(userId, dataEngineClient);
+        for(Process process : processes){
+            validateProcess(process, repositoryService);
+        }
 
         Map<String, List<String>> columnLineages = processSetupService.getJobProcessLineageMappingsProxiesByCsvColumn();
 
@@ -147,6 +151,20 @@ public class DataEngineFVT {
         }
     }
 
+    private void validateProcess(Process process, RepositoryService repositoryService)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        List<EntityDetail> processes = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
+        assertNotNull(processes);
+        assertEquals(1, processes.size());
+
+        EntityDetail processAsEntityDetail = processes.get(0);
+        assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+    }
+
     private void validateCurrentAttribute(String currentAttribute, EntityDetail entityDetail) {
         assertEquals(currentAttribute, entityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
         assertEquals(currentAttribute + "_displayName", entityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
@@ -160,7 +178,7 @@ public class DataEngineFVT {
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException {
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
 
@@ -195,6 +213,38 @@ public class DataEngineFVT {
                 updatedProcessAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
         assertEquals(updatedProcess.getDescription(),
                 updatedProcessAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void verifyHighLevelLineage(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
+
+        List<LineageMapping> lineageMappings = new ArrayList<>();
+        lineageMappings.add(processSetupService.createLineageMapping(dataFile.getQualifiedName(), process.getQualifiedName()));
+        lineageMappings.add(processSetupService.createLineageMapping(process.getQualifiedName(), relationalTable.getQualifiedName()));
+        dataEngineClient.addLineageMappings(userId, lineageMappings);
+
+        List<EntityDetail> dataFiles = repositoryService.findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
+        assertNotNull(dataFiles);
+        assertEquals(1, dataFiles.size());
+
+        List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(dataFiles.get(0).getGUID(), PROCESS_TYPE_GUID);
+        assertNotNull(targetProcesses);
+        assertEquals(1, targetProcesses.size());
+
+        List<EntityDetail> targetRelationalTable = repositoryService.getRelatedEntities(targetProcesses.get(0).getGUID(), RELATIONAL_TABLE_TYPE_GUID);
+        assertNotNull(targetRelationalTable);
+        assertEquals(1, targetRelationalTable.size());
+
     }
 
     @ParameterizedTest
