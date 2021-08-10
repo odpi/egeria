@@ -120,7 +120,6 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship the relationship to be processed
      */
     private void processRelationshipEvent(Relationship relationship){
-        log.info("relationships");
         publisher.publishEvent(relationship);
     }
 
@@ -177,7 +176,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
      * Determines whether an Asset is in the supported zones.
      *
      * @param assetZones list of zones for the asset.
-     * @return boolean flag
+     * @return boolean true if at least one of the assetZones is in the supportedZones, otherwise false
      */
     private boolean inTheZone(List<String>   assetZones)
     {
