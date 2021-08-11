@@ -21,7 +21,10 @@ The ActivityDescription classification highlights when a term describes such an 
 * **DataValue** means that the glossary term describes a valid value for a data item.
 
 
-Return to [Area 3](Area-3-models.md).
+----
+
+* Return to [Area 3](Area-3-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

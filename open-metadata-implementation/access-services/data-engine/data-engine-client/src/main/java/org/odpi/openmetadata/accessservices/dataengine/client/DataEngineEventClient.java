@@ -11,9 +11,8 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
@@ -60,16 +59,13 @@ public class DataEngineEventClient implements DataEngineClient {
         this.deleteSemantic = deleteSemantic;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws InvalidParameterException, ConnectorCheckedException {
-        ProcessesEvent event = new ProcessesEvent();
+    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException, ConnectorCheckedException {
+        ProcessEvent event = new ProcessEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PROCESSES_EVENT);
-        event.setProcesses(processes);
+        event.setEventType(DataEngineEventType.PROCESS_EVENT);
+        event.setProcess(process);
 
         topicConnector.sendEvent(event);
 
@@ -77,18 +73,14 @@ public class DataEngineEventClient implements DataEngineClient {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
-                                                                                                       ConnectorCheckedException {
-        ProcessesDeleteEvent event = new ProcessesDeleteEvent();
+    public void deleteProcess(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = new DeleteEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DELETE_PROCESSES_EVENT);
-        event.setQualifiedNames(qualifiedNames);
-        event.setGuids(guids);
+        event.setEventType(DataEngineEventType.DELETE_PROCESS_EVENT);
+        event.setQualifiedName(qualifiedName);
+        event.setGuid(guid);
         event.setDeleteSemantic(deleteSemantic);
 
         topicConnector.sendEvent(event);

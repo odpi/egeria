@@ -313,14 +313,14 @@ public class AnalyticsModelingRestServices {
 
 	/**
 	 * Handle error in processing: build error response, and log with standard handler.
-	 * @param error being thrown
+	 * @param exception being thrown
 	 * @param methodName context
 	 * @return response with error definition.
 	 */
-	private AnalyticsModelingOMASAPIResponse handleErrorResponse(Exception e, String methodName)	{
-		AnalyticsModelingCheckedException error = createAnalyticsException(e, methodName);
+	private AnalyticsModelingOMASAPIResponse handleErrorResponse(Exception exception, String methodName)	{
+		AnalyticsModelingCheckedException error = createAnalyticsException(exception, methodName);
 		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		getExceptionHandler().captureThrowable(ret, e, methodName);
+		getExceptionHandler().captureExceptions(ret, exception, methodName);
 		return ret;
 	}
 	

@@ -275,12 +275,12 @@ public class AssetLineageRestServices {
     public GUIDListResponse publishAssetContext(String serverName, String userId, String entityType, String guid) {
         String methodName = "publishAssetContext";
         GUIDListResponse response = new GUIDListResponse();
-
+        AuditLog auditLog = null;
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
             RelationshipsContext assetContext = assetContextHandler.buildAssetContext(userId, entity);
@@ -297,7 +297,7 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
 
         return response;

@@ -24,7 +24,7 @@ into the governance program.
 
 ![UML Packages](area-1-collaboration-overview.png#pagewidth)
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

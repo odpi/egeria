@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Taxonomy;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +23,13 @@ public class TaxonomyMapper extends ClassificationMapper{
     private static final String className = TaxonomyMapper.class.getName();
     private static final String typeName = "Taxonomy";
 
-    public TaxonomyMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public TaxonomyMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
     @Override
     protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         Taxonomy taxonomy = (Taxonomy)omasClassification;
-        String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"organizingPrinciple",omrsClassificationProperties,"");
+        String stringValue = repositoryHelper.getStringProperty(genericHandler.getServiceName(),"organizingPrinciple",omrsClassificationProperties,"");
         taxonomy.setOrganizingPrinciple(stringValue);
         return Taxonomy.getPropertyNames();
     }
@@ -48,7 +48,7 @@ public class TaxonomyMapper extends ClassificationMapper{
         InstanceProperties instanceProperties = new InstanceProperties();
         Taxonomy taxonomy = (Taxonomy)omasClassification;
         if (taxonomy.getOrganizingPrinciple()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,("organizingPrinciple"),taxonomy.getOrganizingPrinciple(),"updateOMRSAttributes");
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,("organizingPrinciple"),taxonomy.getOrganizingPrinciple(),"updateOMRSAttributes");
         }
         return instanceProperties;
     }

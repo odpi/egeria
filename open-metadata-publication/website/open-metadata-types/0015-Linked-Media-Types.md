@@ -19,8 +19,10 @@ These images enrich the description of the object and may include,
 for example, design drawings, photographs or illustrations of the
 component in action.
 
+----
 
-Return to [Area 0](Area-0-models.md).
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

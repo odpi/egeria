@@ -82,7 +82,7 @@ The final set of models capture architectures and patterns.
    * For Event Schemas - [Topic Integrator OMIS](../../../open-metadata-implementation/integration-services/topic-integrator)
    * For Forms and Report Schemas - [Display Integrator OMIS](../../../open-metadata-implementation/integration-services/display-integrator)
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

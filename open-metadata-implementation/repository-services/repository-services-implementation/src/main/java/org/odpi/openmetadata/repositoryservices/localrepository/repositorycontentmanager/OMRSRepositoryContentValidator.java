@@ -2944,7 +2944,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * The caller can update the entity provided:
          * The entity is locally mastered
          * OR
-         * The entity has instanceProvenanceType set to external and replicatedBy is set to the local metadataColelctionId.
+         * The entity has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
          * Any other combination suggest that this is either a reference copy of an instance from the local cohort or a reference
          * copy of an external entity (and something else is responsible for replication).
          *

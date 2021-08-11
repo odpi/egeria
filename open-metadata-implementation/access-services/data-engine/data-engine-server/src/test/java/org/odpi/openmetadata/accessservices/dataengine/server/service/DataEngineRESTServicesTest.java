@@ -38,9 +38,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesDeleteRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
@@ -602,9 +600,9 @@ class DataEngineRESTServicesTest {
 
         when(dataEngineCollectionHandler.createCollection(USER, getCollection(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(COLLECTION_GUID);
 
-        ProcessesRequestBody requestBody = mockProcessesRequestBody();
+        ProcessRequestBody requestBody = mockProcessRequestBody();
 
-        ProcessListResponse response = dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertProcess(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEnginePortHandler, times(1)).createPortImplementation(USER, portImplementation, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -613,7 +611,7 @@ class DataEngineRESTServicesTest {
         verify(processHandler, times(1)).updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEngineCollectionHandler, times(1)).addCollectionMembershipRelationship(USER, COLLECTION_GUID, PROCESS_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        assertEquals(PROCESS_GUID, response.getGUIDs().get(0));
+        assertEquals(PROCESS_GUID, response.getGUID());
     }
 
     @Test
@@ -632,9 +630,9 @@ class DataEngineRESTServicesTest {
 
         when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
-        ProcessesRequestBody requestBody = mockProcessesRequestBody();
+        ProcessRequestBody requestBody = mockProcessRequestBody();
 
-        dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.upsertProcess(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureExceptions(any(GUIDResponse.class), eq(mockedException), eq(methodName));
     }
@@ -654,9 +652,9 @@ class DataEngineRESTServicesTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
-        ProcessesRequestBody requestBody = mockProcessesRequestBody();
+        ProcessRequestBody requestBody = mockProcessRequestBody();
 
-        dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.upsertProcess(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureExceptions(any(GUIDResponse.class), eq(mockedException), eq(methodName));
     }
@@ -693,9 +691,9 @@ class DataEngineRESTServicesTest {
         EntityDetail mockedPort = mockEntityDetailWithQualifiedName(PORT_GUID, QUALIFIED_NAME);
         when(processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME))
                 .thenReturn(new HashSet<>(Collections.singletonList(mockedPort)));
-        ProcessesRequestBody requestBody = mockProcessesRequestBody();
+        ProcessRequestBody requestBody = mockProcessRequestBody();
 
-        ProcessListResponse response = dataEngineRESTServices.upsertProcesses(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertProcess(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
@@ -708,7 +706,7 @@ class DataEngineRESTServicesTest {
         List<InstanceStatus> allValues = instanceStatuses.getAllValues();
         assertEquals(2, allValues.size());
         assertTrue(allValues.containsAll(Arrays.asList(InstanceStatus.DRAFT, InstanceStatus.ACTIVE)));
-        assertEquals(PROCESS_GUID, response.getGUIDs().get(0));
+        assertEquals(PROCESS_GUID, response.getGUID());
     }
 
     private Optional<EntityDetail> mockEntityDetail(String guid) {
@@ -931,7 +929,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void deleteProcesses_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+    void deleteProcess_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                     FunctionNotSupportedException {
         mockPortHandler("deletePort");
         mockSchemaTypeHandler("deleteSchemaType");
@@ -940,7 +938,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, PROCESS_QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
 
         EntityDetail mockedPort = mock(EntityDetail.class);
         when(mockedPort.getGUID()).thenReturn(GUID);
@@ -949,10 +947,9 @@ class DataEngineRESTServicesTest {
 
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedPort));
 
-        ProcessesDeleteRequestBody requestBody = getProcessesDeleteRequestBody();
-        requestBody.setQualifiedNames(Collections.singletonList(PROCESS_QUALIFIED_NAME));
+        DeleteRequestBody requestBody = getDeleteRequestBody();
 
-        dataEngineRESTServices.deleteProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.deleteProcess(USER, SERVER_NAME, requestBody);
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -974,9 +971,9 @@ class DataEngineRESTServicesTest {
 
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedPort));
 
-        ProcessesDeleteRequestBody requestBody = getProcessesDeleteRequestBody();
-        requestBody.setGuids(Collections.singletonList(PROCESS_GUID));
-        dataEngineRESTServices.deleteProcesses(USER, SERVER_NAME, requestBody);
+        DeleteRequestBody requestBody = getDeleteRequestBody();
+        requestBody.setGuid(PROCESS_GUID);
+        dataEngineRESTServices.deleteProcess(USER, SERVER_NAME, requestBody);
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -1157,12 +1154,6 @@ class DataEngineRESTServicesTest {
 
         verify(dataEngineConnectionAndEndpointHandler, times(1)).removeEndpoint(USER, GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
-    private ProcessesDeleteRequestBody getProcessesDeleteRequestBody() {
-        ProcessesDeleteRequestBody deleteRequestBody = new ProcessesDeleteRequestBody();
-        deleteRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        deleteRequestBody.setDeleteSemantic(DeleteSemantic.SOFT);
-        return deleteRequestBody;
-    }
 
     private DeleteRequestBody getDeleteRequestBody() {
         DeleteRequestBody deleteRequestBody = new DeleteRequestBody();
@@ -1247,9 +1238,9 @@ class DataEngineRESTServicesTest {
         return requestBody;
     }
 
-    private ProcessesRequestBody mockProcessesRequestBody() {
-        ProcessesRequestBody requestBody = new ProcessesRequestBody();
-        requestBody.setProcesses(Collections.singletonList(process));
+    private ProcessRequestBody mockProcessRequestBody() {
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setProcess(process);
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
@@ -1358,7 +1349,6 @@ class DataEngineRESTServicesTest {
         process.setOwnerType(OwnerType.USER_ID);
         process.setPortImplementations(portImplementations);
         process.setPortAliases(portAliases);
-        process.setLineageMappings(lineageMappings);
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
         process.setCollection(collection);
 

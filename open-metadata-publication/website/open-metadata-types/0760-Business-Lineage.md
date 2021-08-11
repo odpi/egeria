@@ -11,7 +11,10 @@ some of the technical detail to be eliminated from the display.
 ![UML](0760-Business-Lineage.png#pagewidth)
 
 
-Return to [Area 7](Area-7-models.md).
+---
+
+* Return to [Area 7](Area-7-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

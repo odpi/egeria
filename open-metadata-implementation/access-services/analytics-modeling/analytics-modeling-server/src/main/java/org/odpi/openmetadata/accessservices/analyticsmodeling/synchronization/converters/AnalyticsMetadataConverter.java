@@ -66,7 +66,7 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			
 			if (nativeClass == null) {
 				throw new PropertyServerException(
-						AnalyticsModelingErrorCode.MISSING_BEAN_CLASS.getMessageDefinition(),
+						AnalyticsModelingErrorCode.MISSING_BEAN_CLASS.getMessageDefinition(entity.getGUID()),
 						this.getClass().getSimpleName(),
 						methodName);
 			}
@@ -104,7 +104,7 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			}
 
 			throw new PropertyServerException(
-					AnalyticsModelingErrorCode.UNEXPECTED_CLASS.getMessageDefinition(object.getClass().getSimpleName()),
+					AnalyticsModelingErrorCode.UNEXPECTED_CLASS.getMessageDefinition(object.getClass().getSimpleName(), entity.getGUID()),
 					this.getClass().getSimpleName(),
 					methodName);
 		}

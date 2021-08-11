@@ -27,9 +27,10 @@ They run in an [Engine Host](../../../open-metadata-implementation/admin-service
 OMAG Server and draw their configuration from the 
 **GovernanceEngine** and the linked **GovernanceService** elements in the associated metadata server.
 
-----
+---
 
-Return to [Area 4](Area-4-models.md).
+* Return to [Area 4](Area-4-models.md).
+* Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
