@@ -172,11 +172,11 @@ public class ServerAuthorViewHandler {
                         StoredServer storedServer = new StoredServer();
                         storedServer.setStoredServerName(serverName);
                         storedServer.setServerType(omagServerConfig.getLocalServerType());
-                        String status =  "Stopped";
+                        String status = "NOT ACTIVE";
                         try {
                             OMAGServerConfig activeConfig = getActiveConfiguration(className, methodName, serverName);
                             if (activeConfig != null) {
-                                status = "Started";
+                                status = "ACTIVE";
                             }
                         } catch (ServerAuthorViewServiceException e) {
                            // cannot get to this server - so it is not available.
