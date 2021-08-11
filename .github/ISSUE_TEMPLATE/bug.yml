@@ -4,7 +4,7 @@
 name: 🐞 Bug
 description: File a bug/issue
 title: "[BUG] <title>"
-labels: [Bug, triage]
+labels: [bug, triage]
 body:
   - type: checkboxes
     id: issue_exists
