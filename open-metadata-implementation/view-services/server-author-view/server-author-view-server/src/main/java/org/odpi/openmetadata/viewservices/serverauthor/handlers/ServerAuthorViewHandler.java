@@ -168,9 +168,20 @@ public class ServerAuthorViewHandler {
 
                     // populate the platform with summaries of each server.
                     for (OMAGServerConfig omagServerConfig : omagServerConfigSet) {
+                        String serverName = omagServerConfig.getLocalServerName();
                         StoredServer storedServer = new StoredServer();
-                        storedServer.setStoredServerName(omagServerConfig.getLocalServerName());
+                        storedServer.setStoredServerName(serverName);
                         storedServer.setServerType(omagServerConfig.getLocalServerType());
+                        String status =  "Stopped";
+                        try {
+                            OMAGServerConfig activeConfig = getActiveConfiguration(className, methodName, serverName);
+                            if (activeConfig != null) {
+                                status = "Started";
+                            }
+                        } catch (ServerAuthorViewServiceException e) {
+                           // cannot get to this server - so it is not available.
+                        }
+                        storedServer.setServerStatus(status);
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
