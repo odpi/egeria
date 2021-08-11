@@ -183,15 +183,7 @@ public class DataEngineFVT {
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
 
         List<EntityDetail> processes = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
-        assertNotNull(processes);
-        assertEquals(1, processes.size());
-
-        EntityDetail processAsEntityDetail = processes.get(0);
-        assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-        assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
-        assertEquals(process.getName(), processAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(process.getDescription(), processAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
-        assertEquals(process.getOwner(), getOwnership(processAsEntityDetail));
+        assertProcess(process, processes);
 
         //update process
         String newSuffix = "-new";
@@ -203,16 +195,7 @@ public class DataEngineFVT {
 
         List<EntityDetail> updatedProcesses =
                 repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, updatedProcess.getQualifiedName());
-        assertNotNull(updatedProcesses);
-        assertEquals(1, updatedProcesses.size());
-
-        EntityDetail updatedProcessAsEntityDetail = updatedProcesses.get(0);
-        assertEquals(updatedProcess.getDisplayName(),
-                updatedProcessAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
-        assertEquals(updatedProcess.getName(),
-                updatedProcessAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(updatedProcess.getDescription(),
-                updatedProcessAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertProcess(updatedProcess, updatedProcesses);
     }
 
     @ParameterizedTest
@@ -223,7 +206,11 @@ public class DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        processSetupService.createExternalDataEngine(userId, dataEngineClient);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
+        assertDatabase(database, databases);
+
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
         RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
@@ -233,18 +220,14 @@ public class DataEngineFVT {
         lineageMappings.add(processSetupService.createLineageMapping(process.getQualifiedName(), relationalTable.getQualifiedName()));
         dataEngineClient.addLineageMappings(userId, lineageMappings);
 
-        List<EntityDetail> dataFiles = repositoryService.findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
-        assertNotNull(dataFiles);
-        assertEquals(1, dataFiles.size());
+        List<EntityDetail> targetDataFiles = repositoryService.findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
+        assertDataFile(dataFile, targetDataFiles);
 
-        List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(dataFiles.get(0).getGUID(), PROCESS_TYPE_GUID);
-        assertNotNull(targetProcesses);
-        assertEquals(1, targetProcesses.size());
+        List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(targetDataFiles.get(0).getGUID(), PROCESS_TYPE_GUID);
+        assertProcess(process, targetProcesses);
 
         List<EntityDetail> targetRelationalTable = repositoryService.getRelatedEntities(targetProcesses.get(0).getGUID(), RELATIONAL_TABLE_TYPE_GUID);
-        assertNotNull(targetRelationalTable);
-        assertEquals(1, targetRelationalTable.size());
-
+        assertRelationalTable(relationalTable, targetRelationalTable);
     }
 
     @ParameterizedTest
@@ -260,16 +243,7 @@ public class DataEngineFVT {
 
         // assert Database
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
-        assertNotNull(databases);
-        assertEquals(1, databases.size());
-
-        EntityDetail databaseAsEntityDetail = databases.get(0);
-        assertEquals(database.getDisplayName(), databaseAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(database.getDescription(), databaseAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
-        assertEquals(database.getDatabaseType(), databaseAsEntityDetail.getProperties().getPropertyValue(DEPLOYED_IMPLEMENTATION_TYPE).valueAsString());
-        assertEquals(database.getDatabaseVersion(), databaseAsEntityDetail.getProperties().getPropertyValue(DATABASE_VERSION).valueAsString());
-        assertEquals(database.getDatabaseInstance(), databaseAsEntityDetail.getProperties().getPropertyValue(INSTANCE).valueAsString());
-        assertEquals(database.getDatabaseImportedFrom(), databaseAsEntityDetail.getProperties().getPropertyValue(IMPORTED_FROM).valueAsString());
+        EntityDetail databaseAsEntityDetail = assertDatabase(database, databases);
 
         // assert Deployed Database Schema
         List<EntityDetail> schemas = repositoryService
@@ -297,14 +271,7 @@ public class DataEngineFVT {
         // assert Relational Table
         List<EntityDetail> relationalTables = repositoryService
                 .findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
-        assertNotNull(relationalTables);
-        assertEquals(1, relationalTables.size());
-
-        EntityDetail relationalTableAsEntityDetail = relationalTables.get(0);
-        assertEquals(relationalTable.getDisplayName(),
-                relationalTableAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
-        assertEquals(relationalTable.getDescription(),
-                relationalTableAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        EntityDetail relationalTableAsEntityDetail = assertRelationalTable(relationalTable, relationalTables);
 
         // assert Relational DB Schema Type
         List<EntityDetail> relationalSchemas = repositoryService
@@ -343,14 +310,7 @@ public class DataEngineFVT {
         // assert Data File
         List<EntityDetail> dataFiles = repositoryService
                 .findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
-        assertNotNull(dataFiles);
-        assertEquals(1, dataFiles.size());
-
-        EntityDetail dataFileAsEntityDetail = dataFiles.get(0);
-        assertEquals(dataFile.getDisplayName(), dataFileAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(dataFile.getQualifiedName(), dataFileAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-        assertEquals(dataFile.getDescription(), dataFileAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
-        assertEquals(dataFile.getFileType(), dataFileAsEntityDetail.getProperties().getPropertyValue(FILE_TYPE).valueAsString());
+        EntityDetail dataFileAsEntityDetail = assertDataFile(dataFile, dataFiles);
 
         // assert Tabular Schema Type
         List<EntityDetail> tabularSchemas = repositoryService
@@ -374,6 +334,56 @@ public class DataEngineFVT {
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(dataFile.getColumns().get(0).getDescription(),
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+    }
+
+    private void assertProcess(Process process, List<EntityDetail> processes) {
+        assertNotNull(processes);
+        assertEquals(1, processes.size());
+
+        EntityDetail processAsEntityDetail = processes.get(0);
+        assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(process.getName(), processAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(process.getDescription(), processAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(process.getOwner(), getOwnership(processAsEntityDetail));
+    }
+
+    private EntityDetail assertDatabase(Database database, List<EntityDetail> databases) {
+        assertNotNull(databases);
+        assertEquals(1, databases.size());
+
+        EntityDetail databaseAsEntityDetail = databases.get(0);
+        assertEquals(database.getDisplayName(), databaseAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(database.getDescription(), databaseAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(database.getDatabaseType(), databaseAsEntityDetail.getProperties().getPropertyValue(DEPLOYED_IMPLEMENTATION_TYPE).valueAsString());
+        assertEquals(database.getDatabaseVersion(), databaseAsEntityDetail.getProperties().getPropertyValue(DATABASE_VERSION).valueAsString());
+        assertEquals(database.getDatabaseInstance(), databaseAsEntityDetail.getProperties().getPropertyValue(INSTANCE).valueAsString());
+        assertEquals(database.getDatabaseImportedFrom(), databaseAsEntityDetail.getProperties().getPropertyValue(IMPORTED_FROM).valueAsString());
+        return databaseAsEntityDetail;
+    }
+
+    private EntityDetail assertRelationalTable(RelationalTable relationalTable, List<EntityDetail> relationalTables) {
+        assertNotNull(relationalTables);
+        assertEquals(1, relationalTables.size());
+
+        EntityDetail relationalTableAsEntityDetail = relationalTables.get(0);
+        assertEquals(relationalTable.getDisplayName(),
+                relationalTableAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(relationalTable.getDescription(),
+                relationalTableAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        return relationalTableAsEntityDetail;
+    }
+
+    private EntityDetail assertDataFile(DataFile dataFile, List<EntityDetail> dataFiles) {
+        assertNotNull(dataFiles);
+        assertEquals(1, dataFiles.size());
+
+        EntityDetail dataFileAsEntityDetail = dataFiles.get(0);
+        assertEquals(dataFile.getDisplayName(), dataFileAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(dataFile.getQualifiedName(), dataFileAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(dataFile.getDescription(), dataFileAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(dataFile.getFileType(), dataFileAsEntityDetail.getProperties().getPropertyValue(FILE_TYPE).valueAsString());
+        return dataFileAsEntityDetail;
     }
 
     private String getOwnership(EntityDetail entityDetail){
