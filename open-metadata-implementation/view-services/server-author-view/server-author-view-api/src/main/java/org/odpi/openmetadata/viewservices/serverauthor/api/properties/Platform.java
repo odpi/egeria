@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,7 +33,11 @@ public class Platform {
     private String platformDescription;
     private PlatformStatus platformStatus;
     private Set<StoredServer> storedServers = new HashSet<>();
-    private Set<RegisteredOMAGService> registeredOMAGServices = new HashSet<>();
+
+    private List<RegisteredOMAGService> accessServices;
+    private List<RegisteredOMAGService> commonServices;
+    private List<RegisteredOMAGService> governanceServices;
+    private List<RegisteredOMAGService> viewServices;
 
     /**
      * Default Constructor sets the properties to nulls
@@ -111,19 +116,51 @@ public class Platform {
     }
 
     /**
-     * Get the registered access services for this platform
-     * @return RegisteredOMAGService
+     * Set the access services that this platform supports.
+     * @param accessServices
      */
-    public Set<RegisteredOMAGService> getRegisteredOMAGServices() {
-        return registeredOMAGServices;
+    public void setAccessServices(List<RegisteredOMAGService> accessServices) {
+        this.accessServices = accessServices;
     }
-
     /**
-     * Set the registered access services for this platform
-     * @param registeredOMAGServices
+     * Get the common services that this platform supports.
+     * @return common services supported by this platform
      */
-    public void setRegisteredOMAGServices(Set<RegisteredOMAGService> registeredOMAGServices) {
-        this.registeredOMAGServices = registeredOMAGServices;
+    public List<RegisteredOMAGService> getCommonServices() {
+        return commonServices;
+    }
+    /**
+     * Set the common services that this platform supports.
+     * @param commonServices
+     */
+    public void setCommonServices(List<RegisteredOMAGService> commonServices) {
+        this.commonServices = commonServices;
+    }
+    /**
+     * Get the governance services that this platform supports.
+     * @return governance services supported by this platform
+     */
+    public List<RegisteredOMAGService> getGovernanceServices() {
+        return governanceServices;
+    }
+    /**
+     * Set the governance services that this platform supports.
+     * @param governanceServices
+     */
+    public void setGovernanceServices(List<RegisteredOMAGService> governanceServices) { this.governanceServices = governanceServices; }
+    /**
+     * Get the view services that this platform supports.
+     * @return view services supported by this platform
+     */
+    public List<RegisteredOMAGService> getViewServices() {
+        return viewServices;
+    }
+    /**
+     * Set the view services that this platform supports.
+     * @param viewServices
+     */
+    public void setViewServices(List<RegisteredOMAGService> viewServices) {
+        this.viewServices = viewServices;
     }
 
     /**
@@ -172,8 +209,23 @@ public class Platform {
              sb.append(storedServer).append(',');
         }
         sb.append('}');
-        sb.append("registeredAccessServices={");
-        for (RegisteredOMAGService registeredOMAGService:registeredOMAGServices) {
+        sb.append("accessServices={");
+        for (RegisteredOMAGService registeredOMAGService:accessServices) {
+            sb.append(registeredOMAGService).append(',');
+        }
+        sb.append('}');
+        sb.append("viewServices={");
+        for (RegisteredOMAGService registeredOMAGService:viewServices) {
+            sb.append(registeredOMAGService).append(',');
+        }
+        sb.append('}');
+        sb.append("governanceServices={");
+        for (RegisteredOMAGService registeredOMAGService:governanceServices) {
+            sb.append(registeredOMAGService).append(',');
+        }
+        sb.append('}');
+        sb.append("commonServices={");
+        for (RegisteredOMAGService registeredOMAGService:commonServices) {
             sb.append(registeredOMAGService).append(',');
         }
         sb.append('}');
@@ -198,9 +250,42 @@ public class Platform {
                }
            }
         }
-        for (RegisteredOMAGService registeredOMAGService:registeredOMAGServices) {
+        for (RegisteredOMAGService registeredOMAGService:accessServices) {
             boolean foundIt = false;
-            for (RegisteredOMAGService platformRegisteredOMAGService: platform.registeredOMAGServices) {
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.accessServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService:commonServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.commonServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService:governanceServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.governanceServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService:viewServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.viewServices) {
                 if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
                     foundIt = true;
                 }
@@ -217,6 +302,6 @@ public class Platform {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, registeredOMAGServices);
+        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, accessServices, viewServices, governanceServices, commonServices);
     }
 }

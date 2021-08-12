@@ -14,7 +14,12 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorExceptionHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewErrorCode;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewServiceException;
@@ -148,14 +153,16 @@ public class ServerAuthorViewHandler {
     }
 
     /**
-     * Get the server configurations associated with the platforms that this view service knows about.
+     * Get the server configurations associated with the platforms that this view service knows about as well as the
+     * services it supports.
      *
      * @param userId     userId under which the request is performed
      * @param methodName The name of the method being invoked
+     * @param auditLog  auditLog
      * @return the known platforms, which if active will contain their associated omag server configurations
      * @throws ServerAuthorViewServiceException the server author view has detected an error
      */
-    public Set<Platform> getKnownPlatforms(String userId, String methodName) throws ServerAuthorViewServiceException {
+    public Set<Platform> getKnownPlatforms(String userId, String methodName, AuditLog auditLog) throws ServerAuthorViewServiceException {
         Set<Platform> knownPlatforms = new HashSet<>();
         try {
             for (String platformName : configuredPlatforms.keySet()) {
@@ -165,7 +172,8 @@ public class ServerAuthorViewHandler {
                 // need to use the other constructor to pass the user and password from the configuration
                 Set<OMAGServerConfig> omagServerConfigSet = null;
                 try {
-                    OMAGServerPlatformConfigurationClient omagServerPlatformConfigurationClient = new OMAGServerPlatformConfigurationClient(userId, resourceEndpoint.getResourceRootURL());
+                    String platFormEndpoint = resourceEndpoint.getResourceRootURL();
+                    OMAGServerPlatformConfigurationClient omagServerPlatformConfigurationClient = new OMAGServerPlatformConfigurationClient(userId, platFormEndpoint);
                     omagServerConfigSet =  omagServerPlatformConfigurationClient.getAllServerConfigurations();
                     platform.setPlatformStatus(PlatformStatus.ACTIVE);
 
@@ -188,19 +196,38 @@ public class ServerAuthorViewHandler {
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
-                    Set<RegisteredOMAGService> registeredAccessServices = omagServerPlatformConfigurationClient.getRegisteredAccessServices().stream().collect(Collectors.toSet());
-                    platform.setRegisteredOMAGServices(registeredAccessServices);
+                    PlatformServicesClient platformServicesClient = new PlatformServicesClient(platformName, platFormEndpoint);
+                    List<RegisteredOMAGService> accessServiceList = platformServicesClient.getAccessServices(userId);
+                    platform.setAccessServices(accessServiceList);
+
+                    List<RegisteredOMAGService> commonServiceList = platformServicesClient.getCommonServices(userId);
+                    platform.setCommonServices(commonServiceList);
+
+                    List<RegisteredOMAGService> governanceServiceList = platformServicesClient.getGovernanceServices(userId);
+                    platform.setGovernanceServices(governanceServiceList);
+
+                    List<RegisteredOMAGService> viewServiceList = platformServicesClient.getViewServices(userId);
+                    platform.setViewServices(viewServiceList);
+
                 } catch (OMAGConfigurationErrorException e) {
                     // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
-                    // configured in this view service
+                    // configured in this view service.
                     platform.setPlatformStatus(PlatformStatus.NOT_CONTACTABLE);
+                } catch (PropertyServerException e) {
+                    // create a new platform object in case it is partially filled in.
+                    platform = new Platform();
+                    platform.setPlatformStatus(PlatformStatus.NOT_CONTACTABLE);
+                } catch (InvalidParameterException error) {
+                   throw ServerAuthorExceptionHandler.mapOCFInvalidParameterException(className, methodName, error);
+                } catch (UserNotAuthorizedException error) {
+                    throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
                 }
                 knownPlatforms.add(platform);
             }
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         }
 
         return knownPlatforms;
@@ -252,7 +279,7 @@ public class ServerAuthorViewHandler {
             );
             configurationClient.setInMemLocalRepository();
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -277,7 +304,7 @@ public class ServerAuthorViewHandler {
             );
             configurationClient.setGraphLocalRepository(storageProperties);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -301,7 +328,7 @@ public class ServerAuthorViewHandler {
             );
             configurationClient.setReadOnlyLocalRepository();
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -328,7 +355,7 @@ public class ServerAuthorViewHandler {
                                                                                                   this.platformURL);
             config = adminServicesClient.getOMAGServerConfig();
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -355,7 +382,7 @@ public class ServerAuthorViewHandler {
             adminServicesClient.deployOMAGServerConfig(destinationPlatformRootURL);
 
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -379,7 +406,7 @@ public class ServerAuthorViewHandler {
                                                                                                   this.platformURL);
             adminServicesClient.setOMAGServerConfig(omagServerConfig);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -407,7 +434,7 @@ public class ServerAuthorViewHandler {
             }
             client.configureAccessService(serviceURLMarker, accessServiceOptions);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -434,7 +461,7 @@ public class ServerAuthorViewHandler {
             }
             client.configureAllAccessServices(accessServiceOptions);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -458,7 +485,7 @@ public class ServerAuthorViewHandler {
                                                                                                        this.platformURL);
             client.setEnterpriseAccessConfig(enterpriseAccessConfig);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -486,7 +513,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.setEventBus(connectorProvider, topicURLRoot, configurationProperties);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -509,7 +536,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.setDefaultAuditLog();
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -534,7 +561,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.addConsoleAuditLogDestination(supportedSeverities);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -559,7 +586,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.addSLF4JAuditLogDestination(supportedSeverities);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -584,7 +611,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.addFileAuditLogDestination(supportedSeverities);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -609,7 +636,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.addEventTopicAuditLogDestination(supportedSeverities);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -634,7 +661,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             client.addAuditLogDestination(connection);
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {
@@ -660,7 +687,7 @@ public class ServerAuthorViewHandler {
                                                                                      this.platformURL);
             config = client.getOMAGServerInstanceConfig();
         } catch (OMAGNotAuthorizedException error) {
-            throw ServerAuthorExceptionHandler.mapOMAGUserNotAuthorizedException(className, methodName, error);
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGConfigurationErrorException error) {

@@ -804,7 +804,7 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // get the defined platforms from the config
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName, auditLog));
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
