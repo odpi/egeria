@@ -6,8 +6,10 @@ package org.odpi.openmetadata.viewservices.serverauthor.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,6 +33,7 @@ public class Platform {
     private String platformDescription;
     private PlatformStatus platformStatus;
     private Set<StoredServer> storedServers = new HashSet<>();
+    private Set<AccessServiceConfig> accessServiceConfigs = new HashSet<>();
 
     /**
      * Default Constructor sets the properties to nulls
@@ -106,6 +109,22 @@ public class Platform {
      */
     public void setStoredServers(Set<StoredServer> storedServers) {
         this.storedServers = storedServers;
+    }
+
+    /**
+     * Get the registered access services for this platform
+     * @return AccessServiceConfig
+     */
+    public Set<AccessServiceConfig> getAccessServiceConfigs() {
+        return accessServiceConfigs;
+    }
+
+    /**
+     * Set the registered access services for this platform
+     * @param accessServiceConfigs
+     */
+    public void setAccessServiceConfigs(Set<AccessServiceConfig> accessServiceConfigs) {
+        this.accessServiceConfigs = accessServiceConfigs;
     }
 
     /**

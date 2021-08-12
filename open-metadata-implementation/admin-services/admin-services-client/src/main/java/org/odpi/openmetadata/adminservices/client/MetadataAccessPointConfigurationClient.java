@@ -71,13 +71,20 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
      */
 
     /**
-     * Return the list of access services for this server.
+     * Return the list of access services for this plaform
+     *
+     * This call is deprecated, as the MetadataAccessPointConfigurationClient client is for configuring a particular
+     * server, not interrogating platform information.
+     *
+     * Please use the call getRegisteredAccessServices in the platform configuration client
+     * OMAGServerPlatformConfigurationClient.
      *
      * @return list of access service descriptions
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
+    @Deprecated
     public List<RegisteredOMAGService> getRegisteredAccessServices() throws OMAGNotAuthorizedException,
                                                                             OMAGInvalidParameterException,
                                                                             OMAGConfigurationErrorException

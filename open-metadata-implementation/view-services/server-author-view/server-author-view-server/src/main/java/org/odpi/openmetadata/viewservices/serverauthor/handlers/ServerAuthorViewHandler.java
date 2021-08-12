@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurati
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
@@ -162,8 +163,8 @@ public class ServerAuthorViewHandler {
                 // need to use the other constructor to pass the user and password from the configuration
                 Set<OMAGServerConfig> omagServerConfigSet = null;
                 try {
-                    omagServerConfigSet = new OMAGServerPlatformConfigurationClient(userId, resourceEndpoint.getResourceRootURL())
-                            .getAllServerConfigurations();
+                    OMAGServerPlatformConfigurationClient omagServerPlatformConfigurationClient = new OMAGServerPlatformConfigurationClient(userId, resourceEndpoint.getResourceRootURL());
+                    omagServerConfigSet =  omagServerPlatformConfigurationClient.getAllServerConfigurations();
                     platform.setPlatformStatus(PlatformStatus.ACTIVE);
 
                     // populate the platform with summaries of each server.
@@ -185,6 +186,10 @@ public class ServerAuthorViewHandler {
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
+                    //`/open-metadata/platform-services/users/${userId}/server-platform/registered-services/access-services`;
+                    MetadataAccessPointConfigurationClient metadataAccessPointConfigurationClient = new MetadataAccessPointConfigurationClient(userId, "",resourceEndpoint.getResourceRootURL());
+                    Set<AccessServiceConfig> accessServiceConfigs = (Set<AccessServiceConfig>) metadataAccessPointConfigurationClient.getAccessServicesConfiguration();
+                    platform.setAccessServiceConfigs(accessServiceConfigs);
                 } catch (OMAGConfigurationErrorException e) {
                     // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
                     // configured in this view service

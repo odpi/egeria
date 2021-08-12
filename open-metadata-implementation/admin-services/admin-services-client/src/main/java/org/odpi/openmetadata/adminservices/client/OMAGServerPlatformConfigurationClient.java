@@ -11,9 +11,12 @@ import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -278,4 +281,30 @@ public class OMAGServerPlatformConfigurationClient
 
         return restResult.getOMAGServerConfigs();
     }
+    /*
+     * =============================================================
+     * Learn about all possible access services that a platform has
+     */
+
+    /**
+     * Return the list of access services for this platform.
+     *
+     * @return list of access service descriptions registered on this platform
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public List<RegisteredOMAGService> getRegisteredAccessServices() throws OMAGNotAuthorizedException,
+                                                                            OMAGInvalidParameterException,
+                                                                            OMAGConfigurationErrorException
+    {
+        final String methodName  = "getRegisteredAccessServices";
+        final String urlTemplate = "/open-metadata/platform-services/users/{0}/server-platform/registered-services/access-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName,
+                                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                                     adminUserId);
+        return restResult.getServices();
+    }
+
 }
