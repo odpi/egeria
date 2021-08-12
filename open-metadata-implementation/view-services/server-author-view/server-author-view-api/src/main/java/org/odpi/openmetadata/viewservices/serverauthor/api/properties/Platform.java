@@ -6,10 +6,9 @@ package org.odpi.openmetadata.viewservices.serverauthor.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class Platform {
     private String platformDescription;
     private PlatformStatus platformStatus;
     private Set<StoredServer> storedServers = new HashSet<>();
-    private Set<AccessServiceConfig> accessServiceConfigs = new HashSet<>();
+    private Set<RegisteredOMAGService> registeredOMAGServices = new HashSet<>();
 
     /**
      * Default Constructor sets the properties to nulls
@@ -113,18 +112,18 @@ public class Platform {
 
     /**
      * Get the registered access services for this platform
-     * @return AccessServiceConfig
+     * @return RegisteredOMAGService
      */
-    public Set<AccessServiceConfig> getAccessServiceConfigs() {
-        return accessServiceConfigs;
+    public Set<RegisteredOMAGService> getRegisteredOMAGServices() {
+        return registeredOMAGServices;
     }
 
     /**
      * Set the registered access services for this platform
-     * @param accessServiceConfigs
+     * @param registeredOMAGServices
      */
-    public void setAccessServiceConfigs(Set<AccessServiceConfig> accessServiceConfigs) {
-        this.accessServiceConfigs = accessServiceConfigs;
+    public void setRegisteredOMAGServices(Set<RegisteredOMAGService> registeredOMAGServices) {
+        this.registeredOMAGServices = registeredOMAGServices;
     }
 
     /**
@@ -173,6 +172,11 @@ public class Platform {
              sb.append(storedServer).append(',');
         }
         sb.append('}');
+        sb.append("registeredAccessServices={");
+        for (RegisteredOMAGService registeredOMAGService:registeredOMAGServices) {
+            sb.append(registeredOMAGService).append(',');
+        }
+        sb.append('}');
         sb.append('}');
         return sb;
     }
@@ -194,6 +198,17 @@ public class Platform {
                }
            }
         }
+        for (RegisteredOMAGService registeredOMAGService:registeredOMAGServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.registeredOMAGServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
 
         return Objects.equals(platformName, platform.platformName) &&
                 Objects.equals(platformDescription, platform.platformDescription) &&
@@ -202,6 +217,6 @@ public class Platform {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers);
+        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, registeredOMAGServices);
     }
 }

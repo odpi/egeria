@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndp
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorExceptionHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewErrorCode;
@@ -186,10 +187,8 @@ public class ServerAuthorViewHandler {
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
-                    //`/open-metadata/platform-services/users/${userId}/server-platform/registered-services/access-services`;
-                    MetadataAccessPointConfigurationClient metadataAccessPointConfigurationClient = new MetadataAccessPointConfigurationClient(userId, "",resourceEndpoint.getResourceRootURL());
-                    Set<AccessServiceConfig> accessServiceConfigs = (Set<AccessServiceConfig>) metadataAccessPointConfigurationClient.getAccessServicesConfiguration();
-                    platform.setAccessServiceConfigs(accessServiceConfigs);
+                    Set<RegisteredOMAGService> registeredAccessServices = (Set<RegisteredOMAGService>) omagServerPlatformConfigurationClient.getRegisteredAccessServices();
+                    platform.setRegisteredOMAGServices(registeredAccessServices);
                 } catch (OMAGConfigurationErrorException e) {
                     // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
                     // configured in this view service
