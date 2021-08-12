@@ -6,6 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:view-services:server-author-view:server-author-view-api')
     implementation project(':open-metadata-implementation:view-services:server-author-view:server-author-view-server')
     implementation 'org.springframework:spring-web'
