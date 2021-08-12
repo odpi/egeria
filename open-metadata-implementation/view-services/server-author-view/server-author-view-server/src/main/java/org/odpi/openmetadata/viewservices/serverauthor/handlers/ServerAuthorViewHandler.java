@@ -24,6 +24,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.StoredServer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -187,7 +188,7 @@ public class ServerAuthorViewHandler {
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
-                    Set<RegisteredOMAGService> registeredAccessServices = (Set<RegisteredOMAGService>) omagServerPlatformConfigurationClient.getRegisteredAccessServices();
+                    Set<RegisteredOMAGService> registeredAccessServices = omagServerPlatformConfigurationClient.getRegisteredAccessServices().stream().collect(Collectors.toSet());
                     platform.setRegisteredOMAGServices(registeredAccessServices);
                 } catch (OMAGConfigurationErrorException e) {
                     // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL

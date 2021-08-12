@@ -71,13 +71,12 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
      */
 
     /**
-     * Return the list of access services for this plaform
+     * Return the list of access services for this platform
      *
      * This call is deprecated, as the MetadataAccessPointConfigurationClient client is for configuring a particular
      * server, not interrogating platform information.
      *
-     * Please use the call getRegisteredAccessServices in the platform configuration client
-     * OMAGServerPlatformConfigurationClient.
+     * Please use the call getAccessServices in the platform services client PlatformServicesClient
      *
      * @return list of access service descriptions
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
