@@ -16,6 +16,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
+description = 'Server Author API View Services'
+
 java {
     withJavadocJar()
 }

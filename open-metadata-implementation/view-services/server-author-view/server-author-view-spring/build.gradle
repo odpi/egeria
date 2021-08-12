@@ -13,6 +13,8 @@ dependencies {
 
 }
 
+description = 'Server Author Spring View Services'
+
 java {
     withJavadocJar()
 }

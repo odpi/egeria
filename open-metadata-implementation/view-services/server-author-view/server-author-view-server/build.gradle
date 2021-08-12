@@ -23,6 +23,8 @@ dependencies {
 
 }
 
+description = 'Server Author Server View Services'
+
 java {
     withJavadocJar()
 }
