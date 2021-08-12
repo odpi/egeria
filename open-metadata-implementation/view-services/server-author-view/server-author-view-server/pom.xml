@@ -72,7 +72,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>platform-services-api</artifactId>
+            <artifactId>platform-services-client</artifactId>
         </dependency>
 
     </dependencies>
