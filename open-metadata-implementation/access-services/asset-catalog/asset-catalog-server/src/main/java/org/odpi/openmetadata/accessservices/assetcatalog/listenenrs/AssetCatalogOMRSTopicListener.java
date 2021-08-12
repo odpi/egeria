@@ -70,9 +70,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent)
     {
-        if (log.isDebugEnabled()) {
-            log.debug("Processing instance event: " + instanceEvent);
-        }
+        log.debug("Processing instance event: {}" + instanceEvent);
 
         if (instanceEvent == null) {
             log.debug("Ignored instance event - null OMRSInstanceEvent");
