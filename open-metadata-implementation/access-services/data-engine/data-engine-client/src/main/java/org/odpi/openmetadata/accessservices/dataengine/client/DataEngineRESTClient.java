@@ -334,14 +334,15 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                                               PropertyServerException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = RELATIONAL_TABLE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
         requestBody.setRelationalTable(relationalTable);
+        requestBody.setDatabaseQualifiedName(databaseQualifiedName);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
