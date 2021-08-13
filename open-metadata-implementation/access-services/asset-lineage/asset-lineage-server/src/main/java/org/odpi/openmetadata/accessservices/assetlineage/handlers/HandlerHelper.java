@@ -35,11 +35,13 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
 
 
 /**
@@ -48,13 +50,13 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class HandlerHelper {
 
     private static final String GUID_PARAMETER = "guid";
-    private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
-    private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
     private final Set<String> lineageClassificationTypes;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
+
+    private final Converter converter;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -64,11 +66,12 @@ public class HandlerHelper {
      * @param repositoryHandler       handler for calling the repository services
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler,
-                         Set<String> lineageClassificationTypes) {
+                         Converter converter, Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.lineageClassificationTypes = lineageClassificationTypes;
+        this.converter = converter;
     }
 
     /**
@@ -93,9 +96,9 @@ public class HandlerHelper {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
 
-        String typeGuid = getTypeByName(userId, relationshipTypeName);
+        String relationshipTypeGUID = getTypeGUID(userId, relationshipTypeName);
 
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, typeGuid,
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, relationshipTypeGUID,
                 relationshipTypeName, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
@@ -129,9 +132,10 @@ public class HandlerHelper {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
 
-        String typeGuid = getTypeByName(userId, relationshipTypeName);
-        return Optional
-                .of(repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName));
+        String typeGuid = getTypeGUID(userId, relationshipTypeName);
+        return Optional.ofNullable(
+                repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName)
+        );
     }
 
     /**
@@ -142,7 +146,7 @@ public class HandlerHelper {
      *
      * @return Guid of the type if found, null String if not found
      */
-    String getTypeByName(String userId, String typeDefName) {
+    String getTypeGUID(String userId, String typeDefName) {
         final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {
@@ -216,7 +220,7 @@ public class HandlerHelper {
                                                            FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
-        String typeDefGUID = getTypeByName(userId, entityTypeName);
+        String typeDefGUID = getTypeGUID(userId, entityTypeName);
         return Optional.ofNullable(repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName));
@@ -236,7 +240,7 @@ public class HandlerHelper {
         }
 
         Optional<Classification> assetZoneMembership = classifications.stream()
-                .filter(classification -> classification.getName().equals(ASSET_ZONE_MEMBERSHIP)).findFirst();
+                .filter(classification -> classification.getName().equals(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP)).findFirst();
 
         if (assetZoneMembership.isPresent()) {
             List<String> zoneMembership = repositoryHelper.getStringArrayProperty(AssetLineageConstants.ASSET_LINEAGE_OMAS, ZONE_MEMBERSHIP,
@@ -258,7 +262,7 @@ public class HandlerHelper {
      *
      * @return a list of lineage classifications
      */
-    public List<Classification> filterLineageClassifications(List<Classification> classifications) {
+    private List<Classification> filterLineageClassifications(List<Classification> classifications) {
         if (CollectionUtils.isNotEmpty(classifications)) {
             return classifications.stream()
                     .filter(classification -> classification.getType() != null)
@@ -287,7 +291,6 @@ public class HandlerHelper {
         lineageEntity.setCreateTime(classification.getCreateTime());
         lineageEntity.setUpdateTime(classification.getUpdateTime());
 
-        Converter converter = new Converter(repositoryHelper);
         lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 
@@ -335,12 +338,9 @@ public class HandlerHelper {
                                                                                                                                  InvalidParameterException {
         Set<GraphContext> lineageRelationships = new HashSet<>();
 
-        Converter converter = new Converter(repositoryHelper);
         for (Relationship relationship : relationships) {
-
             EntityDetail startEntity = getEntityDetails(userId, relationship.getEntityOneProxy().getGUID(),
                     relationship.getEntityOneProxy().getType().getTypeDefName());
-
             EntityDetail endEntity = getEntityDetails(userId, relationship.getEntityTwoProxy().getGUID(),
                     relationship.getEntityTwoProxy().getType().getTypeDefName());
 
@@ -350,7 +350,6 @@ public class HandlerHelper {
             LineageEntity endVertex = converter.createLineageEntity(endEntity);
 
             lineageRelationships.add(new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex));
-
         }
 
         return new RelationshipsContext(entityGUID, lineageRelationships);
@@ -366,7 +365,6 @@ public class HandlerHelper {
     public RelationshipsContext buildContextForLineageClassifications(EntityDetail entityDetail) {
         List<Classification> classifications = filterLineageClassifications(entityDetail.getClassifications());
 
-        Converter converter = new Converter(repositoryHelper);
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
 
         String entityGUID = entityDetail.getGUID();
@@ -438,7 +436,6 @@ public class HandlerHelper {
      * @return the entity detail in open lineage format
      */
     public LineageEntity getLineageEntity(EntityDetail entityDetail) {
-        Converter converter = new Converter(repositoryHelper);
         return converter.createLineageEntity(entityDetail);
     }
 

@@ -20,6 +20,9 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.google.guava:guava'
     implementation 'org.apache.commons:commons-lang3'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.mockito:mockito-core'
 }
 
 description = 'Asset Lineage OMAS Server-side'

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -17,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,7 +44,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetContextHandler {
 
     private final RepositoryHandler repositoryHandler;
-    private final InvalidParameterHandler invalidParameterHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
 
@@ -54,17 +51,13 @@ public class AssetContextHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param invalidParameterHandler    handler for invalid parameters
-     * @param repositoryHelper           helper used by the converters
      * @param repositoryHandler          handler for calling the repository services
+     * @param handlerHelper              helper handler
      * @param supportedZones             configurable list of zones that Asset Lineage is allowed to retrieve Assets from
-     * @param lineageClassificationTypes lineage classification list
      */
-    public AssetContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                               RepositoryHandler repositoryHandler, List<String> supportedZones, Set<String> lineageClassificationTypes) {
-        this.invalidParameterHandler = invalidParameterHandler;
+    public AssetContextHandler(RepositoryHandler repositoryHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
         this.repositoryHandler = repositoryHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.handlerHelper = handlerHelper;
         this.supportedZones = supportedZones;
     }
 
@@ -80,7 +73,6 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildSchemaElementContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildSchemaElementContext";
-
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
 
         Map<String, RelationshipsContext> context = new HashMap<>();
@@ -171,6 +163,26 @@ public class AssetContextHandler {
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), TABULAR_COLUMN);
 
         return buildSchemaElementContext(userId, entityDetail);
+    }
+
+    /**
+     * Returns the asset entity context in lineage format
+     *
+     * @param userId      the unique identifier for the user
+     * @param guid        the guid of the entity for which the context is build
+     * @param typeDefName the type def name of the entity for which the context is build
+     *
+     * @return the asset entity context in lineage format
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
+        if (!handlerHelper.isTableOrDataStore(userId, entityDetail)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 
     /**
@@ -328,25 +340,5 @@ public class AssetContextHandler {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
-    }
-
-    /**
-     * Returns the asset entity context in lineage format
-     *
-     * @param userId      the unique identifier for the user
-     * @param guid        the guid of the entity for which the context is build
-     * @param typeDefName the type def name of the entity for which the context is build
-     *
-     * @return the asset entity context in lineage format
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
-        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
-        if (!handlerHelper.isTableOrDataStore(userId, entityDetail)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 }
