@@ -138,6 +138,9 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (assetBean == null || !this.inTheZone(assetBean.getZoneMembership())) {
                     log.debug("Ignored instance event - Asset not in the supported zones!");
+                    auditLog.logMessage(
+                            "Ignored instance event - Asset not in the supported zones!!",
+                            AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition("Asset not in the supported zones!"));
                     return;
                 }
                 publisher.publishEvent(assetBean);

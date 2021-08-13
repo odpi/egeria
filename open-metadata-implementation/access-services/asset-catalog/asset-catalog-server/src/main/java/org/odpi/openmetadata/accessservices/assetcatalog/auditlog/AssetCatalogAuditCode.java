@@ -55,7 +55,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
     EVENT_NOT_PROCESSING("OMAS-ASSET-CATALOG-0006",
             OMRSAuditLogRecordSeverity.TRACE,
             "An event is ignored {0}",
-            "The event could not be processed",
+            "The event will not be processed",
             "No action is required. This is part of the normal operation of the service."),;
 
 
