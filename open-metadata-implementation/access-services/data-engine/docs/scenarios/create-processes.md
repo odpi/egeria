@@ -3,7 +3,7 @@
 
 # Create processes
 
-[Create a process](../../data-engine-server/docs/scenarios/create-processes.md) 
+[Create a process](../../data-engine-server/docs/scenarios/create-process.md) 
 with the associated ports and process port relationships.
 
 ----
