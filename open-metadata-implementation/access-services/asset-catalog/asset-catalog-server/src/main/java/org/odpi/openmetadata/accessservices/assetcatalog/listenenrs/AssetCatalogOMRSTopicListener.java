@@ -81,6 +81,9 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 
         if (instanceEventOriginator == null) {
             log.debug("Ignored instance event - null OMRSEventOriginator");
+            auditLog.logMessage(
+                    "No instance origin. Event IGNORED!",
+                    AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition());
             return;
         }
 

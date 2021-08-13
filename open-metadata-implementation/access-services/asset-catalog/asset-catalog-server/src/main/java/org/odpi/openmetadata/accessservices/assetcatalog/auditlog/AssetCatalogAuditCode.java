@@ -45,13 +45,18 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            "No action is required. This is part of the normal operation of the service."),
 
     EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-CATALOG-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "An exception occurred while processing incoming event {0}",
             "The event could not be processed",
-            "Review the exception to determine the source of the error and correct it."),;
+            "Review the exception to determine the source of the error and correct it."),
+    EVENT_NOT_PROCESSING("OMAS-ASSET-CATALOG-0006",
+            OMRSAuditLogRecordSeverity.TRACE,
+            "An event is ignored {0}",
+            "The event could not be processed",
+            "No action is required. This is part of the normal operation of the service."),;
 
 
     private AuditLogMessageDefinition messageDefinition;
