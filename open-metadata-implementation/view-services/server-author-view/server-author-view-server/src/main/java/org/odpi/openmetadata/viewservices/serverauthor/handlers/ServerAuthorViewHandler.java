@@ -6,7 +6,6 @@ import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurati
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
@@ -29,7 +28,6 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.StoredServer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -183,28 +181,19 @@ public class ServerAuthorViewHandler {
                         StoredServer storedServer = new StoredServer();
                         storedServer.setStoredServerName(serverName);
                         storedServer.setServerType(omagServerConfig.getLocalServerType());
-                        String status = "NOT ACTIVE";
-                        try {
-                            OMAGServerConfig activeConfig = getActiveConfiguration(className, methodName, serverName);
-                            if (activeConfig != null) {
-                                status = "ACTIVE";
-                            }
-                        } catch (ServerAuthorViewServiceException e) {
-                           // cannot get to this server - so it is not available.
-                        }
-                        storedServer.setServerStatus(status);
                         // do not have a description of the server yet.
                         platform.addStoredServer(storedServer);
                     }
                     PlatformServicesClient platformServicesClient = new PlatformServicesClient(platformName, platFormEndpoint);
+
                     List<RegisteredOMAGService> accessServiceList = platformServicesClient.getAccessServices(userId);
                     platform.setAccessServices(accessServiceList);
 
-                    List<RegisteredOMAGService> commonServiceList = platformServicesClient.getCommonServices(userId);
-                    platform.setCommonServices(commonServiceList);
+                    List<RegisteredOMAGService> engineServicesList = platformServicesClient.getEngineServices(userId);
+                    platform.setEngineServices(engineServicesList);
 
-                    List<RegisteredOMAGService> governanceServiceList = platformServicesClient.getGovernanceServices(userId);
-                    platform.setGovernanceServices(governanceServiceList);
+                    List<RegisteredOMAGService> integrationServiceList = platformServicesClient.getIntegrationServices(userId);
+                    platform.setIntegrationServices(integrationServiceList);
 
                     List<RegisteredOMAGService> viewServiceList = platformServicesClient.getViewServices(userId);
                     platform.setViewServices(viewServiceList);
@@ -218,7 +207,7 @@ public class ServerAuthorViewHandler {
                     platform = new Platform();
                     platform.setPlatformStatus(PlatformStatus.NOT_CONTACTABLE);
                 } catch (InvalidParameterException error) {
-                   throw ServerAuthorExceptionHandler.mapOCFInvalidParameterException(className, methodName, error);
+                    throw ServerAuthorExceptionHandler.mapOCFInvalidParameterException(className, methodName, error);
                 } catch (UserNotAuthorizedException error) {
                     throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
                 }

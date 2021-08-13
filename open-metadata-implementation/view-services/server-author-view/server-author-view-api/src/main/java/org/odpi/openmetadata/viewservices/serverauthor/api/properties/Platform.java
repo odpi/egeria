@@ -35,8 +35,8 @@ public class Platform {
     private Set<StoredServer> storedServers = new HashSet<>();
 
     private List<RegisteredOMAGService> accessServices;
-    private List<RegisteredOMAGService> commonServices;
-    private List<RegisteredOMAGService> governanceServices;
+    private List<RegisteredOMAGService> engineServices;
+    private List<RegisteredOMAGService> integrationServices;
     private List<RegisteredOMAGService> viewServices;
 
     /**
@@ -123,31 +123,31 @@ public class Platform {
         this.accessServices = accessServices;
     }
     /**
-     * Get the common services that this platform supports.
-     * @return common services supported by this platform
+     * Get the engine services that this platform supports.
+     * @return engine services supported by this platform
      */
-    public List<RegisteredOMAGService> getCommonServices() {
-        return commonServices;
+    public List<RegisteredOMAGService> getEngineServices() {
+        return engineServices;
     }
     /**
-     * Set the common services that this platform supports.
-     * @param commonServices
+     * Set the engine services that this platform supports.
+     * @param engineServices
      */
-    public void setCommonServices(List<RegisteredOMAGService> commonServices) {
-        this.commonServices = commonServices;
+    public void setEngineServices(List<RegisteredOMAGService> engineServices) {
+        this.engineServices = engineServices;
     }
     /**
      * Get the governance services that this platform supports.
      * @return governance services supported by this platform
      */
-    public List<RegisteredOMAGService> getGovernanceServices() {
-        return governanceServices;
+    public List<RegisteredOMAGService> getIntegrationServices() {
+        return integrationServices;
     }
     /**
      * Set the governance services that this platform supports.
-     * @param governanceServices
+     * @param integrationServices
      */
-    public void setGovernanceServices(List<RegisteredOMAGService> governanceServices) { this.governanceServices = governanceServices; }
+    public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) { this.integrationServices = integrationServices; }
     /**
      * Get the view services that this platform supports.
      * @return view services supported by this platform
@@ -220,12 +220,12 @@ public class Platform {
         }
         sb.append('}');
         sb.append("governanceServices={");
-        for (RegisteredOMAGService registeredOMAGService:governanceServices) {
+        for (RegisteredOMAGService registeredOMAGService: integrationServices) {
             sb.append(registeredOMAGService).append(',');
         }
         sb.append('}');
         sb.append("commonServices={");
-        for (RegisteredOMAGService registeredOMAGService:commonServices) {
+        for (RegisteredOMAGService registeredOMAGService: engineServices) {
             sb.append(registeredOMAGService).append(',');
         }
         sb.append('}');
@@ -261,9 +261,9 @@ public class Platform {
                 }
             }
         }
-        for (RegisteredOMAGService registeredOMAGService:commonServices) {
+        for (RegisteredOMAGService registeredOMAGService: engineServices) {
             boolean foundIt = false;
-            for (RegisteredOMAGService platformRegisteredOMAGService: platform.commonServices) {
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.engineServices) {
                 if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
                     foundIt = true;
                 }
@@ -272,9 +272,9 @@ public class Platform {
                 }
             }
         }
-        for (RegisteredOMAGService registeredOMAGService:governanceServices) {
+        for (RegisteredOMAGService registeredOMAGService: integrationServices) {
             boolean foundIt = false;
-            for (RegisteredOMAGService platformRegisteredOMAGService: platform.governanceServices) {
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.integrationServices) {
                 if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
                     foundIt = true;
                 }
@@ -302,6 +302,6 @@ public class Platform {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, accessServices, viewServices, governanceServices, commonServices);
+        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, accessServices, viewServices, integrationServices, engineServices);
     }
 }
