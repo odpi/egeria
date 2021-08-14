@@ -12,12 +12,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Endianness defines the hardware byte ordering
+ * ByteOrdering defines the hardware byte ordering
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum Endianness implements Serializable
+public enum ByteOrdering implements Serializable
 {
     BIG_ENDIAN     (0,  0,  "BigEndian",    "Bits or bytes order from the big end."),
     LITTLE_ENDIAN  (1,  1,  "LittleEndian", "Bits or bytes ordered from the little end.");
@@ -42,10 +42,10 @@ public enum Endianness implements Serializable
      * @param name default name
      * @param description default description
      */
-    Endianness(int    ordinal,
-               int    openTypeOrdinal,
-               String name,
-               String description)
+    ByteOrdering(int    ordinal,
+                 int    openTypeOrdinal,
+                 String name,
+                 String description)
     {
         this.ordinal         = ordinal;
         this.openTypeOrdinal = openTypeOrdinal;
@@ -113,6 +113,6 @@ public enum Endianness implements Serializable
     @Override
     public String toString()
     {
-        return "Endianness : " + name;
+        return "ByteOrdering : " + name;
     }
 }

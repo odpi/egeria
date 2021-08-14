@@ -3,40 +3,36 @@
 
 package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.*;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetProperties is a java bean used to create assets associated with the data platform.
+ * OperatingPlatformProperties describes the properties of the operating system and hardware.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerProperties.class, name = "SoftwareServerProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerPlatformProperties.class, name = "SoftwareServerPlatformProperties"),
-        })
-public class AssetProperties extends ConfigurationItemProperties
+public class OperatingPlatformProperties extends ConfigurationItemProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String displayName = null;
-    private String description = null;
+    private String       displayName     = null;
+    private String       description     = null;
+    private String       operatingSystem = null;
+    private ByteOrdering byteOrdering    = null;
 
 
     /**
      * Default constructor
      */
-    public AssetProperties()
+    public OperatingPlatformProperties()
     {
     }
 
@@ -46,7 +42,7 @@ public class AssetProperties extends ConfigurationItemProperties
      *
      * @param template object to copy
      */
-    public AssetProperties(AssetProperties template)
+    public OperatingPlatformProperties(OperatingPlatformProperties template)
     {
         super(template);
 
@@ -54,6 +50,8 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
+            operatingSystem = template.getOperatingSystem();
+            byteOrdering = template.getByteOrdering();
         }
     }
 
@@ -105,6 +103,50 @@ public class AssetProperties extends ConfigurationItemProperties
 
 
     /**
+     * Return the name of the operating system running on the host.
+     *
+     * @return string name
+     */
+    public String getOperatingSystem()
+    {
+        return operatingSystem;
+    }
+
+
+    /**
+     * Set up the name of the operating system running on the host.
+     *
+     * @param operatingSystem string name
+     */
+    public void setOperatingSystem(String operatingSystem)
+    {
+        this.operatingSystem = operatingSystem;
+    }
+
+
+    /**
+     * Return the byte ordering of the hardware.
+     *
+     * @return byteOrdering
+     */
+    public ByteOrdering getByteOrdering()
+    {
+        return byteOrdering;
+    }
+
+
+    /**
+     * Set up  the byte ordering of the hardware.
+     *
+     * @param byteOrdering byteOrdering
+     */
+    public void setByteOrdering(ByteOrdering byteOrdering)
+    {
+        this.byteOrdering = byteOrdering;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -112,9 +154,11 @@ public class AssetProperties extends ConfigurationItemProperties
     @Override
     public String toString()
     {
-        return "AssetProperties{" +
+        return "OperatingPlatformProperties{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
+                       ", operatingSystem='" + operatingSystem + '\'' +
+                       ", byteOrdering=" + byteOrdering +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", classifications=" + getClassifications() +
@@ -142,15 +186,16 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        AssetProperties asset = (AssetProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getDescription(), asset.getDescription());
+        OperatingPlatformProperties that = (OperatingPlatformProperties) objectToCompare;
+        return Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(operatingSystem, that.operatingSystem) &&
+                       byteOrdering == that.byteOrdering;
     }
-
 
 
     /**
@@ -161,6 +206,6 @@ public class AssetProperties extends ConfigurationItemProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription());
+        return Objects.hash(super.hashCode(), displayName, description, operatingSystem, byteOrdering);
     }
 }

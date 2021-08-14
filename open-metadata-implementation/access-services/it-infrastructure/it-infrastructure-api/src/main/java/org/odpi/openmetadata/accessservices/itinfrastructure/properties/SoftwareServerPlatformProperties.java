@@ -3,7 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
@@ -11,25 +13,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerProperties is a representation of the properties for a software server.
+ * SoftwareServerPlatformProperties is a representation of the properties for a software server platform.
+ * This is the process that is visible to the operating system or container.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerProperties extends AssetProperties
+public class SoftwareServerPlatformProperties extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String  softwareServerType    = null;
-    private String  softwareServerVersion = null;
-    private String  softwareServerSource  = null;
-    private String  softwareServerUserId  = null;
+    private String  platformType    = null;
+    private String  platformVersion = null;
+    private String  platformSource  = null;
+    private String  platformUserId  = null;
 
 
     /**
      * Default constructor
      */
-    public SoftwareServerProperties()
+    public SoftwareServerPlatformProperties()
     {
     }
 
@@ -39,16 +42,16 @@ public class SoftwareServerProperties extends AssetProperties
      *
      * @param template object to copy
      */
-    public SoftwareServerProperties(SoftwareServerProperties template)
+    public SoftwareServerPlatformProperties(SoftwareServerPlatformProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            softwareServerType    = template.getSoftwareServerType();
-            softwareServerVersion = template.getSoftwareServerVersion();
-            softwareServerSource  = template.getSoftwareServerSource();
-            softwareServerUserId  = template.getSoftwareServerUserId();
+            platformType    = template.getSoftwareServerType();
+            platformVersion = template.getSoftwareServerVersion();
+            platformSource  = template.getSoftwareServerSource();
+            platformUserId  = template.getSoftwareServerUserId();
         }
     }
 
@@ -60,18 +63,18 @@ public class SoftwareServerProperties extends AssetProperties
      */
     public String getSoftwareServerType()
     {
-        return softwareServerType;
+        return platformType;
     }
 
 
     /**
      * Set up the type description for the server's type.
      *
-     * @param softwareServerType type description string
+     * @param platformType type description string
      */
-    public void setSoftwareServerType(String softwareServerType)
+    public void setSoftwareServerType(String platformType)
     {
-        this.softwareServerType = softwareServerType;
+        this.platformType = platformType;
     }
 
 
@@ -82,18 +85,18 @@ public class SoftwareServerProperties extends AssetProperties
      */
     public String getSoftwareServerVersion()
     {
-        return softwareServerVersion;
+        return platformVersion;
     }
 
 
     /**
      * Set up the version of the server.
      *
-     * @param softwareServerVersion version string
+     * @param platformVersion version string
      */
-    public void setSoftwareServerVersion(String softwareServerVersion)
+    public void setSoftwareServerVersion(String platformVersion)
     {
-        this.softwareServerVersion = softwareServerVersion;
+        this.platformVersion = platformVersion;
     }
 
 
@@ -104,18 +107,18 @@ public class SoftwareServerProperties extends AssetProperties
      */
     public String getSoftwareServerSource()
     {
-        return softwareServerSource;
+        return platformSource;
     }
 
 
     /**
      * Set up the source (such as vendor or operator) of the server.
      *
-     * @param softwareServerSource string name
+     * @param platformSource string name
      */
-    public void setSoftwareServerSource(String softwareServerSource)
+    public void setSoftwareServerSource(String platformSource)
     {
-        this.softwareServerSource = softwareServerSource;
+        this.platformSource = platformSource;
     }
 
 
@@ -126,18 +129,18 @@ public class SoftwareServerProperties extends AssetProperties
      */
     public String getSoftwareServerUserId()
     {
-        return softwareServerUserId;
+        return platformUserId;
     }
 
 
     /**
      * Set up the user identity of the server.
      *
-     * @param softwareServerUserId string user identity
+     * @param platformUserId string user identity
      */
-    public void setSoftwareServerUserId(String softwareServerUserId)
+    public void setSoftwareServerUserId(String platformUserId)
     {
-        this.softwareServerUserId = softwareServerUserId;
+        this.platformUserId = platformUserId;
     }
 
 
@@ -149,11 +152,11 @@ public class SoftwareServerProperties extends AssetProperties
     @Override
     public String toString()
     {
-        return "SoftwareServerProperties{" +
-                       "softwareServerType='" + softwareServerType + '\'' +
-                       ", softwareServerVersion='" + softwareServerVersion + '\'' +
-                       ", softwareServerSource='" + softwareServerSource + '\'' +
-                       ", softwareServerUserId='" + softwareServerUserId + '\'' +
+        return "SoftwareServerPlatformProperties{" +
+                       "platformType='" + platformType + '\'' +
+                       ", platformVersion='" + platformVersion + '\'' +
+                       ", platformSource='" + platformSource + '\'' +
+                       ", platformUserId='" + platformUserId + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -187,11 +190,11 @@ public class SoftwareServerProperties extends AssetProperties
         {
             return false;
         }
-        SoftwareServerProperties that = (SoftwareServerProperties) objectToCompare;
-        return Objects.equals(softwareServerType, that.softwareServerType) &&
-                Objects.equals(softwareServerVersion, that.softwareServerVersion) &&
-                Objects.equals(softwareServerSource, that.softwareServerSource) &&
-                Objects.equals(softwareServerUserId, that.softwareServerUserId);
+        SoftwareServerPlatformProperties that = (SoftwareServerPlatformProperties) objectToCompare;
+        return Objects.equals(platformType, that.platformType) &&
+                Objects.equals(platformVersion, that.platformVersion) &&
+                Objects.equals(platformSource, that.platformSource) &&
+                Objects.equals(platformUserId, that.platformUserId);
     }
 
 
@@ -203,6 +206,6 @@ public class SoftwareServerProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), softwareServerType, softwareServerVersion, softwareServerSource, softwareServerUserId);
+        return Objects.hash(super.hashCode(), platformType, platformVersion, platformSource, platformUserId);
     }
 }
