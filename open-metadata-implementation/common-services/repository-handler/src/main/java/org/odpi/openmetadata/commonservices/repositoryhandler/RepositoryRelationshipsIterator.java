@@ -6,6 +6,8 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
  */
 public class RepositoryRelationshipsIterator
 {
+    private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
+
     private RepositoryHandler  repositoryHandler;
     private String             userId;
     private String             startingEntityGUID;
@@ -62,6 +66,10 @@ public class RepositoryRelationshipsIterator
         this.startingFrom           = startingFrom;
         this.requesterPageSize      = requesterPageSize;
         this.methodName             = methodName;
+        if (log.isDebugEnabled())
+        {
+            log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
+        }
     }
 
 
@@ -86,8 +94,18 @@ public class RepositoryRelationshipsIterator
                                                                           requesterPageSize,
                                                                           methodName);
 
-            if (relationshipsCache != null)
-            {
+            if (relationshipsCache != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("relationshipsCache");
+                    for (Relationship relationship : relationshipsCache) {
+                        log.debug("relationship guid" + relationship.getGUID() +
+                                          " end1 " +
+                                          relationship.getEntityOneProxy().getGUID() +
+                                          " end2 " +
+                                          relationship.getEntityTwoProxy().getGUID());
+                    }
+                }
+
                 startingFrom = startingFrom + relationshipsCache.size();
             }
         }

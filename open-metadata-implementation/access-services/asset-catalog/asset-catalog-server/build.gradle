@@ -17,8 +17,11 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-core'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'

@@ -405,52 +405,6 @@ public class RepositoryHandler
         return attachedEntityGUID;
     }
 
-
-
-    /**
-     * Update the properties of an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param updateProperties properties for the entity
-     * @param methodName name of calling method
-     * @return updated entity
-     *
-     * @throws InvalidParameterException problem with the GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail  updateEntityProperties(String                  userId,
-                                                String                  entityGUID,
-                                                String                  entityTypeGUID,
-                                                String                  entityTypeName,
-                                                InstanceProperties      updateProperties,
-                                                String                  methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        final String guidParameterName = "entityGUID";
-
-        EntityDetail originalEntity = this.getEntityByGUID(userId,
-                                                           entityGUID,
-                                                           guidParameterName,
-                                                           entityTypeName,
-                                                           methodName);
-
-        return updateEntityProperties(userId,
-                                      entityGUID,
-                                      originalEntity,
-                                      entityTypeGUID,
-                                      entityTypeName,
-                                      updateProperties,
-                                      methodName);
-    }
-
-
-
     /**
      * Update the properties of an existing entity in the open metadata repository.
      *
@@ -497,81 +451,6 @@ public class RepositoryHandler
                                       updateProperties,
                                       methodName);
     }
-
-
-    /**
-     * Update the properties of an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param originalEntity entity retrieved from repository
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param newProperties properties for the entity
-     * @param methodName name of calling method
-     * @return updated entity
-     *
-     * @throws InvalidParameterException problem with the GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail  updateEntityProperties(String                  userId,
-                                                String                  entityGUID,
-                                                EntityDetail            originalEntity,
-                                                String                  entityTypeGUID,
-                                                String                  entityTypeName,
-                                                InstanceProperties      newProperties,
-                                                String                  methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        final String localMethodName = "updateEntityProperties";
-
-        if (originalEntity != null)
-        {
-            /*
-             * If there are no properties to change then nothing more to do
-             */
-            if ((newProperties == null) && (originalEntity.getProperties() == null))
-            {
-                return originalEntity;
-            }
-
-            /*
-             * If nothing has changed in the properties then nothing to do
-             */
-            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
-            {
-                return originalEntity;
-            }
-
-            try
-            {
-                EntityDetail newEntity = metadataCollection.updateEntityProperties(userId, entityGUID, newProperties);
-                if (newEntity == null)
-                {
-                    errorHandler.handleNoEntity(entityTypeGUID,
-                                                entityTypeName,
-                                                newProperties,
-                                                methodName);
-                }
-
-                return newEntity;
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
-            catch (Exception error)
-            {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
-            }
-        }
-
-        return null;
-    }
-
 
     /**
      * Update the properties of an existing entity in the open metadata repository.
@@ -1151,117 +1030,6 @@ public class RepositoryHandler
         }
     }
 
-
-    /**
-     * Update the properties of an existing entity in the open metadata repository.
-     * This method is deprecated because it does not pass the external source identifiers and so the
-     * metadata provenance can not be verified.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param properties properties for the entity
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail    updateEntity(String                  userId,
-                                        String                  entityGUID,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        InstanceProperties      properties,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        final String localMethodName = "updateEntity(deprecated)";
-
-        try
-        {
-            EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
-                                                                               entityGUID,
-                                                                               properties);
-
-            if (newEntity == null)
-            {
-                errorHandler.handleNoEntity(entityTypeGUID,
-                                            entityTypeName,
-                                            properties,
-                                            methodName);
-            }
-
-            return newEntity;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Add a new classification to an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param classificationName name of the classification's type
-     * @param properties properties for the classification
-     * @param methodName name of calling method
-     * @return updated entity
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail    classifyEntity(String                  userId,
-                                          String                  entityGUID,
-                                          String                  classificationName,
-                                          InstanceProperties      properties,
-                                          String                  methodName) throws UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String localMethodName = "classifyEntity(deprecated)";
-
-        try
-        {
-            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationName,
-                                                                       properties);
-
-            if (newEntity == null)
-            {
-                errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             null,
-                                                             classificationName,
-                                                             properties,
-                                                             methodName);
-            }
-            else
-            {
-                return newEntity;
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
     /**
      * Add a new classification to an existing entity in the open metadata repository.
      *
@@ -1431,68 +1199,6 @@ public class RepositoryHandler
                                 methodName);
         }
     }
-
-
-    /**
-     * Remove an existing classification from an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeName name of the classification's type
-     * @param existingClassificationHeader current value of classification
-     * @param methodName name of calling method
-     *
-     * @throws InvalidParameterException one of the parameters is invalid = probably the GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void    declassifyEntity(String                  userId,
-                                    String                  entityGUID,
-                                    String                  classificationTypeName,
-                                    InstanceAuditHeader     existingClassificationHeader,
-                                    String                  methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String localMethodName = "declassifyEntity";
-
-        InstanceAuditHeader auditHeader = existingClassificationHeader;
-
-        if (auditHeader == null)
-        {
-            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
-        }
-
-        /*
-         * Nothing to do if the classification is already gone.
-         */
-        if (auditHeader != null)
-        {
-            try
-            {
-                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
-
-                if (newEntity == null)
-                {
-                    errorHandler.handleNoEntityForClassification(entityGUID,
-                                                                 null,
-                                                                 classificationTypeName,
-                                                                 null,
-                                                                 methodName);
-                }
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
-            catch (Exception error)
-            {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
-            }
-        }
-    }
-
 
     /**
      * Remove an existing classification from an existing entity in the open metadata repository.
@@ -1773,51 +1479,6 @@ public class RepositoryHandler
         }
     }
 
-
-    /**
-     * Remove an entity from the open metadata repository after checking that is is not connected to
-     * anything else.  The repository handler helps to ensure that all relationships are deleted explicitly
-     * ensuring the events are created and making it easier for third party repositories to keep track of
-     * changes rather than have to implement the implied deletes from the logical graph.
-     *
-     * @param userId calling user
-     * @param obsoleteEntityGUID unique identifier of the entity
-     * @param entityTypeGUID type of entity to delete
-     * @param entityTypeName name of the entity's type
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void removeIsolatedEntity(String           userId,
-                                     String           obsoleteEntityGUID,
-                                     String           entityTypeGUID,
-                                     String           entityTypeName,
-                                     String           methodName) throws UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String localMethodName = "removeIsolatedEntity";
-
-        // Todo - validate that the entity is in fact isolated.
-        try
-        {
-            try
-            {
-                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-            {
-                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
-            }
-        }
-        catch (Exception error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
-
     /**
      * Purge an entity stored in a repository that does not support delete.
      *
@@ -1858,40 +1519,6 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
-
-
-    /**
-     * Restore the requested entity to the state it was before it was deleted.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param deletedEntityGUID String unique identifier (guid) for the entity.
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void  restoreEntity(String userId,
-                               String deletedEntityGUID,
-                               String methodName) throws UserNotAuthorizedException,
-                                                         PropertyServerException
-    {
-        final String localMethodName = "restoreEntity(deprecated)";
-
-        try
-        {
-            metadataCollection.restoreEntity(userId, deletedEntityGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
 
     /**
      * Restore the requested entity to the state it was before it was deleted.
@@ -3453,44 +3080,6 @@ public class RepositoryHandler
                                            methodName);
     }
 
-
-    /**
-     * Return the current version of a requested relationship.
-     *
-     * @param userId  user making the request
-     * @param relationshipGUID String unique identifier for the relationship.
-     * @param methodName  name of calling method
-     *
-     * @return retrieved relationship or exception
-     *
-     * @throws UserNotAuthorizedException security access problem
-     * @throws PropertyServerException problem accessing the property server
-     */
-    @Deprecated
-    public Relationship getRelationshipByGUID(String                 userId,
-                                              String                 relationshipGUID,
-                                              String                 methodName) throws UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        final String localMethodName = "getRelationshipByGUID";
-
-        try
-        {
-            return metadataCollection.getRelationship(userId, relationshipGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
     /**
      * Return the current version of a requested relationship.
      *
@@ -4082,8 +3671,25 @@ public class RepositoryHandler
                                                                            relationshipTypeName,
                                                                            methodName);
 
+
+
             if (relationships != null)
             {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("getUniqueParentRelationshipByType relationships");
+                    for (Relationship relationship : relationships)
+                    {
+                        log.debug("relationship.getGUID()=" +
+                                          relationship.getGUID() +
+                                          "relationship.end1 guid=" +
+                                          relationship.getEntityOneProxy().getGUID() +
+                                          relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                          "relationship.end2 guid " +
+                                          relationship.getEntityTwoProxy().getGUID() +
+                                          relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+                    }
+                }
                 RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
                                                                                                userId,
                                                                                                startingEntityGUID,
@@ -4097,9 +3703,22 @@ public class RepositoryHandler
                 while (iterator.moreToReceive())
                 {
                     Relationship relationship = iterator.getNext();
-
                     if (relationship != null)
                     {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("getUniqueParentRelationshipByType while (iterator.moreToReceive()");
+                            log.debug("relationship.getGUID()=" +
+                                              relationship.getGUID() +
+                                              ", relationship.end1 guid=" +
+                                              relationship.getEntityOneProxy().getGUID() +
+                                              ",qualified name=" +
+                                              relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                              "relationship.end2 guid " +
+                                              relationship.getEntityTwoProxy().getGUID() +
+                                              ",qualified name=" +
+                                              relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+                        }
                         EntityProxy parentEntity;
 
                         if (parentAtEnd1)
@@ -4113,6 +3732,17 @@ public class RepositoryHandler
 
                         if ((parentEntity != null) && (! startingEntityGUID.equals(parentEntity.getGUID())))
                         {
+                            if (log.isDebugEnabled()) {
+                                log.debug("getUniqueParentRelationshipByType : returning relationship.getGUID()=" +
+                                                  relationship.getGUID() +
+                                                  "relationship.end1 guid=" +
+                                                  relationship.getEntityOneProxy().getGUID() +
+                                                  relationship.getEntityOneProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName") +
+                                                  "relationship.end2 guid " +
+                                                  relationship.getEntityTwoProxy().getGUID() +
+                                                  relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName"));
+
+                            }
                             return relationship;
                         }
                     }
@@ -4463,62 +4093,6 @@ public class RepositoryHandler
                                 methodName);
     }
 
-
-    /**
-     * Delete a relationship between two entities.  If delete is not supported, purge is used.
-     * This method is deprecated because it is not possible to verify the metadata provenance of the
-     * relationship being deleted.
-     *
-     * @param userId calling user
-     * @param relationshipTypeGUID unique identifier of the type of relationship to delete
-     * @param relationshipTypeName name of the type of relationship to delete
-     * @param relationshipGUID unique identifier of the relationship to delete
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void removeRelationship(String                  userId,
-                                   String                  relationshipTypeGUID,
-                                   String                  relationshipTypeName,
-                                   String                  relationshipGUID,
-                                   String                  methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        final String localMethodName = "removeRelationship";
-
-        try
-        {
-            try
-            {
-                metadataCollection.deleteRelationship(userId,
-                                                      relationshipTypeGUID,
-                                                      relationshipTypeName,
-                                                      relationshipGUID);
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-            {
-                this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
-                auditLog.logMessage(methodName,
-                                    RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
-                                                                                                        relationshipTypeName,
-                                                                                                        relationshipTypeGUID,
-                                                                                                        methodName,
-                                                                                                        metadataCollection.getMetadataCollectionId(userId)));
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
-
     /**
      * Delete a relationship between two entities.  If delete is not supported, purge is used.
      * The external source identifiers
@@ -4691,39 +4265,6 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    @Deprecated
-    public void restoreRelationship(String userId,
-                                    String deletedRelationshipGUID,
-                                    String methodName) throws UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        final String localMethodName = "restoreRelationship(deprecated)";
-
-        try
-        {
-            metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
-
-    /**
-     * Restore the requested relationship to the state it was before it was deleted.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
     public void restoreRelationship(String userId,
                                     String externalSourceGUID,
                                     String externalSourceName,
@@ -4735,6 +4276,8 @@ public class RepositoryHandler
 
         try
         {
+            // check each end is active prior to attempting the restore
+
             Relationship relationship = metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
             if (relationship != null)
             {
@@ -4929,45 +4472,6 @@ public class RepositoryHandler
         }
     }
 
-
-    /**
-     * Update the properties in the requested relationship.  This method is deprecated because it is not
-     * possible to verify the metadata provenance of the relationship.
-     *
-     * @param userId calling user
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param relationshipProperties new properties for relationship
-     * @param methodName name of calling method.
-     *
-     * @throws PropertyServerException there is a problem communicating with the repository.
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void updateRelationshipProperties(String                 userId,
-                                             String                 relationshipGUID,
-                                             InstanceProperties     relationshipProperties,
-                                             String                 methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        final String localMethodName = "updateRelationshipProperties";
-
-        try
-        {
-            metadataCollection.updateRelationshipProperties(userId,
-                                                            relationshipGUID,
-                                                            relationshipProperties);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
-
     /**
      * Update the properties in the requested relationship.
      *
@@ -5014,42 +4518,6 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
-
-
-    /**
-     * Update the status in the requested relationship.
-     *
-     * @param userId calling user
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param instanceStatus new InstanceStatus for the entity.
-     * @param methodName name of calling method.
-     *
-     * @throws PropertyServerException there is a problem communicating with the repository.
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void updateRelationshipStatus(String                 userId,
-                                         String                 relationshipGUID,
-                                         InstanceStatus         instanceStatus,
-                                         String                 methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        final String localMethodName = "updateRelationshipStatus(deprecated)";
-
-        try
-        {
-            metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
 
     /**
      * Update the status in the requested relationship.

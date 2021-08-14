@@ -192,7 +192,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -202,7 +202,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param serverName local UI server name
      * @param userId     userid
      * @param guid       guid of the term to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -214,9 +214,9 @@ public class GlossaryAuthorViewTermRESTResource {
     @DeleteMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
                                                        @PathVariable String userId,
-                                                       @PathVariable String guid,
-                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTerm(serverName, userId, guid, isPurge);
+                                                       @PathVariable String guid
+                                                      ) {
+        return restAPI.deleteTerm(serverName, userId, guid);
     }
 
     /**

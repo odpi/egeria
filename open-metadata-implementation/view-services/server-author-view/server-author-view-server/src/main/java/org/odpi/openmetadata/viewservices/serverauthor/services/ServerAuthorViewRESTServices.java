@@ -84,7 +84,7 @@ public class ServerAuthorViewRESTServices {
         } catch (UserNotAuthorizedException error) {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
     }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -118,7 +118,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -152,7 +152,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -185,7 +185,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -217,7 +217,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -251,7 +251,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -322,7 +322,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -357,7 +357,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -394,7 +394,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -435,7 +435,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -467,7 +467,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -536,7 +536,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -569,7 +569,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -602,7 +602,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -635,7 +635,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -670,7 +670,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -704,7 +704,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -781,6 +781,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -807,7 +808,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

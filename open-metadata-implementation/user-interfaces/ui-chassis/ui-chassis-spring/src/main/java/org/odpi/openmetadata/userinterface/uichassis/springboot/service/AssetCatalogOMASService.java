@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
@@ -48,13 +48,13 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public AssetDescription getAssetDetails(String user,
+    public AssetCatalogBean getAssetDetails(String user,
                                             String assetId,
                                             String assetType)
             throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
     {
         try {
-            return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
+            return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetCatalogBean();
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
@@ -65,7 +65,7 @@ public class AssetCatalogOMASService {
      * @param response string returned from Open Lineage Services to be processed
      * @return map of nodes and edges describing the end to end flow
      */
-    private Map<String, List> processAssetDescription(AssetDescription response) {
+    private Map<String, List> processAssetDescription(AssetCatalogBean response) {
         Map<String, List> graphData = new HashMap<>();
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
@@ -84,12 +84,12 @@ public class AssetCatalogOMASService {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public AssetDescription getAssetUniverse(String user,
+    public AssetCatalogBean getAssetUniverse(String user,
                                              String assetId,
                                              String assetType)
             throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
-            return assetCatalog.getAssetUniverse(user, assetId, assetType).getAssetDescription();
+            return assetCatalog.getAssetUniverse(user, assetId, assetType).getAssetCatalogBean();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error retrieving asset universe for %s", assetId));
             throw e;
