@@ -180,6 +180,7 @@ public class InvalidParameterHandler
      *
      * @throws InvalidParameterException the searchString is null
      */
+    @SuppressWarnings(value = "unused")
     public void validateSearchString(String searchString,
                                      String searchParameter,
                                      String methodName) throws InvalidParameterException
@@ -191,6 +192,28 @@ public class InvalidParameterHandler
                                                 this.getClass().getName(),
                                                 methodName,
                                                 searchParameter);
+        }
+        else
+        {
+            /*
+             * This test just validated that the regular expression in the search parameter is valid.
+             */
+            final String testString = "abcdefghijklmnopqrstuvwxyz";
+
+            try
+            {
+                boolean matchResult = testString.matches(searchString);
+            }
+            catch (Exception error)
+            {
+                throw new InvalidParameterException(OMAGCommonErrorCode.INVALID_SEARCH_STRING.getMessageDefinition(searchParameter,
+                                                                                                                   methodName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    searchParameter);
+            }
         }
     }
 

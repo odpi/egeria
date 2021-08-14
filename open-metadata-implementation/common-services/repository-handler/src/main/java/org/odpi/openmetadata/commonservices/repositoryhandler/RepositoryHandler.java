@@ -4623,6 +4623,10 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException  error)
+        {
+            /* All ok since the relationship has already been deleted by another thread */
+        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException  error)
         {
             this.purgeRelationship(userId,
