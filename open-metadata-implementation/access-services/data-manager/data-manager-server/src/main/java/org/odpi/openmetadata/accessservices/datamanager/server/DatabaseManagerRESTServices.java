@@ -10,7 +10,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -418,7 +420,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -427,11 +429,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabasesResponse findDatabases(String serverName,
-                                           String userId,
-                                           String searchString,
-                                           int    startFrom,
-                                           int    pageSize)
+    public DatabasesResponse findDatabases(String                  serverName,
+                                           String                  userId,
+                                           SearchStringRequestBody requestBody,
+                                           int                     startFrom,
+                                           int                     pageSize)
     {
         final String methodName = "findDatabases";
 
@@ -444,16 +446,23 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseElement> databaseAssets = handler.findDatabases(userId, searchString, startFrom, pageSize, methodName);
+                List<DatabaseElement> databaseAssets = handler.findDatabases(userId, requestBody.getSearchString(), startFrom, pageSize, methodName);
 
-            response.setElementList(databaseAssets);
+                response.setElementList(databaseAssets);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -472,7 +481,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -481,11 +490,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabasesResponse   getDatabasesByName(String serverName,
-                                                  String userId,
-                                                  String name,
-                                                  int    startFrom,
-                                                  int    pageSize)
+    public DatabasesResponse   getDatabasesByName(String          serverName,
+                                                  String          userId,
+                                                  NameRequestBody requestBody,
+                                                  int             startFrom,
+                                                  int             pageSize)
     {
         final String methodName = "getDatabasesByName";
 
@@ -498,16 +507,23 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseElement> databaseAssets = handler.getDatabasesByName(userId, name, startFrom, pageSize, methodName);
+                List<DatabaseElement> databaseAssets = handler.getDatabasesByName(userId, requestBody.getName(), startFrom, pageSize, methodName);
 
-            response.setElementList(databaseAssets);
+                response.setElementList(databaseAssets);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -998,7 +1014,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1007,11 +1023,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseSchemasResponse   findDatabaseSchemas(String serverName,
-                                                         String userId,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public DatabaseSchemasResponse   findDatabaseSchemas(String                  serverName,
+                                                         String                  userId,
+                                                         SearchStringRequestBody requestBody,
+                                                         int                     startFrom,
+                                                         int                     pageSize)
     {
         final String methodName = "findDatabaseSchemas";
 
@@ -1024,16 +1040,23 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseSchemaElement> databaseSchemaAssets = handler.findDatabaseSchemas(userId, searchString, startFrom, pageSize, methodName);
+                List<DatabaseSchemaElement> databaseSchemaAssets = handler.findDatabaseSchemas(userId, requestBody.getSearchString(), startFrom, pageSize, methodName);
 
-            response.setElementList(databaseSchemaAssets);
+                response.setElementList(databaseSchemaAssets);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1105,7 +1128,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1114,11 +1137,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseSchemasResponse   getDatabaseSchemasByName(String serverName,
-                                                              String userId,
-                                                              String name,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public DatabaseSchemasResponse   getDatabaseSchemasByName(String          serverName,
+                                                              String          userId,
+                                                              NameRequestBody requestBody,
+                                                              int             startFrom,
+                                                              int             pageSize)
     {
         final String methodName = "getDatabaseSchemasByName";
 
@@ -1131,16 +1154,24 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseSchemaElement> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId, name, startFrom, pageSize, methodName);
+                List<DatabaseSchemaElement> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId, requestBody.getName(), startFrom,
+                                                                                                    pageSize, methodName);
 
-            response.setElementList(databaseSchemaAssets);
+                response.setElementList(databaseSchemaAssets);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1472,7 +1503,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1481,11 +1512,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseTablesResponse   findDatabaseTables(String serverName,
-                                                       String userId,
-                                                       String searchString,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public DatabaseTablesResponse   findDatabaseTables(String                  serverName,
+                                                       String                  userId,
+                                                       SearchStringRequestBody requestBody,
+                                                       int                     startFrom,
+                                                       int                     pageSize)
     {
         final String methodName = "findDatabaseTables";
 
@@ -1498,16 +1529,27 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseTableElement> databaseTableAttributes = handler.findDatabaseTables(userId, searchString, startFrom, pageSize, methodName);
+                List<DatabaseTableElement> databaseTableAttributes = handler.findDatabaseTables(userId,
+                                                                                                requestBody.getSearchString(),
+                                                                                                startFrom,
+                                                                                                pageSize,
+                                                                                                methodName);
 
-            response.setElementList(databaseTableAttributes);
+                response.setElementList(databaseTableAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1583,7 +1625,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1592,11 +1634,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseTablesResponse   getDatabaseTablesByName(String serverName,
-                                                            String userId,
-                                                            String name,
-                                                            int    startFrom,
-                                                            int    pageSize)
+    public DatabaseTablesResponse   getDatabaseTablesByName(String          serverName,
+                                                            String          userId,
+                                                            NameRequestBody requestBody,
+                                                            int             startFrom,
+                                                            int             pageSize)
     {
         final String methodName = "getDatabaseTablesByName";
 
@@ -1609,16 +1651,24 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseTableElement> databaseTableAttributes = handler.getDatabaseTablesByName(userId, name, startFrom, pageSize, methodName);
+                List<DatabaseTableElement> databaseTableAttributes = handler.getDatabaseTablesByName(userId, requestBody.getName(), startFrom,
+                                                                                                     pageSize, methodName);
 
-            response.setElementList(databaseTableAttributes);
+                response.setElementList(databaseTableAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1948,7 +1998,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1957,11 +2007,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseViewsResponse   findDatabaseViews(String serverName,
-                                                     String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize)
+    public DatabaseViewsResponse   findDatabaseViews(String                  serverName,
+                                                     String                  userId,
+                                                     SearchStringRequestBody requestBody,
+                                                     int                     startFrom,
+                                                     int                     pageSize)
     {
         final String methodName = "findDatabaseViews";
 
@@ -1974,16 +2024,27 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseViewElement> databaseViewAttributes = handler.findDatabaseViews(userId, searchString, startFrom, pageSize, methodName);
+                List<DatabaseViewElement> databaseViewAttributes = handler.findDatabaseViews(userId,
+                                                                                             requestBody.getSearchString(),
+                                                                                             startFrom,
+                                                                                             pageSize,
+                                                                                             methodName);
 
-            response.setElementList(databaseViewAttributes);
+                response.setElementList(databaseViewAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2055,7 +2116,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2064,11 +2125,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseViewsResponse   getDatabaseViewsByName(String serverName,
-                                                          String userId,
-                                                          String name,
-                                                          int    startFrom,
-                                                          int    pageSize)
+    public DatabaseViewsResponse   getDatabaseViewsByName(String          serverName,
+                                                          String          userId,
+                                                          NameRequestBody requestBody,
+                                                          int             startFrom,
+                                                          int             pageSize)
     {
         final String methodName = "getDatabaseViewsByName";
 
@@ -2081,16 +2142,24 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseViewElement> databaseViewAttributes = handler.getDatabaseViewsByName(userId, name, startFrom, pageSize, methodName);
+                List<DatabaseViewElement> databaseViewAttributes = handler.getDatabaseViewsByName(userId, requestBody.getName(), startFrom, pageSize,
+                                                                                                  methodName);
 
-            response.setElementList(databaseViewAttributes);
+                response.setElementList(databaseViewAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2503,7 +2572,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2512,11 +2581,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseColumnsResponse   findDatabaseColumns(String serverName,
-                                                         String userId,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public DatabaseColumnsResponse   findDatabaseColumns(String                  serverName,
+                                                         String                  userId,
+                                                         SearchStringRequestBody requestBody,
+                                                         int                     startFrom,
+                                                         int                     pageSize)
     {
         final String methodName = "findDatabaseColumns";
 
@@ -2529,16 +2598,27 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseColumnElement> databaseColumnAttributes = handler.findDatabaseColumns(userId, searchString, startFrom, pageSize, methodName);
+                List<DatabaseColumnElement> databaseColumnAttributes = handler.findDatabaseColumns(userId,
+                                                                                                   requestBody.getSearchString(),
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   methodName);
 
-            response.setElementList(databaseColumnAttributes);
+                response.setElementList(databaseColumnAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2614,7 +2694,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2623,11 +2703,11 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseColumnsResponse   getDatabaseColumnsByName(String serverName,
-                                                              String userId,
-                                                              String name,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public DatabaseColumnsResponse   getDatabaseColumnsByName(String          serverName,
+                                                              String          userId,
+                                                              NameRequestBody requestBody,
+                                                              int             startFrom,
+                                                              int             pageSize)
     {
         final String methodName = "getDatabaseColumnsByName";
 
@@ -2640,16 +2720,24 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseColumnElement> databaseColumnAttributes = handler.getDatabaseColumnsByName(userId, name, startFrom, pageSize, methodName);
+                List<DatabaseColumnElement> databaseColumnAttributes = handler.getDatabaseColumnsByName(userId, requestBody.getName(), startFrom,
+                                                                                                        pageSize, methodName);
 
-            response.setElementList(databaseColumnAttributes);
+                response.setElementList(databaseColumnAttributes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

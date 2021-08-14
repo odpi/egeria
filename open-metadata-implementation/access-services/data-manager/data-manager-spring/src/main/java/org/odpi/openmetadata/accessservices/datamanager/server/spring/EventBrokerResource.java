@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.EventBrokerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -203,7 +205,7 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -212,15 +214,15 @@ public class EventBrokerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/topics/by-search-string/{searchString}")
+    @PostMapping(path = "/topics/by-search-string")
 
-    public TopicsResponse findTopics(@PathVariable String serverName,
-                                     @PathVariable String userId,
-                                     @PathVariable String searchString,
-                                     @RequestParam int    startFrom,
-                                     @RequestParam int    pageSize)
+    public TopicsResponse findTopics(@PathVariable String                  serverName,
+                                     @PathVariable String                  userId,
+                                     @RequestBody  SearchStringRequestBody requestBody,
+                                     @RequestParam int                     startFrom,
+                                     @RequestParam int                     pageSize)
     {
-        return restAPI.findTopics(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findTopics(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -230,7 +232,7 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -239,15 +241,15 @@ public class EventBrokerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/topics/by-name/{name}")
+    @PostMapping(path = "/topics/by-name")
 
-    public TopicsResponse   getTopicsByName(@PathVariable String serverName,
-                                            @PathVariable String userId,
-                                            @PathVariable String name,
-                                            @RequestParam int    startFrom,
-                                            @RequestParam int    pageSize)
+    public TopicsResponse   getTopicsByName(@PathVariable String          serverName,
+                                            @PathVariable String          userId,
+                                            @RequestBody  NameRequestBody requestBody,
+                                            @RequestParam int             startFrom,
+                                            @RequestParam int             pageSize)
     {
-        return restAPI.getTopicsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getTopicsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -413,7 +415,7 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -422,15 +424,15 @@ public class EventBrokerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/topics/event-types/by-search-string/{searchString}")
+    @PostMapping(path = "/topics/event-types/by-search-string")
 
-    public EventTypesResponse findEventTypes(@PathVariable String serverName,
-                                             @PathVariable String userId,
-                                             @PathVariable String searchString,
-                                             @RequestParam int    startFrom,
-                                             @RequestParam int    pageSize)
+    public EventTypesResponse findEventTypes(@PathVariable String                  serverName,
+                                             @PathVariable String                  userId,
+                                             @RequestBody  SearchStringRequestBody requestBody,
+                                             @RequestParam int                     startFrom,
+                                             @RequestParam int                     pageSize)
     {
-        return restAPI.findEventTypes(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findEventTypes(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -492,7 +494,7 @@ public class EventBrokerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -501,15 +503,15 @@ public class EventBrokerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/topics/event-types/by-name/{name}")
+    @PostMapping(path = "/topics/event-types/by-name")
 
-    public EventTypesResponse getEventTypesByName(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String name,
-                                                  @RequestParam int    startFrom,
-                                                  @RequestParam int    pageSize)
+    public EventTypesResponse getEventTypesByName(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @RequestBody  NameRequestBody requestBody,
+                                                  @RequestParam int             startFrom,
+                                                  @RequestParam int             pageSize)
     {
-        return restAPI.getEventTypesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getEventTypesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 

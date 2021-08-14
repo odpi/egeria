@@ -9,6 +9,8 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -428,15 +430,20 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        TopicsResponse restResult = restClient.callTopicsGetRESTCall(methodName,
-                                                                     urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     searchString,
-                                                                     startFrom,
-                                                                     validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        TopicsResponse restResult = restClient.callTopicsPostRESTCall(methodName,
+                                                                      urlTemplate,
+                                                                      requestBody,
+                                                                      serverName,
+                                                                      userId,
+                                                                      startFrom,
+                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -472,15 +479,20 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
-        TopicsResponse restResult = restClient.callTopicsGetRESTCall(methodName,
-                                                                     urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     name,
-                                                                     startFrom,
-                                                                     validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        TopicsResponse restResult = restClient.callTopicsPostRESTCall(methodName,
+                                                                      urlTemplate,
+                                                                      requestBody,
+                                                                      serverName,
+                                                                      userId,
+                                                                      startFrom,
+                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -520,7 +532,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-brokers/{2}/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/event-brokers/{2}/{3}/topics?startFrom={4}&pageSize={5}";
 
         TopicsResponse restResult = restClient.callTopicsGetRESTCall(methodName,
                                                                      urlTemplate,
@@ -808,15 +820,20 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/by-search-string?startFrom={2}&pageSize={3}";
 
-        EventTypesResponse restResult = restClient.callEventTypesGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             searchString,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        EventTypesResponse restResult = restClient.callEventTypesPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -939,15 +956,20 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/event-types/by-name?startFrom={2}&pageSize={3}";
 
-        EventTypesResponse restResult = restClient.callEventTypesGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             name,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        EventTypesResponse restResult = restClient.callEventTypesPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }
