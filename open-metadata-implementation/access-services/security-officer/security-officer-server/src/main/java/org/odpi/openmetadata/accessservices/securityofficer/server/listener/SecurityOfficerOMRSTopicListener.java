@@ -209,7 +209,7 @@ public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase {
                   eventTypeName, entityDetail.getGUID(), entityDetail.getType().getTypeDefName(), serverUserId);
     }
 
-    private void logExceptionToAudit(String methodName, OMRSInstanceEvent instanceEvent, Throwable error) {
+    private void logExceptionToAudit(String methodName, OMRSInstanceEvent instanceEvent, Exception error) {
         auditLog.logException(methodName,
                               SecurityOfficerAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(instanceEvent.getInstanceEventType().getName()),
                               "instanceEvent {" + instanceEvent.toString() + "}",
