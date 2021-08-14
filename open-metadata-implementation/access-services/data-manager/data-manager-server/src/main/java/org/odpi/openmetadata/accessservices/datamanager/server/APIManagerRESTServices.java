@@ -16,7 +16,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIOperationHandler;
@@ -58,6 +60,7 @@ public class APIManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param apiManagerIsHome should the API be marked as owned by the event broker so others can not update?
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -65,14 +68,16 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createAPI(String           serverName,
-                                  String           userId,
-                                  boolean          apiManagerIsHome,
+    public GUIDResponse createAPI(String         serverName,
+                                  String         userId,
+                                  boolean        apiManagerIsHome,
+                                  String         endpointGUID,
                                   APIRequestBody requestBody)
     {
         final String methodName                  = "createAPI";
         final String apiManagerGUIDParameterName = "apiManagerGUID";
         final String apiGUIDParameterName        = "apiGUID";
+        final String endpointGUIDParameterName   = "endpointGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -123,6 +128,23 @@ public class APIManagerRESTServices
                                                 apiGUID,
                                                 requestBody.getVendorProperties(),
                                                 methodName);
+
+                    if (endpointGUID != null)
+                    {
+                        handler.linkElementToElement(userId,
+                                                     handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                     handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                     apiGUID,
+                                                     apiGUIDParameterName,
+                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                     endpointGUID,
+                                                     endpointGUIDParameterName,
+                                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                     null,
+                                                     methodName);
+                    }
                 }
 
                 response.setGUID(apiGUID);
@@ -148,6 +170,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiManagerIsHome should the API be marked as owned by the event broker so others can not update?
      * @param requestBody properties that override the template
@@ -159,6 +182,7 @@ public class APIManagerRESTServices
      */
     public GUIDResponse createAPIFromTemplate(String              serverName,
                                               String              userId,
+                                              String              endpointGUID,
                                               String              templateGUID,
                                               boolean             apiManagerIsHome,
                                               TemplateRequestBody requestBody)
@@ -166,6 +190,7 @@ public class APIManagerRESTServices
         final String methodName                  = "createAPIFromTemplate";
         final String apiManagerGUIDParameterName = "apiManagerGUID";
         final String apiGUIDParameterName        = "apiGUID";
+        final String endpointGUIDParameterName   = "endpointGUID";
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
@@ -204,6 +229,23 @@ public class APIManagerRESTServices
                                                               requestBody.getExternalSourceGUID(),
                                                               apiManagerGUIDParameterName,
                                                               methodName);
+
+                if (endpointGUID != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceGUID()),
+                                                 handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
+                                                 apiGUID,
+                                                 apiGUIDParameterName,
+                                                 OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                 endpointGUID,
+                                                 endpointGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+                }
 
                 response.setGUID(apiGUID);
             }
@@ -469,7 +511,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -478,11 +520,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIsResponse findAPIs(String serverName,
-                                 String userId,
-                                 String searchString,
-                                 int    startFrom,
-                                 int    pageSize)
+    public APIsResponse findAPIs(String                  serverName,
+                                 String                  userId,
+                                 SearchStringRequestBody requestBody,
+                                 int                     startFrom,
+                                 int                     pageSize)
     {
         final String methodName = "findAPIs";
         final String searchStringParameterName = "searchString";
@@ -496,21 +538,28 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            List<APIElement> apiElements = handler.findAssets(userId,
-                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                              searchString,
-                                                              searchStringParameterName,
-                                                              startFrom,
-                                                              pageSize,
-                                                              methodName);
+                List<APIElement> apiElements = handler.findAssets(userId,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  requestBody.getSearchString(),
+                                                                  searchStringParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  methodName);
 
-            /*
-             * Set up the vendor properties in the results before setting the results in the response object.
-             */
-            response.setElementList(this.setUpVendorProperties(userId, apiElements, handler, methodName));
+                /*
+                 * Set up the vendor properties in the results before setting the results in the response object.
+                 */
+                response.setElementList(this.setUpVendorProperties(userId, apiElements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -529,7 +578,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -538,11 +587,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIsResponse   getAPIsByName(String serverName,
-                                        String userId,
-                                        String name,
-                                        int    startFrom,
-                                        int    pageSize)
+    public APIsResponse   getAPIsByName(String          serverName,
+                                        String          userId,
+                                        NameRequestBody requestBody,
+                                        int             startFrom,
+                                        int             pageSize)
     {
         final String methodName = "getAPIsByName";
         final String nameParameterName = "name";
@@ -556,21 +605,30 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            List<APIElement> apiElements = handler.getAssetsByName(userId,
-                                                                   OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                                                   name,
-                                                                   nameParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName);
+            if (requestBody != null)
+            {
 
-            /*
-             * Set up the vendor properties before adding results to response
-             */
-            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+                AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
+
+                List<APIElement> apiElements = handler.getAssetsByName(userId,
+                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       requestBody.getName(),
+                                                                       nameParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
+
+                /*
+                 * Set up the vendor properties before adding results to response
+                 */
+                response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -626,6 +684,67 @@ public class APIManagerRESTServices
                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
+
+            /*
+             * Set up the vendor properties before adding results to response
+             */
+            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of API metadata elements linked to the requested endpoint.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endpointGUID endpointGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public APIsResponse   getAPIsByEndpoint(String serverName,
+                                            String userId,
+                                            String endpointGUID,
+                                            int    startFrom,
+                                            int    pageSize)
+    {
+        final String methodName = "getAPIsByEndpoint";
+        final String guidParameterName = "endpointGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        APIsResponse response = new APIsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
+
+            List<APIElement> apiElements = handler.getAttachedElements(userId,
+                                                                       endpointGUID,
+                                                                       guidParameterName,
+                                                                       OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
                                                                        startFrom,
                                                                        pageSize,
@@ -987,7 +1106,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -996,11 +1115,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIOperationsResponse findAPIOperations(String serverName,
-                                                   String userId,
-                                                   String searchString,
-                                                   int    startFrom,
-                                                   int    pageSize)
+    public APIOperationsResponse findAPIOperations(String                  serverName,
+                                                   String                  userId,
+                                                   SearchStringRequestBody requestBody,
+                                                   int                     startFrom,
+                                                   int                     pageSize)
     {
         final String methodName = "findAPIOperations";
         final String searchStringParameterName = "searchString";
@@ -1014,19 +1133,26 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
 
-            List<APIOperationElement> elements = handler.findAPIOperations(userId,
-                                                                           searchString,
-                                                                           searchStringParameterName,
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           methodName);
+                List<APIOperationElement> elements = handler.findAPIOperations(userId,
+                                                                               requestBody.getSearchString(),
+                                                                               searchStringParameterName,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
 
-            /*
-             * Set up the vendor properties before adding results to response
-             */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                /*
+                 * Set up the vendor properties before adding results to response
+                 */
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1102,7 +1228,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1111,11 +1237,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIOperationsResponse getAPIOperationsByName(String serverName,
-                                                        String userId,
-                                                        String name,
-                                                        int    startFrom,
-                                                        int    pageSize)
+    public APIOperationsResponse getAPIOperationsByName(String          serverName,
+                                                        String          userId,
+                                                        NameRequestBody requestBody,
+                                                        int             startFrom,
+                                                        int             pageSize)
     {
         final String methodName = "getAPIOperationsByName";
         final String nameParameterName = "name";
@@ -1129,14 +1255,21 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
 
-            List<APIOperationElement> elements = handler.getAPIOperationsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+                List<APIOperationElement> elements = handler.getAPIOperationsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
 
-            /*
-             * Set up the vendor properties before adding results to response
-             */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                /*
+                 * Set up the vendor properties before adding results to response
+                 */
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1515,7 +1648,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1524,11 +1657,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIParameterListsResponse findAPIParameterLists(String serverName,
-                                                           String userId,
-                                                           String searchString,
-                                                           int    startFrom,
-                                                           int    pageSize)
+    public APIParameterListsResponse findAPIParameterLists(String                  serverName,
+                                                           String                  userId,
+                                                           SearchStringRequestBody requestBody,
+                                                           int                     startFrom,
+                                                           int                     pageSize)
     {
         final String methodName = "findAPIParameterLists";
         final String searchStringParameterName = "searchString";
@@ -1542,19 +1675,27 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
 
-            List<APIParameterListElement> elements = handler.findAPIParameterLists(userId,
-                                                                                   searchString,
-                                                                                   searchStringParameterName,
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   methodName);
+                APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            /*
-             * Set up the vendor properties before adding results to response
-             */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                List<APIParameterListElement> elements = handler.findAPIParameterLists(userId,
+                                                                                       requestBody.getSearchString(),
+                                                                                       searchStringParameterName,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       methodName);
+
+                /*
+                 * Set up the vendor properties before adding results to response
+                 */
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1630,7 +1771,7 @@ public class APIManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1639,11 +1780,11 @@ public class APIManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public APIParameterListsResponse getAPIParameterListsByName(String serverName,
-                                                                String userId,
-                                                                String name,
-                                                                int    startFrom,
-                                                                int    pageSize)
+    public APIParameterListsResponse getAPIParameterListsByName(String          serverName,
+                                                                String          userId,
+                                                                NameRequestBody requestBody,
+                                                                int             startFrom,
+                                                                int             pageSize)
     {
         final String methodName = "getAPIParameterListsByName";
         final String nameParameterName = "name";
@@ -1657,14 +1798,21 @@ public class APIManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            List<APIParameterListElement> elements = handler.getAPIParameterListsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+                List<APIParameterListElement> elements = handler.getAPIParameterListsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
 
-            /*
-             * Set up the vendor properties before adding results to response
-             */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                /*
+                 * Set up the vendor properties before adding results to response
+                 */
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

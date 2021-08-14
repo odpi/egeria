@@ -13,7 +13,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.DisplayDataContainerHandler;
@@ -468,7 +470,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -477,11 +479,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public FormsResponse findForms(String serverName,
-                                   String userId,
-                                   String searchString,
-                                   int    startFrom,
-                                   int    pageSize)
+    public FormsResponse findForms(String                  serverName,
+                                   String                  userId,
+                                   SearchStringRequestBody requestBody,
+                                   int                     startFrom,
+                                   int                     pageSize)
     {
         final String methodName = "findForms";
         final String searchStringParameterName = "searchString";
@@ -495,18 +497,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
-            List<FormElement> formAssets = handler.findAssets(userId,
-                                                              OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                              searchString,
-                                                              searchStringParameterName,
-                                                              startFrom,
-                                                              pageSize,
-                                                              methodName);
+                List<FormElement> formAssets = handler.findAssets(userId,
+                                                                  OpenMetadataAPIMapper.FORM_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                  requestBody.getSearchString(),
+                                                                  searchStringParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  methodName);
 
-            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+                response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -525,7 +534,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -534,11 +543,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public FormsResponse   getFormsByName(String serverName,
-                                          String userId,
-                                          String name,
-                                          int    startFrom,
-                                          int    pageSize)
+    public FormsResponse   getFormsByName(String          serverName,
+                                          String          userId,
+                                          NameRequestBody requestBody,
+                                          int             startFrom,
+                                          int             pageSize)
     {
         final String methodName = "getFormsByName";
         final String nameParameterName = "name";
@@ -552,18 +561,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
-            List<FormElement> formAssets = handler.getAssetsByName(userId,
-                                                                   OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                                                   name,
-                                                                   nameParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName);
+                List<FormElement> formAssets = handler.getAssetsByName(userId,
+                                                                       OpenMetadataAPIMapper.FORM_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                       requestBody.getName(),
+                                                                       nameParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
-            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+                response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1197,7 +1213,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1206,11 +1222,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ReportsResponse findReports(String serverName,
-                                       String userId,
-                                       String searchString,
-                                       int    startFrom,
-                                       int    pageSize)
+    public ReportsResponse findReports(String                  serverName,
+                                       String                  userId,
+                                       SearchStringRequestBody requestBody,
+                                       int                     startFrom,
+                                       int                     pageSize)
     {
         final String methodName = "findReports";
         final String searchStringParameterName = "searchString";
@@ -1224,18 +1240,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
-            List<ReportElement> reportAssets = handler.findAssets(userId,
-                                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                                  searchString,
-                                                                  searchStringParameterName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  methodName);
+                List<ReportElement> reportAssets = handler.findAssets(userId,
+                                                                      OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
+                                                                      OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      requestBody.getSearchString(),
+                                                                      searchStringParameterName,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      methodName);
 
-            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+                response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1254,7 +1277,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1263,11 +1286,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ReportsResponse   getReportsByName(String serverName,
-                                              String userId,
-                                              String name,
-                                              int    startFrom,
-                                              int    pageSize)
+    public ReportsResponse   getReportsByName(String          serverName,
+                                              String          userId,
+                                              NameRequestBody requestBody,
+                                              int             startFrom,
+                                              int             pageSize)
     {
         final String methodName = "getReportsByName";
         final String nameParameterName = "name";
@@ -1281,18 +1304,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
-            List<ReportElement> reportAssets = handler.getAssetsByName(userId,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                                                       name,
-                                                                       nameParameterName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       methodName);
+                List<ReportElement> reportAssets = handler.getAssetsByName(userId,
+                                                                           OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
+                                                                           OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           requestBody.getName(),
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           methodName);
 
-            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+                response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1839,7 +1869,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1848,11 +1878,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public QueriesResponse findQueries(String serverName,
-                                       String userId,
-                                       String searchString,
-                                       int    startFrom,
-                                       int    pageSize)
+    public QueriesResponse findQueries(String                  serverName,
+                                       String                  userId,
+                                       SearchStringRequestBody requestBody,
+                                       int                     startFrom,
+                                       int                     pageSize)
     {
         final String methodName = "findQueries";
         final String searchStringParameterName = "searchString";
@@ -1866,18 +1896,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
-            List<QueryElement> queryAssets = handler.findAssets(userId,
-                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                                searchString,
-                                                                searchStringParameterName,
-                                                                startFrom,
-                                                                pageSize,
-                                                                methodName);
+                List<QueryElement> queryAssets = handler.findAssets(userId,
+                                                                    OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                    requestBody.getSearchString(),
+                                                                    searchStringParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName);
 
-            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+                response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1896,7 +1933,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1905,11 +1942,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public QueriesResponse   getQueriesByName(String serverName,
-                                              String userId,
-                                              String name,
-                                              int    startFrom,
-                                              int    pageSize)
+    public QueriesResponse   getQueriesByName(String          serverName,
+                                              String          userId,
+                                              NameRequestBody requestBody,
+                                              int             startFrom,
+                                              int             pageSize)
     {
         final String methodName = "getQueriesByName";
         final String nameParameterName = "name";
@@ -1923,18 +1960,25 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
-            List<QueryElement> queryAssets = handler.getAssetsByName(userId,
-                                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                                                     name,
-                                                                     nameParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName);
+                List<QueryElement> queryAssets = handler.getAssetsByName(userId,
+                                                                         OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                         requestBody.getName(),
+                                                                         nameParameterName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName);
 
-            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+                response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2376,7 +2420,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2385,11 +2429,11 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataContainersResponse findDataContainers(String serverName,
-                                                     String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize)
+    public DataContainersResponse findDataContainers(String                  serverName,
+                                                     String                  userId,
+                                                     SearchStringRequestBody requestBody,
+                                                     int                     startFrom,
+                                                     int                     pageSize)
     {
         final String methodName = "findDataContainers";
 
@@ -2402,15 +2446,24 @@ public class DisplayApplicationRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId,
+                                                                                                                                              serverName,
+                                                                                                                                              methodName);
 
-            List<DataContainerElement> elements = handler.findDataContainers(userId,
-                                                                             searchString,
-                                                                             startFrom,
-                                                                             pageSize,
-                                                                             methodName);
+                List<DataContainerElement> elements = handler.findDataContainers(userId,
+                                                                                 requestBody.getSearchString(),
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2481,7 +2534,7 @@ public class DisplayApplicationRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2490,28 +2543,37 @@ public class DisplayApplicationRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataContainersResponse getDataContainersByName(String serverName,
-                                                          String userId,
-                                                          String name,
-                                                          int    startFrom,
-                                                          int    pageSize)
+    public DataContainersResponse getDataContainersByName(String          serverName,
+                                                          String          userId,
+                                                          NameRequestBody requestBody,
+                                                          int             startFrom,
+                                                          int             pageSize)
     {
         final String methodName = "getDataContainersByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DataContainersResponse response = new DataContainersResponse();
-        AuditLog           auditLog = null;
+        AuditLog               auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId,
+                                                                                                                                              serverName,
+                                                                                                                                              methodName);
 
-            List<DataContainerElement> elements = handler.getDataContainersByName(userId, name, startFrom, pageSize, methodName);
+                List<DataContainerElement> elements = handler.getDataContainersByName(userId, requestBody.getName(), startFrom, pageSize, methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

@@ -212,10 +212,10 @@ public class OperationalServicesResource
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
                     url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
 
-    public VoidResponse addOpenMetadataArchiveFile(@PathVariable String     userId,
-                                                   @PathVariable String     serverName,
-                                                   @RequestBody  Connection connection)
+    public VoidResponse addOpenMetadataArchive(@PathVariable String     userId,
+                                               @PathVariable String     serverName,
+                                               @RequestBody  Connection connection)
     {
-        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, connection);
+        return operationalServices.addOpenMetadataArchive(userId, serverName, connection);
     }
 }

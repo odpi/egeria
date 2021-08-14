@@ -616,7 +616,6 @@ public class GovernanceRolesRESTServices
      * @param roleId  the unique identifier of the governance role.
      * @return governance role object or
      * InvalidParameterException the governanceRoleGUID or governance domain is either null or invalid or
-     * AppointmentIdNotUniqueException more than one governance role entity was retrieved for this governanceRoleGUID
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
