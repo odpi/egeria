@@ -6,10 +6,9 @@ package org.odpi.openmetadata.viewservices.serverauthor.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -31,6 +30,11 @@ public class Platform {
     private String platformDescription;
     private PlatformStatus platformStatus;
     private Set<StoredServer> storedServers = new HashSet<>();
+
+    private List<RegisteredOMAGService> accessServices;
+    private List<RegisteredOMAGService> engineServices;
+    private List<RegisteredOMAGService> integrationServices;
+    private List<RegisteredOMAGService> viewServices;
 
     /**
      * Default Constructor sets the properties to nulls
@@ -109,6 +113,54 @@ public class Platform {
     }
 
     /**
+     * Set the access services that this platform supports.
+     * @param accessServices
+     */
+    public void setAccessServices(List<RegisteredOMAGService> accessServices) {
+        this.accessServices = accessServices;
+    }
+    /**
+     * Get the engine services that this platform supports.
+     * @return engine services supported by this platform
+     */
+    public List<RegisteredOMAGService> getEngineServices() {
+        return engineServices;
+    }
+    /**
+     * Set the engine services that this platform supports.
+     * @param engineServices
+     */
+    public void setEngineServices(List<RegisteredOMAGService> engineServices) {
+        this.engineServices = engineServices;
+    }
+    /**
+     * Get the governance services that this platform supports.
+     * @return governance services supported by this platform
+     */
+    public List<RegisteredOMAGService> getIntegrationServices() {
+        return integrationServices;
+    }
+    /**
+     * Set the governance services that this platform supports.
+     * @param integrationServices
+     */
+    public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) { this.integrationServices = integrationServices; }
+    /**
+     * Get the view services that this platform supports.
+     * @return view services supported by this platform
+     */
+    public List<RegisteredOMAGService> getViewServices() {
+        return viewServices;
+    }
+    /**
+     * Set the view services that this platform supports.
+     * @param viewServices
+     */
+    public void setViewServices(List<RegisteredOMAGService> viewServices) {
+        this.viewServices = viewServices;
+    }
+
+    /**
      * Add a stored server to the platform
      *
      * @param storedServer stored server to add
@@ -149,11 +201,41 @@ public class Platform {
         sb.append("platformName=").append(this.platformName).append(",");
         sb.append("platformDescription=").append(this.platformDescription).append(",");
         sb.append("platformStatus=").append(this.platformStatus).append(",");
-        sb.append("storedServers={");
-        for (StoredServer storedServer:storedServers) {
-             sb.append(storedServer).append(',');
+        sb.append("storedServers=[");
+        if (storedServers != null && storedServers.size() > 0) {
+            for (StoredServer storedServer : storedServers) {
+                sb.append(storedServer).append(',');
+            }
+         }
+        sb.append(']');
+        sb.append("accessServices=[");
+        if (accessServices != null && accessServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : accessServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
         }
-        sb.append('}');
+        sb.append('[');
+        sb.append("viewServices=[");
+        if (viewServices !=null && viewServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : viewServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
+        }
+        sb.append(']');
+        sb.append("integrationServices=[");
+        if (integrationServices != null && integrationServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : integrationServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
+        }
+        sb.append(']');
+        sb.append("engineServices=[");
+        if (engineServices != null && engineServices.size() >0 ) {
+            for (RegisteredOMAGService registeredOMAGService : engineServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
+        }
+        sb.append(']');
         sb.append('}');
         return sb;
     }
@@ -175,6 +257,50 @@ public class Platform {
                }
            }
         }
+        for (RegisteredOMAGService registeredOMAGService:accessServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.accessServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService: engineServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.engineServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService: integrationServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.integrationServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
+        for (RegisteredOMAGService registeredOMAGService:viewServices) {
+            boolean foundIt = false;
+            for (RegisteredOMAGService platformRegisteredOMAGService: platform.viewServices) {
+                if (Objects.equals(registeredOMAGService, platformRegisteredOMAGService)) {
+                    foundIt = true;
+                }
+                if (!foundIt) {
+                    return false;
+                }
+            }
+        }
 
         return Objects.equals(platformName, platform.platformName) &&
                 Objects.equals(platformDescription, platform.platformDescription) &&
@@ -183,6 +309,6 @@ public class Platform {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers);
+        return Objects.hash(super.hashCode(), platformName, platformDescription, platformStatus, storedServers, accessServices, viewServices, integrationServices, engineServices);
     }
 }
