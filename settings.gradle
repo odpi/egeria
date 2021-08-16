@@ -51,6 +51,8 @@ include(':open-metadata-implementation:adapters:open-connectors:data-store-conne
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
 // todo - convert to integration connectors and governance action connectors
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
@@ -437,6 +439,8 @@ project(':open-metadata-implementation:adapters:open-connectors:data-store-conne
 project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/files-integration-connectors')
+project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/kafka-integration-connector')
+project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/openapi-integration-connector')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors')
 // todo convert to integration connectors and governance action connectors
 //project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors')
