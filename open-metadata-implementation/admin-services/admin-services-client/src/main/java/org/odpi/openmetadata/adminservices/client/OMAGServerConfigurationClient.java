@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OMAGServerConfigurationClient provides services to configure an OMAG Server.
- * It is abstract because it is extended by the concrete types of server.
+ * OMAGServerConfigurationClient provides common services to configure an OMAG Server.
  */
 public class OMAGServerConfigurationClient
 {

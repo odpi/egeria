@@ -11,6 +11,8 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -794,15 +796,20 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsGetRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 searchString,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -838,13 +845,18 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
                                                                                  urlTemplate,
+                                                                                 requestBody,
                                                                                  serverName,
                                                                                  userId,
-                                                                                 name,
                                                                                  startFrom,
                                                                                  validatedPageSize);
 
@@ -1122,15 +1134,20 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             searchString,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1166,15 +1183,20 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             name,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1246,15 +1268,20 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/types/{2}/by-search-string/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       searchString,
-                                                                                       startFrom,
-                                                                                       validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1291,15 +1318,20 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       name,
-                                                                                       startFrom,
-                                                                                       validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }

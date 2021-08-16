@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -174,8 +175,8 @@ public class DataManagerRESTServices
                 response.setGUID(handler.createSoftwareServerCapability(userId,
                                                                         requestBody.getExternalSourceGUID(),
                                                                         requestBody.getExternalSourceName(),
-                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                        OpenMetadataAPIMapper.DATA_MANAGER_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
                                                                         requestBody.getQualifiedName(),
                                                                         requestBody.getDisplayName(),
@@ -496,7 +497,7 @@ public class DataManagerRESTServices
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param qualifiedName unique name of the integration daemon
+     * @param requestBody unique name of the integration daemon
      *
      * @return unique identifier of the integration daemon's software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -505,7 +506,7 @@ public class DataManagerRESTServices
      */
     public GUIDResponse  getMetadataSourceGUID(String serverName,
                                                String userId,
-                                               String qualifiedName)
+                                               NameRequestBody requestBody)
     {
         final String methodName = "getMetadataSourceGUID";
         final String parameterName = "qualifiedName";
@@ -519,14 +520,21 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                qualifiedName,
-                                                                parameterName,
-                                                                methodName));
+                response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
+                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    requestBody.getName(),
+                                                                    parameterName,
+                                                                    methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

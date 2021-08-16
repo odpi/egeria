@@ -176,6 +176,11 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                     "The system is unable to process the request because the requested object is not an anchor entity.",
                     "Correct the code in the caller to issue the request against this element's anchor object and retry."),
 
+    INVALID_SEARCH_STRING(400, "OMAG-COMMON-400-028",
+                       "The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}",
+                       "The system is unable to process the request with this search string.",
+                       "Correct the code in the caller to provide a valid regular expression search string."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails because the requested object is not of the right type.",

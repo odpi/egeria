@@ -51,7 +51,6 @@ public class HostProperties extends ConfigurationItemProperties
         return "HostProperties{" +
                        "qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
                        ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +

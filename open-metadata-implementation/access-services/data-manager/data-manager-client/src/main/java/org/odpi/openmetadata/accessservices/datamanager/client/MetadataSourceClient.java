@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerR
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -491,13 +492,18 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name";
 
-        GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(qualifiedName);
+        requestBody.setNamePropertyName(qualifiedNameParameterName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
+                                                                  requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  qualifiedName);
+                                                                  userId);
 
         return restResult.getGUID();
     }

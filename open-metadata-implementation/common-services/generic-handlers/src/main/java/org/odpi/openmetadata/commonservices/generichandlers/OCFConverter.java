@@ -859,7 +859,16 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
         connectorType.setDisplayName(this.removeName(instanceProperties));
         connectorType.setDescription(this.removeDescription(instanceProperties));
+        connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
+        connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));
         connectorType.setConnectorProviderClassName(this.removeConnectorProviderClassName(instanceProperties));
+        connectorType.setConnectorFrameworkName(this.removeConnectorFrameworkName(instanceProperties));
+        connectorType.setConnectorInterfaceLanguage(this.removeConnectorInterfaceLanguage(instanceProperties));
+        connectorType.setConnectorInterfaces(this.removeConnectorInterfaces(instanceProperties));
+        connectorType.setTargetTechnologySource(this.removeTargetTechnologySource(instanceProperties));
+        connectorType.setTargetTechnologyName(this.removeTargetTechnologyName(instanceProperties));
+        connectorType.setTargetTechnologyInterfaces(this.removeTargetTechnologyInterfaces(instanceProperties));
+        connectorType.setTargetTechnologyVersions(this.removeTargetTechnologyVersions(instanceProperties));
         connectorType.setRecognizedAdditionalProperties(this.removeRecognizedAdditionalProperties(instanceProperties));
         connectorType.setRecognizedSecuredProperties(this.removeRecognizedSecuredProperties(instanceProperties));
         connectorType.setRecognizedConfigurationProperties(this.removeRecognizedConfigurationProperties(instanceProperties));

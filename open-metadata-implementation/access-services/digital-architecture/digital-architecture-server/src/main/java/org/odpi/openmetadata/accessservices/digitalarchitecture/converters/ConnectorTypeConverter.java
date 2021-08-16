@@ -74,7 +74,16 @@ public class ConnectorTypeConverter<B> extends DigitalArchitectureOMASConverter<
                     connectorTypeProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     connectorTypeProperties.setDisplayName(this.removeName(instanceProperties));
                     connectorTypeProperties.setDescription(this.removeDescription(instanceProperties));
+                    connectorTypeProperties.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
+                    connectorTypeProperties.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));
                     connectorTypeProperties.setConnectorProviderClassName(this.removeConnectorProviderClassName(instanceProperties));
+                    connectorTypeProperties.setConnectorFrameworkName(this.removeConnectorFrameworkName(instanceProperties));
+                    connectorTypeProperties.setConnectorInterfaceLanguage(this.removeConnectorInterfaceLanguage(instanceProperties));
+                    connectorTypeProperties.setConnectorInterfaces(this.removeConnectorInterfaces(instanceProperties));
+                    connectorTypeProperties.setTargetTechnologySource(this.removeTargetTechnologySource(instanceProperties));
+                    connectorTypeProperties.setTargetTechnologyName(this.removeTargetTechnologyName(instanceProperties));
+                    connectorTypeProperties.setTargetTechnologyInterfaces(this.removeTargetTechnologyInterfaces(instanceProperties));
+                    connectorTypeProperties.setTargetTechnologyVersions(this.removeTargetTechnologyVersions(instanceProperties));
                     connectorTypeProperties.setRecognizedAdditionalProperties(this.removeRecognizedAdditionalProperties(instanceProperties));
                     connectorTypeProperties.setRecognizedSecuredProperties(this.removeRecognizedSecuredProperties(instanceProperties));
                     connectorTypeProperties.setRecognizedConfigurationProperties(this.removeRecognizedConfigurationProperties(instanceProperties));

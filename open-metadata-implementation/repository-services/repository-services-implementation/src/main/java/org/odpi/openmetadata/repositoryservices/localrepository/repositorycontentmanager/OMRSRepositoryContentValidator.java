@@ -4526,7 +4526,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * Probably a class cast error which should never occur.
              */
-            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(sourceName, methodName),
+            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(error.getClass().getName(),
+                                                                                                            searchCriteria,
+                                                                                                            methodName,
+                                                                                                            sourceName,
+                                                                                                            error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
@@ -4642,7 +4646,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * Probably a class cast error which should never occur.
              */
-            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(sourceName, methodName),
+            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(error.getClass().getName(),
+                                                                                                            searchPropertyValue,
+                                                                                                            methodName,
+                                                                                                            sourceName,
+                                                                                                            error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
