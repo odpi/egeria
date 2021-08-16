@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypePrope
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,10 +34,11 @@ import java.util.UUID;
 public abstract class ConnectorProviderBase extends ConnectorProvider implements AuditLoggingComponent
 {
     private String               connectorClassName            = null;
+    protected List<String>       connectorInterfaces           = new ArrayList<>();
     private ComponentDescription connectorComponentDescription = null;
 
-    protected AuditLog      auditLog  = null;
-    protected ConnectorType connectorTypeBean  = null;
+    protected AuditLog      auditLog            = null;
+    protected ConnectorType connectorTypeBean   = null;
 
     private final int     hashCode = UUID.randomUUID().hashCode();
 
@@ -46,9 +49,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      */
     public ConnectorProviderBase ()
     {
-        /*
-         * Nothing to do
-         */
+        connectorInterfaces.add(Connector.class.getName());
     }
 
 

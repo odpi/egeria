@@ -9,6 +9,8 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -432,13 +434,18 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + formURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + formURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        FormsResponse restResult = restClient.callFormsGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        FormsResponse restResult = restClient.callFormsPostRESTCall(methodName,
                                                                    urlTemplate,
+                                                                   requestBody,
                                                                    serverName,
                                                                    userId,
-                                                                   searchString,
                                                                    startFrom,
                                                                    validatedPageSize);
 
@@ -476,15 +483,20 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + formURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + formURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        FormsResponse restResult = restClient.callFormsGetRESTCall(methodName,
-                                                                   urlTemplate,
-                                                                   serverName,
-                                                                   userId,
-                                                                   name,
-                                                                   startFrom,
-                                                                   validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        FormsResponse restResult = restClient.callFormsPostRESTCall(methodName,
+                                                                    urlTemplate,
+                                                                    requestBody,
+                                                                    serverName,
+                                                                    userId,
+                                                                    startFrom,
+                                                                    validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -880,15 +892,20 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        ReportsResponse restResult = restClient.callReportsGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       searchString,
-                                                                       startFrom,
-                                                                       validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        ReportsResponse restResult = restClient.callReportsPostRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        requestBody,
+                                                                        serverName,
+                                                                        userId,
+                                                                        startFrom,
+                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -924,15 +941,20 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        ReportsResponse restResult = restClient.callReportsGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       name,
-                                                                       startFrom,
-                                                                       validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        ReportsResponse restResult = restClient.callReportsPostRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        requestBody,
+                                                                        serverName,
+                                                                        userId,
+                                                                        startFrom,
+                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1328,15 +1350,20 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + queryURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + queryURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        QueriesResponse restResult = restClient.callQueriesGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       searchString,
-                                                                       startFrom,
-                                                                       validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        QueriesResponse restResult = restClient.callQueriesPostRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        requestBody,
+                                                                        serverName,
+                                                                        userId,
+                                                                        startFrom,
+                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1372,15 +1399,20 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + queryURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + queryURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        QueriesResponse restResult = restClient.callQueriesGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       name,
-                                                                       startFrom,
-                                                                       validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        QueriesResponse restResult = restClient.callQueriesPostRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        requestBody,
+                                                                        serverName,
+                                                                        userId,
+                                                                        startFrom,
+                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1720,7 +1752,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/types/{2}/by-search-string/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/types/{2}/by-search-string?startFrom={3}&pageSize={4}";
 
         String requestTypeName = "DataContainer";
 
@@ -1729,14 +1761,19 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
             requestTypeName = typeName;
         }
 
-        DataContainersResponse restResult = restClient.callDataContainersGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     requestTypeName,
-                                                                                     searchString,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DataContainersResponse restResult = restClient.callDataContainersPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      requestTypeName,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1817,7 +1854,7 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/types/{2}/by-name/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaURLTemplatePrefix + "/data-containers/types/{2}/by-name?startFrom={3}&pageSize={4}";
 
         String requestTypeName = "DataContainer";
 
@@ -1826,14 +1863,19 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
             requestTypeName = typeName;
         }
 
-        DataContainersResponse restResult = restClient.callDataContainersGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     requestTypeName,
-                                                                                     name,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DataContainersResponse restResult = restClient.callDataContainersPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      requestTypeName,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }

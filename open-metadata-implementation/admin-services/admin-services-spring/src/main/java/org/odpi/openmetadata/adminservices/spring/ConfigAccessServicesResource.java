@@ -108,6 +108,51 @@ public class ConfigAccessServicesResource
     }
 
 
+
+    /**
+     * Enable a single access service.
+     * This version of the call does not set up the InTopic nor the OutTopic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @param serviceURLMarker string indicating which access service it is configuring
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping(path = "/access-services/{serviceURLMarker}/no-topics")
+    public VoidResponse configureAccessServiceNoTopics(@PathVariable                  String              userId,
+                                                       @PathVariable                  String              serverName,
+                                                       @PathVariable                  String              serviceURLMarker,
+                                                       @RequestBody(required = false) Map<String, Object> accessServiceOptions)
+    {
+        return adminAPI.configureAccessServiceNoTopics(userId, serverName, serviceURLMarker, accessServiceOptions);
+    }
+
+
+    /**
+     * Enable all access services that are registered with this server platform.
+     * This version of the call does not set up the InTopic nor the OutTopic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping(path = "/access-services/no-topics")
+    public VoidResponse configureAllAccessServicesNoTopics(@PathVariable                  String              userId,
+                                                           @PathVariable                  String              serverName,
+                                                           @RequestBody(required = false) Map<String, Object> accessServiceOptions)
+    {
+        return adminAPI.configureAllAccessServicesNoTopics(userId, serverName, accessServiceOptions);
+    }
+
+
     /**
      * Disable the access services.  This removes all configuration for the access services
      * and disables the enterprise repository services.

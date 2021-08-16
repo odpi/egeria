@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -216,19 +217,19 @@ public class DataManagerOMASResource
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param qualifiedName unique name of the integration daemon
+     * @param requestBody unique name of the integration daemon
      *
      * @return unique identifier of the integration daemon's software server capability or
      * InvalidParameterException  the bean properties are invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
      */
-    @GetMapping(path = "metadata-sources/by-name/{qualifiedName}")
+    @PostMapping(path = "metadata-sources/by-name")
 
-    public GUIDResponse  getMetadataSourceGUID(@PathVariable String serverName,
-                                               @PathVariable String userId,
-                                               @PathVariable String qualifiedName)
+    public GUIDResponse  getMetadataSourceGUID(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataSourceGUID(serverName, userId, qualifiedName);
+        return restAPI.getMetadataSourceGUID(serverName, userId, requestBody);
     }
 }

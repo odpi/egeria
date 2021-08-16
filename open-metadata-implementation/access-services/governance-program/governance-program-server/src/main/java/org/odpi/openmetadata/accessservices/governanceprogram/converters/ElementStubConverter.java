@@ -45,6 +45,7 @@ public class ElementStubConverter<B> extends GovernanceProgramOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value = "unchecked")
     private B getNewBean(Class<B>    beanClass,
                          EntityProxy entityProxy,
                          String      methodName) throws PropertyServerException

@@ -685,4 +685,38 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
                                                                  serverName);
         return restResult.getGUID();
     }
+
+
+    /**
+     * Set up the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param metadataCollectionId unique identifier for the metadata collection
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setLocalMetadataCollectionId(String metadataCollectionId) throws OMAGNotAuthorizedException,
+                                                                                 OMAGInvalidParameterException,
+                                                                                 OMAGConfigurationErrorException
+    {
+        final String methodName  = "setLocalMetadataCollectionId";
+        final String parameterName = "metadataCollectionId";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-id";
+
+        try
+        {
+            invalidParameterHandler.validateGUID(metadataCollectionId, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        metadataCollectionId,
+                                        adminUserId,
+                                        serverName);
+    }
 }
