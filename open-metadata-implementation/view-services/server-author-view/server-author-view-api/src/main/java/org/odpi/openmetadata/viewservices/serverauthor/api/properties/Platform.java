@@ -8,10 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -204,31 +201,41 @@ public class Platform {
         sb.append("platformName=").append(this.platformName).append(",");
         sb.append("platformDescription=").append(this.platformDescription).append(",");
         sb.append("platformStatus=").append(this.platformStatus).append(",");
-        sb.append("storedServers={");
-        for (StoredServer storedServer:storedServers) {
-             sb.append(storedServer).append(',');
+        sb.append("storedServers=[");
+        if (storedServers != null && storedServers.size() > 0) {
+            for (StoredServer storedServer : storedServers) {
+                sb.append(storedServer).append(',');
+            }
+         }
+        sb.append(']');
+        sb.append("accessServices=[");
+        if (accessServices != null && accessServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : accessServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
         }
-        sb.append('}');
-        sb.append("accessServices={");
-        for (RegisteredOMAGService registeredOMAGService:accessServices) {
-            sb.append(registeredOMAGService).append(',');
+        sb.append('[');
+        sb.append("viewServices=[");
+        if (viewServices !=null && viewServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : viewServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
         }
-        sb.append('}');
-        sb.append("viewServices={");
-        for (RegisteredOMAGService registeredOMAGService:viewServices) {
-            sb.append(registeredOMAGService).append(',');
+        sb.append(']');
+        sb.append("integrationServices=[");
+        if (integrationServices != null && integrationServices.size() >0) {
+            for (RegisteredOMAGService registeredOMAGService : integrationServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
         }
-        sb.append('}');
-        sb.append("governanceServices={");
-        for (RegisteredOMAGService registeredOMAGService: integrationServices) {
-            sb.append(registeredOMAGService).append(',');
+        sb.append(']');
+        sb.append("engineServices=[");
+        if (engineServices != null && engineServices.size() >0 ) {
+            for (RegisteredOMAGService registeredOMAGService : engineServices) {
+                sb.append(registeredOMAGService).append(',');
+            }
         }
-        sb.append('}');
-        sb.append("commonServices={");
-        for (RegisteredOMAGService registeredOMAGService: engineServices) {
-            sb.append(registeredOMAGService).append(',');
-        }
-        sb.append('}');
+        sb.append(']');
         sb.append('}');
         return sb;
     }

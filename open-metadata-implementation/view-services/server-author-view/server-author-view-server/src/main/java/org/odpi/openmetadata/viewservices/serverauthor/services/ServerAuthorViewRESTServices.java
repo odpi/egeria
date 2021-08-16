@@ -794,9 +794,11 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException the server name is invalid or
      * ServerAuthorViewServiceException The Server Author has detected an error.
      */
-    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId, String serverName) {
         String methodName = "getKnownPlatforms";
-
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
         ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
 
         AuditLog auditLog = null;
@@ -810,9 +812,9 @@ public class ServerAuthorViewRESTServices {
         } catch (Exception exception) {
             restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
         return response;
     }
 }
