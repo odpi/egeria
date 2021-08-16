@@ -8,16 +8,33 @@ IT infrastructure (nodes, computers, etc) that data resources are hosted on.
 
 ![UML](0030-Hosts-and-Platforms.png#pagewidth)
 
-**ITInfrastructure** is a type of [Asset](0010-Base-Model.md).
+**ITInfrastructure** is a type of [Asset](0010-Base-Model.md) that supports the running
+of software systems.
 
-A **Host** is an IT Infrastructure concept associated with the hardware running the systems.
-It provides a mechanism for describing a unit of hardware that provides the ability to host software servers.
+In today's systems, hardware is managed to get the maximum use out of it.
+Therefore the concept of a **Host** is abstracted to describe a deployment environment
+that has access to hardware and has a basic software stack, typically including the operating systems.
 
 The host can be linked to its location through the [AssetLocation](0025-Locations.md) relationship.
 
 The **OperatingPlatform** is an informational structure to describe the
-operating system of the host.
-Many hosts could have the same operating platform.
+hardware characteristics and software stack (operating system etc) of the host.
+Details of the software stack can be captured in a [Collection](0021-Collections.md)
+linked to the operating platform using the **OperatingPlatformManifest**.
+The collection may contain many different types of details such as configuration files and software packages that can
+organized into nested collections.
+Collections that list software packages can be classified with the **SoftwarePackageManifest**
+classification.
+
+Many hosts could have the same operating platform.  This means it can be used to
+represent standardized software stacks and which hosts
+they have been deployed to.  Pipelines that manage the software stacks on these machines can use these elements to
+manage the rollout and update of the different software packages.
+
+## Related Models
+
+[0035 Complex Hosts](0035-Complex-Hosts.md) describes how hardware is virtualized.
+[0037 Software Server Platform](0037-Software-Server-Platforms.md) describes the software process that run on a host.
 
 ----
 

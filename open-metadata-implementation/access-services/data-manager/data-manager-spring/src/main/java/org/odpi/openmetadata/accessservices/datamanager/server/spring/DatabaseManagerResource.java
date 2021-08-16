@@ -10,7 +10,9 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DatabaseManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import org.springframework.web.bind.annotation.*;
@@ -216,7 +218,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -225,15 +227,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/by-search-string/{searchString}")
+    @PostMapping(path = "/databases/by-search-string")
 
-    public DatabasesResponse findDatabases(@PathVariable String serverName,
-                                           @PathVariable String userId,
-                                           @PathVariable String searchString,
-                                           @RequestParam int    startFrom,
-                                           @RequestParam int    pageSize)
+    public DatabasesResponse findDatabases(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @RequestBody  SearchStringRequestBody requestBody,
+                                           @RequestParam int                     startFrom,
+                                           @RequestParam int                     pageSize)
     {
-        return restAPI.findDatabases(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDatabases(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -243,7 +245,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -252,15 +254,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/by-name/{name}")
+    @PostMapping(path = "/databases/by-name")
 
-    public DatabasesResponse   getDatabasesByName(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String name,
-                                                  @RequestParam int    startFrom,
-                                                  @RequestParam int    pageSize)
+    public DatabasesResponse   getDatabasesByName(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @RequestBody  NameRequestBody requestBody,
+                                                  @RequestParam int             startFrom,
+                                                  @RequestParam int             pageSize)
     {
-        return restAPI.getDatabasesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDatabasesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -492,7 +494,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -501,15 +503,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/by-search-string/{searchString}")
+    @PostMapping(path = "/databases/schemas/by-search-string")
 
-    public DatabaseSchemasResponse   findDatabaseSchemas(@PathVariable String serverName,
-                                                         @PathVariable String userId,
-                                                         @PathVariable String searchString,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+    public DatabaseSchemasResponse   findDatabaseSchemas(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @RequestBody  SearchStringRequestBody requestBody,
+                                                         @RequestParam int                     startFrom,
+                                                         @RequestParam int                     pageSize)
     {
-        return restAPI.findDatabaseSchemas(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDatabaseSchemas(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -545,7 +547,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -554,15 +556,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/by-name/{name}")
+    @PostMapping(path = "/databases/schemas/by-name")
 
-    public DatabaseSchemasResponse   getDatabaseSchemasByName(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String name,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public DatabaseSchemasResponse   getDatabaseSchemasByName(@PathVariable String          serverName,
+                                                              @PathVariable String          userId,
+                                                              @RequestBody  NameRequestBody requestBody,
+                                                              @RequestParam int             startFrom,
+                                                              @RequestParam int             pageSize)
     {
-        return restAPI.getDatabaseSchemasByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDatabaseSchemasByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -714,7 +716,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -723,15 +725,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/by-search-string/{searchString}")
+    @PostMapping(path = "/databases/schemas/tables/by-search-string")
 
-    public DatabaseTablesResponse   findDatabaseTables(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String searchString,
-                                                       @RequestParam int    startFrom,
-                                                       @RequestParam int    pageSize)
+    public DatabaseTablesResponse   findDatabaseTables(@PathVariable String                  serverName,
+                                                       @PathVariable String                  userId,
+                                                       @RequestBody  SearchStringRequestBody requestBody,
+                                                       @RequestParam int                     startFrom,
+                                                       @RequestParam int                     pageSize)
     {
-        return restAPI.findDatabaseTables(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDatabaseTables(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -767,7 +769,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -776,15 +778,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/by-name/{name}")
+    @PostMapping(path = "/databases/schemas/tables/by-name")
 
-    public DatabaseTablesResponse   getDatabaseTablesByName(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String name,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public DatabaseTablesResponse   getDatabaseTablesByName(@PathVariable String          serverName,
+                                                            @PathVariable String          userId,
+                                                            @RequestBody  NameRequestBody requestBody,
+                                                            @RequestParam int             startFrom,
+                                                            @RequestParam int             pageSize)
     {
-        return restAPI.getDatabaseTablesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDatabaseTablesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -932,7 +934,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -941,15 +943,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/views/by-search-string/{searchString}")
+    @PostMapping(path = "/databases/schemas/tables/views/by-search-string")
 
-    public DatabaseViewsResponse   findDatabaseViews(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String searchString,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public DatabaseViewsResponse   findDatabaseViews(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestBody  SearchStringRequestBody requestBody,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize)
     {
-        return restAPI.findDatabaseViews(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDatabaseViews(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -985,7 +987,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -994,15 +996,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/views/by-name/{name}")
+    @PostMapping(path = "/databases/schemas/tables/views/by-name")
 
-    public DatabaseViewsResponse   getDatabaseViewsByName(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @PathVariable String name,
-                                                          @RequestParam int    startFrom,
-                                                          @RequestParam int    pageSize)
+    public DatabaseViewsResponse   getDatabaseViewsByName(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @RequestBody  NameRequestBody requestBody,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize)
     {
-        return restAPI.getDatabaseViewsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDatabaseViewsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -1156,7 +1158,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1165,15 +1167,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/columns/by-search-string/{searchString}")
+    @PostMapping(path = "/databases/schemas/tables/columns/by-search-string")
 
-    public DatabaseColumnsResponse   findDatabaseColumns(@PathVariable String serverName,
-                                                         @PathVariable String userId,
-                                                         @PathVariable String searchString,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+    public DatabaseColumnsResponse   findDatabaseColumns(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @RequestBody  SearchStringRequestBody requestBody,
+                                                         @RequestParam int                     startFrom,
+                                                         @RequestParam int                     pageSize)
     {
-        return restAPI.findDatabaseColumns(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDatabaseColumns(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -1209,7 +1211,7 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1218,15 +1220,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/columns/by-name/{name}")
+    @PostMapping(path = "/databases/schemas/tables/columns/by-name")
 
-    public DatabaseColumnsResponse   getDatabaseColumnsByName(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String name,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public DatabaseColumnsResponse   getDatabaseColumnsByName(@PathVariable String          serverName,
+                                                              @PathVariable String          userId,
+                                                              @RequestBody  NameRequestBody requestBody,
+                                                              @RequestParam int             startFrom,
+                                                              @RequestParam int             pageSize)
     {
-        return restAPI.getDatabaseColumnsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDatabaseColumnsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 

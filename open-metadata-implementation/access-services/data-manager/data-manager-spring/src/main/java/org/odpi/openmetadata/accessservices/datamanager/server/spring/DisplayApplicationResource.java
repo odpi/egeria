@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DisplayApplicationRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -202,7 +204,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString  string to find in the properties
+     * @param requestBody  string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -211,15 +213,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/forms/by-search-string/{searchString}")
+    @PostMapping(path = "/forms/by-search-string")
 
-    public FormsResponse findForms(@PathVariable String serverName,
-                                   @PathVariable String userId,
-                                   @PathVariable String searchString,
-                                   @RequestParam int    startFrom,
-                                   @RequestParam int    pageSize)
+    public FormsResponse findForms(@PathVariable String                  serverName,
+                                   @PathVariable String                  userId,
+                                   @RequestBody  SearchStringRequestBody requestBody,
+                                   @RequestParam int                     startFrom,
+                                   @RequestParam int                     pageSize)
     {
-        return restAPI.findForms(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findForms(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -229,7 +231,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -238,15 +240,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/forms/by-name/{name}")
+    @PostMapping(path = "/forms/by-name")
 
-    public FormsResponse   getFormsByName(@PathVariable String serverName,
-                                          @PathVariable String userId,
-                                          @PathVariable String name,
-                                          @RequestParam int    startFrom,
-                                          @RequestParam int    pageSize)
+    public FormsResponse   getFormsByName(@PathVariable String          serverName,
+                                          @PathVariable String          userId,
+                                          @RequestBody  NameRequestBody requestBody,
+                                          @RequestParam int             startFrom,
+                                          @RequestParam int             pageSize)
     {
-        return restAPI.getFormsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getFormsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -460,7 +462,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString  string to find in the properties
+     * @param requestBody  string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -469,15 +471,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/reports/by-search-string/{searchString}")
+    @PostMapping(path = "/reports/by-search-string")
 
-    public ReportsResponse findReports(@PathVariable String serverName,
-                                       @PathVariable String userId,
-                                       @PathVariable String searchString,
-                                       @RequestParam int    startFrom,
-                                       @RequestParam int    pageSize)
+    public ReportsResponse findReports(@PathVariable String                  serverName,
+                                       @PathVariable String                  userId,
+                                       @RequestBody  SearchStringRequestBody requestBody,
+                                       @RequestParam int                     startFrom,
+                                       @RequestParam int                     pageSize)
     {
-        return restAPI.findReports(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findReports(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -487,7 +489,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -496,15 +498,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/reports/by-name/{name}")
+    @PostMapping(path = "/reports/by-name")
 
-    public ReportsResponse   getReportsByName(@PathVariable String serverName,
-                                              @PathVariable String userId,
-                                              @PathVariable String name,
-                                              @RequestParam int    startFrom,
-                                              @RequestParam int    pageSize)
+    public ReportsResponse   getReportsByName(@PathVariable String          serverName,
+                                              @PathVariable String          userId,
+                                              @RequestBody  NameRequestBody requestBody,
+                                              @RequestParam int             startFrom,
+                                              @RequestParam int             pageSize)
     {
-        return restAPI.getReportsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getReportsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -718,7 +720,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString  string to find in the properties
+     * @param requestBody  string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -727,15 +729,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/queries/by-search-string/{searchString}")
+    @PostMapping(path = "/queries/by-search-string")
 
-    public QueriesResponse findQueries(@PathVariable String serverName,
-                                       @PathVariable String userId,
-                                       @PathVariable String searchString,
-                                       @RequestParam int    startFrom,
-                                       @RequestParam int    pageSize)
+    public QueriesResponse findQueries(@PathVariable String                  serverName,
+                                       @PathVariable String                  userId,
+                                       @RequestBody  SearchStringRequestBody requestBody,
+                                       @RequestParam int                     startFrom,
+                                       @RequestParam int                     pageSize)
     {
-        return restAPI.findQueries(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findQueries(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -745,7 +747,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -754,15 +756,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/queries/by-name/{name}")
+    @PostMapping(path = "/queries/by-name")
 
-    public QueriesResponse   getQueriesByName(@PathVariable String serverName,
-                                              @PathVariable String userId,
-                                              @PathVariable String name,
-                                              @RequestParam int    startFrom,
-                                              @RequestParam int    pageSize)
+    public QueriesResponse   getQueriesByName(@PathVariable String          serverName,
+                                              @PathVariable String          userId,
+                                              @RequestBody  NameRequestBody requestBody,
+                                              @RequestParam int             startFrom,
+                                              @RequestParam int             pageSize)
     {
-        return restAPI.getQueriesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getQueriesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -932,7 +934,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString  string to find in the properties
+     * @param requestBody  string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -941,15 +943,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/data-containers/by-search-string/{searchString}")
+    @PostMapping(path = "/data-containers/by-search-string")
 
-    public DataContainersResponse findDataContainers(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String searchString,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public DataContainersResponse findDataContainers(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestBody  SearchStringRequestBody requestBody,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize)
     {
-        return restAPI.findDataContainers(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findDataContainers(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -985,7 +987,7 @@ public class DisplayApplicationResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -994,15 +996,15 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/data-containers/by-name/{name}")
+    @PostMapping(path = "/data-containers/by-name")
 
-    public DataContainersResponse getDataContainersByName(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @PathVariable String name,
-                                                          @RequestParam int    startFrom,
-                                                          @RequestParam int    pageSize)
+    public DataContainersResponse getDataContainersByName(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @RequestBody  NameRequestBody requestBody,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize)
     {
-        return restAPI.getDataContainersByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getDataContainersByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
