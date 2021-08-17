@@ -6,7 +6,10 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * The Server Author Exception handler maps OMAG exceptions that have been produced by the admin client into
@@ -58,12 +61,10 @@ public class ServerAuthorExceptionHandler {
      * Map an OMAGNotAuthorizedException to a ServerAuthorViewServiceException which is more consumable / meaningful to the UI
      * @param className the name of the calling class
      * @param methodName the name of the operation being requested
-     * @param omagException supplied OMAGNotAuthorizedException
      * @return mapped Server author View Exception
      */
-    public static ServerAuthorViewServiceException mapOMAGUserNotAuthorizedException(String            className,
-                                                                                     String                     methodName,
-                                                                                     OMAGNotAuthorizedException omagException)
+    public static ServerAuthorViewServiceException mapToUserNotAuthorizedException(String            className,
+                                                                                     String            methodName)
     {
         return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(),
                                            className,
@@ -94,6 +95,25 @@ public class ServerAuthorExceptionHandler {
      */
     public static ServerAuthorViewServiceException mapOMAGConfigurationErrorException(String className, String methodName, OMAGConfigurationErrorException error) {
         return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.CONFIG_ERROR.getMessageDefinition(),
+                                                    className,
+                                                    methodName);
+    }
+    /**
+     * Map an OCF InvalidParameterException to a ServerAuthorViewServiceException which is more consumable / meaningful to the UI
+     * @param className the name of the calling class
+     * @param methodName the name of the operation being requested
+     * @param error supplied OCF InvalidParameterException
+     * @return mapped Server author View Exception
+     */
+    public static ServerAuthorViewServiceException mapOCFInvalidParameterException(String className, String methodName, InvalidParameterException error) {
+        String parameterName = error.getReportedErrorMessageParameters()[0];
+        return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, parameterName),
+                                                    className,
+                                                    methodName);
+    }
+
+    public static ServerAuthorViewServiceException mapOCFPropertyServerError(String className, String methodName, PropertyServerException error) {
+        return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(methodName),
                                                     className,
                                                     methodName);
     }
