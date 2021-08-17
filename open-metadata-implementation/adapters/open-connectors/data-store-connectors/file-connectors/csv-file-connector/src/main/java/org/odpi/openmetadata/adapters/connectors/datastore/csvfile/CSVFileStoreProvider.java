@@ -15,24 +15,31 @@ import java.util.List;
  */
 public class CSVFileStoreProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
-    static final String  connectorTypeName = "Structured File Store Connector";
-    static final String  connectorTypeDescription = "Connector supports reading of structured (CSV) files.";
+    private static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
+    private static final String  connectorTypeName = "CSV File Connector";
+    private static final String  connectorTypeDescription = "Connector supports reading of structured (CSV) files.";
+
+    private static final String  expectedDataFormat = "csv";
+    private static final String  assetTypeName = "CSVFile";
 
     public static final String  columnNamesProperty = "columnNames";
     public static final String  delimiterCharacterProperty = "delimiterCharacter";
     public static final String  quoteCharacterProperty = "quoteCharacter";
 
+
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * registry store implementation.
+     * file store implementation.
      */
     public CSVFileStoreProvider()
     {
+        super();
+
         Class<?>    connectorClass = CSVFileStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
+        connectorInterfaces.add(CSVFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
@@ -41,6 +48,9 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setExpectedDataFormat(expectedDataFormat);
+        connectorType.setConnectorInterfaces(connectorInterfaces);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(columnNamesProperty);

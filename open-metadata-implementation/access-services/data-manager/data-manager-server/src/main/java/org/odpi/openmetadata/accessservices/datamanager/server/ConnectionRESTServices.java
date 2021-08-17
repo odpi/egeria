@@ -14,6 +14,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
@@ -109,9 +111,9 @@ public class ConnectionRESTServices
                 if (connectionGUID != null)
                 {
                     handler.setVendorProperties(userId,
-                                                    connectionGUID,
-                                                    requestBody.getVendorProperties(),
-                                                    methodName);
+                                                connectionGUID,
+                                                requestBody.getVendorProperties(),
+                                                methodName);
                 }
 
                 response.setGUID(connectionGUID);
@@ -842,7 +844,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -851,11 +853,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectionsResponse findConnections(String serverName,
-                                               String userId,
-                                               String searchString,
-                                               int    startFrom,
-                                               int    pageSize)
+    public ConnectionsResponse findConnections(String                  serverName,
+                                               String                  userId,
+                                               SearchStringRequestBody requestBody,
+                                               int                     startFrom,
+                                               int                     pageSize)
     {
         final String methodName = "findConnections";
         final String searchStringParameterName = "searchString";
@@ -869,16 +871,23 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            List<ConnectionElement> connections = handler.findConnections(userId,
-                                                                          searchString,
-                                                                          searchStringParameterName,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          methodName);
+                List<ConnectionElement> connections = handler.findConnections(userId,
+                                                                              requestBody.getSearchString(),
+                                                                              searchStringParameterName,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              methodName);
 
-            response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -897,7 +906,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -906,11 +915,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectionsResponse   getConnectionsByName(String serverName,
-                                                      String userId,
-                                                      String name,
-                                                      int    startFrom,
-                                                      int    pageSize)
+    public ConnectionsResponse   getConnectionsByName(String          serverName,
+                                                      String          userId,
+                                                      NameRequestBody requestBody,
+                                                      int             startFrom,
+                                                      int             pageSize)
     {
         final String methodName = "getConnectionsByName";
         final String nameParameterName = "name";
@@ -924,16 +933,23 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            List<ConnectionElement> connections = handler.getConnectionsByName(userId,
-                                                                               name,
-                                                                               nameParameterName,
-                                                                               startFrom,
-                                                                               pageSize,
-                                                                               methodName);
+                List<ConnectionElement> connections = handler.getConnectionsByName(userId,
+                                                                                   requestBody.getName(),
+                                                                                   nameParameterName,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
 
-            response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1262,7 +1278,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1271,11 +1287,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EndpointsResponse findEndpoints(String serverName,
-                                           String userId,
-                                           String searchString,
-                                           int    startFrom,
-                                           int    pageSize)
+    public EndpointsResponse findEndpoints(String                  serverName,
+                                           String                  userId,
+                                           SearchStringRequestBody requestBody,
+                                           int                     startFrom,
+                                           int                     pageSize)
     {
         final String methodName = "findEndpoints";
         final String searchStringParameterName = "searchString";
@@ -1289,16 +1305,23 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
 
-            List<EndpointElement> elements = handler.findEndpoints(userId,
-                                                                   searchString,
-                                                                   searchStringParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName);
+                List<EndpointElement> elements = handler.findEndpoints(userId,
+                                                                       requestBody.getSearchString(),
+                                                                       searchStringParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1317,7 +1340,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1326,11 +1349,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EndpointsResponse getEndpointsByName(String serverName,
-                                                String userId,
-                                                String name,
-                                                int    startFrom,
-                                                int    pageSize)
+    public EndpointsResponse getEndpointsByName(String          serverName,
+                                                String          userId,
+                                                NameRequestBody requestBody,
+                                                int             startFrom,
+                                                int             pageSize)
     {
         final String methodName = "getEndpointsByName";
         final String nameParameterName = "name";
@@ -1344,11 +1367,19 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
 
-            List<EndpointElement> elements = handler.getEndpointsByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+                EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                List<EndpointElement> elements = handler.getEndpointsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
+
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1419,7 +1450,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1428,11 +1459,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectorTypesResponse findConnectorTypes(String serverName,
-                                                     String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize)
+    public ConnectorTypesResponse findConnectorTypes(String                  serverName,
+                                                     String                  userId,
+                                                     SearchStringRequestBody requestBody,
+                                                     int                     startFrom,
+                                                     int                     pageSize)
     {
         final String methodName = "findConnectorTypes";
         final String searchStringParameterName = "searchString";
@@ -1446,16 +1477,23 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
 
-            List<ConnectorTypeElement> elements = handler.findConnectorTypes(userId,
-                                                                             searchString,
-                                                                             searchStringParameterName,
-                                                                             startFrom,
-                                                                             pageSize,
-                                                                             methodName);
+                List<ConnectorTypeElement> elements = handler.findConnectorTypes(userId,
+                                                                                 requestBody.getSearchString(),
+                                                                                 searchStringParameterName,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1474,7 +1512,7 @@ public class ConnectionRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1483,11 +1521,11 @@ public class ConnectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectorTypesResponse getConnectorTypesByName(String serverName,
-                                                          String userId,
-                                                          String name,
-                                                          int    startFrom,
-                                                          int    pageSize)
+    public ConnectorTypesResponse getConnectorTypesByName(String          serverName,
+                                                          String          userId,
+                                                          NameRequestBody requestBody,
+                                                          int             startFrom,
+                                                          int             pageSize)
     {
         final String methodName = "getConnectorTypesByName";
         final String nameParameterName = "name";
@@ -1501,11 +1539,23 @@ public class ConnectionRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ConnectorTypeHandler<ConnectorTypeElement> handler = instanceHandler.getConnectorTypeHandler(userId, serverName, methodName);
 
-            List<ConnectorTypeElement> elements = handler.getConnectorTypesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+                List<ConnectorTypeElement> elements = handler.getConnectorTypesByName(userId,
+                                                                                      requestBody.getName(),
+                                                                                      nameParameterName,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

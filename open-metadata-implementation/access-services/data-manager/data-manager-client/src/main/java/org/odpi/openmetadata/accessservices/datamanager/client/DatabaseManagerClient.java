@@ -10,7 +10,9 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -472,13 +474,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DatabasesResponse restResult = restClient.callDatabasesPostRESTCall(methodName,
                                                                            urlTemplate,
+                                                                           requestBody,
                                                                            serverName,
                                                                            userId,
-                                                                           searchString,
                                                                            startFrom,
                                                                            validatedPageSize);
 
@@ -516,15 +523,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           name,
-                                                                           startFrom,
-                                                                           validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DatabasesResponse restResult = restClient.callDatabasesPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -910,10 +922,16 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-search-string?startFrom={2}&pageSize={3}";
 
-        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasPostRESTCall(methodName,
                                                                                        urlTemplate,
+                                                                                       requestBody,
                                                                                        serverName,
                                                                                        userId,
                                                                                        searchString,
@@ -997,15 +1015,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-name?startFrom={2}&pageSize={3}";
 
-        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       name,
-                                                                                       startFrom,
-                                                                                       validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1275,15 +1298,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-search-string?startFrom={2}&pageSize={3}";
 
-        DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     searchString,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DatabaseTablesResponse restResult = restClient.callDatabaseTablesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1362,15 +1390,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-name?startFrom={2}&pageSize={3}";
 
-        DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     name,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DatabaseTablesResponse restResult = restClient.callDatabaseTablesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1636,15 +1669,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-search-string?startFrom={2}&pageSize={3}";
 
-        DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   searchString,
-                                                                                   startFrom,
-                                                                                   validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DatabaseViewsResponse restResult = restClient.callDatabaseViewsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1723,15 +1761,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-name?startFrom={2}&pageSize={3}";
 
-        DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   name,
-                                                                                   startFrom,
-                                                                                   validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DatabaseViewsResponse restResult = restClient.callDatabaseViewsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -2009,15 +2052,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-search-string?startFrom={2}&pageSize={3}";
 
-        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       searchString,
-                                                                                       startFrom,
-                                                                                       validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -2096,15 +2144,20 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-name?startFrom={2}&pageSize={3}";
 
-        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       name,
-                                                                                       startFrom,
-                                                                                       validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize);
 
         return restResult.getElementList();
     }

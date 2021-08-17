@@ -419,10 +419,32 @@ public class ConfigRepositoryServicesResource
      */
     @GetMapping(path = "/local-repository/metadata-collection-id")
 
-    public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String               userId,
-                                                     @PathVariable  String               serverName)
+    public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String userId,
+                                                     @PathVariable  String serverName)
     {
         return adminAPI.getLocalMetadataCollectionId(userId, serverName);
+    }
+
+
+    /**
+     * Set up the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @param metadataCollectionId        new identifier for the local repository's metadata collection
+     * @return void or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @PostMapping(path = "/local-repository/metadata-collection-id")
+
+    public VoidResponse setLocalMetadataCollectionId(@PathVariable String userId,
+                                                     @PathVariable String serverName,
+                                                     @RequestBody  String metadataCollectionId)
+    {
+        return adminAPI.setLocalMetadataCollectionId(userId, serverName, metadataCollectionId);
     }
 
 

@@ -11,7 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -542,7 +544,7 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -551,11 +553,11 @@ public class EventBrokerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public TopicsResponse findTopics(String serverName,
-                                     String userId,
-                                     String searchString,
-                                     int    startFrom,
-                                     int    pageSize)
+    public TopicsResponse findTopics(String                  serverName,
+                                     String                  userId,
+                                     SearchStringRequestBody requestBody,
+                                     int                     startFrom,
+                                     int                     pageSize)
     {
         final String methodName = "findTopics";
         final String searchStringParameterName = "searchString";
@@ -569,18 +571,25 @@ public class EventBrokerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
-            List<TopicElement> topicAssets = handler.findAssets(userId,
-                                                                OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                                searchString,
-                                                                searchStringParameterName,
-                                                                startFrom,
-                                                                pageSize,
-                                                                methodName);
+                List<TopicElement> topicAssets = handler.findAssets(userId,
+                                                                    OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                                    requestBody.getSearchString(),
+                                                                    searchStringParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName);
 
-            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -599,7 +608,7 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -608,11 +617,11 @@ public class EventBrokerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public TopicsResponse   getTopicsByName(String serverName,
-                                            String userId,
-                                            String name,
-                                            int    startFrom,
-                                            int    pageSize)
+    public TopicsResponse   getTopicsByName(String          serverName,
+                                            String          userId,
+                                            NameRequestBody requestBody,
+                                            int             startFrom,
+                                            int             pageSize)
     {
         final String methodName = "getTopicsByName";
         final String nameParameterName = "name";
@@ -626,18 +635,25 @@ public class EventBrokerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
-            List<TopicElement> topicAssets = handler.getAssetsByName(userId,
-                                                                     OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
-                                                                     name,
-                                                                     nameParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName);
+                List<TopicElement> topicAssets = handler.getAssetsByName(userId,
+                                                                         OpenMetadataAPIMapper.TOPIC_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                                         requestBody.getName(),
+                                                                         nameParameterName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName);
 
-            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1045,7 +1061,7 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1054,11 +1070,11 @@ public class EventBrokerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EventTypesResponse findEventTypes(String serverName,
-                                             String userId,
-                                             String searchString,
-                                             int    startFrom,
-                                             int    pageSize)
+    public EventTypesResponse findEventTypes(String                  serverName,
+                                             String                  userId,
+                                             SearchStringRequestBody requestBody,
+                                             int                     startFrom,
+                                             int                     pageSize)
     {
         final String methodName = "findEventTypes";
         final String searchStringParameterName = "searchString";
@@ -1072,16 +1088,23 @@ public class EventBrokerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> eventTypes = handler.findEventTypes(userId,
-                                                                       searchString,
-                                                                       searchStringParameterName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       methodName);
+                List<EventTypeElement> eventTypes = handler.findEventTypes(userId,
+                                                                           requestBody.getSearchString(),
+                                                                           searchStringParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           methodName);
 
-            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1209,7 +1232,7 @@ public class EventBrokerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1218,11 +1241,11 @@ public class EventBrokerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EventTypesResponse getEventTypesByName(String serverName,
-                                                  String userId,
-                                                  String name,
-                                                  int    startFrom,
-                                                  int    pageSize)
+    public EventTypesResponse getEventTypesByName(String          serverName,
+                                                  String          userId,
+                                                  NameRequestBody requestBody,
+                                                  int             startFrom,
+                                                  int             pageSize)
     {
         final String methodName = "getEventTypesByName";
         final String nameParameterName = "name";
@@ -1236,11 +1259,19 @@ public class EventBrokerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-            List<EventTypeElement> eventTypes = handler.getEventTypesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+                List<EventTypeElement> eventTypes = handler.getEventTypesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize,
+                                                                                methodName);
 
-            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
