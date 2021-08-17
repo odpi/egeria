@@ -262,4 +262,25 @@ public class Attribute extends Referenceable {
      */
     private String validValuesSetGUID;
 
+    /**
+     * The name of the type for this schema element
+     * -- GETTER --
+     * Return name of the type of this schema element
+     * @return name of the type
+     * -- SETTER --
+     * Set the name of the type for this schema element
+     * @param typeName the name of the type of data
+     */
+    private String typeName;
+
+    /**
+     * Unique identifier of the type for this schema element
+     * -- GETTER --
+     * Return identifier of the type of this schema element
+     * @return identifier of the type for this schema element
+     * -- SETTER --
+     * Set the value for the type identifier
+     * @param typeGuid unique identifier (guid) of the schema element
+     */
+    private String typeGuid;
 }
