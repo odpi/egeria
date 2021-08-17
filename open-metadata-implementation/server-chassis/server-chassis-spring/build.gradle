@@ -86,6 +86,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
     runtimeOnly project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
     runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
+    runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')
 }
 
 description = 'OMAG Server Platform Chassis for Spring'
