@@ -1524,11 +1524,11 @@ public class OMAGServerOperationalServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or connection parameter.
      */
-    public VoidResponse addOpenMetadataArchiveFile(String     userId,
-                                                   String     serverName,
-                                                   Connection connection)
+    public VoidResponse addOpenMetadataArchive(String     userId,
+                                               String     serverName,
+                                               Connection connection)
     {
-        final String methodName = "addOpenMetadataArchiveFile";
+        final String methodName = "addOpenMetadataArchive";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

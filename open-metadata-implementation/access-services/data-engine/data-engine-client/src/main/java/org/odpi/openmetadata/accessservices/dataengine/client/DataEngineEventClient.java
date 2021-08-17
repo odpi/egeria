@@ -299,12 +299,14 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+            throws InvalidParameterException, ConnectorCheckedException {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
         event.setRelationalTable(relationalTable);
+        event.setDatabaseQualifiedName(databaseQualifiedName);
 
         topicConnector.sendEvent(event);
 

@@ -34,7 +34,6 @@ public class ConfigurationItemProperties implements Serializable
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
-    private List<String>         meanings             = null;
 
     private List<Classification> classifications      = null;
 
@@ -63,7 +62,6 @@ public class ConfigurationItemProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            meanings             = template.getMeanings();
             classifications      = template.getClassifications();
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
@@ -124,39 +122,6 @@ public class ConfigurationItemProperties implements Serializable
         {
             return new HashMap<>(additionalProperties);
         }
-    }
-
-
-    /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<String> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<String> meanings)
-    {
-        this.meanings = meanings;
     }
 
 
@@ -294,7 +259,6 @@ public class ConfigurationItemProperties implements Serializable
         return "ConfigurationItemProperties{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
                 ", classifications=" + classifications +
                 ", vendorProperties=" + vendorProperties +
                 ", typeName='" + typeName + '\'' +
@@ -323,7 +287,6 @@ public class ConfigurationItemProperties implements Serializable
         ConfigurationItemProperties that = (ConfigurationItemProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(meanings, that.meanings) &&
                 Objects.equals(classifications, that.classifications) &&
                 Objects.equals(vendorProperties, that.vendorProperties) &&
                 Objects.equals(typeName, that.typeName) &&
@@ -339,7 +302,7 @@ public class ConfigurationItemProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, meanings, classifications,
+        return Objects.hash(qualifiedName, additionalProperties, classifications,
                             vendorProperties, typeName, extendedProperties);
     }
 }

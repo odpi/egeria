@@ -6,6 +6,7 @@ import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesC
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
@@ -37,7 +38,6 @@ public class RepositoryService {
     private static final String QUALIFIED_NAME = "qualifiedName";
 
     private static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
-    private static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
     private static final String LINEAGE_MAPPING_TYPE_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
 
     private static final int PAGE_SIZE = 100;
@@ -80,22 +80,22 @@ public class RepositoryService {
      * @param entityGUID the GUID of the entity
      * @return the list of relationships in which the entity is involved
      */
-    public List<Relationship> findRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException, EntityNotKnownException,
-            FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
-            TypeErrorException, PagingErrorException {
+    public List<Relationship> findLineageMappingRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException,
+            EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         return client.getRelationshipsForEntity(userId, entityGUID, LINEAGE_MAPPING_TYPE_GUID, 0,
                 null, null, null, SequencingOrder.ANY, PAGE_SIZE);
     }
 
     /**
-     * Based on a searchCriteria the method searches for an entity GUID which has the qualified name equal to the search
+     * Based on a searchCriteria the method searches for an entity which has the qualified name equal to the search
      * criteria. The search is done through a LocalRepositoryServicesClient call.
      *
      * @param entityValue the search criteria used to search for a qualified name
-     * @return the GUID of the first found object
+     * @return entity detail
      */
-    public String findEntityGUIDByQualifiedName(String entityValue) throws UserNotAuthorizedException, FunctionNotSupportedException,
+    public EntityDetail findEntityByQualifiedName(String entityValue) throws UserNotAuthorizedException, FunctionNotSupportedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         InstanceProperties matchProperties = new InstanceProperties();
 
@@ -117,23 +117,59 @@ public class RepositoryService {
                 MatchCriteria.ANY, 0, null, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
 
         if (entityDetails == null || entityDetails.isEmpty()) {
-            return "";
+            return null;
         }
-        return entityDetails.get(0).getGUID();
+        return entityDetails.get(0);
     }
 
     /**
-     * Find a software server capability by using the search criteria given as parameter in a call to the
-     * LocalRepositoryServicesClient
+     * Find an entity by using the search criteria given as parameter in a call to the LocalRepositoryServicesClient
      *
+     * @param typeGuid guid of expected type
      * @param searchCriteria the property value used to search and identify the software server capability
+     *
      * @return a list of EntityDetails that contain the found software server capability
      */
-    public List<EntityDetail> findSoftwareServerCapabilityByPropertyValue(String searchCriteria) throws UserNotAuthorizedException,
+    public List<EntityDetail> findEntityByPropertyValue(String typeGuid, String searchCriteria) throws UserNotAuthorizedException,
             FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
             TypeErrorException, PagingErrorException {
 
-        return client.findEntitiesByPropertyValue(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, searchCriteria, 0,
-                null, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
+        return client.findEntitiesByPropertyValue(userId, typeGuid, searchCriteria, 0, null,
+                null, null, null, SequencingOrder.ANY, PAGE_SIZE);
     }
+
+    /**
+     * Extract the entity at the other end of a relationship. Disregard edge orientation
+     *
+     * @param startEntityGuid guid of known entity
+     * @param targetEntityTypeGuid guid of expected type
+     *
+     * @return a list of EntityDetails that contain the found software server capability
+     */
+    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String targetEntityTypeGuid)
+            throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException,
+            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+
+        List<Relationship> relationships = client.getRelationshipsForEntity(userId, startEntityGuid, null,
+                0, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
+
+        return relationships.stream().map(
+                r -> startEntityGuid.equals(r.getEntityOneProxy().getGUID()) ? r.getEntityTwoProxy() : r.getEntityOneProxy()
+        ).filter(
+                ep -> ep.getType().getTypeDefGUID().equals(targetEntityTypeGuid)
+        ).map(
+                EntityProxy::getGUID
+        ).map(
+                guid -> {
+                    try {
+                        return client.getEntityDetail(userId, guid);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+        ).collect(Collectors.toList());
+    }
+
 }

@@ -195,18 +195,20 @@ public class SoftwareServerCapabilitiesProperties extends ConfigurationItemPrope
     @Override
     public String toString()
     {
-        return "DataPlatformProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
-                ", version='" + version + '\'' +
-                ", patchLevel='" + patchLevel + '\'' +
-                ", source='" + source + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", meanings=" + getMeanings() +
-                '}';
+        return "SoftwareServerCapabilitiesProperties{" +
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", typeDescription='" + typeDescription + '\'' +
+                       ", version='" + version + '\'' +
+                       ", patchLevel='" + patchLevel + '\'' +
+                       ", source='" + source + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", classifications=" + getClassifications() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

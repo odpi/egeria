@@ -75,6 +75,11 @@
             <artifactId>ffdc-services</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>generic-handlers</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

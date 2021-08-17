@@ -206,7 +206,6 @@ public class ValidValueProperties extends ReferenceableProperties
                 ", isDeprecated=" + isDeprecated +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", classifications=" + getClassifications() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

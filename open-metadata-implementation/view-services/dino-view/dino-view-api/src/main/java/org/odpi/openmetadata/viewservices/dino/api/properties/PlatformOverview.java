@@ -30,6 +30,8 @@ public class PlatformOverview {
     private List<RegisteredOMAGService> commonServices;
     private List<RegisteredOMAGService> governanceServices;
     private List<RegisteredOMAGService> viewServices;
+    private List<RegisteredOMAGService> engineServices;
+    private List<RegisteredOMAGService> integrationServices;
 
     /**
      * Default Constructor sets the properties to nulls
@@ -124,4 +126,19 @@ public class PlatformOverview {
         this.viewServices = viewServices;
     }
 
+    public List<RegisteredOMAGService> getEngineServices() {
+        return engineServices;
+    }
+
+    public void setEngineServices(List<RegisteredOMAGService> engineServices) {
+        this.engineServices = engineServices;
+    }
+
+    public List<RegisteredOMAGService> getIntegrationServices() {
+        return integrationServices;
+    }
+
+    public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) {
+        this.integrationServices = integrationServices;
+    }
 }

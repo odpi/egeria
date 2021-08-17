@@ -217,7 +217,6 @@ public class MeaningProperties extends ReferenceableProperties
                 ", usage='" + usage + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", type=" + getTypeName() +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
