@@ -22,8 +22,8 @@ A K8s is being developed at https://github.com/odpi/egeria-k8s-operator .
 ## Docker Compose
 
 Currently the focus is on Helm charts to facilitate deployment to Kubernetes clusters.
-However currently we still have a docker-compose environment to support our egeria labs. 
-It is not expected we will develop these further & is recommended to switch to using our Kubernetes examples instead.
+
+The docker-compose environment is now deprecated & it is recommended to switch to using our Kubernetes examples instead.
 
 ----
 * Return to [open-metadata-resources](..)
