@@ -25,9 +25,15 @@ The following changes have been made to the open metadata types:
   See description in model [0040](../open-metadata-publication/website/open-metadata-types/0040-Software-Servers.md).
 
 
-### Egeria UI
-* Passwords for the samples Coco Pharmaceuticals users changed to 'secret';
+## Deprecation of docker-compose
 
+The docker-compose environment for running our Coco Pharmaceuticals lab demo/tutorial is now deprecated. The configuration is still available, but will not
+be further developed or tested, and will be removed in a future release.
+
+Our Kubernetes Helm charts are now recommended to quickly setup the same lab
+environment, and the [documentation](https://odpi.github.io/egeria-charts/site/index.html) for these has been improved to cover 
+a Kubernetes introduction, and example based on 'microk8s' which are suited to
+an end user desktop environment (and can also be run in enterprise/cloud environments)
 
 ### Known Issues
 
