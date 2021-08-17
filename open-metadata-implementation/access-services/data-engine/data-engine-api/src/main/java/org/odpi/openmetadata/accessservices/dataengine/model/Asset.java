@@ -95,7 +95,7 @@ public class Asset extends Referenceable {
      * Sets the GUID
      * @param GUID the GUID
      */
-    private String GUID;
+    private String guid;
 
     /**
      * The unique identifier for the organization that originated this asset

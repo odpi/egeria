@@ -125,7 +125,7 @@ class DataEngineProcessHandlerTest {
         String methodName = "createProcess";
 
         Process process = getProcess();
-        process.setGUID(PROCESS_GUID);
+        process.setGuid(PROCESS_GUID);
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -173,7 +173,7 @@ class DataEngineProcessHandlerTest {
         ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
         Process process = getProcess();
-        process.setGUID(PROCESS_GUID);
+        process.setGuid(PROCESS_GUID);
         doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process);
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
@@ -199,7 +199,7 @@ class DataEngineProcessHandlerTest {
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
         Process process = getProcess();
-        process.setGUID(PROCESS_GUID);
+        process.setGuid(PROCESS_GUID);
 
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
@@ -227,7 +227,7 @@ class DataEngineProcessHandlerTest {
                                                                  InvalidParameterException {
         String methodName = "updateProcess";
         Process process = getProcess();
-        process.setGUID(PROCESS_GUID);
+        process.setGuid(PROCESS_GUID);
 
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
@@ -292,7 +292,7 @@ class DataEngineProcessHandlerTest {
 
         mockTypeDef(PROCESS_TYPE_NAME, PROCESS_TYPE_GUID);
         Process process = getProcess();
-        process.setGUID(PROCESS_GUID);
+        process.setGuid(PROCESS_GUID);
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
@@ -309,7 +309,6 @@ class DataEngineProcessHandlerTest {
 
     @Test
     void getPortsForProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        final String methodName = "getPortsForProcess";
 
         mockTypeDef(PROCESS_PORT_TYPE_NAME, PROCESS_PORT_TYPE_GUID);
 

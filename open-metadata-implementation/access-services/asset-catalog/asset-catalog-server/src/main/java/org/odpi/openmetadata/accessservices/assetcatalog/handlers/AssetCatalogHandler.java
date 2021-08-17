@@ -68,11 +68,11 @@ public class AssetCatalogHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
-    private AssetCatalogConverter assetCatalogConverter;
-    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private final AssetCatalogConverter assetCatalogConverter;
+    private final List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
-    private List<String> supportedZones;
+    private final List<String> supportedZones;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -393,7 +393,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
         List<EntityDetail> result;
-        List<String> typesFilter = Collections.emptyList();
+        List<String> typesFilter;
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
@@ -480,7 +480,7 @@ public class AssetCatalogHandler {
                 getContextForDataSet(userId, entityDetail, assetCatalogItemElement);
             }
 
-            elements.setElements(Collections.singletonList(assetCatalogItemElement));
+            elements.setAssetCatalogItemElements(Collections.singletonList(assetCatalogItemElement));
             return elements;
         }
     }
@@ -607,7 +607,7 @@ public class AssetCatalogHandler {
             AssetCatalogItemElement assetCatalogItemElement = addSchemaForGlossaryTerm(userId, schema);
             assets.add(assetCatalogItemElement);
         }
-        elements.setElements(assets);
+        elements.setAssetCatalogItemElements(assets);
         return elements;
     }
 

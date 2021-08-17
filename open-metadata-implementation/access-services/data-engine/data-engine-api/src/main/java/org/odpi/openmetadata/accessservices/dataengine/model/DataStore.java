@@ -109,9 +109,7 @@ public class DataStore extends Asset {
      * @return map of name-value pairs
      */
     public Map<String, String> getEncodingProperties() {
-        if (encodingProperties == null) {
-            return null;
-        } else if (encodingProperties.isEmpty()) {
+        if (encodingProperties == null || encodingProperties.isEmpty()) {
             return null;
         }
         return encodingProperties;

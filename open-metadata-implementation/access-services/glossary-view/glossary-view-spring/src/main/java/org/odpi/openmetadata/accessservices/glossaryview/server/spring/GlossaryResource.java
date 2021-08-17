@@ -7,13 +7,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.GlossaryService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
-import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.*;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_FROM_DEFAULT_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_SIZE_DEFAULT_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_SIZE_MAX_VALUE;
 
 /**
  * Spring Rest Controller defining 'Glossary' oriented endpoints
