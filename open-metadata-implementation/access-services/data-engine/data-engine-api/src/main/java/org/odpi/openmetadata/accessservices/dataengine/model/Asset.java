@@ -87,17 +87,6 @@ public class Asset extends Referenceable {
     private List<String> zoneMembership;
 
     /**
-     * The GUID
-     * -- GETTER --
-     * Gets the GUID
-     * @return the GUID
-     * -- SETTER --
-     * Sets the GUID
-     * @param GUID the GUID
-     */
-    private String guid;
-
-    /**
      * The unique identifier for the organization that originated this asset
      * -- SETTER --
      * Set up the unique identifier for the organization that originated this asset.

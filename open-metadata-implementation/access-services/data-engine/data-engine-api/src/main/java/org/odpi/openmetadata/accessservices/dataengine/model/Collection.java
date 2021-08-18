@@ -22,11 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class Collection implements Serializable {
+public class Collection extends Referenceable implements Serializable {
 
-    private String qualifiedName;
     private String name;
 
 }
