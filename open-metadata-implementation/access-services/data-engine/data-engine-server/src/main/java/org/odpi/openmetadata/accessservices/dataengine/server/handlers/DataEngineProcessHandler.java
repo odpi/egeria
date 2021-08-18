@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -46,7 +45,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineProcessHandler {
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final AssetHandler<Process> assetHandler;
@@ -61,22 +59,19 @@ public class DataEngineProcessHandler {
      * @param serviceName             name of this service
      * @param serverName              name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param registrationHandler     provides utilities for manipulating software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                    AssetHandler<Process> assetHandler, DataEngineRegistrationHandler registrationHandler,
-                                    DataEngineCommonHandler dataEngineCommonHandler) {
+                                    OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,
+                                    DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.assetHandler = assetHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
@@ -144,7 +139,7 @@ public class DataEngineProcessHandler {
         }
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
+        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
                 updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
                 updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
                 buildProcessExtendedProperties(updatedProcess), methodName);
@@ -301,7 +296,7 @@ public class DataEngineProcessHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
+        assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
     }
 }

@@ -36,7 +36,6 @@ public class DataEngineDataFileHandler {
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
-    private final RepositoryHandler repositoryHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final AssetHandler<DataFile> fileHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
@@ -62,7 +61,6 @@ public class DataEngineDataFileHandler {
                                      DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.fileHandler = fileHandler;
         this.dataEngineSchemaTypeHandler = dataEngineSchemaTypeHandler;
