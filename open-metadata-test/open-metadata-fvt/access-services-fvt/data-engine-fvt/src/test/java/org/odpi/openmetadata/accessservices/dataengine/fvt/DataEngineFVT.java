@@ -12,6 +12,8 @@ import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
@@ -56,6 +58,8 @@ public class DataEngineFVT {
     private static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID = "eab811ec-556a-45f1-9091-bc7ac8face0f";
     private static final String TABULAR_SCHEMA_TYPE_TYPE_GUID = "248975ec-8019-4b8a-9caf-084c8b724233";
     private static final String PROCESS_TYPE_GUID = "d8f33bd7-afa9-4a11-a8c7-07dcec83c050";
+    private static final String PORT_IMPLEMENTATION_TYPE_GUID = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";
+    private static final String PORT_ALIAS_TYPE_GUID = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";
     private static final String OWNERSHIP_CLASSIFICATION_TYPE_GUID = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
 
     private static final String DESCRIPTION = "description";
@@ -72,6 +76,7 @@ public class DataEngineFVT {
     private static final String INSTANCE = "instance";
     private static final String IMPORTED_FROM = "importedFrom";
     private static final String OWNER = "owner";
+    private static final String PORT_TYPE = "portType";
 
     private static final String DATA_ENGINE = "DataEngine";
     private static final String ADMIN = "admin";
@@ -122,7 +127,9 @@ public class DataEngineFVT {
         processSetupService.createExternalDataEngine(userId, dataEngineClient);
         List<Process> processes = processSetupService.createJobProcessWithContent(userId, dataEngineClient);
         for(Process process : processes){
-            validateProcess(process, repositoryService);
+            validate(process, repositoryService);
+            validatePortImplementations(process.getPortImplementations(), repositoryService);
+            validatePortAliases(process.getPortAliases(), repositoryService);
         }
 
         Map<String, List<String>> columnLineages = processSetupService.getJobProcessLineageMappingsProxiesByCsvColumn();
@@ -151,7 +158,7 @@ public class DataEngineFVT {
         }
     }
 
-    private void validateProcess(Process process, RepositoryService repositoryService)
+    private void validate(Process process, RepositoryService repositoryService)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
@@ -163,6 +170,54 @@ public class DataEngineFVT {
         EntityDetail processAsEntityDetail = processes.get(0);
         assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
         assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+    }
+
+    private void validatePortImplementations(List<PortImplementation> portImplementations, RepositoryService repositoryService)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        if(portImplementations == null || portImplementations.isEmpty()){
+            return;
+        }
+        for(PortImplementation portImplementation : portImplementations) {
+            List<EntityDetail> savedPortImplementations = repositoryService
+                    .findEntityByPropertyValue(PORT_IMPLEMENTATION_TYPE_GUID, portImplementation.getQualifiedName());
+            assertNotNull(savedPortImplementations);
+            assertEquals(1, savedPortImplementations.size());
+
+            EntityDetail portImplementationAsEntityDetail = savedPortImplementations.get(0);
+            assertEquals(portImplementation.getQualifiedName(),
+                    portImplementationAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+            assertEquals(portImplementation.getDisplayName(),
+                    portImplementationAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+            assertEquals(portImplementation.getPortType().getName(),
+                    portImplementationAsEntityDetail.getProperties().getPropertyValue(PORT_TYPE).valueAsString());
+        }
+    }
+
+    private void validatePortAliases(List<PortAlias> portAliases, RepositoryService repositoryService)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        if(portAliases == null || portAliases.isEmpty()){
+            return;
+        }
+        for(PortAlias portAlias : portAliases) {
+            List<EntityDetail> savedPortAliases = repositoryService
+                    .findEntityByPropertyValue(PORT_ALIAS_TYPE_GUID, portAlias.getQualifiedName());
+            assertNotNull(savedPortAliases);
+            assertEquals(1, savedPortAliases.size());
+
+            EntityDetail portAliasAsEntityDetail = savedPortAliases.get(0);
+            assertEquals(portAlias.getQualifiedName(),
+                    portAliasAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+            assertEquals(portAlias.getDisplayName(),
+                    portAliasAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+            assertEquals(portAlias.getPortType().getName(),
+                    portAliasAsEntityDetail.getProperties().getPropertyValue(PORT_TYPE).valueAsString());
+        }
     }
 
     private void validateCurrentAttribute(String currentAttribute, EntityDetail entityDetail) {
