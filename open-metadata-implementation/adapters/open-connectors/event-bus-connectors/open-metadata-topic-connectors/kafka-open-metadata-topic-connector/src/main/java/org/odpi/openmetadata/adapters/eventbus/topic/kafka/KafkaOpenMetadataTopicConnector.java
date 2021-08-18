@@ -461,8 +461,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         boolean getRunningBrokers(Properties connectionProperties ) {
 
             boolean found = false;
-            try  (AdminClient adminClient = KafkaAdminClient.create(connectionProperties))
-            {
+            AdminClient adminClient = KafkaAdminClient.create(connectionProperties)
+            try {
                 DescribeClusterResult describeClusterResult = adminClient.describeCluster();
                 Collection<Node> brokers = describeClusterResult.nodes().get();
                 if (!brokers.isEmpty()) {
@@ -472,6 +472,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 //gulp down any exceptions, the waiting method will control any audit logging
                 //but keep a copy for reference
                 lastException = e;
+            } finally {
+            	adminClient.close(Duration.ZERO);
             }
 
             return found;
