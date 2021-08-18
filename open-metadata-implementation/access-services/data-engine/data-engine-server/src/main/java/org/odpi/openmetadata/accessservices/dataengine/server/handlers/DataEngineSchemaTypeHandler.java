@@ -323,7 +323,9 @@ public class DataEngineSchemaTypeHandler {
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(), attribute.getLength(), attribute.getPrecision(),
                 attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(), additionalProperties,
-                TABULAR_COLUMN_TYPE_GUID, TABULAR_COLUMN_TYPE_NAME, null, repositoryHelper, serviceName, serverName);
+                attribute.getTypeGuid() != null ? attribute.getTypeGuid() : TABULAR_COLUMN_TYPE_GUID,
+                attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
+                null, repositoryHelper, serviceName, serverName);
     }
 
     private void createSchemaAttribute(String userId, SchemaType schemaType, String schemaTypeGUID, Attribute attribute,
