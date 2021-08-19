@@ -41,7 +41,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATABASE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
@@ -119,6 +121,18 @@ class AssetLineageOMRSTopicListenerTest {
     }
 
     @Test
+    void processInstanceEvent_updateEntityEvent_notValidType() throws OCFCheckedExceptionBase, JsonProcessingException {
+        EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        EntityDetail originalEntity = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, originalEntity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).publishProcessContext(entityDetail);
+        verify(assetLineagePublisher, times(0)).isEntityEligibleForPublishing(entityDetail);
+    }
+
+    @Test
     void processInstanceEvent_deleteEntityEvent() throws OCFCheckedExceptionBase, JsonProcessingException {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DELETED_ENTITY_EVENT);
@@ -133,6 +147,16 @@ class AssetLineageOMRSTopicListenerTest {
     }
 
     @Test
+    void processInstanceEvent_deleteEntityEvent_notValidType() throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DELETED_ENTITY_EVENT);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).isEntityEligibleForPublishing(entityDetail);
+    }
+
+    @Test
     void processInstanceEvent_classifiedEntityEvent() throws OCFCheckedExceptionBase, JsonProcessingException {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT);
@@ -143,6 +167,19 @@ class AssetLineageOMRSTopicListenerTest {
 
         verify(assetLineagePublisher, times(1)).isEntityEligibleForPublishing(entityDetail);
         verify(assetLineagePublisher, times(1)).publishClassificationContext(entityDetail,
+                AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
+    }
+
+    @Test
+    void processInstanceEvent_classifiedEntityEvent_notValidType() throws OCFCheckedExceptionBase, JsonProcessingException {
+        EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT);
+        mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).isEntityEligibleForPublishing(entityDetail);
+        verify(assetLineagePublisher, times(0)).publishClassificationContext(entityDetail,
                 AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
     }
 
@@ -198,6 +235,18 @@ class AssetLineageOMRSTopicListenerTest {
     }
 
     @Test
+    void processInstanceEvent_declassifiedEntityEvent_notValidType() throws OCFCheckedExceptionBase, JsonProcessingException {
+        EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DECLASSIFIED_ENTITY_EVENT);
+        mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).publishClassificationContext(entityDetail,
+                AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);
+    }
+
+    @Test
     void processInstanceEvent_reclassifiedEntityEvent() throws OCFCheckedExceptionBase, JsonProcessingException {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT);
@@ -216,6 +265,20 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, TEST_CLASSIFICATION);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).isEntityEligibleForPublishing(entityDetail);
+        verify(assetLineagePublisher, times(0)).publishClassificationContext(entityDetail,
+                AssetLineageEventType.RECLASSIFIED_ENTITY_EVENT);
+    }
+
+
+    @Test
+    void processInstanceEvent_reclassifiedEntityEvent_notValidType() throws OCFCheckedExceptionBase, JsonProcessingException {
+        EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT);
+        mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -254,6 +317,21 @@ class AssetLineageOMRSTopicListenerTest {
 
         verify(assetLineagePublisher, times(1)).publishLineageRelationshipEvent(lineageRelationship,
                 AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+    }
+
+    @Test
+    void processInstanceEvent_newRelationship_NotSupportedRelationshipType() throws OCFCheckedExceptionBase, JsonProcessingException {
+        Relationship relationship = mockRelationship(ASSET_SCHEMA_TYPE);
+        OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+        LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
+
+        assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
+
+        verify(assetLineagePublisher, times(0)).publishLineageRelationshipEvent(lineageRelationship,
+                AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+        verify(assetLineagePublisher, times(0)).publishGlossaryContext(GUID);
+        verify(assetLineagePublisher, times(0))
+                .publishLineageMappingRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     @Test

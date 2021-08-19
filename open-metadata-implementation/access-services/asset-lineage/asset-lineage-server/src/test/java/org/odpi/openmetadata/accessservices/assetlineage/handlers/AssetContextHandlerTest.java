@@ -10,11 +10,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -22,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION;
@@ -32,6 +40,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
@@ -44,10 +53,14 @@ import static org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mapper
 class AssetContextHandlerTest {
     private static final String GUID = "guid";
     private static final String USER = "user";
+    private static final String ANCHOR_GUID_VALUE = "relGuid";
+    private static final String ANCHORS = "Anchors";
     @Mock
     private HandlerHelper handlerHelper;
     @Mock
     private List<String> supportedZones;
+    @Mock
+    private RepositoryHandler repositoryHandler;
     @InjectMocks
     private AssetContextHandler assetContextHandler;
 
@@ -71,6 +84,38 @@ class AssetContextHandlerTest {
 
         verify(handlerHelper, times(1)).validateAsset(entityDetail, "buildSchemaElementContext", supportedZones);
         verify(handlerHelper, times(1)).addContextForRelationships(eq(USER), eq(entityDetail), eq(NESTED_SCHEMA_ATTRIBUTE), any());
+    }
+
+    @Test
+    void buildSchemaElementContext_tabularColumn_internal() throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = mockEntityDetail(TABULAR_COLUMN);
+        EntityDetail schemaType = mockEntityDetail(TABULAR_SCHEMA_TYPE);
+        when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
+
+        mockAnchorGuid(schemaType);
+        when(repositoryHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+                .thenReturn(true);
+
+        assetContextHandler.buildSchemaElementContext(USER, entityDetail);
+
+        verify(handlerHelper, times(1)).validateAsset(entityDetail, "buildSchemaElementContext", supportedZones);
+        verify(handlerHelper, times(0)).addContextForRelationships(eq(USER), eq(schemaType), eq(ASSET_SCHEMA_TYPE), any());
+    }
+
+    @Test
+    void buildSchemaElementContext_tabularColumn_NotInternal() throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = mockEntityDetail(TABULAR_COLUMN);
+        EntityDetail schemaType = mockEntityDetail(TABULAR_SCHEMA_TYPE);
+        when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
+
+        mockAnchorGuid(schemaType);
+        when(repositoryHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+                .thenReturn(false);
+
+        assetContextHandler.buildSchemaElementContext(USER, entityDetail);
+
+        verify(handlerHelper, times(1)).validateAsset(entityDetail, "buildSchemaElementContext", supportedZones);
+        verify(handlerHelper, times(1)).addContextForRelationships(eq(USER), eq(schemaType), eq(ASSET_SCHEMA_TYPE), any());
     }
 
     @Test
@@ -129,6 +174,17 @@ class AssetContextHandlerTest {
     }
 
     @Test
+    void buildColumnContext_notValidType() throws OCFCheckedExceptionBase {
+        LineageEntity lineageEntity = mockLineageEntity(DATA_FILE);
+        EntityDetail entityDetail = mockEntityDetail(DATA_FILE);
+        when(handlerHelper.isTabularColumn(USER, DATA_FILE)).thenReturn(false);
+
+        assetContextHandler.buildColumnContext(USER, lineageEntity);
+        verify(handlerHelper, times(0)).getEntityDetails(USER, GUID, DATA_FILE);
+        verify(handlerHelper, times(0)).addContextForRelationships(eq(USER), eq(entityDetail), eq(NESTED_SCHEMA_ATTRIBUTE), any());
+    }
+
+    @Test
     void buildAssetEntityContext() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(RELATIONAL_TABLE);
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE);
@@ -140,6 +196,17 @@ class AssetContextHandlerTest {
         assetContextHandler.buildAssetEntityContext(USER, GUID, RELATIONAL_TABLE);
         verify(handlerHelper, times(1)).getLineageEntity(entityDetail);
     }
+
+    @Test
+    void buildAssetEntityContext_notValidType() throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = mockEntityDetail(TABULAR_COLUMN);
+        when(handlerHelper.getEntityDetails(USER, GUID, TABULAR_COLUMN)).thenReturn(entityDetail);
+        when(handlerHelper.isTableOrDataStore(USER, entityDetail)).thenReturn(false);
+
+        assetContextHandler.buildAssetEntityContext(USER, GUID, TABULAR_COLUMN);
+        verify(handlerHelper, times(0)).getLineageEntity(entityDetail);
+    }
+
 
     private EntityDetail mockEntityDetail(String typeDefName) {
         EntityDetail entityDetail = mock(EntityDetail.class);
@@ -156,5 +223,21 @@ class AssetContextHandlerTest {
         lineageEntity.setGuid(GUID);
         lineageEntity.setTypeDefName(typeDefName);
         return lineageEntity;
+    }
+
+    private void mockAnchorGuid(EntityDetail schemaType) throws OCFCheckedExceptionBase {
+        Relationship relationship = mock(Relationship.class);
+        when(handlerHelper.getUniqueRelationshipByType(USER, GUID, ATTRIBUTE_FOR_SCHEMA, TABULAR_COLUMN)).thenReturn(Optional.of(relationship));
+        when(handlerHelper.getEntityAtTheEnd(USER, GUID, relationship)).thenReturn(schemaType);
+        List<Classification> classifications = new ArrayList<>();
+        Classification classification = mock(Classification.class);
+        when(classification.getName()).thenReturn(ANCHORS);
+        InstanceProperties instanceProperties = mock(InstanceProperties.class);
+        InstancePropertyValue instancePropertyValue = mock(InstancePropertyValue.class);
+        when(instancePropertyValue.valueAsString()).thenReturn(ANCHOR_GUID_VALUE);
+        when(instanceProperties.getPropertyValue(ANCHOR_GUID)).thenReturn(instancePropertyValue);
+        when(classification.getProperties()).thenReturn(instanceProperties);
+        classifications.add(classification);
+        when(schemaType.getClassifications()).thenReturn(classifications);
     }
 }

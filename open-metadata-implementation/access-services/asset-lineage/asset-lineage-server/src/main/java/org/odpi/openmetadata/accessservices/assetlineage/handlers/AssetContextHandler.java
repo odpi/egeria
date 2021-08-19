@@ -51,9 +51,9 @@ public class AssetContextHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param repositoryHandler          handler for calling the repository services
-     * @param handlerHelper              helper handler
-     * @param supportedZones             configurable list of zones that Asset Lineage is allowed to retrieve Assets from
+     * @param repositoryHandler handler for calling the repository services
+     * @param handlerHelper     helper handler
+     * @param supportedZones    configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
     public AssetContextHandler(RepositoryHandler repositoryHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
         this.repositoryHandler = repositoryHandler;
@@ -76,28 +76,25 @@ public class AssetContextHandler {
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
 
         Map<String, RelationshipsContext> context = new HashMap<>();
-        Set<GraphContext> columnContext = new HashSet<>();
-
         final String typeDefName = entityDetail.getType().getTypeDefName();
+        Set<GraphContext> columnContext = new HashSet<>();
         switch (typeDefName) {
             case TABULAR_COLUMN:
-            case TABULAR_FILE_COLUMN:
                 if (!isInternalTabularColumn(userId, entityDetail)) {
-                    EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
-                    handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
-
-                    context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                            columnContext));
+                    columnContext = buildTabularColumnContext(userId, entityDetail);
                 }
                 break;
-            case RELATIONAL_COLUMN:
-                handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
-
-                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                        columnContext));
+            case TABULAR_FILE_COLUMN:
+                columnContext = buildTabularColumnContext(userId, entityDetail);
                 break;
+            case RELATIONAL_COLUMN:
+                columnContext = buildRelationalColumnContext(userId, entityDetail);
+                break;
+            default:
+               return context;
         }
 
+        context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(), columnContext));
         return context;
     }
 
@@ -340,5 +337,39 @@ public class AssetContextHandler {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
+    }
+
+
+    /**
+     * Builds the column context for a RelationalColumn
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the column context
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private Set<GraphContext> buildRelationalColumnContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        Set<GraphContext> columnContext = new HashSet<>();
+        handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
+        return columnContext;
+    }
+
+    /**
+     * Builds the column context for a TabularColumn or TabularFileColumn
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the column context
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private Set<GraphContext> buildTabularColumnContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        Set<GraphContext> columnContext = new HashSet<>();
+        EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
+        handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+        return columnContext;
     }
 }
