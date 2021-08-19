@@ -122,24 +122,6 @@ class GlossaryContextHandlerTest {
         verify(assetContextHandler, times(1)).buildSchemaElementContext(USER, entityDetail);
     }
 
-    private List<Relationship> mockGetRelationships(String relationshipType, String entityType, String guid) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = new ArrayList<>();
-        Relationship relationship = mock(Relationship.class);
-
-        EntityProxy entityOneProxy = mock(EntityProxy.class);
-        when(entityOneProxy.getGUID()).thenReturn(guid);
-        when(relationship.getEntityOneProxy()).thenReturn(entityOneProxy);
-
-        EntityProxy entityTwoProxy = mock(EntityProxy.class);
-        when(entityTwoProxy.getGUID()).thenReturn(CATEGORY_GUID);
-        when(relationship.getEntityTwoProxy()).thenReturn(entityTwoProxy);
-
-        relationships.add(relationship);
-        when(handlerHelper.getRelationshipsByType(USER, guid, relationshipType, entityType)).thenReturn(relationships);
-
-        return relationships;
-    }
-
     @Test
     void hasGlossaryTermLineageRelationships_true() throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = mock(EntityDetail.class);
@@ -165,4 +147,23 @@ class GlossaryContextHandlerTest {
 
         assertFalse(glossaryContextHandler.hasGlossaryTermLineageRelationships(USER, entityDetail));
     }
+
+    private List<Relationship> mockGetRelationships(String relationshipType, String entityType, String guid) throws OCFCheckedExceptionBase {
+        List<Relationship> relationships = new ArrayList<>();
+        Relationship relationship = mock(Relationship.class);
+
+        EntityProxy entityOneProxy = mock(EntityProxy.class);
+        when(entityOneProxy.getGUID()).thenReturn(guid);
+        when(relationship.getEntityOneProxy()).thenReturn(entityOneProxy);
+
+        EntityProxy entityTwoProxy = mock(EntityProxy.class);
+        when(entityTwoProxy.getGUID()).thenReturn(CATEGORY_GUID);
+        when(relationship.getEntityTwoProxy()).thenReturn(entityTwoProxy);
+
+        relationships.add(relationship);
+        when(handlerHelper.getRelationshipsByType(USER, guid, relationshipType, entityType)).thenReturn(relationships);
+
+        return relationships;
+    }
+
 }

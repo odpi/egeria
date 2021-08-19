@@ -141,7 +141,7 @@ class AssetLineageRestServicesTest {
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
-        GUIDListResponse response = assetLineageRestServices.publishEntities(SERVER_NAME, USER, ENTITY_TYPE, findEntitiesParameters);
+        assetLineageRestServices.publishEntities(SERVER_NAME, USER, ENTITY_TYPE, findEntitiesParameters);
 
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(any(GUIDListResponse.class), eq(mockedException));
     }
@@ -154,7 +154,7 @@ class AssetLineageRestServicesTest {
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
-        GUIDListResponse response = assetLineageRestServices.publishEntities(SERVER_NAME, USER, ENTITY_TYPE, findEntitiesParameters);
+        assetLineageRestServices.publishEntities(SERVER_NAME, USER, ENTITY_TYPE, findEntitiesParameters);
 
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(any(GUIDListResponse.class), eq(mockedException));
     }
@@ -213,7 +213,7 @@ class AssetLineageRestServicesTest {
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
-        GUIDListResponse response = assetLineageRestServices.publishEntity(SERVER_NAME, USER, ENTITY_TYPE, GUID);
+        assetLineageRestServices.publishEntity(SERVER_NAME, USER, ENTITY_TYPE, GUID);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(any(GUIDListResponse.class), eq(mockedException));
     }
 
@@ -224,7 +224,7 @@ class AssetLineageRestServicesTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
-        GUIDListResponse response = assetLineageRestServices.publishEntity(SERVER_NAME, USER, ENTITY_TYPE, GUID);
+        assetLineageRestServices.publishEntity(SERVER_NAME, USER, ENTITY_TYPE, GUID);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(any(GUIDListResponse.class), eq(mockedException));
     }
 
@@ -254,7 +254,7 @@ class AssetLineageRestServicesTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
-        GUIDListResponse response = assetLineageRestServices.publishAssetContext(SERVER_NAME, USER, ENTITY_TYPE, GUID);
+        assetLineageRestServices.publishAssetContext(SERVER_NAME, USER, ENTITY_TYPE, GUID);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(any(GUIDListResponse.class), eq(mockedException));
     }
 
@@ -265,7 +265,7 @@ class AssetLineageRestServicesTest {
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
         when(instanceHandler.getHandlerHelper(USER, SERVER_NAME, methodName)).thenThrow(mockedException);
 
-        GUIDListResponse response = assetLineageRestServices.publishAssetContext(SERVER_NAME, USER, ENTITY_TYPE, GUID);
+        assetLineageRestServices.publishAssetContext(SERVER_NAME, USER, ENTITY_TYPE, GUID);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(any(GUIDListResponse.class), eq(mockedException));
     }
 
@@ -318,9 +318,9 @@ class AssetLineageRestServicesTest {
     }
 
     private static <T> T mockException(Class<T> exceptionClass, String methodName) throws NoSuchMethodException,
-                                                                                  IllegalAccessException,
-                                                                                  InvocationTargetException,
-                                                                                  InstantiationException {
+                                                                                          IllegalAccessException,
+                                                                                          InvocationTargetException,
+                                                                                          InstantiationException {
 
         Constructor<T> constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class, String.class,
                 String.class, String.class);
