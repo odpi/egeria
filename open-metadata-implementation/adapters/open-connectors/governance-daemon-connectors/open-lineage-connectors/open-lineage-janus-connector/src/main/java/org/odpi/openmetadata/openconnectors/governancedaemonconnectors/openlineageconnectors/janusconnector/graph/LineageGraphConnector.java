@@ -160,15 +160,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             guidList.forEach(
                     guid -> findInputColumns(g, guid)
             );
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
+            commitTransaction(g);
         } catch (Exception e) {
             log.error("Something went wrong when trying to map a process. The error is: ", e);
             auditLog.logException("Something went wrong when trying to map a process.", PROCESS_MAPPING_ERROR.getMessageDefinition(), e);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
         }
     }
 
@@ -199,9 +195,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, P.within(DATA_FILE_AND_SUBTYPES)),
                         __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
 
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        commitTransaction(g);
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.forEach(columnIn -> findOutputColumns(g, columnIn, process));
@@ -220,9 +214,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .out(LINEAGE_MAPPING)
                 .toList();
 
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        commitTransaction(g);
 
         Vertex vertexToStart;
         if (schemaElementVertices != null) {
@@ -257,9 +249,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .has(PROPERTY_KEY_ENTITY_GUID,
                         g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID)).toList();
 
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        commitTransaction(g);
 
         if (!initialProcess.isEmpty()) {
             return schemaElementVertex;
@@ -311,9 +301,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
 
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
+            commitTransaction(g);
 
             addAssetToProcessEdges(columnIn, columnOut, process);
 
@@ -346,9 +334,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
         }
 
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        commitTransaction(g);
     }
 
     /**
@@ -530,22 +516,16 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         if (!vertex.hasNext()) {
             log.debug("when trying to update, vertex with guid {} was not found  ", lineageEntity.getGuid());
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
             return;
         }
 
         try {
             addOrUpdatePropertiesVertex(vertex.next(), lineageEntity);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
+            commitTransaction(g);
         } catch (Exception e) {
             log.error("An exception happened during update of the properties with exception: ", e);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
         }
     }
 
@@ -580,22 +560,16 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, lineageRelationship.getGuid());
         if (!edge.hasNext()) {
             log.debug("when trying to update, edge with guid {} was not found", lineageRelationship.getGuid());
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
             return;
         }
 
         try {
             addOrUpdatePropertiesEdge(lineageRelationship);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
+            commitTransaction(g);
         } catch (Exception e) {
             log.debug("An exception happened during update of the properties with error:", e);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
         }
     }
 
@@ -611,9 +585,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             Iterator<Vertex> vertexIterator = g.V().has(PROPERTY_KEY_ENTITY_GUID, classificationGuid);
             if (!vertexIterator.hasNext()) {
                 log.debug("Classification with guid {} not found", classificationGuid);
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
+                rollbackTransaction(g);
                 continue;
             }
 
@@ -622,9 +594,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     .toList().get(0).get(PROPERTY_KEY_ENTITY_VERSION);
             if (storedClassificationVersion < graphContext.getToVertex().getVersion()) {
                 addOrUpdatePropertiesVertex(storedClassification, graphContext.getToVertex());
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().commit();
-                }
+                commitTransaction(g);
                 break;
             }
         }
@@ -651,17 +621,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
                 if (context.getToVertex().getGuid().equals(storedClassificationGuid)) {
                     try {
-                        g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop();
-                        g.E(edge.id()).drop();
-                        if (graphFactory.isSupportingTransactions()) {
-                            g.tx().commit();
-                        }
+                        g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop().iterate();
+                        g.E(edge.id()).drop().iterate();
+                        commitTransaction(g);
                         break;
                     } catch (Exception e) {
                         log.debug("An exception happened during delete of classifications with error:", e);
-                        if (graphFactory.isSupportingTransactions()) {
-                            g.tx().rollback();
-                        }
+                        rollbackTransaction(g);
                     }
 
                 }
@@ -671,21 +637,20 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     @Override
     public void deleteEntity(String guid, Object version) {
-        Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).has(PROPERTY_KEY_ENTITY_VERSION, version);
+        /*
+        * TODO need to take into account the version of the entity once we have history
+        * */
+        Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
 
         //TODO add check when we will have classifications to delete classifications first
         if (!vertex.hasNext()) {
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
             log.debug("Vertex with guid is not present {}", guid);
             return;
         }
 
-        g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).drop();
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).drop().iterate();
+        commitTransaction(g);
         log.debug("Vertex with guid {} deleted", guid);
     }
 
@@ -693,17 +658,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     public void deleteRelationship(String guid) {
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, guid);
         if (!edge.hasNext()) {
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
             log.debug("Edge with guid did not delete {}", guid);
             return;
         }
 
-        g.E(edge.next().id()).drop();
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
+        g.E(edge.next().id()).drop().iterate();
+        commitTransaction(g);
         log.debug("Edge with guid {} deleted", guid);
     }
 
@@ -773,18 +734,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 }
 
             }
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
+            commitTransaction(g);
             return endVertices;
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("Vertex does not exist with guid {} and display name {}", startingVertex.id(),
                         startingVertex.property(PROPERTY_KEY_DISPLAY_NAME).value());
             }
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
+            rollbackTransaction(g);
             return null;
         }
     }
@@ -856,6 +813,24 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public boolean isEntityInGraph(String guid) {
         return !g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).toList().isEmpty();
+    }
+
+    /**
+     * commit the graph transaction if graph transactions are enabled
+     * @param g the graph traversal
+     */
+    private void commitTransaction(GraphTraversalSource g) {
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+    }
+    /**
+     * rollback the transaction if graph transactions are enabled
+     * */
+    private void rollbackTransaction(GraphTraversalSource g) {
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().rollback();
+        }
     }
 }
 

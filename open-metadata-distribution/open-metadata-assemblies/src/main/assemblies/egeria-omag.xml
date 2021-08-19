@@ -66,6 +66,8 @@
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
                 <include>org.odpi.egeria:governance-action-connectors:*</include>
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
+                <include>org.odpi.egeria:kafka-integration-connector:*</include>
+                <include>org.odpi.egeria:openapi-integration-connector:*</include>
                 <include>org.odpi.egeria:graph-repository-connector:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:inmemory-repository-connector:*</include>

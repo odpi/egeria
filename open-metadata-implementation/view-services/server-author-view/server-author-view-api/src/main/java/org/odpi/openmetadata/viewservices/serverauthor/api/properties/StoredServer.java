@@ -27,6 +27,7 @@ public class StoredServer {
     private String storedServerName;
     private String storedServerDescription;
     private String serverType;
+    private String serverStatus;
 
     /**
      * Default Constructor sets the properties to nulls
@@ -105,6 +106,25 @@ public class StoredServer {
     public void setServerType(String serverType) {
         this.serverType = serverType;
     }
+
+    /**
+     * Set the status for the storedServer
+     *
+     * @param serverStatus set storedServer status
+     */
+    public void setServerStatus(String serverStatus) {
+        this.serverStatus = serverStatus;
+    }
+    /**
+     * Get the status of the stored Server
+     *
+     * @return server status
+     */
+    public String getServerStatus() {
+        return serverStatus;
+    }
+
+
 
     @Override
     public String toString() {

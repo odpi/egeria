@@ -781,6 +781,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -793,9 +794,11 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException the server name is invalid or
      * ServerAuthorViewServiceException The Server Author has detected an error.
      */
-    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId, String serverName) {
         String methodName = "getKnownPlatforms";
-
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
         ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
 
         AuditLog auditLog = null;
@@ -803,15 +806,15 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // get the defined platforms from the config
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName, auditLog));
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
             restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
         return response;
     }
 }

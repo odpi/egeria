@@ -32,6 +32,7 @@ public class PlatformConnectionProvider {
     private static final String SERVER_IN_MEMORY_ENABLED = "server.in-memory-graph.enabled";
     private static final String SERVER_LOCAL_GRAPH_ENABLED = "server.local-graph.enabled";
     private static final String SERVER_LOCAL_GRAPH_NAME = "server.local-graph.name";
+    private static final String EXTERNAL_SOURCE_NAME = "DataEngine";
 
     private static DataEngineRESTClient dataEngineRESTClientInMemory;
     private static RepositoryService repositoryServiceInMemory;
@@ -53,6 +54,7 @@ public class PlatformConnectionProvider {
             String inMemoryServerName = properties.getProperty(SERVER_IN_MEMORY_NAME);
             if (dataEngineRESTClientInMemory == null) {
                 dataEngineRESTClientInMemory = new DataEngineRESTClient(inMemoryServerName, serverPlatformRootURL);
+                dataEngineRESTClientInMemory.setExternalSourceName(EXTERNAL_SOURCE_NAME);
             }
             if (repositoryServiceInMemory == null) {
                 repositoryServiceInMemory = new RepositoryService(inMemoryServerName, userId, serverPlatformRootURL);
@@ -64,6 +66,7 @@ public class PlatformConnectionProvider {
             String localGraphServerName = properties.getProperty(SERVER_LOCAL_GRAPH_NAME);
             if(dataEngineRESTClientLocalGraph == null) {
                 dataEngineRESTClientLocalGraph = new DataEngineRESTClient(localGraphServerName, serverPlatformRootURL);
+                dataEngineRESTClientLocalGraph.setExternalSourceName(EXTERNAL_SOURCE_NAME);
             }
             if(repositoryServiceLocalGraph == null) {
                 repositoryServiceLocalGraph = new RepositoryService(localGraphServerName, userId, serverPlatformRootURL);

@@ -32,6 +32,7 @@ public interface APIManagerInterface
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
      * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param apiProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -44,6 +45,7 @@ public interface APIManagerInterface
                      String        apiManagerGUID,
                      String        apiManagerName,
                      boolean       apiManagerIsHome,
+                     String        endpointGUID,
                      APIProperties apiProperties) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException;
@@ -56,6 +58,7 @@ public interface APIManagerInterface
      * @param apiManagerGUID unique identifier of software server capability representing the caller
      * @param apiManagerName unique name of software server capability representing the caller
      * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -69,6 +72,7 @@ public interface APIManagerInterface
                                  String             apiManagerGUID,
                                  String             apiManagerName,
                                  boolean            apiManagerIsHome,
+                                 String             endpointGUID,
                                  String             templateGUID,
                                  TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
@@ -225,6 +229,28 @@ public interface APIManagerInterface
                                           int    pageSize) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException;
+
+
+    /**
+     * Retrieve the list of APIs connected to the requested endpoint.
+     *
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<APIElement> getAPIsForEndpoint(String userId,
+                                        String endpointGUID,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**

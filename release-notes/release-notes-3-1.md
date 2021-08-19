@@ -21,13 +21,35 @@ The following changes have been made to the open metadata types:
   **ArraySchemaType** and **SetSchemaType**.
   See description in model [0507](../open-metadata-publication/website/open-metadata-types/0507-External-Schema-Type.md).
 
-* The **ServerEndpoint** relationship can now connector to any **ITInfrastructure** elements, not just **SoftwareServers**.
+* The **ServerEndpoint** relationship can now connect to any **ITInfrastructure** elements, not just **SoftwareServers**.
   See description in model [0040](../open-metadata-publication/website/open-metadata-types/0040-Software-Servers.md).
 
+* The **OperatingPlatform** entity can now record the patch level of the operating system.  There are also new types for describing
+  the contents of an operating platform.
+  See description in model [0030](../open-metadata-publication/website/open-metadata-types/0030-Hosts-and-Platforms.md).
 
-### Egeria UI
-* Passwords for the samples Coco Pharmaceuticals users changed to 'secret';
+* There are now types for distinguishing between virtual machines and virtual containers as well as bare metal hardware.
+  There are also new types for specific technologies such as **HadoopCluster**, **KubernetesCluster** and **DockerContainer**
+  to provide concrete examples of different types of hosts using popular technologies.
+  Finally the **DeployedVirtualContainer** relationship has been deprecated in favor of a more generic **HostedHost** relationship.
+  See description in model [0035](../open-metadata-publication/website/open-metadata-types/0035-Complex-Hosts.md).
 
+* There are new types for define a storage volume that has been attached to a host.
+  See description in model [0036](../open-metadata-publication/website/open-metadata-types/0036-Storage.md).
+
+* A new subtype of software server for reusable business functions (such as microservices) has been added called **ApplicationService**.
+  See description in model [0057](../open-metadata-publication/website/open-metadata-types/0057-Software-Services.md).
+
+
+## Deprecation of docker-compose
+
+The docker-compose environment for running our Coco Pharmaceuticals lab demo/tutorial is now deprecated. The configuration is still available, but will not
+be further developed or tested, and will be removed in a future release.
+
+Our Kubernetes Helm charts are now recommended to quickly setup the same lab
+environment, and the [documentation](https://odpi.github.io/egeria-charts/site/index.html) for these has been improved to cover 
+a Kubernetes introduction, and example based on 'microk8s' which are suited to
+an end user desktop environment (and can also be run in enterprise/cloud environments)
 
 ### Known Issues
 

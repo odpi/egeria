@@ -2,8 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -276,10 +284,8 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertRelationalTable(String userId, RelationalTable relationalTable) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException,
-                                                                                        ConnectorCheckedException;
+    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException;
 
     /**
      * Create or update the data file entity

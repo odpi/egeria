@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
+import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -48,7 +50,11 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
                                  AuditLog auditLog, String serverUserName, String sourceName,
                                  List<String> supportedTypesForSearch) throws NewInstanceException {
 
-        super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
+        super(description.getAccessServiceName() + " OMAS",
+                repositoryConnector,
+                auditLog,
+                serverUserName,
+                repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {

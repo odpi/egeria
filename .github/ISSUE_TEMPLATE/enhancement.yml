@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the Egeria project.
+---
+name: Enhancement
+description: Suggest an Enhancement
+title: "[Enhancement] <title>"
+labels: [enhancement, triage]
+body:
+  - type: checkboxes
+    id: issue_exists
+    attributes:
+      label: Is there an existing issue for this?
+      description: "Search to see if an issue already exists for the probem you encountered. This can save you and the maintainers time. Please include any related issues in the other text boxes below ie by #1234 for an egeria issue, or include the URL"
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: What capability is missing, or not offering what you need?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: Summarise what you'd like to see changed or added
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives
+      description: Can you think of any alternatives?
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Any Further Information?
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering    !
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
+  - type: checkboxes
+    id: work_on_it
+    attributes:
+      label: Would you be prepared to be assigned this issue to work on?
+      description: Let us know if you'd be able to be involved in designing and implementing this enhancement
+      options:
+        - label: I can work on this
+          required: true

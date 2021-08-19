@@ -1853,6 +1853,87 @@ public class OMAGServerAdminServices
     }
 
 
+
+    /**
+     * Return the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @return guid response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    public VoidResponse setLocalMetadataCollectionId(String userId,
+                                                     String serverName,
+                                                     String metadataCollectionId)
+    {
+        final String methodName = "setLocalMetadataCollectionId";
+        final String parameterNameName = "setLocalMetadataCollectionId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(metadataCollectionId, parameterNameName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+            LocalRepositoryConfig    localRepositoryConfig    = null;
+
+            /*
+             * Extract any existing local repository configuration
+             */
+            if (repositoryServicesConfig != null)
+            {
+                localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+            }
+
+            /*
+             * The local repository should be partially configured already by setLocalRepositoryMode()
+             */
+            if (localRepositoryConfig == null)
+            {
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET.getMessageDefinition(serverName),
+                                                        this.getClass().getName(),
+                                                        methodName);
+            }
+
+            /*
+             * Set up the metadata collection name in the local repository config and save.
+             */
+            localRepositoryConfig.setMetadataCollectionId(metadataCollectionId);
+
+            this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+
+            return response;
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Set up the local metadata collection name.  If this is not set then the default value is the
      * local server name.

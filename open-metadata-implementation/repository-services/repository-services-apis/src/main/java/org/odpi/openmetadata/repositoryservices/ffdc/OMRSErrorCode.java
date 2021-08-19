@@ -196,7 +196,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request because the unique identifiers are needed.",
             "Correct the caller's code to provide compatible type identifiers and retry the request."),
     BAD_PROPERTY_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-040",
-            "An invalid property has been found in a metadata instance stored in repository {0} during the {1} operation",
+            "Unexpected exception {0} occurred when comparing properties against a search string of {1} during the {2} operation from {3}. Error message was {4}",
             "The system is unable to perform the request because the unique identifier must be provided.",
             "Correct the error in the requesting code and retry."),
     NULL_REFERENCE_INSTANCE(400, "OMRS-REPOSITORY-400-041",

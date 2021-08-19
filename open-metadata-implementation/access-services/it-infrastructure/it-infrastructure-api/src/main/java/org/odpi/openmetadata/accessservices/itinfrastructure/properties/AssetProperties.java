@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = SoftwareServerProperties.class, name = "SoftwareServerProperties"),
+                @JsonSubTypes.Type(value = SoftwareServerPlatformProperties.class, name = "SoftwareServerPlatformProperties"),
         })
 public class AssetProperties extends ConfigurationItemProperties
 {
@@ -111,18 +112,17 @@ public class AssetProperties extends ConfigurationItemProperties
     @Override
     public String toString()
     {
-        return "ReferenceDataAssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+        return "AssetProperties{" +
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", classifications=" + getClassifications() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
-
 
 
     /**
