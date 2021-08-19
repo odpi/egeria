@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 public class LineageVerticesAndEdges implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Set<LineageVertex> lineageVertices;
     private Set<LineageEdge> lineageEdges;
 

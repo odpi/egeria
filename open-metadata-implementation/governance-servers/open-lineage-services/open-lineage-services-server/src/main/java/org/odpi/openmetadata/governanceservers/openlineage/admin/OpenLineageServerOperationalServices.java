@@ -192,7 +192,7 @@ public class OpenLineageServerOperationalServices {
         try {
             connector = new ConnectorBroker().getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
-            OcfCheckedExceptionToOmagConfigurationError(e, auditCode, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
             exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
@@ -234,7 +234,7 @@ public class OpenLineageServerOperationalServices {
         try {
             connector.initializeGraphDB(this.auditLog);
         } catch (OCFCheckedExceptionBase e) {
-            OcfCheckedExceptionToOmagConfigurationError(e, auditCode, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
             exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
@@ -254,7 +254,7 @@ public class OpenLineageServerOperationalServices {
         try {
             connector.start();
         } catch (OCFCheckedExceptionBase e) {
-            OcfCheckedExceptionToOmagConfigurationError(e, auditCode, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
             exceptionToOMAGConfigurationError(e, errorCode, methodName, auditCode, actionDescription);
         }
@@ -280,7 +280,7 @@ public class OpenLineageServerOperationalServices {
         try {
             inTopicConnector.start();
         } catch (OCFCheckedExceptionBase e) {
-            OcfCheckedExceptionToOmagConfigurationError(e, auditCode, actionDescription);
+            OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
             exceptionToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_STARTING_IN_TOPIC_CONNECTOR, methodName, auditCode, actionDescription);
         }
@@ -370,7 +370,7 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription The action that was taking place when the exception occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void OcfCheckedExceptionToOmagConfigurationError(OCFCheckedExceptionBase e, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+    private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase e, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         logException(auditCode, actionDescription, e);
         throw new OMAGConfigurationErrorException(e.getReportedHTTPCode(),
                 e.getReportingClassName(),

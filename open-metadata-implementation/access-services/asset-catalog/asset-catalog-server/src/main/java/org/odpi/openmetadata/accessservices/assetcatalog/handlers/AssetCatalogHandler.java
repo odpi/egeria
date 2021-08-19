@@ -331,7 +331,6 @@ public class AssetCatalogHandler {
     }
 
     /**
-     * @param serverName       name of the local server
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
@@ -341,7 +340,7 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";

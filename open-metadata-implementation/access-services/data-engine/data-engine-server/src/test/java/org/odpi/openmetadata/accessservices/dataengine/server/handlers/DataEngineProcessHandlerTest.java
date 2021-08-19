@@ -287,8 +287,6 @@ class DataEngineProcessHandlerTest {
         final String methodName = "updateProcessStatus";
 
         mockTypeDef(PROCESS_TYPE_NAME, PROCESS_TYPE_GUID);
-        Process process = getProcess();
-
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 

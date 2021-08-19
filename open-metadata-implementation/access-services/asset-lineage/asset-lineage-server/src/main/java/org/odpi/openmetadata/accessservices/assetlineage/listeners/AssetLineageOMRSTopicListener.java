@@ -99,6 +99,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent event) {
         log.trace("Ignoring registry event: {}", event);
     }
@@ -108,6 +109,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
         log.trace("Ignoring type event: {}", event);
     }
@@ -117,6 +119,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
         if (instanceEvent == null) {
             return;

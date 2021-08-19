@@ -171,7 +171,7 @@ public enum OpenLineageServerAuditCode {
         MessageFormat mf = new MessageFormat(logMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OpenLineageServerAuditCode.getMessage({}): {}", Arrays.toString(params), result));
+        log.debug("==> OpenLineageServerAuditCode.getMessage({}): {}", Arrays.toString(params), result);
 
         return result;
     }

@@ -430,7 +430,7 @@ public class AssetCatalogHandlerTest {
 
         SearchParameters searchParams = mockSearchParams();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
-        List<AssetCatalogBean> result = assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams);
+        List<AssetCatalogBean> result = assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams);
 
         assertEquals(FIRST_GUID, result.get(0).getGuid());
         String methodName = "getEntitiesFromNeighborhood";
@@ -461,7 +461,7 @@ public class AssetCatalogHandlerTest {
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
         assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
-                () -> assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams));
+                () -> assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams));
     }
 
     @Test
@@ -484,7 +484,7 @@ public class AssetCatalogHandlerTest {
                 1);
         doThrow(PropertyServerException.class).when(errorHandler).handleRepositoryError(mockedException, methodName);
         assertThrows(PropertyServerException.class,
-                () -> assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams));
+                () -> assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams));
 
     }
 
@@ -507,7 +507,7 @@ public class AssetCatalogHandlerTest {
         doThrow(new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(),
                 this.getClass().getName(), "", "")).when(errorHandler).handleUnauthorizedUser(USER, methodName);
         assertThrows(UserNotAuthorizedException.class,
-                () -> assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams));
+                () -> assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams));
     }
 
     @Test
@@ -528,7 +528,7 @@ public class AssetCatalogHandlerTest {
         SearchParameters searchParams = mockSearchParams();
 
         assertThrows(AssetCatalogException.class,
-                () -> assetCatalogHandler.getEntitiesFromNeighborhood("server", USER, FIRST_GUID, searchParams));
+                () -> assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams));
 
     }
 

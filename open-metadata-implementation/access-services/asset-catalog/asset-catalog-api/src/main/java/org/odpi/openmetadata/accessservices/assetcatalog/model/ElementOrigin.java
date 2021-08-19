@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ElementOrigin implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The name of the server where the element was retrieved from.
      * -- GETTER --

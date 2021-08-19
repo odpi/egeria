@@ -28,6 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ProcessHierarchy implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The parent process
      * -- GETTER --
