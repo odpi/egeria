@@ -90,9 +90,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             }
 
             auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
-        } catch (OMAGConfigurationErrorException error) {
-            log.error("The Asset Lineage OMAS could not be started", error);
-            throw error;
         } catch (Exception error) {
             log.error("The Asset Lineage OMAS could not be started", error);
             auditLog.logException(actionDescription, AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);

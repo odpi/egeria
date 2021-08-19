@@ -100,9 +100,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        if(log.isTraceEnabled()) {
-            log.trace("Ignoring registry event: {}", event);
-        }
+        log.trace("Ignoring registry event: {}", event);
     }
 
     /**
@@ -111,9 +109,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param event inbound event
      */
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        if(log.isTraceEnabled()) {
-            log.trace("Ignoring type event: {}", event);
-        }
+        log.trace("Ignoring type event: {}", event);
     }
 
     /**

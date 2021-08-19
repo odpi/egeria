@@ -119,16 +119,12 @@ public enum GlossaryViewAuditCode {
      * @return logMessage (formatted with supplied parameters)
      */
     public String getFormattedLogMessage(String... params) {
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("<== GlossaryView Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
+        log.debug("<== GlossaryView Audit Code.getMessage({})", Arrays.toString(params));
 
         MessageFormat mf = new MessageFormat(logMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("==> GlossaryView Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
+        log.debug("==> GlossaryView Audit Code.getMessage({}): {}", Arrays.toString(params), result);
 
         return result;
     }

@@ -29,8 +29,8 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getCategory() throws Exception{
-        when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(categories.get(0).getGUID()), eq("guid"),
-                eq(CATEGORY_TYPE_NAME), eq("getCategory"))).thenReturn(categories.get(0));
+        when(repositoryHandler.getEntityByGUID(USER_ID, categories.get(0).getGUID(), "guid",
+                CATEGORY_TYPE_NAME, "getCategory")).thenReturn(categories.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getCategory(USER_ID, SERVER_NAME, categories.get(0).getGUID());
 
