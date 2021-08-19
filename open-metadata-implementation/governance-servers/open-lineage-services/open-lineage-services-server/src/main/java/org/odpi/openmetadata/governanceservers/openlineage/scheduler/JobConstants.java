@@ -11,4 +11,7 @@ public class JobConstants {
     public static final String CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME = "configAssetLineageLastUpdateTime";
     public static final String LINEAGE_GRAPH_JOB = "LineageGraphJob";
     public static final int DEFAULT_JOB_INTERVAL_IN_SECONDS = 120;
+
+    private JobConstants() {
+    }
 }

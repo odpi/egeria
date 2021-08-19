@@ -34,7 +34,6 @@ public class StoringServices {
      * Delegates the call for the creation of entities and relationships to the connector
      */
     public void upsertEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
-        String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
     /**

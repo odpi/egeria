@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
+public class GlossaryServiceTest extends GlossaryViewOmasBase {
 
     private final GlossaryService underTest = new GlossaryService();
 

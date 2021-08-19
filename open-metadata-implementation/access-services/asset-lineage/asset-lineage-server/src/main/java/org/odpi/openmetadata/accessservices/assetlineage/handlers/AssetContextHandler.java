@@ -46,7 +46,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetContextHandler {
 
     private final RepositoryHandler repositoryHandler;
-    private final InvalidParameterHandler invalidParameterHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
 
@@ -62,7 +61,6 @@ public class AssetContextHandler {
      */
     public AssetContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                RepositoryHandler repositoryHandler, List<String> supportedZones, Set<String> lineageClassificationTypes) {
-        this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.supportedZones = supportedZones;
@@ -103,6 +101,8 @@ public class AssetContextHandler {
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                         columnContext));
+                break;
+            default:
                 break;
         }
 

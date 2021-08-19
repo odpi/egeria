@@ -28,19 +28,19 @@ public enum GlossaryViewAuditCode {
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary View Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Glossary View OMAS.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INITIALIZED("OMAS-GLOSSARY-VIEW-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary View Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Glossary View OMAS has completed initialization of a new instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_SHUTDOWN("OMAS-GLOSSARY-VIEW-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Glossary View Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Glossary View OMAS instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INSTANCE_FAILURE("OMAS-GLOSSARY-VIEW-0004",
             OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -133,4 +133,7 @@ public enum GlossaryViewAuditCode {
         return result;
     }
 
+    private static class Constants {
+        public static final String NORMAL_OPERATION_OF_THE_SERVICE = "No action is required.  This is part of the normal operation of the service.";
+    }
 }

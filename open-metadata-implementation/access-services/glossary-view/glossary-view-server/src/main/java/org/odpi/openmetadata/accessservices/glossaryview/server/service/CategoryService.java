@@ -18,9 +18,6 @@ public class CategoryService extends GlossaryViewOMAS {
     private static final String CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME ="CategoryHierarchyLink";
     private static final String LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME = "LibraryCategoryReference";
 
-    public CategoryService() {}
-
-
     /**
      * Extract the category definition for the given GUID
      *

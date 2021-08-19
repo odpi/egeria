@@ -216,7 +216,7 @@ public enum OpenLineageServerAuditCode {
      *
      * @param messageDefinition the message definition
      */
-    public void setMessageDefinition(AuditLogMessageDefinition messageDefinition) {
+    void setMessageDefinition(AuditLogMessageDefinition messageDefinition) {
         this.messageDefinition = messageDefinition;
     }
 }
