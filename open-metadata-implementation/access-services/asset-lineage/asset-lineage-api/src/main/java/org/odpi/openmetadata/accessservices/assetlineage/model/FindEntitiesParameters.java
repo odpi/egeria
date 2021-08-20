@@ -51,16 +51,13 @@ public class FindEntitiesParameters {
         return sequencingOrder;
     }
 
-    static public class Builder {
+    public static class Builder {
         private Long updatedAfter;
         private List<String> entitySubtypeGUIDs;
         private List<InstanceStatus> limitResultsByStatus;
         private SearchClassifications searchClassifications;
         private String sequencingProperty;
         private SequencingOrder sequencingOrder;
-
-        public Builder() {
-        }
 
         public Builder withEntitySubtypeGUIDs(List<String> entitySubtypeGUIDs) {
             this.entitySubtypeGUIDs = entitySubtypeGUIDs;

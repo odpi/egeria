@@ -173,8 +173,7 @@ public enum OpenLineageServerErrorCode {
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("ODFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
+        log.debug("ODFErrorCode.getMessage({}): {}", Arrays.toString(params), result);
         return result;
     }
 

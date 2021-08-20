@@ -40,12 +40,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private String serverName;
 
     /**
-     * Default constructor
-     */
-    public AssetLineageAdmin() {
-    }
-
-    /**
      * Initialize the access service.
      *
      * @param accessServiceConfigurationProperties specific configuration properties for this access service.
@@ -91,10 +85,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             }
 
             auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
-        } catch (OMAGConfigurationErrorException error) {
-            log.error("The Asset Lineage OMAS could not be started", error);
-            throw error;
-        } catch (Throwable error) {
+        } catch (Exception error) {
             log.error("The Asset Lineage OMAS could not be started", error);
             auditLog.logException(actionDescription,
                     AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);

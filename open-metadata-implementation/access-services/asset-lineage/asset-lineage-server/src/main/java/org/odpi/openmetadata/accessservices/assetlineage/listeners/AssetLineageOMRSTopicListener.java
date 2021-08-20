@@ -95,8 +95,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        log.trace("Ignoring registry event: " + event.toString());
+        log.trace("Ignoring registry event: {}", event);
     }
 
     /**
@@ -104,8 +105,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        log.trace("Ignoring type event: " + event.toString());
+        log.trace("Ignoring type event: {}", event);
     }
 
     /**
@@ -113,6 +115,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
         if (instanceEvent == null) {
             return;
@@ -153,6 +156,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     break;
                 case DELETED_RELATIONSHIP_EVENT:
                     processDeletedRelationshipEvent(relationship);
+                    break;
+                default:
                     break;
             }
         } catch (OCFCheckedExceptionBase e) {
@@ -363,11 +368,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @return true if the it is a lineage relationship
      */
     private boolean isLineageRelationship(Relationship relationship) {
-        if (!isRelationshipValid(relationship)) {
-            return false;
+        if (isRelationshipValid(relationship)) {
+            return immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName());
         }
-
-        return immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName());
+        return false;
     }
 
     /**
@@ -426,7 +430,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @return true if the relationship type is available and if the both ends of the relationship are available
      */
-    private Boolean isRelationshipValid(Relationship relationship) {
+    private boolean isRelationshipValid(Relationship relationship) {
         return relationship.getType() != null
                 && relationship.getType().getTypeDefName() != null
                 && relationship.getEntityOneProxy() != null

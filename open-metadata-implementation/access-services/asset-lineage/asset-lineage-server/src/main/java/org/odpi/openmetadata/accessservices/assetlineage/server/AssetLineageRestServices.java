@@ -117,7 +117,7 @@ public class AssetLineageRestServices {
                 response.setGUIDs(entitiesByTypeName.get().stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
 
                 CompletableFuture.supplyAsync(buildAndPublishLineageContext(auditLog,publisher,entitiesByTypeName, entityType))
-                        .thenAccept((result) ->
+                        .thenAccept(result ->
                             result.ifPresent(publishedItems -> {
                                 sendLineagePublishSummary(publishedItems, cutOffTime, publisher, auditLog);
                                 publishLineageTaskActive.set(false);

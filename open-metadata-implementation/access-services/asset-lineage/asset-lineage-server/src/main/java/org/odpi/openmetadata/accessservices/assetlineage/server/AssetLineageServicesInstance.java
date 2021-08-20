@@ -119,6 +119,7 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
         this.assetLineagePublisher = assetLineagePublisher;
     }
 
+    @Override
     public AuditLog getAuditLog() {
         return super.getAuditLog();
     }

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-public class AssetCatalogEntityResourceTest {
+class AssetCatalogEntityResourceTest {
 
     private static final String USER = "user";
     private static final String SERVER_NAME = "serverName";
