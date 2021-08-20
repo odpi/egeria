@@ -110,7 +110,7 @@ public class AssetLineageRestServices {
                 Long cutOffTime = System.currentTimeMillis();
                 Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
 
-                if (!entitiesByTypeName.isPresent()) {
+                if (entitiesByTypeName.isEmpty()) {
                     return response;
                 }
 
@@ -124,8 +124,6 @@ public class AssetLineageRestServices {
                             })
                         );
             }
-
-
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -133,7 +131,6 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
-
         return response;
     }
 
@@ -255,11 +252,9 @@ public class AssetLineageRestServices {
                         typeName, entityDetail.getGUID());
                 break;
         }
-
         if (!context.isEmpty()) {
             return entityDetail.getGUID();
         }
-
         return null;
     }
 
@@ -299,7 +294,6 @@ public class AssetLineageRestServices {
         } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
             restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
-
         return response;
     }
 
@@ -333,5 +327,4 @@ public class AssetLineageRestServices {
                 });
         return new ArrayList<>(guids);
     }
-
 }

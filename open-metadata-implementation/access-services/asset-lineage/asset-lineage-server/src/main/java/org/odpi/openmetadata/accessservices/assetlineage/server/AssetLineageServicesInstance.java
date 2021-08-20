@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContex
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -24,13 +25,14 @@ import java.util.Set;
  * It is also responsible for registering itself in the instance map.
  */
 public class AssetLineageServicesInstance extends OMASServiceInstance {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
-    private GlossaryContextHandler glossaryContextHandler;
-    private AssetContextHandler assetContextHandler;
-    private ProcessContextHandler processContextHandler;
-    private ClassificationHandler classificationHandler;
+    private static final AccessServiceDescription description = AccessServiceDescription.ASSET_LINEAGE_OMAS;
+    private final GlossaryContextHandler glossaryContextHandler;
+    private final AssetContextHandler assetContextHandler;
+    private final ProcessContextHandler processContextHandler;
+    private final ClassificationHandler classificationHandler;
+    private final HandlerHelper handlerHelper;
+
     private AssetLineagePublisher assetLineagePublisher;
-    private HandlerHelper handlerHelper;
 
     /**
      * Set up the handlers for this server.
@@ -40,60 +42,28 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
      * @param lineageClassificationTypes list of lineage classification supported
      * @param localServerUserId          userId used for server initiated actions
      * @param auditLog                   destination for audit log events.
+     *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                        List<String> supportedZones,
-                                        Set<String> lineageClassificationTypes,
-                                        String localServerUserId, AuditLog auditLog) throws NewInstanceException {
-        super(myDescription.getAccessServiceFullName(),
-                repositoryConnector,
-                auditLog,
-                localServerUserId,
-                repositoryConnector.getMaxPageSize());
+    public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
+                                        Set<String> lineageClassificationTypes, String localServerUserId, AuditLog auditLog) throws
+                                                                                                                             NewInstanceException {
+        super(description.getAccessServiceFullName(), repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
 
         super.supportedZones = supportedZones;
 
-        if (repositoryHandler != null) {
-            assetContextHandler = new AssetContextHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler,
-                    supportedZones,
-                    lineageClassificationTypes);
-
-            processContextHandler = new ProcessContextHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler,
-                    assetContextHandler,
-                    supportedZones,
-                    lineageClassificationTypes);
-
-            glossaryContextHandler = new GlossaryContextHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler,
-                    assetContextHandler,
-                    lineageClassificationTypes);
-
-            classificationHandler = new ClassificationHandler(
-                    invalidParameterHandler,
-                    lineageClassificationTypes,
-                    repositoryHelper);
-
-            handlerHelper = new HandlerHelper(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler,
-                    lineageClassificationTypes);
-
-        } else {
+        if (repositoryHandler == null) {
             String methodName = "AssetLineageServicesInstance";
             throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
-                    this.getClass().getName(),
-                    methodName);
+                    this.getClass().getName(), methodName);
         }
+
+        Converter converter = new Converter(repositoryHelper);
+        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, converter, lineageClassificationTypes);
+        assetContextHandler = new AssetContextHandler(repositoryHandler, handlerHelper, supportedZones);
+        processContextHandler = new ProcessContextHandler(assetContextHandler, handlerHelper, supportedZones);
+        glossaryContextHandler = new GlossaryContextHandler(invalidParameterHandler, assetContextHandler, handlerHelper);
+        classificationHandler = new ClassificationHandler(invalidParameterHandler, handlerHelper);
     }
 
     /**
@@ -104,7 +74,6 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
     GlossaryContextHandler getGlossaryContextHandler() {
         return glossaryContextHandler;
     }
-
 
     /**
      * Return the specialized context handler for Asset Lineage OMAS.

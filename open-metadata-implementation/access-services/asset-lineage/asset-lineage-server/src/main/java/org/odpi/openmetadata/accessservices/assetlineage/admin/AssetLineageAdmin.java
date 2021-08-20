@@ -6,8 +6,10 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -45,14 +47,13 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
      * @param repositoryConnector                  connector for querying the cohort repositories
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
+     *
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
-                           OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector repositoryConnector,
-                           AuditLog auditLog,
-                           String serverUserName) throws OMAGConfigurationErrorException {
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector, AuditLog auditLog, String serverUserName) throws
+                                                                                                                  OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
@@ -60,12 +61,11 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             this.auditLog = auditLog;
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
-                    accessServiceConfigurationProperties.getAccessServiceName(),
-                    auditLog);
+                    accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
             Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
-            this.instance = new AssetLineageServicesInstance(repositoryConnector,
-                    supportedZones, lineageClassificationTypes, serverUserName, auditLog);
+            this.instance =
+                    new AssetLineageServicesInstance(repositoryConnector, supportedZones, lineageClassificationTypes, serverUserName, auditLog);
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
@@ -74,27 +74,24 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
-                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
-                        serverUserName,
-                        lineageClassificationTypes,
-                        auditLog,
-                        accessServiceOptions);
+                Converter converter = new Converter(repositoryConnector.getRepositoryHelper());
+                AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(converter, serverName, publisher,
+                        lineageClassificationTypes, auditLog);
 
-                super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
-                        serverName,
-                        enterpriseOMRSTopicConnector,
-                        omrsTopicListener,
-                        auditLog);
+                super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(), serverName,
+                        enterpriseOMRSTopicConnector, omrsTopicListener, auditLog);
                 this.instance.setAssetLineagePublisher(omrsTopicListener.getPublisher());
             }
 
             auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         } catch (Exception error) {
             log.error("The Asset Lineage OMAS could not be started", error);
-            auditLog.logException(actionDescription, AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
+            auditLog.logException(actionDescription,
+                    AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
 
-            super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(), error);
+            super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(),
+                    error);
         }
     }
 
@@ -102,16 +99,15 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
      * Returns the list of lineage classifications
      *
      * @param accessServiceConfig Asset Lineage Configuration
+     *
      * @return the list of the lineage classifications
      */
     private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
 
         if (accessServiceConfig.getAccessServiceOptions() != null) {
-            Object lineageClassificationTypesProperty = accessServiceConfig
-                    .getAccessServiceOptions()
-                    .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
+            Object lineageClassificationTypesProperty = accessServiceConfig.getAccessServiceOptions().get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
             if (lineageClassificationTypesProperty != null) {
-                return new HashSet<>((List<String>)lineageClassificationTypesProperty);
+                return new HashSet<>((List<String>) lineageClassificationTypesProperty);
             }
         }
 
