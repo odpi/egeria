@@ -69,7 +69,7 @@ class AssetLineageOMRSTopicListenerTest {
     @BeforeEach
     public void beforeEach() throws NoSuchFieldException, IllegalAccessException {
         Field lineageClassificationTypesField = AssetLineageOMRSTopicListener.class.getDeclaredField("lineageClassificationTypes");
-        boolean connectionHandlerIsAccessible = lineageClassificationTypesField.isAccessible();
+        boolean connectionHandlerIsAccessible = lineageClassificationTypesField.canAccess(assetLineageOMRSTopicListener);
         lineageClassificationTypesField.setAccessible(true);
         lineageClassificationTypesField.set(assetLineageOMRSTopicListener, lineageClassificationTypes);
         lineageClassificationTypesField.setAccessible(connectionHandlerIsAccessible);
