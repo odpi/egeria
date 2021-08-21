@@ -4,34 +4,23 @@
 # Egeria Community Guide
 
 This project welcomes contributors from any organization or background, provided they are
-willing to follow the simple processes outlined below, as well as adhere to the 
+willing to follow the simple processes outlined below, as well as adhere to the
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Joining the community
 
-The community collaborates primarily through `Zoom` calls, `GitHub` and the instance messaging tool, `Slack`.
-There is also a mailing list.
+### Live discussions
 
-### Zoom calls
+We have a variety of weekly and bi-weekly meetings to which all are welcome:
 
-There are two regular online meetings using Zoom each week, both on a Tuesday. All are welcome.
+<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=Europe%2FLondon&amp;src=YjVxaGRyNXFkYmZscDhkbHA3MGxtb2RtMHNmdmlocWxAaW1wb3J0LmNhbGVuZGFyLmdvb2dsZS5jb20&amp;color=%234285F4&amp;showCalendars=0&amp;showPrint=0&amp;title=Egeria%20Calendar" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
-* **Developers call** - one hour - 
-  Discussion on code development - not minuted -
-  
-  10 am (UK); 11 am (Amsterdam/CET); 12pm (Bucharest)
-  
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
-  
-* **Community call** - one hour - 
-  Demos, meet-ups and other activities going on in the Egeria community
-  
-  2pm (UK); 3pm (Amsterdam/CET); 4pm (Bucharest)
-  
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
- 
-  Meeting Agenda and Minutes are here [https://github.com/odpi/data-governance/wiki](https://github.com/odpi/data-governance/wiki)
-  
+| Call | Purpose |
+|---|---|
+| Developers call | <ul><li>Discussion on code development (not minuted)</li><li>Every Thursday</li><li>*Egeria Developers Community Call (recorded)* in the [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar)</li></ul> |
+| Community call | <ul><li>Demos, meetups and other activities going on in the community ([agenda and minutes :material-dock-window:](https://github.com/odpi/data-governance/wiki){ target=wiki })</li><li>Every Wednesday</li><li>*Egeria Community Call (every Wednesday)* in the [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar)</li><li>[Egeria community meeting minutes](https://wiki.lfaidata.foundation/display/EG/Community+Meetings)</li><li> Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)</li></ul>|
+| TSC call | <ul><li>Strategy, planning and decision-making with the Technical Steering Committee (TSC)</li><li>Every second Wednesday</li><li>[Egeria TSC home page](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home)</li><li>*Egeria TSC Meetings* in the [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar)</li></ul> |
+
 
 ### Connecting to Slack
 
@@ -102,7 +91,7 @@ agrees with the [Developer Certificate of Origin (DCO)](developer-resources/why-
 The Linux Foundation provide build and distribution facilities.
 You need an account to access some of the reports from the build.
 
-This is the link to create a [Linux Foundation account](https://identity.linuxfoundation.org). 
+This is the link to create a [Linux Foundation account](https://identity.linuxfoundation.org).
 Note the username and password you selected.
 
 ----
