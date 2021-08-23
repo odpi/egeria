@@ -40,6 +40,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      */
+    @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,

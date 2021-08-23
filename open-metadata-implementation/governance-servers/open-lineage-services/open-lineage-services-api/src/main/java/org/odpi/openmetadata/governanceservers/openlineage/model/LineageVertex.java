@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,7 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class"
 )
-public class LineageVertex {
+public class LineageVertex implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String nodeID;
     private String nodeType;
