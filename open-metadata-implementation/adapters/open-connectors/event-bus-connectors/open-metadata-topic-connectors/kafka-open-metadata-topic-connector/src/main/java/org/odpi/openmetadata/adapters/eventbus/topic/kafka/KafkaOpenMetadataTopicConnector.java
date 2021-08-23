@@ -432,7 +432,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 //but keep a copy for reference
                 lastException = e;
             } finally {
-            	adminClient.close(Duration.ZERO);
+            	if (adminClient != null) {
+            		adminClient.close(Duration.ZERO);
+            	}
             }
 
             return found;
