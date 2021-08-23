@@ -68,11 +68,11 @@ public class AssetCatalogHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
-    private AssetCatalogConverter assetCatalogConverter;
-    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private final AssetCatalogConverter assetCatalogConverter;
+    private final List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
-    private List<String> supportedZones;
+    private final List<String> supportedZones;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -331,7 +331,6 @@ public class AssetCatalogHandler {
     }
 
     /**
-     * @param serverName       name of the local server
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
@@ -341,7 +340,7 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String serverName, String userId, String assetGUID, SearchParameters searchParameters)
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
@@ -351,7 +350,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        InstanceGraph entityNeighborhood = getAssetNeighborhood(serverName, userId, assetGUID, searchParameters);
+        InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, assetGUID, searchParameters);
 
         List<EntityDetail> entities = entityNeighborhood.getEntities();
         if (CollectionUtils.isEmpty(entities)) {
@@ -393,7 +392,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
         List<EntityDetail> result;
-        List<String> typesFilter = Collections.emptyList();
+        List<String> typesFilter;
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
@@ -480,7 +479,7 @@ public class AssetCatalogHandler {
                 getContextForDataSet(userId, entityDetail, assetCatalogItemElement);
             }
 
-            elements.setElements(Collections.singletonList(assetCatalogItemElement));
+            elements.setAssetCatalogItemElements(Collections.singletonList(assetCatalogItemElement));
             return elements;
         }
     }
@@ -607,7 +606,7 @@ public class AssetCatalogHandler {
             AssetCatalogItemElement assetCatalogItemElement = addSchemaForGlossaryTerm(userId, schema);
             assets.add(assetCatalogItemElement);
         }
-        elements.setElements(assets);
+        elements.setAssetCatalogItemElements(assets);
         return elements;
     }
 
@@ -1426,7 +1425,7 @@ public class AssetCatalogHandler {
         return classifications.stream().filter(classification -> classification.getName().equals(classificationName)).collect(Collectors.toList());
     }
 
-    private InstanceGraph getAssetNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
+    private InstanceGraph getAssetNeighborhood(String userId, String entityGUID, SearchParameters searchParameters)
             throws AssetCatalogException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 

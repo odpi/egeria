@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.dataengine.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

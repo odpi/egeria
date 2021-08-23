@@ -28,11 +28,11 @@ public class AssetContext {
     /**
      * Add vertex boolean.
      *
-     * @param Vertex the vertex
+     * @param vertex the vertex
      * @return the boolean
      */
-    public boolean addVertex(LineageEntity Vertex) {
-        return vertices.add(Vertex);
+    public boolean addVertex(LineageEntity vertex) {
+        return vertices.add(vertex);
     }
 
 

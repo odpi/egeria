@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAu
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
@@ -50,8 +49,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                                          String serverName,
                                          List<String> supportedZones,
                                          List<String> supportedTypesForSearch
-                                         )
-            throws OMAGConfigurationErrorException {
+                                         ) {
             super(serviceName, auditLog);
             this.publisher = new AssetCatalogSearchPublisher(outTopicConnector);
             this.serverName = serverName;
@@ -70,7 +68,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent)
     {
-        log.debug("Processing instance event: {}" + instanceEvent);
+        log.debug("Processing instance event: {}", instanceEvent);
 
         if (instanceEvent == null) {
             log.debug("Ignored instance event - null OMRSInstanceEvent");
@@ -107,6 +105,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 case DELETED_RELATIONSHIP_EVENT:
                     processRelationshipEvent(relationship);
                     break;
+                default: break;
             }
 
         } catch (Exception e) {

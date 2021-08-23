@@ -17,10 +17,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Glossary extends GlossaryViewEntityDetail {
 
-    private static String DISPLAY_NAME = "displayName";
-    private static String USAGE = "usage";
-    private static String DESCRIPTION = "description";
-    private static String LANGUAGE = "language";
+    private static final String DISPLAY_NAME = "displayName";
+    private static final String USAGE = "usage";
+    private static final String DESCRIPTION = "description";
+    private static final String LANGUAGE = "language";
 
     public String getDisplayName(){
         return getProperties().get(DISPLAY_NAME);

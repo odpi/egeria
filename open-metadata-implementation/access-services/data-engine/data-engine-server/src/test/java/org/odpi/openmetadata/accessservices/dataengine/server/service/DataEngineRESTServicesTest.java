@@ -832,7 +832,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    public void insertDataFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void insertDataFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("upsertDataFile");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getDataFile());
         mockRegistrationHandler("upsertDataFile");
@@ -847,7 +847,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    public void insertCSVFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void insertCSVFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("upsertDataFile");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getCsvFile());
         mockRegistrationHandler("upsertDataFile");
