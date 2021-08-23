@@ -420,7 +420,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         boolean getRunningBrokers(Properties connectionProperties ) {
 
             boolean found = false;
-            AdminClient adminClient = KafkaAdminClient.create(connectionProperties)
+            AdminClient adminClient = KafkaAdminClient.create(connectionProperties);
             try {
                 DescribeClusterResult describeClusterResult = adminClient.describeCluster();
                 Collection<Node> brokers = describeClusterResult.nodes().get();
