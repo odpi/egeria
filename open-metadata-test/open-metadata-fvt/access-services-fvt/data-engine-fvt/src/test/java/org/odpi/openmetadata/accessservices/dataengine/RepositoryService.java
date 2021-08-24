@@ -142,25 +142,22 @@ public class RepositoryService {
      * Extract the entity at the other end of a relationship. Disregard edge orientation
      *
      * @param startEntityGuid guid of known entity
-     * @param targetEntityTypeGuid guid of expected type
+     * @param relationshipTypeGuid guid of relationship type
      *
-     * @return a list of EntityDetails that contain the found software server capability
+     * @return a list of EntityDetails found at the other end of designated relationship types
      */
-    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String targetEntityTypeGuid)
+    public List<EntityDetail> getRelatedEntities(String startEntityGuid, String relationshipTypeGuid)
             throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
 
-        List<Relationship> relationships = client.getRelationshipsForEntity(userId, startEntityGuid, null,
+        List<Relationship> relationships = client.getRelationshipsForEntity(userId, startEntityGuid, relationshipTypeGuid,
                 0, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
 
         return relationships.stream().map(
                 r -> startEntityGuid.equals(r.getEntityOneProxy().getGUID()) ? r.getEntityTwoProxy() : r.getEntityOneProxy()
-        ).filter(
-                ep -> ep.getType().getTypeDefGUID().equals(targetEntityTypeGuid)
-        ).map(
-                EntityProxy::getGUID
-        ).map(
+        ).map(EntityProxy::getGUID)
+        .map(
                 guid -> {
                     try {
                         return client.getEntityDetail(userId, guid);
