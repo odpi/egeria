@@ -76,7 +76,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertRelationalTable"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable);
+        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName");
         assertEquals(GUID, response.getGUID());
     }
 
