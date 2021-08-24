@@ -274,7 +274,7 @@ public class DataEngineFVT {
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
 
