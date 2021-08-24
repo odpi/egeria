@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class LineageMapping implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The source attribute
      * -- GETTER --

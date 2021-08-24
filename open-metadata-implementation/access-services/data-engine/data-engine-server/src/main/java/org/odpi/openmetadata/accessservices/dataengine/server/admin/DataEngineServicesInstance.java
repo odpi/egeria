@@ -248,9 +248,9 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 new DataEngineConnectionAndEndpointHandler(invalidParameterHandler, repositoryHelper, serviceName, serverName,
                         dataEngineCommonHandler, connectionHandler, endpointHandler);
 
-        processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+        processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
                 assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-        dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+        dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
         dataEngineCollectionHandler = new DataEngineCollectionHandler(serviceName, serverName, invalidParameterHandler,
@@ -259,8 +259,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
         dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler,
-                dataEngineConnectionAndEndpointHandler);
+                relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
 
 
         final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),

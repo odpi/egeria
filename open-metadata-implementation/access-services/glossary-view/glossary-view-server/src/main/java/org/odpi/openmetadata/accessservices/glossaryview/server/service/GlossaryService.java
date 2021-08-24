@@ -19,8 +19,6 @@ public class GlossaryService extends GlossaryViewOMAS {
     private static final String TERM_ANCHOR_RELATIONSHIP_NAME = "TermAnchor";
     private static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
 
-    public GlossaryService() {}
-
     /**
      * Extract the glossary definition for the given GUID
      *

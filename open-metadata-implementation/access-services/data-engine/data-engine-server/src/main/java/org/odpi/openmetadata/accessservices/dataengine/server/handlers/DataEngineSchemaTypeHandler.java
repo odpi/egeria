@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuild
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -51,7 +50,6 @@ public class DataEngineSchemaTypeHandler {
     public static final String SCHEMA_TYPE_GUID_PARAMETER_NAME = "schemaTypeGUID";
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
@@ -65,7 +63,6 @@ public class DataEngineSchemaTypeHandler {
      * @param serviceName                   name of this service
      * @param serverName                    name of the local server
      * @param invalidParameterHandler       handler for managing parameter errors
-     * @param repositoryHandler             manages calls to the repository services
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
      * @param schemaTypeHandler             handler for managing schema elements in the metadata repositories
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
@@ -73,8 +70,7 @@ public class DataEngineSchemaTypeHandler {
      * @param schemaAttributeHandler        handler for managing schema attributes in the metadata repositories
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                       SchemaTypeHandler<SchemaType> schemaTypeHandler,
+                                       OMRSRepositoryHelper repositoryHelper, SchemaTypeHandler<SchemaType> schemaTypeHandler,
                                        SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler,
                                        DataEngineRegistrationHandler dataEngineRegistrationHandler,
                                        DataEngineCommonHandler dataEngineCommonHandler) {
@@ -82,7 +78,6 @@ public class DataEngineSchemaTypeHandler {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.schemaTypeHandler = schemaTypeHandler;
         this.schemaAttributeHandler = schemaAttributeHandler;
         this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
@@ -194,8 +189,8 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateName(sourceQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(targetQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> sourceEntity = getLineageMappingEntity(userId, sourceQualifiedName, methodName);
-        Optional<EntityDetail> targetEntity = getLineageMappingEntity(userId, targetQualifiedName, methodName);
+        Optional<EntityDetail> sourceEntity = getLineageMappingEntity(userId, sourceQualifiedName);
+        Optional<EntityDetail> targetEntity = getLineageMappingEntity(userId, targetQualifiedName);
 
         if (sourceEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
@@ -217,15 +212,13 @@ public class DataEngineSchemaTypeHandler {
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualified name of the entity
-     * @param methodName    the method name
-     *
      * @return An optional containing the entity for which to create the lineage mapping, or an empty optional
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private Optional<EntityDetail> getLineageMappingEntity(String userId, String qualifiedName, String methodName) throws UserNotAuthorizedException,
+    private Optional<EntityDetail> getLineageMappingEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                                           PropertyServerException,
                                                                                                                           InvalidParameterException {
         Optional<EntityDetail> referenceableEntity = dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
@@ -343,13 +336,12 @@ public class DataEngineSchemaTypeHandler {
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         schemaTypeBuilder.setDataType(dataType);
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
-        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
         final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID,
-                externalSourceName, schemaTypeGUID, schemaTypeGUIDParameterName, TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                externalSourceName, schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, methodName);
     }

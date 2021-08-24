@@ -239,7 +239,7 @@ public class AssetCatalogServiceTest {
                 .thenReturn(assetCatalogHandler);
 
         when(assetCatalogHandler
-                .getEntitiesFromNeighborhood(SERVER_NAME, USER, FIRST_GUID, searchParameters))
+                .getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParameters))
                 .thenReturn(response);
 
         AssetCatalogListResponse assetsFromNeighborhood = assetCatalogRESTService.getAssetsFromNeighborhood(SERVER_NAME,
