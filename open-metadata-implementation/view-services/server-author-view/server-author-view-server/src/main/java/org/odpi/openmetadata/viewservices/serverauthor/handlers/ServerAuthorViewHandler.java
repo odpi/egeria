@@ -26,6 +26,8 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.Platform;
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.PlatformStatus;
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.StoredServer;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReportSeverity;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 import java.util.*;
 
@@ -726,6 +728,15 @@ public class ServerAuthorViewHandler {
      */
     public void deactivateServerTemporarily(String className, String methodName, String destinationPlatformName, String serverToBeDeactivatedName) {
         // TODO not yet implemented
+    }
+
+    /**
+     * Get the supported severities for the audit log
+     *
+     * @return the list of the supported severities for  the audit log
+     */
+    public List<OMRSAuditLogReportSeverity> getSupportedAuditLogSeverities() {
+       return OMRSAuditLogRecordSeverity.getSeverityList();
     }
 }
 
