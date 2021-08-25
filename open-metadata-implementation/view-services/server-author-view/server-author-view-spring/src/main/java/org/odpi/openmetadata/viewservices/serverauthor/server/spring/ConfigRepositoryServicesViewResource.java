@@ -253,9 +253,10 @@ class ConfigRepositoryServicesViewResource {
     @PostMapping(path = "/cohorts/{cohortName}")
     public VoidResponse addCohortRegistration(@PathVariable                   String               userId,
                                               @PathVariable                   String               serverName,
+                                              @PathVariable                   String               serverToBeConfiguredName,
                                               @PathVariable                   String               cohortName)
     {
-        return serverAPI.addCohortRegistration(userId, serverName, cohortName);
+        return serverAPI.addCohortRegistration(userId, serverName, serverToBeConfiguredName,  cohortName);
     }
 
 }
