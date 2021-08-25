@@ -864,11 +864,12 @@ public class ServerAuthorViewRESTServices {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
+     * @param dedicatedTopics topic structure
      * @param additionalProperties additional properties for the event bus connection
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
-     * OMAGConfigurationErrorException the event bus is not set.
+     * @return VoidResponse or
+     * ServerAuthorException if the supplied userId is not authorized to issue this command or
+     * invalid serverName, cohortName or serviceMode parameter or
+     * or the cohort registration failed
      */
     public VoidResponse addCohortRegistration(String userId, String serverName, String cohortName, CohortTopicStructure dedicatedTopics, Map<String, Object> additionalProperties) {
         String methodName = "addCohortRegistration";

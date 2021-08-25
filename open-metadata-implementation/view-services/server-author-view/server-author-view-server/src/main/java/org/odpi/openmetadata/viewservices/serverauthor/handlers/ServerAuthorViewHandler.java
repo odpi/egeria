@@ -741,7 +741,20 @@ public class ServerAuthorViewHandler {
     public List<OMRSAuditLogReportSeverity> getSupportedAuditLogSeverities() {
        return OMRSAuditLogRecordSeverity.getSeverityList();
     }
-
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param cohortName  name of the cohort.
+     * @param dedicatedTopics topic structure
+     * @param additionalProperties additional properties for the event bus connection
+     * @throws ServerAuthorViewServiceException error occurred during the registration of the cohort
+     */
     public void addCohortRegistration(String serverToBeConfiguredName,
                                       String cohortName,
                                       CohortTopicStructure dedicatedTopics,
