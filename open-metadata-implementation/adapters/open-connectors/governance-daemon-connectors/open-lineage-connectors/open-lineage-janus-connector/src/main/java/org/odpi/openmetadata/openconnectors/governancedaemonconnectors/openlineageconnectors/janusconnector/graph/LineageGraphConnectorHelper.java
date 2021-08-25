@@ -1052,11 +1052,14 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-        Iterator<Vertex> transformationProject = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(COLLECTION));
+        GraphTraversal<Vertex, Map<Object, Object>> transformationProject = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(COLLECTION)).valueMap();
         commitTransaction();
         if (transformationProject.hasNext()) {
+            Map<Object, Object> transformationProjectValueMap = transformationProject.next();
+            if (transformationProjectValueMap.containsKey(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)) {
             properties.put(TRANSFORMATION_PROJECT_KEY,
-                    transformationProject.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+                    transformationProjectValueMap.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString());
+            }
         }
         return properties;
     }
