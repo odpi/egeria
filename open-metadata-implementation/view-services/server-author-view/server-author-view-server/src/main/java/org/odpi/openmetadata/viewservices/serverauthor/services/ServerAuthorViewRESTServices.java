@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.serverauthor.services;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
@@ -9,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -848,6 +850,48 @@ public class ServerAuthorViewRESTServices {
             log.debug("Returning from method: " + methodName + " with response: " + response.toString());
         }
         return response;
+
+    }
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName server to be configured
+     * @param cohortName  name of the cohort.
+     * @return VoidResponse or
+     * ServerAuthorException if the supplied userId is not authorized to issue this command or
+     * invalid serverName, cohortName or serviceMode parameter or
+     * or the cohort registration failed
+     */
+    public VoidResponse addCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "addCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // register new cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.addCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+
+
 
     }
 }
