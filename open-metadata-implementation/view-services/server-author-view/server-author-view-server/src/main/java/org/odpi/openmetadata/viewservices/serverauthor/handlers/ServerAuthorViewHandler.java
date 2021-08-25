@@ -6,6 +6,8 @@ import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurati
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
@@ -28,6 +30,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.StoredServer;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReportSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+
 
 import java.util.*;
 
@@ -737,6 +740,27 @@ public class ServerAuthorViewHandler {
      */
     public List<OMRSAuditLogReportSeverity> getSupportedAuditLogSeverities() {
        return OMRSAuditLogRecordSeverity.getSeverityList();
+    }
+
+    public void addCohortRegistration(String serverToBeConfiguredName,
+                                      String cohortName,
+                                      CohortTopicStructure dedicatedTopics,
+                                      Map<String, Object> additionalProperties) throws ServerAuthorViewServiceException {
+        final String methodName = "addCohortRegistration";
+        try {
+            MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
+                                                                                             serverToBeConfiguredName,
+                                                                                             this.platformURL);
+            client.addCohortRegistration(cohortName,dedicatedTopics, additionalProperties);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGConfigurationErrorException error) {
+            // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
+            // configured in this view service.
+           throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
     }
 }
 

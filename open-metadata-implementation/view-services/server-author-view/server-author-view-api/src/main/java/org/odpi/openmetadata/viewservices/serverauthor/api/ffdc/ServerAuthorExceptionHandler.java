@@ -64,7 +64,7 @@ public class ServerAuthorExceptionHandler {
      * @return mapped Server author View Exception
      */
     public static ServerAuthorViewServiceException mapToUserNotAuthorizedException(String            className,
-                                                                                     String            methodName)
+                                                                                   String            methodName)
     {
         return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(),
                                            className,
@@ -78,7 +78,9 @@ public class ServerAuthorExceptionHandler {
      * @param omagException supplied OMAGInvalidParameterException
      * @return mapped Server author View Exception
      */
-    public static ServerAuthorViewServiceException mapOMAGInvalidParameterException(String className, String methodName, OMAGInvalidParameterException omagException)
+    public static ServerAuthorViewServiceException mapOMAGInvalidParameterException(String className,
+                                                                                    String methodName,
+                                                                                    OMAGInvalidParameterException omagException)
     {
         String parameterName = omagException.getReportedErrorMessageParameters()[0];
         return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, parameterName),
