@@ -167,7 +167,7 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
                                         adminUserId,
                                         serverName,
                                         cohortName,
-                                        cohortTopicStructure);
+                                        cohortTopicStructure.name());
     }
 
 

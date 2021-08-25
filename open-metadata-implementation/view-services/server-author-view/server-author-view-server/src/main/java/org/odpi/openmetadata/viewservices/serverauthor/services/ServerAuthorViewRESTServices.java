@@ -864,14 +864,12 @@ public class ServerAuthorViewRESTServices {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @param dedicatedTopics topic structure
-     * @param additionalProperties additional properties for the event bus connection
      * @return VoidResponse or
      * ServerAuthorException if the supplied userId is not authorized to issue this command or
      * invalid serverName, cohortName or serviceMode parameter or
      * or the cohort registration failed
      */
-    public VoidResponse addCohortRegistration(String userId, String serverName, String cohortName, CohortTopicStructure dedicatedTopics, Map<String, Object> additionalProperties) {
+    public VoidResponse addCohortRegistration(String userId, String serverName, String cohortName) {
         String methodName = "addCohortRegistration";
         if (log.isDebugEnabled()) {
             log.debug("Entering method: " + methodName + " with serverName " + serverName);
@@ -883,7 +881,7 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // register new cohort
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            handler.addCohortRegistration(serverName, cohortName, dedicatedTopics, additionalProperties);
+            handler.addCohortRegistration(serverName, cohortName);
         } catch (Exception exception) {
             restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }

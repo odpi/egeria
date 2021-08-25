@@ -245,7 +245,6 @@ class ConfigRepositoryServicesViewResource {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @param additionalProperties additional properties for the event bus connection
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter or
@@ -254,10 +253,9 @@ class ConfigRepositoryServicesViewResource {
     @PostMapping(path = "/cohorts/{cohortName}")
     public VoidResponse addCohortRegistration(@PathVariable                   String               userId,
                                               @PathVariable                   String               serverName,
-                                              @PathVariable                   String               cohortName,
-                                              @RequestBody(required = false)  Map<String, Object>  additionalProperties)
+                                              @PathVariable                   String               cohortName)
     {
-        return serverAPI.addCohortRegistration(userId, serverName, cohortName, CohortTopicStructure.DEDICATED_TOPICS, additionalProperties);
+        return serverAPI.addCohortRegistration(userId, serverName, cohortName);
     }
 
 }

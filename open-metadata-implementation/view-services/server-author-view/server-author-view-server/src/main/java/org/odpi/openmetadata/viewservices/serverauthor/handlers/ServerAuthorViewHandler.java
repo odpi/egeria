@@ -751,20 +751,17 @@ public class ServerAuthorViewHandler {
      * They are also able to query each other's metadata directly through REST calls.
      *
      * @param cohortName  name of the cohort.
-     * @param dedicatedTopics topic structure
-     * @param additionalProperties additional properties for the event bus connection
      * @throws ServerAuthorViewServiceException error occurred during the registration of the cohort
      */
     public void addCohortRegistration(String serverToBeConfiguredName,
-                                      String cohortName,
-                                      CohortTopicStructure dedicatedTopics,
-                                      Map<String, Object> additionalProperties) throws ServerAuthorViewServiceException {
+                                      String cohortName
+                                    ) throws ServerAuthorViewServiceException {
         final String methodName = "addCohortRegistration";
         try {
             MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
                                                                                              serverToBeConfiguredName,
                                                                                              this.platformURL);
-            client.addCohortRegistration(cohortName,dedicatedTopics, additionalProperties);
+            client.addCohortRegistration(cohortName,null);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
         } catch (OMAGNotAuthorizedException error) {

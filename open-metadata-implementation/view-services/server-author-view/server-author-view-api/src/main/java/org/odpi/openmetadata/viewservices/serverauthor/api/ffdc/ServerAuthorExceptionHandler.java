@@ -96,7 +96,7 @@ public class ServerAuthorExceptionHandler {
      * @return ServerAuthorViewServiceException Server Author View Service Exception
      */
     public static ServerAuthorViewServiceException mapOMAGConfigurationErrorException(String className, String methodName, OMAGConfigurationErrorException error) {
-        return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.CONFIG_ERROR.getMessageDefinition(),
+        return new ServerAuthorViewServiceException(ServerAuthorViewErrorCode.CONFIG_ERROR.getMessageDefinition(methodName),
                                                     className,
                                                     methodName);
     }
