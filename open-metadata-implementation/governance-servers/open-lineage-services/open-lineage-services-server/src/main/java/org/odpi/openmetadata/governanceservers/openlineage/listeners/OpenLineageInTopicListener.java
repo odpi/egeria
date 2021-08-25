@@ -6,10 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -58,7 +58,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             }
         } catch (JsonProcessingException e) {
             logException(assetLineageEvent, e);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.error("Exception processing the in topic event", e);
             OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.PROCESS_EVENT_EXCEPTION;
 
@@ -139,6 +139,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             case LINEAGE_SYNC_EVENT:
                 lineageSyncEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageSyncEvent.class);
                 storingServices.apply(lineageSyncEvent);
+                break;
             default:
                 break;
         }

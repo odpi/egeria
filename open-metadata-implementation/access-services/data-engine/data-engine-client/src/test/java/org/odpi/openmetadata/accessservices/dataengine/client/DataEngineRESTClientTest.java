@@ -43,7 +43,7 @@ public class DataEngineRESTClientTest {
     private DataEngineRESTClient dataEngineRESTClient;
 
     @Before
-    public void before() throws Exception {
+    public void before() throws InvalidParameterException {
         MockitoAnnotations.openMocks(this);
 
         dataEngineRESTClient = new DataEngineRESTClient(SERVER_NAME, SERVER_URL);
@@ -76,7 +76,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertRelationalTable"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable);
+        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName");
         assertEquals(GUID, response.getGUID());
     }
 

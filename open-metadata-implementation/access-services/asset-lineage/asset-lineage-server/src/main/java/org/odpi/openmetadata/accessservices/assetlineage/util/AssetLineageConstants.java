@@ -21,6 +21,7 @@ public final class AssetLineageConstants {
     public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
     //Area 5 Types
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE = "RelationalTable";

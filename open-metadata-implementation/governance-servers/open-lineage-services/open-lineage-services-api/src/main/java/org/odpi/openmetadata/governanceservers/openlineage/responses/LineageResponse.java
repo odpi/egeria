@@ -6,8 +6,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.EqualsAndHashCode;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+
+import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class"
 )
-public class LineageResponse extends FFDCResponseBase {
+@EqualsAndHashCode
+public class LineageResponse extends FFDCResponseBase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public LineageResponse(){}
 

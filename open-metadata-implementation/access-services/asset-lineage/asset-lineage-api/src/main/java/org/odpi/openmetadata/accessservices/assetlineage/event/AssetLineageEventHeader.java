@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -28,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LineageSyncEvent.class, name = "LineageSyncEvent")
 })
 
-public abstract class AssetLineageEventHeader {
+public abstract class AssetLineageEventHeader implements Serializable {
 
     private long eventVersionId = 1L;
 

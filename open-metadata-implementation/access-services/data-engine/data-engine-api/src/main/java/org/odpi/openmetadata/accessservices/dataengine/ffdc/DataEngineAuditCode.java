@@ -26,19 +26,19 @@ public enum DataEngineAuditCode {
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Data Engine OMAS.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NO_ACTION_IS_REQUIRED),
 
     SERVICE_INITIALIZED("OMAS-DATA-ENGINE-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Data Engine OMAS has completed initialization of a new instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NO_ACTION_IS_REQUIRED),
 
     SERVICE_SHUTDOWN("OMAS-DATA-ENGINE-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Data Engine OMAS instance.",
-            "No action is required.  This is part of the normal operation of the service."),
+            Constants.NO_ACTION_IS_REQUIRED),
 
     SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0004",
             OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -114,4 +114,7 @@ public enum DataEngineAuditCode {
         return messageDefinition;
     }
 
+    private static class Constants {
+        public static final String NO_ACTION_IS_REQUIRED = "No action is required.  This is part of the normal operation of the service.";
+    }
 }

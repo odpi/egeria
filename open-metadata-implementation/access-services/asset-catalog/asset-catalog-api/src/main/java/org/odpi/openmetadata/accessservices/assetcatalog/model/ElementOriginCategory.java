@@ -42,9 +42,7 @@ public enum ElementOriginCategory implements Serializable
     CONFIGURATION           (5, "Configuration",           "The element is part of a service's configuration.  The metadata collection id is null."),
     EXTERNAL_SOURCE         (6, "External Source",         "The element is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
 
-    private static final long     serialVersionUID = 1L;
-
-
+    private static final long serialVersionUID = 1L;
 
     /**
      *  The code for metadata element.

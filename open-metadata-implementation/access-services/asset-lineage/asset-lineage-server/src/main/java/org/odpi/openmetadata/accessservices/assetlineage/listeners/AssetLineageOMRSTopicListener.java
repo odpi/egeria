@@ -65,24 +65,20 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param repositoryHelper     helper object for building and querying TypeDefs and metadata instances
-     * @param outTopicConnector    The connector used for the Asset Lineage OMAS Out Topic
-     * @param serverName           name of this server instance
-     * @param serverUserName       name of the user of the server instance
-     * @param accessServiceOptions options passed to the access service.
+     * @param converter  The converter used for creating entities in Open Lineage format
+     * @param serverName name of this server instance
+     * @param publisher  instance of the asset-lineage topic publisherT
      */
-    public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
-                                         OpenMetadataTopicConnector outTopicConnector,
-                                         String serverName, String serverUserName,
+    public AssetLineageOMRSTopicListener(Converter converter,
+                                         String serverName,
+                                         AssetLineagePublisher publisher,
                                          Set<String> lineageClassificationTypes,
-                                         AuditLog auditLog,
-                                         Map<String, Object> accessServiceOptions)
-            throws OCFCheckedExceptionBase {
-        this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
+                                         AuditLog auditLog) {
+        this.publisher = publisher;
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.auditLog = auditLog;
         this.serverName = serverName;
-        converter = new Converter(repositoryHelper);
+        this.converter = converter;
     }
 
     /**
@@ -99,8 +95,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent event) {
-        log.trace("Ignoring registry event: " + event.toString());
+        log.trace("Ignoring registry event: {}", event);
     }
 
     /**
@@ -108,8 +105,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        log.trace("Ignoring type event: " + event.toString());
+        log.trace("Ignoring type event: {}", event);
     }
 
     /**
@@ -117,6 +115,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
         if (instanceEvent == null) {
             return;
@@ -157,6 +156,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     break;
                 case DELETED_RELATIONSHIP_EVENT:
                     processDeletedRelationshipEvent(relationship);
+                    break;
+                default:
                     break;
             }
         } catch (OCFCheckedExceptionBase e) {
@@ -258,6 +259,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         if (!anyLineageClassificationsLeft(entityDetail))
             return;
+
+        if (!publisher.isEntityEligibleForPublishing(entityDetail)) {
+            return;
+        }
 
         log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.RECLASSIFIED_ENTITY_EVENT.getEventTypeName(),
                 entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
@@ -363,11 +368,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @return true if the it is a lineage relationship
      */
     private boolean isLineageRelationship(Relationship relationship) {
-        if (!isRelationshipValid(relationship)) {
-            return false;
+        if (isRelationshipValid(relationship)) {
+            return immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName());
         }
-
-        return immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName());
+        return false;
     }
 
     /**
@@ -426,7 +430,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @return true if the relationship type is available and if the both ends of the relationship are available
      */
-    private Boolean isRelationshipValid(Relationship relationship) {
+    private boolean isRelationshipValid(Relationship relationship) {
         return relationship.getType() != null
                 && relationship.getType().getTypeDefName() != null
                 && relationship.getEntityOneProxy() != null

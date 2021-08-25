@@ -12,7 +12,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -28,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @EqualsAndHashCode
 @ToString
 public class ProcessHierarchy implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * The parent process

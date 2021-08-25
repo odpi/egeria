@@ -3,11 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -29,14 +27,14 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
      * @return handler object
      */
     @Getter
-    private AssetCatalogHandler assetCatalogHandler;
+    private final AssetCatalogHandler assetCatalogHandler;
 
     /**
      * Return the handler for relationships requests
      * @return handler object
      */
     @Getter
-    private RelationshipHandler relationshipHandler;
+    private final RelationshipHandler relationshipHandler;
 
     /**
      * @param repositoryConnector     link to the repository responsible for servicing the REST calls.
