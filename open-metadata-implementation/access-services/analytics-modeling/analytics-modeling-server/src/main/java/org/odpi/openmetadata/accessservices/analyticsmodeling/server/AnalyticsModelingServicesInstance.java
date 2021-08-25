@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaCo
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -83,8 +83,6 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
                 publishZones,
                 auditLog);
         
-        databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDao, invalidParameterHandler);
-        
         ExecutionContext ctx = new ExecutionContext(
     			serviceName,
     			serverName,
@@ -97,6 +95,8 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
     			defaultZones,
     			publishZones,
     			auditLog);
+
+        databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDao, ctx);
 
         artifactHandler = new AnalyticsArtifactHandler(ctx);
     }
