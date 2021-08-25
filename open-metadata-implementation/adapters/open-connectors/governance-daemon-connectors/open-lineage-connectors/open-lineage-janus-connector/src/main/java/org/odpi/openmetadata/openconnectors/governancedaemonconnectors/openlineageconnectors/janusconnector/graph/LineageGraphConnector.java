@@ -405,10 +405,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     private List<String> getAllNeighbours(String entityGUID) {
-        Iterator<Vertex> exitingVertices = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE().otherV();
+        GraphTraversal<Vertex, Vertex> exitingVertices = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE().otherV();
+
         List<String> existingGUIDs = new ArrayList<>();
         while (exitingVertices.hasNext()) {
-            existingGUIDs.add((String) exitingVertices.next().property(PROPERTY_KEY_ENTITY_GUID).value());
+            Map<Object, Object> valueMap = g.V(exitingVertices.next().id()).valueMap(PROPERTY_KEY_ENTITY_GUID).next();
+            if (valueMap.containsKey(PROPERTY_KEY_ENTITY_GUID)) {
+                existingGUIDs.addAll((List<String>) valueMap.get(PROPERTY_KEY_ENTITY_GUID));
+            }
         }
         return existingGUIDs;
     }
@@ -427,9 +431,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Edge> existingEdges = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE();
         while (existingEdges.hasNext()) {
             Edge edge = existingEdges.next();
-            String inVertexGuid = (String) edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
-            String outVertexGuid = (String) edge.outVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
-            if (obsoleteNeighbours.contains(inVertexGuid) || obsoleteNeighbours.contains(outVertexGuid)) {
+            List<String> inVertexGuid = (List<String>) g.V(edge.inVertex()).valueMap(PROPERTY_KEY_ENTITY_GUID).next().get(PROPERTY_KEY_ENTITY_GUID);
+            List<String> outVertexGuid =  (List<String>) g.V(edge.outVertex()).valueMap(PROPERTY_KEY_ENTITY_GUID).next().get(PROPERTY_KEY_ENTITY_GUID);
+            if (obsoleteNeighbours.containsAll(inVertexGuid) || obsoleteNeighbours.containsAll(outVertexGuid)) {
                 commit(graphFactory, g, dropEdgeFromGraph, edge, "Could not drop edge " + edge.id());
             }
         }

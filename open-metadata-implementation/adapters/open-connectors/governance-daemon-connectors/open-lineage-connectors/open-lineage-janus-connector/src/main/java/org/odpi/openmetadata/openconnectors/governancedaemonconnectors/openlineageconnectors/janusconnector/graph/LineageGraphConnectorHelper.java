@@ -905,7 +905,7 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getTabularColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-        GraphTraversal<Vertex, Map<Object, Object>> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE)).valueMap();
+        GraphTraversal<Vertex, Map<Object, List<String>>> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE)).valueMap();
 //        Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
 //        commitTransaction();
         if (tabularSchemaType.hasNext()) {
@@ -975,24 +975,24 @@ public class LineageGraphConnectorHelper {
         } else if (vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()) {
             return vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString();
             */
-        GraphTraversal<Vertex, Map<Object, Object>> vertexMapGraphTraversal = g.V(vertex.id()).valueMap();
+        GraphTraversal<Vertex, Map<Object, List<String>>> vertexMapGraphTraversal = g.V(vertex.id()).valueMap();
         if (!vertexMapGraphTraversal.hasNext()){
             return null;
         }
-        Map<Object, Object> vertexMap = vertexMapGraphTraversal.next();
+        Map<Object, List<String>> vertexMap = vertexMapGraphTraversal.next();
         if (vertexMap.containsKey(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)) {
-            return vertexMap.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
+            return vertexMap.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).get(0);
         } else if (vertexMap.containsKey(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME)) {
-            return vertexMap.get(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).toString();
+            return vertexMap.get(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).get(0);
         }
         return null;
     }
 
-    private String getDisplayNameForVertex(Map<Object, Object> vertex) {
+    private String getDisplayNameForVertex(Map<Object, List<String>> vertex) {
         if (vertex.containsKey(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)) {
-            return vertex.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
+            return vertex.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).get(0);
         } else if (vertex.containsKey(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME)) {
-            return vertex.get(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).toString();
+            return vertex.get(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).get(0);
         }
         return null;
     }
@@ -1058,7 +1058,7 @@ public class LineageGraphConnectorHelper {
             Map<Object, Object> transformationProjectValueMap = transformationProject.next();
             if (transformationProjectValueMap.containsKey(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)) {
             properties.put(TRANSFORMATION_PROJECT_KEY,
-                    transformationProjectValueMap.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString());
+                    ((List<String>)transformationProjectValueMap.get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)).get(0));
             }
         }
         return properties;
@@ -1066,10 +1066,10 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getGlossaryTermProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-        GraphTraversal<Vertex, Map<Object, Object>> glossary = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(GLOSSARY)).valueMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
+        GraphTraversal<Vertex, Map<Object, List<String>>> glossary = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(GLOSSARY)).valueMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME);
         commitTransaction();
         if (glossary.hasNext()) {
-            properties.put(GLOSSARY_KEY, glossary.next().get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString());
+            properties.put(GLOSSARY_KEY, glossary.next().get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).get(0));
         }
         return properties;
     }
