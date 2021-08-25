@@ -28,6 +28,6 @@ jobs:
           stale-pr-label: 'no-pr-activity'
           days-before-stale: 60
           days-before-close: 20
-          exempt-issue-label: 'pinned'
-          exempt-pr-label: 'pinned'
+          exempt-issue-labels: 'pinned'
+          exempt-pr-labels: 'pinned'
           operations-per-run: 30

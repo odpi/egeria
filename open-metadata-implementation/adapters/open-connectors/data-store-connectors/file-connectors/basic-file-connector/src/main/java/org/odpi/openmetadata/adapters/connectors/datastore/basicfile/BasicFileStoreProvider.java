@@ -15,6 +15,7 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
     private static final String  connectorTypeGUID = "ba213761-f5f5-4cf5-a95f-6150aef09e0b";
     private static final String  connectorTypeName = "Basic File Store Connector";
     private static final String  connectorTypeDescription = "Connector supports reading of Files.";
+    private static final String  assetTypeName = "DataFile";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -22,9 +23,13 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
      */
     public BasicFileStoreProvider()
     {
+        super();
+
         Class<BasicFileStoreConnector>  connectorClass = BasicFileStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+
+        connectorInterfaces.add(BasicFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
@@ -32,6 +37,8 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
+        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setConnectorInterfaces(connectorInterfaces);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;

@@ -31,6 +31,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>files-integration-connectors</module>
+        <module>kafka-integration-connector</module>
+        <module>openapi-integration-connector</module>
     </modules>
 
 </project>

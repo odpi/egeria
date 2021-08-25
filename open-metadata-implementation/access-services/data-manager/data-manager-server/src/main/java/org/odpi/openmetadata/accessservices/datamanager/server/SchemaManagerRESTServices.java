@@ -17,6 +17,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -282,7 +284,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -291,11 +293,11 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueSetsResponse getValidValueSetByName(String serverName,
-                                                         String userId,
-                                                         String name,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public ValidValueSetsResponse getValidValueSetByName(String          serverName,
+                                                         String          userId,
+                                                         NameRequestBody requestBody,
+                                                         int             startFrom,
+                                                         int             pageSize)
     {
         final String methodName        = "getValidValueSetByName";
         final String nameParameterName = "name";
@@ -309,16 +311,23 @@ public class SchemaManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueSetElement,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ValidValuesHandler<ValidValueSetElement,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getValidValueByName(userId, name, nameParameterName, startFrom, pageSize, methodName));
+                response.setElementList(handler.getValidValueByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -337,7 +346,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -346,11 +355,11 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueSetsResponse findValidValueSet(String serverName,
-                                                    String userId,
-                                                    String searchString,
-                                                    int    startFrom,
-                                                    int    pageSize)
+    public ValidValueSetsResponse findValidValueSet(String                  serverName,
+                                                    String                  userId,
+                                                    SearchStringRequestBody requestBody,
+                                                    int                     startFrom,
+                                                    int                     pageSize)
     {
         final String methodName                = "findValidValueSet";
         final String searchStringParameterName = "searchString";
@@ -364,16 +373,24 @@ public class SchemaManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueSetElement,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean,
-                                      OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                ValidValuesHandler<ValidValueSetElement,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean,
+                                          OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.findValidValues(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName));
+                response.setElementList(
+                        handler.findValidValues(userId, requestBody.getSearchString(), searchStringParameterName, startFrom, pageSize, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -805,7 +822,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -815,12 +832,12 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypesResponse findSchemaType(String serverName,
-                                              String userId,
-                                              String typeName,
-                                              String searchString,
-                                              int    startFrom,
-                                              int    pageSize)
+    public SchemaTypesResponse findSchemaType(String                  serverName,
+                                              String                  userId,
+                                              String                  typeName,
+                                              SearchStringRequestBody requestBody,
+                                              int                     startFrom,
+                                              int                     pageSize)
     {
         final String methodName                = "findSchemaType";
 
@@ -833,16 +850,23 @@ public class SchemaManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
-            List<SchemaTypeElement> results = handler.findSchemaTypes(userId,
-                                                                      typeName,
-                                                                      searchString,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      methodName);
+                List<SchemaTypeElement> results = handler.findSchemaTypes(userId,
+                                                                          typeName,
+                                                                          requestBody.getSearchString(),
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          methodName);
 
-            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -910,7 +934,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -920,12 +944,12 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypesResponse getSchemaTypeByName(String serverName,
-                                                   String userId,
-                                                   String typeName,
-                                                   String name,
-                                                   int    startFrom,
-                                                   int    pageSize)
+    public SchemaTypesResponse getSchemaTypeByName(String          serverName,
+                                                   String          userId,
+                                                   String          typeName,
+                                                   NameRequestBody requestBody,
+                                                   int             startFrom,
+                                                   int             pageSize)
     {
         final String methodName = "getSchemaTypeByName";
 
@@ -938,16 +962,23 @@ public class SchemaManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
-            List<SchemaTypeElement> results = handler.getSchemaTypeByName(userId,
-                                                                          typeName,
-                                                                          name,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          methodName);
+                List<SchemaTypeElement> results = handler.getSchemaTypeByName(userId,
+                                                                              typeName,
+                                                                              requestBody.getName(),
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              methodName);
 
-            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1568,7 +1599,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1578,12 +1609,12 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributesResponse findSchemaAttributes(String serverName,
-                                                         String userId,
-                                                         String typeName,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public SchemaAttributesResponse findSchemaAttributes(String                  serverName,
+                                                         String                  userId,
+                                                         String                  typeName,
+                                                         SearchStringRequestBody requestBody,
+                                                         int                     startFrom,
+                                                         int                     pageSize)
     {
         final String methodName                = "findSchemaAttributes";
         final String searchStringParameterName = "searchString";
@@ -1606,7 +1637,7 @@ public class SchemaManagerRESTServices
             if (typeDef != null)
             {
                 List<SchemaAttributeElement> results = handler.findSchemaAttributes(userId,
-                                                                                    searchString,
+                                                                                    requestBody.getSearchString(),
                                                                                     searchStringParameterName,
                                                                                     typeDef.getGUID(),
                                                                                     typeDef.getName(),
@@ -1692,7 +1723,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1702,12 +1733,12 @@ public class SchemaManagerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributesResponse getSchemaAttributesByName(String serverName,
-                                                              String userId,
-                                                              String typeName,
-                                                              String name,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public SchemaAttributesResponse getSchemaAttributesByName(String          serverName,
+                                                              String          userId,
+                                                              String          typeName,
+                                                              NameRequestBody requestBody,
+                                                              int             startFrom,
+                                                              int             pageSize)
     {
         final String methodName        = "getSchemaAttributesByName";
         final String nameParameterName = "name";
@@ -1721,25 +1752,32 @@ public class SchemaManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaAttributeHandler<SchemaAttributeElement,
-                                          SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
-
-            TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
-
-            if (typeDef != null)
+            if (requestBody != null)
             {
-                List<SchemaAttributeElement> results = handler.getSchemaAttributesByName(userId,
-                                                                                         name,
-                                                                                         nameParameterName,
-                                                                                         typeDef.getGUID(),
-                                                                                         typeDef.getName(),
-                                                                                         null,
-                                                                                         null,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         methodName);
+                SchemaAttributeHandler<SchemaAttributeElement,
+                                              SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+
+                if (typeDef != null)
+                {
+                    List<SchemaAttributeElement> results = handler.getSchemaAttributesByName(userId,
+                                                                                             requestBody.getName(),
+                                                                                             nameParameterName,
+                                                                                             typeDef.getGUID(),
+                                                                                             typeDef.getName(),
+                                                                                             null,
+                                                                                             null,
+                                                                                             startFrom,
+                                                                                             pageSize,
+                                                                                             methodName);
+
+                    response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)

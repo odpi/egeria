@@ -16,6 +16,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
  * access service in the server and it can be configured and used.
  */
 class AssetLineageRegistration {
+
+    private AssetLineageRegistration() {}
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */

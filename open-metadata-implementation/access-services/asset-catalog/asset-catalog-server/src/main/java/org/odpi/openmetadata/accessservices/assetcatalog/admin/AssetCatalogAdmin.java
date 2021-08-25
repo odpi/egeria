@@ -3,12 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
+import org.odpi.openmetadata.accessservices.assetcatalog.listenenrs.AssetCatalogOMRSTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.Collections;
@@ -21,7 +24,8 @@ import java.util.List;
  */
 public class AssetCatalogAdmin extends AccessServiceAdmin {
 
-    public static final String SUPPORTED_TYPES_FOR_SEARCH = "SupportedTypesForSearch";
+    public static final String SUPPORTED_TYPES_FOR_SEARCH   = "SupportedTypesForSearch";
+    public static final String ENABLE_INDEX_EVENTS          = "EnableIndexingEvents";
     private AuditLog auditLog;
     private String serverName;
     private AssetCatalogServicesInstance instance;
@@ -36,6 +40,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      */
+    @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
@@ -57,14 +62,65 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverUserName,
                     accessServiceConfigurationProperties.getAccessServiceName(), supportedTypesForSearch);
 
+
+            boolean indexingEnabled = this.isIndexingEnabled(accessServiceConfigurationProperties);
+
+            if(indexingEnabled) {
+                registerListener(accessServiceConfigurationProperties,
+                        enterpriseOMRSTopicConnector,
+                        repositoryConnector,
+                        auditLog);
+            }
+
             this.serverName = instance.getServerName();
 
             auditLog.logMessage(actionDescription, AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
+
         } catch (Exception error) {
             auditLog.logException(actionDescription, AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
 
             super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceFullName(), error);
         }
+    }
+
+    private void registerListener(AccessServiceConfig accessServiceConfigurationProperties,
+                                  OMRSTopicConnector enterpriseOMRSTopicConnector,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  AuditLog auditLog) throws OMAGConfigurationErrorException {
+
+        Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+
+        String serviceName = accessServiceConfigurationProperties.getAccessServiceName();
+
+        OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(
+                outTopicConnection,
+                accessServiceConfigurationProperties.getAccessServiceName(),
+                auditLog);
+
+        List<String> supportedZones = this.extractSupportedZones(
+                accessServiceConfigurationProperties.getAccessServiceOptions(),
+                serviceName,
+                auditLog);
+
+        List<String> supportedTypesForSearch = getSupportedTypesForSearchOption(accessServiceConfigurationProperties);
+
+        AssetCatalogOMRSTopicListener omrsTopicListener = new AssetCatalogOMRSTopicListener(
+                serviceName,
+                auditLog,
+                outTopicConnector,
+                repositoryConnector.getRepositoryHelper(),
+                repositoryConnector.getRepositoryValidator(),
+                serverName,
+                supportedZones,
+                supportedTypesForSearch
+                );
+
+        super.registerWithEnterpriseTopic(
+                serviceName,
+                serverName,
+                enterpriseOMRSTopicConnector,
+                omrsTopicListener,
+                auditLog);
     }
 
     /**
@@ -82,6 +138,19 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
         }
     }
 
+    private boolean isIndexingEnabled(AccessServiceConfig accessServiceConfigurationProperties) {
+        if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
+            return (Boolean) accessServiceConfigurationProperties.getAccessServiceOptions().getOrDefault(ENABLE_INDEX_EVENTS, Boolean.FALSE);
+        }
+        return false;
+    }
+
+
+    /**
+     *
+     * @param accessServiceConfigurationProperties service configuration object
+     * @return the list of supported types for search
+     */
     private List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfigurationProperties) {
         if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
             Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);

@@ -12,7 +12,6 @@ import lombok.ToString;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 

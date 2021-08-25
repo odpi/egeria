@@ -19,6 +19,8 @@
  *
  *     <li>APIManagerClient enables the caller to define APIs that are supported by a server or API gateway.</li>
  *
+ *     <li>ConnectionManagerClient enables the caller maintain connection information.</li>
+ *
  *     <li>DataManagerEventClient enables the client to send and receive events from the Data Manager OMAS.</li>
  * </ul>
  */

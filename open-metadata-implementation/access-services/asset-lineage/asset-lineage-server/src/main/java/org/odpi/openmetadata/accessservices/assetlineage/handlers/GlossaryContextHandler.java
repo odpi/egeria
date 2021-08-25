@@ -45,14 +45,12 @@ public class GlossaryContextHandler {
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
+     * @param handlerHelper           the helper handler
      */
-    public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                  RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
-                                  Set<String> lineageClassificationTypes) {
+    public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler,  AssetContextHandler assetContextHandler,
+                                  HandlerHelper handlerHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.handlerHelper = handlerHelper;
         this.assetContextHandler = assetContextHandler;
     }
 
@@ -238,7 +236,7 @@ public class GlossaryContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Set<EntityDetail> getSchemaElementsAttached(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+    private Set<EntityDetail> getSchemaElementsAttached(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), GLOSSARY_TERM);
 
         Set<EntityDetail> schemaElements = new HashSet<>();

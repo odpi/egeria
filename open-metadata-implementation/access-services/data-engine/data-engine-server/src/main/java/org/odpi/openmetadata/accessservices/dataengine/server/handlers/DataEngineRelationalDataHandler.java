@@ -13,12 +13,10 @@ import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
@@ -40,8 +38,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRelationalDataHandler {
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
-    private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType>
             relationalDataHandler;
@@ -55,15 +51,12 @@ public class DataEngineRelationalDataHandler {
      * @param serviceName                            name of this service
      * @param serverName                             name of the local server
      * @param invalidParameterHandler                handler for managing parameter errors
-     * @param repositoryHandler                      manages calls to the repository services
-     * @param repositoryHelper                       provides utilities for manipulating the repository services objects
      * @param relationalDataHandler                  provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler                provides utilities for manipulating entities
      * @param registrationHandler                    creates software server capability entities
      * @param dataEngineConnectionAndEndpointHandler provides utilities specific for manipulating Connections and Endpoints
      **/
     public DataEngineRelationalDataHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                           RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
                                            RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
                                                    SchemaType> relationalDataHandler, DataEngineRegistrationHandler registrationHandler,
                                            DataEngineCommonHandler dataEngineCommonHandler,
@@ -72,8 +65,6 @@ public class DataEngineRelationalDataHandler {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.relationalDataHandler = relationalDataHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;

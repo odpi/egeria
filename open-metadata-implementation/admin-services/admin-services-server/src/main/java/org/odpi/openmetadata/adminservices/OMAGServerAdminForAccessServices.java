@@ -373,6 +373,193 @@ public class OMAGServerAdminForAccessServices
     }
 
 
+
+    /**
+     * Enable a single access service.
+     * This version of the call does not set up the InTopic nor the OutTopic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serviceURLMarker access service name used in URL
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     *
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse configureAccessServiceNoTopics(String              userId,
+                                                       String              serverName,
+                                                       String              serviceURLMarker,
+                                                       Map<String, Object> accessServiceOptions)
+    {
+        final String methodName = "configureAccessServiceNoTopics";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
+            EnterpriseAccessConfig    enterpriseAccessConfig  = this.getEnterpriseAccessConfig(serverConfig);
+
+            /*
+             * Get the registration information for this access service.
+             */
+            AccessServiceRegistration accessServiceRegistration = OMAGAccessServiceRegistration.getAccessServiceRegistration(serviceURLMarker);
+
+            errorHandler.validateAccessServiceIsRegistered(accessServiceRegistration, serviceURLMarker, serverName, methodName);
+
+            accessServiceConfigList = this.updateAccessServiceConfig(createAccessServiceConfig(accessServiceRegistration,
+                                                                                               accessServiceOptions,
+                                                                                               null,
+                                                                                               serverName,
+                                                                                               serverConfig.getLocalServerId()),
+                                                                     accessServiceConfigList);
+
+
+            if (enterpriseAccessConfig == null)
+            {
+                /*
+                 * Set up the enterprise repository services if this is the first access service.
+                 */
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                                                                                               serverConfig.getLocalServerId());
+            }
+
+            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Enable all access services that are registered with this server platform.   The configuration properties
+     * for each access service can be changed from their default using setAccessServicesConfig operation.
+     * This version of the call does not set up the InTopic nor the OutTopic.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse configureAllAccessServicesNoTopics(String              userId,
+                                                           String              serverName,
+                                                           Map<String, Object> accessServiceOptions)
+    {
+        final String methodName = "configureAllAccessServices";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<AccessServiceConfig> accessServiceConfigList = new ArrayList<>();
+            EnterpriseAccessConfig    enterpriseAccessConfig  = null;
+
+            /*
+             * Get the list of Access Services implemented in this server.
+             */
+            List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+
+            /*
+             * Set up the available access services.
+             */
+            if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
+            {
+                for (AccessServiceRegistration registration : accessServiceRegistrationList)
+                {
+                    if (registration != null)
+                    {
+                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        {
+                            accessServiceConfigList.add(createAccessServiceConfig(registration,
+                                                                                  accessServiceOptions,
+                                                                                  null,
+                                                                                  serverName,
+                                                                                  serverConfig.getLocalServerId()));
+                        }
+                    }
+                }
+
+                /*
+                 * Now set up the enterprise repository services.
+                 */
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                                                                                               serverConfig.getLocalServerId());
+            }
+
+            if (accessServiceConfigList.isEmpty())
+            {
+                accessServiceConfigList = null;
+            }
+
+            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Set up the configuration for a single access service.
      *

@@ -20,6 +20,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorResourceEndpointListResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.SupportedAuditLogSeveritiesResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.handlers.ServerAuthorViewHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.initialization.ServerAuthorViewInstanceHandler;
 import org.slf4j.Logger;
@@ -781,6 +782,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -793,9 +795,11 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException the server name is invalid or
      * ServerAuthorViewServiceException The Server Author has detected an error.
      */
-    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId, String serverName) {
         String methodName = "getKnownPlatforms";
-
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
         ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
 
         AuditLog auditLog = null;
@@ -803,15 +807,47 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // get the defined platforms from the config
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName, auditLog));
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
             restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
         return response;
+    }
+    /**
+     * Get the audit log supported severities for the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public SupportedAuditLogSeveritiesResponse getAuditLogDestinationSupportedSeverities(String userId, String serverName, String serverToBeConfiguredName) {
+        String methodName = " getAuditLogDestinationSupportedSeverities";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
+        SupportedAuditLogSeveritiesResponse response = new SupportedAuditLogSeveritiesResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            response.setSeverities(handler.getSupportedAuditLogSeverities());
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+
     }
 }

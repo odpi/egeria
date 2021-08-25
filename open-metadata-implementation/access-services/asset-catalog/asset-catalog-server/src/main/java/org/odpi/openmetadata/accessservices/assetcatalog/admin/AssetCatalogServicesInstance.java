@@ -27,14 +27,14 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
      * @return handler object
      */
     @Getter
-    private AssetCatalogHandler assetCatalogHandler;
+    private final AssetCatalogHandler assetCatalogHandler;
 
     /**
      * Return the handler for relationships requests
      * @return handler object
      */
     @Getter
-    private RelationshipHandler relationshipHandler;
+    private final RelationshipHandler relationshipHandler;
 
     /**
      * @param repositoryConnector     link to the repository responsible for servicing the REST calls.
@@ -48,7 +48,11 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
                                  AuditLog auditLog, String serverUserName, String sourceName,
                                  List<String> supportedTypesForSearch) throws NewInstanceException {
 
-        super(description.getAccessServiceName() + " OMAS", repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
+        super(description.getAccessServiceName() + " OMAS",
+                repositoryConnector,
+                auditLog,
+                serverUserName,
+                repositoryConnector.getMaxPageSize());
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
