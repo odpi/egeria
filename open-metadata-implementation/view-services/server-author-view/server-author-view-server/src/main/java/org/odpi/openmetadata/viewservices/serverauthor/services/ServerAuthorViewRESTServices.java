@@ -890,8 +890,36 @@ public class ServerAuthorViewRESTServices {
             log.debug("Returning from method: " + methodName + " with response: " + response.toString());
         }
         return response;
+    }
+    /**
+     * Unregister this server from an open metadata repository cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     */
+    public VoidResponse removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "removeCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
 
-
-
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // unregister cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.removeCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
     }
 }

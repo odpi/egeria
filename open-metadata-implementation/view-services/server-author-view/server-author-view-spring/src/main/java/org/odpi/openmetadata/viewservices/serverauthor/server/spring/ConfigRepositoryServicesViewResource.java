@@ -258,5 +258,24 @@ class ConfigRepositoryServicesViewResource {
     {
         return serverAPI.addCohortRegistration(userId, serverName, serverToBeConfiguredName,  cohortName);
     }
+    /**
+     * Unregister this server from an open metadata repository cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     */
+    @DeleteMapping(path = "/cohorts/{cohortName}")
+    public VoidResponse removeCohortRegistration(@PathVariable                String               userId,
+                                              @PathVariable                   String               serverName,
+                                              @PathVariable                   String               serverToBeConfiguredName,
+                                              @PathVariable                   String               cohortName)
+    {
+        return serverAPI.removeCohortRegistration(userId, serverName, serverToBeConfiguredName,  cohortName);
+    }
+
 
 }
