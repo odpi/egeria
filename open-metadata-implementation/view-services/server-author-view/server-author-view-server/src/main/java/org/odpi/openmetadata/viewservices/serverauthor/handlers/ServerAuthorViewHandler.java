@@ -6,6 +6,8 @@ import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurati
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
@@ -28,6 +30,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.StoredServer;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReportSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+
 
 import java.util.*;
 
@@ -737,6 +740,62 @@ public class ServerAuthorViewHandler {
      */
     public List<OMRSAuditLogReportSeverity> getSupportedAuditLogSeverities() {
        return OMRSAuditLogRecordSeverity.getSeverityList();
+    }
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param serverToBeConfiguredName  server being configured
+     * @param cohortName  name of the cohort.
+     * @throws ServerAuthorViewServiceException error occurred during the registration of the cohort
+     */
+    public void addCohortRegistration(String serverToBeConfiguredName,
+                                      String cohortName
+                                    ) throws ServerAuthorViewServiceException {
+        final String methodName = "addCohortRegistration";
+        try {
+            MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
+                                                                                             serverToBeConfiguredName,
+                                                                                             this.platformURL);
+            client.addCohortRegistration(cohortName,null);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGConfigurationErrorException error) {
+            // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
+            // configured in this view service.
+           throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
+     * Unregister this server from an open metadata repository cohort.
+     *
+     * @param serverToBeConfiguredName  server being configured
+     * @param cohortName  name of the cohort.
+     * @throws ServerAuthorViewServiceException error occurred during the unregistration of the cohort
+     */
+    public void removeCohortRegistration(String serverToBeConfiguredName, String cohortName ) throws ServerAuthorViewServiceException {
+        final String methodName = "removeCohortRegistration";
+        try {
+            MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
+                                                                                             serverToBeConfiguredName,
+                                                                                             this.platformURL);
+            client.clearCohortRegistration(cohortName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGConfigurationErrorException error) {
+            // if we have a configuration error, this is likely because we could not contact the platform using the platform root URL
+            // configured in this view service.
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
     }
 }
 
