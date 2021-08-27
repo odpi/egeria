@@ -1408,6 +1408,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaType());
         this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaElementType());
         this.archiveBuilder.addTypeDefPatch(deprecateArraySchemaType());
+        this.archiveBuilder.addTypeDefPatch(deprecateArrayDocumentType());
         this.archiveBuilder.addTypeDefPatch(deprecateSetSchemaType());
     }
 
@@ -1431,7 +1432,7 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * Deprecate the BoundedSchemaType
+     * Deprecate the BoundedSchemaElementType
      *
      * @return patch
      */
@@ -1449,13 +1450,31 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * Deprecate the BoundedSchemaType
+     * Deprecate the ArraySchemaType
      *
      * @return patch
      */
     private TypeDefPatch deprecateArraySchemaType()
     {
         final String typeName = "ArraySchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    /**
+     * Deprecate the ArrayDocumentType
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecateArrayDocumentType()
+    {
+        final String typeName = "ArrayDocumentType";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
