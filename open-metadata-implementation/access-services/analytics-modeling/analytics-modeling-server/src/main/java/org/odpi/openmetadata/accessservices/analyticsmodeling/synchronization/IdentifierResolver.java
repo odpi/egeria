@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
@@ -52,8 +54,9 @@ public class IdentifierResolver {
 	 * 
 	 * @param ctx execution context to access repository.
 	 * @param asset which identifiers to resolve.
+	 * @throws AnalyticsModelingCheckedException in case of an error while asset resolved.
 	 */
-	public IdentifierResolver(ExecutionContext ctx, AnalyticsAsset asset) {
+	public IdentifierResolver(ExecutionContext ctx, AnalyticsAsset asset) throws AnalyticsModelingCheckedException {
 
 		this.ctx = ctx;
 		this.asset = asset;
@@ -85,8 +88,9 @@ public class IdentifierResolver {
 	/**
 	 * Resolve GUIDs for source referenced by identifier.
 	 * @param ref of the source.
+	 * @throws AnalyticsModelingCheckedException in case of repository error.
 	 */
-	private void resolveSourcesGuids(AssetReference ref) {
+	private void resolveSourcesGuids(AssetReference ref) throws AnalyticsModelingCheckedException {
 		
 		String methodName = "resolveSourcesGuids";
 		String alias = ref.getAlias() + NAME_SEPARATOR;
@@ -170,8 +174,9 @@ public class IdentifierResolver {
 
 	/**
 	 * Function augments references to external artifacts with repository GUIDs of corresponding assets.
+	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
-	private void resolveAssetReferences() {
+	private void resolveAssetReferences() throws AnalyticsModelingCheckedException {
 
 		String methodName = "resolveAliases";
 		
@@ -179,13 +184,13 @@ public class IdentifierResolver {
 			return;	// base module does not have references: all GUIDs resolved.
 		}
 
-		try {
-			// all assets are children of software server capability
-			for(AssetReference ref : asset.getReference()) {
+		// all assets are children of software server capability
+		for(AssetReference ref : asset.getReference()) {
+			
+			String qualifiedName = QualifiedNameUtils.buildQualifiedName(
+					ctx.getServerSoftwareCapability().getQualifiedName(), IdMap.INFOTMATION_VIEW_TYPE_NAME, ref.getUid());
 				
-				String qualifiedName = QualifiedNameUtils.buildQualifiedName(
-						ctx.getServerSoftwareCapability().getQualifiedName(), IdMap.INFOTMATION_VIEW_TYPE_NAME, ref.getUid());
-				
+			try {
 				List<EntityDetail> refAsset = ctx.getServerSoftwareCapabilityHandler().getEntitiesByValue(
 						ctx.getUserId(),
 						qualifiedName,
@@ -197,15 +202,24 @@ public class IdentifierResolver {
 				
 				if (refAsset == null || refAsset.isEmpty()) {
 					// missing referenced asset: maybe fine if the reference is not used, but log warning
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_ASSET_NO_REVERENCE.getMessageDefinition(asset.getDisplayName()));
 				} else if (refAsset.size() > 1) {
 					// qualified name collision: corrupted repository data
+					throw new AnalyticsModelingCheckedException(
+							AnalyticsModelingErrorCode.MULTIPLE_ASSETS_SAME_QUALIFIEDNAME.getMessageDefinition(qualifiedName),
+							this.getClass().getSimpleName(),
+							methodName);
+					
 				} else {
 					ref.setGuid(refAsset.get(0).getGUID());
 					resolveSourcesGuids(ref);
 				}
+			} catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+				throw new AnalyticsModelingCheckedException(
+						AnalyticsModelingErrorCode.FAILED_GET_ASSET_BY_QUALIFIEDNAME.getMessageDefinition(qualifiedName, e.getReportedErrorMessage()),
+						this.getClass().getSimpleName(),
+						methodName, e);
 			}
-		} catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -214,10 +228,12 @@ public class IdentifierResolver {
 	 * 
 	 * @param assetQualifiedName of the asset.
 	 * @param methodName for logging.
-	 * @return list of elements
+	 * @return list of elements.
+	 * @throws AnalyticsModelingCheckedException in case of repository error.
 	 */
-	public List<EntityDetail> getSchemaAttributes(String assetQualifiedName, String methodName) {
-		
+	public List<EntityDetail> getSchemaAttributes(String assetQualifiedName, String methodName)
+			throws AnalyticsModelingCheckedException 
+	{
 		List<EntityDetail> metadata = new ArrayList<>();
 		String pattern = ctx.getRepositoryHelper().getStartsWithRegex(assetQualifiedName + "::");
 
@@ -236,7 +252,10 @@ public class IdentifierResolver {
 				metadata.addAll(metadataPage);
 			}
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-			e.printStackTrace();
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_GET_SCHEMA_ATTRIBUTES_BY_QUALIFIEDNAME.getMessageDefinition(pattern, e.getReportedErrorMessage()),
+					this.getClass().getSimpleName(),
+					methodName, e);
 		}
 		return metadata;
 	}

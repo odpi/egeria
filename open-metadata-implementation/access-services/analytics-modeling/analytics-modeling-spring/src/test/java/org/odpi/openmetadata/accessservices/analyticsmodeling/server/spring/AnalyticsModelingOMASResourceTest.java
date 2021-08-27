@@ -31,9 +31,10 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterExce
 public class AnalyticsModelingOMASResourceTest {
 
 	private static final String REPORT_WRONG_ERROR_DETAILS = "Wrong error details.";
-	private static final String REPORT_WRONG_ERROR_MESSAGE = "Wrong error message.";
+	private static final String REPORT_WRONG_ERROR_TITLE = "Wrong error title.";
 	private static final String REPORT_WRONG_ERROR_CODE = "Wrong error code.";
 	private static final String REPORT_WRONG_HTTP_STATUS = "'Bad request' http status 400 is expected";
+	private static final String REPORT_WRONG_SEVERITY = "Wrong severity.";
 	
 	private static final String USER = "user";
 	private static final String SERVER_NAME = "serverName";
@@ -43,6 +44,7 @@ public class AnalyticsModelingOMASResourceTest {
 	private static final String SCHEMA = "schema_name";
 	private static final String CATALOG = "catalog_name";
 	private static final String DATABASE_GUID = "databaseGUID";
+	private static final String HTTP_400= "400";
 
 
 	@InjectMocks
@@ -91,14 +93,21 @@ public class AnalyticsModelingOMASResourceTest {
 		assertTrue(response instanceof ErrorResponse);
 		ErrorResponse errResponse = (ErrorResponse)response;
 		assertEquals( 400, errResponse.getRelatedHTTPCode(), REPORT_WRONG_HTTP_STATUS);
-		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
-				errResponse.getErrorCode(), REPORT_WRONG_ERROR_CODE);
-		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter databaseGUID has invalid value.",
-				errResponse.getMessage(), REPORT_WRONG_ERROR_MESSAGE);
-		assertEquals( "OMAG-COMMON-400-005 The unique identifier (guid) passed on the databaseGUID parameter of the getModule operation is null",
-				errResponse.getExceptionCause(), REPORT_WRONG_ERROR_DETAILS);
+
+		assertError(errResponse, HTTP_400,
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				"OMAS-ANALYTICS-MODELING-015 The request parameter databaseGUID has invalid value.",
+				"OMAG-COMMON-400-005 The unique identifier (guid) passed on the databaseGUID parameter of the getModule operation is null");
 		
 		verify(restAPI, times(1)).validateUrlParameters(SERVER_NAME, USER, null, DATABASE_GUID, null, null, "getModule");
+	}
+
+	private void assertError(ErrorResponse errResponse, String status, String code, String title, String detail) {
+		assertEquals( status, errResponse.getErrors().get(0).getStatus(), REPORT_WRONG_HTTP_STATUS);
+		assertEquals( code, errResponse.getErrors().get(0).getCode(), REPORT_WRONG_ERROR_CODE);
+		assertEquals( title, errResponse.getErrors().get(0).getTitle(), REPORT_WRONG_ERROR_TITLE);
+		assertEquals( detail, errResponse.getErrors().get(0).getDetail(), REPORT_WRONG_ERROR_DETAILS);
+		assertEquals( "error", errResponse.getErrors().get(0).getMeta().get("severity"), REPORT_WRONG_SEVERITY);
 	}
 	
 	@Test
@@ -114,24 +123,21 @@ public class AnalyticsModelingOMASResourceTest {
 		assertTrue(response instanceof ErrorResponse);
 		ErrorResponse errResponse = (ErrorResponse)response;
 		assertEquals( 400, errResponse.getRelatedHTTPCode(), REPORT_WRONG_HTTP_STATUS);
-		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
-				errResponse.getErrorCode(), REPORT_WRONG_ERROR_CODE);
-		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter startFrom has invalid value.",
-				errResponse.getMessage(), REPORT_WRONG_ERROR_MESSAGE);
-		assertEquals( "OMAG-COMMON-400-008 The starting point for the results -1, passed on the startFrom parameter of the getDatabases operation, is negative",
-				errResponse.getExceptionCause(), REPORT_WRONG_ERROR_DETAILS);
+		
+		assertError( errResponse, HTTP_400,
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				"OMAS-ANALYTICS-MODELING-015 The request parameter startFrom has invalid value.",
+				"OMAG-COMMON-400-008 The starting point for the results -1, passed on the startFrom parameter of the getDatabases operation, is negative");
 		
 		response = resource.getDatabases(SERVER_NAME, USER, FROM, -1);
 		
 		assertTrue(response instanceof ErrorResponse);
 		errResponse = (ErrorResponse)response;
 		assertEquals( 400, errResponse.getRelatedHTTPCode(), REPORT_WRONG_HTTP_STATUS);
-		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
-				errResponse.getErrorCode(), REPORT_WRONG_ERROR_CODE);
-		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter pageSize has invalid value.",
-				errResponse.getMessage(), REPORT_WRONG_ERROR_MESSAGE);
-		assertEquals( "OMAG-COMMON-400-009 The page size -1 for the results, passed on the pageSize parameter of the getDatabases operation, is negative",
-				errResponse.getExceptionCause(), REPORT_WRONG_ERROR_DETAILS);
+		assertError( errResponse, HTTP_400, 
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				"OMAS-ANALYTICS-MODELING-015 The request parameter pageSize has invalid value.",
+				"OMAG-COMMON-400-009 The page size -1 for the results, passed on the pageSize parameter of the getDatabases operation, is negative");
 		
 		verify(restAPI, times(2)).validateUrlParameters(eq(SERVER_NAME), eq(USER), eq(null), eq(null), anyInt(), anyInt(), eq("getDatabases"));
 	}
@@ -148,12 +154,10 @@ public class AnalyticsModelingOMASResourceTest {
 		assertTrue(response instanceof ErrorResponse);
 		ErrorResponse errResponse = (ErrorResponse)response;
 		assertEquals( 400, errResponse.getRelatedHTTPCode(), REPORT_WRONG_HTTP_STATUS);
-		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
-				errResponse.getErrorCode(), REPORT_WRONG_ERROR_CODE);
-		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter userId has invalid value.",
-				errResponse.getMessage(), REPORT_WRONG_ERROR_MESSAGE);
-		assertEquals( "OMAG-COMMON-400-004 The user identifier (user id) passed on the getSchemas operation is null",
-				errResponse.getExceptionCause(), REPORT_WRONG_ERROR_DETAILS);
+		assertError( errResponse, HTTP_400, 
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				"OMAS-ANALYTICS-MODELING-015 The request parameter userId has invalid value.",
+				"OMAG-COMMON-400-004 The user identifier (user id) passed on the getSchemas operation is null");
 		
 		verify(restAPI, times(1)).validateUrlParameters(SERVER_NAME, null, GUID, DATABASE_GUID, FROM, PAGE_SIZE, "getSchemas");
 	}
@@ -170,12 +174,10 @@ public class AnalyticsModelingOMASResourceTest {
 		assertTrue(response instanceof ErrorResponse);
 		ErrorResponse errResponse = (ErrorResponse)response;
 		assertEquals( 400, errResponse.getRelatedHTTPCode(), REPORT_WRONG_HTTP_STATUS);
-		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
-				errResponse.getErrorCode(), REPORT_WRONG_ERROR_CODE);
-		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter serverName has invalid value.",
-				errResponse.getMessage(), REPORT_WRONG_ERROR_MESSAGE);
-		assertEquals( "OMAG-COMMON-400-006 The name passed on the serverName parameter of the getTables operation is null",
-				errResponse.getExceptionCause(), REPORT_WRONG_ERROR_DETAILS);
+		assertError( errResponse, HTTP_400,
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				"OMAS-ANALYTICS-MODELING-015 The request parameter serverName has invalid value.",
+				"OMAG-COMMON-400-006 The name passed on the serverName parameter of the getTables operation is null");
 		
 		verify(restAPI, times(1)).validateUrlParameters(null, USER, GUID, DATABASE_GUID, null, null, "getTables");
 	}
