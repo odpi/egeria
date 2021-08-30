@@ -41,7 +41,7 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Review the exception cause and retry to fetch the entity."),
 	GET_RELATIONSHIP_EXCEPTION(
 			"OMAS-ANALYTICS-MODELING-003", 
-			"Relationship {0} for entity {1} could not be fetched. Cause: {3}",
+			"Relationship {0} for entity {1} could not be fetched. Cause: {2}",
 			"The system is unable to fetch relationship for entity.", 
 			"Review the exception cause and retry to fetch the relationship."),
 	SERVICE_NOT_INITIALIZED(
