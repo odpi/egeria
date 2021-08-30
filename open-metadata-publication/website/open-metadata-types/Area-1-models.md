@@ -13,7 +13,6 @@ into the governance program.
 * **[0112 People](0112-People.md)** - profiles and roles for people
 * **[0115 Teams](0115-Teams.md)** - team profiles and structures
 * **[0117 IT Profiles](0117-IT-Profiles.md)** - profiles for engines
-* **[0120 Collections](0120-Collections.md)** - collections of related elements
 * **[0130 Projects](0130-Projects.md)** - projects for organizing change to the IT landscape
 * **[0135 Meetings](0135-Meetings.md)** - meetings where ideas, situations and plans are discussed and reviewed
 * **[0137 Actions for People](0137-Actions.md)** - descriptions of actions for people

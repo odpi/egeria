@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.1-SNAPSHOT'
+    version = '3.2-SNAPSHOT'
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'

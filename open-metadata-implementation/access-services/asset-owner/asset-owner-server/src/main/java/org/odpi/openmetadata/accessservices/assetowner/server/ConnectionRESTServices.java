@@ -854,6 +854,10 @@ public class ConnectionRESTServices
                                                                               methodName);
                 response.setElementList(connections);
             }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -909,6 +913,10 @@ public class ConnectionRESTServices
                                                                                    pageSize,
                                                                                    methodName);
                 response.setElementList(connections);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)
@@ -1277,6 +1285,10 @@ public class ConnectionRESTServices
                                                                         methodName);
                 response.setElementList(endpoints);
             }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1332,6 +1344,10 @@ public class ConnectionRESTServices
                                                                              pageSize,
                                                                              methodName);
                 response.setElementList(endpoints);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)
@@ -1444,6 +1460,10 @@ public class ConnectionRESTServices
                                                                                        methodName);
                 response.setElementList(connectorTypes);
             }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1499,6 +1519,10 @@ public class ConnectionRESTServices
                                                                                             pageSize,
                                                                                             methodName);
                 response.setElementList(connectorTypes);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)

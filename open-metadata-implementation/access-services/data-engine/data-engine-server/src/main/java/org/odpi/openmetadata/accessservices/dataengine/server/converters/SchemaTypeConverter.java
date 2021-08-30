@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -47,12 +48,13 @@ public class SchemaTypeConverter<B> extends OpenMetadataAPIGenericConverter<B> {
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewSchemaTypeBean(Class<B> beanClass, InstanceHeader schemaRootHeader, String schemaTypeTypeName,
                                   InstanceProperties instanceProperties, List<Classification> schemaRootClassifications,
                                   int attributeCount, String validValueSetGUID, B externalSchemaType, B mapFromSchemaType,
                                   B mapToSchemaType, List<B> schemaTypeOptions, String methodName) throws PropertyServerException {
         try {
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof SchemaType) {
                 SchemaType bean = (SchemaType) returnBean;
@@ -66,7 +68,7 @@ public class SchemaTypeConverter<B> extends OpenMetadataAPIGenericConverter<B> {
             }
 
             return returnBean;
-        } catch (IllegalAccessException | InstantiationException | ClassCastException error) {
+        } catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error) {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
         return null;

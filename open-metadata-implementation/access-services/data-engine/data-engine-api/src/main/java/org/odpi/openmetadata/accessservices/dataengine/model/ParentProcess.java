@@ -28,6 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ParentProcess implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The qualified name
      * -- GETTER --

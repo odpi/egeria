@@ -10,7 +10,9 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -384,15 +386,20 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + validValueSetsURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + validValueSetsURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        ValidValueSetsResponse restResult = restClient.callValidValueSetsGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     name,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        ValidValueSetsResponse restResult = restClient.callValidValueSetsPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -428,15 +435,20 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + validValueSetsURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + validValueSetsURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        ValidValueSetsResponse restResult = restClient.callValidValueSetsGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     searchString,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        ValidValueSetsResponse restResult = restClient.callValidValueSetsPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -781,7 +793,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/types/{2}/by-search-string/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/types/{2}/by-search-string?startFrom={3}&pageSize={4}";
 
         String requestTypeName = "SchemaType";
 
@@ -790,12 +802,17 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             requestTypeName = typeName;
         }
 
-        SchemaTypesResponse restResult = restClient.callSchemaTypesGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        SchemaTypesResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
                                                                                urlTemplate,
+                                                                               requestBody,
                                                                                serverName,
                                                                                userId,
                                                                                requestTypeName,
-                                                                               searchString,
                                                                                startFrom,
                                                                                validatedPageSize);
 
@@ -881,7 +898,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/types/{2}/by-name/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaTypeURLTemplatePrefix + "/types/{2}/by-name?startFrom={3}&pageSize={4}";
 
         String requestTypeName = "SchemaType";
 
@@ -890,12 +907,17 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             requestTypeName = typeName;
         }
 
-        SchemaTypesResponse restResult = restClient.callSchemaTypesGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        SchemaTypesResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
                                                                                urlTemplate,
+                                                                               requestBody,
                                                                                serverName,
                                                                                userId,
                                                                                requestTypeName,
-                                                                               name,
                                                                                startFrom,
                                                                                validatedPageSize);
 
@@ -1318,7 +1340,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-search-string/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-search-string?startFrom={3}&pageSize={4}";
 
         String requestTypeName = schemaAttributeTypeName;
 
@@ -1327,14 +1349,19 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             requestTypeName = typeName;
         }
 
-        SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         requestTypeName,
-                                                                                         searchString,
-                                                                                         startFrom,
-                                                                                         validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          requestTypeName,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1416,7 +1443,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-name/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + schemaAttributeURLTemplatePrefix + "/types/{2}/by-name?startFrom={3}&pageSize={4}";
 
         String requestTypeName = schemaAttributeTypeName;
 
@@ -1425,14 +1452,19 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
             requestTypeName = typeName;
         }
 
-        SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         requestTypeName,
-                                                                                         name,
-                                                                                         startFrom,
-                                                                                         validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          requestTypeName,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
         return restResult.getElementList();
     }

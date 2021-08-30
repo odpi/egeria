@@ -190,7 +190,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                 connectorType.getQualifiedName(),
                                                 connectorType.getDisplayName(),
                                                 connectorType.getDescription(),
+                                                connectorType.getSupportedAssetTypeName(),
+                                                connectorType.getExpectedDataFormat(),
                                                 connectorType.getConnectorProviderClassName(),
+                                                connectorType.getConnectorFrameworkName(),
+                                                connectorType.getConnectorInterfaceLanguage(),
+                                                connectorType.getConnectorInterfaces(),
+                                                connectorType.getTargetTechnologySource(),
+                                                connectorType.getTargetTechnologyName(),
+                                                connectorType.getTargetTechnologyInterfaces(),
+                                                connectorType.getTargetTechnologyVersions(),
                                                 connectorType.getRecognizedAdditionalProperties(),
                                                 connectorType.getRecognizedSecuredProperties(),
                                                 connectorType.getRecognizedConfigurationProperties(),
@@ -211,7 +220,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                          connectorType.getQualifiedName(),
                                          connectorType.getDisplayName(),
                                          connectorType.getDescription(),
+                                         connectorType.getSupportedAssetTypeName(),
+                                         connectorType.getExpectedDataFormat(),
                                          connectorType.getConnectorProviderClassName(),
+                                         connectorType.getConnectorFrameworkName(),
+                                         connectorType.getConnectorInterfaceLanguage(),
+                                         connectorType.getConnectorInterfaces(),
+                                         connectorType.getTargetTechnologySource(),
+                                         connectorType.getTargetTechnologyName(),
+                                         connectorType.getTargetTechnologyInterfaces(),
+                                         connectorType.getTargetTechnologyVersions(),
                                          connectorType.getRecognizedAdditionalProperties(),
                                          connectorType.getRecognizedSecuredProperties(),
                                          connectorType.getRecognizedConfigurationProperties(),
@@ -240,7 +258,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param displayName    human memorable name for the connectorType - does not need to be unique
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
-     * @param connectorProviderClassName class name of the connector provider.
+     * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param expectedDataFormat the format of the data that the connector supports - null for "any"
+     * @param connectorProviderClassName class name of the connector provider
+     * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
+     * @param connectorInterfaceLanguage the language that the connector is implemented in - default Java
+     * @param connectorInterfaces list of interfaces that the connector supports
+     * @param targetTechnologySource the organization that supplies the target technology that the connector implementation connects to
+     * @param targetTechnologyName the name of the target technology that the connector implementation connects to
+     * @param targetTechnologyInterfaces the names of the interfaces in the target technology that the connector calls
+     * @param targetTechnologyVersions the versions of the target technology that the connector supports
      * @param recognizedAdditionalProperties property name for additionalProperties in a linked Connection object.
      * @param recognizedSecuredProperties property name for securedProperties in a linked Connection object.
      * @param recognizedConfigurationProperties property name for configurationProperties in a linked Connection object.
@@ -262,7 +289,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       String              qualifiedName,
                                       String              displayName,
                                       String              description,
+                                      String              supportedAssetTypeName,
+                                      String              expectedDataFormat,
                                       String              connectorProviderClassName,
+                                      String              connectorFrameworkName,
+                                      String              connectorInterfaceLanguage,
+                                      List<String>        connectorInterfaces,
+                                      String              targetTechnologySource,
+                                      String              targetTechnologyName,
+                                      List<String>        targetTechnologyInterfaces,
+                                      List<String>        targetTechnologyVersions,
                                       List<String>        recognizedAdditionalProperties,
                                       List<String>        recognizedSecuredProperties,
                                       List<String>        recognizedConfigurationProperties,
@@ -293,7 +329,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         ConnectorTypeBuilder builder = new ConnectorTypeBuilder(qualifiedName,
                                                                 displayName,
                                                                 description,
+                                                                supportedAssetTypeName,
+                                                                expectedDataFormat,
                                                                 connectorProviderClassName,
+                                                                connectorFrameworkName,
+                                                                connectorInterfaceLanguage,
+                                                                connectorInterfaces,
+                                                                targetTechnologySource,
+                                                                targetTechnologyName,
+                                                                targetTechnologyInterfaces,
+                                                                targetTechnologyVersions,
                                                                 recognizedAdditionalProperties,
                                                                 recognizedSecuredProperties,
                                                                 recognizedConfigurationProperties,
@@ -394,7 +439,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param displayName    human memorable name for the connectorType - does not need to be unique
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
-     * @param connectorProviderClassName class name of the connector provider.
+     * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param expectedDataFormat the format of the data that the connector supports - null for "any"
+     * @param connectorProviderClassName class name of the connector provider
+     * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
+     * @param connectorInterfaceLanguage the language that the connector is implemented in - default Java
+     * @param connectorInterfaces list of interfaces that the connector supports
+     * @param targetTechnologySource the organization that supplies the target technology that the connector implementation connects to
+     * @param targetTechnologyName the name of the target technology that the connector implementation connects to
+     * @param targetTechnologyInterfaces the names of the interfaces in the target technology that the connector calls
+     * @param targetTechnologyVersions the versions of the target technology that the connector supports
      * @param recognizedAdditionalProperties property name for additionalProperties in a linked Connection object.
      * @param recognizedSecuredProperties property name for securedProperties in a linked Connection object.
      * @param recognizedConfigurationProperties property name for configurationProperties in a linked Connection object.
@@ -414,7 +468,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                 String              qualifiedName,
                                                 String              displayName,
                                                 String              description,
+                                                String              supportedAssetTypeName,
+                                                String              expectedDataFormat,
                                                 String              connectorProviderClassName,
+                                                String              connectorFrameworkName,
+                                                String              connectorInterfaceLanguage,
+                                                List<String>        connectorInterfaces,
+                                                String              targetTechnologySource,
+                                                String              targetTechnologyName,
+                                                List<String>        targetTechnologyInterfaces,
+                                                List<String>        targetTechnologyVersions,
                                                 List<String>        recognizedAdditionalProperties,
                                                 List<String>        recognizedSecuredProperties,
                                                 List<String>        recognizedConfigurationProperties,
@@ -443,7 +506,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                          qualifiedName,
                                                          displayName,
                                                          description,
+                                                         supportedAssetTypeName,
+                                                         expectedDataFormat,
                                                          connectorProviderClassName,
+                                                         connectorFrameworkName,
+                                                         connectorInterfaceLanguage,
+                                                         connectorInterfaces,
+                                                         targetTechnologySource,
+                                                         targetTechnologyName,
+                                                         targetTechnologyInterfaces,
+                                                         targetTechnologyVersions,
                                                          recognizedAdditionalProperties,
                                                          recognizedSecuredProperties,
                                                          recognizedConfigurationProperties,
@@ -469,7 +541,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param displayName    human memorable name for the connectorType - does not need to be unique
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
-     * @param connectorProviderClassName class name of the connector provider.
+     * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param expectedDataFormat the format of the data that the connector supports - null for "any"
+     * @param connectorProviderClassName class name of the connector provider
+     * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
+     * @param connectorInterfaceLanguage the language that the connector is implemented in - default Java
+     * @param connectorInterfaces list of interfaces that the connector supports
+     * @param targetTechnologySource the organization that supplies the target technology that the connector implementation connects to
+     * @param targetTechnologyName the name of the target technology that the connector implementation connects to
+     * @param targetTechnologyInterfaces the names of the interfaces in the target technology that the connector calls
+     * @param targetTechnologyVersions the versions of the target technology that the connector supports
      * @param recognizedAdditionalProperties property name for additionalProperties in a linked Connection object.
      * @param recognizedSecuredProperties property name for securedProperties in a linked Connection object.
      * @param recognizedConfigurationProperties property name for configurationProperties in a linked Connection object.
@@ -491,7 +572,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       String              qualifiedName,
                                       String              displayName,
                                       String              description,
+                                      String              supportedAssetTypeName,
+                                      String              expectedDataFormat,
                                       String              connectorProviderClassName,
+                                      String              connectorFrameworkName,
+                                      String              connectorInterfaceLanguage,
+                                      List<String>        connectorInterfaces,
+                                      String              targetTechnologySource,
+                                      String              targetTechnologyName,
+                                      List<String>        targetTechnologyInterfaces,
+                                      List<String>        targetTechnologyVersions,
                                       List<String>        recognizedAdditionalProperties,
                                       List<String>        recognizedSecuredProperties,
                                       List<String>        recognizedConfigurationProperties,
@@ -523,7 +613,16 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         ConnectorTypeBuilder builder = new ConnectorTypeBuilder(qualifiedName,
                                                                 displayName,
                                                                 description,
+                                                                supportedAssetTypeName,
+                                                                expectedDataFormat,
                                                                 connectorProviderClassName,
+                                                                connectorFrameworkName,
+                                                                connectorInterfaceLanguage,
+                                                                connectorInterfaces,
+                                                                targetTechnologySource,
+                                                                targetTechnologyName,
+                                                                targetTechnologyInterfaces,
+                                                                targetTechnologyVersions,
                                                                 recognizedAdditionalProperties,
                                                                 recognizedSecuredProperties,
                                                                 recognizedConfigurationProperties,

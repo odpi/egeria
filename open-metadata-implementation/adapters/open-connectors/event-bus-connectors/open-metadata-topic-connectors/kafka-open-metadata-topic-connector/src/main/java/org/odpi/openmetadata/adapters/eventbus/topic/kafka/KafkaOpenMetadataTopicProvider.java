@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     private static final String  connectorTypeName = "Kafka Open Metadata Topic Connector";
     private static final String  connectorTypeDescription = "Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.";
 
+    private static final String  expectedDataFormat = "PLAINTEXT";
+    private static final String  assetTypeName = "KafkaTopic";
+
     public static final String  producerPropertyName = "producer";
     public static final String  consumerPropertyName = "consumer";
     public static final String  egeriaConsumerPropertyName = "egeria_kafka_consumer";
@@ -29,9 +34,14 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
      */
     public KafkaOpenMetadataTopicProvider()
     {
+        super();
+
         Class<?>    connectorClass = KafkaOpenMetadataTopicConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+
+        connectorInterfaces.add(OpenMetadataTopic.class.getName());
+        connectorInterfaces.add(AuditLoggingComponent.class.getName());
 
         ConnectorType  connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
@@ -39,7 +49,10 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         connectorType.setQualifiedName(connectorTypeName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
+        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setExpectedDataFormat(expectedDataFormat);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setConnectorInterfaces(connectorInterfaces);
 
         List<String>  recognizedPropertyNames = new ArrayList<>();
         recognizedPropertyNames.add(producerPropertyName);

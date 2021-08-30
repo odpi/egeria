@@ -132,7 +132,10 @@ public class RESTExceptionHandler
             }
             else
             {
-                log.debug("FFDC Response: {}", restResult.toString());
+                if (log.isDebugEnabled())
+                {
+                    log.debug("FFDC good Response: {}", restResult.toString());
+                }
             }
         }
     }

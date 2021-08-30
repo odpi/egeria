@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.SchemaManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,7 +117,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -124,15 +126,15 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/valid-value-sets/by-name/{name}")
+    @PostMapping(path = "/valid-value-sets/by-name}")
 
-    public ValidValueSetsResponse getValidValueSetByName(@PathVariable String serverName,
-                                                         @PathVariable String userId,
-                                                         @PathVariable String name,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+    public ValidValueSetsResponse getValidValueSetByName(@PathVariable String          serverName,
+                                                         @PathVariable String          userId,
+                                                         @RequestBody  NameRequestBody requestBody,
+                                                         @RequestParam int             startFrom,
+                                                         @RequestParam int             pageSize)
     {
-        return restAPI.getValidValueSetByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getValidValueSetByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -142,7 +144,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -151,15 +153,15 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/valid-value-sets/by-search-string/{searchString}")
+    @PostMapping(path = "/valid-value-sets/by-search-string")
 
-    public ValidValueSetsResponse findValidValueSet(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String searchString,
-                                                    @RequestParam int    startFrom,
-                                                    @RequestParam int    pageSize)
+    public ValidValueSetsResponse findValidValueSet(@PathVariable String                  serverName,
+                                                    @PathVariable String                  userId,
+                                                    @RequestBody  SearchStringRequestBody requestBody,
+                                                    @RequestParam int                     startFrom,
+                                                    @RequestParam int                     pageSize)
     {
-        return restAPI.findValidValueSet(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findValidValueSet(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -314,7 +316,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -324,16 +326,16 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/schema-types/types/{typeName}/by-search-string/{searchString}")
+    @PostMapping(path = "/schema-types/types/{typeName}/by-search-string")
 
-    public SchemaTypesResponse findSchemaType(@PathVariable String serverName,
-                                              @PathVariable String userId,
-                                              @PathVariable String typeName,
-                                              @PathVariable String searchString,
-                                              @RequestParam int    startFrom,
-                                              @RequestParam int    pageSize)
+    public SchemaTypesResponse findSchemaType(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @PathVariable String                  typeName,
+                                              @RequestBody  SearchStringRequestBody requestBody,
+                                              @RequestParam int                     startFrom,
+                                              @RequestParam int                     pageSize)
     {
-        return restAPI.findSchemaType(serverName, userId, typeName, searchString, startFrom, pageSize);
+        return restAPI.findSchemaType(serverName, userId, typeName, requestBody, startFrom, pageSize);
     }
 
 
@@ -367,7 +369,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -377,16 +379,16 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/schema-types/types/{typeName}/by-name/{name}")
+    @PostMapping(path = "/schema-types/types/{typeName}/by-name")
 
-    public SchemaTypesResponse getSchemaTypeByName(@PathVariable String serverName,
-                                                   @PathVariable String userId,
-                                                   @PathVariable String typeName,
-                                                   @PathVariable String name,
-                                                   @RequestParam int    startFrom,
-                                                   @RequestParam int    pageSize)
+    public SchemaTypesResponse getSchemaTypeByName(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @PathVariable String          typeName,
+                                                   @RequestBody  NameRequestBody requestBody,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize)
     {
-        return restAPI.getSchemaTypeByName(serverName, userId, typeName, name, startFrom, pageSize);
+        return restAPI.getSchemaTypeByName(serverName, userId, typeName, requestBody, startFrom, pageSize);
     }
 
 
@@ -596,7 +598,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -606,16 +608,16 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/schema-attributes/types/{typeName}/by-search-string/{searchString}")
+    @PostMapping(path = "/schema-attributes/types/{typeName}/by-search-string")
 
-    public SchemaAttributesResponse findSchemaAttributes(@PathVariable String serverName,
-                                                         @PathVariable String userId,
-                                                         @PathVariable String typeName,
-                                                         @PathVariable String searchString,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+    public SchemaAttributesResponse findSchemaAttributes(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @PathVariable String                  typeName,
+                                                         @RequestBody  SearchStringRequestBody requestBody,
+                                                         @RequestParam int                     startFrom,
+                                                         @RequestParam int                     pageSize)
     {
-        return restAPI.findSchemaAttributes(serverName, userId, typeName, searchString, startFrom, pageSize);
+        return restAPI.findSchemaAttributes(serverName, userId, typeName, requestBody, startFrom, pageSize);
     }
 
 
@@ -651,7 +653,7 @@ public class SchemaManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param typeName optional type name for the schema type - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -661,16 +663,16 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/schema-attributes/types/{typeName}/by-name/{name}")
+    @PostMapping(path = "/schema-attributes/types/{typeName}/by-name")
 
-    public SchemaAttributesResponse getSchemaAttributesByName(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String typeName,
-                                                              @PathVariable String name,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public SchemaAttributesResponse getSchemaAttributesByName(@PathVariable String          serverName,
+                                                              @PathVariable String          userId,
+                                                              @PathVariable String          typeName,
+                                                              @RequestBody  NameRequestBody requestBody,
+                                                              @RequestParam int             startFrom,
+                                                              @RequestParam int             pageSize)
     {
-        return restAPI.getSchemaAttributesByName(serverName, userId, typeName, name, startFrom, pageSize);
+        return restAPI.getSchemaAttributesByName(serverName, userId, typeName, requestBody, startFrom, pageSize);
     }
 
 

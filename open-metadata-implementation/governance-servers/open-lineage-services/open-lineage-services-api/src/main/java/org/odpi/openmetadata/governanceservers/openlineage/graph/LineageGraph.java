@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 

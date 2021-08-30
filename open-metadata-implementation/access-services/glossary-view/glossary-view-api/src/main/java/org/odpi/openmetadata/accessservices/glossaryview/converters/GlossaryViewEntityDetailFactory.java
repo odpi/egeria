@@ -15,15 +15,15 @@ import java.util.function.Supplier;
 
 class GlossaryViewEntityDetailFactory {
 
-    private final static String DEFAULT = "Default";
-    private final static String GLOSSARY = "Glossary";
-    private final static String CATEGORY = "GlossaryCategory";
-    private final static String TERM = "GlossaryTerm";
-    private final static String CONTROLLED_TERM = "ControlledGlossaryTerm";
-    private final static String EXTERNAL_GLOSSARY_LINK = "ExternalGlossaryLink";
+    private static final String DEFAULT = "Default";
+    private static final String GLOSSARY = "Glossary";
+    private static final String CATEGORY = "GlossaryCategory";
+    private static final String TERM = "GlossaryTerm";
+    private static final String CONTROLLED_TERM = "ControlledGlossaryTerm";
+    private static final String EXTERNAL_GLOSSARY_LINK = "ExternalGlossaryLink";
 
-    private final static Map<String, Supplier<GlossaryViewEntityDetail>> workers = new HashMap<>();
-    static{
+    private static final Map<String, Supplier<GlossaryViewEntityDetail>> workers = new HashMap<>();
+    static {
         workers.put(DEFAULT, GlossaryViewEntityDetail::new);
         workers.put(GLOSSARY, Glossary::new);
         workers.put(CATEGORY, GlossaryCategory::new);
@@ -31,6 +31,8 @@ class GlossaryViewEntityDetailFactory {
         workers.put(CONTROLLED_TERM, ControlledGlossaryTerm::new);
         workers.put(EXTERNAL_GLOSSARY_LINK, ExternalGlossaryLink::new);
     }
+
+    private GlossaryViewEntityDetailFactory() {}
 
     public static GlossaryViewEntityDetail build(String entityType){
         if(!workers.containsKey(entityType)){

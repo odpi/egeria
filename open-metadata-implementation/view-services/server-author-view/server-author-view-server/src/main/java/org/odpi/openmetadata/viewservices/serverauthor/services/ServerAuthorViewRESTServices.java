@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.serverauthor.services;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
@@ -9,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,6 +22,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorResourceEndpointListResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.SupportedAuditLogSeveritiesResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.handlers.ServerAuthorViewHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.initialization.ServerAuthorViewInstanceHandler;
 import org.slf4j.Logger;
@@ -781,6 +784,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -793,9 +797,11 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException the server name is invalid or
      * ServerAuthorViewServiceException The Server Author has detected an error.
      */
-    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId, String serverName) {
         String methodName = "getKnownPlatforms";
-
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
         ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
 
         AuditLog auditLog = null;
@@ -803,15 +809,117 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // get the defined platforms from the config
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName, auditLog));
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
             restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+    }
+    /**
+     * Get the audit log supported severities for the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public SupportedAuditLogSeveritiesResponse getAuditLogDestinationSupportedSeverities(String userId, String serverName, String serverToBeConfiguredName) {
+        String methodName = " getAuditLogDestinationSupportedSeverities";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
+        SupportedAuditLogSeveritiesResponse response = new SupportedAuditLogSeveritiesResponse();
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            response.setSeverities(handler.getSupportedAuditLogSeverities());
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
 
+    }
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName server to be configured
+     * @param cohortName  name of the cohort.
+     * @return VoidResponse or
+     * ServerAuthorException if the supplied userId is not authorized to issue this command or
+     * invalid serverName, cohortName or serviceMode parameter or
+     * or the cohort registration failed
+     */
+    public VoidResponse addCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "addCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // register new cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.addCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+    }
+    /**
+     * Unregister this server from an open metadata repository cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     */
+    public VoidResponse removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "removeCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // unregister cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.removeCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
         return response;
     }
 }

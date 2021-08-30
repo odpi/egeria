@@ -27,11 +27,11 @@ public class ClassificationHandler {
      * Instantiates a new Classification handler.
      *
      * @param invalidParameterHandler the invalid parameter handler
+     * @param handlerHelper           the helper handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes,
-                                 OMRSRepositoryHelper repositoryHelper) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, HandlerHelper handlerHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, null, lineageClassificationTypes);
+        this.handlerHelper = handlerHelper;
     }
 
 

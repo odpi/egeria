@@ -322,7 +322,7 @@ public class TestConnectorProviderBase
         }
         catch (Throwable error)
         {
-            assertTrue(error.getMessage().contains("OCF-CONNECTOR-500-008 Java class java.lang.String is not a Connector"));
+            assertTrue(error.getMessage().contains("OCF-CONNECTOR-500-008 Java class java.lang.String for connector named Test.Connection does not implement the Connector interface"));
         }
     }
 

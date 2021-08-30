@@ -11,8 +11,8 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryPar
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 
 
@@ -59,8 +59,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                 serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES, postBody, serverName, userId, guid);
 
         detectExceptions(methodName, lineageResponse);
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
-        return lineageVerticesAndEdges;
+        return lineageResponse.getLineageVerticesAndEdges();
     }
 
     public LineageVertex getEntityDetails(String userId, String guid) throws InvalidParameterException, PropertyServerException, OpenLineageException {
@@ -69,8 +68,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
                 serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES + DETAILS, serverName, userId, guid);
 
         detectExceptions(methodName, lineageVertexResponse);
-        LineageVertex entityDetails = lineageVertexResponse.getLineageVertex();
-        return entityDetails;
+        return lineageVertexResponse.getLineageVertex();
     }
 
     private void detectExceptions(String methodName,

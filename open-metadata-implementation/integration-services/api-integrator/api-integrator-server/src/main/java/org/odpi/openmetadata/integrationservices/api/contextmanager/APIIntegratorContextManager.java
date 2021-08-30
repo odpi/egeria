@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.api.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
@@ -31,9 +32,10 @@ import java.util.Map;
  */
 public class APIIntegratorContextManager extends IntegrationContextManager
 {
-    private APIManagerClient      apiManagerClient  = null;
-    private MetadataSourceClient  metadataSourceClient   = null;
-    private DataManagerRESTClient restClient             = null;
+    private APIManagerClient        apiManagerClient        = null;
+    private ConnectionManagerClient connectionManagerClient = null;
+    private MetadataSourceClient    metadataSourceClient    = null;
+    private DataManagerRESTClient   restClient              = null;
 
     /**
      * Default constructor
@@ -93,7 +95,13 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                    auditLog);
         }
 
-        apiManagerClient = new APIManagerClient(partnerOMASServerName,
+        connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize,
+                                                              auditLog);
+
+         apiManagerClient= new APIManagerClient(partnerOMASServerName,
                                                 partnerOMASPlatformRootURL,
                                                 restClient,
                                                 maxPageSize,
@@ -206,10 +214,11 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                                        connectorId);
 
             serviceSpecificConnector.setContext(new APIIntegratorContext(apiManagerClient,
-                                                                              dataManagerEventClient,
-                                                                              localServerUserId,
-                                                                              metadataSourceGUID,
-                                                                              metadataSourceQualifiedName));
+                                                                         connectionManagerClient,
+                                                                         dataManagerEventClient,
+                                                                         localServerUserId,
+                                                                         metadataSourceGUID,
+                                                                         metadataSourceQualifiedName));
         }
         else
         {

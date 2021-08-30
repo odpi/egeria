@@ -9,7 +9,9 @@ import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.ConnectionRESTServices;
 import org.odpi.openmetadata.accessservices.datamanager.server.EventBrokerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -358,7 +360,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -367,15 +369,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/connections/by-search-string/{searchString}")
+    @PostMapping(path = "/connections/by-search-string")
 
-    public ConnectionsResponse findConnections(@PathVariable String serverName,
-                                               @PathVariable String userId,
-                                               @PathVariable String searchString,
-                                               @RequestParam int    startFrom,
-                                               @RequestParam int    pageSize)
+    public ConnectionsResponse findConnections(@PathVariable String                  serverName,
+                                               @PathVariable String                  userId,
+                                               @RequestBody  SearchStringRequestBody requestBody,
+                                               @RequestParam int                     startFrom,
+                                               @RequestParam int                     pageSize)
     {
-        return restAPI.findConnections(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findConnections(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -385,7 +387,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -394,15 +396,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/connections/by-name/{name}")
+    @PostMapping(path = "/connections/by-name")
 
-    public ConnectionsResponse   getConnectionsByName(@PathVariable String serverName,
-                                                      @PathVariable String userId,
-                                                      @PathVariable String name,
-                                                      @RequestParam int    startFrom,
-                                                      @RequestParam int    pageSize)
+    public ConnectionsResponse   getConnectionsByName(@PathVariable String          serverName,
+                                                      @PathVariable String          userId,
+                                                      @RequestBody  NameRequestBody requestBody,
+                                                      @RequestParam int             startFrom,
+                                                      @RequestParam int             pageSize)
     {
-        return restAPI.getConnectionsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getConnectionsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -537,7 +539,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -546,15 +548,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/endpoints/by-search-string/{searchString}")
+    @PostMapping(path = "/endpoints/by-search-string")
 
-    public EndpointsResponse findEndpoints(@PathVariable String serverName,
-                                           @PathVariable String userId,
-                                           @PathVariable String searchString,
-                                           @RequestParam int    startFrom,
-                                           @RequestParam int    pageSize)
+    public EndpointsResponse findEndpoints(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @RequestBody  SearchStringRequestBody requestBody,
+                                           @RequestParam int                     startFrom,
+                                           @RequestParam int                     pageSize)
     {
-        return restAPI.findEndpoints(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findEndpoints(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -564,7 +566,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -573,15 +575,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/endpoints/by-name/{name}")
+    @PostMapping(path = "/endpoints/by-name")
 
-    public EndpointsResponse getEndpointsByName(@PathVariable String serverName,
-                                                @PathVariable String userId,
-                                                @PathVariable String name,
-                                                @RequestParam int    startFrom,
-                                                @RequestParam int    pageSize)
+    public EndpointsResponse getEndpointsByName(@PathVariable String          serverName,
+                                                @PathVariable String          userId,
+                                                @RequestBody  NameRequestBody requestBody,
+                                                @RequestParam int             startFrom,
+                                                @RequestParam int             pageSize)
     {
-        return restAPI.getEndpointsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getEndpointsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -620,7 +622,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -629,15 +631,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/connector-types/by-search-string/{searchString}")
+    @PostMapping(path = "/connector-types/by-search-string")
 
-    public ConnectorTypesResponse findConnectorTypes(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String searchString,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public ConnectorTypesResponse findConnectorTypes(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestBody  SearchStringRequestBody requestBody,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize)
     {
-        return restAPI.findConnectorTypes(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findConnectorTypes(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -647,7 +649,7 @@ public class ConnectionManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -656,15 +658,15 @@ public class ConnectionManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/connector-types/by-name/{name}")
+    @PostMapping(path = "/connector-types/by-name")
 
-    public ConnectorTypesResponse getConnectorTypesByName(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @PathVariable String name,
-                                                          @RequestParam int    startFrom,
-                                                          @RequestParam int    pageSize)
+    public ConnectorTypesResponse getConnectorTypesByName(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @RequestBody  NameRequestBody requestBody,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize)
     {
-        return restAPI.getConnectorTypesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getConnectorTypesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
