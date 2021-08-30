@@ -12,8 +12,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 

@@ -193,7 +193,6 @@ public class EndpointProperties extends ConfigurationItemProperties
                 ", encryptionMethod='" + encryptionMethod + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", classifications=" + getClassifications() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +

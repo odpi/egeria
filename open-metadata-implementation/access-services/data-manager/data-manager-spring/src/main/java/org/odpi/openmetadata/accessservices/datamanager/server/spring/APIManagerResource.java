@@ -9,7 +9,9 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterL
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.APIManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +61,33 @@ public class APIManagerResource
                                   @RequestParam boolean        apiManagerIsHome,
                                   @RequestBody  APIRequestBody requestBody)
     {
-        return restAPI.createAPI(serverName, userId, apiManagerIsHome, requestBody);
+        return restAPI.createAPI(serverName, userId, apiManagerIsHome, null, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a api.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint where this API is located
+     * @param apiManagerIsHome should the API be marked as owned by the event broker so others can not update?
+     * @param requestBody properties to store
+     *
+     * @return unique identifier of the new metadata element or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/apis/for-endpoint/{endpointGUID}")
+
+    public GUIDResponse createAPI(@PathVariable String         serverName,
+                                  @PathVariable String         userId,
+                                  @PathVariable String         endpointGUID,
+                                  @RequestParam boolean        apiManagerIsHome,
+                                  @RequestBody  APIRequestBody requestBody)
+    {
+        return restAPI.createAPI(serverName, userId, apiManagerIsHome, endpointGUID, requestBody);
     }
 
 
@@ -85,7 +113,35 @@ public class APIManagerResource
                                               @RequestParam boolean             apiManagerIsHome,
                                               @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createAPIFromTemplate(serverName, userId, templateGUID, apiManagerIsHome, requestBody);
+        return restAPI.createAPIFromTemplate(serverName, userId, null, templateGUID, apiManagerIsHome, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a API using an existing metadata element as a template.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint where this API is located
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param apiManagerIsHome should the API be marked as owned by the event broker so others can not update?
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/apis/for-endpoint/{endpointGUID}/from-template/{templateGUID}")
+
+    public GUIDResponse createAPIFromTemplate(@PathVariable String              serverName,
+                                              @PathVariable String              userId,
+                                              @PathVariable String              endpointGUID,
+                                              @PathVariable String              templateGUID,
+                                              @RequestParam boolean             apiManagerIsHome,
+                                              @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.createAPIFromTemplate(serverName, userId, endpointGUID, templateGUID, apiManagerIsHome, requestBody);
     }
 
 
@@ -173,7 +229,7 @@ public class APIManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param apiGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName unique endpointGUID of the metadata element to remove
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -199,7 +255,7 @@ public class APIManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -208,25 +264,25 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/by-search-string/{searchString}")
+    @PostMapping(path = "/apis/by-search-string")
 
-    public APIsResponse findAPIs(@PathVariable String serverName,
-                                 @PathVariable String userId,
-                                 @PathVariable String searchString,
-                                 @RequestParam int    startFrom,
-                                 @RequestParam int    pageSize)
+    public APIsResponse findAPIs(@PathVariable String                  serverName,
+                                 @PathVariable String                  userId,
+                                 @RequestBody  SearchStringRequestBody requestBody,
+                                 @RequestParam int                     startFrom,
+                                 @RequestParam int                     pageSize)
     {
-        return restAPI.findAPIs(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAPIs(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
     /**
-     * Retrieve the list of API metadata elements with a matching qualified or display name.
+     * Retrieve the list of API metadata elements with a matching qualified or display endpointGUID.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -235,15 +291,15 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/by-name/{name}")
+    @PostMapping(path = "/apis/by-name")
 
-    public APIsResponse   getAPIsByName(@PathVariable String serverName,
-                                        @PathVariable String userId,
-                                        @PathVariable String name,
-                                        @RequestParam int    startFrom,
-                                        @RequestParam int    pageSize)
+    public APIsResponse   getAPIsByName(@PathVariable String          serverName,
+                                        @PathVariable String          userId,
+                                        @RequestBody  NameRequestBody requestBody,
+                                        @RequestParam int             startFrom,
+                                        @RequestParam int             pageSize)
     {
-        return restAPI.getAPIsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAPIsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -253,7 +309,7 @@ public class APIManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the event broker
-     * @param apiManagerName unique name of software server capability representing the event broker
+     * @param apiManagerName unique endpointGUID of software server capability representing the event broker
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -272,6 +328,32 @@ public class APIManagerResource
                                                @RequestParam int    pageSize)
     {
         return restAPI.getAPIsForAPIManager(serverName, userId, apiManagerGUID, apiManagerName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of API metadata elements that are linked to the requested endpoint.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param endpointGUID endpointGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/apis/by-endpoint/{endpointGUID}")
+
+    public APIsResponse getAPIsByEndpoint(@PathVariable String serverName,
+                                          @PathVariable String userId,
+                                          @PathVariable String endpointGUID,
+                                          @RequestParam int    startFrom,
+                                          @RequestParam int    pageSize)
+    {
+        return restAPI.getAPIsByEndpoint(serverName, userId, endpointGUID, startFrom, pageSize);
     }
 
 
@@ -383,7 +465,7 @@ public class APIManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param apiOperationGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName unique endpointGUID of the metadata element to remove
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -409,7 +491,7 @@ public class APIManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -418,15 +500,15 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/api-operations/by-search-string/{searchString}")
+    @PostMapping(path = "/apis/api-operations/by-search-string")
 
-    public APIOperationsResponse findAPIOperations(@PathVariable String serverName,
-                                                   @PathVariable String userId,
-                                                   @PathVariable String searchString,
-                                                   @RequestParam int    startFrom,
-                                                   @RequestParam int    pageSize)
+    public APIOperationsResponse findAPIOperations(@PathVariable String                  serverName,
+                                                   @PathVariable String                  userId,
+                                                   @RequestBody  SearchStringRequestBody requestBody,
+                                                   @RequestParam int                     startFrom,
+                                                   @RequestParam int                     pageSize)
     {
-        return restAPI.findAPIOperations(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAPIOperations(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -457,12 +539,12 @@ public class APIManagerResource
 
 
     /**
-     * Retrieve the list of API operation metadata elements with a matching qualified or display name.
+     * Retrieve the list of API operation metadata elements with a matching qualified or display endpointGUID.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -471,15 +553,15 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/api-operations/by-name/{name}")
+    @PostMapping(path = "/apis/api-operations/by-name")
 
-    public APIOperationsResponse getAPIOperationsByName(@PathVariable String serverName,
-                                                        @PathVariable String userId,
-                                                        @PathVariable String name,
-                                                        @RequestParam int    startFrom,
-                                                        @RequestParam int    pageSize)
+    public APIOperationsResponse getAPIOperationsByName(@PathVariable String          serverName,
+                                                        @PathVariable String          userId,
+                                                        @RequestBody  NameRequestBody requestBody,
+                                                        @RequestParam int             startFrom,
+                                                        @RequestParam int             pageSize)
     {
-        return restAPI.getAPIOperationsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAPIOperationsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -595,7 +677,7 @@ public class APIManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param apiParameterListGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName unique endpointGUID of the metadata element to remove
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -621,7 +703,7 @@ public class APIManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -630,15 +712,15 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/api-operations/api-parameter-lists/by-search-string/{searchString}")
+    @PostMapping(path = "/apis/api-operations/api-parameter-lists/by-search-string")
 
-    public APIParameterListsResponse findAPIParameterLists(@PathVariable String serverName,
-                                                           @PathVariable String userId,
-                                                           @PathVariable String searchString,
-                                                           @RequestParam int    startFrom,
-                                                           @RequestParam int    pageSize)
+    public APIParameterListsResponse findAPIParameterLists(@PathVariable String                  serverName,
+                                                           @PathVariable String                  userId,
+                                                           @RequestBody  SearchStringRequestBody requestBody,
+                                                           @RequestParam int                     startFrom,
+                                                           @RequestParam int                     pageSize)
     {
-        return restAPI.findAPIParameterLists(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAPIParameterLists(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -669,12 +751,12 @@ public class APIManagerResource
 
 
     /**
-     * Retrieve the list of API parameter list metadata elements with a matching qualified or display name.
+     * Retrieve the list of API parameter list metadata elements with a matching qualified or display endpointGUID.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -683,15 +765,15 @@ public class APIManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/apis/api-operations/api-parameter-lists/by-name/{name}")
+    @PostMapping(path = "/apis/api-operations/api-parameter-lists/by-name")
 
-    public APIParameterListsResponse getAPIParameterListsByName(@PathVariable String serverName,
-                                                                @PathVariable String userId,
-                                                                @PathVariable String name,
-                                                                @RequestParam int    startFrom,
-                                                                @RequestParam int    pageSize)
+    public APIParameterListsResponse getAPIParameterListsByName(@PathVariable String          serverName,
+                                                                @PathVariable String          userId,
+                                                                @RequestBody  NameRequestBody requestBody,
+                                                                @RequestParam int             startFrom,
+                                                                @RequestParam int             pageSize)
     {
-        return restAPI.getAPIParameterListsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAPIParameterListsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 

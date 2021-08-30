@@ -88,12 +88,12 @@ public interface ExternalReferenceManagementInterface
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     void linkExternalReferenceToElement(String userId,
-                               String attachedToGUID,
-                               String linkId,
-                               String linkDescription,
-                               String externalReferenceGUID) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException;
+                                        String attachedToGUID,
+                                        String linkId,
+                                        String linkDescription,
+                                        String externalReferenceGUID) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
 
 
     /**

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,6 +31,10 @@ public enum DataItemSortOrder implements Serializable {
             "largest/highest value is first and the rest of the instances follow in " +
             "descending order."),
     UNSORTED(3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 1L;
 
     public static final String ENUM_TYPE_GUID = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
 
@@ -72,10 +75,6 @@ public enum DataItemSortOrder implements Serializable {
      */
     @Getter
     private final String description;
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static final long serialVersionUID = 1L;
 
     /**
      * Constructor to set up the instance of this enum.

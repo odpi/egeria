@@ -30,8 +30,6 @@ public class GlossaryViewClassification {
     private String status;
     private Map<String, String> properties = new HashMap<>();
 
-    public GlossaryViewClassification(){}
-
     public String getName() {
         return name;
     }

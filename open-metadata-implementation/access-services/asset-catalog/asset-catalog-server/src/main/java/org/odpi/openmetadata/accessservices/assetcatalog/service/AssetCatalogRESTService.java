@@ -257,7 +257,7 @@ public class AssetCatalogRESTService {
         AssetCatalogListResponse response = new AssetCatalogListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            List<AssetCatalogBean> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(serverName, userId, assetGUID, searchParameters);
+            List<AssetCatalogBean> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(userId, assetGUID, searchParameters);
 
             response.setAssetCatalogBeanList(entitiesFromNeighborhood);
         } catch (AssetCatalogException e) {

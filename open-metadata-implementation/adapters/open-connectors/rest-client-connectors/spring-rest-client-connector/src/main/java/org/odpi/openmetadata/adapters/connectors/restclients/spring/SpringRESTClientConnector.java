@@ -255,7 +255,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
 

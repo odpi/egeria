@@ -58,29 +58,38 @@ public class ConnectorTypeConverter<B> extends OCFConverter<B>
 
             if (returnBean instanceof ConnectorType)
             {
-                ConnectorType bean = (ConnectorType) returnBean;
+                ConnectorType connectorType = (ConnectorType) returnBean;
 
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME, methodName);
+                this.setUpElementHeader(connectorType, entity, OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity.
                  */
                 InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setConnectorProviderClassName(this.removeConnectorProviderClassName(instanceProperties));
-                bean.setRecognizedAdditionalProperties(this.removeRecognizedAdditionalProperties(instanceProperties));
-                bean.setRecognizedSecuredProperties(this.removeRecognizedSecuredProperties(instanceProperties));
-                bean.setRecognizedConfigurationProperties(this.removeRecognizedConfigurationProperties(instanceProperties));
+                connectorType.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                connectorType.setDisplayName(this.removeName(instanceProperties));
+                connectorType.setDescription(this.removeDescription(instanceProperties));
+                connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
+                connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));
+                connectorType.setConnectorProviderClassName(this.removeConnectorProviderClassName(instanceProperties));
+                connectorType.setConnectorFrameworkName(this.removeConnectorFrameworkName(instanceProperties));
+                connectorType.setConnectorInterfaceLanguage(this.removeConnectorInterfaceLanguage(instanceProperties));
+                connectorType.setConnectorInterfaces(this.removeConnectorInterfaces(instanceProperties));
+                connectorType.setTargetTechnologySource(this.removeTargetTechnologySource(instanceProperties));
+                connectorType.setTargetTechnologyName(this.removeTargetTechnologyName(instanceProperties));
+                connectorType.setTargetTechnologyInterfaces(this.removeTargetTechnologyInterfaces(instanceProperties));
+                connectorType.setTargetTechnologyVersions(this.removeTargetTechnologyVersions(instanceProperties));
+                connectorType.setRecognizedAdditionalProperties(this.removeRecognizedAdditionalProperties(instanceProperties));
+                connectorType.setRecognizedSecuredProperties(this.removeRecognizedSecuredProperties(instanceProperties));
+                connectorType.setRecognizedConfigurationProperties(this.removeRecognizedConfigurationProperties(instanceProperties));
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                connectorType.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
             }
 
             return returnBean;

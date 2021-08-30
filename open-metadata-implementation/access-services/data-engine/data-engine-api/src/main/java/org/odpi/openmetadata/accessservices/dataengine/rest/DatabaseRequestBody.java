@@ -11,9 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
-import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

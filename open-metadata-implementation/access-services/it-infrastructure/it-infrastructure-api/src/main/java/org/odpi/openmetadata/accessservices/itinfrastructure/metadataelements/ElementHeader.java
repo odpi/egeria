@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,6 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * ElementHeader provides the common identifier and type information for all properties objects
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
+ *
+ * In addition are useful attachments that are found connected to the metadata element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,6 +34,8 @@ public class ElementHeader implements Serializable
     private String        guid = null;
     private ElementType   type = null;
     private ElementOrigin origin = null;
+
+    private List<ElementClassification> classifications  = null;
 
 
     /**
@@ -49,9 +55,10 @@ public class ElementHeader implements Serializable
     {
         if (template != null)
         {
-            guid   = template.getGUID();
-            type   = template.getType();
-            origin = template.getOrigin();
+            guid             = template.getGUID();
+            type             = template.getType();
+            origin           = template.getOrigin();
+            classifications  = template.getClassifications();
         }
     }
 
@@ -131,6 +138,39 @@ public class ElementHeader implements Serializable
 
 
     /**
+     * Return the list of classifications associated with the metadata element.
+     *
+     * @return Classifications  list of classifications
+     */
+    public List<ElementClassification> getClassifications()
+    {
+        if (classifications == null)
+        {
+            return null;
+        }
+        else if (classifications.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(classifications);
+        }
+    }
+
+
+    /**
+     * Set up the classifications associated with this metadata element.
+     *
+     * @param classifications list of classifications
+     */
+    public void setClassifications(List<ElementClassification> classifications)
+    {
+        this.classifications = classifications;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -139,11 +179,14 @@ public class ElementHeader implements Serializable
     public String toString()
     {
         return "ElementHeader{" +
-                "type=" + type +
+                "guid='" + guid + '\'' +
+                ", type=" + type +
                 ", origin=" + origin +
-                ", guid='" + getGUID() + '\'' +
+                ", classifications=" + classifications +
+                ", GUID='" + getGUID() + '\'' +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -158,14 +201,15 @@ public class ElementHeader implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         ElementHeader that = (ElementHeader) objectToCompare;
-        return Objects.equals(getType(), that.getType()) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(getOrigin(), that.getOrigin());
+        return Objects.equals(guid, that.guid) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(origin, that.origin) &&
+                Objects.equals(classifications, that.classifications);
     }
 
 
@@ -177,6 +221,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin);
+        return Objects.hash(guid, type, origin, classifications);
     }
 }

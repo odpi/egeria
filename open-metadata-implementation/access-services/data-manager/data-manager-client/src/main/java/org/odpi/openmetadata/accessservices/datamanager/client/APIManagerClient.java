@@ -9,6 +9,8 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -135,6 +137,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param apiManagerGUID unique identifier of software server capability representing the API manager
      * @param apiManagerName unique name of software server capability representing the API manager
      * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param apiProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -148,6 +151,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                             String        apiManagerGUID,
                             String        apiManagerName,
                             boolean       apiManagerIsHome,
+                            String        endpointGUID,
                             APIProperties apiProperties) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -161,18 +165,34 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(apiProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "?apiManagerIsHome={2}";
+        final String urlTemplateWithEndpoint = serverPlatformURLRoot + apiURLTemplatePrefix + "/for-endpoint/{2}?apiManagerIsHome={3}";
 
         APIRequestBody requestBody = new APIRequestBody(apiProperties);
         
         requestBody.setExternalSourceGUID(apiManagerGUID);
         requestBody.setExternalSourceName(apiManagerName);
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  apiManagerIsHome);
+        GUIDResponse restResult;
+
+        if (endpointGUID == null)
+        {
+            restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                         urlTemplate,
+                                                         requestBody,
+                                                         serverName,
+                                                         userId,
+                                                         apiManagerIsHome);
+        }
+        else
+        {
+            restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                         urlTemplateWithEndpoint,
+                                                         requestBody,
+                                                         serverName,
+                                                         userId,
+                                                         endpointGUID,
+                                                         apiManagerIsHome);
+        }
 
         return restResult.getGUID();
     }
@@ -185,6 +205,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param apiManagerGUID unique identifier of software server capability representing the API manager
      * @param apiManagerName unique name of software server capability representing the API manager
      * @param apiManagerIsHome should the API be marked as owned by the API manager so others can not update?
+     * @param endpointGUID unique identifier of the endpoint where this API is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -199,6 +220,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                         String             apiManagerGUID,
                                         String             apiManagerName,
                                         boolean            apiManagerIsHome,
+                                        String             endpointGUID,
                                         String             templateGUID,
                                         TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -215,19 +237,36 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/from-template/{2}?apiManagerIsHome={3}";
-        
+        final String urlTemplateWithEndpoint = serverPlatformURLRoot + apiURLTemplatePrefix + "/for-endpoint/{2}/from-template/{3}?apiManagerIsHome={4}";
+
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
         
         requestBody.setExternalSourceGUID(apiManagerGUID);
         requestBody.setExternalSourceName(apiManagerName);
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  templateGUID,
-                                                                  apiManagerIsHome);
+        GUIDResponse restResult;
+
+        if (endpointGUID == null)
+        {
+            restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                         urlTemplate,
+                                                         requestBody,
+                                                         serverName,
+                                                         userId,
+                                                         templateGUID,
+                                                         apiManagerIsHome);
+        }
+        else
+        {
+            restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                         urlTemplateWithEndpoint,
+                                                         requestBody,
+                                                         serverName,
+                                                         userId,
+                                                         endpointGUID,
+                                                         templateGUID,
+                                                         apiManagerIsHome);
+        }
 
         return restResult.getGUID();
     }
@@ -433,15 +472,20 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
-                                                                 urlTemplate,
-                                                                 serverName,
-                                                                 userId,
-                                                                 searchString,
-                                                                 startFrom,
-                                                                 validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        APIsResponse restResult = restClient.callAPIsPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  startFrom,
+                                                                  validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -477,13 +521,18 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        APIsResponse restResult = restClient.callAPIsPostRESTCall(methodName,
                                                                  urlTemplate,
+                                                                 requestBody,
                                                                  serverName,
                                                                  userId,
-                                                                 name,
                                                                  startFrom,
                                                                  validatedPageSize);
 
@@ -532,6 +581,50 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                  userId,
                                                                  apiManagerGUID,
                                                                  apiManagerName,
+                                                                 startFrom,
+                                                                 validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+
+    /**
+     * Retrieve the list of APIs connected to the requested endpoint.
+     *
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<APIElement> getAPIsForEndpoint(String userId,
+                                               String endpointGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "getAPIsForEndpoint";
+        final String endpointGUIDParameterName = "endpointGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/by-endpoint/{2}?startFrom={3}&pageSize={4}";
+
+        APIsResponse restResult = restClient.callAPIsGetRESTCall(methodName,
+                                                                 urlTemplate,
+                                                                 serverName,
+                                                                 userId,
+                                                                 endpointGUID,
                                                                  startFrom,
                                                                  validatedPageSize);
 
@@ -812,13 +905,18 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-search-string?startFrom={2}&pageSize={3}";
 
-        APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        APIOperationsResponse restResult = restClient.callAPIOperationsPostRESTCall(methodName,
                                                                                    urlTemplate,
+                                                                                   requestBody,
                                                                                    serverName,
                                                                                    userId,
-                                                                                   searchString,
                                                                                    startFrom,
                                                                                    validatedPageSize);
 
@@ -901,13 +999,18 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/by-name?startFrom={2}&pageSize={3}";
 
-        APIOperationsResponse restResult = restClient.callAPIOperationsGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        APIOperationsResponse restResult = restClient.callAPIOperationsPostRESTCall(methodName,
                                                                                    urlTemplate,
+                                                                                   requestBody,
                                                                                    serverName,
                                                                                    userId,
-                                                                                   name,
                                                                                    startFrom,
                                                                                    validatedPageSize);
 
@@ -1202,13 +1305,17 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/by-search-string?startFrom={2}&pageSize={3}";
 
-        APIParameterListsResponse restResult = restClient.callAPIParameterListsGetRESTCall(methodName,
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        APIParameterListsResponse restResult = restClient.callAPIParameterListsPostRESTCall(methodName,
                                                                                            urlTemplate,
                                                                                            serverName,
                                                                                            userId,
-                                                                                           searchString,
                                                                                            startFrom,
                                                                                            validatedPageSize);
 
@@ -1289,15 +1396,20 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/by-name?startFrom={2}&pageSize={3}";
 
-        APIParameterListsResponse restResult = restClient.callAPIParameterListsGetRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           name,
-                                                                                           startFrom,
-                                                                                           validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        APIParameterListsResponse restResult = restClient.callAPIParameterListsPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            startFrom,
+                                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -1530,7 +1642,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param schemaAttributeElements returned list
      * @return return reformatted list
      */
-    private List<APIParameterElement> getAPIParametersFomSchemaAttributes(List<SchemaAttributeElement> schemaAttributeElements)
+    private List<APIParameterElement> getAPIParametersFromSchemaAttributes(List<SchemaAttributeElement> schemaAttributeElements)
     {
         if (schemaAttributeElements != null)
         {
@@ -1582,7 +1694,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     {
         List<SchemaAttributeElement> schemaAttributeElements = super.findSchemaAttributes(userId, searchString, typeName, startFrom, pageSize);
 
-        return getAPIParametersFomSchemaAttributes(schemaAttributeElements);
+        return getAPIParametersFromSchemaAttributes(schemaAttributeElements);
     }
 
 
@@ -1609,7 +1721,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     {
         List<SchemaAttributeElement> schemaAttributeElements = super.getNestedAttributes(userId, parentElementGUID, startFrom, pageSize);
 
-        return getAPIParametersFomSchemaAttributes(schemaAttributeElements);
+        return getAPIParametersFromSchemaAttributes(schemaAttributeElements);
     }
 
 
@@ -1639,7 +1751,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
     {
         List<SchemaAttributeElement> schemaAttributeElements = super.getSchemaAttributesByName(userId, name, typeName, startFrom, pageSize);
 
-        return getAPIParametersFomSchemaAttributes(schemaAttributeElements);
+        return getAPIParametersFromSchemaAttributes(schemaAttributeElements);
     }
 
 

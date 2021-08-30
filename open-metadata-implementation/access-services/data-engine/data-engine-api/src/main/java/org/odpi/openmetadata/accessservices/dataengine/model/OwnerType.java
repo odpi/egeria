@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,6 +34,10 @@ public enum OwnerType implements Serializable {
     USER_ID(0, 0, "UserId", "The owner's user id is stored in the owner property."),
     PROFILE_ID(1, 1, "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
     OTHER(99, 99, "Other", "A different identifier for the owner outside of the scope of open metadata has been used.");
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 1L;
 
     public static final String ENUM_TYPE_GUID = "9548390c-69f5-4dc6-950d-6feeee257b56";
 
@@ -71,10 +74,6 @@ public enum OwnerType implements Serializable {
      * @return String description
      */
     private final String description;
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static final long serialVersionUID = 1L;
 
     /**
      * Constructor to set up the instance of this enum.

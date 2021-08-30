@@ -34,7 +34,6 @@ public class StoringServices {
      * Delegates the call for the creation of entities and relationships to the connector
      */
     public void upsertEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
-        String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
     /**
@@ -73,7 +72,6 @@ public class StoringServices {
      * Delegates the call for the deletion of an entity to the connector
      */
     public void deleteEntity(LineageEntityEvent lineageEntityEvent) {
-
         lineageGraph.deleteEntity(lineageEntityEvent.getLineageEntity().getGuid(), lineageEntityEvent.getLineageEntity().getVersion());
     }
 

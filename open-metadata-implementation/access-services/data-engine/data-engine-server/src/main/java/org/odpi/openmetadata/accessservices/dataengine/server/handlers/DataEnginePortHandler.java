@@ -41,16 +41,15 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEnginePortHandler {
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final PortHandler<Port> portHandler;
     private final DataEngineRegistrationHandler registrationHandler;
 
-    private final static String processGUIDParameterName = "processGUID";
-    private final static String portGUIDParameterName = "portGUID";
-    private final static String schemaTypeGUIDParameterName = "schemaTypeGUID";
+    private static final String PROCESS_GUID_PARAMETER_NAME = "processGUID";
+    private static final String PORT_GUID_PARAMETER_NAME = "portGUID";
+    private static final String SCHEMA_TYPE_GUID_PARAMETER_NAME = "schemaTypeGUID";
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -72,7 +71,6 @@ public class DataEnginePortHandler {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.portHandler = portHandler;
         this.registrationHandler = registrationHandler;
@@ -180,7 +178,7 @@ public class DataEnginePortHandler {
         invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, processGUIDParameterName, port.getQualifiedName(),
+        return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
                 port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName, null, methodName);
     }
 
@@ -213,7 +211,7 @@ public class DataEnginePortHandler {
             return;
         }
 
-        portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, port.getQualifiedName(),
+        portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
                 port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null, methodName);
     }
 
@@ -242,8 +240,8 @@ public class DataEnginePortHandler {
         if (!dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID, PORT_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME)
                 .isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-            portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName,
-                    schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+            portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
+                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, methodName);
         }
     }
 
@@ -301,8 +299,8 @@ public class DataEnginePortHandler {
         String delegatedPortGUID = delegatedPortEntity.get().getGUID();
         if (!dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME).isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-            portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, delegatedPortGUID,
-                    portGUIDParameterName, methodName);
+            portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
+                    PORT_GUID_PARAMETER_NAME, methodName);
         }
     }
 
@@ -327,7 +325,7 @@ public class DataEnginePortHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, methodName);
+        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, methodName);
     }
 
     /**

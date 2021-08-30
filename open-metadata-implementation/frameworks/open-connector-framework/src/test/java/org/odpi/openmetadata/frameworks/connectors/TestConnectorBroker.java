@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -33,7 +32,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-001 Null connection object passed on request for new connector instance"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -55,7 +54,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-001 Null connection object passed on request for new connector instance"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -79,7 +78,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection <Unknown>"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -103,7 +102,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection <Unknown>"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -129,7 +128,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -157,7 +156,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-003 Null connectorType property passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -191,7 +190,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-005 Unknown Connector Provider class Joke passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -225,7 +224,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-004 Null Connector Provider passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -255,9 +254,9 @@ public class TestConnectorBroker
         {
             cb.getConnector(testConnection);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
-            assertTrue(exc.getMessage().contains("OCF-CONNECTION-400-008 Invalid Connector Provider class org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase passed in connection Test.Connection"));
+            assertTrue(exc.getMessage().contains("OCF-CONNECTION-400-008 Connector Provider class org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase passed in connection Test.Connection"));
         }
     }
 
@@ -285,7 +284,7 @@ public class TestConnectorBroker
         {
             cb.getConnector(testConnection);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(exc.getMessage().contains("OCF-CONNECTION-500-011 Connector Provider org.odpi.openmetadata.frameworks.connectors.MockEmptyConnectorProvider returned a null connector instance for connection Test.Connection"));
         }
@@ -315,7 +314,7 @@ public class TestConnectorBroker
         {
             cb.getConnector(testConnection);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(exc.getMessage().contains("OCF-PROPERTIES-400-014"));
         }
@@ -345,7 +344,7 @@ public class TestConnectorBroker
         {
             cb.getConnector(testConnection);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(exc.getMessage().contains("OCF-PROPERTIES-400-014"));
         }
@@ -375,7 +374,7 @@ public class TestConnectorBroker
         {
             cb.getConnector(testConnection);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(exc.getMessage().contains("OCF-CONNECTION-500-001 OCF method detected an unexpected exception"));
         }
@@ -411,7 +410,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-005 Unknown Connector Provider class Joke passed in connection Test.Connection"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -446,7 +445,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-006 Class java.lang.String passed in connection Test.Connection is not a Connector Provider"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -483,7 +482,7 @@ public class TestConnectorBroker
         {
             assertTrue(chk.getMessage().contains("OCF-CONNECTION-400-006 Class java.lang.String passed in connection Test.Connection is not a Connector Provider"));
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(false);
         }
@@ -517,7 +516,7 @@ public class TestConnectorBroker
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));
             assertTrue(mockConnector.getConnectedAssetProperties("TestUserId") == null);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             assertTrue(false);
         }
@@ -553,7 +552,7 @@ public class TestConnectorBroker
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));
             assertTrue(mockConnector.getConnectedAssetProperties("TestUserId") == null);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             assertTrue(false);
         }
