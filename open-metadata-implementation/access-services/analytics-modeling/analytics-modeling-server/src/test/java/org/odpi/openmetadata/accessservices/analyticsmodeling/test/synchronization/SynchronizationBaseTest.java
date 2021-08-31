@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
@@ -28,6 +27,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.EntityP
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.JsonMocks;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
