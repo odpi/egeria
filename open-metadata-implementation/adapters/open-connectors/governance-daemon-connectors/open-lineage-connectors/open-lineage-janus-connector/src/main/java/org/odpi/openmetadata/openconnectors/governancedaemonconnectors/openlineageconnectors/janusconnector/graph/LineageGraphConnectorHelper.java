@@ -906,8 +906,6 @@ public class LineageGraphConnectorHelper {
     private Map<String, String> getTabularColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
         GraphTraversal<Vertex, Map<Object, List<String>>> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE)).valueMap();
-//        Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
-//        commitTransaction();
         if (tabularSchemaType.hasNext()) {
             properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(tabularSchemaType.next()));
         }
@@ -917,7 +915,6 @@ public class LineageGraphConnectorHelper {
 
         commitTransaction();
         if (dataFileAsset.hasNext()) {
-//            Map<Object, Object> dataFileVertex = dataFileAsset.next();
             properties.putAll(getDataFileProperties(g, dataFileAsset.next()));
         }
 
@@ -969,12 +966,6 @@ public class LineageGraphConnectorHelper {
     }
 
     private String getDisplayNameForVertex(Vertex vertex) {
-        /*
-          if (vertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
-            return vertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
-        } else if (vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()) {
-            return vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString();
-            */
         GraphTraversal<Vertex, Map<Object, List<String>>> vertexMapGraphTraversal = g.V(vertex.id()).valueMap();
         if (!vertexMapGraphTraversal.hasNext()){
             return null;
