@@ -89,7 +89,7 @@ public class DataEngineRegistrationHandler {
                     null, entityTypeDef.getGUID(), entityTypeDef.getName(), null, externalEngineName,
                     softwareServerCapability.getName(), softwareServerCapability.getDescription(), entityTypeDef.getDescription(),
                     softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                    softwareServerCapability.getAdditionalProperties(), null, methodName);
+                    softwareServerCapability.getAdditionalProperties(), null, null, null, methodName);
         } else {
             ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
             InstanceProperties properties = builder.getInstanceProperties(methodName);
