@@ -201,7 +201,6 @@ public class ServerAuthorViewRESTServices {
      * @param serverName  local server name.
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
-     * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
