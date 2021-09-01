@@ -107,7 +107,7 @@ class ConfigRepositoryServicesViewResource {
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
     @PostMapping(path = "/local-repository/mode/plugin-repository/connection")
-    public VoidResponse setPluginRepositoryConnection(@PathVariable String     userId,
+    public FFDCResponseBase setPluginRepositoryConnection(@PathVariable String     userId,
                                                       @PathVariable String     serverName,
                                                       @PathVariable String     serverToBeConfiguredName,
                                                       @RequestBody  Connection connection)
