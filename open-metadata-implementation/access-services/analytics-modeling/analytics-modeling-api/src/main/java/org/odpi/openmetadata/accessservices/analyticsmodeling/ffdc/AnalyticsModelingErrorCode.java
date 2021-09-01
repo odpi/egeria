@@ -174,6 +174,16 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Failed to fetch schema attributes by qualified name {0}. Cause: {1}",
 			"The system is unable to fetch schema attributes.",
 			"Review exception message and requested qualified name pattern."),
+	FAILED_GET_SERVER_CAPABILITY_GUID(
+			"OMAS-ANALYTICS-MODELING-036", 
+			"User {0} failed to retrieve server capability with GUID {1}. Cause: {2}",
+			"The system is unable to retrieve server capability by GUID.",
+			"Verify the server capability GUID and access rights."),
+	FAILED_GET_SERVER_CAPABILITY_NAME(
+			"OMAS-ANALYTICS-MODELING-037", 
+			"User {0} failed to retrieve server capability with name {1}. Cause: {2}",
+			"The system is unable to retrieve server capability by name.",
+			"Verify the server capability name, and access rights."),
 	
 	
 	// information messages codes 200-299, HTTP status 100: Continue.

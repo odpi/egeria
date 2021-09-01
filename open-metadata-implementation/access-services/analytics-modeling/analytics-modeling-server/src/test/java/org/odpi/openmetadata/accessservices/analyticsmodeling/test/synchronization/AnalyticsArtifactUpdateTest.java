@@ -39,9 +39,10 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testModuleNotChanged() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -51,7 +52,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 		
-		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "module"), AnalyticsAsset.class));
 		
 		// Verify structure and content of the updated asset. 
@@ -74,9 +75,10 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testRemoveObjects() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -86,7 +88,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 
-		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "moduleShort"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
@@ -117,9 +119,10 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testAddedObjects() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("moduleShort"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("moduleShort"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
@@ -128,7 +131,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 
-		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "module"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
@@ -153,16 +156,17 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	void testUpdateReferences() throws Exception {
 
 		// prepare for test
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		// Verify structure before test 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be created.");
 		String guid = guidsModule.getAssetsList().get(0);
 		assertSubgraph(guid, "moduleSubgraph");
 		
-		guidsModule = obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+		guidsModule = obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "moduleReferences"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
@@ -189,10 +193,12 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		String baseModule = getBaseModuleJson("baseModule");	// base module definition with fixed GUIDs
 		AnalyticsAsset assetBaseModule = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
 
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, assetBaseModule);
 		String guidBase = guidsModule.getAssetsList().get(0);
 		
-		guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		// Verify structure before test 
 		String guidModule = guidsModule.getAssetsList().get(0);
@@ -203,13 +209,13 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		AnalyticsAsset updatedBM = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
 		updatedBM.getContainer().get(0).setIdentifier("COUNTRY1");
 
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, updatedBM);
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, updatedBM);
 		// Verify structure and content of the updated asset and dependent asset. 
 		assertSubgraph(guidBase, "baseModuleNewIdentifierSubgraph");
 		assertSubgraph(guidModule, "moduleRemovedReferenceSubgraph");	// two relationships were removed from moduleSubgraph.json
 		
 		// update with original definition: roll back
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, 
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class));
 		// Verify structure and content of the updated asset and dependent asset. 
 		assertSubgraph(guidBase, "baseModuleSubgraph");
@@ -241,26 +247,27 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		module.setType("baseModule");
 		module.setDescription(TEST_DESCRIPTION);
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, module);
 		String guid = guidsModule.getAssetsList().get(0);
 		
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 		
 		// property updates one by one confirm that each update is completed
 		module.setDisplayName(UPDATED + MODULE_NAME);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getDisplayName(), UPDATED + MODULE_NAME, "Module name update failed");
 		
 		module.setDescription(UPDATED + TEST_DESCRIPTION);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getDescription(), UPDATED + TEST_DESCRIPTION, "Description update failed");
 
 		module.setLocation(UPDATED + UID_PATH);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getLocation(), UPDATED + UID_PATH, "Location update failed");
 
 		module.setLastModified(UPDATED + TIMESTAMP);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, module);
 		AnalyticsAsset repositoryAsset = getAsset(assetConverter, guid, testName);
 		assertEquals(repositoryAsset.getLastModified(), UPDATED + TIMESTAMP, "Last modified update failed");
 
@@ -275,10 +282,11 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	@Test
 	void testUpdateVisualization() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("module"));
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("report"));
 		String guidModule = guidsReport.getAssetsList().get(0);
 		String guidReport = guidsReport.getAssetsList().get(1);
 		
@@ -288,7 +296,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		assertSubgraph(guidReport, "reportSubgraph");
 		
 		// update report
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID,
 				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "report2"), AnalyticsAsset.class));
 		assertSubgraph(guidReport, "report2Subgraph");
 	}
@@ -304,10 +312,11 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	@Test
 	void testUpdateModifiedModuleReference() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule2"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule2"));
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		String guidModule = guidsReport.getAssetsList().get(0);
 		
 		// Verify structure and content of the built asset before test. 
@@ -321,7 +330,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		AnalyticsAsset asset = TestUtilities.readObjectJson(module, AnalyticsAsset.class);
 		
 		// update report
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, asset);
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, asset);
 		assertSubgraph(guidModule, "module2Subgraph");
 	}	
 	/**

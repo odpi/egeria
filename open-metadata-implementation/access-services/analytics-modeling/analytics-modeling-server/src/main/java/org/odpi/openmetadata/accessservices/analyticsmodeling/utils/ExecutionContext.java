@@ -83,7 +83,14 @@ public class ExecutionContext {
 		this.userId = userId;
 	}
 
-	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName)
+	/**
+	 * Get software server capability by GUID, name, or create.
+	 * @param userId of the request.
+	 * @param softwareServerCapabilityName to get.
+	 * @param softwareServerCapabilityGUID to get.
+	 * @throws AnalyticsModelingCheckedException in case of an errors.
+	 */
+	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName, String softwareServerCapabilityGUID)
 			throws AnalyticsModelingCheckedException
 	{
 		
@@ -96,10 +103,36 @@ public class ExecutionContext {
 				 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
 				localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 		
+		// first try to use GUID
 		try {
-			softwareServerCapability = softwareServerCapabilityHandler
-					.findSoftwareServerCapability(userId, softwareServerCapabilityName, methodName);
+			if (softwareServerCapabilityGUID != null) {
+				softwareServerCapability = softwareServerCapabilityHandler
+						.getSoftwareServerCapability(userId, softwareServerCapabilityGUID, "guid", methodName);
+			}
+		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_GET_SERVER_CAPABILITY_GUID.getMessageDefinition(userId, 
+							softwareServerCapabilityName, ex.getLocalizedMessage()),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		}
 			
+		try {
+			if (softwareServerCapability == null) {
+				softwareServerCapability = softwareServerCapabilityHandler
+						.findSoftwareServerCapability(userId, softwareServerCapabilityName, methodName);
+			}
+		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_GET_SERVER_CAPABILITY_NAME.getMessageDefinition(userId, 
+							softwareServerCapabilityName, ex.getLocalizedMessage()),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		}
+
+		try {
 			if (softwareServerCapability == null) {
 				String guid = softwareServerCapabilityHandler.createSoftwareServerCapability(userId, softwareServerCapabilityName, methodName);
 				softwareServerCapability = softwareServerCapabilityHandler.getSoftwareServerCapability(userId, guid, "guid", methodName);
@@ -112,7 +145,6 @@ public class ExecutionContext {
 					this.getClass().getSimpleName(),
 					methodName,
 					ex);
-			
 		}
 	}
 

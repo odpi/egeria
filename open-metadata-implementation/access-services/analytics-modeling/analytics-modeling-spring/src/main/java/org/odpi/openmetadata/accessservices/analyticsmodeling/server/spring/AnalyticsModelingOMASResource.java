@@ -135,6 +135,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
 	 * @param artifact definition json.
 	 * @return errors or list of created assets.
 	 */
@@ -144,10 +145,11 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=false) String serverCapabilityGUID,
 			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
-		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
+		return restAPI.createArtifact(serverName, userId, serverCapability, serverCapabilityGUID, artifact);
 	}
 
     /**
@@ -155,6 +157,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
 	 * @param artifact from json definition.
 	 * @return errors or list of created assets.
 	 */
@@ -164,10 +167,11 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=false) String serverCapabilityGUID,
 			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
-		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);
+		return restAPI.updateArtifact(serverName, userId, serverCapability, serverCapabilityGUID, artifact);
 	}
     
     /**
@@ -175,6 +179,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
 	 * @param identifier of the artifact in 3rd party system.
 	 * @return errors or list of created assets.
 	 */
@@ -184,8 +189,9 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=false) String serverCapabilityGUID,
 			@RequestParam(required=true) String identifier)
     {
-		return restAPI.deleteArtifact(serverName, userId, serverCapability, identifier);
+		return restAPI.deleteArtifact(serverName, userId, serverCapability, serverCapabilityGUID, identifier);
 	}
 }
