@@ -1417,7 +1417,9 @@ public class OpenMetadataTypesArchive3_1
         this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaType());
         this.archiveBuilder.addTypeDefPatch(deprecateBoundedSchemaElementType());
         this.archiveBuilder.addTypeDefPatch(deprecateArraySchemaType());
+        this.archiveBuilder.addTypeDefPatch(deprecateArrayDocumentType());
         this.archiveBuilder.addTypeDefPatch(deprecateSetSchemaType());
+        this.archiveBuilder.addTypeDefPatch(deprecateSetDocumentType());
     }
 
 
@@ -1440,7 +1442,7 @@ public class OpenMetadataTypesArchive3_1
     }
 
     /**
-     * Deprecate the BoundedSchemaType
+     * Deprecate the BoundedSchemaElementType
      *
      * @return patch
      */
@@ -1458,7 +1460,7 @@ public class OpenMetadataTypesArchive3_1
     }
 
     /**
-     * Deprecate the BoundedSchemaType
+     * Deprecate the ArraySchemaType
      *
      * @return patch
      */
@@ -1476,7 +1478,25 @@ public class OpenMetadataTypesArchive3_1
     }
 
     /**
-     * Deprecate the BoundedSchemaType
+     * Deprecate the ArrayDocumentType
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecateArrayDocumentType()
+    {
+        final String typeName = "ArrayDocumentType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    /**
+     * Deprecate the SetSchemaType
      *
      * @return patch
      */
@@ -1493,5 +1513,23 @@ public class OpenMetadataTypesArchive3_1
         return typeDefPatch;
     }
 
+
+    /**
+     * Deprecate the SetDocumentType
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecateSetDocumentType()
+    {
+        final String typeName = "SetDocumentType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
 }
 
