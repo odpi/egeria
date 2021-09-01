@@ -93,7 +93,7 @@ class DataEngineRegistrationHandlerTest {
                 softwareServerCapability.getQualifiedName(),
                 softwareServerCapability.getName(), softwareServerCapability.getDescription(), null,
                 softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                softwareServerCapability.getAdditionalProperties(), null, methodName)).thenReturn(GUID);
+                softwareServerCapability.getAdditionalProperties(), null, null, null, methodName)).thenReturn(GUID);
 
         String response = registrationHandler.upsertExternalDataEngine(USER, softwareServerCapability);
 
@@ -145,7 +145,7 @@ class DataEngineRegistrationHandlerTest {
                 softwareServerCapability.getQualifiedName(), softwareServerCapability.getName(), softwareServerCapability.getDescription(),
                 null, softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
                 softwareServerCapability.getSource(), softwareServerCapability.getAdditionalProperties(),
-                null, methodName)).thenThrow(mockedException);
+                null, null, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 registrationHandler.upsertExternalDataEngine(USER, softwareServerCapability));
