@@ -608,6 +608,11 @@ public class DinoViewHandler {
             List<RegisteredOMAGService> viewServiceList = platformServicesClient.getViewServices(userId);
             platformOverview.setViewServices(viewServiceList);
 
+            List<RegisteredOMAGService> integrationServiceList = platformServicesClient.getIntegrationServices(userId);
+            platformOverview.setIntegrationServices(integrationServiceList);
+
+            List<RegisteredOMAGService> engineServiceList = platformServicesClient.getEngineServices(userId);
+            platformOverview.setEngineServices(engineServiceList);
             return platformOverview;
 
         }

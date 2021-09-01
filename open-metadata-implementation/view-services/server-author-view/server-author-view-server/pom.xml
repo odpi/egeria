@@ -9,7 +9,7 @@
     <parent>
         <artifactId>server-author-view</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.1-SNAPSHOT</version>
+        <version>3.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -68,6 +68,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>server-author-view-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>platform-services-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
     </dependencies>

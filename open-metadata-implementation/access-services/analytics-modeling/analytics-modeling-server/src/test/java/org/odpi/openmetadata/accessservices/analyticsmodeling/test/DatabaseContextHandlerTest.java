@@ -29,6 +29,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
@@ -97,7 +98,21 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
                 null, // publishZones,
                 auditLog);
 		
-		databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDaoReal, invalidParameterHandler);
+		ExecutionContext ctx = new ExecutionContext(
+				serviceName, 
+				serverName, 
+				invalidParameterHandler,
+				repositoryHandler,
+				enterpriseConnector.getRepositoryHelper(),
+				LOCAL_SERVER_USER_ID,
+				null, // securityVerifier,
+				null, // supportedZones,
+				null, // defaultZones,
+				null, // publishZones,
+				auditLog);
+
+		
+		databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDaoReal, ctx);
 	}
 
 	@Test
@@ -283,11 +298,15 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
+		addGlossaryTerm(entitySchema, "Go Sales", null, null);
 
 		EntityDetail entityTableDate = createSchemaTable(entitySchema, TBL_DATE);
 		EntityDetail pkDate = addColumn(entityTableDate, "DateKey", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
 		setColumnPrimaryKey(pkDate, buildKey(PRIMARY_KEY_PREFIX, TBL_DATE, "DateKey"));
 		addColumn(entityTableDate, TBL_DATE, "TIMESTAMP", "DATETIME");
+		
+		addGlossaryTerm(entityTableDate, "Calendar", null, null);
+		addGlossaryTerm(pkDate, "Date Key", "Primary key for Date used in sales orders.", "Primary key for Date.");
 
 		// table "Location" has combined primary key with two fields
 		EntityDetail entityTableLocation = createSchemaTable(entitySchema, TBL_LOCATION);
@@ -332,7 +351,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		defineColumnForeignKey(columnEntity, pkLongitude);
 
 		// testing is done here
-		ResponseContainerModule moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,
+		ResponseContainerModule moduleResponse = databaseContextHandler.getModule(USER_ID, entityDB.getGUID(), DATABASE_GOSALES,
 				SCHEMA_DBO, null);
 
 		// assert result
@@ -348,7 +367,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// test table filter include
 		ModuleTableFilter filter = new ModuleTableFilter();
 		filter.getMeta().setIncludedTables(Arrays.asList(TBL_DATE, TBL_LOCATION));
-		moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
+		moduleResponse = databaseContextHandler.getModule(USER_ID, entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
 		assertNotNull(moduleResponse);
 		tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 		assertEquals(tables.size(), 2, "Two tables should pass the filter.");
@@ -356,7 +375,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// test table filter exclude
 		filter = new ModuleTableFilter();
 		filter.getMeta().setExcludedTables(Arrays.asList(TBL_DATE));
-		moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
+		moduleResponse = databaseContextHandler.getModule(USER_ID, entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
 		assertNotNull(moduleResponse);
 		tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 		assertEquals(tables.size(), 3, "Three tables should pass the filter.");
@@ -367,7 +386,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		String badGuid = "BadGuid";
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO, null));
+				() -> databaseContextHandler.getModule(USER_ID, badGuid, DATABASE_GOSALES, SCHEMA_DBO, null));
 		assertEquals(AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition(Constants.GUID, badGuid).getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
@@ -381,7 +400,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		String badSchema = "schemaUnknown";
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema, null));
+				() -> databaseContextHandler.getModule(USER_ID, entityDB.getGUID(), DATABASE_GOSALES, badSchema, null));
 
 		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
@@ -409,7 +428,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getModuleInvalidParameter() {
 
 		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
-				() -> databaseContextHandler.getModule(null, DATABASE_GOSALES, SCHEMA_DBO, null));
+				() -> databaseContextHandler.getModule(USER_ID, null, DATABASE_GOSALES, SCHEMA_DBO, null));
 		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 

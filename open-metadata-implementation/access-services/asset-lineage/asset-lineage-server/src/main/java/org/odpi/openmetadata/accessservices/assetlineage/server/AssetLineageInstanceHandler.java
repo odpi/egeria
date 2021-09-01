@@ -169,6 +169,7 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException
      * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException
      */
+    @Override
     public AuditLog getAuditLog(String userId, String serverName, String serviceOperationName)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
             org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException,

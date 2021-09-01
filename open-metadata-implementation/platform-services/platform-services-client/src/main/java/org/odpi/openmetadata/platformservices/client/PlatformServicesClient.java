@@ -364,6 +364,32 @@ public class PlatformServicesClient
         return restResult.getServices();
     }
 
+    /**
+     * Retrieve a list of the integration services registered on the platform
+     *
+     * @param userId calling user
+     *
+     * @return List of integration services
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RegisteredOMAGService> getIntegrationServices(String   userId) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "getIntegrationServices";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/registered-services/integration-services";
+
+        RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, userId);
+
+        return restResult.getServices();
+    }
+
 
     /**
      * Retrieve a list of the common services registered on the platform

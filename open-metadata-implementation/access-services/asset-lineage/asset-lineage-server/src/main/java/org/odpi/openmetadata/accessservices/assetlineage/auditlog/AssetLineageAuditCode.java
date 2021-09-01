@@ -13,20 +13,20 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Lineage OMAS.",
-            "No action is required.  This is part of the normal operation of the server."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVER),
 
 
     SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Lineage OMAS has completed initialization.",
-            "No action is required.  This is part of the normal operation of the server."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVER),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Asset Lineage OMAS server instance.",
-            "No action is required.  This is part of the normal operation of the server."),
+            Constants.NORMAL_OPERATION_OF_THE_SERVER),
 
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0004",
@@ -45,13 +45,13 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.INFO,
             "{0} Processing sequence entity type {1} items {2}",
             "The Asset Lineage OMAS records information about processing sequence.",
-            "No action is required."),
+            Constants.NO_ACTION_IS_REQUIRED),
 
     ENTITY_INFO("OMAS-ASSET-LINEAGE-0007",
             OMRSAuditLogRecordSeverity.INFO,
             "{0} Entity type {1} guid {2}",
             "The Asset Lineage OMAS records information about entity.",
-            "No action is required."),
+            Constants.NO_ACTION_IS_REQUIRED),
 
     ENTITY_ERROR("OMAS-ASSET-LINEAGE-0008",
             OMRSAuditLogRecordSeverity.ERROR,
@@ -71,7 +71,7 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
             "The asset context for the entity with guid {0} is requested through REST endpoint and will be " +
                     "retrieved on the out topic.",
             "The Asset Lineage OMAS retrieves entity's asset context.",
-            "No action is required.");
+            Constants.NO_ACTION_IS_REQUIRED);
 
     private AuditLogMessageDefinition messageDefinition;
 
@@ -132,5 +132,10 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
         return "AssetLineageAuditCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';
+    }
+
+    private static class Constants {
+        public static final String NORMAL_OPERATION_OF_THE_SERVER = "No action is required.  This is part of the normal operation of the server.";
+        public static final String NO_ACTION_IS_REQUIRED = "No action is required.";
     }
 }

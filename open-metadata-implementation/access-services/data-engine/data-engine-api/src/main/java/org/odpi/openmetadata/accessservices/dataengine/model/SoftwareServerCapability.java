@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -111,5 +111,16 @@ public class SoftwareServerCapability implements Serializable {
      * @param source the source
      */
     private String source;
+
+    /**
+     * Additional properties
+     * -- GETTER --
+     * Gets the additional properties
+     * @return the dditional properties
+     * -- SETTER --
+     * Sets the additional properties.
+     * @param additionalProperties the additional properties
+     */
+    Map<String, String> additionalProperties;
 
 }

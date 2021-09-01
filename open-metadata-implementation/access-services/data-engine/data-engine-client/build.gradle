@@ -16,9 +16,11 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-topic-connectors')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation 'org.springframework:spring-core'
     implementation 'org.apache.commons:commons-collections4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.springframework:spring-core'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
 

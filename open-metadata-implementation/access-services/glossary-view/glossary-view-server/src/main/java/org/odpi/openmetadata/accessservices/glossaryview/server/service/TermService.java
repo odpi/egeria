@@ -32,8 +32,6 @@ public class TermService extends GlossaryViewOMAS {
     private static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOFRelationship";
     private static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
 
-    public TermService() {}
-
     /**
      * Extract the term definition for the given GUID
      *

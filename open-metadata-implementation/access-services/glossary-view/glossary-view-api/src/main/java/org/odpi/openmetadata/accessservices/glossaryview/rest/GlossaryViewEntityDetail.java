@@ -54,8 +54,6 @@ public class GlossaryViewEntityDetail{
 
     private List<GlossaryViewClassification> classifications;
 
-    public GlossaryViewEntityDetail(){}
-
     public String getTypeDefName(){ return typeDefName; }
 
     public String getCreatedBy() {

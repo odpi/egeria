@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class GlossaryViewOMAS extends OMRSClient {
 
-    private final static String GLOSSARY_VIEW_OMAS = "Glossary View OMAS";
+    private static final String GLOSSARY_VIEW_OMAS = "Glossary View OMAS";
 
     /**
      * Predicate to test the current time between effectiveFrom and effectiveTo properties of an entity detail. Will return
