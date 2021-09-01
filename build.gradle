@@ -25,7 +25,7 @@ buildscript {
 plugins {
         //id "nebula.lint" version "16.9.0"
         //id "nebula-aggregate-javadocs"
-        id "io.freefair.lombok" version "6.1.0-m3"
+        id "io.freefair.lombok" version "6.1.0"
     }
 
 /* run './gradlew aggregateJavadocs' at top level to build all docs & output to build/docs/javadoc */
@@ -76,19 +76,19 @@ allprojects {
     ext {
         logbackVersion = '1.2.5'
         jacksonVersion = '2.12.2'
-        nettyVersion = '4.1.66.Final'
+        nettyVersion = '4.1.67.Final'
         luceneVersion = '8.9.0'
         gremlinVersion = '3.4.12'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
-        springdataVersion = '2.5.3'
+        springdataVersion = '2.5.4'
         springwebVersion = '5.3.9'
         springldapVersion = '2.3.4.RELEASE'
-        springsecurityVersion = '5.5.1'
-        springbootVersion = '2.5.3'
-        mockitoVersion = '3.11.2'
+        springsecurityVersion = '5.5.2'
+        mockitoVersion = '3.12.4'
+        springbootVersion = '2.5.4'
         junitjupiterVersion = '5.7.2'
-        tomcatVersion = '9.0.50'
+        tomcatVersion = '9.0.52'
         httpcoreVersion = '4.4.14'
     }
 
@@ -104,7 +104,7 @@ allprojects {
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.google.crypto.tink:tink:1.6.1")
-            implementation("com.github.spotbugs:spotbugs-annotations:4.3.0")
+            implementation("com.github.spotbugs:spotbugs-annotations:4.4.0")
             implementation("com.google.code.findbugs:jsr305:3.0.2")
             implementation("com.google.guava:guava:30.1.1-jre")
             implementation("com.h2database:h2:1.4.200")
@@ -114,9 +114,9 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0")
             implementation("commons-logging:commons-logging:1.2")
             implementation("org.apache.commons:commons-text:1.9")
-            implementation("io.github.classgraph:classgraph:4.8.110")
+            implementation("io.github.classgraph:classgraph:4.8.115")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
-            implementation("io.micrometer:micrometer-registry-prometheus:1.7.2")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.7.3")
             implementation('io.lettuce:lettuce-core:6.1.4.RELEASE')
             implementation("io.netty:netty-handler:${nettyVersion}")
             implementation("io.netty:netty-common:${nettyVersion}")
@@ -157,8 +157,8 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
-            implementation("org.codehaus.plexus:plexus-utils:3.4.0")
-            implementation("org.elasticsearch:elasticsearch:7.13.4")
+            implementation("org.elasticsearch:elasticsearch:7.14.0")
+            implementation("org.codehaus.plexus:plexus-utils:3.4.1")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
             implementation("org.janusgraph:janusgraph-inmemory:${janusVersion}")
@@ -227,7 +227,7 @@ allprojects {
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.14.2")
-            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.13.4")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.14.0")
         }
     }
 
