@@ -87,7 +87,7 @@ public class DataEngineRegistrationHandler {
         if (externalEngineGUID == null) {
             externalEngineGUID = softwareServerCapabilityHandler.createSoftwareServerCapability(userId, null,
                     null, entityTypeDef.getGUID(), entityTypeDef.getName(), null, externalEngineName,
-                    softwareServerCapability.getName(), softwareServerCapability.getDescription(), entityTypeDef.getDescription(),
+                    softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                     softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
                     softwareServerCapability.getAdditionalProperties(), null, null, null, methodName);
         } else {
