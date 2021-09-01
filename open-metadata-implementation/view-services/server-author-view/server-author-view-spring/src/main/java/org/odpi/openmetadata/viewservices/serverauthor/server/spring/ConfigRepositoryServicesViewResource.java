@@ -94,6 +94,26 @@ class ConfigRepositoryServicesViewResource {
                                                 @PathVariable String serverToBeConfiguredName) {
         return serverAPI.setReadOnlyLocalRepository(userId, serverName, serverToBeConfiguredName);
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    @PostMapping(path = "/local-repository/mode/plugin-repository/connection")
+    public VoidResponse setPluginRepositoryConnection(@PathVariable String     userId,
+                                                      @PathVariable String     serverName,
+                                                      @PathVariable String     serverToBeConfiguredName,
+                                                      @RequestBody  Connection connection)
+    {
+        return serverAPI.setPluginRepositoryConnection(userId, serverName, serverToBeConfiguredName, connection);
+    }
 
     /*
      * =============================================================

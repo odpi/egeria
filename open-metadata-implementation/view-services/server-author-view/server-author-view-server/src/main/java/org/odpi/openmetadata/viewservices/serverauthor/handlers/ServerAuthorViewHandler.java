@@ -329,6 +329,33 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
+        try {
+            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
+                                                                                                          serverToBeConfiguredName,
+                                                                                                          this.platformURL
+            );
+            configurationClient.setPluginRepositoryConnection(connection);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
 
     /**
      * Get the stored configuration for the named server
@@ -797,5 +824,6 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+
 }
 
