@@ -58,6 +58,7 @@ public interface FilesAndFoldersInterface
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null
      * @param fileManagerCapabilityName unique name of the software server capability representing an owning external file manager or null
+     * @param fileSystemGUID unique identifier of the file system to connect folder to
      * @param folderGUID unique identifier of the folder in the catalog
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -79,6 +80,7 @@ public interface FilesAndFoldersInterface
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null
      * @param fileManagerCapabilityName unique name of the software server capability representing an owning external file manager or null
+     * @param fileSystemGUID unique identifier of the file system to disconnect folder from
      * @param folderGUID unique identifier of the folder in the catalog
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
