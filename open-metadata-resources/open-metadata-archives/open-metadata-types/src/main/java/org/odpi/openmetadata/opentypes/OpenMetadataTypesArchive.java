@@ -156,6 +156,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0030HostsAndOperatingPlatforms();
+        update0620DataProfiling();
     }
 
 
@@ -165,7 +166,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * The OperatingPlatform now can record the patch level of the operating system.
+     * The Add support for a software archive.
      */
     private void update0030HostsAndOperatingPlatforms()
     {
@@ -188,6 +189,79 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Add the fingerprint annotation used for de-duplicating assets with the same content.
+     */
+    private void update0620DataProfiling()
+    {
+        this.archiveBuilder.addEntityDef(addFingerprintAnnotationEntity());
+    }
+
+
+    private EntityDef addFingerprintAnnotationEntity()
+    {
+        final String guid = "b3adca2a-ce66-4b29-bf2e-7406ada8ab49";
+
+        final String name            = "FingerprintAnnotation";
+        final String description     = "An annotation capturing asset fingerprint information.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFieldAnnotation";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fingerprint";
+        final String attribute1Description     = "A string value that represents the content of the asset.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "hash";
+        final String attribute2Description     = "An integer value that represents the content of the asset.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "fingerprintAlgorithm";
+        final String attribute3Description     = "The algorithm use to generate either the fingerprint.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "hashAlgorithm";
+        final String attribute4Description     = "The algorithm use to generate either the hash.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
