@@ -304,6 +304,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            beanGUID,
                                                            beanGUIDParameterName,
                                                            beanGUIDTypeName,
+                                                           null,
+                                                           null,
+                                                           false,
                                                            methodName);
 
         EntityDetail  anchorEntity = validateAnchorEntity(userId,
@@ -412,18 +415,18 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateClassificationEffectivityDates(String userId,
-                                                        String externalSourceGUID,
-                                                        String externalSourceName,
-                                                        String beanGUID,
-                                                        String beanGUIDParameterName,
-                                                        String beanGUIDTypeName,
-                                                        String classificationTypeGUID,
-                                                        String classificationTypeName,
-                                                        Date   effectiveFrom,
-                                                        Date   effectiveTo,
-                                                        String methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                     String externalSourceGUID,
+                                                     String externalSourceName,
+                                                     String beanGUID,
+                                                     String beanGUIDParameterName,
+                                                     String beanGUIDTypeName,
+                                                     String classificationTypeGUID,
+                                                     String classificationTypeName,
+                                                     Date   effectiveFrom,
+                                                     Date   effectiveTo,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(beanGUID, beanGUIDParameterName, methodName);
@@ -432,6 +435,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            beanGUID,
                                                            beanGUIDParameterName,
                                                            beanGUIDTypeName,
+                                                           null,
+                                                           null,
+                                                           false,
+                                                           supportedZones,
+                                                           null,
                                                            methodName);
 
         EntityDetail  anchorEntity = validateAnchorEntity(userId,
@@ -441,6 +449,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanGUIDParameterName,
                                                           true,
                                                           supportedZones,
+                                                          null,
                                                           methodName);
 
         if (beanEntity != null)
@@ -527,17 +536,17 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateBeanEffectivityDates(String userId,
-                                              String externalSourceGUID,
-                                              String externalSourceName,
-                                              String beanGUID,
-                                              String beanGUIDParameterName,
-                                              String beanGUIDTypeGUID,
-                                              String beanGUIDTypeName,
-                                              Date   effectiveFrom,
-                                              Date   effectiveTo,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                           String externalSourceGUID,
+                                           String externalSourceName,
+                                           String beanGUID,
+                                           String beanGUIDParameterName,
+                                           String beanGUIDTypeGUID,
+                                           String beanGUIDTypeName,
+                                           Date   effectiveFrom,
+                                           Date   effectiveTo,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(beanGUID, beanGUIDParameterName, methodName);
@@ -546,6 +555,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            beanGUID,
                                                            beanGUIDParameterName,
                                                            beanGUIDTypeName,
+                                                           null,
+                                                           null,
+                                                           true,
+                                                           supportedZones,
+                                                           null,
                                                            methodName);
 
         EntityDetail  anchorEntity = validateAnchorEntity(userId,
@@ -633,16 +647,16 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelationshipEffectivityDates(String userId,
-                                                      String externalSourceGUID,
-                                                      String externalSourceName,
-                                                      String relationshipGUID,
-                                                      String relationshipGUIDParameterName,
-                                                      String relationshipGUIDTypeName,
-                                                      Date   effectiveFrom,
-                                                      Date   effectiveTo,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                                   String externalSourceGUID,
+                                                   String externalSourceName,
+                                                   String relationshipGUID,
+                                                   String relationshipGUIDParameterName,
+                                                   String relationshipGUIDTypeName,
+                                                   Date   effectiveFrom,
+                                                   Date   effectiveTo,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
@@ -651,8 +665,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                             relationshipGUID,
                                                                             relationshipGUIDParameterName,
                                                                             relationshipGUIDTypeName,
+                                                                            null,
                                                                             methodName);
-
 
         if (relationship != null)
         {
@@ -665,6 +679,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      null,
                                       methodName);
 
             this.validateAnchorEntity(userId,
@@ -673,6 +688,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      null,
                                       methodName);
 
             InstanceProperties newProperties = relationship.getProperties();
@@ -699,7 +715,7 @@ public class OpenMetadataAPIGenericHandler<B>
     /**
      * Create the new properties to hand to the repository helper based on the supplied properties,
      * existing properties and whether this is a merge update or not.
-     * The effectivity dates are always preserved.  If they need updating then use the separate call.
+     * The effectivity dates are always preserved unless they are over-written by the caller.  If they need clearing then use the separate call.
      *
      * @param isMergeUpdate should the supplied updateProperties be merged with existing properties (true) by replacing the just the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
@@ -735,6 +751,16 @@ public class OpenMetadataAPIGenericHandler<B>
                         newProperties.setProperty(propertyName, propertyMap.get(propertyName));
                     }
                 }
+
+                if (suppliedProperties.getEffectiveFromTime() != null)
+                {
+                    newProperties.setEffectiveFromTime(suppliedProperties.getEffectiveFromTime());
+                }
+
+                if (suppliedProperties.getEffectiveToTime() != null)
+                {
+                    newProperties.setEffectiveToTime(suppliedProperties.getEffectiveToTime());
+                }
             }
         }
         else
@@ -746,8 +772,14 @@ public class OpenMetadataAPIGenericHandler<B>
              */
             if (existingProperties != null)
             {
-                newProperties.setEffectiveFromTime(existingProperties.getEffectiveFromTime());
-                newProperties.setEffectiveToTime(existingProperties.getEffectiveToTime());
+                if (existingProperties.getEffectiveFromTime() != null)
+                {
+                    newProperties.setEffectiveFromTime(existingProperties.getEffectiveFromTime());
+                }
+                if (existingProperties.getEffectiveToTime() != null)
+                {
+                    newProperties.setEffectiveToTime(existingProperties.getEffectiveToTime());
+                }
             }
         }
 
@@ -793,6 +825,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                             relationshipGUID,
                                                                             relationshipGUIDParameterName,
                                                                             relationshipTypeName,
+                                                                            null,
                                                                             methodName);
 
         if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
@@ -813,6 +846,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      null,
                                       methodName);
 
             this.validateAnchorEntity(userId,
@@ -821,6 +855,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      null,
                                       methodName);
 
             repositoryHandler.updateRelationshipProperties(userId,
@@ -884,14 +919,14 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not allowed to update the security tags
      */
     public void removeClassificationFromRepository(String userId,
-                                            String beanGUID,
-                                            String beanGUIDParameterName,
-                                            String beanGUIDTypeName,
-                                            String classificationTypeGUID,
-                                            String classificationTypeName,
-                                            String methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+                                                   String beanGUID,
+                                                   String beanGUIDParameterName,
+                                                   String beanGUIDTypeName,
+                                                   String classificationTypeGUID,
+                                                   String classificationTypeName,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         removeClassificationFromRepository(userId,
                                            null,
@@ -940,6 +975,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            beanGUID,
                                                            beanGUIDParameterName,
                                                            beanGUIDTypeName,
+                                                           null,
+                                                           null,
+                                                           true,
+                                                           supportedZones,
+                                                           null,
                                                            methodName);
 
         EntityDetail  anchorEntity = validateAnchorEntity(userId,
@@ -1846,6 +1886,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param targetGUID unique identifier for the entity
      * @param targetEntity contents of the entity from the repository
      * @param anchorGUID unique identifier of the anchor
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException problem with one of the properties
@@ -1855,6 +1896,7 @@ public class OpenMetadataAPIGenericHandler<B>
     private void maintainAnchorGUIDInClassification(String        targetGUID,
                                                     EntitySummary targetEntity,
                                                     String        anchorGUID,
+                                                    Date          effectiveTime,
                                                     String        methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -2015,6 +2057,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                            null,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                                           effectiveTime,
                                                                                            methodName);
 
             while (iterator.moreToReceive())
@@ -2054,7 +2097,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         case OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID:
                             if (entityOneGUID.equals(targetGUID))
                             {
-                                this.maintainAnchorGUIDInClassification(entityTwoGUID, relationship.getEntityTwoProxy(), anchorGUID, methodName);
+                                this.maintainAnchorGUIDInClassification(entityTwoGUID, relationship.getEntityTwoProxy(), anchorGUID, effectiveTime, methodName);
                             }
                             break;
 
@@ -2075,11 +2118,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                         proxyTwoGUIDParameterName,
                                                                                         relationship.getEntityTwoProxy().getType().getTypeDefName(),
                                                                                         true,
-                                                                                        null,
+                                                                                        supportedZones,
+                                                                                        effectiveTime,
                                                                                         methodName);
                                 if (proxyTwoAnchor != null)
                                 {
-                                    this.maintainAnchorGUIDInClassification(entityTwoGUID, relationship.getEntityTwoProxy(), anchorGUID, methodName);
+                                    this.maintainAnchorGUIDInClassification(entityTwoGUID, relationship.getEntityTwoProxy(), anchorGUID, effectiveTime, methodName);
                                 }
                             }
 
@@ -2098,6 +2142,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of schema type (it is assumed that the anchorGUID property of this type is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2108,6 +2153,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForSchemaType(String userId,
                                               String schemaTypeGUID,
+                                              Date   effectiveTime,
                                               String methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2120,6 +2166,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
         if (relationship != null)
         {
@@ -2136,12 +2183,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaAttribute(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaAttribute(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         /*
@@ -2152,12 +2200,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         /*
@@ -2168,24 +2217,26 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         /*
@@ -2196,48 +2247,54 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
+
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
+
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         /*
@@ -2248,6 +2305,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     effectiveTime,
                                                                      methodName);
         if (relationship != null)
         {
@@ -2272,6 +2330,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param attributeGUID unique identifier of attribute (it is assumed that the anchorGUID property of this attribute is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2282,6 +2341,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForSchemaAttribute(String userId,
                                                    String attributeGUID,
+                                                   Date   effectiveTime,
                                                    String methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -2294,12 +2354,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         /*
@@ -2313,12 +2374,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                            true,
+                                                                           effectiveTime,
                                                                            methodName);
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return getAnchorGUIDForSchemaAttribute(userId, proxy.getGUID(), methodName);
+            return getAnchorGUIDForSchemaAttribute(userId, proxy.getGUID(), effectiveTime, methodName);
         }
 
         return null;
@@ -2332,6 +2394,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param connectionGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2341,6 +2404,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForConnection(String userId,
                                               String connectionGUID,
+                                              Date   effectiveTime,
                                               String methodName) throws PropertyServerException,
                                                                         UserNotAuthorizedException
     {
@@ -2352,11 +2416,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
+
             if ((proxy != null) && (proxy.getGUID() != null))
             {
                 return proxy.getGUID();
@@ -2372,6 +2438,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param likeGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2381,6 +2448,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForLike(String userId,
                                         String likeGUID,
+                                        Date   effectiveTime,
                                         String methodName) throws PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -2392,6 +2460,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.LIKE_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
@@ -2412,6 +2481,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param ratingGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2421,6 +2491,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForRating(String userId,
                                           String ratingGUID,
+                                          Date   effectiveTime,
                                           String methodName) throws PropertyServerException,
                                                                     UserNotAuthorizedException
     {
@@ -2432,6 +2503,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.RATING_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
@@ -2451,7 +2523,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * Walk the graph to locate the anchor for a Rating.  Ratings are attached directly to a referenceable.
      *
      * @param userId calling user
-     * @param ratingGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param reportGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2460,7 +2533,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private String getAnchorGUIDForOpenDiscoveryAnalysisReport(String userId,
-                                                               String ratingGUID,
+                                                               String reportGUID,
+                                                               Date   effectiveTime,
                                                                String methodName) throws PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
@@ -2468,10 +2542,11 @@ public class OpenMetadataAPIGenericHandler<B>
          * Is the report connected to an Asset?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                  ratingGUID,
+                                                                                  reportGUID,
                                                                                   OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
@@ -2493,6 +2568,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param annotationGUID unique identifier of the comment (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2502,6 +2578,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForAnnotation(String userId,
                                               String annotationGUID,
+                                              Date   effectiveTime,
                                               String methodName) throws PropertyServerException,
                                                                         UserNotAuthorizedException
     {
@@ -2513,6 +2590,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                                                     null,
                                                                                     null,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (relationships != null)
@@ -2526,11 +2605,11 @@ public class OpenMetadataAPIGenericHandler<B>
                     {
                         if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
                         {
-                            return this.getAnchorGUIDForOpenDiscoveryAnalysisReport(userId, proxy.getGUID(), methodName);
+                            return this.getAnchorGUIDForOpenDiscoveryAnalysisReport(userId, proxy.getGUID(), effectiveTime, methodName);
                         }
                         else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME))
                         {
-                            String parentAnchorGUID = this.getAnchorGUIDForDataField(userId, proxy.getGUID(), methodName);
+                            String parentAnchorGUID = this.getAnchorGUIDForDataField(userId, proxy.getGUID(), effectiveTime, methodName);
 
                             if (parentAnchorGUID != null)
                             {
@@ -2539,7 +2618,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         }
                         else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME))
                         {
-                            return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), methodName);
+                            return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), effectiveTime, methodName);
                         }
                     }
                 }
@@ -2556,6 +2635,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param annotationReviewGUID unique identifier of the annotation review (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2565,6 +2645,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForAnnotationReview(String userId,
                                                     String annotationReviewGUID,
+                                                    Date   effectiveTime,
                                                     String methodName) throws PropertyServerException,
                                                                               UserNotAuthorizedException
     {
@@ -2576,6 +2657,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
@@ -2583,7 +2665,7 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityProxy proxy = relationship.getEntityOneProxy();
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), methodName);
+                return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), effectiveTime, methodName);
             }
         }
 
@@ -2597,6 +2679,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param dataFieldGUID unique identifier of the data field (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached asset or null if there is no attached asset
@@ -2606,6 +2689,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForDataField(String userId,
                                              String dataFieldGUID,
+                                             Date   effectiveTime,
                                              String methodName) throws PropertyServerException,
                                                                        UserNotAuthorizedException
     {
@@ -2617,6 +2701,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
         if (relationship != null)
@@ -2624,12 +2709,13 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityProxy proxy = relationship.getEntityOneProxy();
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), methodName);
+                return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), effectiveTime, methodName);
             }
         }
 
         return null;
     }
+
 
     /**
      * Walk the graph to locate the anchor for a comment.  Comments are attached to each other through various levels of nesting
@@ -2638,6 +2724,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param commentGUID unique identifier of the comment (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached anchor or null if there is no attached anchor
@@ -2647,6 +2734,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String getAnchorGUIDForComment(String userId,
                                            String commentGUID,
+                                           Date   effectiveTime,
                                            String methodName) throws PropertyServerException,
                                                                      UserNotAuthorizedException
     {
@@ -2658,6 +2746,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (relationships != null)
@@ -2672,7 +2762,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         if ((! commentGUID.equals(proxy.getGUID())) &&
                             (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.COMMENT_TYPE_NAME)))
                         {
-                            String parentAnchorGUID = this.getAnchorGUIDForComment(userId, proxy.getGUID(), methodName);
+                            String parentAnchorGUID = this.getAnchorGUIDForComment(userId, proxy.getGUID(), effectiveTime, methodName);
 
                             /*
                              * If the parent has no anchor then it is a detached chain of comments and the parent is the anchor.
@@ -2692,11 +2782,14 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
     /**
-     * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are connected directly to their anchor Glossary via a TermAnchor relationship.
+     * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are connected directly to their anchor
+     * Glossary via a TermAnchor relationship.
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the Glossary Term (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached anchor or null if there is no attached anchor
@@ -2705,9 +2798,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private String getAnchorGUIDForGlossaryTerm(String userId,
-                                           String glossaryTermGUID,
-                                           String methodName) throws PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                                String glossaryTermGUID,
+                                                Date   effectiveTime,
+                                                String methodName) throws PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         /*
          * Is the Glossary Term connected to anything?
@@ -2717,6 +2811,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (relationships != null)
@@ -2737,11 +2833,14 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
     /**
-     * Walk the graph to locate the anchor for a Glossary Category.  Glossary Categories are connected directly to their anchor Glossary via a CategoryAnchor relationship.
+     * Walk the graph to locate the anchor for a Glossary Category.  Glossary Categories are connected directly to their anchor Glossary
+     * via a CategoryAnchor relationship.
      *
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the Glossary Category (it is assumed that the anchorGUID property of this instance is null)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of attached anchor or null if there is no attached anchor
@@ -2750,9 +2849,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
     private String getAnchorGUIDForGlossaryCategory(String userId,
-                                                String glossaryCategoryGUID,
-                                                String methodName) throws PropertyServerException,
-                                                                          UserNotAuthorizedException
+                                                    String glossaryCategoryGUID,
+                                                    Date   effectiveTime,
+                                                    String methodName) throws PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         /*
          * Is the Glossary Category connected to anything?
@@ -2762,6 +2862,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                                    0, 0,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (relationships != null)
@@ -2782,6 +2884,7 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
     /**
      * This method walks the relationships to determine if the entity identified by the targetGUID has an anchor.  It returns the GUID of
      * this anchor if it exists or null if it does not.  This method is used both as part of setting up the anchorGUID in a newly linked entity,
@@ -2789,6 +2892,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param targetGUID unique identifier for the entity to test
      * @param targetTypeName type of the entity to test
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return anchorGUID or null
      * @throws InvalidParameterException on of the properties is invalid which is suspicious since they have been validated earlier
@@ -2797,6 +2901,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     private String deriveAnchorGUID(String targetGUID,
                                     String targetTypeName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -2809,51 +2914,51 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.COMMENT_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForComment(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForComment(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.RATING_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForRating(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForRating(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.LIKE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForLike(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForLike(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForAnnotation(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForAnnotation(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, methodName);
+            anchorGUID = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, effectiveTime, methodName);
         }
 
         return anchorGUID;
@@ -2867,6 +2972,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param targetGUIDParameterName parameter that provided the guid
      * @param targetTypeName type of entity to validate
      * @param originalAnchorGUID the original anchor guid - may be null
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return newAnchorGUID we derive the anchor from the the target element and then return it. Note this value can be null if there is no anchor.
@@ -2876,17 +2982,18 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the local server user id is not able to update the entity
      */
     private String reEvaluateAnchorGUID(String targetGUID,
-                                      String targetGUIDParameterName,
-                                      String targetTypeName,
-                                      String originalAnchorGUID,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                        String targetGUIDParameterName,
+                                        String targetTypeName,
+                                        String originalAnchorGUID,
+                                        Date   effectiveTime,
+                                        String methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         /*
          * Find out the anchorGUID by following the relationships
          */
-        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, methodName);
+        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, effectiveTime, methodName);
 
         /*
          * The anchorGUID has changed
@@ -2898,11 +3005,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            targetGUID,
                                                                            targetGUIDParameterName,
                                                                            targetTypeName,
+                                                                           effectiveTime,
                                                                            methodName);
 
             if (targetElement != null)
             {
-                this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, methodName);
+                this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, effectiveTime, methodName);
             }
         }
         return newAnchorGUID;
@@ -2917,6 +3025,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param targetElement target entity already retrieved
      * @param targetTypeName type of entity to validate
      * @param originalAnchorGUID the original anchor guid - may be null
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return the new anchor GUID
@@ -2929,6 +3038,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         String       targetTypeName,
                                         EntityDetail targetElement,
                                         String       originalAnchorGUID,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2936,7 +3046,7 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Find out the anchorGUID by following the relationships
          */
-        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, methodName);
+        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, effectiveTime, methodName);
 
         /*
          * The anchorGUID has changed
@@ -2946,7 +3056,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             if (targetElement != null)
             {
-                this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, methodName);
+                this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, effectiveTime, methodName);
             }
         }
 
@@ -2963,6 +3073,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param connectToType       type of the connect to element.
      * @param isUpdate         is this an update request?
      * @param suppliedSupportedZones supported zone list from calling service
+     * @param effectiveTime    the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName       calling method
      * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2975,6 +3086,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String       connectToType,
                                              boolean      isUpdate,
                                              List<String> suppliedSupportedZones,
+                                             Date         effectiveTime,
                                              String       methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -2989,6 +3101,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           connectToGUID,
                                                                           connectToGUIDParameterName,
                                                                           connectToType,
+                                                                          effectiveTime,
                                                                           methodName);
 
         return this.validateAnchorEntity(userId,
@@ -2998,13 +3111,14 @@ public class OpenMetadataAPIGenericHandler<B>
                                          connectToGUIDParameterName,
                                          isUpdate,
                                          suppliedSupportedZones,
+                                         effectiveTime,
                                          methodName);
     }
 
 
     /**
      * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
-     * update.
+     * update.  Assumes an effective date of "now".
      *
      * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
      * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
@@ -3039,6 +3153,61 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String        connectToGUIDParameterName,
                                              boolean       isUpdate,
                                              List<String>  suppliedSupportedZones,
+                                             String        methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return this.validateAnchorEntity(userId,
+                                         connectToGUID,
+                                         connectToType,
+                                         connectToEntity,
+                                         connectToGUIDParameterName,
+                                         isUpdate,
+                                         suppliedSupportedZones,
+                                         null,
+                                         methodName);
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
+     * update.
+     *
+     * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
+     * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
+     * have access to it.
+     *
+     * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
+     * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
+     * validated.
+     *
+     * Some anchor entities have specific validation to perform.
+     *
+     * @param userId           userId of user making request.
+     * @param connectToGUID    unique id for the object to connect the attachment to
+     * @param connectToType    name of type of connectToEntity
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connect to guid
+     * @param isUpdate         is this an update request?
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
+     * caller to set the LatestChange classification
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorEntity(String        userId,
+                                             String        connectToGUID,
+                                             String        connectToType,
+                                             EntityDetail  connectToEntity,
+                                             String        connectToGUIDParameterName,
+                                             boolean       isUpdate,
+                                             List<String>  suppliedSupportedZones,
+                                             Date          effectiveTime,
                                              String        methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -3107,14 +3276,14 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * The classification is missing - so walk the relationships to find the anchor if it exists.
              */
-            anchorGUID = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), methodName);
+            anchorGUID = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), effectiveTime, methodName);
 
             if (anchorGUID != null)
             {
                 /*
                  * The anchor has been found so store it in the classification so it is easy to find next time.
                  */
-                maintainAnchorGUIDInClassification(connectToGUID, connectToEntity, anchorGUID, methodName);
+                maintainAnchorGUIDInClassification(connectToGUID, connectToEntity, anchorGUID, effectiveTime, methodName);
             }
         }
 
@@ -3132,6 +3301,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                  anchorGUID,
                                                                  anchorGUIDParameterName,
                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 effectiveTime,
                                                                  methodName);
             }
         }
@@ -3195,14 +3365,14 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void validateUniqueProperty(String                         entityGUID,
-                                       String                         entityTypeGUID,
-                                       String                         entityTypeName,
-                                       String                         uniqueParameterValue,
-                                       String                         uniqueParameterName,
-                                       String                         methodName) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public void validateUniqueProperty(String entityGUID,
+                                       String entityTypeGUID,
+                                       String entityTypeName,
+                                       String uniqueParameterValue,
+                                       String uniqueParameterName,
+                                       String methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         List<String> propertyNames = new ArrayList<>();
         propertyNames.add(uniqueParameterName);
@@ -3224,6 +3394,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       null,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                      new Date(), // entities need to be effective now in order to match
                                                                       methodName);
 
         if ((existingEntities != null) && (! existingEntities.isEmpty()))
@@ -3615,6 +3786,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                         qualifiedNamePropertyNamesList,
+                                                        null,
                                                         methodName);
 
         if (glossaryGUID == null)
@@ -3675,30 +3847,30 @@ public class OpenMetadataAPIGenericHandler<B>
         InstanceProperties properties = existingProperties;
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
-                                                                      summary,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                  summary,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
-                                                                      abbreviation,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                  abbreviation,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  usage,
+                                                                  methodName);
         return properties;
     }
 
@@ -3706,7 +3878,8 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Maintain the supplementary properties of a technical metadata element in a glossary term linked to the supplied element.
-     * The glossary term needs to be connected to a glossary which may need to be created.
+     * The glossary term needs to be connected to a glossary which may need to be created.  There is no use of effective time
+     * on these elements because they are effective all of the time that the asset is effective
      *
      * @param userId calling user
      * @param elementGUID element for the
@@ -3742,6 +3915,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                           qualifiedNamePropertyNamesList,
+                                                          null,
                                                           methodName);
 
         if (glossaryTerm == null)
@@ -3875,9 +4049,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param elementTypeName type of the anchor entity
      * @param attachmentTypeGUID unique identifier of the attachment relationship's type
      * @param attachmentTypeName unique name of the attachment's type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return count of attached objects
+     * @return count of attached objects that are effective now
      *
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -3888,6 +4063,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 String elementTypeName,
                                 String attachmentTypeGUID,
                                 String attachmentTypeName,
+                                Date   effectiveTime,
                                 String methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -3907,6 +4083,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        attachmentTypeName,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       effectiveTime,
                                                                                        methodName);
 
 
@@ -3935,6 +4112,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -3950,6 +4128,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       relationshipTypeGUID,
                                           String       relationshipTypeName,
                                           String       resultingElementTypeName,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -3963,6 +4142,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       resultingElementTypeName,
                                       false,
                                       supportedZones,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -3980,6 +4160,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param forLineage is this part of al lineage request?
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -3997,6 +4178,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       resultingElementTypeName,
                                           boolean      forLineage,
                                           List<String> serviceSupportedZones,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -4006,6 +4188,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              relationshipTypeGUID,
                                                                              relationshipTypeName,
+                                                                             effectiveTime,
                                                                              methodName);
 
         if (entity != null)
@@ -4079,6 +4262,59 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
+        return this.getAttachedEntities(userId,
+                                        startingElementGUID,
+                                        startingElementGUIDParameterName,
+                                        startingElementTypeName,
+                                        relationshipTypeGUID,
+                                        relationshipTypeName,
+                                        resultingElementTypeName,
+                                        null,
+                                        null,
+                                        false,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        null,
+                                        methodName);
+    }
+
+
+    /**
+     * Return the entities for the required relationships attached to a specific entity.
+     *
+     * @param userId     calling user
+     * @param startingElementGUID identifier for the entity that the identifier is attached to
+     * @param startingElementGUIDParameterName name of the parameter used to pass the guid
+     * @param startingElementTypeName type name for anchor
+     * @param relationshipTypeGUID unique identifier of the attachment's relationship type
+     * @param relationshipTypeName unique name of the attachment's relationship type
+     * @param resultingElementTypeName unique name of the attached entity's type
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<EntityDetail> getAttachedEntities(String       userId,
+                                                  String       startingElementGUID,
+                                                  String       startingElementGUIDParameterName,
+                                                  String       startingElementTypeName,
+                                                  String       relationshipTypeGUID,
+                                                  String       relationshipTypeName,
+                                                  String       resultingElementTypeName,
+                                                  int          startingFrom,
+                                                  int          pageSize,
+                                                  Date         effectiveTime,
+                                                  String       methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
         return getAttachedEntities(userId,
                                    startingElementGUID,
                                    startingElementGUIDParameterName,
@@ -4092,6 +4328,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    supportedZones,
                                    startingFrom,
                                    pageSize,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -4109,6 +4346,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -4127,6 +4365,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   List<String> serviceSupportedZones,
                                                   int          startingFrom,
                                                   int          pageSize,
+                                                  Date         effectiveTime,
                                                   String       methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
@@ -4144,6 +4383,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    serviceSupportedZones,
                                    startingFrom,
                                    pageSize,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -4164,6 +4404,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -4185,6 +4426,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   List<String> serviceSupportedZones,
                                                   int          startingFrom,
                                                   int          pageSize,
+                                                  Date         effectiveTime,
                                                   String       methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
@@ -4198,6 +4440,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingElementTypeName,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         List<Relationship> visibleRelationships = this.getAttachmentLinks(userId,
@@ -4209,6 +4452,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           resultingElementTypeName,
                                                                           startingFrom,
                                                                           pageSize,
+                                                                          effectiveTime,
                                                                           methodName);
 
         if (visibleRelationships != null)
@@ -4236,6 +4480,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              omittedClassificationName,
                                                                              forLineage,
                                                                              supportedZones,
+                                                                             effectiveTime,
                                                                              methodName));
                         }
                         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
@@ -4271,6 +4516,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4287,6 +4533,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String   attachmentRelationshipTypeName,
                                                  String   attachmentEntityGUID,
                                                  String   attachmentEntityTypeName,
+                                                 Date     effectiveTime,
                                                  String   methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -4300,6 +4547,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             attachmentEntityGUID,
                                             attachmentEntityTypeName,
                                             0,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -4316,6 +4564,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4333,6 +4582,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String   attachmentEntityGUID,
                                                  String   attachmentEntityTypeName,
                                                  int      attachmentEntityEnd,
+                                                 Date     effectiveTime,
                                                  String   methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -4348,6 +4598,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    attachmentEntityEnd,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -4378,6 +4629,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingGUID identifier for the entity that the identifier is attached to
      * @param startingGUIDParameterName name of the parameter used to pass the guid
      * @param startingTypeName type name for anchor
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4390,6 +4642,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      String   startingGUID,
                                                      String   startingGUIDParameterName,
                                                      String   startingTypeName,
+                                                     Date     effectiveTime,
                                                      String   methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -4405,6 +4658,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        0,
                                        0,
                                        invalidParameterHandler.getMaxPagingSize(),
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -4421,6 +4675,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4438,6 +4693,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String   attachmentEntityTypeName,
                                                   int      startingFrom,
                                                   int      pageSize,
+                                                  Date     effectiveTime,
                                                   String   methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -4453,6 +4709,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        0,
                                        startingFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -4470,6 +4727,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4488,6 +4746,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String   attachmentEntityTypeName,
                                                   int      startingFrom,
                                                   int      pageSize,
+                                                  Date     effectiveTime,
                                                   String   methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -4503,6 +4762,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        0,
                                        startingFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -4521,6 +4781,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved relationships or null if none found
@@ -4540,6 +4801,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   int      attachmentEntityEnd,
                                                   int      startingFrom,
                                                   int      pageSize,
+                                                  Date     effectiveTime,
                                                   String   methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -4557,6 +4819,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        attachmentRelationshipTypeName,
                                                                                        startingFrom,
                                                                                        queryPageSize,
+                                                                                       effectiveTime,
                                                                                        methodName);
 
 
@@ -4646,6 +4909,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
@@ -4662,6 +4926,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   SequencingOrder       sequencingOrder,
                                                   int                   startingFrom,
                                                   int                   pageSize,
+                                                  Date                  effectiveTime,
                                                   String                methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -4693,6 +4958,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                                sequencingOrder,
                                                                                                startingFrom,
                                                                                                queryPageSize,
+                                                                                               effectiveTime,
                                                                                                methodName);
 
         List<Relationship> results = new ArrayList<>();
@@ -4714,6 +4980,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                               false,
                                               supportedZones,
+                                              effectiveTime,
                                               methodName);
 
                     this.validateAnchorEntity(userId,
@@ -4722,6 +4989,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                               false,
                                               supportedZones,
+                                              effectiveTime,
                                               methodName);
 
                     results.add(relationship);
@@ -4779,6 +5047,16 @@ public class OpenMetadataAPIGenericHandler<B>
                                  entityTypeName,
                                  propertyBuilder,
                                  methodName);
+
+        if (uniqueParameterName != null)
+        {
+            validateUniqueProperty(null,
+                                   entityTypeGUID,
+                                   entityTypeName,
+                                   uniqueParameterValue,
+                                   uniqueParameterValue,
+                                   methodName);
+        }
 
         return repositoryHandler.createEntity(userId,
                                               entityTypeGUID,
@@ -4928,7 +5206,7 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * This call ensures the template exists and is the correct type. An exception will be thrown if there are any problems.
          */
-        EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId, templateGUID, templateGUIDParameterName, entityTypeName, methodName);
+        EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId, templateGUID, templateGUIDParameterName, entityTypeName, null, methodName);
 
         if (templateEntity != null)
         {
@@ -4942,6 +5220,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           templateGUIDParameterName,
                                                                           false,
                                                                           supportedZones,
+                                                                          null,
                                                                           methodName);
             String templateAnchorGUID = null;
             if (templateAnchorEntity != null)
@@ -5133,6 +5412,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        null,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
         /*
@@ -5161,6 +5441,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     entityProxy.getGUID(),
                                                                                     nextTemplateEntityGUIDParameterName,
                                                                                     null,
+                                                                                    null,
                                                                                     methodName);
 
                 if ((nextTemplateEntity != null) && (nextTemplateEntity.getType() != null))
@@ -5175,6 +5456,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                       nextTemplateEntityGUIDParameterName,
                                                                                       false,
                                                                                       supportedZones,
+                                                                                      null,
                                                                                       methodName);
 
                     String nextTemplateAnchorGUID = null;
@@ -5459,6 +5741,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          entityGUID,
                                                                          entityGUIDParameterName,
                                                                          entityTypeName,
+                                                                         null,
                                                                          methodName);
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
@@ -5470,6 +5753,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   entityGUIDParameterName,
                                                                   true,
                                                                   serviceSupportedZones,
+                                                                  null,
                                                                   methodName);
 
             /*
@@ -5640,6 +5924,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          entityGUID,
                                                                          entityGUIDParameterName,
                                                                          entityTypeName,
+                                                                         null,
                                                                          methodName);
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
@@ -5651,6 +5936,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   entityGUIDParameterName,
                                                                   true,
                                                                   serviceSupportedZones,
+                                                                  null,
                                                                   methodName);
 
             /*
@@ -5758,6 +6044,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         potentialAnchoredEntity.getGUID(),
                                                                         guidParameterName,
                                                                         potentialAnchoredEntity.getType().getTypeDefName(),
+                                                                        null,
                                                                         methodName);
 
                 String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
@@ -5860,6 +6147,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               entityTypeName,
                                                               false,
                                                               serviceSupportedZones,
+                                                              null,
                                                               methodName);
 
         /*
@@ -5960,6 +6248,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        null,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -6032,10 +6321,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
     public void deleteAnchoredEntity(EntityDetail anchorEntity,
-                                      EntityProxy  potentialAnchoredEntity,
-                                      String       methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+                                     EntityProxy  potentialAnchoredEntity,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         /*
          * Only need to progress if anchor entity exists.
@@ -6053,6 +6342,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         entityGUID,
                                                                         guidParameterName,
                                                                         entityTypeName,
+                                                                        null,
                                                                         methodName);
 
                 String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
@@ -6065,7 +6355,7 @@ public class OpenMetadataAPIGenericHandler<B>
                      * because it is a parent object.   If it now has no anchor then it can be
                      * deleted because it is a child object.
                      */
-                    String derivedAnchorGUID = this.deriveAnchorGUID(entityGUID, entityTypeName, methodName);
+                    String derivedAnchorGUID = this.deriveAnchorGUID(entityGUID, entityTypeName, null, methodName);
 
                     if (derivedAnchorGUID == null)
                     {
@@ -6182,6 +6472,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                  entityGUID,
                                                                  entityGUIDParameterName,
                                                                  entityTypeName,
+                                                                 null,
                                                                  methodName);
 
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
@@ -6248,18 +6539,18 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteBeanInRepository(String       userId,
-                                        String       externalSourceGUID,
-                                        String       externalSourceName,
-                                        String       entityGUID,
-                                        String       entityGUIDParameterName,
-                                        String       entityTypeGUID,
-                                        String       entityTypeName,
-                                        String       validatingPropertyName,
-                                        String       validatingPropertyValue,
-                                        EntityDetail anchorEntity,
-                                        String       methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+                                       String       externalSourceGUID,
+                                       String       externalSourceName,
+                                       String       entityGUID,
+                                       String       entityGUIDParameterName,
+                                       String       entityTypeGUID,
+                                       String       entityTypeName,
+                                       String       validatingPropertyName,
+                                       String       validatingPropertyValue,
+                                       EntityDetail anchorEntity,
+                                       String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         /*
          * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
@@ -6273,6 +6564,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        null,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -6346,10 +6638,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                   String       entityGUID,
                                   String       entityTypeName,
                                   String       methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        boolean isIsolated = true;
         /*
          * Retrieve the first relationship, if there is one then we have relationships.
          */
@@ -6361,14 +6652,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        null,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
-        if (iterator.moreToReceive())
-        {
-            isIsolated = false;
-        }
-        return isIsolated;
+        return ! (iterator.moreToReceive());
     }
+
 
     /**
      * Return the elements of the requested type indirectly attached to an entity identified by the starting GUID via the listed relationship
@@ -6382,6 +6671,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relatedEntityTypeName unique name of the attached entity's type
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6398,6 +6688,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        String       relatedEntityTypeName,
                                        int          startingFrom,
                                        int          pageSize,
+                                       Date         effectiveTime,
                                        String       methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -6411,6 +6702,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           supportedZones,
                                           startingFrom,
                                           pageSize,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -6428,6 +6720,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6445,6 +6738,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        List<String> serviceSupportedZones,
                                        int          startingFrom,
                                        int          pageSize,
+                                       Date         effectiveTime,
                                        String       methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -6467,6 +6761,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6484,6 +6779,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String       attachmentEntityTypeName,
                                                 int          startingFrom,
                                                 int          pageSize,
+                                                Date         effectiveTime,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -6498,6 +6794,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             supportedZones,
                                             startingFrom,
                                             pageSize,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -6515,6 +6812,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6533,6 +6831,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 List<String> serviceSupportedZones,
                                                 int          startingFrom,
                                                 int          pageSize,
+                                                Date         effectiveTime,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -6548,6 +6847,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingTypeName,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -6563,6 +6863,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     attachmentEntityTypeName,
                                                                     startingFrom,
                                                                     pageSize,
+                                                                    effectiveTime,
                                                                     methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -6590,6 +6891,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    attachmentEntityTypeName,
                                                    false,
                                                    serviceSupportedZones,
+                                                   effectiveTime,
                                                    methodName);
 
                         results.add(entityProxy.getGUID());
@@ -6628,6 +6930,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6636,17 +6939,18 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public String getAttachedElementGUID(String       userId,
-                                         String       startingGUID,
-                                         String       startingGUIDParameterName,
-                                         String       startingTypeName,
-                                         String       attachmentRelationshipTypeGUID,
-                                         String       attachmentRelationshipTypeName,
-                                         String       attachmentEntityTypeName,
-                                         int          selectionEnd,
-                                         String       methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public String getAttachedElementGUID(String userId,
+                                         String startingGUID,
+                                         String startingGUIDParameterName,
+                                         String startingTypeName,
+                                         String attachmentRelationshipTypeGUID,
+                                         String attachmentRelationshipTypeName,
+                                         String attachmentEntityTypeName,
+                                         int    selectionEnd,
+                                         Date   effectiveTime,
+                                         String methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         return getAttachedElementGUID(userId,
                                       startingGUID,
@@ -6657,6 +6961,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       attachmentEntityTypeName,
                                       selectionEnd,
                                       supportedZones,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -6673,6 +6978,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for retrieved objects or null if none found
@@ -6690,6 +6996,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentEntityTypeName,
                                          int          selectionEnd,
                                          List<String> serviceSupportedZones,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -6705,6 +7012,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingTypeName,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -6720,6 +7028,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     attachmentEntityTypeName,
                                                                     0,
                                                                     invalidParameterHandler.getMaxPagingSize(),
+                                                                    effectiveTime,
                                                                     methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -6761,6 +7070,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   attachmentEntityTypeName,
                                                   false,
                                                   serviceSupportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         if (result == null)
@@ -6803,6 +7113,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -6818,6 +7129,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 String       relationshipTypeGUID,
                                 String       relationshipTypeName,
                                 String       resultingElementTypeName,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -6830,6 +7142,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   relationshipTypeName,
                                   resultingElementTypeName,
                                   supportedZones,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -6846,6 +7159,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -6862,6 +7176,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 String       relationshipTypeName,
                                 String       resultingElementTypeName,
                                 List<String> serviceSupportedZones,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -6874,6 +7189,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              relationshipTypeGUID,
                                                                              relationshipTypeName,
+                                                                             effectiveTime,
                                                                              methodName);
 
         if (entity != null)
@@ -6909,6 +7225,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -6926,6 +7243,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String attachmentEntityTypeName,
                                          int    startingFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -6945,6 +7263,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -6962,6 +7281,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -6980,6 +7300,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          List<String> serviceSupportedZones,
                                          int          startingFrom,
                                          int          pageSize,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -6999,6 +7320,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -7018,6 +7340,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -7038,6 +7361,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          int          selectionEnd,
                                          int          startingFrom,
                                          int          pageSize,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -7057,6 +7381,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -7079,6 +7404,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -7102,6 +7428,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          List<String> serviceSupportedZones,
                                          int          startingFrom,
                                          int          pageSize,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -7115,6 +7442,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingTypeName,
                                                               false,
                                                               serviceSupportedZones,
+                                                              effectiveTime,
                                                               methodName);
 
         invalidParameterHandler.validateAnchorGUID(anchorGUID, anchorGUIDParameterName, anchorEntity, startingGUID, startingTypeName, methodName);
@@ -7134,6 +7462,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     selectionEnd,
                                                                     startingFrom,
                                                                     pageSize,
+                                                                    effectiveTime,
                                                                     methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -7160,125 +7489,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      false,
                                                      selectionEnd,
                                                      serviceSupportedZones,
-                                                     methodName);
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
-                }
-                catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
-                {
-                    // skip entities that are not visible to this user
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
-                    }
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
-    }
-
-
-    /**
-     * Return the elements of the requested type attached to an entity identified by the starting GUID.
-     *
-     * @param userId     calling user
-     * @param startingGUID identifier for the entity that the identifier is attached to
-     * @param startingGUIDParameterName name of parameter supplying the GUID
-     * @param startingTypeName name of the type of object being attached to
-     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
-     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
-     * @param attachmentEntityTypeName unique name of the attached entity's type
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
-     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param serviceSupportedZones supported zones for calling service
-     * @param startingFrom start position for results
-     * @param pageSize     maximum number of results
-     * @param methodName calling method
-     *
-     * @return list of retrieved objects or null if none found
-     *
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the repositories
-     */
-    public   List<B> getAnchorsForAttachedElements(String       userId,
-                                                   String       startingGUID,
-                                                   String       startingGUIDParameterName,
-                                                   String       startingTypeName,
-                                                   String       attachmentRelationshipTypeGUID,
-                                                   String       attachmentRelationshipTypeName,
-                                                   String       attachmentEntityTypeName,
-                                                   String       requiredClassificationName,
-                                                   String       omittedClassificationName,
-                                                   int          selectionEnd,
-                                                   List<String> serviceSupportedZones,
-                                                   int          startingFrom,
-                                                   int          pageSize,
-                                                   String       methodName) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  startingGUID,
-                                  startingGUIDParameterName,
-                                  startingTypeName,
-                                  false,
-                                  serviceSupportedZones,
-                                  methodName);
-
-        /*
-         * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
-         * Relationships are returned so that the isPublic property from the relationship can be retrieved.
-         */
-        List<Relationship>  relationships = this.getAttachmentLinks(userId,
-                                                                    startingGUID,
-                                                                    startingGUIDParameterName,
-                                                                    startingTypeName,
-                                                                    attachmentRelationshipTypeGUID,
-                                                                    attachmentRelationshipTypeName,
-                                                                    attachmentEntityTypeName,
-                                                                    startingFrom,
-                                                                    pageSize,
-                                                                    methodName);
-
-        if ((relationships == null) || (relationships.isEmpty()))
-        {
-            return null;
-        }
-
-        List<B>  results = new ArrayList<>();
-
-        for (Relationship  relationship : relationships)
-        {
-            if (relationship != null)
-            {
-                try
-                {
-                    B bean = this.getAttachedElement(userId,
-                                                     startingGUID,
-                                                     startingGUIDParameterName,
-                                                     startingTypeName,
-                                                     relationship,
-                                                     attachmentEntityTypeName,
-                                                     requiredClassificationName,
-                                                     omittedClassificationName,
-                                                     false,
-                                                     selectionEnd,
-                                                     serviceSupportedZones,
+                                                     effectiveTime,
                                                      methodName);
                     if (bean != null)
                     {
@@ -7321,6 +7532,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forLineage is this request part of lineage?
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName   calling method
      * @return new bean
      * @throws InvalidParameterException  the parameters are invalid
@@ -7338,6 +7550,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  boolean       forLineage,
                                  int           selectionEnd,
                                  List<String>  serviceSupportedZones,
+                                 Date          effectiveTime,
                                  String        methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -7373,6 +7586,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         entityProxy.getGUID(),
                                                                         guidParameterName,
                                                                         attachmentEntityTypeName,
+                                                                        effectiveTime,
                                                                         methodName);
 
                 this.validateAnchorEntity(userId,
@@ -7451,6 +7665,8 @@ public class OpenMetadataAPIGenericHandler<B>
 
         return null;
     }
+
+
     /**
      * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
      *
@@ -7490,8 +7706,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-
-    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
+    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
                                                           String        startingGUID,
                                                           String        startingGUIDParameterName,
                                                           String        startingTypeName,
@@ -7503,7 +7718,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           int           startFrom,
                                                           boolean       startsWith,
                                                           boolean       ignoreCase,
-                                                          int           queryPageSize ,
+                                                          int           queryPageSize,
                                                           String        methodName) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
@@ -7524,6 +7739,86 @@ public class OpenMetadataAPIGenericHandler<B>
                                            startsWith,
                                            ignoreCase,
                                            queryPageSize,
+                                           null,
+                                           methodName);
+    }
+
+
+    /**
+     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
+     *
+     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
+     * <ul>
+     * <li> with the relationship relationshipTypeName</li>
+     * <li> the relationship relationshipTypeGUID</li>
+     * <li> be at this end of the relationship.</li>
+     * <li> it is visible to the calling user </li>
+     * </ul>
+     * <p>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
+     *</ul>
+     * Optionally if specified, the attached entity needs to
+     * <ul>
+     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
+     * </ul>
+     *
+     * @param userId       calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param relationshipTypeName name of the type of relationship attaching the attached entity
+     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param specificMatchPropertyNames list of property names to
+     * @param searchCriteria text to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
+     * @param ignoreCase if set ignore case on the match, if not set then case must match
+     * @param queryPageSize requested page size
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName   calling method
+     * @return List of attached entities
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
+                                                          String        startingGUID,
+                                                          String        startingGUIDParameterName,
+                                                          String        startingTypeName,
+                                                          String        relationshipTypeName,
+                                                          String        relationshipTypeGUID,
+                                                          int           selectionEnd,
+                                                          Set<String>   specificMatchPropertyNames,
+                                                          String        searchCriteria,
+                                                          int           startFrom,
+                                                          boolean       startsWith,
+                                                          boolean       ignoreCase,
+                                                          int           queryPageSize,
+                                                          Date          effectiveTime,
+                                                          String        methodName) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        return getAttachedFilteredEntities(userId,
+                                           startingGUID,
+                                           startingGUIDParameterName,
+                                           startingTypeName,
+                                           relationshipTypeName,
+                                           relationshipTypeGUID,
+                                           selectionEnd,
+                                           null,
+                                           null,
+                                           true,
+                                           specificMatchPropertyNames,
+                                           searchCriteria,
+                                           startFrom,
+                                           startsWith,
+                                           ignoreCase,
+                                           queryPageSize,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -7569,51 +7864,50 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
      * @param ignoreCase if set ignore case on the match, if not set then case must match
      * @param queryPageSize requested page size
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName   calling method
      * @return List of attached entities
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-
-    /*
-     * Note this method has parameters that are bing used by callers. If you need more options (e.g. to specify asOfTime or to limit on classification or around zones) then overload this method.
-     */
-    public List<EntityDetail> getAttachedFilteredEntities(String  userId,
-                                                  String        startingGUID,
-                                                  String        startingGUIDParameterName,
-                                                  String        startingTypeName,
-                                                  String        relationshipTypeName,
-                                                  String        relationshipTypeGUID,
-                                                  int           selectionEnd,
-                                                  String        attachedEntityFilterRelationshipTypeName,
-                                                  String        attachedEntityFilterRelationshipTypeGUID,
-                                                  boolean       attachedEntityParentAtEnd1,
-                                                  Set<String>   specificMatchPropertyNames,
-                                                  String        searchCriteria,
-                                                  int           startFrom,
-                                                  boolean       startsWith,
-                                                  boolean       ignoreCase,
-                                                  int           queryPageSize ,
-                                                  String        methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
+                                                          String        startingGUID,
+                                                          String        startingGUIDParameterName,
+                                                          String        startingTypeName,
+                                                          String        relationshipTypeName,
+                                                          String        relationshipTypeGUID,
+                                                          int           selectionEnd,
+                                                          String        attachedEntityFilterRelationshipTypeName,
+                                                          String        attachedEntityFilterRelationshipTypeGUID,
+                                                          boolean       attachedEntityParentAtEnd1,
+                                                          Set<String>   specificMatchPropertyNames,
+                                                          String        searchCriteria,
+                                                          int           startFrom,
+                                                          boolean       startsWith,
+                                                          boolean       ignoreCase,
+                                                          int           queryPageSize,
+                                                          Date          effectiveTime,
+                                                          String        methodName) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         int localStartFrom = 0;
+
         RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
-                                                                                                     userId,
-                                                                                                     startingGUID,
-                                                                                                     startingTypeName,
-                                                                                                     relationshipTypeGUID,
-                                                                                                     relationshipTypeName,
-                                                                                                     null,
-                                                                                                     localStartFrom,
-                                                                                                     queryPageSize,
-                                                                                                     selectionEnd,
-                                                                                                     methodName);
+                                                                                                        userId,
+                                                                                                        startingGUID,
+                                                                                                        startingTypeName,
+                                                                                                        relationshipTypeGUID,
+                                                                                                        relationshipTypeName,
+                                                                                                        null,
+                                                                                                        localStartFrom,
+                                                                                                        queryPageSize,
+                                                                                                        selectionEnd,
+                                                                                                        effectiveTime,
+                                                                                                        methodName);
         // resultsToReturn is the subset of the filtered results to meets the requested startFrom
         List<EntityDetail> resultsToReturn = new ArrayList<>();
         // accumulate the total filtered results from 0 - so we can then honour the requested startFrom which is the index into the filtered results.
@@ -7630,19 +7924,29 @@ public class OpenMetadataAPIGenericHandler<B>
                 {
                     String displayName = "";
                     String qualifiedName = "";
-                    if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null ) {
-                        if ( relatedEntity.getProperties().getInstanceProperties().get("displayName")!=null) {
-                            displayName = relatedEntity.getProperties().getInstanceProperties().get("displayName").toString();
+
+                    if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null )
+                    {
+                        if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME) != null)
+                        {
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME).toString();
                         }
-                        if ( relatedEntity.getProperties().getInstanceProperties().get("qualifiedName")!=null) {
-                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get("qualifiedName").toString();
+                        else if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.NAME_PROPERTY_NAME) != null)
+                        {
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.NAME_PROPERTY_NAME).toString();
+                        }
+                        if ( relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME)!=null)
+                        {
+                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).toString();
                         }
                     }
+
                     log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
                 }
+
                 Relationship parentRelationship = null;
                 // apply the filter if there is one
-                if (attachedEntityFilterRelationshipTypeGUID != null && attachedEntityFilterRelationshipTypeName != null)
+                if ((attachedEntityFilterRelationshipTypeGUID != null) && (attachedEntityFilterRelationshipTypeName != null))
                 {
                     parentRelationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                                              relatedEntity.getGUID(),
@@ -7650,6 +7954,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                              attachedEntityFilterRelationshipTypeGUID,
                                                                                              attachedEntityFilterRelationshipTypeName,
                                                                                              attachedEntityParentAtEnd1,
+                                                                                             effectiveTime,
                                                                                              methodName);
 
                     if (log.isDebugEnabled())
@@ -7660,11 +7965,14 @@ public class OpenMetadataAPIGenericHandler<B>
                         }
                     }
                 }
+
                 // if there is a parentRelationship - this should not be included.
-                if (parentRelationship == null &&
-                        entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase)) {
+                if ((parentRelationship == null) && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
+                {
                     totalFilteredResults.add(relatedEntity);
-                    if (totalFilteredResults.size() > startFrom) {
+
+                    if (totalFilteredResults.size() > startFrom)
+                    {
                         resultsToReturn.add(relatedEntity);
                     }
                 }
@@ -7682,6 +7990,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     }
 
+
     /**
      * Check whether the attribute values, associated with the supplied attribute names, in the supplied entity match the search criteria. This text match is influenced by the
      * exactValue and ignoreCase flags.
@@ -7693,13 +8002,23 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param ignoreCase when set ignore the case, otherwise do a case sensitive match.
      * @return true for match otherwise false
      */
-
-    protected boolean entityMatchSearchCriteria(EntityDetail entity, Set<String> attributeNames, String searchCriteria, boolean exactValue, boolean ignoreCase)
+    protected boolean entityMatchSearchCriteria(EntityDetail entity,
+                                                Set<String>  attributeNames,
+                                                String       searchCriteria,
+                                                boolean      exactValue,
+                                                boolean      ignoreCase)
     {
-        if (attributeNames == null) return true; // TODO maybe this should be an error
-        if (searchCriteria == null) return true; // nothing specific to match so it all matches
+        if (attributeNames == null)
+        {
+            return true; // TODO maybe this should be an error
+        }
 
-        String regexedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
+        if (searchCriteria == null)
+        {
+            return true; // nothing specific to match so it all matches
+        }
+
+        String regExedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
         boolean isMatch = false;
         InstanceProperties matchProperties = entity.getProperties();
         Iterator<String> propertyNames = matchProperties.getPropertyNames();
@@ -7721,11 +8040,12 @@ public class OpenMetadataAPIGenericHandler<B>
                         if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
                         {
                             String currentValue = (String) ppv.getPrimitiveValue();
-                            if (currentValue != null && currentValue.matches(regexedSearchCriteria))
+                            if (currentValue != null && currentValue.matches(regExedSearchCriteria))
                             {
                                 isMatch = true;
                             }
                         }
+
                         // TODO if there are no valid string attributes throw an error?
                     }
                 }
@@ -7733,6 +8053,7 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         return isMatch;
     }
+
 
     /**
      * Take a literal string supplied in searchCriteria and augment it with extra content for the regex engine to process.
@@ -7749,52 +8070,22 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             // ignore the flags for an empty search criteria string - assume we want everything
             searchCriteria = ".*";
-        } else
+        }
+        else
         {
             // lose any leading and trailing blanks
             searchCriteria = searchCriteria.trim();
             if (exactValue)
             {
                 searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
-            } else
+            }
+            else
             {
                 searchCriteria = repositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
             }
         }
 
         return searchCriteria;
-    }
-    /**
-     * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
-     *
-     * @param userId userId of the user making the request
-     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
-     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
-     * @param requestedEntityTypeName name of type of entity to retrieve
-     * @param methodName calling method
-     *
-     * @return retrieved entity
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public EntityDetail getEntityFromRepository(String       userId,
-                                                String       requestedEntityGUID,
-                                                String       requestedEntityGUIDParameterName,
-                                                String       requestedEntityTypeName,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
-    {
-        return this.getEntityFromRepository(userId,
-                                            requestedEntityGUID,
-                                            requestedEntityGUIDParameterName,
-                                            requestedEntityTypeName,
-                                            null,
-                                            null,
-                                            false,
-                                            supportedZones,
-                                            methodName);
     }
 
 
@@ -7814,13 +8105,55 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public EntityDetail getEntityFromRepository(String       userId,
-                                                String       requestedEntityGUID,
-                                                String       requestedEntityGUIDParameterName,
-                                                String       requestedEntityTypeName,
-                                                String       requiredClassificationName,
-                                                String       omittedClassificationName,
-                                                String       methodName) throws InvalidParameterException,
+    public EntityDetail getEntityFromRepository(String  userId,
+                                                String  requestedEntityGUID,
+                                                String  requestedEntityGUIDParameterName,
+                                                String  requestedEntityTypeName,
+                                                String  requiredClassificationName,
+                                                String  omittedClassificationName,
+                                                boolean forLineage,
+                                                String  methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        return this.getEntityFromRepository(userId,
+                                            requestedEntityGUID,
+                                            requestedEntityGUIDParameterName,
+                                            requestedEntityTypeName,
+                                            requiredClassificationName,
+                                            omittedClassificationName,
+                                            forLineage,
+                                            supportedZones,
+                                            null,
+                                            methodName);
+    }
+
+
+    /**
+     * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
+     *
+     * @param userId userId of the user making the request
+     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
+     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
+     * @param requestedEntityTypeName name of type of entity to retrieve
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return retrieved entity
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityFromRepository(String userId,
+                                                String requestedEntityGUID,
+                                                String requestedEntityGUIDParameterName,
+                                                String requestedEntityTypeName,
+                                                String requiredClassificationName,
+                                                String omittedClassificationName,
+                                                Date   effectiveTime,
+                                                String methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
@@ -7832,6 +8165,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             omittedClassificationName,
                                             false,
                                             supportedZones,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -7872,6 +8206,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        omittedClassificationName,
                                        false,
                                        serviceSupportedZones,
+                                       null,
                                        methodName);
     }
 
@@ -7887,6 +8222,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return retrieved entity
@@ -7902,6 +8238,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String       omittedClassificationName,
                                                 boolean      forLineage,
                                                 List<String> serviceSupportedZones,
+                                                Date         effectiveTime,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -7913,6 +8250,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           requestedEntityGUID,
                                                                           requestedEntityGUIDParameterName,
                                                                           requestedEntityTypeName,
+                                                                          effectiveTime,
                                                                           methodName);
 
         /*
@@ -8019,6 +8357,41 @@ public class OpenMetadataAPIGenericHandler<B>
                                           guidParameterName,
                                           resultTypeName,
                                           supportedZones,
+                                          null,
+                                          methodName);
+    }
+
+
+    /**
+     * Use the supplied unique identifier (guid) of an entity in the repository to retrieve its contents as a bean.
+     * The entity is checked to ensure it is of the required return type.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the entity to retrieve
+     * @param guidParameterName parameter supplying the unique identifier
+     * @param resultTypeName type of the retrieve entity
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return B bean
+     * @throws InvalidParameterException one of the properties (probably the GUID) is invalid
+     * @throws PropertyServerException the repository services hit an unexpected problem
+     * @throws UserNotAuthorizedException the user is not permitted to access this entity
+     */
+    public B getBeanFromRepository(String userId,
+                                   String guid,
+                                   String guidParameterName,
+                                   String resultTypeName,
+                                   Date   effectiveTime,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
+        return this.getBeanFromRepository(userId,
+                                          guid,
+                                          guidParameterName,
+                                          resultTypeName,
+                                          supportedZones,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -8031,6 +8404,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param guidParameterName name of the parameter supplying the GUID
      * @param entityTypeName name of type of entity to retrieve
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return new bean
@@ -8043,6 +8417,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       guidParameterName,
                                    String       entityTypeName,
                                    List<String> serviceSupportedZones,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -8056,7 +8431,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            entityTypeName,
                                                            null,
                                                            null,
+                                                           false,
                                                            serviceSupportedZones,
+                                                           effectiveTime,
                                                            methodName);
 
         if (entity != null)
@@ -8108,6 +8485,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityGUIDParameterName name of parameter providing the entityGUID
      * @param entityTypeName expected type of entity
      * @param propertyName name of property to extract
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -8119,6 +8497,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                String       entityGUIDParameterName,
                                                String       entityTypeName,
                                                String       propertyName,
+                                               Date         effectiveTime,
                                                String       methodName) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
@@ -8129,6 +8508,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         entityTypeName,
                                                         propertyName,
                                                         supportedZones,
+                                                        effectiveTime,
                                                         methodName);
     }
 
@@ -8142,6 +8522,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityTypeName expected type of entity
      * @param propertyName name of property to extract
      * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -8154,6 +8535,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                String             entityTypeName,
                                                String             propertyName,
                                                List<String>       serviceSupportedZones,
+                                               Date               effectiveTime,
                                                String             methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -8172,7 +8554,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                  entityTypeName,
                                                                  null,
                                                                  null,
+                                                                 false,
                                                                  serviceSupportedZones,
+                                                                 effectiveTime,
                                                                  methodName);
 
         if (entityDetail != null)
@@ -8227,6 +8611,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list to start from (0 for start)
      * @param queryPageSize maximum number of values to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return configured iterator
      */
@@ -8239,6 +8624,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           String       sequencingPropertyName,
                                                           int          startFrom,
                                                           int          queryPageSize,
+                                                          Date         effectiveTime,
                                                           String       methodName)
     {
         RepositoryIteratorForEntities iterator;
@@ -8264,6 +8650,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   sequencingPropertyName,
                                                                   startFrom,
                                                                   queryPageSize,
+                                                                  effectiveTime,
                                                                   methodName);
             }
             else
@@ -8279,6 +8666,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   sequencingPropertyName,
                                                                   startFrom,
                                                                   queryPageSize,
+                                                                  effectiveTime,
                                                                   methodName);
             }
         }
@@ -8294,6 +8682,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                       sequencingPropertyName,
                                                       startFrom,
                                                       queryPageSize,
+                                                      effectiveTime,
                                                       methodName);
         }
 
@@ -8311,6 +8700,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the requested entity/bean
@@ -8324,11 +8714,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       namePropertyName,
                                           String       resultTypeGUID,
                                           String       resultTypeName,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        return this.getBeanGUIDByUniqueName(userId, name, nameParameterName, namePropertyName, resultTypeGUID, resultTypeName, supportedZones, methodName);
+        return this.getBeanGUIDByUniqueName(userId,
+                                            name,
+                                            nameParameterName,
+                                            namePropertyName,
+                                            resultTypeGUID,
+                                            resultTypeName,
+                                            supportedZones,
+                                            effectiveTime,
+                                            methodName);
     }
 
 
@@ -8343,6 +8742,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the requested entity/bean
@@ -8357,6 +8757,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       resultTypeGUID,
                                           String       resultTypeName,
                                           List<String> serviceSupportedZones,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -8369,7 +8770,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
         int queryPageSize = invalidParameterHandler.getMaxPagingSize();
 
-
         RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
                                                                          name,
                                                                          resultTypeGUID,
@@ -8379,6 +8779,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          null,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
         /*
@@ -8454,6 +8855,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8467,6 +8869,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  String       namePropertyName,
                                  String       resultTypeGUID,
                                  String       resultTypeName,
+                                 Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -8478,6 +8881,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    resultTypeGUID,
                                    resultTypeName,
                                    supportedZones,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -8492,6 +8896,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8506,6 +8911,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  String       resultTypeGUID,
                                  String       resultTypeName,
                                  List<String> serviceSupportedZones,
+                                 Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -8528,6 +8934,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          null,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
         /*
@@ -8604,6 +9011,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return matching bean.
      *
@@ -8617,6 +9025,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       resultTypeGUID,
                              String       resultTypeName,
                              List<String> specificMatchPropertyNames,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -8633,6 +9042,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
+                                                             effectiveTime,
                                                              methodName);
 
 
@@ -8671,6 +9081,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8688,6 +9099,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -8706,6 +9118,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -8721,6 +9134,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8736,6 +9150,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
@@ -8753,6 +9168,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -8770,6 +9186,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8787,6 +9204,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
@@ -8804,6 +9222,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -8820,6 +9239,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8836,6 +9256,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
@@ -8854,6 +9275,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -8875,6 +9297,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
@@ -8893,6 +9316,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              SequencingOrder       sequencingOrder,
                              int                   startingFrom,
                              int                   pageSize,
+                             Date                  effectiveTime,
                              String                methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -8918,6 +9342,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                      sequencingOrder,
                                                                                      startingFrom,
                                                                                      queryPageSize,
+                                                                                     effectiveTime,
                                                                                      methodName);
 
         List<B> results = new ArrayList<>();
@@ -8957,6 +9382,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -8975,6 +9401,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -8992,6 +9419,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -9013,6 +9441,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9032,6 +9461,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -9049,6 +9479,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -9070,6 +9501,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9090,6 +9522,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -9108,6 +9541,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     sequencingPropertyName,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -9127,6 +9561,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9146,6 +9581,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       String       sequencingPropertyName,
                                       int          startFrom,
                                       int          pageSize,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -9162,6 +9598,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                             sequencingPropertyName,
                                                             startFrom,
                                                             pageSize,
+                                                            effectiveTime,
                                                             methodName);
 
         if (entities != null)
@@ -9206,6 +9643,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9227,6 +9665,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -9245,6 +9684,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                          sequencingPropertyName,
                                                          startFrom,
                                                          pageSize,
+                                                         effectiveTime,
                                                          methodName);
 
 
@@ -9284,6 +9724,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of entities
@@ -9298,6 +9739,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String       sequencingPropertyName,
                                                 int          startFrom,
                                                 int          pageSize,
+                                                Date         effectiveTime,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -9315,6 +9757,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          sequencingPropertyName,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
 
@@ -9411,6 +9854,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of entities
@@ -9428,6 +9872,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                            String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -9448,6 +9893,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        sequencingPropertyName,
                                        startFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -9467,6 +9913,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9485,6 +9932,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String       omittedClassificationName,
                                                  int          startFrom,
                                                  int          pageSize,
+                                                 Date         effectiveTime,
                                                  String       methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -9503,6 +9951,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        null,
                                        startFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -9523,6 +9972,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9542,6 +9992,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String       sequencingPropertyName,
                                                  int          startFrom,
                                                  int          pageSize,
+                                                 Date         effectiveTime,
                                                  String       methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -9560,6 +10011,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        sequencingPropertyName,
                                        startFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -9579,6 +10031,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9598,6 +10051,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     String       sequencingPropertyName,
                                                     int          startFrom,
                                                     int          pageSize,
+                                                    Date         effectiveTime,
                                                     String       methodName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -9619,6 +10073,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                         sequencingPropertyName,
                                                                                         0,
                                                                                         queryPageSize,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
         return getEntitiesByValue(userId,
@@ -9653,6 +10108,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9674,6 +10130,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String       sequencingPropertyName,
                                                  int          startFrom,
                                                  int          pageSize,
+                                                 Date         effectiveTime,
                                                  String       methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -9696,6 +10153,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          sequencingPropertyName,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
         String entityParameterName = "Entity from search of value " + value;
@@ -9881,6 +10339,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -9902,6 +10361,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               String       sequencingPropertyName,
                                               int          startFrom,
                                               int          pageSize,
+                                              Date         effectiveTime,
                                               String       methodName) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
@@ -9920,6 +10380,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               sequencingPropertyName,
                                                               startFrom,
                                                               pageSize,
+                                                              effectiveTime,
                                                               methodName);
 
         if (entities != null)
@@ -9953,6 +10414,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return requested entity
      *
@@ -9966,6 +10428,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       resultTypeGUID,
                                           String       resultTypeName,
                                           List<String> specificMatchPropertyNames,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -9984,6 +10447,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
+                                                             effectiveTime,
                                                              methodName);
 
 
@@ -10016,6 +10480,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the requested entity.
      *
@@ -10029,6 +10494,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         String       resultTypeGUID,
                                         String       resultTypeName,
                                         List<String> specificMatchPropertyNames,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -10039,6 +10505,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     resultTypeGUID,
                                                     resultTypeName,
                                                     specificMatchPropertyNames,
+                                                    effectiveTime,
                                                     methodName);
 
 
@@ -10062,6 +10529,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -10077,6 +10545,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       String       sequencingPropertyName,
                                       int          startFrom,
                                       int          pageSize,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -10095,6 +10564,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           sequencingPropertyName,
                                           startFrom,
                                           pageSize,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -10114,6 +10584,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -10132,6 +10603,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             String       sequencingPropertyName,
                                             int          startFrom,
                                             int          pageSize,
+                                            Date         effectiveTime,
                                             String       methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
@@ -10150,6 +10622,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           sequencingPropertyName,
                                           startFrom,
                                           pageSize,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -10168,6 +10641,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -10186,6 +10660,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                      String       sequencingPropertyName,
                                      int          startFrom,
                                      int          pageSize,
+                                     Date         effectiveTime,
                                      String       methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -10204,6 +10679,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          sequencingPropertyName,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
         /*
@@ -10305,6 +10781,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -10318,11 +10795,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                   String       sequencingPropertyName,
                                   int          startFrom,
                                   int          pageSize,
+                                  Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        return getBeansByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, methodName);
+        return getBeansByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, effectiveTime, methodName);
     }
 
 
@@ -10336,6 +10814,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans
@@ -10350,6 +10829,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   String       sequencingPropertyName,
                                   int          startFrom,
                                   int          pageSize,
+                                  Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -10361,6 +10841,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              sequencingPropertyName,
                                                              startFrom,
                                                              pageSize,
+                                                             effectiveTime,
                                                              methodName);
 
         if ((entities != null)  && (! entities.isEmpty()))
@@ -10398,6 +10879,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for matching beans
@@ -10411,11 +10893,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                            String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        return this.getBeanGUIDsByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, methodName);
+        return this.getBeanGUIDsByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, effectiveTime, methodName);
     }
 
 
@@ -10429,6 +10912,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for matching beans
@@ -10443,6 +10927,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                            String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -10460,6 +10945,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          sequencingPropertyName,
                                                                          0,
                                                                          queryPageSize,
+                                                                         effectiveTime,
                                                                          methodName);
 
         /*
@@ -10521,13 +11007,14 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the list of beans of the requested type that match the supplied name.
+     * Return the list of beans of the requested type that match the supplied classification.
      *
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of beans
@@ -10535,14 +11022,15 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByClassification(String       userId,
-                                            String       resultTypeGUID,
-                                            String       resultClassificationName,
-                                            int          startFrom,
-                                            int          pageSize,
-                                            String       methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    public List<B> getBeansByClassification(String userId,
+                                            String resultTypeGUID,
+                                            String resultClassificationName,
+                                            int    startFrom,
+                                            int    pageSize,
+                                            Date   effectiveTime,
+                                            String methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -10552,6 +11040,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                          resultClassificationName,
                                                                                          startFrom,
                                                                                          queryPageSize,
+                                                                                         effectiveTime,
                                                                                          methodName);
 
         if (entities != null)
@@ -10577,7 +11066,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the list of beans of the requested type that match the supplied name.
+     * Return the list of beans of the requested type that match the supplied classification.
      *
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
@@ -10591,14 +11080,14 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getBeanGUIDsByClassification(String       userId,
-                                                     String       resultTypeGUID,
-                                                     String       resultClassificationName,
-                                                     int          startFrom,
-                                                     int          pageSize,
-                                                     String       methodName) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public List<String> getBeanGUIDsByClassification(String userId,
+                                                     String resultTypeGUID,
+                                                     String resultClassificationName,
+                                                     int    startFrom,
+                                                     int    pageSize,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -10608,6 +11097,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                          resultClassificationName,
                                                                                          startFrom,
                                                                                          queryPageSize,
+                                                                                         new Date(),
                                                                                          methodName);
 
         if (entities != null)
@@ -10690,7 +11180,8 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Creates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
-     * Both elements must be visible to the user to allow the link.
+     * Both elements must be visible to the user to allow the link.  If the relationship already exists with matching effectivity dates,
+     * the properties are updated.
      *
      * @param userId                    userId of user making request
      * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
@@ -10733,10 +11224,22 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachingGUID, attachingGUIDParameterName, methodName);
 
+        Date effectiveFrom = null;
+        Date effectiveTo   = null;
+
+        if (relationshipProperties != null)
+        {
+            effectiveFrom = relationshipProperties.getEffectiveFromTime();
+            effectiveTo   = relationshipProperties.getEffectiveToTime();
+        }
+
+        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
+
         EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                 startingGUID,
                                                                                 startingGUIDParameterName,
                                                                                 startingElementTypeName,
+                                                                                effectiveTime,
                                                                                 methodName);
 
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -10746,12 +11249,14 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
+                                                                             effectiveTime,
                                                                              methodName);
 
         EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                  attachingGUID,
                                                                                  attachingGUIDParameterName,
                                                                                  attachingElementTypeName,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
         EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -10761,22 +11266,103 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingGUIDParameterName,
                                                                               false,
                                                                               suppliedSupportedZones,
+                                                                              effectiveTime,
                                                                               methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
          * An exception is thrown if there are any problems.
          * The anchor entities are returned if there are anchor entities associated with a specific end.
+         *
+         * The next test ensures that the effectivity dates in the new relationship's properties are compatible with the
+         * existing relationships.
          */
+        List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                                     startingGUID,
+                                                                                                     startingElementTypeName,
+                                                                                                     attachingGUID,
+                                                                                                     attachmentTypeGUID,
+                                                                                                     attachmentTypeName,
+                                                                                                     effectiveFrom,
+                                                                                                     effectiveTo,
+                                                                                                     true,
+                                                                                                     methodName);
 
-        Relationship relationship = repositoryHandler.createRelationship(userId,
-                                                                         attachmentTypeGUID,
-                                                                         externalSourceGUID,
-                                                                         externalSourceName,
-                                                                         startingGUID,
-                                                                         attachingGUID,
-                                                                         relationshipProperties,
-                                                                         methodName);
+        Relationship newRelationship;
+        String actionDescriptionTemplate;
+        int    actionOrdinal;
+
+        if (existingRelationships != null)
+        {
+            if (existingRelationships.size() == 1)
+            {
+                actionDescriptionTemplate = "Updating link from %s %s to %s %s";
+                actionOrdinal = OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+
+                newRelationship = repositoryHandler.updateRelationshipProperties(userId,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 existingRelationships.get(0),
+                                                                                 relationshipProperties,
+                                                                                 methodName);
+            }
+            else
+            {
+                String guids = null;
+
+                for (Relationship relationship : existingRelationships)
+                {
+                    if (relationship != null)
+                    {
+                        if (guids == null)
+                        {
+                            guids = "[";
+                        }
+                        else
+                        {
+                            guids = ", ";
+                        }
+
+                        guids = guids + relationship.getGUID() + " ";
+                    }
+                }
+
+                if (guids == null)
+                {
+                    guids = "[]";
+                }
+                else
+                {
+                    guids = guids + "]";
+                }
+
+                throw new InvalidParameterException(GenericHandlersErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(attachmentTypeName,
+                                                                                                                               startingElementTypeName,
+                                                                                                                               startingGUID,
+                                                                                                                               attachingElementTypeName,
+                                                                                                                               attachingGUID,
+                                                                                                                               guids,
+                                                                                                                               methodName,
+                                                                                                                               serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    attachmentTypeName);
+            }
+        }
+        else
+        {
+            actionDescriptionTemplate = "Linking %s %s to %s %s";
+            actionOrdinal = OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+
+            newRelationship = repositoryHandler.createRelationship(userId,
+                                                                   attachmentTypeGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   startingGUID,
+                                                                   attachingGUID,
+                                                                   relationshipProperties,
+                                                                   methodName);
+        }
 
         /*
          * Final stage is to add the latest change classification to the anchor(s).
@@ -10790,6 +11376,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   startingElementTypeName,
                                                                   startingElementEntity,
                                                                   null,
+                                                                  effectiveTime,
                                                                   methodName);
 
             if (startingElementAnchorGUID != null)
@@ -10806,6 +11393,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     startingElementAnchorGUID,
                                                                                     anchorGUIDParameterName,
                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
                 }
             }
@@ -10825,6 +11413,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           attachingElementTypeName,
                                                                           attachingElementEntity,
                                                                           null,
+                                                                          effectiveTime,
                                                                           methodName);
 
             if (attachingElementAnchorGUID != null)
@@ -10841,6 +11430,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                      attachingElementAnchorGUID,
                                                                                      anchorGUIDParameterName,
                                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                     effectiveTime,
                                                                                      methodName);
                 }
             }
@@ -10850,7 +11440,6 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
          */
-        final String actionDescriptionTemplate = "Linking %s %s to %s %s";
 
         String actionDescription = String.format(actionDescriptionTemplate,
                                                  startingElementTypeName,
@@ -10862,7 +11451,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
                                          OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         actionOrdinal,
                                          null,
                                          attachingGUID,
                                          attachingElementTypeName,
@@ -10877,7 +11466,7 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
                                              OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             actionOrdinal,
                                              null,
                                              attachingGUID,
                                              attachingElementTypeName,
@@ -10897,7 +11486,7 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 this.addLatestChangeToAnchor(attachingElementAnchorEntity,
                                              OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             actionOrdinal,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -10919,7 +11508,7 @@ public class OpenMetadataAPIGenericHandler<B>
                  */
                 this.addLatestChangeToAnchor(attachingElementEntity,
                                              OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             actionOrdinal,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -10930,14 +11519,13 @@ public class OpenMetadataAPIGenericHandler<B>
             }
         }
 
-        if (relationship != null)
+        if (newRelationship != null)
         {
-            return relationship.getGUID();
+            return newRelationship.getGUID();
         }
 
         return null;
     }
-
 
 
     /**
@@ -11043,11 +11631,14 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachingGUID, attachingGUIDParameterName, methodName);
 
-        EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                startingGUID,
-                                                                                startingGUIDParameterName,
-                                                                                startingElementTypeName,
-                                                                                methodName);
+        Date effectiveTime = getEffectiveTime(relationshipProperties);
+
+        EntityDetail startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                               startingGUID,
+                                                                               startingGUIDParameterName,
+                                                                               startingElementTypeName,
+                                                                               effectiveTime,
+                                                                               methodName);
 
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
@@ -11069,6 +11660,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  attachingGUID,
                                                                                  attachingGUIDParameterName,
                                                                                  attachingElementTypeName,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
         EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -11078,6 +11670,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingGUIDParameterName,
                                                                               false,
                                                                               suppliedSupportedZones,
+                                                                              effectiveTime,
                                                                               methodName);
 
         /*
@@ -11092,6 +11685,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                      attachingGUID,
                                                                                      attachmentTypeGUID,
                                                                                      attachmentTypeName,
+                                                                                     effectiveTime,
                                                                                      methodName);
 
         if (relationship != null)
@@ -11155,6 +11749,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           startingElementTypeName,
                                           startingElementEntity,
                                           null,
+                                          effectiveTime,
                                           methodName);
             }
 
@@ -11200,6 +11795,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           attachingElementTypeName,
                                           attachingElementEntity,
                                           null,
+                                          effectiveTime,
                                           methodName);
             }
         }
@@ -11316,10 +11912,13 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(newAttachingGUID, newAttachingGUIDParameterName, methodName);
 
+        Date effectiveTime = getEffectiveTime(relationshipProperties);
+
         EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                 startingGUID,
                                                                                 startingGUIDParameterName,
                                                                                 startingElementTypeName,
+                                                                                effectiveTime,
                                                                                 methodName);
 
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -11329,6 +11928,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
+                                                                             effectiveTime,
                                                                              methodName);
 
         String startingElementAnchorGUID = startingGUID;
@@ -11342,6 +11942,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     newAttachingGUID,
                                                                                     newAttachingGUIDParameterName,
                                                                                     newAttachingElementTypeName,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         EntityDetail newAttachingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -11351,6 +11952,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  newAttachingGUIDParameterName,
                                                                                  false,
                                                                                  suppliedSupportedZones,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
         /*
@@ -11366,6 +11968,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                    startAtEnd1,
                                                                                    attachmentTypeGUID,
                                                                                    attachmentTypeName,
+                                                                                   effectiveTime,
                                                                                    methodName);
 
         String oldAttachingGUID = "<null>";
@@ -11448,6 +12051,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       startingElementTypeName,
                                       startingElementEntity,
                                       startingElementAnchorEntity.getGUID(),
+                                      effectiveTime,
                                       methodName);
         }
         else
@@ -11473,6 +12077,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       startingElementTypeName,
                                       startingElementEntity,
                                       null,
+                                      effectiveTime,
                                       methodName);
         }
 
@@ -11502,6 +12107,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       newAttachingElementTypeName,
                                       newAttachingElementEntity,
                                       newAttachingElementAnchorEntity.getGUID(),
+                                      effectiveTime,
                                       methodName);
         }
         else
@@ -11527,6 +12133,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       newAttachingElementTypeName,
                                       newAttachingElementEntity,
                                       null,
+                                      effectiveTime,
                                       methodName);
         }
     }
@@ -11550,6 +12157,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachingElementTypeName  type name of the attaching element's entity
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -11569,6 +12177,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachingElementTypeName,
                                          String       attachmentTypeGUID,
                                          String       attachmentTypeName,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -11587,6 +12196,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       supportedZones,
                                       attachmentTypeGUID,
                                       attachmentTypeName,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -11610,6 +12220,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
      * @param attachmentTypeGUID        unique identifier of type of the relationship to remove
      * @param attachmentTypeName        unique name of type of the relationship to remove
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -11630,6 +12241,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          List<String> suppliedSupportedZones,
                                          String       attachmentTypeGUID,
                                          String       attachmentTypeName,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -11644,6 +12256,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                       attachedGUID,
                                                                                       attachmentTypeGUID,
                                                                                       attachmentTypeName,
+                                                                                      effectiveTime,
                                                                                       methodName);
 
         this.unlinkElementFromElement(userId,
@@ -11766,14 +12379,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
+        final String relationshipParameterName = "relationship";
+
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(relationship, relationshipParameterName, methodName);
+
+        Date effectiveTime = getEffectiveTime(relationship.getProperties());
 
         EntityDetail startingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                startingGUID,
                                                                                startingGUIDParameterName,
                                                                                startingElementTypeName,
+                                                                               effectiveTime,
                                                                                methodName);
 
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -11783,6 +12402,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
+                                                                             effectiveTime,
                                                                              methodName);
 
         String startingElementAnchorGUID = startingGUID;
@@ -11800,6 +12420,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                attachedGUID,
                                                                                attachedGUIDParameterName,
                                                                                attachedElementTypeName,
+                                                                               effectiveTime,
                                                                                methodName);
 
         EntityDetail attachedElementAnchorEntity = this.validateAnchorEntity(userId,
@@ -11809,53 +12430,74 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              attachedGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
+                                                                             effectiveTime,
                                                                              methodName);
 
-        /*
-         * The unlink only occurs if there is a relationship.
-         */
-        if (relationship != null)
+        if ((!onlyCreatorPermitted) || (userId.equals(relationship.getCreatedBy())))
         {
-            if ((!onlyCreatorPermitted) || (userId.equals(relationship.getCreatedBy())))
+            if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
             {
-                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
-                {
-                    repositoryHandler.removeRelationship(userId,
-                                                         externalSourceGUID,
-                                                         externalSourceName,
-                                                         relationship,
-                                                         methodName);
-                }
+                repositoryHandler.removeRelationship(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     relationship,
+                                                     methodName);
             }
-            else
-            {
-                throw new UserNotAuthorizedException(GenericHandlersErrorCode.ONLY_CREATOR_CAN_DELETE.getMessageDefinition(methodName,
-                                                                                                                           startingElementTypeName,
-                                                                                                                           startingGUID,
-                                                                                                                           attachedElementTypeName,
-                                                                                                                           attachedGUID,
-                                                                                                                           userId),
-                                                     this.getClass().getName(),
-                                                     methodName,
-                                                     userId);
-            }
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(GenericHandlersErrorCode.ONLY_CREATOR_CAN_DELETE.getMessageDefinition(methodName,
+                                                                                                                       startingElementTypeName,
+                                                                                                                       startingGUID,
+                                                                                                                       attachedElementTypeName,
+                                                                                                                       attachedGUID,
+                                                                                                                       userId),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+
+        /*
+         * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
+         */
+        final String actionDescriptionTemplate = "Unlinking %s %s from %s %s";
+
+        String actionDescription = String.format(actionDescriptionTemplate,
+                                                 startingElementTypeName,
+                                                 startingGUID,
+                                                 attachedElementTypeName,
+                                                 attachedGUID);
+
+
+        if (startingElementAnchorEntity != null)
+        {
+            this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         null,
+                                         attachedGUID,
+                                         attachedElementTypeName,
+                                         attachmentTypeName,
+                                         userId,
+                                         actionDescription,
+                                         methodName);
 
             /*
-             * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
+             * Now that this relationship is gone, the anchorGUID may now be wrong
              */
-            final String actionDescriptionTemplate = "Unlinking %s %s from %s %s";
-
-            String actionDescription = String.format(actionDescriptionTemplate,
-                                                     startingElementTypeName,
-                                                     startingGUID,
-                                                     attachedElementTypeName,
-                                                     attachedGUID);
-
-
-            if (startingElementAnchorEntity != null)
+            newStartingAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
+                                                              startingGUIDParameterName,
+                                                              startingElementTypeName,
+                                                              startingElementAnchorEntity.getGUID(),
+                                                              effectiveTime,
+                                                              methodName);
+        }
+        else
+        {
+            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
             {
-                this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                this.addLatestChangeToAnchor(startingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              attachedGUID,
@@ -11864,120 +12506,101 @@ public class OpenMetadataAPIGenericHandler<B>
                                              userId,
                                              actionDescription,
                                              methodName);
-
-                /*
-                 * Now that this relationship is gone, the anchorGUID may now be wrong
-                 */
-                newStartingAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
-                                          startingGUIDParameterName,
-                                          startingElementTypeName,
-                                          startingElementAnchorEntity.getGUID(),
-                                          methodName);
             }
-            else
+        }
+
+        if (attachedElementAnchorEntity != null)
+        {
+            /*
+             * Only need to add latestChange if the anchor of the attached element is different
+             */
+            if (! attachedElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
-                if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
-                {
-                    this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 attachedGUID,
-                                                 attachedElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-                }
+                this.addLatestChangeToAnchor(attachedElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             startingGUID,
+                                             startingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
             }
-
-            if (attachedElementAnchorEntity != null)
-            {
-                /*
-                 * Only need to add latestChange if the anchor of the attached element is different
-                 */
-                if (! attachedElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
-                {
-                    this.addLatestChangeToAnchor(attachedElementAnchorEntity,
-                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 startingGUID,
-                                                 startingElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-                }
-
-                /*
-                 * Now that this relationship is gone, the anchorGUID may now be wrong
-                 */
-                newAttachedAnchorGUID = this.reEvaluateAnchorGUID(attachedGUID,
-                                          attachedGUIDParameterName,
-                                          attachedElementTypeName,
-                                          attachedElementAnchorEntity.getGUID(),
-                                          methodName);
-            }
-            else
-            {
-                if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
-                {
-                    this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 startingGUID,
-                                                 startingElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-                }
-            }
-
 
             /*
-             * If the attached element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
+             * Now that this relationship is gone, the anchorGUID may now be wrong
              */
-              if (attachedElementAnchorEntity != null && newAttachedAnchorGUID == null)
-              {
-                  try {
-                      this.deleteBeanInRepository(userId,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  attachedGUID,
-                                                  attachedGUIDParameterName,
-                                                  attachedElementTypeGUID,
-                                                  attachedElementTypeName,
-                                                  null,
-                                                  null,
-                                                  attachedElementAnchorEntity,
-                                                  methodName);
-                  } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
-                  {
-                      // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
-                      auditLog.logException(methodName,
-                                            GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
-                                                                                                                attachedGUID,
-                                                                                                                attachedElementTypeName,
-                                                                                                                attachedElementTypeGUID,
-                                                                                                                methodName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                error.getMessage()),
-                                            error);
-
-                  }
-            }
-            /*
-             * If the starting element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
-             */
-            if (startingElementAnchorEntity != null && newStartingAnchorGUID == null)
+            newAttachedAnchorGUID = this.reEvaluateAnchorGUID(attachedGUID,
+                                                              attachedGUIDParameterName,
+                                                              attachedElementTypeName,
+                                                              attachedElementAnchorEntity.getGUID(),
+                                                              effectiveTime,
+                                                              methodName);
+        }
+        else
+        {
+            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
             {
-                final String startingElementTypeGUID = repositoryHelper.getTypeDefByName(methodName, startingElementTypeName).getGUID();
-                try
-                {
-                    this.deleteBeanInRepository(userId,
+                this.addLatestChangeToAnchor(startingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             startingGUID,
+                                             startingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+        }
+
+
+        /*
+         * If the attached element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
+         */
+        if (attachedElementAnchorEntity != null && newAttachedAnchorGUID == null)
+        {
+            try
+            {
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            attachedGUID,
+                                            attachedGUIDParameterName,
+                                            attachedElementTypeGUID,
+                                            attachedElementTypeName,
+                                            null,
+                                            null,
+                                            attachedElementAnchorEntity,
+                                            methodName);
+            }
+            catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+            {
+                // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                auditLog.logException(methodName,
+                                      GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                     attachedGUID,
+                                                                                                                     attachedElementTypeName,
+                                                                                                                     attachedElementTypeGUID,
+                                                                                                                     methodName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     error.getMessage()),
+                                      error);
+
+            }
+        }
+
+        /*
+         * If the starting element had an anchor before the relationship deletion, but now is without an anchor, then delete the bean.
+         */
+        if (startingElementAnchorEntity != null && newStartingAnchorGUID == null)
+        {
+            final String startingElementTypeGUID = repositoryHelper.getTypeDefByName(methodName, startingElementTypeName).getGUID();
+
+            try
+            {
+                this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
                                             startingGUID,
@@ -11988,66 +12611,21 @@ public class OpenMetadataAPIGenericHandler<B>
                                             null,
                                             startingElementAnchorEntity,
                                             methodName);
-                } catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
-                {
-                    // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
-                    auditLog.logException(methodName,
-                                          GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
-                                                                                                                         startingGUID,
-                                                                                                                         startingElementTypeName,
-                                                                                                                         startingElementTypeGUID,
-                                                                                                                         methodName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         error.getMessage()),
-                                          error);
-                }
+            }
+            catch (InvalidParameterException | PropertyServerException| UserNotAuthorizedException error)
+            {
+                // This method should succeed, because the relationship has been deleted. Issue an audit log indicating that the bean delete failed
+                auditLog.logException(methodName,
+                                      GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN.getMessageDefinition(serviceName,
+                                                                                                                     startingGUID,
+                                                                                                                     startingElementTypeName,
+                                                                                                                     startingElementTypeGUID,
+                                                                                                                     methodName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     error.getMessage()),
+                                      error);
             }
         }
-    }
-
-
-    /**
-     * Calls unlinkElementFromElement for all relationships of a certain type emanating from the requested element.
-     *
-     * @param userId                    userId of user making request
-     * @param onlyCreatorPermitted      operation only permitted if the userId was the same one that created the relationship
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
-     * @param startingGUID              unique id for the starting element's entity
-     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
-     * @param startingElementTypeName   type name of the starting element's entity
-     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
-     * @param attachmentTypeName        unique name of type of the relationship to create
-     * @param methodName                calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the relationships in the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void unlinkAllElements(String       userId,
-                                  boolean      onlyCreatorPermitted,
-                                  String       externalSourceGUID,
-                                  String       externalSourceName,
-                                  String       startingGUID,
-                                  String       startingGUIDParameterName,
-                                  String       startingElementTypeName,
-                                  String       attachmentTypeGUID,
-                                  String       attachmentTypeName,
-                                  String       methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
-    {
-        this.unlinkAllElements(userId,
-                               onlyCreatorPermitted,
-                               externalSourceGUID,
-                               externalSourceName,
-                               startingGUID,
-                               startingGUIDParameterName,
-                               startingElementTypeName,
-                               supportedZones,
-                               attachmentTypeGUID,
-                               attachmentTypeName,
-                               methodName);
     }
 
 
@@ -12064,6 +12642,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -12080,6 +12659,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   List<String> suppliedSupportedZones,
                                   String       attachmentTypeGUID,
                                   String       attachmentTypeName,
+                                  Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -12095,6 +12675,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingElementTypeName,
                                   true,
                                   suppliedSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
@@ -12105,6 +12686,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                        attachmentTypeName,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       effectiveTime,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -12128,6 +12710,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               suppliedSupportedZones,
                                               attachmentTypeGUID,
                                               attachmentTypeName,
+                                              effectiveTime,
                                               methodName);
             }
         }
@@ -12148,6 +12731,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
      * @param detachedElementTypeName   name of type of element that will be detached
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
      * @return unique identifier of the entity that has been detached
@@ -12166,6 +12750,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentTypeGUID,
                                          String       attachmentTypeName,
                                          String       detachedElementTypeName,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -12181,6 +12766,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       attachmentTypeGUID,
                                       attachmentTypeName,
                                       detachedElementTypeName,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -12200,6 +12786,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
      * @param detachedElementTypeName   name of type of element that will be detached
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
      * @return unique identifier of the entity that has been detached
@@ -12219,6 +12806,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentTypeGUID,
                                          String       attachmentTypeName,
                                          String       detachedElementTypeName,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -12234,6 +12822,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingElementTypeName,
                                   true,
                                   suppliedSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         List<Relationship> links = this.getAttachmentLinks(userId,
@@ -12245,6 +12834,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            detachedElementTypeName,
                                                            0,
                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                           effectiveTime,
                                                            methodName);
 
         if (links == null)
@@ -12282,11 +12872,85 @@ public class OpenMetadataAPIGenericHandler<B>
                                           suppliedSupportedZones,
                                           attachmentTypeGUID,
                                           attachmentTypeName,
+                                          effectiveTime,
                                           methodName);
 
         }
 
         return detachedElementGUID;
+    }
+
+
+
+    /**
+     * Set up the effectivity times for an element not using a builder - typically a relationship.
+     *
+     * @param currentProperties other property values for the element
+     * @param effectiveFrom supplied starting time for this element (null for all time)
+     * @param effectiveTo supplied ending time for this element
+     * @return correctly filled out properties
+     */
+    InstanceProperties setUpEffectiveDates(InstanceProperties currentProperties,
+                                           Date               effectiveFrom,
+                                           Date               effectiveTo)
+    {
+        InstanceProperties properties = currentProperties;
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+            }
+
+            properties.setEffectiveFromTime(effectiveFrom);
+            properties.setEffectiveToTime(effectiveTo);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Derive the effective time value to use when retrieving relationships.
+     * This is based on the effectivity values from an element's properties.
+     * If there are no properties then effectively there is no effective time.
+     *
+     * @param properties properties from element
+     * @return single date to use on retrieve commands - null means all time
+     */
+    public Date getEffectiveTime(InstanceProperties properties)
+    {
+        if (properties != null)
+        {
+            return getEffectiveTime(properties.getEffectiveFromTime(), properties.getEffectiveToTime());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Derive the effective time value to use when retrieving relationships.
+     * This is based on the effectivity values from an element's properties.
+     *
+     * @param effectiveFromTime start date/time for the element
+     * @param effectiveToTime end date/time for the
+     * @return single date to use on retrieve commands - null means all time
+     */
+    public Date getEffectiveTime(Date effectiveFromTime,
+                                 Date effectiveToTime)
+    {
+        if (effectiveFromTime != null)
+        {
+            return effectiveFromTime;
+        }
+        else if (effectiveToTime != null)
+        {
+            return effectiveToTime;
+        }
+
+        return null;
     }
 
 
@@ -12297,17 +12961,21 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage is this request part of a lineage service
      * @param methodName calling method
      * @throws InvalidParameterException the integrator GUID or name does not match what is in the metadata repository
      * @throws PropertyServerException problem accessing repositories
      * @throws UserNotAuthorizedException security access problem
      */
-    public void verifyExternalSourceIdentity(String userId,
-                                             String externalSourceGUID,
-                                             String externalSourceName,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void verifyExternalSourceIdentity(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             boolean forLineage,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String guidParameterName = "externalSourceGUID";
 
@@ -12324,7 +12992,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                    null,
                                                                    null,
+                                                                   forLineage,
                                                                    supportedZones,
+                                                                   effectiveTime,
                                                                    methodName);
 
             if (integrator == null)

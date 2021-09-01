@@ -180,10 +180,30 @@ public class OpenMetadataTypesArchive
      */
     private void update0030HostsAndOperatingPlatforms()
     {
+        this.archiveBuilder.addEntityDef(addSoftwareArchiveEntity());
         this.archiveBuilder.addTypeDefPatch(updateOperatingPlatformEntity());
         this.archiveBuilder.addClassificationDef(addSoftwarePackageManifestClassification());
         this.archiveBuilder.addRelationshipDef(addOperatingPlatformManifestRelationship());
     }
+
+
+    private EntityDef addSoftwareArchiveEntity()
+    {
+        final String guid = "4c4bfc3f-1374-4e4c-a76d-c8e82b2cafaa";
+
+        final String name            = "SoftwareArchive";
+        final String description     = "A collection of runnable software components.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Collection";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
 
     private TypeDefPatch updateOperatingPlatformEntity()
     {

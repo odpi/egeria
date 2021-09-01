@@ -1369,6 +1369,7 @@ public class AssetOwnerRESTServices
                                              assetGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
+                                             null,
                                              methodName);
 
         }
@@ -1427,6 +1428,7 @@ public class AssetOwnerRESTServices
                                              assetElementGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
+                                             null,
                                              methodName);
 
         }
@@ -1483,6 +1485,8 @@ public class AssetOwnerRESTServices
                                        requestBody.getBusinessCapabilityGUID(),
                                        businessCapabilityGUIDParameterName,
                                        requestBody.getOtherOriginValues(),
+                                       null,
+                                       null,
                                        methodName);
             }
             else
@@ -2137,6 +2141,7 @@ public class AssetOwnerRESTServices
                                                        nameParameterName,
                                                        startFrom,
                                                        pageSize,
+                                                       null,
                                                        methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -2184,7 +2189,13 @@ public class AssetOwnerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.findAssets(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
+            response.setAssets(handler.findAssets(userId,
+                                                  searchString,
+                                                  searchStringParameter,
+                                                  startFrom,
+                                                  pageSize,
+                                                  null,
+                                                  methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Exception error)
@@ -2228,6 +2239,7 @@ public class AssetOwnerRESTServices
                                                             assetGUID,
                                                             assetGUIDParameter,
                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            null,
                                                             methodName));
         }
         catch (Exception error)
@@ -2576,6 +2588,7 @@ public class AssetOwnerRESTServices
                                                element1GUIDParameter,
                                                element2GUID,
                                                element2GUIDParameter,
+                                               null,
                                                methodName);
         }
         catch (Exception error)

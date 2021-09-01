@@ -192,7 +192,7 @@ public class IdentifierResolver {
 						IdMap.INFOTMATION_VIEW_TYPE_GUID,
 						IdMap.INFOTMATION_VIEW_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), true,
-						null, null, 0, 0, methodName);
+						null, null, 0, 0, null, methodName);
 				
 				if (refAsset == null || refAsset.isEmpty()) {
 					// missing referenced asset: maybe fine if the reference is not used, but log warning
@@ -230,7 +230,7 @@ public class IdentifierResolver {
 						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID,
 						IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, metadata.size(), 0, methodName)) != null) 
+						null, null, metadata.size(), 0, null, methodName)) != null)
 			{
 				metadata.addAll(metadataPage);
 			}

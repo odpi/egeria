@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
@@ -78,6 +79,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostClusterGUIDParameterName parameter supplying the hostClusterGUID
      * @param hostGUID unique identifier of the member host
      * @param hostGUIDParameterName parameter supplying the hostGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -91,6 +94,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                        String hostClusterGUIDParameterName,
                                        String hostGUID,
                                        String hostGUIDParameterName,
+                                       Date   effectiveFrom,
+                                       Date   effectiveTo,
                                        String methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -106,7 +111,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.HOST_TYPE_NAME,
                                   OpenMetadataAPIMapper.HOST_CLUSTER_MEMBER_TYPE_GUID,
                                   OpenMetadataAPIMapper.HOST_CLUSTER_MEMBER_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -121,6 +126,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostClusterGUIDParameterName parameter supplying the hostClusterGUID
      * @param hostGUID unique identifier of the member host
      * @param hostGUIDParameterName parameter supplying the hostGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -134,6 +140,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                        String hostClusterGUIDParameterName,
                                        String hostGUID,
                                        String hostGUIDParameterName,
+                                       Date   effectiveTime,
                                        String methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -151,6 +158,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.HOST_TYPE_NAME,
                                       OpenMetadataAPIMapper.HOST_CLUSTER_MEMBER_TYPE_GUID,
                                       OpenMetadataAPIMapper.HOST_CLUSTER_MEMBER_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -165,6 +173,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param virtualContainerGUID unique identifier of the virtual container deployed on the host
      * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -178,6 +188,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                   String hostGUIDParameterName,
                                                   String virtualContainerGUID,
                                                   String virtualContainerGUIDParameterName,
+                                                  Date   effectiveFrom,
+                                                  Date   effectiveTo,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -193,7 +205,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.VIRTUAL_CONTAINER_TYPE_NAME,
                                   OpenMetadataAPIMapper.DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID,
                                   OpenMetadataAPIMapper.DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -208,6 +220,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostGUIDParameterName parameter supplying the virtualContainerGUID
      * @param virtualContainerGUID unique identifier of the virtual container deployed on the host
      * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -221,6 +234,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                   String hostGUIDParameterName,
                                                   String virtualContainerGUID,
                                                   String virtualContainerGUIDParameterName,
+                                                  Date   effectiveTime,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -238,6 +252,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.VIRTUAL_CONTAINER_TYPE_NAME,
                                       OpenMetadataAPIMapper.DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID,
                                       OpenMetadataAPIMapper.DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -255,6 +270,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param deploymentTime date/time that the platform was deployed
      * @param deployer user who issued the deploy command
      * @param platformStatus operational status of the platform
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -262,20 +279,27 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupSoftwareServerPlatformDeployment(String userId,
-                                                       String externalSourceGUID,
-                                                       String externalSourceName,
-                                                       String hostGUID,
-                                                       String hostGUIDParameterName,
-                                                       String softwareServerPlatformGUID,
-                                                       String softwareServerPlatformGUIDParameterName,
-                                                       Date   deploymentTime,
-                                                       String deployer,
-                                                       int    platformStatus,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                      String externalSourceGUID,
+                                                      String externalSourceName,
+                                                      String hostGUID,
+                                                      String hostGUIDParameterName,
+                                                      String softwareServerPlatformGUID,
+                                                      String softwareServerPlatformGUIDParameterName,
+                                                      Date   deploymentTime,
+                                                      String deployer,
+                                                      int    platformStatus,
+                                                      Date   effectiveFrom,
+                                                      Date   effectiveTo,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getSoftwareServerPlatformDeploymentProperties(deploymentTime,
+                                                                                                          deployer,
+                                                                                                          platformStatus,
+                                                                                                          methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -288,10 +312,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_GUID,
                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_NAME,
-                                  builder.getSoftwareServerPlatformDeploymentProperties(deploymentTime,
-                                                                                        deployer,
-                                                                                        platformStatus,
-                                                                                        methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -306,6 +327,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param softwareServerPlatformGUID unique identifier of the software server platform
      * @param softwareServerPlatformGUIDParameterName parameter supplying the softwareServerPlatformGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -319,6 +341,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                       String hostGUIDParameterName,
                                                       String softwareServerPlatformGUID,
                                                       String softwareServerPlatformGUIDParameterName,
+                                                      Date   effectiveTime,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -336,6 +359,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -353,6 +377,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
      * @param serverStatus operational status of the server
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -369,11 +395,18 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                               Date   deploymentTime,
                                               String deployer,
                                               int    serverStatus,
+                                              Date   effectiveFrom,
+                                              Date   effectiveTo,
                                               String methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getSoftwareServerSupportedCapabilitiesProperties(deploymentTime,
+                                                                                                             deployer,
+                                                                                                             serverStatus,
+                                                                                                             methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -386,10 +419,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_TYPE_NAME,
                                   OpenMetadataAPIMapper.SERVER_DEPLOYMENT_TYPE_GUID,
                                   OpenMetadataAPIMapper.SERVER_DEPLOYMENT_TYPE_NAME,
-                                  builder.getSoftwareServerSupportedCapabilitiesProperties(deploymentTime,
-                                                                                           deployer,
-                                                                                           serverStatus,
-                                                                                           methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -404,6 +434,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param softwareServerPlatformGUIDParameterName parameter supplying the softwareServerPlatformGUID
      * @param softwareServerGUID unique identifier of the software server
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param effectiveTime  time that this relationship must be active (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -417,6 +449,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                               String softwareServerPlatformGUIDParameterName,
                                               String softwareServerGUID,
                                               String softwareServerGUIDParameterName,
+                                              Date   effectiveTime,
                                               String methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -434,6 +467,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_TYPE_NAME,
                                       OpenMetadataAPIMapper.SERVER_DEPLOYMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.SERVER_DEPLOYMENT_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -448,6 +482,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
      * @param endpointGUID unique identifier of the endpoint
      * @param endpointGUIDParameterName parameter supplying the endpointGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -461,6 +497,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                             String softwareServerGUIDParameterName,
                                             String endpointGUID,
                                             String endpointGUIDParameterName,
+                                            Date   effectiveFrom,
+                                            Date   effectiveTo,
                                             String methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -476,7 +514,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                   OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
                                   OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -491,6 +529,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
      * @param endpointGUID unique identifier of the endpoint
      * @param endpointGUIDParameterName parameter supplying the endpointGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -504,6 +543,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                             String softwareServerGUIDParameterName,
                                             String endpointGUID,
                                             String endpointGUIDParameterName,
+                                            Date   effectiveTime,
                                             String methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -521,6 +561,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                       OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
                                       OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -538,6 +579,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
      * @param serverCapabilityStatus operational status of the capability
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -554,11 +597,18 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                        Date   deploymentTime,
                                                        String deployer,
                                                        int    serverCapabilityStatus,
+                                                       Date   effectiveFrom,
+                                                       Date   effectiveTo,
                                                        String methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getSoftwareServerSupportedCapabilitiesProperties(deploymentTime,
+                                                                                                             deployer,
+                                                                                                             serverCapabilityStatus,
+                                                                                                             methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -571,10 +621,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                   OpenMetadataAPIMapper.SUPPORTED_CAPABILITY_TYPE_GUID,
                                   OpenMetadataAPIMapper.SUPPORTED_CAPABILITY_TYPE_NAME,
-                                  builder.getSoftwareServerSupportedCapabilitiesProperties(deploymentTime,
-                                                                                           deployer,
-                                                                                           serverCapabilityStatus,
-                                                                                           methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -589,6 +636,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
      * @param softwareServerCapabilityGUID unique identifier of the software server capability
      * @param softwareServerCapabilityGUIDParameterName parameter supplying the softwareServerCapabilityGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -602,6 +650,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                        String softwareServerGUIDParameterName,
                                                        String softwareServerCapabilityGUID,
                                                        String softwareServerCapabilityGUIDParameterName,
+                                                       Date   effectiveTime,
                                                        String methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -619,6 +668,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                       OpenMetadataAPIMapper.SUPPORTED_CAPABILITY_TYPE_GUID,
                                       OpenMetadataAPIMapper.SUPPORTED_CAPABILITY_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -635,6 +685,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param assetGUIDParameterName parameter supplying the assetGUID
      * @param description description of the use
      * @param useType server asset use type
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -650,11 +702,15 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                       String assetGUIDParameterName,
                                                       String description,
                                                       int    useType,
+                                                      Date   effectiveFrom,
+                                                      Date   effectiveTo,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getSoftwareServerCapabilitiesAssetUseProperties(description, useType, methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -667,7 +723,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                   OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                   OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                  builder.getSoftwareServerCapabilitiesAssetUseProperties(description, useType, methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -682,6 +738,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param softwareServerCapabilityGUIDParameterName parameter supplying the assetGUID
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the assetGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -695,6 +752,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                       String softwareServerCapabilityGUIDParameterName,
                                                       String assetGUID,
                                                       String assetGUIDParameterName,
+                                                      Date   effectiveTime,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -712,6 +770,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -726,6 +785,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param networkGUID unique identifier of the network
      * @param networkGUIDParameterName parameter supplying the networkGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -739,6 +800,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                  String hostGUIDParameterName,
                                  String networkGUID,
                                  String networkGUIDParameterName,
+                                 Date   effectiveFrom,
+                                 Date   effectiveTo,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -754,7 +817,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.NETWORK_TYPE_NAME,
                                   OpenMetadataAPIMapper.HOST_NETWORK_TYPE_GUID,
                                   OpenMetadataAPIMapper.HOST_NETWORK_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -769,6 +832,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param networkGUID unique identifier of the network
      * @param networkGUIDParameterName parameter supplying the networkGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -782,6 +846,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                  String hostGUIDParameterName,
                                  String networkGUID,
                                  String networkGUIDParameterName,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -799,6 +864,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.NETWORK_TYPE_NAME,
                                       OpenMetadataAPIMapper.HOST_NETWORK_TYPE_GUID,
                                       OpenMetadataAPIMapper.HOST_NETWORK_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -811,8 +877,10 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param networkGatewayGUID unique identifier of the network gateway
      * @param networkGatewayGUIDParameterName parameter supplying the networkGatewayGUID
-     * @param networkGUID unique identifier of the network
+     * @param networkGUID unique identifier of The network
      * @param networkGUIDParameterName parameter supplying the networkGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -826,6 +894,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                         String networkGatewayGUIDParameterName,
                                         String networkGUID,
                                         String networkGUIDParameterName,
+                                        Date   effectiveFrom,
+                                        Date   effectiveTo,
                                         String methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -841,7 +911,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   OpenMetadataAPIMapper.NETWORK_TYPE_NAME,
                                   OpenMetadataAPIMapper.NETWORK_GATEWAY_LINK_TYPE_GUID,
                                   OpenMetadataAPIMapper.NETWORK_GATEWAY_LINK_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -856,6 +926,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param networkGatewayGUIDParameterName parameter supplying the networkGatewayGUID
      * @param networkGUID unique identifier of the network
      * @param networkGUIDParameterName parameter supplying the networkGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -869,6 +940,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                         String networkGatewayGUIDParameterName,
                                         String networkGUID,
                                         String networkGUIDParameterName,
+                                        Date   effectiveTime,
                                         String methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -886,6 +958,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       OpenMetadataAPIMapper.NETWORK_TYPE_NAME,
                                       OpenMetadataAPIMapper.NETWORK_GATEWAY_LINK_TYPE_GUID,
                                       OpenMetadataAPIMapper.NETWORK_GATEWAY_LINK_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 

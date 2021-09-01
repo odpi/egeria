@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -105,9 +106,14 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 {
                     if (this.getEntityFromRepository(userId,
                                                      connectorType.getGUID(),
+                                                     guidParameterName,
                                                      OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
-                                                     methodName,
-                                                     guidParameterName) != null)
+                                                     null,
+                                                     null,
+                                                     false,
+                                                     supportedZones,
+                                                     null,
+                                                     methodName) != null)
                     {
                         return connectorType.getGUID();
                     }
@@ -131,6 +137,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                                              supportedZones,
+                                                             null,
                                                              methodName);
             }
 
@@ -143,6 +150,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                                              supportedZones,
+                                                             null,
                                                              methodName);
             }
 
@@ -428,6 +436,90 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Retrieves the connector type for the named asset type and if found, returns its unique identifier.
+     *
+     * @param userId           userId of user making request
+     * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param methodName calling method
+     *
+     * @return GUID for new connectorType
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String getConnectorTypeForAsset(String userId,
+                                           String supportedAssetTypeName,
+                                           String methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        String parameterName = "supportedAssetTypeName";
+
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.SUPPORTED_ASSET_TYPE_NAME);
+
+        List<EntityDetail> connectorTypes = this.getEntitiesByValue(userId,
+                                                                    supportedAssetTypeName,
+                                                                    parameterName,
+                                                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                    specificMatchPropertyNames,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    supportedZones,
+                                                                    null,
+                                                                    0,
+                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                    null,
+                                                                    methodName);
+
+
+        String otherConnectorTypeGUID = null;
+
+        if (connectorTypes != null)
+        {
+            /*
+             * Search for a connector type that supports the OCF framework and ideally is in Java.  When one is found return immediately.
+             * If no OCF connector in Java is available, an OCF connector that is not in Java is returned. Notice that the OCF is the
+             * default framework and Java is the default language so nulls in these fields is treated as a match.
+             */
+            for (EntityDetail connectorType : connectorTypes)
+            {
+                if (connectorType != null)
+                {
+                    String framework = repositoryHelper.getStringProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME,
+                                                                          connectorType.getProperties(),
+                                                                          methodName);
+                    String language  = repositoryHelper.getStringProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                          connectorType.getProperties(),
+                                                                          methodName);
+
+                    if ((framework == null) || (OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT.equals(framework)))
+                    {
+                        if ((language == null) || (OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
+                        {
+                            return connectorType.getGUID();
+                        }
+                        else
+                        {
+                            otherConnectorTypeGUID = connectorType.getGUID();
+                        }
+                    }
+                }
+            }
+        }
+
+        return otherConnectorTypeGUID;
+    }
+
+
+    /**
      * Retrieves the connector type for the qualified name and if found, returns its unique identifier.
      * Otherwise, it creates a new connectorType and returns the unique identifier for it.
      *
@@ -495,6 +587,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                                                 supportedZones,
+                                                                null,
                                                                 methodName);
 
         if (connectorTypeGUID == null)
@@ -718,6 +811,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -767,6 +861,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 

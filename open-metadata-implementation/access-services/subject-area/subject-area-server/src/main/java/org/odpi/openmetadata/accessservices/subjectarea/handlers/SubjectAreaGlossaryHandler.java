@@ -80,36 +80,45 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
             final String suppliedGlossaryName = suppliedGlossary.getName();
+
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "name");
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedGlossary);
+
+                Date effectiveFrom = null;
+                Date effectiveTo = null;
+
+                if (suppliedGlossary.getEffectiveFromTime() != null) {
+                    effectiveFrom = new Date(suppliedGlossary.getEffectiveFromTime());
+                }
+                if (suppliedGlossary.getEffectiveToTime() != null) {
+                    effectiveTo = new Date(suppliedGlossary.getEffectiveToTime());
+                }
+
                 GlossaryBuilder builder = new GlossaryBuilder(suppliedGlossary.getQualifiedName(),
-                                                                              suppliedGlossary.getName(),
-                                                                              suppliedGlossary.getDescription(),
-                                                                              suppliedGlossary.getLanguage(),
-                                                                              suppliedGlossary.getUsage(),
-                                                                              genericHandler.getRepositoryHelper(),
-                                                                              genericHandler.getServiceName(),
-                                                                              genericHandler.getServerName());
+                                                              suppliedGlossary.getName(),
+                                                              suppliedGlossary.getDescription(),
+                                                              suppliedGlossary.getLanguage(),
+                                                              suppliedGlossary.getUsage(),
+                                                              genericHandler.getRepositoryHelper(),
+                                                              genericHandler.getServiceName(),
+                                                              genericHandler.getServerName());
+
+                builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
                 String guid = genericHandler.createBeanInRepository(userId,
-                                                                            null,
-                                                                            null,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                                            null,
-                                                                            null,
-                                                                            builder,
-                                                                            methodName);
-                // set effectivity dates if required
-                setNodeEffectivity(userId,
-                                   suppliedGlossary,
-                                   methodName,
-                                   guid,
-                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
+                                                                    null,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                    null,
+                                                                    null,
+                                                                    builder,
+                                                                    methodName);
+
                 // set classifications if required
                 if (suppliedGlossary.getNodeType() == NodeType.Taxonomy || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary) {
 
@@ -170,8 +179,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               null,
+                                                                               (Date)null,
                                                                                methodName);
             GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
             response.addResult(glossaryMapper.map(entityDetail));
@@ -259,30 +267,40 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-            response = getGlossaryByGuid(userId, guid);
-            if (response.head().isPresent()) {
-                Glossary currentGlossary = response.head().get();
-                GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
-                EntityDetail entityDetail = glossaryMapper.map(currentGlossary);
-                genericHandler.updateBeanInRepository(userId,
-                                                      null,
-                                                      null,
-                                                      guid,
-                                                      "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                                      entityDetail.getProperties(),
-                                                      !isReplace,
-                                                      methodName);
-                setNodeEffectivity(userId,
-                                   suppliedGlossary,
-                                   methodName,
-                                   guid,
-                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
 
-                response = getGlossaryByGuid(userId, guid);
+            Date effectiveFrom = null;
+            Date effectiveTo = null;
+
+            if (suppliedGlossary.getEffectiveFromTime() != null) {
+                effectiveFrom = new Date(suppliedGlossary.getEffectiveFromTime());
             }
+            if (suppliedGlossary.getEffectiveToTime() != null) {
+                effectiveTo = new Date(suppliedGlossary.getEffectiveToTime());
+            }
+
+            GlossaryBuilder builder = new GlossaryBuilder(suppliedGlossary.getQualifiedName(),
+                                                          suppliedGlossary.getName(),
+                                                          suppliedGlossary.getDescription(),
+                                                          suppliedGlossary.getLanguage(),
+                                                          suppliedGlossary.getUsage(),
+                                                          genericHandler.getRepositoryHelper(),
+                                                          genericHandler.getServiceName(),
+                                                          genericHandler.getServerName());
+
+            builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+            genericHandler.updateBeanInRepository(userId,
+                                                  null,
+                                                  null,
+                                                  guid,
+                                                  "guid",
+                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                  builder.getInstanceProperties(methodName),
+                                                  !isReplace,
+                                                  methodName);
+            response = getGlossaryByGuid(userId, guid);
+
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
@@ -543,6 +561,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                !exactValue,
                                                                                ignoreCase,
                                                                                pageSize,
+                                                                               null,
                                                                                methodName);
                 Set<Category> categories = new HashSet<>();
                 if(entities != null)

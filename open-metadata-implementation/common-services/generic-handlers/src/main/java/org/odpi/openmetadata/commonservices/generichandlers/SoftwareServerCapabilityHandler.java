@@ -11,6 +11,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param encryption encryption type - null for unencrypted
      * @param additionalProperties additional properties
      * @param vendorProperties  properties about the vendor and/or their product
+     * @param effectiveFrom starting time for this element (null for all time)
+     * @param effectiveTo ending time for this element (null for all time)
      * @param methodName calling method
      *
      * @return unique identifier for the file system
@@ -106,6 +109,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                      String               encryption,
                                      Map<String, String>  additionalProperties,
                                      Map<String, String>  vendorProperties,
+                                     Date                 effectiveFrom,
+                                     Date                 effectiveTo,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -124,6 +129,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                       repositoryHelper,
                                                                                       serviceName,
                                                                                       serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         builder.setFileSystemClassification(userId, format, encryption, methodName);
 
@@ -188,6 +195,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                    String               source,
                                                    Map<String, String>  additionalProperties,
                                                    Map<String, String>  vendorProperties,
+                                                   Date                 effectiveFrom,
+                                                   Date                 effectiveTo,
                                                    String               methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -203,6 +212,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
         {
             typeName = specializedTypeName;
         }
+
         SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(uniqueName,
                                                                                       displayName,
                                                                                       description,
@@ -217,6 +227,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                       repositoryHelper,
                                                                                       serviceName,
                                                                                       serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         if (classificationName != null)
         {
@@ -252,6 +264,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param softwareServerCapabilityGUID unique identifier for the software server capability that is to be classified
      * @param softwareServerCapabilityGUIDParameterName parameter supplying softwareServerCapabilityGUID
      * @param classificationName name of classification if any
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -264,6 +278,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                           String softwareServerCapabilityGUID,
                                                           String softwareServerCapabilityGUIDParameterName,
                                                           String classificationName,
+                                                          Date   effectiveFrom,
+                                                          Date   effectiveTo,
                                                           String methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -282,7 +298,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                            classificationTypeGUID,
                                            classificationName,
-                                           null,
+                                           this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            false,
                                            methodName);
 
@@ -297,6 +313,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param typeName unique name of type
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return List of unique identifiers
@@ -305,14 +322,15 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> getSoftwareServerCapabilityGUIDsByType(String  userId,
-                                                               String  typeGUID,
-                                                               String  typeName,
-                                                               int     startingFrom,
-                                                               int     maxPageSize,
-                                                               String  methodName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public List<String> getSoftwareServerCapabilityGUIDsByType(String userId,
+                                                               String typeGUID,
+                                                               String typeName,
+                                                               int    startingFrom,
+                                                               int    maxPageSize,
+                                                               Date   effectiveTime,
+                                                               String methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         return this.getBeanGUIDsByType(userId,
                                        typeGUID,
@@ -321,6 +339,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                        null,
                                        startingFrom,
                                        maxPageSize,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -333,6 +352,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param typeName unique name of type
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return List of beans
@@ -341,14 +361,15 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getSoftwareServerCapabilitiesByType(String  userId,
-                                                       String  typeGUID,
-                                                       String  typeName,
-                                                       int     startingFrom,
-                                                       int     maxPageSize,
-                                                       String  methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<B> getSoftwareServerCapabilitiesByType(String userId,
+                                                       String typeGUID,
+                                                       String typeName,
+                                                       int    startingFrom,
+                                                       int    maxPageSize,
+                                                       Date   effectiveTime,
+                                                       String methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         return this.getBeansByType(userId,
                                    typeGUID,
@@ -357,6 +378,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                    null,
                                    startingFrom,
                                    maxPageSize,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -368,6 +390,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param classificationName name of classification
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return List of beans
@@ -380,6 +403,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                  String  classificationName,
                                                                  int     startingFrom,
                                                                  int     maxPageSize,
+                                                                 Date    effectiveTime,
                                                                  String  methodName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -389,6 +413,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                              classificationName,
                                              startingFrom,
                                              maxPageSize,
+                                             effectiveTime,
                                              methodName);
     }
 

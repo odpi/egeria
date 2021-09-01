@@ -60,7 +60,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to process the request as the metadata server in not contactable.",
             "Contact your admin to correct configuration to enable the Metadata server to be contacted."),
     CREATE_WITHOUT_GLOSSARY(400, "OMAS-SUBJECT-AREA-400-008",
-            "Cannot continue with create without a glossary processing request {0}",
+            "Cannot continue with {0} without a glossary",
             "The system is unable to process the request as the create requires a Glossary to be passed.",
             "Correct the code in the caller to create with a glossary."),
     GLOSSARY_TERM_CREATE_WITHOUT_NAME(400, "OMAS-SUBJECT-AREA-400-009",

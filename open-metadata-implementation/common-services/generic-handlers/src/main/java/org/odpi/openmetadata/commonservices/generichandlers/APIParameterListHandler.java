@@ -485,6 +485,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                         null,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
                                                         methodName);
 
         return this.getBeansForEntities(userId,
@@ -541,6 +542,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                               null,
                                                               startFrom,
                                                               pageSize,
+                                                              null,
                                                               methodName);
 
         return this.getBeansForEntities(userId, entities, nameParameterName, methodName);
@@ -632,6 +634,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                                    OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   null,
                                                                    methodName);
 
         if (relationships != null)
@@ -693,6 +696,11 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                            guid,
                                                            guidParameterName,
                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                           null,
+                                                           null,
+                                                           false,
+                                                           supportedZones,
+                                                           null,
                                                            methodName);
 
         return getBeanForEntity(userId, entity, guidParameterName, methodName);
@@ -730,6 +738,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        0,
                                                                        0,
+                                                                       null,
                                                                        methodName);
 
             return converter.getNewComplexBean(beanClass,
