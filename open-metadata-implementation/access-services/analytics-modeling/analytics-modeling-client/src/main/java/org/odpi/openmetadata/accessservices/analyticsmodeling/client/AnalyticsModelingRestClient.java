@@ -39,6 +39,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	
 	private final String urlTemplateResource = "/servers/{0}/open-metadata/access-services/analytics-modeling/users/{1}/";
 	private final String urlTemplateSynchronization = urlTemplateResource + "sync?serverCapability={2}";
+	private final String urlTemplateSynchronizationWithGUID = urlTemplateSynchronization + "&serverCapabilityGUID={3}";
 
     /**
      * Constructor for no authentication with audit log.
@@ -214,6 +215,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * Create assets defined by artifact.
 	 * @param user requested the operation.
 	 * @param serverCapability the source of artifact.
+	 * @param serverCapabilityGUID the source of artifact.
 	 * @param artifact definition.
 	 * @return list of GUIDs for created assets.
 	 * @throws PropertyServerException in case REST call failed.
@@ -221,13 +223,18 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets createAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
-		String url = serverPlatformURLRoot + urlTemplateSynchronization;
-		AnalyticsModelingOMASAPIResponse response = 
-				callPostRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, artifact, serverName, user, serverCapability);
+
+		AnalyticsModelingOMASAPIResponse response = serverCapabilityGUID == null
+				? callPostRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class,
+						serverPlatformURLRoot + urlTemplateSynchronization,
+						artifact, serverName, user,	serverCapability)
+				: callPostRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class,
+						serverPlatformURLRoot + urlTemplateSynchronizationWithGUID,
+						artifact, serverName, user, serverCapability, serverCapabilityGUID);
 
 		handleFailedResponse(response, methodName);
 		
@@ -238,6 +245,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * Update assets defined by artifact.
 	 * @param user requested the operation.
 	 * @param serverCapability the source of artifact.
+	 * @param serverCapabilityGUID the source of artifact.
 	 * @param artifact definition.
 	 * @return list of GUIDs for updated assets.
 	 * @throws PropertyServerException in case REST call failed.
@@ -245,13 +253,17 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets updateAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
-		String url = serverPlatformURLRoot + urlTemplateSynchronization;
-		AnalyticsModelingOMASAPIResponse response = 
-				callPutRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, artifact, serverName, user, serverCapability);
+		AnalyticsModelingOMASAPIResponse response = serverCapabilityGUID == null
+				? callPutRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class,
+						serverPlatformURLRoot + urlTemplateSynchronization,
+						artifact, serverName, user, serverCapability)
+				: callPutRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class,
+						serverPlatformURLRoot + urlTemplateSynchronizationWithGUID,
+						artifact, serverName, user, serverCapability, serverCapabilityGUID);
 
 		handleFailedResponse(response, methodName);
 		
@@ -262,6 +274,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * Delete assets defined by identifier.
 	 * @param user requested the operation.
 	 * @param serverCapability the source of artifact.
+	 * @param serverCapabilityGUID the source of artifact.
 	 * @param identifier defining the assets.
 	 * @return list of GUIDs for deleted assets.
 	 * @throws PropertyServerException in case REST call failed.
@@ -269,13 +282,18 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets deleteAssets(String user, String serverCapability, String identifier)
+	public ResponseContainerAssets deleteAssets(String user, String serverCapability, String serverCapabilityGUID, String identifier)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException
 	{
 		String methodName = "deleteAssets";
-		String url = serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}";
-		AnalyticsModelingOMASAPIResponse response =
-				callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, null, serverName, user, serverCapability, identifier);
+
+		AnalyticsModelingOMASAPIResponse response = serverCapabilityGUID == null
+				? callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
+						serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}",
+						serverName, user, serverCapability, identifier)
+				: callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
+						serverPlatformURLRoot + urlTemplateSynchronizationWithGUID + "&identifier={4}",
+						serverName, user, serverCapability, serverCapabilityGUID, identifier);
 		
 		handleFailedResponse(response, methodName);
 		

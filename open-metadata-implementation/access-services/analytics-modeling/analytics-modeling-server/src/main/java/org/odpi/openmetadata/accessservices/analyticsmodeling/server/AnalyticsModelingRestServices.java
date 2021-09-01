@@ -144,7 +144,7 @@ public class AnalyticsModelingRestServices {
 
 			SchemaTablesResponse response = new SchemaTablesResponse();
 			DatabaseContextHandler handler = getHandler().getDatabaseContextHandler(serverName, userId, methodName);
-			ResponseContainerSchemaTables tables = handler.getSchemaTables(databaseGuid, schema);
+			ResponseContainerSchemaTables tables = handler.getSchemaTables(userId, databaseGuid, schema);
 			response.setTableList(tables);
 			response.setMeta(handler.getMessages());
 			ret = response;
@@ -197,10 +197,13 @@ public class AnalyticsModelingRestServices {
 	 * @param serverName where to create artifact.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
+	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, 
+			String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact) 
+	{
 
 		String methodName = "createArtifact";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -212,7 +215,7 @@ public class AnalyticsModelingRestServices {
 
 			AssetsResponse response = new AssetsResponse();
 			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
-			ResponseContainerAssets assets = handler.createAssets(userId, serverCapability, artifact);
+			ResponseContainerAssets assets = handler.createAssets(userId, serverCapability, serverCapabilityGUID, artifact);
 			response.setAssetList(assets);
 			response.setMeta(handler.getMessages());
 			ret = response;
@@ -229,11 +232,13 @@ public class AnalyticsModelingRestServices {
 	 * @param serverName where to create artifact.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
-
+	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId,
+			String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact) 
+	{
 		String methodName = "updateArtifact";
 		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -244,7 +249,7 @@ public class AnalyticsModelingRestServices {
 
 			AssetsResponse response = new AssetsResponse();
 			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
-			ResponseContainerAssets assets = handler.updateAssets(userId, serverCapability, artifact);
+			ResponseContainerAssets assets = handler.updateAssets(userId, serverCapability, serverCapabilityGUID, artifact);
 			response.setAssetList(assets);
 			response.setMeta(handler.getMessages());
 			ret = response;
@@ -261,12 +266,13 @@ public class AnalyticsModelingRestServices {
 	 * @param serverName where to create artifact.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param identifier of the artifact in the 3rd party system.
 	 * @return response with status of the operation.
 	 */
-	public AnalyticsModelingOMASAPIResponse deleteArtifact(String serverName, String userId, String serverCapability,
-			String identifier) {
-		
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(String serverName, String userId,
+			String serverCapability, String serverCapabilityGUID, String identifier)
+	{
 		String methodName = "deleteArtifact";
 		AnalyticsModelingOMASAPIResponse ret;
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -277,7 +283,7 @@ public class AnalyticsModelingRestServices {
 
 			AssetsResponse response = new AssetsResponse();
 			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
-			ResponseContainerAssets assets = handler.deleteAssets(userId, serverCapability, identifier);
+			ResponseContainerAssets assets = handler.deleteAssets(userId, serverCapability, serverCapabilityGUID, identifier);
 			response.setAssetList(assets);
 			response.setMeta(handler.getMessages());
 			ret = response;
