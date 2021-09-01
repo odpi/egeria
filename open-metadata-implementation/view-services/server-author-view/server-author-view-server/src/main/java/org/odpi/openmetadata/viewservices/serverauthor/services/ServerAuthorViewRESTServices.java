@@ -194,6 +194,41 @@ public class ServerAuthorViewRESTServices {
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    public FFDCResponseBase setPluginRepositoryConnection(String userId, String serverName, String serverToBeConfiguredName, Connection connection) {
+        final String methodName = "setPluginRepositoryConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        FFDCResponseBase response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.setPluginRepositoryConnection(className, methodName, serverToBeConfiguredName, connection);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
 
     /**
      * Return the stored configuration document for the server.
@@ -922,4 +957,5 @@ public class ServerAuthorViewRESTServices {
         }
         return response;
     }
+
 }
