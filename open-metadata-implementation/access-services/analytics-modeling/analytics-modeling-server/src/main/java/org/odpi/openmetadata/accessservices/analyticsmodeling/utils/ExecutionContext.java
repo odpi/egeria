@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
+package org.odpi.openmetadata.accessservices.analyticsmodeling.utils;
 
 import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SoftwareServerCapabilityConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -67,6 +68,11 @@ public class ExecutionContext {
 		this.auditLog = auditLog;
 	}
 	
+	public void initialize(String userId)
+	{
+		this.userId = userId;
+	}
+
 	public void initializeSoftwareServerCapability(String userId, String softwareServerCapabilityName)
 			throws AnalyticsModelingCheckedException
 	{

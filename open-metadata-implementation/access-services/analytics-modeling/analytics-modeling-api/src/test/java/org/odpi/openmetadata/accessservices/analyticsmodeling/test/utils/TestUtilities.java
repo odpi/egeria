@@ -133,6 +133,14 @@ public class TestUtilities {
 		
 		guids.add(guid.getValue());		// mark as guid that had been processed
 		guid.setValue(generateGUID(object));	// set predefined guid value
+		
+		PropertyType term = object.getPropertyByName("GlossaryTerm");
+		if ( term == null) {
+			return;
+		}
+		String value = term.getValue().replaceFirst("\\\"guid\\\":\\\"[0-9abcdef\\-]+\\\"",
+				String.format("\\\"guid\":\"GlossaryTerm_%s\"", guid.getValue()));
+		term.setValue(value);
 	}
 
 	/**
