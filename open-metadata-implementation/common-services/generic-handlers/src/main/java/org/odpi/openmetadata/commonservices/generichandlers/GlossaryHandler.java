@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -310,12 +311,15 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                            OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
                                            builder.getTaxonomyProperties(organizingPrinciple, methodName),
+                                           false,
                                            methodName);
     }
 
@@ -342,6 +346,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
@@ -378,12 +384,15 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                            OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
                                            builder.getCanonicalVocabularyProperties(scope, methodName),
+                                           false,
                                            methodName);
     }
 
@@ -407,6 +416,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                                                           PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
@@ -458,6 +469,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -471,6 +483,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                   String searchStringParameterName,
                                   int    startFrom,
                                   int    pageSize,
+                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -483,6 +496,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -496,6 +510,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -509,6 +524,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                          String nameParameterName,
                                          int    startFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -531,6 +547,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 

@@ -450,6 +450,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -649,6 +650,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
+                                      null,
                                       methodName);
     }
 
@@ -1192,6 +1194,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -1238,6 +1241,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -1266,6 +1270,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameter,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          null,
                                           methodName);
     }
 
@@ -1304,6 +1309,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -1342,6 +1348,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -1383,6 +1390,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 

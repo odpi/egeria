@@ -107,6 +107,7 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
                 IdMap.CAPABILITY_TYPE_GUID,
                 IdMap.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
                 Arrays.asList("source"),
+                null,
                 methodName);
 	}
 	

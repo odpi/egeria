@@ -962,6 +962,7 @@ public class OMAGServerPlatformInstanceMap
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
+     * @param serviceOperationName name of the calling method/request
      *
      * @return string name
      * @throws InvalidParameterException the serverName is not known.

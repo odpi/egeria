@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * RatingHandler manages the Rating entity.  The Rating entity describes the star rating and review text
- * type of feedback
+ * type of feedback.  Ratings do not support effectivity dates and are always anchored to a referenceable.
  */
 public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -81,14 +81,15 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public int countRatings(String userId,
                             String elementGUID,
                             String methodName) throws InvalidParameterException,
-                                                 PropertyServerException,
-                                                 UserNotAuthorizedException
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -131,6 +132,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -184,6 +186,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   serviceName,
                                                   serverName);
 
+        builder.setAnchors(userId, elementGUID, methodName);
 
         String ratingGUID = this.createBeanInRepository(userId,
                                                         externalSourceGUID,
@@ -252,6 +255,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                                         OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                                        null,
                                                         methodName);
 
         if (ratingGUID != null)

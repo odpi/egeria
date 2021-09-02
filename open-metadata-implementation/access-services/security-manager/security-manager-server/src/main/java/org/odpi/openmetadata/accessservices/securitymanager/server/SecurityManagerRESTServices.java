@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 
+
 /**
  * The SecurityManagerRESTServices provides the server-side implementation of the services
  * that are generic for all types of security managers.
@@ -126,6 +127,8 @@ public class SecurityManagerRESTServices
                                                           requestBody.getEncryption(),
                                                           requestBody.getAdditionalProperties(),
                                                           requestBody.getVendorProperties(),
+                                                          null,
+                                                          null,
                                                           methodName));
             }
         }
@@ -188,6 +191,8 @@ public class SecurityManagerRESTServices
                                                                         requestBody.getSource(),
                                                                         requestBody.getAdditionalProperties(),
                                                                         requestBody.getVendorProperties(),
+                                                                        null,
+                                                                        null,
                                                                         methodName));
             }
         }
@@ -248,6 +253,8 @@ public class SecurityManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)

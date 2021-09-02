@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataprivacy.server;
 
 import org.odpi.openmetadata.accessservices.dataprivacy.ffdc.DataPrivacyErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

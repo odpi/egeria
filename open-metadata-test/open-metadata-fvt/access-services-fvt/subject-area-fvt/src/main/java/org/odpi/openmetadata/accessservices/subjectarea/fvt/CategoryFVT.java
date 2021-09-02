@@ -76,11 +76,17 @@ public class CategoryFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        try {
         System.out.println("CategoryFVT runIt started");
         CategoryFVT fvt = new CategoryFVT(url, serverName, userId);
         fvt.run();
         fvt.deleteRemaining();
         System.out.println("CategoryFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getCategoryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         CategoryFVT fvt = new CategoryFVT(url, serverName, userId);

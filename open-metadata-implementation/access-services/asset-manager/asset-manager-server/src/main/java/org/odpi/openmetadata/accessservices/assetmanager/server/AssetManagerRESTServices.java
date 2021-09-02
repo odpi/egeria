@@ -148,6 +148,8 @@ public class AssetManagerRESTServices
                                                                         assetManagerProperties.getSource(),
                                                                         assetManagerProperties.getAdditionalProperties(),
                                                                         assetManagerProperties.getVendorProperties(),
+                                                                        null,
+                                                                        null,
                                                                         methodName));
             }
             else
@@ -310,6 +312,7 @@ public class AssetManagerRESTServices
                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
+                                                null,
                                                 methodName);
             }
             else
@@ -408,6 +411,7 @@ public class AssetManagerRESTServices
                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
+                                                null,
                                                 methodName);
             }
             else
@@ -588,6 +592,7 @@ public class AssetManagerRESTServices
                                                assetManagerGUIDParameterName,
                                                requestBody.getAssetManagerName(),
                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                               null,
                                                methodName);
             }
             else
@@ -665,6 +670,7 @@ public class AssetManagerRESTServices
                                                                                  requestBody.getExternalIdentifier(),
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 null,
                                                                                  methodName));
             }
             else

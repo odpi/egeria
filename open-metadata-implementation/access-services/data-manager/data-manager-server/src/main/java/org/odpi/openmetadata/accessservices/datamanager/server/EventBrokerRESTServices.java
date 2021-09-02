@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -582,6 +583,7 @@ public class EventBrokerRESTServices
                                                                     searchStringParameterName,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    new Date(),
                                                                     methodName);
 
                 response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
@@ -646,6 +648,7 @@ public class EventBrokerRESTServices
                                                                          nameParameterName,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         new Date(),
                                                                          methodName);
 
                 response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
@@ -712,6 +715,7 @@ public class EventBrokerRESTServices
                                                                          OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         new Date(),
                                                                          methodName);
 
             response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));

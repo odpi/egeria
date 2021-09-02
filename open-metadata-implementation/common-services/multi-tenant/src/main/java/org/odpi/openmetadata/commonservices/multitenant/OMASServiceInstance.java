@@ -47,44 +47,6 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
-     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
-     * @param auditLog logging destination
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    @Deprecated
-    public OMASServiceInstance(String                  serviceName,
-                               OMRSRepositoryConnector repositoryConnector,
-                               List<String>            supportedZones,
-                               List<String>            defaultZones,
-                               AuditLog                auditLog) throws NewInstanceException
-    {
-        this(serviceName, repositoryConnector, supportedZones, defaultZones, null, auditLog, null, 500);
-    }
-
-
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param auditLog logging destination
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    @Deprecated
-    public OMASServiceInstance(String                  serviceName,
-                               OMRSRepositoryConnector repositoryConnector,
-                               AuditLog                auditLog) throws NewInstanceException
-    {
-        this(serviceName, repositoryConnector, null, null, null, auditLog, null, 500);
-    }
-
-
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
@@ -189,7 +151,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.outTopicConnectorProviderName = outTopicConnectorProviderName;
                 this.outTopicEventBusConnection = outTopicEventBusConnection;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                                this.getClass().getName(),

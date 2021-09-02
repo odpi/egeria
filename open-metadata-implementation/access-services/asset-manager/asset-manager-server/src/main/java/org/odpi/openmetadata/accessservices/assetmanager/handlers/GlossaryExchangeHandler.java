@@ -159,6 +159,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                  assetManagerGUID,
                                                                                  assetManagerName,
+                                                                                 null,
                                                                                  methodName));
                 }
             }
@@ -199,6 +200,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                          OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                          assetManagerGUID,
                                                                                          assetManagerName,
+                                                                                         null,
                                                                                          methodName));
                 }
             }
@@ -241,6 +243,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                                          assetManagerGUID,
                                                                                          assetManagerName,
+                                                                                         null,
                                                                                          methodName));
                 }
             }
@@ -623,7 +626,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        List<GlossaryElement> results = glossaryHandler.findGlossaries(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName);
+        List<GlossaryElement> results = glossaryHandler.findGlossaries(userId, searchString, searchStringParameterName, startFrom, pageSize, null, methodName);
 
         addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results , methodName);
 
@@ -661,7 +664,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        List<GlossaryElement> results = glossaryHandler.getGlossariesByName(userId, name, nameParameterName, startFrom, pageSize, methodName);
+        List<GlossaryElement> results = glossaryHandler.getGlossariesByName(userId, name, nameParameterName, startFrom, pageSize, null, methodName);
 
         addCorrelationPropertiesToGlossaries(userId, assetManagerGUID, assetManagerName, results, methodName);
 
@@ -710,6 +713,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                                    startFrom,
                                                                                                    pageSize,
+                                                                                                   null,
                                                                                                    methodName);
 
         if (glossaryEntities != null)
@@ -731,6 +735,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                             OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                             assetManagerGUID,
                                                                                             assetManagerName,
+                                                                                            null,
                                                                                             methodName));
 
                         results.add(glossaryElement);
@@ -785,6 +790,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                          assetManagerGUID,
                                                                          assetManagerName,
+                                                                         null,
                                                                          methodName));
         }
 
@@ -1102,6 +1108,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                searchStringParameterName,
                                                                                                startFrom,
                                                                                                pageSize,
+                                                                                               null,
                                                                                                methodName);
 
         this.addCorrelationPropertiesToGlossaryCategories(userId,
@@ -1241,6 +1248,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                  assetManagerGUID,
                                                                                  assetManagerName,
+                                                                                 null,
                                                                                  methodName));
         }
 
@@ -1329,6 +1337,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                              assetManagerGUID,
                                                                              assetManagerName,
+                                                                             null,
                                                                              methodName));
         }
 
@@ -2715,6 +2724,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                          assetManagerGUID,
                                                                          assetManagerName,
+                                                                         null,
                                                                          methodName));
         }
 

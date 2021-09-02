@@ -7,10 +7,14 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -37,7 +41,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveVersion     = "3.2";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
-    private static final Date                    creationDate       = new Date(1630064147880L);
+    private static final Date                    creationDate       = new Date(1588261366992L);
 
     /*
      * Specific values for initializing TypeDefs
@@ -152,7 +156,8 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-
+        update0030HostsAndOperatingPlatforms();
+        update0620DataProfiling();
     }
 
 
@@ -160,5 +165,109 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+
+    /**
+     * The Add support for a software archive.
+     */
+    private void update0030HostsAndOperatingPlatforms()
+    {
+        this.archiveBuilder.addEntityDef(addSoftwareArchiveEntity());
+    }
+
+
+    private EntityDef addSoftwareArchiveEntity()
+    {
+        final String guid = "4c4bfc3f-1374-4e4c-a76d-c8e82b2cafaa";
+
+        final String name            = "SoftwareArchive";
+        final String description     = "A collection of runnable software components.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Collection";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Add the fingerprint annotation used for de-duplicating assets with the same content.
+     */
+    private void update0620DataProfiling()
+    {
+        this.archiveBuilder.addEntityDef(addFingerprintAnnotationEntity());
+    }
+
+
+    private EntityDef addFingerprintAnnotationEntity()
+    {
+        final String guid = "b3adca2a-ce66-4b29-bf2e-7406ada8ab49";
+
+        final String name            = "FingerprintAnnotation";
+        final String description     = "An annotation capturing asset fingerprint information.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFieldAnnotation";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fingerprint";
+        final String attribute1Description     = "A string value that represents the content of the asset.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "hash";
+        final String attribute2Description     = "An integer value that represents the content of the asset.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "fingerprintAlgorithm";
+        final String attribute3Description     = "The algorithm use to generate either the fingerprint.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "hashAlgorithm";
+        final String attribute4Description     = "The algorithm use to generate either the hash.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 }
 

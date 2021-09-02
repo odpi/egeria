@@ -342,6 +342,7 @@ public class GovernanceZoneRESTServices
                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                              OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
                                              OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)
@@ -463,6 +464,7 @@ public class GovernanceZoneRESTServices
                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)

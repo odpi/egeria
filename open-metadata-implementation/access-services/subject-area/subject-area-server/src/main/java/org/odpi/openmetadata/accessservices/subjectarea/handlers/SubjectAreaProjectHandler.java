@@ -87,6 +87,17 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
                 setUniqueQualifiedNameIfBlank(suppliedProject);
+
+                Date effectiveFrom = null;
+                Date effectiveTo = null;
+
+                if (suppliedProject.getEffectiveFromTime() != null) {
+                    effectiveFrom = new Date(suppliedProject.getEffectiveFromTime());
+                }
+                if (suppliedProject.getEffectiveToTime() != null) {
+                    effectiveTo = new Date(suppliedProject.getEffectiveToTime());
+                }
+
                 ProjectBuilder builder = new ProjectBuilder(
                                                             suppliedProject.getQualifiedName(),
                                                             suppliedProject.getName(),
@@ -101,6 +112,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                             genericHandler.getRepositoryHelper(),
                                                             genericHandler.getServiceName(),
                                                             genericHandler.getServerName());
+
+                builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
                 String entityDetailGuid = genericHandler.createBeanInRepository(userId,
                                                                                 null,
                                                                                 null,
@@ -111,13 +125,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                                                 builder,
                                                                                 methodName);
                 if (entityDetailGuid != null) {
-                    // set effectivity dates if required
-                    setNodeEffectivity(userId,
-                                       suppliedProject,
-                                       methodName,
-                                       entityDetailGuid,
-                                       OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-                                       OpenMetadataAPIMapper.PROJECT_TYPE_NAME);
                     response = getProjectByGuid(userId, entityDetailGuid);
                 }
             }
@@ -152,8 +159,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               null,
+                                                                               (Date)null,
                                                                                methodName);
 
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
