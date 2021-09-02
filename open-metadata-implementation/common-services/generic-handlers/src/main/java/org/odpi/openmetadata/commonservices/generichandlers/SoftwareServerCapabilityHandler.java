@@ -261,6 +261,103 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param specializedTypeGUID unique identifier of the software server capability type
+     * @param specializedTypeName unique name of the software server capability type
+     * @param classificationName name of classification if any
+     * @param uniqueName qualified name for the software server capability
+     * @param displayName short display name
+     * @param description description of the file system
+     * @param type type of file system
+     * @param version version of file system
+     * @param patchLevel patchLevel of software supporting the file system
+     * @param source supplier of the software for this file system
+     * @param additionalProperties additional properties
+     * @param vendorProperties  properties about the vendor and/or their product
+     * @param methodName calling method
+     *
+     * @return unique identifier for the file system
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String   createSoftwareServerCapability(String               userId,
+                                                   String               externalSourceGUID,
+                                                   String               externalSourceName,
+                                                   String               specializedTypeGUID,
+                                                   String               specializedTypeName,
+                                                   String               classificationName,
+                                                   String               uniqueName,
+                                                   String               displayName,
+                                                   String               description,
+                                                   String               type,
+                                                   String               version,
+                                                   String               patchLevel,
+                                                   String               source,
+                                                   Map<String, String>  additionalProperties,
+                                                   Map<String, String>  vendorProperties,
+                                                   String               methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        String typeId = OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID;
+        String typeName = OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
+
+        if (specializedTypeGUID != null)
+        {
+            typeId = specializedTypeGUID;
+        }
+        if (specializedTypeName != null)
+        {
+            typeName = specializedTypeName;
+        }
+
+        SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(uniqueName,
+                                                                                      displayName,
+                                                                                      description,
+                                                                                      type,
+                                                                                      version,
+                                                                                      patchLevel,
+                                                                                      source,
+                                                                                      additionalProperties,
+                                                                                      typeId,
+                                                                                      typeName,
+                                                                                      null,
+                                                                                      repositoryHelper,
+                                                                                      serviceName,
+                                                                                      serverName);
+
+        if (classificationName != null)
+        {
+            builder.setCapabilityTypeClassification(userId, classificationName, methodName);
+        }
+
+        String fileSystemGUID = this.createBeanInRepository(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            typeId,
+                                                            typeName,
+                                                            uniqueName,
+                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                            builder,
+                                                            methodName);
+
+        if (fileSystemGUID != null)
+        {
+            this.setVendorProperties(userId, fileSystemGUID, vendorProperties, methodName);
+        }
+
+        return fileSystemGUID;
+    }
+
+
+    /**
+     * Create specialized Software Server Capabilities entities.  Most software service capabilities
+     * either specialize Software Server Capability or have a special classification.  Metadata server
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param softwareServerCapabilityGUID unique identifier for the software server capability that is to be classified
      * @param softwareServerCapabilityGUIDParameterName parameter supplying softwareServerCapabilityGUID
      * @param classificationName name of classification if any
