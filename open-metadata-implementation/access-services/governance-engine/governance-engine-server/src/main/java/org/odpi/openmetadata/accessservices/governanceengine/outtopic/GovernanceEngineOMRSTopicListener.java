@@ -23,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -261,6 +262,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                                          new Date(),
                                                                                                           methodName);
 
                                 if (governanceEngine != null)

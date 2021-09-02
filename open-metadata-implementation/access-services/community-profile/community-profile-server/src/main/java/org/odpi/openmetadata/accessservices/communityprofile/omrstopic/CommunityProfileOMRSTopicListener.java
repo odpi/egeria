@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -104,6 +105,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                                                     userParameterName,
                                                                                                                                     0,
                                                                                                                                     0,
+                                                                                                                                    new Date(),
                                                                                                                                     methodName);
 
                     if (personalProfiles != null)

@@ -1868,6 +1868,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                                                                           methodName);
                         InstanceProperties uniqueAttributes = new InstanceProperties();
 
+                        uniqueAttributes.setEffectiveFromTime(entityProperties.getEffectiveFromTime());
+                        uniqueAttributes.setEffectiveToTime(entityProperties.getEffectiveToTime());
+
                         if (propertiesDefinition != null)
                         {
                             for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
@@ -1889,7 +1892,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                             }
                         }
 
-                        if (uniqueAttributes.getPropertyCount() > 0)
+                        if ((uniqueAttributes.getPropertyCount() > 0) || (uniqueAttributes.getEffectiveFromTime() != null) || (uniqueAttributes.getEffectiveToTime() != null))
                         {
                             entityProxy.setUniqueProperties(uniqueAttributes);
                         }
@@ -1920,7 +1923,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param provenanceType        origin of the entity
      * @param userName              name of the creator
      * @param typeName              name of the type
-     * @param properties            properties for the entity
+     * @param properties            properties for the entity proxy
      * @param classifications       list of classifications for the entity
      * @return                      an entity that is filled out
      * @throws TypeErrorException   the type name is not recognized as an entity type

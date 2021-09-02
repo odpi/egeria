@@ -125,6 +125,8 @@ public class DataManagerRESTServices
                                                           requestBody.getEncryption(),
                                                           requestBody.getAdditionalProperties(),
                                                           requestBody.getVendorProperties(),
+                                                          null,
+                                                          null,
                                                           methodName));
             }
         }
@@ -187,6 +189,8 @@ public class DataManagerRESTServices
                                                                         requestBody.getSource(),
                                                                         requestBody.getAdditionalProperties(),
                                                                         requestBody.getVendorProperties(),
+                                                                        null,
+                                                                        null,
                                                                         methodName));
             }
         }
@@ -246,6 +250,8 @@ public class DataManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -305,6 +311,8 @@ public class DataManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -363,6 +371,8 @@ public class DataManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -421,6 +431,8 @@ public class DataManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -479,6 +491,8 @@ public class DataManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)

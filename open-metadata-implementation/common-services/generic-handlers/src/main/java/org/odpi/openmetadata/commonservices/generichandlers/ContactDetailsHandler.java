@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -74,6 +75,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param profileGUIDParameterName name of parameter supplying the GUID
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -85,6 +87,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       String profileGUIDParameterName,
                                       int    startingFrom,
                                       int    pageSize,
+                                      Date   effectiveTime,
                                       String methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -99,6 +102,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 

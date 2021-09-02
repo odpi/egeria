@@ -15,7 +15,8 @@ import java.util.List;
 
 /**
  * LikeHandler provides access and maintenance for Like objects and their attachment
- * to Referenceables.
+ * to Referenceables.  There is no support for effectivity dates since this does not make sense for this element.
+ * The Like is always anchored to its connected element
  */
 public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -80,14 +81,15 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public int countLikes(String userId,
                           String elementGUID,
                           String methodName) throws InvalidParameterException,
-                                               PropertyServerException,
-                                               UserNotAuthorizedException
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -129,6 +131,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -145,20 +148,19 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param isPublic   indicates whether the feedback should be shared or only be visible to the originating user
      * @param methodName calling method
      *
-     * @return unique identifier of the new Like entity
      * @throws InvalidParameterException  the endpoint bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String saveLike(String     userId,
-                           String     externalSourceGUID,
-                           String     externalSourceName,
-                           String     elementGUID,
-                           String     elementGUIDParameterName,
-                           boolean    isPublic,
-                           String     methodName) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    public void saveLike(String     userId,
+                         String     externalSourceGUID,
+                         String     externalSourceName,
+                         String     elementGUID,
+                         String     elementGUIDParameterName,
+                         boolean    isPublic,
+                         String     methodName) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException
     {
         try
         {
@@ -175,6 +177,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               repositoryHelper,
                                               serviceName,
                                               serverName);
+
+        builder.setAnchors(userId, elementGUID, methodName);
 
         String likeGUID = this.createBeanInRepository(userId,
                                                       externalSourceGUID,
@@ -204,8 +208,6 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       builder.getRelationshipInstanceProperties(methodName),
                                       methodName);
         }
-
-        return likeGUID;
     }
 
 
@@ -242,6 +244,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                                        null,
                                                         methodName);
 
         if (ratingGUID != null)

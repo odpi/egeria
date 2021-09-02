@@ -18,7 +18,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
+
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_MOVEMENT_ENGINE_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
 /**
@@ -87,7 +92,7 @@ public class DataEngineRegistrationHandler {
         if (externalEngineGUID == null) {
             externalEngineGUID = softwareServerCapabilityHandler.createSoftwareServerCapability(userId, null,
                     null, entityTypeDef.getGUID(), entityTypeDef.getName(), null, externalEngineName,
-                    softwareServerCapability.getName(), softwareServerCapability.getDescription(), entityTypeDef.getDescription(),
+                    softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                     softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
                     softwareServerCapability.getAdditionalProperties(), null, methodName);
         } else {

@@ -170,6 +170,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         uniqueNamePropertyName,
                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                        null,
                                         methodName);
     }
 
@@ -215,6 +216,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             uniqueNamePropertyName,
                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            null,
                                             methodName);
     }
 
@@ -255,6 +257,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -327,6 +330,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     attachmentAtEnd,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    null,
                                                                     methodName);
 
         if (relationships != null)
@@ -345,6 +349,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    otherEnd.getGUID(),
                                                                                    otherEndGUIDParameterName,
                                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                   null,
+                                                                                   null,
+                                                                                   false,
+                                                                                   supportedZones,
+                                                                                   null,
                                                                                    methodName);
                         if (otherEndEntity != null)
                         {
@@ -415,6 +424,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                this.getSequencingOrder(sequencingOrder),
                                startingFrom,
                                pageSize,
+                               null, // any effectivity dates
                                methodName);
     }
 
@@ -1090,6 +1100,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     this.getSequencingOrder(sequencingOrder),
                                                                     startFrom,
                                                                     pageSize,
+                                                                    null,
                                                                     methodName);
 
         if (relationships != null)

@@ -23,7 +23,7 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0485](../open-metadata-publication/website/open-metadata-types/0485-Data-Processing-Purposes.md).
 
 * The following types have been deprecated: **BoundedSchemaType**, **BoundedSchemaElementType**,
-  **ArraySchemaType** and **SetSchemaType**.
+  **ArraySchemaType**, **ArrayDocumentType**, **SetSchemaType**, and **SetDocumentType**.
   See description in model [0507](../open-metadata-publication/website/open-metadata-types/0507-External-Schema-Type.md).
 
 * The **ServerEndpoint** relationship can now connect to any **ITInfrastructure** elements, not just **SoftwareServers**.

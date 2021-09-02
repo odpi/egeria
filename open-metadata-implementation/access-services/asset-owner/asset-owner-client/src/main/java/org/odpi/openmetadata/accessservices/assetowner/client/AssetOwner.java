@@ -660,6 +660,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
+    @Deprecated
     public void addConnectionToAsset(String     userId,
                                      String     assetGUID,
                                      String     assetSummary,

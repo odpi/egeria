@@ -42,7 +42,7 @@ public interface EndpointManagerInterface
 
 
     /**
-     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     * Create a new metadata element to represent an endpoint using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param userId calling user
@@ -71,7 +71,7 @@ public interface EndpointManagerInterface
 
 
     /**
-     * Update the metadata element representing a endpoint.
+     * Update the metadata element representing an endpoint.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
@@ -95,7 +95,7 @@ public interface EndpointManagerInterface
 
 
     /**
-     * Remove the metadata element representing a endpoint.  This will delete the endpoint and all categories
+     * Remove the metadata element representing an endpoint.  This will delete the endpoint and all categories
      * and terms.
      *
      * @param userId calling user

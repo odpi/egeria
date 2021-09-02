@@ -14,6 +14,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -367,6 +368,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -412,6 +414,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -425,6 +428,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                           String searchStringParameterName,
                                           int    startFrom,
                                           int    pageSize,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -437,6 +441,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -476,6 +481,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -527,6 +533,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -564,6 +571,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                    1,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                   null,
                                                    methodName);
 
         if ((results == null) || (results.isEmpty()))
@@ -625,6 +633,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         2,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 

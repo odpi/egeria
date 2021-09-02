@@ -23,6 +23,7 @@ import java.util.Map;
 /**
  * SchemaAttributeHandler manages Schema Attribute objects.  It runs server-side in
  * the OMAG Server Platform and retrieves SchemaElement entities through the OMRSRepositoryConnector.
+ * This handler does not support effectivity dates but probably should.
  */
 public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends SchemaElementHandler<SCHEMA_ATTRIBUTE>
 {
@@ -170,6 +171,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                      parentElementGUID,
                                                                      parentElementGUIDParameterName,
                                                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     supportedZones,
+                                                                     null,
                                                                      methodName);
 
             String parentElementTypeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
@@ -244,6 +250,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  parentElementGUID,
                                                                  parentElementGUIDParameterName,
                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                 null,
+                                                                 null,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 null,
                                                                  methodName);
 
         String parentAttributeTypeName             = OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
@@ -707,6 +718,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
+                                                                null,
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -776,6 +788,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  null,
                                                                  false,
                                                                  supportedZones,
+                                                                 null,
                                                                  methodName);
 
         if ((parentEntity != null) && (parentEntity.getType() != null))
@@ -894,6 +907,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
+                                                                null,
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -927,6 +941,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         null,
                                                          methodName);
 
             if (entity != null)
@@ -987,6 +1002,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                   null,
                                                                    methodName);
 
         if (relationships != null)
@@ -1074,6 +1090,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                              schemaTypeName,
                                                                              typeClassification.getProperties(),
                                                                              schemaAttributeEntity.getClassifications(),
+                                                                             null,
                                                                              methodName);
                 }
             }
@@ -1096,6 +1113,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                       OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                       OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                      null,
                                                                       methodName);
             }
 
@@ -1202,6 +1220,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                           expectedTypeName,
                                                                           requiredClassificationName,
                                                                           omittedClassificationName,
+                                                                          false,
+                                                                          supportedZones,
+                                                                          null,
                                                                           methodName);
 
         /*
@@ -1312,6 +1333,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               null,
                                                                               startFrom,
                                                                               pageSize,
+                                                                              null,
                                                                               methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
@@ -1362,6 +1384,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
                                                                        methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);

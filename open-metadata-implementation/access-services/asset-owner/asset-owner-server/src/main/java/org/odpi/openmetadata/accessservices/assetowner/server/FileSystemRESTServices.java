@@ -976,6 +976,7 @@ public class FileSystemRESTServices
                                                        parentGUIDParameterName,
                                                        startingFrom,
                                                        maxPageSize,
+                                                       null,
                                                        methodName));
         }
         catch (Exception error)
@@ -1030,6 +1031,7 @@ public class FileSystemRESTServices
                                                      folderGUIDParameterName,
                                                      startingFrom,
                                                      maxPageSize,
+                                                     null,
                                                      methodName));
         }
         catch (Exception error)

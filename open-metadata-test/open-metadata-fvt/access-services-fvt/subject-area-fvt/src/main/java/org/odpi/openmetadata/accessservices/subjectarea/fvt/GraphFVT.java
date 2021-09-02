@@ -85,11 +85,18 @@ public class GraphFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("GraphFVT runIt started");
-        GraphFVT fvt = new GraphFVT(url, serverName, userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("GraphFVT runIt stopped");
+        try
+        {
+            System.out.println("GraphFVT runIt started");
+            GraphFVT fvt = new GraphFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("GraphFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

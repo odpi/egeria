@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -18,7 +17,8 @@ import java.util.Map;
 
 /**
  * UserIdentityHandler provides the exchange of metadata about glossaries between the repository and the OMAS.
- * Note glossaries are governance metadata and are always defined with LOCAL-COHORT provenance.
+ * Note user identities are governance metadata and are always defined with LOCAL-COHORT provenance.
+ * They also do not have support for effectivity dates.
  *
  * @param <B> class that represents the user identity
  */
@@ -363,6 +363,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                       supportedZones,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -401,6 +402,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                             supportedZones,
                                             startFrom,
                                             pageSize,
+                                            null,
                                             methodName);
     }
 
