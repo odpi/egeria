@@ -254,6 +254,23 @@ class ConfigRepositoryServicesViewResource {
     }
 
     /**
+     * Clear  the audit log destinations associated with the the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/audit-log-destinations")
+    public FFDCResponseBase deleteAuditLogDestinationSupportedSeverities(@PathVariable String userId,
+                                                                                         @PathVariable String serverName,
+                                                                                         @PathVariable String serverToBeConfiguredName) {
+        return serverAPI.clearAuditLogDestinations(userId, serverName, serverToBeConfiguredName);
+    }
+
+    /**
      * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
      *
      * A cohort is a group of open metadata
