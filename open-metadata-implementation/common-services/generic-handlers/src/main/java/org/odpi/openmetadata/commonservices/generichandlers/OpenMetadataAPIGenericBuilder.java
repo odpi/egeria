@@ -307,6 +307,20 @@ public class OpenMetadataAPIGenericBuilder
 
 
     /**
+     * Set up the effective dates for the entity.  This determines
+     *
+     * @param effectiveFrom date that the element is effective from
+     * @param effectiveTo date that the element is effective to
+     */
+    public void setEffectivityDates(Date effectiveFrom,
+                                    Date effectiveTo)
+    {
+        this.effectiveFrom = effectiveFrom;
+        this.effectiveTo   = effectiveTo;
+    }
+
+
+    /**
      * Set up the LatestChange classification for an anchor entity.  This is typically used on the create of
      * the anchor and other direct update actions on it.  Other updates are made to it through the generic handler
      * as attachments are added and changed.
@@ -627,6 +641,29 @@ public class OpenMetadataAPIGenericBuilder
     private InstanceProperties setEffectivityDates(InstanceProperties properties,
                                                    Date               effectiveFrom,
                                                    Date               effectiveTo)
+    {
+        if ((effectiveFrom != null) && (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+            }
+
+            properties.setEffectiveFromTime(effectiveFrom);
+            properties.setEffectiveToTime(effectiveTo);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Set the supplied effectivity dates into the instance properties.
+     *
+     * @param properties current accumulated properties
+     * @return augmented instance properties
+     */
+    protected InstanceProperties setEffectivityDates(InstanceProperties properties)
     {
         if ((effectiveFrom != null) && (effectiveTo != null))
         {

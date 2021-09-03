@@ -80,7 +80,7 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 						null,
 						null,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, methodName);
+						null, null, 0, 0, null, methodName);
 	}
 
 

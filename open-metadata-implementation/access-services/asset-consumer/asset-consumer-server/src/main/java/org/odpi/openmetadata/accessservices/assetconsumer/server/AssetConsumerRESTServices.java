@@ -14,6 +14,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The AssetConsumerRESTServices provides the server-side implementation of the Asset Consumer Open Metadata
@@ -159,7 +161,7 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, searchStringParameter, startFrom, pageSize, new Date(), methodName));
         }
         catch (Exception error)
         {
@@ -211,6 +213,7 @@ public class AssetConsumerRESTServices
                                                           nameParameterName,
                                                           startFrom,
                                                           pageSize,
+                                                          new Date(),
                                                           methodName));
         }
         catch (Exception error)
@@ -903,6 +906,7 @@ public class AssetConsumerRESTServices
                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                               startFrom,
                                                               pageSize,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -1676,6 +1680,7 @@ public class AssetConsumerRESTServices
                                                          tagGUIDParameterName,
                                                          startFrom,
                                                          pageSize,
+                                                         new Date(),
                                                          methodName));
         }
         catch (Exception error)

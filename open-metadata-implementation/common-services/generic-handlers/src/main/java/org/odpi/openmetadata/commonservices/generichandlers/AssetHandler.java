@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -312,6 +313,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                supportedZones,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                               null,
                                methodName);
     }
 
@@ -398,6 +400,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                           null,
                                            methodName);
     }
 
@@ -494,6 +497,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 displayName,
                                                 description,
@@ -524,6 +529,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                      effectiveTime,
                                                                                                       methodName);
 
             if (assetConnectionRelationship != null)
@@ -535,6 +541,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                             effectiveTime,
                                                                                                              methodName);
                 if (connectionEndpointRelationship != null)
                 {
@@ -546,6 +553,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                endpointGUID,
                                                                                endpointGUIDParameterName,
                                                                                OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               supportedZones,
+                                                                               effectiveTime,
                                                                                methodName);
 
                     String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
@@ -827,6 +839,95 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            builder,
                                            methodName);
     }
+
+
+
+    /**
+     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUIDParameterName parameter name of the resulting asset's GUID
+     * @param assetQualifiedName unique name for this asset
+     * @param technicalName the stored display name property for the asset
+     * @param technicalDescription the stored description property associated with the asset
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param assetTypeName name of the type that is a subtype of asset - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param instanceStatus initial status of the Asset in the metadata repository
+     * @param anchorEndpointToAsset set to true if the network address is unique for the asset and should not be reused. False if this is an endpoint
+     *                              that is relevant for multiple assets.
+     * @param configurationProperties configuration properties for the connection
+     * @param connectorProviderClassName Java class name for the connector provider
+     * @param networkAddress the network address (typically the URL but this depends on the protocol)
+     * @param protocol the name of the protocol to use to connect to the endpoint
+     * @param encryptionMethod encryption method to use when passing data to this endpoint
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new asset
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  createAssetWithConnection(String              userId,
+                                             String              externalSourceGUID,
+                                             String              externalSourceName,
+                                             String              assetGUIDParameterName,
+                                             String              assetQualifiedName,
+                                             String              technicalName,
+                                             String              technicalDescription,
+                                             Map<String, String> additionalProperties,
+                                             String              assetTypeName,
+                                             Map<String, Object> extendedProperties,
+                                             InstanceStatus      instanceStatus,
+                                             boolean             anchorEndpointToAsset,
+                                             Map<String, Object> configurationProperties,
+                                             String              connectorProviderClassName,
+                                             String              networkAddress,
+                                             String              protocol,
+                                             String              encryptionMethod,
+                                             String              methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        String assetGUID = this.createAssetInRepository(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        assetQualifiedName,
+                                                        technicalName,
+                                                        technicalDescription,
+                                                        additionalProperties,
+                                                        assetTypeName,
+                                                        extendedProperties,
+                                                        instanceStatus,
+                                                        methodName);
+
+        if (assetGUID != null)
+        {
+            connectionHandler.addAssetConnection(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 assetGUID,
+                                                 assetGUIDParameterName,
+                                                 assetTypeName,
+                                                 assetQualifiedName,
+                                                 anchorEndpointToAsset,
+                                                 configurationProperties,
+                                                 connectorProviderClassName,
+                                                 networkAddress,
+                                                 protocol,
+                                                 encryptionMethod,
+                                                 null,
+                                                 null,
+                                                 methodName);
+        }
+
+        return assetGUID;
+    }
+
 
 
     /**
@@ -1122,11 +1223,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          extendedProperties,
                          methodName);
 
+        Date          effectiveTime = new Date();
         Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetGUID,
                                                                                                   OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  effectiveTime,
                                                                                                   methodName);
         if (connection == null)
         {
@@ -1141,6 +1244,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                         OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                        effectiveTime,
                                         methodName);
         }
         else /* connection to add */
@@ -1156,18 +1260,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                       assetSummary,
                                                                       methodName);
 
+            InstanceProperties relationshipProperties = null;
+
+            if (assetSummary != null)
+            {
+                relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                      assetSummary,
+                                                                                      methodName);
+            }
+
             if (assetConnectionRelationship == null)
             {
-                InstanceProperties relationshipProperties = null;
-
-                if (assetSummary != null)
-                {
-                    relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                          null,
-                                                                                          OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
-                                                                                          assetSummary,
-                                                                                          methodName);
-                }
 
                 repositoryHandler.createRelationship(userId,
                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
@@ -1189,6 +1294,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                 relationshipProperties,
+                                                                 effectiveTime,
                                                                  methodName);
             }
         }
@@ -1273,6 +1380,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
      * @param businessCapabilityGUIDParameterName parameter name supplying businessCapabilityGUID
      * @param otherOriginValues Descriptive labels describing origin of the asset
+     * @param effectiveFromTime the time that the elements must be effective from (null for any time)
+     * @param effectiveToTime the time that the elements must be effective from (null for any time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -1287,6 +1396,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                 String                businessCapabilityGUID,
                                 String                businessCapabilityGUIDParameterName,
                                 Map<String, String>   otherOriginValues,
+                                Date                  effectiveFromTime,
+                                Date                  effectiveToTime,
                                 String                methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -1302,6 +1413,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.ORGANIZATION_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      effectiveFromTime,
                                       methodName);
         }
 
@@ -1313,10 +1425,21 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.BUSINESS_CAPABILITY_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      effectiveFromTime,
                                       methodName);
         }
 
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties properties = builder.getOriginProperties(organizationGUID,
+                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    businessCapabilityGUID,
+                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    otherOriginValues,
+                                                                    methodName);
+
+        properties.setEffectiveFromTime(effectiveFromTime);
+        properties.setEffectiveToTime(effectiveToTime);
 
         this.setClassificationInRepository(userId,
                                            null,
@@ -1326,12 +1449,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
-                                           builder.getOriginProperties(organizationGUID,
-                                                                       OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                                       businessCapabilityGUID,
-                                                                       OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                                       otherOriginValues,
-                                                                       methodName),
+                                           properties,
                                            false,
                                            methodName);
     }
@@ -1533,18 +1651,20 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            0,
                                            serviceSupportedZones,
+                                           null,
                                            methodName);
     }
 
 
     /**
-     * Remove any data sets connected to the asset by the DataContentFroDataSet relationship.
+     * Remove any data sets connected to the asset by the DataContentForDataSet relationship.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param assetGUID unique identifier for asset
      * @param assetTypeName type of asset
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1556,6 +1676,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     String externalSourceName,
                                     String assetGUID,
                                     String assetTypeName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -1568,6 +1689,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                                                        0,
                                                                                        0,
+                                                                                       effectiveTime,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -1629,6 +1751,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 null,
                                                                 0,
                                                                 invalidParameterHandler.getMaxPagingSize(),
+                                                                null,
                                                                 methodName);
 
         if (connectionGUIDs != null)
@@ -1653,6 +1776,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName name of parameter supplying assetGUID
      * @param assetTypeName type name of asset
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1663,6 +1787,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     String assetGUID,
                                     String assetGUIDParameterName,
                                     String assetTypeName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -1671,11 +1796,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 assetGUID,
                                                                 assetGUIDParameterName,
                                                                 assetTypeName,
+                                                                null,
+                                                                null,
+                                                                false,
+                                                                supportedZones,
+                                                                effectiveTime,
                                                                 methodName);
 
         if (assetEntity != null)
         {
-            return this.getAssetWithConnectionBean(userId, assetEntity, methodName);
+            return this.getAssetWithConnectionBean(userId, assetEntity, effectiveTime, methodName);
         }
 
         return null;
@@ -1690,6 +1820,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName name of parameter supplying name
      * @param assetTypeGUID type identifier of asset
      * @param assetTypeName type name of asset
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1701,6 +1832,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           String nameParameterName,
                                           String assetTypeGUID,
                                           String assetTypeName,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1721,11 +1853,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
+                                                             effectiveTime,
                                                              methodName);
 
         if ((results != null) && (results.size() == 1))
         {
-            return getAssetWithConnectionBean(userId, results.get(0), methodName);
+            return getAssetWithConnectionBean(userId, results.get(0), effectiveTime, methodName);
         }
         else
         {
@@ -1737,13 +1870,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the list of discovery services definitions that are stored.
+     * Return the list of assets that are stored.
      *
      * @param userId identifier of calling user
      * @param assetTypeGUID subtype of asset required
      * @param assetTypeName subtype of asset required
      * @param startFrom initial position in the stored list
      * @param pageSize maximum number of definitions to return on this call
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans.
@@ -1757,6 +1891,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                               String assetTypeName,
                                               int    startFrom,
                                               int    pageSize,
+                                              Date   effectiveTime,
                                               String methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -1768,6 +1903,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              null,
                                                              startFrom,
                                                              pageSize,
+                                                             effectiveTime,
                                                              methodName);
 
         if ((entities != null) && (! entities.isEmpty()))
@@ -1778,7 +1914,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
                 if (entity != null)
                 {
-                    B bean = this.getAssetWithConnectionBean(userId, entity, methodName);
+                    B bean = this.getAssetWithConnectionBean(userId, entity, effectiveTime, methodName);
                     if (bean != null)
                     {
                         results.add(bean);
@@ -1803,6 +1939,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param assetEntity entity for root connection object
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return connection object
      * @throws InvalidParameterException the parameters are invalid
@@ -1811,6 +1948,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      */
     private B getAssetWithConnectionBean(String       userId,
                                          EntityDetail assetEntity,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -1823,6 +1961,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   assetEntity.getType().getTypeDefName(),
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  effectiveTime,
                                                                                                   methodName);
 
             if (relationshipToConnection != null)
@@ -1837,6 +1976,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     end1.getGUID(),
                                                                     connectionGUIDParameterName,
                                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    supportedZones,
+                                                                    effectiveTime,
                                                                     methodName);
                 }
             }
@@ -1855,7 +1999,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 supplementaryEntities.add(connectionEntity);
                 supplementaryRelationships.add(relationshipToConnection);
 
-                List<Relationship> connectionRelationships = this.getEmbeddedConnectionRelationships(userId, connectionEntity, methodName);
+                List<Relationship> connectionRelationships = this.getEmbeddedConnectionRelationships(userId, connectionEntity, effectiveTime, methodName);
 
                 if (connectionRelationships != null)
                 {
@@ -1889,6 +2033,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                 entityProxy.getGUID(),
                                                                                                 entityGUIDParameterName,
                                                                                                 entityProxy.getType().getTypeDefName(),
+                                                                                                null,
+                                                                                                null,
+                                                                                                false,
+                                                                                                supportedZones,
+                                                                                                effectiveTime,
                                                                                                 methodName);
                                 if (supplementaryEntity != null)
                                 {
@@ -1923,6 +2072,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param connectionEntity entity for root connection object
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of relationships
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -1930,6 +2080,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      */
     private List<Relationship> getEmbeddedConnectionRelationships(String        userId,
                                                                   EntitySummary connectionEntity,
+                                                                  Date          effectiveTime,
                                                                   String        methodName) throws PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
@@ -1945,6 +2096,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            null,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                                           effectiveTime,
                                                                                            methodName);
 
 
@@ -1977,6 +2129,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                         {
                             List<Relationship> embeddedConnectionRelationships = this.getEmbeddedConnectionRelationships(userId,
                                                                                                                          embeddedConnectionEnd,
+                                                                                                                         effectiveTime,
                                                                                                                          methodName);
 
                             if (embeddedConnectionRelationships != null)
@@ -2007,6 +2160,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param subTypeName type of asset to scan for (null for all asset types)
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2019,6 +2173,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String       subTypeName,
                                         int          startFrom,
                                         int          pageSize,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2030,6 +2185,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       supportedZones,
                                       startFrom,
                                       pageSize,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -2044,6 +2200,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2057,6 +2214,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         List<String> suppliedSupportedZones,
                                         int          startFrom,
                                         int          pageSize,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2068,6 +2226,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       suppliedSupportedZones,
                                       startFrom,
                                       pageSize,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -2081,6 +2240,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param subTypeName type of asset to scan for (null for all asset types)
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2093,6 +2253,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               String       subTypeName,
                               int          startFrom,
                               int          pageSize,
+                              Date         effectiveTime,
                               String       methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -2104,6 +2265,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   supportedZones,
                                   startFrom,
                                   pageSize,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -2118,6 +2280,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
      * @param suppliedSupportedZones list of supported zones from calling service
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2131,6 +2294,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               List<String> suppliedSupportedZones,
                               int          startFrom,
                               int          pageSize,
+                              Date         effectiveTime,
                               String       methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -2142,6 +2306,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   suppliedSupportedZones,
                                   startFrom,
                                   pageSize,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -2158,6 +2323,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2172,6 +2338,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   List<String> suppliedSupportedZones,
                                   int          startFrom,
                                   int          pageSize,
+                                  Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -2203,6 +2370,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                  startFrom,
                                                                                  queryPageSize,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
 
@@ -2247,6 +2415,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of GUIDs for matching assets
      *
@@ -2261,6 +2430,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            List<String> suppliedSupportedZones,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -2292,6 +2462,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                  startFrom,
                                                                                  queryPageSize,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
 
@@ -2335,6 +2506,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2350,6 +2522,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     String   nameParameterName,
                                     int      startFrom,
                                     int      pageSize,
+                                    Date     effectiveTime,
                                     String   methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -2362,6 +2535,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                      supportedZones,
                                      startFrom,
                                      pageSize,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -2377,6 +2551,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2393,6 +2568,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     List<String>  serviceSupportedZones,
                                     int           startFrom,
                                     int           pageSize,
+                                    Date          effectiveTime,
                                     String        methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -2426,6 +2602,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -2441,6 +2618,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2456,6 +2634,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             String   nameParameterName,
                                             int      startFrom,
                                             int      pageSize,
+                                            Date     effectiveTime,
                                             String   methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2468,6 +2647,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -2484,6 +2664,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2500,6 +2681,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             List<String> serviceSupportedZones,
                                             int          startFrom,
                                             int          pageSize,
+                                            Date         effectiveTime,
                                             String       methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
@@ -2531,6 +2713,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -2546,6 +2729,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2561,6 +2745,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    String   nameParameterName,
                                    int      startFrom,
                                    int      pageSize,
+                                   Date     effectiveTime,
                                    String   methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -2573,6 +2758,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     supportedZones,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -2589,6 +2775,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2605,6 +2792,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    List<String> serviceSupportedZones,
                                    int          startFrom,
                                    int          pageSize,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -2639,6 +2827,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -2653,6 +2842,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param metadataCollectionIdParameterName parameter providing the metadata collection id
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2668,6 +2858,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             String   metadataCollectionIdParameterName,
                                             int      startFrom,
                                             int      pageSize,
+                                            Date     effectiveTime,
                                             String   methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -2704,6 +2895,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -2716,6 +2908,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param networkAddressParameterName parameter name supplying networkAddress
      * @param startFrom place to start in query
      * @param pageSize number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of unique identifiers for matching assets
      *
@@ -2728,6 +2921,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                  String networkAddressParameterName,
                                                  int    startFrom,
                                                  int    pageSize,
+                                                 Date   effectiveTime,
                                                  String methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -2760,6 +2954,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                   null,
                                                                   startNextQueryFrom,
                                                                   maxPageSize,
+                                                                  effectiveTime,
                                                                   methodName);
 
 
@@ -2787,6 +2982,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                          supportedZones,
                                                                                          endpointStartFrom,
                                                                                          maxPageSize,
+                                                                                         effectiveTime,
                                                                                          methodName);
 
                             if ((endpointAssetGUIDs == null) || (endpointAssetGUIDs.isEmpty()))
@@ -2843,6 +3039,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName name of asset subtype to validate
      * @param startFrom place to start in query
      * @param pageSize number of results to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of  matching assets
      *
@@ -2856,6 +3053,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String suppliedTypeName,
                                         int    startFrom,
                                         int    pageSize,
+                                        Date   effectiveTime,
                                         String methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -2867,7 +3065,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             assetTypeName = suppliedTypeName;
         }
 
-        List<String> assetGUIDs = this.getAssetGUIDsByEndpoint(userId, networkAddress, networkAddressParameterName, startFrom, pageSize, methodName);
+        List<String> assetGUIDs = this.getAssetGUIDsByEndpoint(userId,
+                                                               networkAddress,
+                                                               networkAddressParameterName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               effectiveTime,
+                                                               methodName);
 
         if ((assetGUIDs == null) || (assetGUIDs.isEmpty()))
         {
@@ -2886,6 +3090,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         networkAddressParameterName,
                                                         assetTypeName,
                                                         supportedZones,
+                                                        effectiveTime,
                                                         methodName);
 
                     assets.add(bean);
@@ -2911,6 +3116,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter name of parameter supplying the search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for assets that match the search string.
@@ -2924,6 +3130,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String   searchStringParameter,
                                         int      startFrom,
                                         int      pageSize,
+                                        Date     effectiveTime,
                                         String   methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -2935,6 +3142,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    searchStringParameter,
                                    startFrom,
                                    pageSize,
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -2950,6 +3158,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for assets that match the search string.
@@ -2965,6 +3174,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String   searchStringParameter,
                                         int      startFrom,
                                         int      pageSize,
+                                        Date     effectiveTime,
                                         String   methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -2992,6 +3202,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -3005,6 +3216,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of assets that match the search string.
@@ -3018,6 +3230,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                String   searchStringParameter,
                                int      startFrom,
                                int      pageSize,
+                               Date     effectiveTime,
                                String   methodName) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException
@@ -3029,6 +3242,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                searchStringParameter,
                                startFrom,
                                pageSize,
+                               effectiveTime,
                                methodName);
     }
 
@@ -3044,6 +3258,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of assets that match the search string.
@@ -3059,6 +3274,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                String searchStringParameter,
                                int    startFrom,
                                int    pageSize,
+                               Date   effectiveTime,
                                String methodName) throws InvalidParameterException,
                                                          PropertyServerException,
                                                          UserNotAuthorizedException
@@ -3086,6 +3302,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -3099,6 +3316,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3106,14 +3324,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getAssetGUIDsByTag(String       userId,
-                                           String       tagGUID,
-                                           String       tagGUIDParameterName,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public List<String> getAssetGUIDsByTag(String userId,
+                                           String tagGUID,
+                                           String tagGUIDParameterName,
+                                           int    startFrom,
+                                           int    pageSize,
+                                           Date   effectiveTime,
+                                           String methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return this.getAttachedElementGUIDs(userId,
                                             tagGUID,
@@ -3125,6 +3344,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             supportedZones,
                                             startFrom,
                                             pageSize,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -3138,6 +3358,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3150,6 +3371,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   String tagGUIDParameterName,
                                   int    startFrom,
                                   int    pageSize,
+                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
@@ -3164,6 +3386,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -3177,6 +3400,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param keywordGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3184,14 +3408,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getAssetGUIDsByKeyword(String       userId,
-                                               String       keywordGUID,
-                                               String       keywordGUIDParameterName,
-                                               int          startFrom,
-                                               int          pageSize,
-                                               String       methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    public List<String> getAssetGUIDsByKeyword(String userId,
+                                               String keywordGUID,
+                                               String keywordGUIDParameterName,
+                                               int    startFrom,
+                                               int    pageSize,
+                                               Date   effectiveTime,
+                                               String methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
         return this.getAttachedElementGUIDs(userId,
                                             keywordGUID,
@@ -3203,6 +3428,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             supportedZones,
                                             startFrom,
                                             pageSize,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -3215,6 +3441,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param keywordGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3222,14 +3449,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getAssetsByKeyword(String       userId,
-                                      String       keywordGUID,
-                                      String       keywordGUIDParameterName,
-                                      int          startFrom,
-                                      int          pageSize,
-                                      String       methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    public List<B> getAssetsByKeyword(String userId,
+                                      String keywordGUID,
+                                      String keywordGUIDParameterName,
+                                      int    startFrom,
+                                      int    pageSize,
+                                      Date   effectiveTime,
+                                      String methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         keywordGUID,
@@ -3241,6 +3469,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -3253,6 +3482,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param termGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3265,6 +3495,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String       termGUIDParameterName,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -3279,6 +3510,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 }

@@ -3,18 +3,15 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
@@ -40,8 +37,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private AssetHandler<FILE>                          fileHandler;
 
     private ConnectionHandler<OpenMetadataAPIDummyBean>                                connectionHandler;
-    private ConnectorTypeHandler<OpenMetadataAPIDummyBean>                             connectorTypeHandler;
-    private EndpointHandler<OpenMetadataAPIDummyBean>                                  endpointHandler;
     private SchemaAttributeHandler<OpenMetadataAPIDummyBean, OpenMetadataAPIDummyBean> schemaAttributeHandler;
 
     private final static String folderDivider = "/";
@@ -50,12 +45,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
     private final static String defaultAvroFileType = "avro";
     private final static String defaultCSVFileType  = "csv";
-
-    private final static BasicFileStoreProvider basicFileStoreProvider = new BasicFileStoreProvider();
-    private final static DataFolderProvider     dataFolderProvider     = new DataFolderProvider();
-    private final static AvroFileStoreProvider  avroFileStoreProvider  = new AvroFileStoreProvider();
-    private final static CSVFileStoreProvider   csvFileStoreProvider   = new CSVFileStoreProvider();
-
 
 
     /**
@@ -163,34 +152,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
-
-        this.connectorTypeHandler = new ConnectorTypeHandler<>(dummyConverter,
-                                                               OpenMetadataAPIDummyBean.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
-
-        this.endpointHandler = new EndpointHandler<>(dummyConverter,
-                                                     OpenMetadataAPIDummyBean.class,
-                                                     serviceName,
-                                                     serverName,
-                                                     invalidParameterHandler,
-                                                     repositoryHandler,
-                                                     repositoryHelper,
-                                                     localServerUserId,
-                                                     securityVerifier,
-                                                     supportedZones,
-                                                     defaultZones,
-                                                     publishZones,
-                                                     auditLog);
 
         OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummySchemaAttributeConverter =
                 new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
@@ -385,6 +346,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                   encryption,
                                                   additionalProperties,
                                                   vendorProperties,
+                                                  null,
+                                                  null,
                                                   methodName);
     }
 
@@ -407,46 +370,43 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private String createFolder(String     userId,
-                                String     externalSourceGUID,
-                                String     externalSourceName,
-                                String     pathName,
-                                String     displayName,
-                                String     description,
-                                String     typeName,
-                                String     methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    private String createFolder(String userId,
+                                String externalSourceGUID,
+                                String externalSourceName,
+                                String pathName,
+                                String displayName,
+                                String description,
+                                String typeName,
+                                String methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
+        final String folderAssetGUIDParameterName = "folderAssetGUID";
+
         String folderAssetTypeName = OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
         if (typeName != null)
         {
             folderAssetTypeName = typeName;
         }
 
-        String folderAssetTypeGUID = invalidParameterHandler.validateTypeName(folderAssetTypeName,
-                                                                              OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                                                              serviceName,
-                                                                              methodName,
-                                                                              repositoryHelper);
-
-        return folderHandler.createAssetInRepository(userId,
-                                                     externalSourceGUID,
-                                                     externalSourceName,
-                                                     pathName,
-                                                     displayName,
-                                                     description,
-                                                     null,
-                                                     null,
-                                                     0,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     folderAssetTypeGUID,
-                                                     folderAssetTypeName,
-                                                     null,
-                                                     methodName);
+        return folderHandler.createAssetWithConnection(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       folderAssetGUIDParameterName,
+                                                       pathName,
+                                                       displayName,
+                                                       description,
+                                                       null,
+                                                       folderAssetTypeName,
+                                                       null,
+                                                       InstanceStatus.ACTIVE,
+                                                       true,
+                                                       null,
+                                                       null,
+                                                       pathName,
+                                                       null,
+                                                       null,
+                                                       methodName);
     }
 
 
@@ -462,6 +422,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param description description of the file system
      * @param typeName type of file system
      * @param initialExtendedProperties extended properties for a specific file type
+     * @param configurationProperties  for the connection
      * @param methodName calling method
      *
      * @return unique identifier for the asset
@@ -479,10 +440,13 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              description,
                                    String              typeName,
                                    Map<String, Object> initialExtendedProperties,
+                                   Map<String, Object> configurationProperties,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
+        final String fileAssetGUIDParameterName = "fileAssetGUID";
+
         Map<String, Object> extendedProperties = new HashMap<>();
         if (initialExtendedProperties != null)
         {
@@ -497,29 +461,25 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             fileAssetTypeName = typeName;
         }
 
-        String fileAssetTypeGUID = invalidParameterHandler.validateTypeName(fileAssetTypeName,
-                                                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                                            serviceName,
-                                                                            methodName,
-                                                                            repositoryHelper);
+        return fileHandler.createAssetWithConnection(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     fileAssetGUIDParameterName,
+                                                     pathName,
+                                                     displayName,
+                                                     description,
+                                                     null,
+                                                     fileAssetTypeName,
+                                                     extendedProperties,
+                                                     InstanceStatus.ACTIVE,
+                                                     true,
+                                                     configurationProperties,
+                                                     null,
+                                                     pathName,
+                                                     null,
+                                                     null,
+                                                     methodName);
 
-        return fileHandler.createAssetInRepository(userId,
-                                                   externalSourceGUID,
-                                                   externalSourceName,
-                                                   pathName,
-                                                   displayName,
-                                                   description,
-                                                   null,
-                                                   null,
-                                                   0,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   fileAssetTypeGUID,
-                                                   fileAssetTypeName,
-                                                   extendedProperties,
-                                                   methodName);
     }
 
 
@@ -570,6 +530,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                   connectToGUID,
                                                   connectToParameterName,
                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                  new Date(),
                                                   methodName))
             {
                 folderHandler.linkElementToElement(userId,
@@ -826,6 +787,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                               null,
                                                methodName);
     }
 
@@ -916,6 +878,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                OpenMetadataAPIMapper.LINKED_FILE_TYPE_GUID,
                                                OpenMetadataAPIMapper.LINKED_FILE_TYPE_NAME,
+                                               null,
                                                methodName);
     }
 
@@ -955,12 +918,14 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                      newParentFolderGUIDParameterName,
                                                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     null,
                                                                                      methodName);
         String existingFilePathName = fileHandler.getBeanStringPropertyFromRepository(userId,
                                                                                       newParentFolder,
                                                                                       newParentFolderGUIDParameterName,
                                                                                       OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                      null,
                                                                                       methodName);
         String fileName = this.getFileName(existingFilePathName);
         String fullPathName = newFolderPathName + "/" + fileName;
@@ -1006,6 +971,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                               0,
                                                               invalidParameterHandler.getMaxPagingSize(),
+                                                              null,
                                                               methodName);
 
             if (endpointGUIDs.isEmpty())
@@ -1067,6 +1033,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateGUID(newParentFolderGUID, newParentFolderGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(movingFolderGUID, movingFolderGUIDParameterName, methodName);
 
+        // todo
         invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
     }
 
@@ -1130,6 +1097,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                     externalSourceName,
                                                                     fileSystemName,
                                                                     fileSystemName,
+                                                                    null,
+                                                                    null,
                                                                     null,
                                                                     null,
                                                                     null,
@@ -1290,15 +1259,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     description,
                                                     OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                     null,
+                                                    null,
                                                     methodName);
-
-        this.addDataFileConnection(userId,
-                                   externalSourceGUID,
-                                   externalSourceName,
-                                   fileAssetGUID,
-                                   fileAssetParameterName,
-                                   pathName,
-                                   methodName);
 
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
@@ -1414,7 +1376,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param encodingDescription the description of the file
      * @param encodingProperties the properties used to drive the encoding
      * @param additionalProperties additional properties for the data folder
-     * @param connectorClassName name of the class for the connector's provider
+     * @param connectorProviderClassName name of the class for the connector's provider - null means used standard connector provider for asset type
      * @param typeName type name of folder
      * @param extendedProperties extended properties supplied by the caller
      * @param methodName calling method
@@ -1438,7 +1400,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              encodingDescription,
                                                     Map<String, String> encodingProperties,
                                                     Map<String, String> additionalProperties,
-                                                    String              connectorClassName,
+                                                    String              connectorProviderClassName,
                                                     String              typeName,
                                                     Map<String, Object> extendedProperties,
                                                     String              methodName) throws InvalidParameterException,
@@ -1462,39 +1424,31 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  extendedProperties);
 
 
-        String folderAssetTypeName = typeName;
-        String folderAssetTypeGUID = invalidParameterHandler.validateTypeName(folderAssetTypeName,
-                                                                              OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
-                                                                              serviceName,
-                                                                              methodName,
-                                                                              repositoryHelper);
+        String folderAssetTypeName = OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME;
 
-        String folderAssetGUID = fileHandler.createAssetInRepository(userId,
-                                                                     externalSourceGUID,
-                                                                     externalSourceName,
-                                                                     pathName,
-                                                                     displayName,
-                                                                     description,
-                                                                     null,
-                                                                     null,
-                                                                     0,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     additionalProperties,
-                                                                     folderAssetTypeGUID,
-                                                                     folderAssetTypeName,
-                                                                     assetExtendedProperties,
-                                                                     methodName);
+        if (typeName != null)
+        {
+            folderAssetTypeName = typeName;
+        }
 
-        this.addDataFolderConnection(userId,
-                                     externalSourceGUID,
-                                     externalSourceName,
-                                     folderAssetGUID,
-                                     folderAssetParameterName,
-                                     pathName,
-                                     connectorClassName,
-                                     methodName);
+        String folderAssetGUID = fileHandler.createAssetWithConnection(userId,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       folderAssetParameterName,
+                                                                       pathName,
+                                                                       displayName,
+                                                                       description,
+                                                                       additionalProperties,
+                                                                       folderAssetTypeName,
+                                                                       assetExtendedProperties,
+                                                                       InstanceStatus.ACTIVE,
+                                                                       true,
+                                                                       null,
+                                                                       connectorProviderClassName,
+                                                                       pathName,
+                                                                       null,
+                                                                       null,
+                                                                       methodName);
 
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
@@ -1555,15 +1509,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
                                                    methodName);
 
-        this.addDataFolderConnection(userId,
-                                     externalSourceGUID,
-                                     externalSourceName,
-                                     folderAssetGUID,
-                                     folderAssetParameterName,
-                                     pathName,
-                                     dataFolderProvider.getClass().getName(),
-                                     methodName);
-
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
                                      externalSourceName,
@@ -1593,7 +1538,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param encodingProperties the properties used to drive the encoding
      * @param suppliedFileType the type of file override (default is to use the file extension)
      * @param additionalProperties additional properties from the user
-     * @param connectorClassName qualified class name for the connector provider for this type of file
+     * @param connectorProviderClassName name of the class for the connector's provider - null means used standard connector provider for asset type
      * @param typeName name of the type (default is File)
      * @param extendedProperties any additional properties for the file type
      * @param methodName calling method
@@ -1619,7 +1564,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           Map<String, String> encodingProperties,
                                           String              suppliedFileType,
                                           Map<String, String> additionalProperties,
-                                          String              connectorClassName,
+                                          String              connectorProviderClassName,
                                           String              typeName,
                                           Map<String, Object> extendedProperties,
                                           String              methodName) throws InvalidParameterException,
@@ -1673,43 +1618,27 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             }
         }
 
-        String fileAssetTypeGUID = invalidParameterHandler.validateTypeName(fileAssetTypeName,
-                                                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
-                                                                            serviceName,
-                                                                            methodName,
-                                                                            repositoryHelper);
-
-        String fileAssetGUID = fileHandler.createAssetInRepository(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   fullPath,
-                                                                   displayName,
-                                                                   description,
-                                                                   null,
-                                                                   null,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   additionalProperties,
-                                                                   fileAssetTypeGUID,
-                                                                   fileAssetTypeName,
-                                                                   assetExtendedProperties,
-                                                                   methodName);
+        String fileAssetGUID = fileHandler.createAssetWithConnection(userId,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     fileAssetParameterName,
+                                                                     fullPath,
+                                                                     displayName,
+                                                                     description,
+                                                                     additionalProperties,
+                                                                     fileAssetTypeName,
+                                                                     assetExtendedProperties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     true,
+                                                                     null,
+                                                                     connectorProviderClassName,
+                                                                     fullPath,
+                                                                     null,
+                                                                     null,
+                                                                     methodName);
 
         if (fileAssetGUID != null)
         {
-            this.addConnectionForFile(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      fileAssetGUID,
-                                      fileAssetParameterName,
-                                      fileType,
-                                      fullPath,
-                                      connectorClassName,
-                                      methodName);
-
-
             return this.addFileAssetPath(userId,
                                          externalSourceGUID,
                                          externalSourceName,
@@ -1905,15 +1834,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     description,
                                                     OpenMetadataAPIMapper.AVRO_FILE_TYPE_NAME,
                                                     null,
+                                                    null,
                                                     methodName);
-
-        this.addAvroFileConnection(userId,
-                                   externalSourceGUID,
-                                   externalSourceName,
-                                   fileAssetGUID,
-                                   fileAssetParameterName,
-                                   fullPath,
-                                   methodName);
 
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
@@ -1989,6 +1911,21 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         extendedProperties.put(OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter.toString());
         extendedProperties.put(OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME, fileType);
 
+        Map<String, Object>  configurationProperties = new HashMap<>();
+
+        configurationProperties.put(CSVFileStoreProvider.delimiterCharacterProperty, delimiterCharacter);
+        configurationProperties.put(CSVFileStoreProvider.quoteCharacterProperty, quoteCharacter);
+
+        if (columnHeaders != null)
+        {
+            configurationProperties.put(CSVFileStoreProvider.columnNamesProperty, columnHeaders);
+        }
+
+        if (configurationProperties.isEmpty())
+        {
+            configurationProperties = null;
+        }
+
         String fileAssetGUID = this.createFileAsset(userId,
                                                     externalSourceGUID,
                                                     externalSourceName,
@@ -1998,18 +1935,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     description,
                                                     OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                                                     extendedProperties,
+                                                    configurationProperties,
                                                     methodName);
-
-        this.addCSVFileConnection(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  fileAssetGUID,
-                                  fileAssetGUIDParameterName,
-                                  fullPath,
-                                  columnHeaders,
-                                  delimiterCharacter,
-                                  quoteCharacter,
-                                  methodName);
 
         if ((columnHeaders != null) && (! columnHeaders.isEmpty()))
         {
@@ -2094,472 +2021,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      fullPath,
                                      pathParameterName,
                                      methodName);
-    }
-
-
-    /**
-     * Return a connection object to add to the asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param fileType file type extension
-     * @param fullPath full path of file name
-     * @param connectorClassName supplied connector
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private void addConnectionForFile(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String assetGUID,
-                                      String assetGUIDParameterName,
-                                      String fileType,
-                                      String fullPath,
-                                      String connectorClassName,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
-    {
-        String providerClass   = connectorClassName;
-
-        if (providerClass == null)
-        {
-            if (defaultCSVFileType.equals(fileType))
-            {
-                providerClass = csvFileStoreProvider.getClass().getName();
-            }
-            else if (defaultAvroFileType.equals(fileType))
-            {
-                providerClass = avroFileStoreProvider.getClass().getName();
-            }
-        }
-
-        String endpointName   = "File.Endpoint." + fullPath;
-        String connectionName = fullPath + " File Connection";
-
-        this.addAssetConnection(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                assetGUID,
-                                assetGUIDParameterName,
-                                fullPath,
-                                connectionName,
-                                null,
-                                providerClass,
-                                endpointName,
-                                methodName);
-    }
-
-
-    /**
-     * This method creates a connection for a File.  The connection object provides the OCF with the
-     * properties to create an appropriate connector and the properties needed by the connector to access the asset.
-     *
-     * The Connection object includes a Connector Type object.  This defines the type of connector to create.
-     * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
-     * to the Asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param fileName name of the file to connect to
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private void  addDataFileConnection(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String assetGUID,
-                                        String assetGUIDParameterName,
-                                        String fileName,
-                                        String methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
-    {
-        String endpointName   = "FileStore.Endpoint." + fileName;
-        String connectionName = fileName + " File Store Connection";
-
-        this.addAssetConnection(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                assetGUID,
-                                assetGUIDParameterName,
-                                fileName,
-                                connectionName,
-                                null,
-                                basicFileStoreProvider.getClass().getName(),
-                                endpointName,
-                                methodName);
-    }
-
-
-    /**
-     * This method creates a connection for a CSV File.  The connection object provides the OCF with the
-     * properties to create an appropriate connector and the properties needed by the connector to access the asset.
-     *
-     * The Connection object includes a Connector Type object.  This defines the type of connector to create.
-     * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
-     * to the Asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param fileName name of the file to connect to
-     * @param columnHeaders boolean parameter defining if the column headers are included in the file
-     * @param delimiterCharacter character used between the columns
-     * @param quoteCharacter character used to group text that includes the delimiter character
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private  void addCSVFileConnection(String       userId,
-                                       String       externalSourceGUID,
-                                       String       externalSourceName,
-                                       String       assetGUID,
-                                       String       assetGUIDParameterName,
-                                       String       fileName,
-                                       List<String> columnHeaders,
-                                       Character    delimiterCharacter,
-                                       Character    quoteCharacter,
-                                       String       methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
-        String endpointName   = "CSVFileStore.Endpoint." + fileName;
-        String connectionName = fileName + " CSV File Store Connection";
-
-        Map<String, Object>  configurationProperties = new HashMap<>();
-
-        if (delimiterCharacter != null)
-        {
-            configurationProperties.put(CSVFileStoreProvider.delimiterCharacterProperty, delimiterCharacter);
-        }
-
-        if (quoteCharacter != null)
-        {
-            configurationProperties.put(CSVFileStoreProvider.quoteCharacterProperty, quoteCharacter);
-        }
-
-        if (columnHeaders != null)
-        {
-            configurationProperties.put(CSVFileStoreProvider.columnNamesProperty, columnHeaders);
-        }
-
-        if (configurationProperties.isEmpty())
-        {
-            configurationProperties = null;
-        }
-
-        this.addAssetConnection(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                assetGUID,
-                                assetGUIDParameterName,
-                                fileName,
-                                connectionName,
-                                configurationProperties,
-                                csvFileStoreProvider.getClass().getName(),
-                                endpointName,
-                                methodName);
-    }
-
-
-    /**
-     * This method creates a connection for an Avro File.  The connection object provides the OCF with the
-     * properties to create an appropriate connector and the properties needed by the connector to access the asset.
-     *
-     * The Connection object includes a Connector Type object.  This defines the type of connector to create.
-     * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
-     * to the Asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param fileName name of the file to connect to
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private void addAvroFileConnection(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
-                                       String assetGUID,
-                                       String assetGUIDParameterName,
-                                       String fileName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
-    {
-        String endpointName   = "AvroFileStore.Endpoint." + fileName;
-        String connectionName = fileName + " Avro File Store Connection";
-
-        this.addAssetConnection(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                assetGUID,
-                                assetGUIDParameterName,
-                                fileName,
-                                connectionName,
-                                null,
-                                avroFileStoreProvider.getClass().getName(),
-                                endpointName,
-                                methodName);
-    }
-
-
-    /**
-     * This method creates a connection for a data folder.  The connection object provides the OCF with the
-     * properties to create an appropriate connector and the properties needed by the connector to access the asset.
-     *
-     * The Connection object includes a Connector Type object.  This defines the type of connector to create.
-     * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
-     * to the Asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param folderName name of the file to connect to
-     * @param connectorProviderName name of the connector provider for the connection
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private   void addDataFolderConnection(String userId,
-                                           String externalSourceGUID,
-                                           String externalSourceName,
-                                           String assetGUID,
-                                           String assetGUIDParameterName,
-                                           String folderName,
-                                           String connectorProviderName,
-                                           String methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        String endpointName   = "DataFolder.Endpoint." + folderName;
-        String connectionName = folderName + " Data Folder Connection";
-
-        this.addAssetConnection(userId,
-                                externalSourceGUID,
-                                externalSourceName,
-                                assetGUID,
-                                assetGUIDParameterName,
-                                folderName,
-                                connectionName,
-                                null,
-                                connectorProviderName,
-                                endpointName,
-                                methodName);
-    }
-
-
-    /**
-     * Return the unique identifier of a connection for the supplied asset.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID         unique identifier of the asset
-     * @param assetGUIDParameterName parameter name supplying the asset guid
-     * @param fullPathName fully qualified path name of the asset
-     * @param connectionName fully qualified name of the connection
-     * @param configurationProperties configuration properties for the connection
-     * @param connectorProviderClassName Java class name for the connector provider
-     * @param endpointName fully qualified name of the endpoint
-     * @param methodName calling method
-     *
-     * @return unique identifier of connector type object
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private void addAssetConnection(String               userId,
-                                    String               externalSourceGUID,
-                                    String               externalSourceName,
-                                    String               assetGUID,
-                                    String               assetGUIDParameterName,
-                                    String               fullPathName,
-                                    String               connectionName,
-                                    Map<String, Object>  configurationProperties,
-                                    String               connectorProviderClassName,
-                                    String               endpointName,
-                                    String               methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
-        final String endpointGUIDParameterName      = "endpointGUID";
-        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
-
-        String endpointGUID = getEndpoint(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          assetGUID,
-                                          endpointName,
-                                          fullPathName,
-                                          methodName);
-
-        String connectorTypeGUID = getConnectorType(userId,
-                                                    externalSourceGUID,
-                                                    externalSourceName,
-                                                    connectorProviderClassName,
-                                                    methodName);
-
-        connectionHandler.createConnection(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           assetGUID,
-                                           assetGUIDParameterName,
-                                           null,
-                                           connectionName,
-                                           connectionName,
-                                           null,
-                                           null,
-                                           null,
-                                           configurationProperties,
-                                           null,
-                                           null,
-                                           null,
-                                           connectorTypeGUID,
-                                           connectorTypeGUIDParameterName,
-                                           endpointGUID,
-                                           endpointGUIDParameterName,
-                                           methodName);
-    }
-
-
-
-    /**
-     * Return a connector type for the supplied connector provider class name.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param connectorProviderClassName Java class name for the connector provider
-     * @param methodName calling method
-     *
-     * @return unique identifier of connector type object
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private String getConnectorType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String connectorProviderClassName,
-                                    String methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        ConnectorType connectorType;
-
-        if (connectorProviderClassName == null)
-        {
-            connectorType = basicFileStoreProvider.getConnectorType();
-        }
-        else if (basicFileStoreProvider.getClass().getName().equals(connectorProviderClassName))
-        {
-            connectorType = basicFileStoreProvider.getConnectorType();
-        }
-        else if (dataFolderProvider.getClass().getName().equals(connectorProviderClassName))
-        {
-            connectorType = dataFolderProvider.getConnectorType();
-        }
-        else if (avroFileStoreProvider.getClass().getName().equals(connectorProviderClassName))
-        {
-            connectorType = avroFileStoreProvider.getConnectorType();
-        }
-        else if (csvFileStoreProvider.getClass().getName().equals(connectorProviderClassName))
-        {
-            connectorType =  csvFileStoreProvider.getConnectorType();
-        }
-        else
-        {
-            connectorType = new ConnectorType();
-
-            connectorType.setConnectorProviderClassName(connectorProviderClassName);
-        }
-
-        return connectorTypeHandler.getConnectorTypeForConnection(userId,
-                                                                  externalSourceGUID,
-                                                                  externalSourceName,
-                                                                  null,
-                                                                  connectorType.getQualifiedName(),
-                                                                  connectorType.getDisplayName(),
-                                                                  connectorType.getDescription(),
-                                                                  connectorType.getSupportedAssetTypeName(),
-                                                                  connectorType.getExpectedDataFormat(),
-                                                                  connectorType.getConnectorProviderClassName(),
-                                                                  connectorType.getConnectorFrameworkName(),
-                                                                  connectorType.getConnectorInterfaceLanguage(),
-                                                                  connectorType.getConnectorInterfaces(),
-                                                                  connectorType.getTargetTechnologySource(),
-                                                                  connectorType.getTargetTechnologyName(),
-                                                                  connectorType.getTargetTechnologyInterfaces(),
-                                                                  connectorType.getTargetTechnologyVersions(),
-                                                                  connectorType.getRecognizedAdditionalProperties(),
-                                                                  connectorType.getRecognizedSecuredProperties(),
-                                                                  connectorType.getRecognizedConfigurationProperties(),
-                                                                  connectorType.getAdditionalProperties(),
-                                                                  methodName);
-    }
-
-
-    /**
-     * Create a new endpoint for the connection.  Endpoints can be shared amongst connections if they
-     * point to the same network address.
-     *
-     * @param endpointName name of the endpoint.
-     * @param fileName name of the file
-     * @return new endpoint
-     */
-    private String getEndpoint(String userId,
-                               String externalSourceGUID,
-                               String externalSourceName,
-                               String assetGUID,
-                               String endpointName,
-                               String fileName,
-                               String methodName) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
-    {
-        final String endpointDescription = "Access information to connect to the actual asset: ";
-
-        return endpointHandler.getEndpointForConnection(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        assetGUID,
-                                                        endpointName,
-                                                        endpointName,
-                                                        endpointDescription + fileName,
-                                                        fileName,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        methodName);
     }
 
 
@@ -2780,6 +2241,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                    0,
+                                                                   null,
                                                                    methodName);
 
         if (connectionGUID != null)
@@ -2858,6 +2320,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                    0,
+                                                                   null,
                                                                    methodName);
 
         if (connectionGUID != null)
@@ -3091,11 +2554,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String getFolderGUIDByPathName(String  userId,
-                                          String  pathName,
-                                          String  methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    private String getFolderGUIDByPathName(String  userId,
+                                           String  pathName,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String  nameName = "pathName";
 
@@ -3199,6 +2662,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               nameName,
                                               0,
                                               invalidParameterHandler.getMaxPagingSize(),
+                                              null,
                                               methodName);
     }
 
@@ -3237,6 +2701,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                      startingFrom,
                                                      pageSize,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -3248,6 +2713,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param parentFolderParameterName name of parameter providing parentFolderGUID
      * @param startingFrom starting point in the list
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of folder unique identifiers (null means no nested folders)
@@ -3261,6 +2727,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String  parentFolderParameterName,
                                           int     startingFrom,
                                           int     pageSize,
+                                          Date    effectiveTime,
                                           String  methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -3274,6 +2741,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                      startingFrom,
                                                      pageSize,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -3286,6 +2754,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param folderGUIDParameterName name of parameter providing folderGUID
      * @param startingFrom starting point in the list
      * @param pageSize maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of file asset unique identifiers
@@ -3299,6 +2768,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                        String  folderGUIDParameterName,
                                        int     startingFrom,
                                        int     pageSize,
+                                       Date    effectiveTime,
                                        String  methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -3312,6 +2782,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                    startingFrom,
                                                    pageSize,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -3322,6 +2793,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user
      * @param dataFileGUID unique identifier used to locate the folder
      * @param dataFileGUIDParameterName name of parameter providing dataFileGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return file properties
@@ -3333,6 +2805,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public FILE getDataFileByGUID(String   userId,
                                   String   dataFileGUID,
                                   String   dataFileGUIDParameterName,
+                                  Date     effectiveTime,
                                   String   methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -3341,6 +2814,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                  dataFileGUID,
                                                  dataFileGUIDParameterName,
                                                  OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                 effectiveTime,
                                                  methodName);
     }
 
@@ -3444,6 +2918,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             nameParameterName,
                                             startingFrom,
                                             pageSize,
+                                            null,
                                             methodName);
     }
 }

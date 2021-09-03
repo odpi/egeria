@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,6 +82,8 @@ public class LocationRESTServices
                                                         locationProperties.getAdditionalProperties(),
                                                         locationProperties.getTypeName(),
                                                         locationProperties.getExtendedProperties(),
+                                                        null,
+                                                        null,
                                                         methodName));
             }
             else
@@ -198,6 +201,8 @@ public class LocationRESTServices
                                        locationProperties.getTypeName(),
                                        locationProperties.getExtendedProperties(),
                                        isMergeUpdate,
+                                       null,
+                                       null,
                                        methodName);
             }
             else
@@ -614,6 +619,8 @@ public class LocationRESTServices
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
+                                        null,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -667,6 +674,7 @@ public class LocationRESTServices
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -720,6 +728,8 @@ public class LocationRESTServices
                                         locationOneGUIDParameter,
                                         locationTwoGUID,
                                         locationTwoGUIDParameter,
+                                        null,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -773,6 +783,7 @@ public class LocationRESTServices
                                        locationOneGUIDParameter,
                                        locationTwoGUID,
                                        locationTwoGUIDParameter,
+                                       null,
                                        methodName);
         }
         catch (Exception error)
@@ -831,6 +842,7 @@ public class LocationRESTServices
                                                                     null,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    new Date(),
                                                                     methodName);
                 response.setElementList(locations);
             }
@@ -898,6 +910,7 @@ public class LocationRESTServices
                                                                           null,
                                                                           startFrom,
                                                                           pageSize,
+                                                                          new Date(),
                                                                           methodName);
                 response.setElementList(locations);
             }

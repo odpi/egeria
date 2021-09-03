@@ -462,6 +462,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -501,6 +502,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -552,6 +554,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -594,6 +597,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
                                                                   false,
                                                                   supportedZones,
+                                                                  null,
                                                                   methodName);
 
         if (eventTypeListEntity != null)
@@ -612,6 +616,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                             2,
                                             startFrom,
                                             pageSize,
+                                            null,
                                             methodName);
         }
 
@@ -656,6 +661,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if (eventListEntity == null)

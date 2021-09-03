@@ -109,6 +109,8 @@ public class ConnectionRESTServices
                                                           null,
                                                           null,
                                                           null,
+                                                          null,
+                                                          null,
                                                           methodName));
             }
             else
@@ -239,6 +241,8 @@ public class ConnectionRESTServices
                                          requestBody.getTypeName(),
                                          requestBody.getExtendedProperties(),
                                          isMergeUpdate,
+                                         null,
+                                         null,
                                          methodName);
             }
             else
@@ -851,6 +855,7 @@ public class ConnectionRESTServices
                                                                               parameterName,
                                                                               startFrom,
                                                                               pageSize,
+                                                                              null,
                                                                               methodName);
                 response.setElementList(connections);
             }
@@ -911,6 +916,7 @@ public class ConnectionRESTServices
                                                                                    parameterName,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   null,
                                                                                    methodName);
                 response.setElementList(connections);
             }
@@ -962,6 +968,7 @@ public class ConnectionRESTServices
             ConnectionElement connection = handler.getConnectionByGUID(userId,
                                                                        connectionGUID,
                                                                        connectionGUIDParameter,
+                                                                       null,
                                                                        methodName);
             response.setElement(connection);
         }
@@ -1167,6 +1174,8 @@ public class ConnectionRESTServices
                                        endpointProperties.getTypeName(),
                                        endpointProperties.getExtendedProperties(),
                                        isMergeUpdate,
+                                       null,
+                                       null,
                                        methodName);
 
                 handler.maintainSupplementaryProperties(userId,
@@ -1282,6 +1291,7 @@ public class ConnectionRESTServices
                                                                         parameterName,
                                                                         startFrom,
                                                                         pageSize,
+                                                                        null,
                                                                         methodName);
                 response.setElementList(endpoints);
             }
@@ -1342,6 +1352,7 @@ public class ConnectionRESTServices
                                                                              parameterName,
                                                                              startFrom,
                                                                              pageSize,
+                                                                             null,
                                                                              methodName);
                 response.setElementList(endpoints);
             }

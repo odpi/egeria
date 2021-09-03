@@ -96,11 +96,18 @@ public class RelationshipsFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("relationshipFVT runIt started");
-        RelationshipsFVT fvt = new RelationshipsFVT(url, serverName, userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("relationshipFVT runIt stopped");
+        try
+        {
+            System.out.println("relationshipFVT runIt started");
+            RelationshipsFVT fvt = new RelationshipsFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("relationshipFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

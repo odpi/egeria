@@ -97,6 +97,8 @@ public class ValidValuesRESTServices
                                                              false,
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
+                                                             null,
+                                                             null,
                                                              methodName));
             }
             else
@@ -167,6 +169,8 @@ public class ValidValuesRESTServices
                                                                     false,
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
             }
             else
@@ -239,6 +243,8 @@ public class ValidValuesRESTServices
                                          false,
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
+                                         null,
+                                         null,
                                          methodName);
             }
             else
@@ -361,7 +367,14 @@ public class ValidValuesRESTServices
                     OpenMetadataAPIDummyBean,
                     OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.attachValidValueToSet(userId, null, null, setGUID, validValueGUID, methodName);
+            handler.attachValidValueToSet(userId,
+                                          null,
+                                          null,
+                                          setGUID,
+                                          validValueGUID,
+                                          null,
+                                          null,
+                                          methodName);
         }
         catch (Exception error)
         {
@@ -414,7 +427,13 @@ public class ValidValuesRESTServices
                     OpenMetadataAPIDummyBean,
                     OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, methodName);
+            handler.detachValidValueFromSet(userId,
+                                            null,
+                                            null,
+                                            setGUID,
+                                            validValueGUID,
+                                            null,
+                                            methodName);
         }
         catch (Exception error)
         {
@@ -462,7 +481,7 @@ public class ValidValuesRESTServices
                                         OpenMetadataAPIDummyBean,
                                         OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getValidValueByGUID(userId, validValueGUID, methodName));
+            response.setElement(handler.getValidValueByGUID(userId, validValueGUID, null, methodName));
         }
         catch (Exception error)
         {
@@ -518,7 +537,13 @@ public class ValidValuesRESTServices
                         OpenMetadataAPIDummyBean,
                         OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getValidValueByName(userId, validValueName, nameParameterName, startFrom, pageSize, methodName));
+                response.setElementList(handler.getValidValueByName(userId,
+                                                                    validValueName,
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    null,
+                                                                    methodName));
             }
         }
         catch (Exception error)
@@ -575,7 +600,13 @@ public class ValidValuesRESTServices
                         OpenMetadataAPIDummyBean,
                         OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findValidValues(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName));
+                response.setElementList(handler.findValidValues(userId,
+                                                                searchString,
+                                                                searchStringParameterName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                null,
+                                                                methodName));
             }
         }
         catch (Exception error)
@@ -634,6 +665,7 @@ public class ValidValuesRESTServices
                                                                     validValueGUIDParameter,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -692,6 +724,7 @@ public class ValidValuesRESTServices
                                                                  validValueGUIDParameter,
                                                                  startFrom,
                                                                  pageSize,
+                                                                 null,
                                                                  methodName));
         }
         catch (Exception error)
