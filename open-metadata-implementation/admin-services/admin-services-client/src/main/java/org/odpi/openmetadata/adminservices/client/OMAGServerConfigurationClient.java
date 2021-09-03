@@ -520,7 +520,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "UpdateAuditLogDestination";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connections/{2}";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connection/{2}";
 
         try
         {
