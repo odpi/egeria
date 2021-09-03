@@ -485,7 +485,7 @@ public class OMAGServerConfigurationClient
                                                                      OMAGInvalidParameterException,
                                                                      OMAGConfigurationErrorException
     {
-        final String methodName    = "addEventTopicAuditLogDestination";
+        final String methodName    = "addAuditLogDestination";
         final String parameterName = "connection";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connection";
 
@@ -504,7 +504,62 @@ public class OMAGServerConfigurationClient
                                         adminUserId,
                                         serverName);
     }
+    /**
+     * Replace an audit log destination identified by the supplied audit Log destination Name with the
+     * supplied supplied audit Log destination connection.
+     *
+     * @param auditLogDestinationName the name of the audit log destination to update
+     * @param auditLogDestination connection object that replaces the existing one
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void updateAuditLogDestination(String auditLogDestinationName, Connection auditLogDestination) throws OMAGNotAuthorizedException,
+                                                                                                                 OMAGInvalidParameterException,
+                                                                                                                 OMAGConfigurationErrorException
+    {
+        final String methodName    = "UpdateAuditLogDestination";
+        final String parameterName = "connection";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connections/{2}";
 
+        try
+        {
+            invalidParameterHandler.validateConnection(auditLogDestination, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPutRESTCall(methodName,
+                                       serverPlatformRootURL + urlTemplate,
+                                       auditLogDestination,
+                                       adminUserId,
+                                       serverName,
+                                       auditLogDestinationName);
+    }
+    /**
+     * Delete an audit log destination that is defined by the supplied audit Log Destination Name
+     *
+     * @param auditLogDestinationName the name of the audit log destination to update
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void deleteAuditLogDestination(String auditLogDestinationName)  throws OMAGNotAuthorizedException,
+                                                                                  OMAGInvalidParameterException,
+                                                                                  OMAGConfigurationErrorException
+    {
+        final String methodName    = "addEventTopicAuditLogDestination";
+        final String parameterName = "connection";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connection";
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        adminUserId,
+                                        serverName,
+                                        auditLogDestinationName);
+    }
 
     /**
      * Clears all audit log destinations for this server.
@@ -723,4 +778,5 @@ public class OMAGServerConfigurationClient
 
         return restResult.getOMAGServerConfig();
     }
+
 }

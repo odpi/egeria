@@ -2635,7 +2635,7 @@ public class OMAGServerAdminServices
                                                String                serverName,
                                                Connection            auditLogDestination)
     {
-        final String methodName = "setAuditLogDestinations";
+        final String methodName = "addAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2690,6 +2690,213 @@ public class OMAGServerAdminServices
                 serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
                 configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     * it is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
+     * in this way it is possible to rename Connections.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param suppliedConnectionName name of the audit log destination to be updated
+     * @param suppliedConnection connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
+     */
+    public VoidResponse updateAuditLogDestination(String userId, String serverName, String suppliedConnectionName, Connection suppliedConnection) {
+        final String methodName = "updateAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerConnection(suppliedConnection, serverName, methodName);
+
+            if (suppliedConnection != null)
+            {
+                OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+                List<String>     configAuditTrail = serverConfig.getAuditTrail();
+
+                if (configAuditTrail == null)
+                {
+                    configAuditTrail = new ArrayList<>();
+                }
+
+                RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+                if (repositoryServicesConfig == null)
+                {
+                    OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+
+                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
+                }
+
+                List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
+
+                // it is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
+                // in this way it is possible to rename Connections.
+
+                if (auditLogDestinations == null)
+                {
+                    // no audit logs so cannot delete a requested one.
+                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "update"),
+                                                            this.getClass().getName(),
+                                                            methodName);
+
+                }
+                else
+                {
+                    int existingIndex = -1;
+                    for (int i=0; i< auditLogDestinations.size(); i++)
+                    {
+                        if (suppliedConnectionName.equals (auditLogDestinations.get(i).getDisplayName()))
+                        {
+                         existingIndex = i;
+                         configAuditTrail.add(new Date().toString() + " " + userId + " updated in the list of audit log destinations.");
+                         break;
+                        }
+                    }
+                    if (existingIndex == -1 )
+                    {
+                        // error cannot find the audit log to update
+                        throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "update"),
+                                                                this.getClass().getName(),
+                                                                methodName);
+                    } else
+                    {
+                        auditLogDestinations.set(existingIndex, suppliedConnection);
+                        repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+
+                        serverConfig.setAuditTrail(configAuditTrail);
+                        /*
+                         * Save the open metadata repository services config in the server's config
+                         */
+                        serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+                        configStore.saveServerConfig(serverName, methodName, serverConfig);
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param suppliedAuditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedAuditLogDestinationName) {
+        final String methodName = "deleteAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig     = configStore.getServerConfig(userId, serverName, methodName);
+            List<String>     configAuditTrail = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig == null)
+            {
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
+            }
+
+            List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
+            // TODO check that the destination supplied in the parameter is consistent with the display name in the supplied connection
+
+            if (auditLogDestinations == null)
+            {
+                // error nothing to delete
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedAuditLogDestinationName, "delete"),
+                                                        this.getClass().getName(),
+                                                        methodName);
+            }
+            else
+            {
+                int existingIndex = -1;
+                for (int i=0; i< auditLogDestinations.size(); i++)
+                {
+                    if (suppliedAuditLogDestinationName.equals (auditLogDestinations.get(i).getDisplayName()))
+                    {
+                        existingIndex = i;
+                        configAuditTrail.add(new Date().toString() + " " + userId + " removed in the list of audit log destinations.");
+                        break;
+                    }
+                }
+                if (existingIndex == -1 )
+                {
+                    // Error did not find a audit log to remove
+                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedAuditLogDestinationName, "delete"),
+                                                            this.getClass().getName(),
+                                                            methodName);
+                } else
+                {
+                    auditLogDestinations.remove(existingIndex);
+                    repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+                    serverConfig.setAuditTrail(configAuditTrail);
+                    /*
+                     * Save the open metadata repository services config in the server's config
+                     */
+                    serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+                    configStore.saveServerConfig(serverName, methodName, serverConfig);
+                }
+            }
+
         }
         catch (OMAGInvalidParameterException error)
         {

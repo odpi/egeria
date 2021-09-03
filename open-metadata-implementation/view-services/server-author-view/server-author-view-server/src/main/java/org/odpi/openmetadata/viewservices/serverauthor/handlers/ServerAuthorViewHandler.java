@@ -688,6 +688,55 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public void updateAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination)
+        throws ServerAuthorViewServiceException {
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.updateAuditLogDestination(auditLogDestinationName, auditLogDestination);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public void deleteAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName) throws ServerAuthorViewServiceException{
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.deleteAuditLogDestination(auditLogDestinationName);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
 
     /**
      * Get the active configuration of the named server
@@ -845,6 +894,5 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
-
 }
 

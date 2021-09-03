@@ -375,6 +375,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                "The server fails to start because this value is needed to operate successfully.",
                "Add a value for this property to the configuration document and restart the server."),
 
+    AUDIT_LOG_DESTINATION_NOT_FOUND(404, "OMAG-ADMIN-404-100",
+                       "The {0} audit log destination name does not exist, so the requested {1} operation cannot proceed",
+                       "The audit log destination as not changed.",
+                       "Amend the request so it refers to an audit destination log that exists."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.  No change was made to the server's configuration document.",
