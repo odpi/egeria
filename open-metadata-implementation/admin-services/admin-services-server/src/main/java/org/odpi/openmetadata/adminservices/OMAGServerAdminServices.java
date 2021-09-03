@@ -2709,9 +2709,9 @@ public class OMAGServerAdminServices
         return response;
     }
     /**
-     * Update an audit log destination that is identified with the supplied destination name with
+     * Update an audit log destination connection that is identified with the supplied destination connection name with
      * the supplied connection object.
-     * it is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
+     * It is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
      * in this way it is possible to rename Connections.
      *
      * @param userId  user that is issuing the request.
@@ -2818,16 +2818,16 @@ public class OMAGServerAdminServices
         return response;
     }
     /**
-     * Delete an audit log destination that is identified with the supplied destination name
+     * Delete an audit log destination connection, that is identified with the supplied destination connection name.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param suppliedAuditLogDestinationName name of the audit log destination to be deleted
+     * @param suppliedConnectionName name of the audit log destination to be deleted
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName.
+     * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
-    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedAuditLogDestinationName) {
+    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedConnectionName) {
         final String methodName = "deleteAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2857,12 +2857,11 @@ public class OMAGServerAdminServices
             }
 
             List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
-            // TODO check that the destination supplied in the parameter is consistent with the display name in the supplied connection
 
             if (auditLogDestinations == null)
             {
                 // error nothing to delete
-                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedAuditLogDestinationName, "delete"),
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "delete"),
                                                         this.getClass().getName(),
                                                         methodName);
             }
@@ -2871,7 +2870,7 @@ public class OMAGServerAdminServices
                 int existingIndex = -1;
                 for (int i=0; i< auditLogDestinations.size(); i++)
                 {
-                    if (suppliedAuditLogDestinationName.equals (auditLogDestinations.get(i).getDisplayName()))
+                    if (suppliedConnectionName.equals (auditLogDestinations.get(i).getDisplayName()))
                     {
                         existingIndex = i;
                         configAuditTrail.add(new Date().toString() + " " + userId + " removed in the list of audit log destinations.");
@@ -2881,7 +2880,7 @@ public class OMAGServerAdminServices
                 if (existingIndex == -1 )
                 {
                     // Error did not find a audit log to remove
-                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedAuditLogDestinationName, "delete"),
+                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "delete"),
                                                             this.getClass().getName(),
                                                             methodName);
                 } else
