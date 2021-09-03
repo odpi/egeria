@@ -336,9 +336,7 @@ public class ServerAuthorViewHandler {
      * @param methodName               current operation
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
-     * OMAGConfigurationErrorException the local repository mode has not been set
+     * @throws ServerAuthorViewServiceException a server author exception
      */
     public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
         try {
@@ -820,8 +818,8 @@ public class ServerAuthorViewHandler {
      * Clear the audit log destinations associated with the the server being configured
      *
      * @param serverToBeConfiguredName name of the server to be configured.
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * @throws ServerAuthorViewServiceException a server author exception
+     *
      */
     public void clearAuditLogDestinations(String serverToBeConfiguredName)  throws ServerAuthorViewServiceException {
         final String methodName = "clearAuditLogDestinations";

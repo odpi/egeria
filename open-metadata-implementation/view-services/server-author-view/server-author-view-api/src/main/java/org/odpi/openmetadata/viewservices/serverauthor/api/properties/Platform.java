@@ -114,7 +114,7 @@ public class Platform {
 
     /**
      * Set the access services that this platform supports.
-     * @param accessServices
+     * @param accessServices the access services that this platform supports.
      */
     public void setAccessServices(List<RegisteredOMAGService> accessServices) {
         this.accessServices = accessServices;
@@ -128,21 +128,21 @@ public class Platform {
     }
     /**
      * Set the engine services that this platform supports.
-     * @param engineServices
+     * @param engineServices engine services that this platform supports.
      */
     public void setEngineServices(List<RegisteredOMAGService> engineServices) {
         this.engineServices = engineServices;
     }
     /**
-     * Get the governance services that this platform supports.
-     * @return governance services supported by this platform
+     * Get the integration services that this platform supports.
+     * @return integration services supported by this platform
      */
     public List<RegisteredOMAGService> getIntegrationServices() {
         return integrationServices;
     }
     /**
-     * Set the governance services that this platform supports.
-     * @param integrationServices
+     * Set the integration services that this platform supports.
+     * @param integrationServices integration services that this platform supports.
      */
     public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) { this.integrationServices = integrationServices; }
     /**
@@ -154,7 +154,7 @@ public class Platform {
     }
     /**
      * Set the view services that this platform supports.
-     * @param viewServices
+     * @param viewServices the view services that this platform supports.
      */
     public void setViewServices(List<RegisteredOMAGService> viewServices) {
         this.viewServices = viewServices;

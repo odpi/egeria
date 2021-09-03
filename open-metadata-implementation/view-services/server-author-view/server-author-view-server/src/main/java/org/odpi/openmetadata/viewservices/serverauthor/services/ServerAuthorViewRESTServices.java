@@ -1031,16 +1031,16 @@ public class ServerAuthorViewRESTServices {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @return void response or
+     * @return voidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
-    public VoidResponse removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+    public FFDCResponseBase removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
         String methodName = "removeCohortRegistration";
         if (log.isDebugEnabled()) {
             log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
         }
-        VoidResponse response = new VoidResponse();
+        FFDCResponseBase response = new ServerAuthorConfigurationResponse();
 
         AuditLog auditLog = null;
         try {
