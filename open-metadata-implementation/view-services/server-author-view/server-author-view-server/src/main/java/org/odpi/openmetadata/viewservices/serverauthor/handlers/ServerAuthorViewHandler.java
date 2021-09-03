@@ -692,12 +692,12 @@ public class ServerAuthorViewHandler {
      * Update an audit log destination that is identified with the supplied destination name with
      * the supplied connection object.
      *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param auditLogDestinationName name of the audit log destination to be updated
      * @param auditLogDestination connection object that defines the audit log destination
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * @throws ServerAuthorViewServiceException a server author exception
      */
     public void updateAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination)
         throws ServerAuthorViewServiceException {
@@ -717,11 +717,11 @@ public class ServerAuthorViewHandler {
     /**
      * Delete an audit log destination that is identified with the supplied destination name
      *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param auditLogDestinationName name of the audit log destination to be deleted
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName.
+     * @throws ServerAuthorViewServiceException a server author exception
      */
     public void deleteAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName) throws ServerAuthorViewServiceException{
         try {
@@ -743,7 +743,7 @@ public class ServerAuthorViewHandler {
      *
      * @param className            class name used for diagnostics
      * @param methodName           the current operation
-     * @param serverToRetrieveName the server to retrive name
+     * @param serverToRetrieveName the server to retrieve name
      * @return the activate configuration or
      * @throws ServerAuthorViewServiceException a server author exception
      */
