@@ -552,7 +552,7 @@ public class OMAGServerConfigurationClient
     {
         final String methodName    = "deleteAuditLogDestination";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connection";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/connection/{2}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,

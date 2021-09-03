@@ -727,7 +727,7 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException invalid serverName.
      */
     public ServerAuthorConfigurationResponse deleteAuditLogDestination(String userId, String serverName, String serverToBeConfiguredName, String auditLogDestinationName) {
-        final String methodName = "updateAuditLogDestination";
+        final String methodName = "deleteAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
