@@ -168,7 +168,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PutMapping(path = "/audit-log-destinations/connection/{destinationName}")
+    @PutMapping(path = "/audit-log-destinations/connection/{connectionName}")
     public VoidResponse updateAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
                                                   @PathVariable String     connectionName,
@@ -181,17 +181,17 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connection name of the audit log destination connection to be deleted
+     * @param connectionName name of the audit log destination connection to be deleted
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName.
      */
-    @DeleteMapping(path = "/audit-log-destinations/connection/{destinationName}")
+    @DeleteMapping(path = "/audit-log-destinations/connection/{connectionName}")
     public VoidResponse deleteAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
-                                                  @PathVariable String     connection)
+                                                  @PathVariable String     connectionName)
     {
-        return adminAPI.deleteAuditLogDestination(userId, serverName, connection);
+        return adminAPI.deleteAuditLogDestination(userId, serverName, connectionName);
     }
 
     /**

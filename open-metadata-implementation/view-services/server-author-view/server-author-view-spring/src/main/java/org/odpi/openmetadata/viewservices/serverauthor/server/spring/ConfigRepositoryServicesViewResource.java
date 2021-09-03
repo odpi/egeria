@@ -248,7 +248,7 @@ class ConfigRepositoryServicesViewResource {
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PutMapping(path = "/audit-log-destinations/connection/{destinationName}")
+    @PutMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
     public ServerAuthorConfigurationResponse updateAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
                                                   @PathVariable String     serverToBeConfiguredName,
@@ -268,7 +268,7 @@ class ConfigRepositoryServicesViewResource {
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName.
      */
-    @DeleteMapping(path = "/audit-log-destinations/connection/{destinationName}")
+    @DeleteMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
     public ServerAuthorConfigurationResponse deleteAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
                                                   @PathVariable String     serverToBeConfiguredName,
