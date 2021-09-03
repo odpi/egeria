@@ -2722,7 +2722,8 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
-    public VoidResponse updateAuditLogDestination(String userId, String serverName, String suppliedConnectionName, Connection suppliedConnection) {
+    public VoidResponse updateAuditLogDestination(String userId, String serverName, String suppliedConnectionName, Connection suppliedConnection)
+    {
         final String methodName = "updateAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2827,7 +2828,8 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
-    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedConnectionName) {
+    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedConnectionName)
+    {
         final String methodName = "deleteAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
