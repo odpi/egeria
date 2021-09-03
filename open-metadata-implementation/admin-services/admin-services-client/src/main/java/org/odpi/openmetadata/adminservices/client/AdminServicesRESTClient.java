@@ -127,7 +127,7 @@ class AdminServicesRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
+     * Issue a DELETE REST call that returns a VoidResponse object.  This is typically a delete
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
@@ -657,11 +657,12 @@ class AdminServicesRESTClient
     {
         try
         {
-            return clientConnector.callPutRESTCall(methodName,
+            VoidResponse restResult = clientConnector.callPutRESTCall(methodName,
                                                    VoidResponse.class,
                                                    urlTemplate,
                                                    requestBody,
                                                    params);
+            exceptionHandler.detectAndThrowAdminExceptions(restResult);
         }
         catch (Exception error)
         {
