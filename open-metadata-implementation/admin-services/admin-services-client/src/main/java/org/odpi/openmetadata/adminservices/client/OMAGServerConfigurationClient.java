@@ -505,8 +505,8 @@ public class OMAGServerConfigurationClient
                                         serverName);
     }
     /**
-     * Replace an audit log destination identified by the supplied audit Log destination Name with the
-     * supplied supplied audit Log destination connection.
+     * Replace an audit log destination connection identified by the supplied audit log destination connection name with the
+     * supplied supplied audit log destination connection.
      *
      * @param suppliedConnectionName the name of the audit log destination to update
      * @param connection connection object that replaces the existing one
@@ -539,7 +539,7 @@ public class OMAGServerConfigurationClient
                                        suppliedConnectionName);
     }
     /**
-     * Delete an audit log destination that is defined by the supplied audit Log Destination Name
+     * Delete an audit log destination that is defined by the supplied audit log destination connection name
      *
      * @param connectionName the name of the audit log destination connection to update
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
