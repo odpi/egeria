@@ -201,6 +201,7 @@ public class ServerAuthorViewRESTServices {
      * @param serverName  local server name.
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
+     * @return FFDCResponseBase VoidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
@@ -1031,16 +1032,16 @@ public class ServerAuthorViewRESTServices {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @return voidResponse or
+     * @return VoidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */
-    public FFDCResponseBase removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+    public VoidResponse removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
         String methodName = "removeCohortRegistration";
         if (log.isDebugEnabled()) {
             log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
         }
-        FFDCResponseBase response = new ServerAuthorConfigurationResponse();
+        VoidResponse response = new VoidResponse();
 
         AuditLog auditLog = null;
         try {
