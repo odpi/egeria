@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -508,6 +509,7 @@ public class DisplayApplicationRESTServices
                                                                   searchStringParameterName,
                                                                   startFrom,
                                                                   pageSize,
+                                                                  new Date(),
                                                                   methodName);
 
                 response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
@@ -572,6 +574,7 @@ public class DisplayApplicationRESTServices
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
                 response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
@@ -638,6 +641,7 @@ public class DisplayApplicationRESTServices
                                                                        OpenMetadataAPIMapper.FORM_TYPE_NAME,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
             response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
@@ -687,6 +691,7 @@ public class DisplayApplicationRESTServices
                                                                   guid,
                                                                   guidParameterName,
                                                                   OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                  new Date(),
                                                                   methodName);
 
             response.setElement(setUpVendorProperties(userId, formAsset, handler, methodName));
@@ -1251,6 +1256,7 @@ public class DisplayApplicationRESTServices
                                                                       searchStringParameterName,
                                                                       startFrom,
                                                                       pageSize,
+                                                                      new Date(),
                                                                       methodName);
 
                 response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
@@ -1315,6 +1321,7 @@ public class DisplayApplicationRESTServices
                                                                            nameParameterName,
                                                                            startFrom,
                                                                            pageSize,
+                                                                           new Date(),
                                                                            methodName);
 
                 response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
@@ -1381,6 +1388,7 @@ public class DisplayApplicationRESTServices
                                                                            OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
                                                                            startFrom,
                                                                            pageSize,
+                                                                           new Date(),
                                                                            methodName);
 
             response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
@@ -1907,6 +1915,7 @@ public class DisplayApplicationRESTServices
                                                                     searchStringParameterName,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    new Date(),
                                                                     methodName);
 
                 response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
@@ -1971,6 +1980,7 @@ public class DisplayApplicationRESTServices
                                                                          nameParameterName,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         new Date(),
                                                                          methodName);
 
                 response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
@@ -2037,6 +2047,7 @@ public class DisplayApplicationRESTServices
                                                                          OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         new Date(),
                                                                          methodName);
 
             response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));

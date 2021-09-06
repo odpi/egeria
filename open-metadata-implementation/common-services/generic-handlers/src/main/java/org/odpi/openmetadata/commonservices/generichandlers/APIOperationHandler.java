@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -462,6 +463,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -475,6 +477,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -488,6 +491,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             String nameParameterName,
                                             int    startFrom,
                                             int    pageSize,
+                                            Date   effectiveTime,
                                             String methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -513,6 +517,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -526,6 +531,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param apiGUIDParameterName parameter name of the apiGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of API Operations element
@@ -539,6 +545,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           String apiGUIDParameterName,
                                           int    startFrom,
                                           int    pageSize,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -555,6 +562,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
                                                                   false,
                                                                   supportedZones,
+                                                                  effectiveTime,
                                                                   methodName);
 
         if (apiSchemaTypeEntity != null)
@@ -573,6 +581,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             2,
                                             startFrom,
                                             pageSize,
+                                            effectiveTime,
                                             methodName);
         }
 
@@ -617,6 +626,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
                                                                   false,
                                                                   supportedZones,
+                                                                  null,
                                                                   methodName);
 
         if (apiSchemaTypeEntity == null)
@@ -678,6 +688,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -689,6 +700,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
     public B getAPIOperationByGUID(String userId,
                                    String guid,
                                    String guidParameterName,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -697,6 +709,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                          effectiveTime,
                                           methodName);
 
     }

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNam
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -275,6 +276,25 @@ public class InMemoryRepositoryTest {
      	}
    	
         return columnEntity;
+    }
+
+    protected void addGlossaryTerm(EntityDetail entity, String name, String description, String summary) throws Exception {
+
+    	String method = "addGlossaryTerm";
+
+    	String termQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(entity), Constants.RELATIONAL_COLUMN, name);
+        InstanceProperties termProperties = new EntityPropertiesBuilder(context, method, null)
+                .withStringProperty(Constants.QUALIFIED_NAME, termQName)
+                .withStringProperty(Constants.DISPLAY_NAME, name)
+                .withStringProperty(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description)
+                .withStringProperty(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME, summary)
+                .build();
+        EntityDetail termEntity = omEntityDao.addEntity(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+        		termQName,
+        		termProperties,
+                false);
+        
+    	omEntityDao.addRelationship(OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME, entity.getGUID(), termEntity.getGUID(), null);
     }
 
 	public void setColumnProperty(EntityDetail columnEntity, String propName, Boolean propValue ) throws Exception {

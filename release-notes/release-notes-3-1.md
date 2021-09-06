@@ -1,10 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 3.1 (expected September 2021)
+# Release 3.1 (September 2021)
 
-Release 3.0 adds:
-* Requirement to build & run with Java 11 (LTS) or above
+Release 3.1 adds:
+* Open Metadata Type changes
+* Deprecation of Docker Compose environment
+* Changes to the Coco Pharmaceuticals lab environment
+* Dependency Updates
+* Bug Fixes
+
 
 Details of these and other changes are in the sections that follow.
 
@@ -18,7 +23,7 @@ The following changes have been made to the open metadata types:
   See new type descriptions in models [0485](../open-metadata-publication/website/open-metadata-types/0485-Data-Processing-Purposes.md).
 
 * The following types have been deprecated: **BoundedSchemaType**, **BoundedSchemaElementType**,
-  **ArraySchemaType** and **SetSchemaType**.
+  **ArraySchemaType**, **ArrayDocumentType**, **SetSchemaType**, and **SetDocumentType**.
   See description in model [0507](../open-metadata-publication/website/open-metadata-types/0507-External-Schema-Type.md).
 
 * The **ServerEndpoint** relationship can now connect to any **ITInfrastructure** elements, not just **SoftwareServers**.
@@ -40,6 +45,13 @@ The following changes have been made to the open metadata types:
 * A new subtype of software server for reusable business functions (such as microservices) has been added called **ApplicationService**.
   See description in model [0057](../open-metadata-publication/website/open-metadata-types/0057-Software-Services.md).
 
+## Beta documentation site
+
+We are in the process of moving our documentation across to a new site at https://odpi.github.io/egeria-docs/ . This is still work in progress so some material is currently missing, and some links will fail.
+
+This site should offer improved usability including navigation & search.
+
+Please continue to refer to the main documentation site for any missing content until this migration is complete.
 
 ## Deprecation of docker-compose
 
@@ -50,6 +62,37 @@ Our Kubernetes Helm charts are now recommended to quickly setup the same lab
 environment, and the [documentation](https://odpi.github.io/egeria-charts/site/index.html) for these has been improved to cover 
 a Kubernetes introduction, and example based on 'microk8s' which are suited to
 an end user desktop environment (and can also be run in enterprise/cloud environments)
+
+## Egeria Helm charts repository
+
+The Helm charts are now being developed at https://github.com/odpi/egeria. Charts are now published as a proper Helm Repository, making installation easier. This move also keeps their lifecycle independent of our various code repositories, and issues/features should be opened on that repository.
+
+Charts are now installable without cloning the git repository. Instead first add the repository:
+```shell
+helm repo add egeria https://odpi.github.io/egeria-charts
+```
+
+You can list charts with:
+```shell
+helm search repo egeria
+```
+And install with :
+```shell
+helm install lab egeria/odpi-egeria-lab
+```
+The documentation is temporarily available at https://odpi.github.io/egeria-charts/site/ but will move to our new cross-repository Egeria docs repository soon.
+
+## Coco Pharmaceuticals lab environment changes
+
+The Egeria UI is not available by default in the labs environment & is not tested. This is because at this time we don't have suitable test data or notebook walkthroughs available. To avoid confusion this is now disabled by default. It can be renabled through a feature flag (at cli or in an override file) ie:
+```shell
+helm install --set egeria.egeria-ui=true lab egeria/odpi-egeria-lab
+```
+
+Note that the Egeria UI continues to be developed. This change is purely due to ensuring consistency of the demo/tutorial environment.
+
+For browsing the type system and repository within this environment, use the React UI.
+
 
 ### Known Issues
 

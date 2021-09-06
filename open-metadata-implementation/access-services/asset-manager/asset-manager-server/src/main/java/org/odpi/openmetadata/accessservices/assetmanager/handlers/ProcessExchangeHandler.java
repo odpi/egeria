@@ -143,6 +143,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
+                                                                                null,
                                                                                 methodName));
                 }
             }
@@ -183,6 +184,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                                 OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
+                                                                                null,
                                                                                 methodName));
                 }
             }
@@ -781,6 +783,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                                                   OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                                                   startFrom,
                                                                                                   validatedPageSize,
+                                                                                                  null,
                                                                                                   methodName);
 
         if (processEntities != null)
@@ -802,6 +805,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                            assetManagerGUID,
                                                                                            assetManagerName,
+                                                                                           null,
                                                                                            methodName));
 
                         results.add(processElement);
@@ -905,6 +909,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                         OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
+                                                                        null,
                                                                         methodName));
         }
 
@@ -948,6 +953,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                         OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
+                                                                        null,
                                                                         methodName));
         }
 
@@ -1631,6 +1637,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                         OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
+                                                                        null,
                                                                         methodName));
         }
 
@@ -1714,6 +1721,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                         OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
+                                                                        null,
                                                                         methodName));
         }
 

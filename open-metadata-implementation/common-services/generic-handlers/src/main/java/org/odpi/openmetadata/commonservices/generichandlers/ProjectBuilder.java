@@ -38,20 +38,19 @@ public class ProjectBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public ProjectBuilder(
-                   String               qualifiedName,
-                   String               name,
-                   String               description,
-                   Date                 startDate,
-                   Date                 plannedEndDate,
-                   String               status,
-                   Map<String, String>  additionalProperties,
-                   String               typeGUID,
-                   String               typeName,
-                   Map<String, Object>  extendedProperties,
-                   OMRSRepositoryHelper repositoryHelper,
-                   String               serviceName,
-                   String               serverName)
+    public ProjectBuilder(String               qualifiedName,
+                          String               name,
+                          String               description,
+                          Date                 startDate,
+                          Date                 plannedEndDate,
+                          String               status,
+                          Map<String, String>  additionalProperties,
+                          String               typeGUID,
+                          String               typeName,
+                          Map<String, Object>  extendedProperties,
+                          OMRSRepositoryHelper repositoryHelper,
+                          String               serviceName,
+                          String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -61,30 +60,32 @@ public class ProjectBuilder extends ReferenceableBuilder
               repositoryHelper,
               serviceName,
               serverName);
+
         this.name = name;
+        this.description = description;
         this.startDate = startDate;
         this.plannedEndDate = plannedEndDate;
         this.status = status;
     }
 
-//
-//    /**
-//     * Classification constructor
-//     *
-//     * @param repositoryHelper helper methods
-//     * @param serviceName name of this OMAS
-//     * @param serverName name of local server
-//     */
-//    ProjectBuilder(OMRSRepositoryHelper repositoryHelper,
-//                   String               serviceName,
-//                   String               serverName)
-//    {
-//        super(OpenMetadataAPIMapper.Project_TYPE_GUID,
-//              OpenMetadataAPIMapper.Project_TYPE_NAME,
-//              repositoryHelper,
-//              serviceName,
-//              serverName);
-//    }
+
+    /**
+     * Classification constructor
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    ProjectBuilder(OMRSRepositoryHelper repositoryHelper,
+                   String               serviceName,
+                   String               serverName)
+    {
+        super(OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
+              OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+              repositoryHelper,
+              serviceName,
+              serverName);
+    }
 
 
     /**

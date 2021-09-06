@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErr
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -104,6 +105,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                name,
                                                nameParameterName,
                                                supportedZones,
+                                               null,
                                                methodName);
     }
 
@@ -118,6 +120,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param name name to search for
      * @param nameParameterName property that provided the name
      * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return matching B bean
@@ -132,6 +135,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                              String       name,
                                              String       nameParameterName,
                                              List<String> serviceSupportedZones,
+                                             Date         effectiveTime,
                                              String       methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -155,6 +159,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             resultTypeGUID,
                                             resultTypeName,
                                             serviceSupportedZones,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -191,6 +196,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            name,
                                            nameParameterName,
                                            supportedZones,
+                                           null,
                                            methodName);
     }
 
@@ -205,6 +211,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param name name to search for
      * @param nameParameterName property that provided the name
      * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return matching B bean
@@ -219,12 +226,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       name,
                                     String       nameParameterName,
                                     List<String> serviceSupportedZones,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
+        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 
         if (typeGUID != null)
         {
@@ -242,6 +250,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         resultTypeGUID,
                                         resultTypeName,
                                         serviceSupportedZones,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -284,6 +293,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 supportedZones,
                                                 startFrom,
                                                 pageSize,
+                                                null,
                                                 methodName);
     }
 
@@ -300,6 +310,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of B beans
@@ -316,6 +327,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     List<String> serviceSupportedZones,
                                                     int          startFrom,
                                                     int          pageSize,
+                                                    Date         effectiveTime,
                                                     String       methodName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -349,6 +361,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           null,
                                           startFrom,
                                           pageSize,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -391,6 +404,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        supportedZones,
                                        startFrom,
                                        pageSize,
+                                       null,
                                        methodName);
     }
 
@@ -407,6 +421,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of B beans
@@ -423,6 +438,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            List<String> serviceSupportedZones,
                                            int          startFrom,
                                            int          pageSize,
+                                           Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -456,6 +472,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -482,6 +499,38 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        String       typeName,
                                                        String       name,
                                                        String       nameParameterName,
+                                                       String       methodName) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        return this.getEntityByUniqueQualifiedName(userId, typeGUID, typeName, name, nameParameterName, null, methodName);
+    }
+
+
+    /**
+     * Return the entity for a qualified name that is effective at a specific time -
+     * if multiple entities have this name, an exception is thrown.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param name name to search for
+     * @param nameParameterName property that provided the name
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of B beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityByUniqueQualifiedName(String       userId,
+                                                       String       typeGUID,
+                                                       String       typeName,
+                                                       String       name,
+                                                       String       nameParameterName,
+                                                       Date         effectiveTime,
                                                        String       methodName) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
@@ -515,6 +564,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       null,
                                                                       0,
                                                                       0,
+                                                                      effectiveTime,
                                                                       methodName);
 
         if (matchingEntities == null)
@@ -575,6 +625,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  supportedZones,
                                                  startFrom,
                                                  pageSize,
+                                                 null,
                                                  methodName);
     }
 
@@ -591,6 +642,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of B beans
@@ -607,6 +659,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      List<String> serviceSupportedZones,
                                                      int          startFrom,
                                                      int          pageSize,
+                                                     Date         effectiveTime,
                                                      String       methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -640,6 +693,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -682,6 +736,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -698,6 +753,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of B beans
@@ -714,6 +770,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             List<String> serviceSupportedZones,
                                             int          startFrom,
                                             int          pageSize,
+                                            Date         effectiveTime,
                                             String       methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
@@ -747,6 +804,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1087,16 +1145,16 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public List<B> getMoreInformation(String       userId,
-                                      String       startingGUID,
-                                      String       startingGUIDParameterName,
-                                      String       suppliedStartingTypeName,
-                                      String       suppliedResultingTypeName,
-                                      int          startFrom,
-                                      int          pageSize,
-                                      String       methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    public List<B> getMoreInformation(String userId,
+                                      String startingGUID,
+                                      String startingGUIDParameterName,
+                                      String suppliedStartingTypeName,
+                                      String suppliedResultingTypeName,
+                                      int    startFrom,
+                                      int    pageSize,
+                                      String methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         return this.getMoreInformation(userId,
                                        startingGUID,
@@ -1106,6 +1164,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        supportedZones,
                                        startFrom,
                                        pageSize,
+                                       null,
                                        methodName);
     }
 
@@ -1121,6 +1180,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom int      starting position for fist returned element.
      * @param pageSize  int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName String calling method
      *
      * @return a list of assets or
@@ -1136,6 +1196,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       List<String> serviceSupportedZones,
                                       int          startFrom,
                                       int          pageSize,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -1162,6 +1223,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1228,6 +1290,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param createdBy who/what created the assignment
      * @param steward which steward is responsible for assignment
      * @param source where was the source of the assignment
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the guid properties are invalid
@@ -1248,6 +1312,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         String createdBy,
                                         String steward,
                                         String source,
+                                        Date   effectiveFrom,
+                                        Date   effectiveTo,
                                         String methodName)  throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -1313,7 +1379,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                  properties,
+                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -1329,6 +1395,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDParameter parameter supply the beanGUID
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1342,6 +1409,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String beanGUIDParameter,
                                           String glossaryTermGUID,
                                           String glossaryTermGUIDParameter,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1360,6 +1428,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -1370,12 +1439,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source - null for local
-     * @param beanGUID unique identifier of the startign element
+     * @param beanGUID unique identifier of the starting element
      * @param beanGUIDParameter parameter supplying the beanGUID
      * @param memberGUID unique identifier of the element to link
      * @param memberGUIDParameter parameter supplying the memberGUID
      * @param resourceUse description of the way that the resource list is used
      * @param watchResource should changes in the members result in notifications
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the guid properties are invalid
@@ -1391,6 +1462,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         String  memberGUIDParameter,
                                         String  resourceUse,
                                         boolean watchResource,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
                                         String  methodName)  throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -1419,7 +1492,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -1434,6 +1507,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDParameter parameter supplying beanGUID
      * @param memberGUID unique identifier of the glossary term
      * @param memberGUIDParameter parameter supplying memberGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1447,9 +1521,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String beanGUIDParameter,
                                           String memberGUID,
                                           String memberGUIDParameter,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         if (beanGUID != null)
         {
@@ -1467,6 +1542,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           supportedZones,
                                           OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                          effectiveTime,
                                           methodName);
         }
     }
@@ -1475,13 +1551,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the list of elements associated with a definition.
+     * Return the list of elements associated with a collection.
      *
      * @param userId calling user
      * @param collectionGUID unique identifier of the collection to query
      * @param collectionGUIDParameterName name of the parameter supplying collectionGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of metadata elements describing the definitions associated with the requested definition
@@ -1495,6 +1572,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String collectionGUIDParameterName,
                                           int    startFrom,
                                           int    pageSize,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1508,6 +1586,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1551,6 +1630,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             null,
                                                             true,
                                                             supportedZones,
+                                                            null,
                                                             methodName);
 
         EntityDetail entity2 = this.getEntityFromRepository(userId,
@@ -1561,6 +1641,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             null,
                                                             true,
                                                             supportedZones,
+                                                            null,
                                                             methodName);
 
         /*
@@ -1692,6 +1773,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param element1GUIDParameter name of parameter supplying element1GUID
      * @param element2GUID unique identifier of second element
      * @param element2GUIDParameter name of parameter supplying element2GUID
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
@@ -1703,6 +1785,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             String element1GUIDParameter,
                                             String element2GUID,
                                             String element2GUIDParameter,
+                                            Date   effectiveTime,
                                             String methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -1722,6 +1805,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             element1GUID,
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             element2GUID,
+                                                            effectiveTime,
                                                             methodName);
 
         /*
@@ -1738,6 +1822,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     0,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
+                                    effectiveTime,
                                     methodName) == null)
         {
             this.removeClassificationFromRepository(userId,
@@ -1746,8 +1831,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     element1GUID,
                                                     element1GUIDParameter,
                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     methodName);
         }
 
@@ -1763,6 +1848,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     0,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
+                                    effectiveTime,
                                     methodName) == null)
         {
             this.removeClassificationFromRepository(userId,
@@ -1771,8 +1857,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     element2GUID,
                                                     element2GUIDParameter,
                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     methodName);
         }
     }
@@ -1816,6 +1902,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      supportedZones,
                                                                      0,
                                                                      invalidParameterHandler.getMaxPagingSize(),
+                                                                     null,
                                                                      methodName);
 
         if (vendorProperties != null)
@@ -1961,6 +2048,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      supportedZones,
                                                                      0,
                                                                      invalidParameterHandler.getMaxPagingSize(),
+                                                                     null,
                                                                      methodName);
 
         if (propertyFacets != null)

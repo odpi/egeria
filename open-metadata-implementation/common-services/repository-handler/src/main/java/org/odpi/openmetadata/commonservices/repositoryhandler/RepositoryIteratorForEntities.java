@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +24,8 @@ public abstract class RepositoryIteratorForEntities
     protected int                pageSize;
     protected String             methodName;
     protected String             sequencingPropertyName;
+    protected Date               effectiveTime;
+
     protected List<EntityDetail> entitiesCache = null;
 
 
@@ -36,6 +39,7 @@ public abstract class RepositoryIteratorForEntities
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositoryIteratorForEntities(RepositoryHandler  repositoryHandler,
@@ -45,6 +49,7 @@ public abstract class RepositoryIteratorForEntities
                                          String             sequencingPropertyName,
                                          int                startingFrom,
                                          int                pageSize,
+                                         Date               effectiveTime,
                                          String             methodName)
     {
         this.repositoryHandler      = repositoryHandler;
@@ -54,6 +59,7 @@ public abstract class RepositoryIteratorForEntities
         this.sequencingPropertyName = sequencingPropertyName;
         this.startingFrom           = startingFrom;
         this.pageSize               = pageSize;
+        this.effectiveTime          = effectiveTime;
         this.methodName             = methodName;
     }
 

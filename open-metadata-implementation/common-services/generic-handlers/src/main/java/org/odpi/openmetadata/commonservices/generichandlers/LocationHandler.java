@@ -11,12 +11,15 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
  * LocationHandler manages Location objects.  It runs server-side in
  * the OMAG Server Platform and retrieves Location entities through the OMRSRepositoryConnector.
+ * It supports effectivity dates on entities and relationships but not on classifications (since these tent to be
+ * innate properties of the location) and all locations are local cohort.
  */
 public class LocationHandler<B> extends ReferenceableHandler<B>
 {
@@ -77,6 +80,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a location
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance location subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @return unique identifier of the new location object
@@ -91,6 +96,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  Map<String, String> additionalProperties,
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -123,6 +130,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
+
+        locationBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return this.createBeanInRepository(userId,
                                            null,
@@ -205,6 +214,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance location
      * @param suppliedTypeName type of location
      * @param extendedProperties  properties for a governance location subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param methodName calling method
      *
@@ -222,6 +233,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
                                  boolean             isMergeUpdate,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -255,6 +268,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
+
+        locationBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
                                     null,
@@ -487,6 +502,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationParentGUIDParameterName parameter supplying the parent
      * @param locationChildGUID unique identifier of the child location
      * @param locationChildGUIDParameterName parameter supplying the child
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -498,6 +515,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     String locationParentGUIDParameterName,
                                     String locationChildGUID,
                                     String locationChildGUIDParameterName,
+                                    Date   effectiveFrom,
+                                    Date   effectiveTo,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -513,7 +532,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -526,6 +545,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationParentGUIDParameterName parameter supplying the parent
      * @param locationChildGUID unique identifier of the child location
      * @param locationChildGUIDParameterName parameter supplying the child
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -537,6 +557,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     String locationParentGUIDParameterName,
                                     String locationChildGUID,
                                     String locationChildGUIDParameterName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -554,6 +575,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -566,6 +588,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationOneGUIDParameterName parameter supplying the first location
      * @param locationTwoGUID unique identifier of the second location
      * @param locationTwoGUIDParameterName parameter supplying the second location
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -577,6 +601,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                    String locationOneGUIDParameterName,
                                    String locationTwoGUID,
                                    String locationTwoGUIDParameterName,
+                                   Date   effectiveFrom,
+                                   Date   effectiveTo,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -592,7 +618,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -605,6 +631,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationOneGUIDParameterName parameter supplying the first location
      * @param locationTwoGUID unique identifier of the second location
      * @param locationTwoGUIDParameterName parameter supplying the second location
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -616,6 +643,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                    String locationOneGUIDParameterName,
                                    String locationTwoGUID,
                                    String locationTwoGUIDParameterName,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -633,6 +661,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -645,6 +674,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationGUIDParameterName parameter supplying the location
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the asset
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -656,6 +687,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                    String locationGUIDParameterName,
                                    String assetGUID,
                                    String assetGUIDParameterName,
+                                   Date   effectiveFrom,
+                                   Date   effectiveTo,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -671,7 +704,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -684,6 +717,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationGUIDParameterName parameter supplying the location
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the asset
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -695,6 +729,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                    String locationGUIDParameterName,
                                    String assetGUID,
                                    String assetGUIDParameterName,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -712,6 +747,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -754,22 +790,25 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
      * @param methodName calling method
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countKnownLocations(String   userId,
-                                   String   elementGUID,
-                                   String   methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public int countKnownLocations(String userId,
+                                   String elementGUID,
+                                   Date   effectiveTime,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -783,6 +822,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of object being attached to
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -797,11 +837,12 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  String       elementTypeName,
                                  int          startingFrom,
                                  int          pageSize,
+                                 Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
-        return this.getLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, methodName);
+        return this.getLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, effectiveTime, methodName);
     }
 
 
@@ -815,6 +856,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -830,6 +872,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  List<String> serviceSupportedZones,
                                  int          startingFrom,
                                  int          pageSize,
+                                 Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -844,6 +887,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 }

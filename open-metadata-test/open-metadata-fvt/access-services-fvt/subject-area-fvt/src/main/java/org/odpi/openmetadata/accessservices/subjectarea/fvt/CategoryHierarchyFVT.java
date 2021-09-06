@@ -56,11 +56,17 @@ public class CategoryHierarchyFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
-        System.out.println("CategoryHierarchyFVT runIt started");
-        CategoryHierarchyFVT fvt = new CategoryHierarchyFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("CategoryHierarchyFVT runIt stopped");
+        try {
+            System.out.println("CategoryHierarchyFVT runIt started");
+            CategoryHierarchyFVT fvt = new CategoryHierarchyFVT(url,serverName,userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("CategoryHierarchyFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

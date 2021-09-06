@@ -30,6 +30,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.mo
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -43,8 +44,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServ
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AnalyticsArtifactHandler {
 
@@ -1260,7 +1259,7 @@ public class AnalyticsArtifactHandler {
 						IdMap.ASSET_TYPE_GUID,
 						IdMap.ASSET_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, methodName);
+						null, null, 0, 0, null, methodName);
 
 			if (ret != null) {
 				// only objects from the requested server

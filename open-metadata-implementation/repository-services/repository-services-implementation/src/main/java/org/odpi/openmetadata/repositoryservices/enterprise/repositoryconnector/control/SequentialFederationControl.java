@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
@@ -21,13 +22,15 @@ public class SequentialFederationControl extends FederationControlBase
      *
      * @param userId calling user
      * @param cohortConnectors list of connectors to call
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public SequentialFederationControl(String                        userId,
                                        List<OMRSRepositoryConnector> cohortConnectors,
+                                       AuditLog                      auditLog,
                                        String                        methodName)
     {
-        super(userId, cohortConnectors, methodName);
+        super(userId, cohortConnectors, auditLog, methodName);
     }
 
 
@@ -48,15 +51,18 @@ public class SequentialFederationControl extends FederationControlBase
                 {
                     OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
 
-                    String metadataCollectionId = this.validateMetadataCollection(metadataCollection, methodName);
+                    String metadataCollectionId = this.validateMetadataCollection(cohortConnector, metadataCollection, methodName);
 
-                    if (executor.issueRequestToRepository(metadataCollectionId, metadataCollection))
+                    if (metadataCollectionId != null)
                     {
-                        /*
-                         * The executor returns true if it has all of the results it needs.
-                         * If it returns false it means it needs more info from another repository
-                         */
-                        return;
+                        if (executor.issueRequestToRepository(metadataCollectionId, metadataCollection))
+                        {
+                            /*
+                             * The executor returns true if it has all of the results it needs.
+                             * If it returns false it means it needs more info from another repository
+                             */
+                            return;
+                        }
                     }
                 }
             }

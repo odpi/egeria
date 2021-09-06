@@ -112,14 +112,17 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
                 validateCategoriesDuringCreation(userId, methodName, suppliedCategorysummaries);
-                InstanceProperties instanceProperties = termEntityDetail.getProperties();
-                if (instanceProperties == null) {
-                    instanceProperties = new InstanceProperties();
+
+                Date effectiveFrom = null;
+                Date effectiveTo = null;
+
+                if (suppliedTerm.getEffectiveFromTime() != null) {
+                    effectiveFrom = new Date(suppliedTerm.getEffectiveFromTime());
                 }
-                if (instanceProperties.getEffectiveFromTime() == null) {
-                    instanceProperties.setEffectiveFromTime(new Date());
-                    termEntityDetail.setProperties(instanceProperties);
+                if (suppliedTerm.getEffectiveToTime() != null) {
+                    effectiveTo = new Date(suppliedTerm.getEffectiveToTime());
                 }
+
                 GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
                                                                       suppliedTerm.getName(),
                                                                       suppliedTerm.getDescription(),
@@ -130,6 +133,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       genericHandler.getRepositoryHelper(),
                                                                       genericHandler.getServiceName(),
                                                                       genericHandler.getServerName());
+
+                builder.setEffectivityDates(effectiveFrom, effectiveTo);
+                builder.setAnchors(userId, glossaryGuid, methodName);
+
                 createdTermGuid = genericHandler.createBeanInRepository(userId,
                                                                         null,
                                                                         null,
@@ -140,21 +147,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                         builder,
                                                                         methodName);
                 if (createdTermGuid != null) {
-                    // set effectivity dates if required
-                    setNodeEffectivity(userId,
-                                       suppliedTerm,
-                                       methodName,
-                                       createdTermGuid,
-                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
 
                     TermAnchor termAnchor = new TermAnchor();
-                    // we expect that the created term has a from time of now or the supplied value.
-                    // set the relationship from value to the same
-                    termAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                    if (instanceProperties.getEffectiveToTime() != null) {
-                        termAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
-                    }
 
                     termAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     termAnchor.getEnd2().setNodeGuid(createdTermGuid);
@@ -169,10 +163,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                 categorization.getEnd2().setNodeGuid(createdTermGuid);
                                 // we expect that the created term has a from time of now or the supplied value.
                                 // set the relationship from value to the same
-                                categorization.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
-                                if (instanceProperties.getEffectiveToTime() != null) {
-                                    categorization.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
-                                }
+                                categorization.setEffectiveFromTime(suppliedTerm.getEffectiveFromTime());
+                                categorization.setEffectiveToTime(suppliedTerm.getEffectiveToTime());
+
                                 // TODO check error
                                 relationshipHandler.createRelationship(methodName, userId, TermCategorizationMapper.class, categorization);
 
@@ -248,8 +241,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                        null,
                                                        null,
-                                                       false,
-                                                       null,
+                                                       (Date)null,
                                                        methodName);
             }
         }
@@ -280,8 +272,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               null,
+                                                                               (Date)null,
                                                                                methodName);
 
             TermMapper termMapper = mappersFactory.get(TermMapper.class);
@@ -360,8 +351,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
-                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME
-                                               );
+                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME);
         if (CollectionUtils.isNotEmpty(termAnchorRelationships)) {
             for (Relationship relationship : termAnchorRelationships) {
                 TermAnchor termAnchor = (TermAnchor)relationship;
@@ -443,7 +433,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Term> updateTerm(String userId, String guid, Term suppliedTerm, SubjectAreaRelationshipHandler relationshipHandler, boolean isReplace) {
@@ -460,6 +450,29 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 EntityDetail suppliedEntity = termMapper.map(suppliedTerm);
                 EntityDetail storedEntity = termMapper.map(storedTerm);
+
+                Date effectiveFrom = null;
+                Date effectiveTo = null;
+
+                if (suppliedTerm.getEffectiveFromTime() != null) {
+                    effectiveFrom = new Date(suppliedTerm.getEffectiveFromTime());
+                }
+                if (suppliedTerm.getEffectiveToTime() != null) {
+                    effectiveTo = new Date(suppliedTerm.getEffectiveToTime());
+                }
+
+                GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
+                                                                      suppliedTerm.getName(),
+                                                                      suppliedTerm.getDescription(),
+                                                                      suppliedTerm.getSummary(),
+                                                                      suppliedTerm.getExamples(),
+                                                                      suppliedTerm.getAbbreviation(),
+                                                                      suppliedTerm.getUsage(),
+                                                                      genericHandler.getRepositoryHelper(),
+                                                                      genericHandler.getServiceName(),
+                                                                      genericHandler.getServerName());
+
+                builder.setEffectivityDates(effectiveFrom, effectiveTo);
                 genericHandler.updateBeanInRepository(userId,
                                                       null,
                                                       null,
@@ -470,12 +483,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                       suppliedEntity.getProperties(),
                                                       !isReplace,
                                                       methodName);
-                setNodeEffectivity(userId,
-                                   suppliedTerm,
-                                   methodName,
-                                   guid,
-                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME);
+
                 // the update properties should not have updated the classifications so we can use
                 Set<String> storedClassificationNames = getStoredClassificationNames(storedTerm);
 
@@ -505,28 +513,26 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                 classificationTypeGUID = typeDef.getGUID();
                             }
 
+                            boolean isMergeUpdate;
+
                             if ((storedClassificationMap == null) || (!storedClassificationMap.containsKey(classificationTypeName))) {
-                                genericHandler.setClassificationInRepository(userId,
-                                                              guid,
-                                                             "guid",
-                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             suppliedClassification.getProperties(),
-                                                             methodName);
+                                isMergeUpdate = false;
                             } else {
-                                genericHandler.setClassificationInRepository(userId,
-                                                                             null,
-                                                                             null,
-                                                                             guid,
-                                                                             "guid",
-                                                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                             classificationTypeGUID,
-                                                                             classificationTypeName,
-                                                                             suppliedClassification.getProperties(),
-                                                                             true,    //  merge
-                                                                             methodName);
+                                isMergeUpdate = true;
                             }
+
+                            genericHandler.setClassificationInRepository(userId,
+                                                                         null,
+                                                                         null,
+                                                                         guid,
+                                                                         "guid",
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         classificationTypeGUID,
+                                                                         classificationTypeName,
+                                                                         suppliedClassification.getProperties(),
+                                                                         isMergeUpdate,
+                                                                         methodName);
+
                             storedClassificationNames.remove(suppliedClassification.getName());
                         }
                     }
@@ -779,6 +785,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                          false,
                                                                                          false,
                                                                                          pageSize,
+                                                                                         null, // any date
                                                                                          methodName);
                 if (entities != null) {
                     Set<Category> categories = new HashSet<>();

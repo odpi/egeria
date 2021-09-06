@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -17,39 +18,48 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
+
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_MOVEMENT_ENGINE_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
 /**
  * DataEngineRegistrationHandler manages SoftwareServerCapability objects from external data engines. It runs
  * server-side in the DataEngine OMAS and creates software server capability entities through the
- * OMRSRepositoryConnector.
+ * SoftwareServerCapabilityHandler.
  */
 public class DataEngineRegistrationHandler {
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
+    private final SoftwareServerCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler;
     private final InvalidParameterHandler invalidParameterHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName             name of this service
-     * @param serverName              name of the local server
-     * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
-     * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param serviceName                       name of this service
+     * @param serverName                        name of the local server
+     * @param invalidParameterHandler           handler for managing parameter errors
+     * @param repositoryHandler                 manages calls to the repository services
+     * @param repositoryHelper                  provides utilities for manipulating the repository services objects
+     * @param softwareServerCapabilityHandler   handler for the creation of SoftwareServerCapability objects
      */
     public DataEngineRegistrationHandler(String serviceName, String serverName,
                                          InvalidParameterHandler invalidParameterHandler,
                                          RepositoryHandler repositoryHandler,
-                                         OMRSRepositoryHelper repositoryHelper) {
+                                         OMRSRepositoryHelper repositoryHelper,
+                                         SoftwareServerCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.softwareServerCapabilityHandler = softwareServerCapabilityHandler;
 
     }
 
@@ -71,20 +81,23 @@ public class DataEngineRegistrationHandler {
         final String methodName = "upsertExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(softwareServerCapability.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME,
-                methodName);
 
-        ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
-        InstanceProperties properties = builder.getInstanceProperties(methodName);
+        String externalEngineName = softwareServerCapability.getQualifiedName();
+        invalidParameterHandler.validateName(externalEngineName, QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
 
-        String externalEngineName = softwareServerCapability.getQualifiedName();
         String externalEngineGUID = getExternalDataEngine(userId, externalEngineName);
         if (externalEngineGUID == null) {
-            externalEngineGUID = repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(),
-                    null, externalEngineName, properties, methodName);
+            externalEngineGUID = softwareServerCapabilityHandler.createSoftwareServerCapability(userId, null,
+                    null, entityTypeDef.getGUID(), entityTypeDef.getName(), null, externalEngineName,
+                    softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
+                    softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
+                    softwareServerCapability.getAdditionalProperties(), null, methodName);
         } else {
+            ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
+            InstanceProperties properties = builder.getInstanceProperties(methodName);
             repositoryHandler.updateEntity(userId, externalEngineGUID, externalEngineName, externalEngineGUID,
                     entityTypeDef.getGUID(), entityTypeDef.getName(), properties, null, methodName);
         }
@@ -140,7 +153,7 @@ public class DataEngineRegistrationHandler {
         return new ExternalDataEnginePropertiesBuilder(softwareServerCapability.getQualifiedName(),
                 softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                 softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                null, repositoryHelper, serviceName, serverName);
+                softwareServerCapability.getAdditionalProperties(), repositoryHelper, serviceName, serverName);
     }
 
 
