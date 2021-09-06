@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -102,6 +103,8 @@ public class ConnectionRESTServices
                                                                  requestBody.getEncryptedPassword(),
                                                                  requestBody.getTypeName(),
                                                                  requestBody.getExtendedProperties(),
+                                                                 null,
+                                                                 null,
                                                                  null,
                                                                  null,
                                                                  null,
@@ -253,6 +256,8 @@ public class ConnectionRESTServices
                                          requestBody.getTypeName(),
                                          requestBody.getExtendedProperties(),
                                          isMergeUpdate,
+                                         null,
+                                         null,
                                          methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -880,6 +885,7 @@ public class ConnectionRESTServices
                                                                               searchStringParameterName,
                                                                               startFrom,
                                                                               pageSize,
+                                                                              new Date(),
                                                                               methodName);
 
                 response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
@@ -942,6 +948,7 @@ public class ConnectionRESTServices
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   new Date(),
                                                                                    methodName);
 
                 response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
@@ -992,7 +999,11 @@ public class ConnectionRESTServices
 
             ConnectionHandler<ConnectionElement> handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            ConnectionElement connection = handler.getConnectionByGUID(userId, guid, guidParameterName, methodName);
+            ConnectionElement connection = handler.getConnectionByGUID(userId,
+                                                                       guid,
+                                                                       guidParameterName,
+                                                                       new Date(),
+                                                                       methodName);
 
             response.setElement(setUpVendorProperties(userId, connection, handler, methodName));
         }
@@ -1189,6 +1200,8 @@ public class ConnectionRESTServices
                                        requestBody.getTypeName(),
                                        requestBody.getExtendedProperties(),
                                        isMergeUpdate,
+                                       null,
+                                       null,
                                        methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1314,6 +1327,7 @@ public class ConnectionRESTServices
                                                                        searchStringParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -1372,7 +1386,13 @@ public class ConnectionRESTServices
 
                 EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
 
-                List<EndpointElement> elements = handler.getEndpointsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
+                List<EndpointElement> elements = handler.getEndpointsByName(userId,
+                                                                            requestBody.getName(),
+                                                                            nameParameterName,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            new Date(),
+                                                                            methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
             }

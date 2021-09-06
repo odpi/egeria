@@ -12,13 +12,13 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * ProcessHandler provides the methods to create and maintain processes and their contents.
+ * It does not currently support effectivity dates - but probably should.
  */
 public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL, LINEAGE_MAPPING> extends ReferenceableHandler<PROCESS>
 {
@@ -597,6 +597,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                           searchStringParameterName,
                                                           startFrom,
                                                           validatedPageSize,
+                                                          null,
                                                           methodName);
 
         return results;

@@ -809,7 +809,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     METADATA_COLLECTION_ID_MISMATCH(500, "OMRS-REST-REPOSITORY-CONNECTOR-500-001",
             "A remote open metadata repository {0} returned a metadata collection identifier of {1} on its REST API after it registered with the cohort using a metadata collection identifier of {2}",
             "There is a configuration error in the remote open metadata repository.",
-            "Review the set up of the remote repository.  It may be that the server-url-root parameter is incorrectly set and is clashing with the setting in another server registered with the same cohort."),
+            "Review the set up of the remote repository.  Has it be reconfigured and changed its metadata collection Id? It may be that the server-url-root parameter is incorrectly set and is clashing with the setting in another server registered with the same cohort."),
     NULL_REMOTE_METADATA_COLLECTION_ID(500, "OMRS-REST-REPOSITORY-CONNECTOR-500-002",
             "A remote open metadata repository {0} returned a null metadata collection identifier on its REST API.  It registered with the cohort using a metadata collection identifier of {1}",
             "There is an internal error in the remote open metadata repository.",

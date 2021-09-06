@@ -169,6 +169,7 @@ public interface SchemaManagerInterface
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param schemaTypeProperties properties about the schema type to store
+     * @param schemaTypeOptionGUIDs unique identifier for the schema types to choose from
      *
      * @return unique identifier of the new schema type
      *

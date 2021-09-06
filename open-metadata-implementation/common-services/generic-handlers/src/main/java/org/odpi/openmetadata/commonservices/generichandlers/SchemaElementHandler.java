@@ -13,11 +13,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * SchemaElementHandler manages common methods fof SchemaType and Schema Attribute objects.  It runs server-side in
  * the OMAG Server Platform and retrieves SchemaElement entities and relationships through the OMRSRepositoryConnector.
+ * This handler does not support effectivity dates but probably should.
  */
 class SchemaElementHandler<B> extends ReferenceableHandler<B>
 {
@@ -111,6 +113,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                              assetGUIDParameterName,
                                                                              assetTypeName,
                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                             null,
                                                                              methodName);
 
         if (assetQualifiedName == null)
@@ -135,6 +138,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                schemaTypeTypeName,
+                                                               null,
                                                                methodName);
 
         if (schemaTypeEntity == null)
@@ -424,6 +428,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       new Date(),
                                                                        methodName);
 
 
@@ -434,6 +439,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       new Date(),
                                                                        methodName);
         }
 
@@ -620,6 +626,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                       OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 

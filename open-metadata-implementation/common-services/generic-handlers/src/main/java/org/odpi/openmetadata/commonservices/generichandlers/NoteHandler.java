@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * NoteLogHandler manages NoteLog objects.  It runs server-side in
  * the OMAG Server Platform and retrieves NoteLog entities through the OMRSRepositoryConnector.
+ * Currently note do not support effectivity dates but may be interesting of notes are added during deployment.
  */
 public class NoteHandler<B> extends ReferenceableHandler<B>
 {
@@ -88,6 +89,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_GUID,
                                       OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 

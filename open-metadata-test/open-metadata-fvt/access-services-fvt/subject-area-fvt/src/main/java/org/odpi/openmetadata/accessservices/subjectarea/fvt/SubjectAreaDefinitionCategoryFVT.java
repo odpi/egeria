@@ -71,11 +71,18 @@ public class SubjectAreaDefinitionCategoryFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("SubjectAreaDefinitionCategoryFVT runIt started");
-        SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
+        try
+        {
+            System.out.println("SubjectAreaDefinitionCategoryFVT runIt started");
+            SubjectAreaDefinitionCategoryFVT fvt = new SubjectAreaDefinitionCategoryFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getSubjectAreaCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         SubjectAreaDefinitionCategoryFVT fvt = new SubjectAreaDefinitionCategoryFVT(url, serverName, userId);

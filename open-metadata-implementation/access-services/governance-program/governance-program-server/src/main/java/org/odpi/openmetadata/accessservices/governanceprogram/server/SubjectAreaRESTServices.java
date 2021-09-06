@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -339,6 +340,7 @@ public class SubjectAreaRESTServices
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)
@@ -460,6 +462,7 @@ public class SubjectAreaRESTServices
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)
@@ -657,6 +660,7 @@ public class SubjectAreaRESTServices
                 subjectAreaDefinition.setNestedSubjectAreaGUIDs(subjectAreaHandler.getSubjectAreaChildrenGUIDs(userId,
                                                                                                                subjectAreaGUID,
                                                                                                                subjectAreaGUIDParameterName,
+                                                                                                               new Date(),
                                                                                                                methodName));
 
                 GovernanceDefinitionHandler<GovernanceDefinitionElement> definitionHandler    = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);

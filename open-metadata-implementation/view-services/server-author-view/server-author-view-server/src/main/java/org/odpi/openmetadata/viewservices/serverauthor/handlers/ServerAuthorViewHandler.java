@@ -329,6 +329,32 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
+        try {
+            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
+                                                                                                          serverToBeConfiguredName,
+                                                                                                          this.platformURL
+            );
+            configurationClient.setPluginRepositoryConnection(connection);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
 
     /**
      * Get the stored configuration for the named server
@@ -742,6 +768,28 @@ public class ServerAuthorViewHandler {
        return OMRSAuditLogRecordSeverity.getSeverityList();
     }
     /**
+     * Clear the audit log destinations associated with the the server being configured
+     *
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public void clearAuditLogDestinations(String serverToBeConfiguredName)  throws ServerAuthorViewServiceException {
+        final String methodName = "clearAuditLogDestinations";
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.clearAuditLogDestinations();
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
      * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
      *
      * A cohort is a group of open metadata
@@ -797,5 +845,6 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+
 }
 

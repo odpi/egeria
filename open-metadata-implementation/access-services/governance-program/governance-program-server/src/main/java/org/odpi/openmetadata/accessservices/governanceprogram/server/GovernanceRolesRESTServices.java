@@ -187,6 +187,8 @@ public class GovernanceRolesRESTServices
                                          requestBody.getTypeName(),
                                          extendedProperties,
                                          isMergeUpdate,
+                                         null,
+                                         null,
                                          methodName);
             }
             else
@@ -320,6 +322,7 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 null,
                                                  methodName);
             }
             else
@@ -453,6 +456,7 @@ public class GovernanceRolesRESTServices
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 null,
                                                  methodName);
             }
             else
@@ -641,6 +645,7 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUIDParameterName,
                                                               0,
                                                               0,
+                                                              null,
                                                               methodName));
         }
         catch (Exception error)
@@ -688,6 +693,7 @@ public class GovernanceRolesRESTServices
                                                                    domainIdentifier,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   null,
                                                                    methodName));
 
         }
@@ -738,6 +744,7 @@ public class GovernanceRolesRESTServices
                                                                 titleParameterName,
                                                                 startFrom,
                                                                 pageSize,
+                                                                null,
                                                                 methodName));
         }
         catch (Exception error)
