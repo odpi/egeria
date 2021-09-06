@@ -75,19 +75,19 @@ Example:
         "port": "8182",
         "hosts": ["localhost"],
         "serializer.className": "org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0",
-        "serializer.config": {
-            "ioRegistries": [
-                "org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry",
-                "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0"
-                ]
-        },
+        "serializer.config.ioRegistries": [
+            "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0",
+            "org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry"
+        ],
         "gremlin.remote.driver.sourceName": "g",
         "remote.schemaManagement.enable": true
     }
 },
 ```
 In this example, the connector accesses a standalone JanusGraph server running on the local machine, on port 8182. 
-The indexing and storage technologies used by the JansusGraph server are irrelevant for the client in this situation.  
+The indexing and storage technologies used by the JanusGraph server are irrelevant for the client in this situation.
+
+Please note that the server needs to have the same ioRegistries configured for the serializer to work properly.
  
 ----
 Return to [open-lineage-connectors](..) module.

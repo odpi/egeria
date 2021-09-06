@@ -15,23 +15,23 @@ public class LineageGraphRemoteConnectorProvider extends LineageGraphProviderBas
     static final String CONNECTOR_TYPE_DESCRIPTION = "Connector supports storing and retrieving entities for lineage using graph hosted on Janus Graph Server.";
 
 
-    public static final String CLUSTER_PORT="gremlin.remote.driver.cluster.port";
-    public static final String CLUSTER_HOSTS="gremlin.remote.driver.cluster.hosts";
-    public static final String SOURCE_NAME ="gremlin.remote.driver.sourceName";
-    public static final String CLUSTER_MIN_CONNECTION_POOL_SIZE ="gremlin.remote.driver.cluster.minConnectionPoolSize";
-    public static final String CLUSTER_MAX_CONNECTION_POOL_SIZE ="gremlin.remote.driver.cluster.maxConnectionPoolSize";
-    public static final String CLUSTER_MAX_IN_PROCESS_PER_CONNECTION ="gremlin.remote.driver.cluster.maxInProcessPerConnection";
-    public static final String CLUSTER_MAX_SIMULTANEOUS_USAGE_PER_CONNECTION ="gremlin.remote.driver.cluster.maxSimultaneousUsagePerConnection";
-    public static final String CLUSTER_CREDENTIALS_USERNAME="gremlin.remote.driver.cluster.credentials.username";
-    public static final String CLUSTER_CREDENTIALS_PASSWORD ="gremlin.remote.driver.cluster.credentials.password";
-    public static final String CLUSTER_SSL_ENABLE ="gremlin.remote.driver.cluster.ssl.enable";
-    public static final String CLUSTER_SSL_SKIP_VALIDATION ="gremlin.remote.driver.cluster.sslSkipCertValidation";
-    public static final String CLUSTER_KEYSTORE ="gremlin.remote.driver.cluster.keyStore";
-    public static final String CLUSTER_KEYSTORE_TYPE ="gremlin.remote.driver.cluster.keyStoreType";// JKS or PKCS#12
-    public static final String CLUSTER_KEYSTORE_PASSWORD ="gremlin.remote.driver.cluster.keyStorePassword";
-    public static final String CLUSTER_TRUST_STORE ="gremlin.remote.driver.cluster.trustStore";
-    public static final String CLUSTER_TRUST_STORE_PASSWORD ="gremlin.remote.driver.cluster.trustStorePassword";
-    public static final String SCHEMA_MANAGEMENT_ENABLE ="remote.schemaManagement.enable";
+    public static final String CLUSTER_PORT = "gremlin.remote.driver.cluster.port";
+    public static final String CLUSTER_HOSTS = "gremlin.remote.driver.cluster.hosts";
+    public static final String SOURCE_NAME = "gremlin.remote.driver.sourceName";
+    public static final String CLUSTER_MIN_CONNECTION_POOL_SIZE = "gremlin.remote.driver.cluster.minConnectionPoolSize";
+    public static final String CLUSTER_MAX_CONNECTION_POOL_SIZE = "gremlin.remote.driver.cluster.maxConnectionPoolSize";
+    public static final String CLUSTER_MAX_IN_PROCESS_PER_CONNECTION = "gremlin.remote.driver.cluster.maxInProcessPerConnection";
+    public static final String CLUSTER_MAX_SIMULTANEOUS_USAGE_PER_CONNECTION = "gremlin.remote.driver.cluster.maxSimultaneousUsagePerConnection";
+    public static final String CLUSTER_CREDENTIALS_USERNAME = "gremlin.remote.driver.cluster.credentials.username";
+    public static final String CLUSTER_CREDENTIALS_PASSWORD = "gremlin.remote.driver.cluster.credentials.password";
+    public static final String CLUSTER_SSL_ENABLE = "gremlin.remote.driver.cluster.ssl.enable";
+    public static final String CLUSTER_SSL_SKIP_VALIDATION = "gremlin.remote.driver.cluster.sslSkipCertValidation";
+    public static final String CLUSTER_KEYSTORE = "gremlin.remote.driver.cluster.keyStore";
+    public static final String CLUSTER_KEYSTORE_TYPE = "gremlin.remote.driver.cluster.keyStoreType";// JKS or PKCS#12
+    public static final String CLUSTER_KEYSTORE_PASSWORD = "gremlin.remote.driver.cluster.keyStorePassword";
+    public static final String CLUSTER_TRUST_STORE = "gremlin.remote.driver.cluster.trustStore";
+    public static final String CLUSTER_TRUST_STORE_PASSWORD = "gremlin.remote.driver.cluster.trustStorePassword";
+    public static final String SCHEMA_MANAGEMENT_ENABLE = "remote.schemaManagement.enable";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
