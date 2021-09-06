@@ -187,8 +187,19 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             if (next.containsKey(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME)) {
                 return Optional.of(next.get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME).get(0));
             }
+        } else {
+            return getLineageUpdateTimeFromGraphVariables();
+
         }
         return Optional.empty();
+    }
+
+    private Optional<Long> getLineageUpdateTimeFromGraphVariables() {
+        try {
+            return g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
+        } catch (UnsupportedOperationException e) {
+            return Optional.empty();
+        }
     }
 
     /**
