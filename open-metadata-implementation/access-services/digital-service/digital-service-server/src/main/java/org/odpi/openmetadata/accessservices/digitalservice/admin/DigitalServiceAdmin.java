@@ -58,15 +58,26 @@ public class DigitalServiceAdmin extends AccessServiceAdmin
 
         try
         {
-            List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                                                                      accessServiceConfig.getAccessServiceName(),
-                                                                      auditLog);
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
+
+            List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
+
+            List<String> publishZones = this.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
 
             this.instance = new DigitalServiceServicesInstance(repositoryConnector,
                                                                supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
                                                                auditLog,
                                                                serverUserName,
-                                                               repositoryConnector.getMaxPageSize());
+                                                               repositoryConnector.getMaxPageSize(),
+                                                               accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             /*

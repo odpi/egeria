@@ -13,12 +13,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
  * SchemaTypeHandler manages SchemaType objects.  It runs server-side in
  * the OMAG Server Platform and retrieves SchemaElement entities through the OMRSRepositoryConnector.
+ * This handler does not support effectivity dates but probably should.
  */
 public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 {
@@ -1075,6 +1077,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId     calling user
      * @param assetGUID identifier for the entity that the object is attached to
      * @param assetGUIDParameterName name of parameter for assetGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1086,6 +1089,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaTypeForAsset(String   userId,
                                    String   assetGUID,
                                    String   assetGUIDParameterName,
+                                   Date     effectiveTime,
                                    String   methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -1096,6 +1100,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1106,6 +1111,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId     calling user
      * @param portGUID identifier for the entity that the object is attached to
      * @param portGUIDParameterName name of parameter for portGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1117,6 +1123,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaTypeForPort(String   userId,
                                   String   portGUID,
                                   String   portGUIDParameterName,
+                                  Date     effectiveTime,
                                   String   methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -1127,6 +1134,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                            OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                            OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1141,6 +1149,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param parentTypeName type name of anchor
      * @param relationshipTypeGUID unique identifier of the relationship type to search along
      * @param relationshipTypeName unique name of the relationship type to search along
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schemaType object or null
@@ -1155,6 +1164,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     String   parentTypeName,
                                     String   relationshipTypeGUID,
                                     String   relationshipTypeName,
+                                    Date     effectiveTime,
                                     String   methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -1166,9 +1176,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                 relationshipTypeGUID,
                                                                 relationshipTypeName,
                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                effectiveTime,
                                                                 methodName);
 
-        return getSchemaTypeFromEntity(userId, schemaTypeEntity, methodName);
+        return getSchemaTypeFromEntity(userId, schemaTypeEntity, effectiveTime, methodName);
     }
 
 
@@ -1179,6 +1190,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId calling user
      * @param schemaTypeGUID guid of schema type to retrieve.
      * @param guidParameterName parameter describing where the guid came from
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schema type or null depending on whether the object is found
@@ -1189,6 +1201,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaType(String   userId,
                            String   schemaTypeGUID,
                            String   guidParameterName,
+                           Date     effectiveTime,
                            String   methodName) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
@@ -1197,9 +1210,14 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                       schemaTypeGUID,
                                                                       guidParameterName,
                                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      supportedZones,
+                                                                      effectiveTime,
                                                                       methodName);
 
-        return getSchemaTypeFromEntity(userId, schemaTypeEntity, methodName);
+        return getSchemaTypeFromEntity(userId, schemaTypeEntity, effectiveTime, methodName);
     }
 
 
@@ -1212,6 +1230,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1224,11 +1243,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                    String searchString,
                                    int    startFrom,
                                    int    pageSize,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        return findSchemaTypes(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, searchString, startFrom, pageSize, methodName);
+        return findSchemaTypes(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, searchString, startFrom, pageSize, effectiveTime, methodName);
     }
 
 
@@ -1241,6 +1261,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1254,6 +1275,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                    String searchString,
                                    int    startFrom,
                                    int    pageSize,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -1283,9 +1305,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         null,
                                                         startFrom,
                                                         pageSize,
+                                                        effectiveTime,
                                                         methodName);
 
-        return getSchemaTypesFromEntities(userId, entities, methodName);
+        return getSchemaTypesFromEntities(userId, entities, effectiveTime, methodName);
     }
 
 
@@ -1297,6 +1320,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1305,15 +1329,16 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getSchemaTypeByName(String userId,
-                                         String name,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         String methodName) throws InvalidParameterException,
+    public List<B> getSchemaTypeByName(String userId,
+                                       String name,
+                                       int    startFrom,
+                                       int    pageSize,
+                                       Date   effectiveTime,
+                                       String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return getSchemaTypeByName(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, name, startFrom, pageSize, methodName);
+        return getSchemaTypeByName(userId, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME, name, startFrom, pageSize, effectiveTime, methodName);
     }
 
 
@@ -1326,6 +1351,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1339,6 +1365,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                        String name,
                                        int    startFrom,
                                        int    pageSize,
+                                       Date   effectiveTime,
                                        String methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -1377,9 +1404,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               null,
                                                               startFrom,
                                                               pageSize,
+                                                              effectiveTime,
                                                               methodName);
 
-        return getSchemaTypesFromEntities(userId, entities, methodName);
+        return getSchemaTypesFromEntities(userId, entities, effectiveTime, methodName);
     }
 
 
@@ -1389,6 +1417,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is connected to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return metadata element describing the schema type associated with the requested parent element or
@@ -1399,6 +1428,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     public B getSchemaTypeForElement(String userId,
                                      String parentElementGUID,
                                      String parentElementTypeName,
+                                     Date   effectiveTime,
                                      String methodName)
     {
         final String parentElementGUIDParameterName = "parentElementGUID";
@@ -1415,6 +1445,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      *
      * @param userId calling user
      * @param schemaTypeEntities list of entities retrieved from the repositories
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of beans
@@ -1425,6 +1456,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      */
     private List<B> getSchemaTypesFromEntities(String             userId,
                                                List<EntityDetail> schemaTypeEntities,
+                                               Date               effectiveTime,
                                                String             methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -1437,7 +1469,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             {
                 if (entity != null)
                 {
-                    results.add(this.getSchemaTypeFromEntity(userId, entity, methodName));
+                    results.add(this.getSchemaTypeFromEntity(userId, entity, effectiveTime, methodName));
                 }
             }
         }
@@ -1458,6 +1490,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      *
      * @param userId calling user
      * @param schemaTypeEntity entity retrieved from the repository
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schema type bean
@@ -1468,6 +1501,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      */
     private B getSchemaTypeFromEntity(String       userId,
                                       EntityDetail schemaTypeEntity,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -1479,6 +1513,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                              schemaTypeEntity.getType().getTypeDefName(),
                                              schemaTypeEntity.getProperties(),
                                              schemaTypeEntity.getClassifications(),
+                                             effectiveTime,
                                              methodName);
         }
 
@@ -1496,6 +1531,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param schemaRootTypeName name of type of the schema element that holds the root information
      * @param instanceProperties properties describing the schema type
      * @param entityClassifications classifications from the root entity
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return schema type bean
@@ -1508,6 +1544,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                         String               schemaRootTypeName,
                                         InstanceProperties   instanceProperties,
                                         List<Classification> entityClassifications,
+                                        Date                 effectiveTime,
                                         String               methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -1537,12 +1574,13 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                           effectiveTime,
                                                                            methodName);
 
             if (externalSchemaTypeEntity != null)
             {
                 externalSchemaTypeGUID = externalSchemaTypeEntity.getGUID();
-                externalSchemaType = this.getSchemaTypeFromEntity(userId, externalSchemaTypeEntity, methodName);
+                externalSchemaType = this.getSchemaTypeFromEntity(userId, externalSchemaTypeEntity, effectiveTime, methodName);
             }
         }
 
@@ -1565,6 +1603,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                       effectiveTime,
                                                                        methodName);
 
             if (validValuesSetEntity != null)
@@ -1581,12 +1620,13 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                          effectiveTime,
                                                                           methodName);
 
             if (mapFromSchemaTypeEntity != null)
             {
                 mapFromSchemaTypeGUID = mapFromSchemaTypeEntity.getGUID();
-                mapFromSchemaType = this.getSchemaTypeFromEntity(userId, mapFromSchemaTypeEntity, methodName);
+                mapFromSchemaType = this.getSchemaTypeFromEntity(userId, mapFromSchemaTypeEntity, effectiveTime, methodName);
             }
 
             EntityDetail mapToSchemaTypeEntity = this.getAttachedEntity(userId,
@@ -1596,12 +1636,13 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                        effectiveTime,
                                                                         methodName);
 
             if (mapToSchemaTypeEntity != null)
             {
                 mapToSchemaTypeGUID = mapToSchemaTypeEntity.getGUID();
-                mapToSchemaType = this.getSchemaTypeFromEntity(userId, mapToSchemaTypeEntity, methodName);
+                mapToSchemaType = this.getSchemaTypeFromEntity(userId, mapToSchemaTypeEntity, effectiveTime, methodName);
             }
         }
         else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
@@ -1615,6 +1656,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                0,
                                                                                invalidParameterHandler.getMaxPagingSize(),
+                                                                               effectiveTime,
                                                                                methodName);
 
             if ((schemaTypeOptionsEntities != null) && (! schemaTypeOptionsEntities.isEmpty()))
@@ -1627,7 +1669,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                     if (schemaTypeOptionEntity != null)
                     {
                         schemaTypeOptionGUIDs.add(schemaTypeOptionEntity.getGUID());
-                        schemaTypeOptions.add(this.getSchemaTypeFromEntity(userId, schemaTypeOptionEntity, methodName));
+                        schemaTypeOptions.add(this.getSchemaTypeFromEntity(userId, schemaTypeOptionEntity, effectiveTime, methodName));
                     }
                 }
             }
@@ -1644,6 +1686,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                   2,
                                                                   0,
                                                                   0,
+                                                                  effectiveTime,
                                                                   methodName);
 
 

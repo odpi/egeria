@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 
 
 /**
@@ -73,6 +74,7 @@ public class DiscoveryEngineRESTServices
                                                          null,
                                                          startFrom,
                                                          pageSize,
+                                                         new Date(),
                                                          methodName));
         }
         catch (Exception error)
@@ -181,6 +183,7 @@ public class DiscoveryEngineRESTServices
                                                           nameParameterName,
                                                           startFrom,
                                                           pageSize,
+                                                          new Date(),
                                                           methodName));
         }
         catch (Exception error)
@@ -237,6 +240,7 @@ public class DiscoveryEngineRESTServices
                                                     null,
                                                     startFrom,
                                                     pageSize,
+                                                    new Date(),
                                                     methodName));
         }
         catch (Exception error)
@@ -288,6 +292,7 @@ public class DiscoveryEngineRESTServices
                                                               networkAddressParameterName,
                                                               startFrom,
                                                               pageSize,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)

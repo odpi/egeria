@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
@@ -48,6 +49,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -229,8 +231,13 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                 supportedZones, defaultZones, publishZones, auditLog);
 
+        final SoftwareServerCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler =
+                new SoftwareServerCapabilityHandler<>(new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+                        SoftwareServerCapability.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                        repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
         dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                repositoryHelper);
+                repositoryHelper, softwareServerCapabilityHandler);
 
         dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);

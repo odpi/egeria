@@ -139,6 +139,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               OpenMetadataAPIMapper.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME,
                                                                               0,
                                                                               invalidParameterHandler.getMaxPagingSize(),
+                                                                              null,
                                                                               methodName);
 
         if ((annotationRelationships != null) && (! annotationRelationships.isEmpty()))
@@ -161,6 +162,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
                                                                                  startingFrom,
                                                                                  pageSize,
+                                                                                 null,
                                                                                  methodName);
 
                         return this.getDataFields(userId, entityGUIDs, methodName);
@@ -211,6 +213,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
                                                                  startingFrom,
                                                                  pageSize,
+                                                                 null,
                                                                  methodName);
 
         return this.getDataFields(userId, entityGUIDs, methodName);
@@ -291,12 +294,18 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             dataFieldGUID,
                                                             dataFieldGUIDParameterName,
                                                             OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                            null,
+                                                            null,
+                                                            false,
+                                                            supportedZones,
+                                                            null,
                                                             methodName);
 
         List<Relationship> relationships = super.getAllAttachmentLinks(userId,
                                                                        dataFieldGUID,
                                                                        dataFieldGUIDParameterName,
                                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                       null,
                                                                        methodName);
 
         return converter.getNewComplexBean(beanClass, entity, relationships, methodName);
@@ -362,6 +371,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               parentEntityType,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if (anchorEntity != null)

@@ -14,6 +14,8 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSource
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -28,12 +30,11 @@ public class EndpointManagerClient implements EndpointManagerInterface
 {
     private static final String endpointURLTemplatePrefix      = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/endpoints";
 
-    String   serverName;               /* Initialized in constructor */
-    String   serverPlatformURLRoot;    /* Initialized in constructor */
-    AuditLog auditLog = null;          /* Initialized in constructor */
+    private String   serverName;               /* Initialized in constructor */
+    private String   serverPlatformURLRoot;    /* Initialized in constructor */
 
-    InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    ITInfrastructureRESTClient   restClient;               /* Initialized in constructor */
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private ITInfrastructureRESTClient   restClient;               /* Initialized in constructor */
 
 
     /**
@@ -55,7 +56,6 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
 
         this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -137,7 +137,6 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
 
         this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -166,7 +165,6 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
@@ -413,7 +411,6 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                         endpointGUID);
     }
 
-
     /**
      * Retrieve the list of endpoint metadata elements that contain the search string.
      * The search string is treated as a regular expression.
@@ -437,22 +434,27 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        final String methodName                = "findEndpoints";
-        final String searchStringParameterName = "searchString";
+        final String methodName = "findEndpoints";
+        final String parameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             searchString,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(parameterName);
+
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -481,22 +483,27 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        final String methodName        = "getEndpointsByName";
-        final String nameParameterName = "name";
+        final String methodName = "getEndpointsByName";
+        final String nameParameter = "name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             name,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameter);
+
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElementList();
     }

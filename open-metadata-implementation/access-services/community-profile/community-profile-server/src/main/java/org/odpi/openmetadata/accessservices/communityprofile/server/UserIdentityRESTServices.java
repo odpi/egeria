@@ -384,6 +384,7 @@ public class UserIdentityRESTServices
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
                                                                        methodName);
                 response.setElements(elements);
             }

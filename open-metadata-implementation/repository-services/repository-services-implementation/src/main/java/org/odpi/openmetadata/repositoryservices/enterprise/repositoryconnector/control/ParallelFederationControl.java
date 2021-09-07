@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
@@ -23,13 +24,15 @@ public class ParallelFederationControl extends FederationControlBase
      *
      * @param userId calling user
      * @param cohortConnectors list of connectors to call
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public ParallelFederationControl(String                        userId,
                                      List<OMRSRepositoryConnector> cohortConnectors,
+                                     AuditLog                      auditLog,
                                      String                        methodName)
     {
-        super(userId, cohortConnectors, methodName);
+        super(userId, cohortConnectors, auditLog, methodName);
 
     }
 
@@ -51,9 +54,12 @@ public class ParallelFederationControl extends FederationControlBase
                 {
                     OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
 
-                    String metadataCollectionId = this.validateMetadataCollection(metadataCollection, methodName);
+                    String metadataCollectionId = this.validateMetadataCollection(cohortConnector, metadataCollection, methodName);
 
-                    executor.issueRequestToRepository(metadataCollectionId, metadataCollection);
+                    if (metadataCollectionId != null)
+                    {
+                        executor.issueRequestToRepository(metadataCollectionId, metadataCollection);
+                    }
                 }
             }
         }

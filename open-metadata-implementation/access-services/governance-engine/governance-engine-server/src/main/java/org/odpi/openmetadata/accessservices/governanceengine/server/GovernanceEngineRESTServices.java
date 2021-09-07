@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The GovernanceEngineRESTServices provides the server-side implementation of the services used by the governance
@@ -1220,6 +1222,7 @@ public class GovernanceEngineRESTServices
                                                  statusOrdinal,
                                                  requestBody.getStartDate(),
                                                  requestBody.getCompletionDate(),
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -1277,7 +1280,7 @@ public class GovernanceEngineRESTServices
                     statusOrdinal = requestBody.getStatus().getOpenTypeOrdinal();
                 }
 
-                handler.updateGovernanceActionStatus(userId, governanceActionGUID, statusOrdinal, methodName);
+                handler.updateGovernanceActionStatus(userId, governanceActionGUID, statusOrdinal, new Date(), methodName);
             }
             else
             {
@@ -1342,6 +1345,7 @@ public class GovernanceEngineRESTServices
                                                requestBody.getRequestParameters(),
                                                requestBody.getOutputGuards(),
                                                requestBody.getNewActionTargets(),
+                                               new Date(),
                                                methodName);
             }
             else
@@ -1550,7 +1554,7 @@ public class GovernanceEngineRESTServices
 
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getGovernanceAction(userId, governanceActionGUID, methodName));
+            response.setElement(handler.getGovernanceAction(userId, governanceActionGUID, new Date(), methodName));
         }
         catch (Exception error)
         {
@@ -1594,7 +1598,7 @@ public class GovernanceEngineRESTServices
 
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-            handler.claimGovernanceAction(userId, governanceActionGUID, methodName);
+            handler.claimGovernanceAction(userId, governanceActionGUID, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1638,7 +1642,7 @@ public class GovernanceEngineRESTServices
 
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getGovernanceActions(userId, startFrom, pageSize, methodName));
+            response.setElements(handler.getGovernanceActions(userId, startFrom, pageSize, new Date(), methodName));
         }
         catch (Exception error)
         {
@@ -1682,7 +1686,7 @@ public class GovernanceEngineRESTServices
 
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getActiveGovernanceActions(userId, startFrom, pageSize, methodName));
+            response.setElements(handler.getActiveGovernanceActions(userId, startFrom, pageSize, new Date(), methodName));
         }
         catch (Exception error)
         {
@@ -1729,7 +1733,7 @@ public class GovernanceEngineRESTServices
 
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getActiveClaimedGovernanceActions(userId, governanceEngineGUID, startFrom, pageSize, methodName));
+            response.setElements(handler.getActiveClaimedGovernanceActions(userId, governanceEngineGUID, startFrom, pageSize, new Date(), methodName));
         }
         catch (Exception error)
         {

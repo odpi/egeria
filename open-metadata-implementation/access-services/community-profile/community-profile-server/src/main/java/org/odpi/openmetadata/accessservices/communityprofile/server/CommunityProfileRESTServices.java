@@ -130,6 +130,8 @@ public class CommunityProfileRESTServices
                                                                         requestBody.getSource(),
                                                                         requestBody.getAdditionalProperties(),
                                                                         requestBody.getVendorProperties(),
+                                                                        null,
+                                                                        null,
                                                                         methodName));
             }
             else
@@ -284,6 +286,8 @@ public class CommunityProfileRESTServices
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
                                                               OpenMetadataAPIMapper.USER_PROFILE_MANAGER_TYPE_NAME,
+                                                              null,
+                                                              null,
                                                               methodName);
         }
         catch (Exception error)
@@ -337,6 +341,8 @@ public class CommunityProfileRESTServices
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
                                                               OpenMetadataAPIMapper.USER_ACCESS_DIRECTORY_TYPE_NAME,
+                                                              null,
+                                                              null,
                                                               methodName);
         }
         catch (Exception error)
@@ -389,6 +395,8 @@ public class CommunityProfileRESTServices
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
                                                               OpenMetadataAPIMapper.MASTER_DATA_MANAGER_TYPE_NAME,
+                                                              null,
+                                                              null,
                                                               methodName);
         }
         catch (Exception error)

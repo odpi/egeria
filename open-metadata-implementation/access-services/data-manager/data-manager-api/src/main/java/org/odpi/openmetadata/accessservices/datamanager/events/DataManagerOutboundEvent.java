@@ -139,7 +139,9 @@ public class DataManagerOutboundEvent extends DataManagerEventHeader
 
     /**
      * Return the element at end one of the relationship that is described in the principleElement. This is only set up on
-     * @return
+     * relationship events.
+     *
+     * @return element stub of entity at end 1
      */
     public ElementStub getEndOneElement()
     {
@@ -147,18 +149,36 @@ public class DataManagerOutboundEvent extends DataManagerEventHeader
     }
 
 
+    /**
+     * Set up the element at end one of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @param endOneElement element stub of entity at end 1
+     */
     public void setEndOneElement(ElementStub endOneElement)
     {
         this.endOneElement = endOneElement;
     }
 
 
+    /**
+     * Return the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @return element stub of entity at end 2
+     */
     public ElementStub getEndTwoElement()
     {
         return endTwoElement;
     }
 
 
+    /**
+     * Set up the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @param endTwoElement element stub of entity at end 2
+     */
     public void setEndTwoElement(ElementStub endTwoElement)
     {
         this.endTwoElement = endTwoElement;

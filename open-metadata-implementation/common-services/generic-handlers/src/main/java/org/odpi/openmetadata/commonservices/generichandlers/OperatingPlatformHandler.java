@@ -11,13 +11,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
 /**
  * OperatingPlatformHandler provides the exchange of metadata about operating platforms between the repository and
- * the OMAS.
+ * the OMAS. Supports external elements and effectivity dates.
  */
 public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -82,6 +83,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param additionalProperties additional properties for a operating platform
      * @param suppliedTypeName type of operatingPlatform
      * @param extendedProperties  properties for a operating platform subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -99,6 +102,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveFrom,
+                                         Date                effectiveTo,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -128,6 +133,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                                                         repositoryHelper,
                                                                         serviceName,
                                                                         serverName);
+        
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.createBeanInRepository(userId,
                                     externalSourceGUID,
@@ -157,6 +164,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param additionalProperties additional properties for a governance operatingPlatform
      * @param suppliedTypeName name of sub type or null
      * @param extendedProperties  properties for a governance operatingPlatform subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -176,6 +185,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                           Map<String, String> additionalProperties,
                                           String              suppliedTypeName,
                                           Map<String, Object> extendedProperties,
+                                          Date                effectiveFrom,
+                                          Date                effectiveTo,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -211,6 +222,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                                                         repositoryHelper,
                                                                         serviceName,
                                                                         serverName);
+        
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
@@ -235,6 +248,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param operatingPlatformGUID unique identifier of the operating platform
      * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -248,6 +263,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                            String hostGUIDParameterName,
                                            String operatingPlatformGUID,
                                            String operatingPlatformGUIDParameterName,
+                                           Date   effectiveFrom,
+                                           Date   effectiveTo,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -263,7 +280,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
-                                  null,
+                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -278,6 +295,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param hostGUIDParameterName parameter supplying the hostGUID
      * @param operatingPlatformGUID unique identifier of the operating platform
      * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -291,6 +309,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                              String hostGUIDParameterName,
                                              String operatingPlatformGUID,
                                              String operatingPlatformGUIDParameterName,
+                                             Date   effectiveTime,
                                              String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -308,6 +327,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -354,6 +374,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param userId calling user
      * @param qualifiedName unique name for the operating platform
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return properties of the operating platform
@@ -362,12 +383,13 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public B getOperatingPlatform(String   userId,
-                                  String   qualifiedName,
-                                  String   qualifiedNameParameter,
-                                  String   methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public B getOperatingPlatform(String userId,
+                                  String qualifiedName,
+                                  String qualifiedNameParameter,
+                                  Date   effectiveTime,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         return this.getBeanByUniqueName(userId,
                                         qualifiedName,
@@ -375,6 +397,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                         OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -384,7 +407,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      *
      * @param userId calling user
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return an this call
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return properties of the operating platform
@@ -393,12 +417,13 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getOperatingPlatforms(String   userId,
-                                         int      startingFrom,
-                                         int      maximumResults,
-                                         String   methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public List<B> getOperatingPlatforms(String userId,
+                                         int    startingFrom,
+                                         int    pageSize,
+                                         Date   effectiveTime,
+                                         String methodName) throws InvalidParameterException, 
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
@@ -406,7 +431,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                    supportedZones,
                                    null,
                                    startingFrom,
-                                   maximumResults,
+                                   pageSize,
+                                   effectiveTime,
                                    methodName);
     }
 }

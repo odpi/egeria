@@ -275,7 +275,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 		String methodName = "deleteAssets";
 		String url = serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}";
 		AnalyticsModelingOMASAPIResponse response =
-				callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, serverName, user, serverCapability, identifier);
+				callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, url, null, serverName, user, serverCapability, identifier);
 		
 		handleFailedResponse(response, methodName);
 		

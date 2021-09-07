@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * SearchKeywordHandler manages SearchKeyword objects.  These are user controlled semantic keywords. SearchKeywordHandler runs server-side in
  * the OMAG Server Platform and retrieves SearchKeyword entities through the OMRSRepositoryConnector.
+ * This handler does not support effectivity dates because it does not make sense for the element type.
  */
 public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -199,6 +200,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                                                   null,
                                                                    methodName) == 0)
             {
                 repositoryHandler.removeEntity(userId,
@@ -247,6 +249,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                     null,
                                      methodName);
     }
 
@@ -290,6 +293,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -331,6 +335,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -362,6 +367,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guidParameterName,
                                           OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                           serviceSupportedZones,
+                                          null,
                                           methodName);
     }
 
@@ -410,6 +416,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -451,6 +458,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -548,6 +556,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -641,6 +650,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 }

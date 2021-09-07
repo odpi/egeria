@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -104,9 +105,14 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                 {
                     if (this.getEntityFromRepository(userId,
                                                      endpoint.getGUID(),
+                                                     guidParameterName,
                                                      OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                     methodName,
-                                                     guidParameterName) != null)
+                                                     null,
+                                                     null,
+                                                     false,
+                                                     supportedZones,
+                                                     null,
+                                                     methodName) != null)
                     {
                         return endpoint.getGUID();
                     }
@@ -130,6 +136,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                              supportedZones,
+                                                             null,
                                                              methodName);
             }
 
@@ -142,6 +149,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                              supportedZones,
+                                                             null,
                                                              methodName);
             }
 
@@ -211,6 +219,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                            null,
                            null,
                            false,
+                           null,
+                           null,
                            methodName);
 
             return existingEndpointGUID;
@@ -386,6 +396,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param protocol the name of the protocol to use to connect to the endpoint
      * @param encryptionMethod encryption method to use when passing data to this endpoint
      * @param additionalProperties name value pairs for values that are not formally defined in the type system
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return GUID for endpoint
@@ -405,6 +416,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     String              protocol,
                                     String              encryptionMethod,
                                     Map<String, String> additionalProperties,
+                                    Date                effectiveTime,
                                     String              methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -429,6 +441,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                      effectiveTime,
                                                                       methodName);
 
         if ((currentEndpoints != null) && (! currentEndpoints.isEmpty()))
@@ -478,6 +491,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName name of the subtype for the endpoint or null for standard type
      * @param extendedProperties any properties for a subtype
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -499,6 +514,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                  String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
                                  boolean             isMergeUpdate,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  String              methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
@@ -533,6 +550,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                       repositoryHelper,
                                                       serviceName,
                                                       serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
@@ -593,6 +612,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return endpoint list
@@ -606,6 +626,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                 List<String> serviceSupportedZones,
                                                 int          startFrom,
                                                 int          pageSize,
+                                                Date         effectiveTime,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -628,6 +649,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -641,6 +663,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -654,6 +677,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                  String searchStringParameterName,
                                  int    startFrom,
                                  int    pageSize,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -666,6 +690,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -679,6 +704,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -692,6 +718,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                       String nameParameterName,
                                       int    startFrom,
                                       int    pageSize,
+                                      Date   effectiveTime,
                                       String methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -715,6 +742,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 

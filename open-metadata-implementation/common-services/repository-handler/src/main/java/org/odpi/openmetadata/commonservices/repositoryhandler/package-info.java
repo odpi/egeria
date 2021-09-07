@@ -17,8 +17,11 @@
  *         Validation of an instance's provenance information when an update is made.  This means that external instances
  *         can only be updated by processes that represent the external source of the instance.
  *     </li>
+ *     <li>
+ *         Verification that instances received from the repositories have the appropriate effectivity date
+ *     </li>
  * </ul>
  * The aim is to reduce the coding needed in the specific handlers used by the Open Metadata Access Services (OMASs) and ensure
- * external entities are managed correctly.
+ * external entities and effectivity dates are managed correctly.
  */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
