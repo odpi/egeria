@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -158,6 +159,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param isDeprecated         is the valid value deprecated
      * @param additionalProperties additional properties for this set.
      * @param extendedProperties   properties that need to be populated into a subtype.
+     * @param effectiveFrom        starting time for this relationship (null for all time)
+     * @param effectiveTo          ending time for this relationship (null for all time)
      * @param methodName           calling method
      * @return unique identifier for the new set
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -175,6 +178,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       boolean             isDeprecated,
                                       Map<String, String> additionalProperties,
                                       Map<String, Object> extendedProperties,
+                                      Date                effectiveFrom,
+                                      Date                effectiveTo,
                                       String              methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -196,6 +201,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                             repositoryHelper,
                                                             serviceName,
                                                             serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
@@ -225,6 +232,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param isDeprecated         is the valid value deprecated
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties   properties that need to be populated into a subtype.
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName           calling method
      * @return unique identifier for the new definition
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -244,6 +253,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                              boolean             isDeprecated,
                                              Map<String, String> additionalProperties,
                                              Map<String, Object> extendedProperties,
+                                             Date                effectiveFrom,
+                                             Date                effectiveTo,
                                              String              methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -267,6 +278,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                             repositoryHelper,
                                                             serviceName,
                                                             serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String definitionGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,
@@ -317,6 +330,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param isDeprecated         is the valid value deprecated
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties   properties that need to be populated into a subtype.
+     * @param effectiveFrom        starting time for this relationship (null for all time)
+     * @param effectiveTo          ending time for this relationship (null for all time)
      * @param methodName           calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -335,6 +350,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                  boolean             isDeprecated,
                                  Map<String, String> additionalProperties,
                                  Map<String, Object> extendedProperties,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -358,6 +375,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                             repositoryHelper,
                                                             serviceName,
                                                             serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
@@ -424,6 +443,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param setGUID            unique identifier of the set.
      * @param validValueGUID     unique identifier of the valid value to add to the set.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -434,6 +455,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       String externalSourceName,
                                       String setGUID,
                                       String validValueGUID,
+                                      Date   effectiveFrom,
+                                      Date   effectiveTo,
                                       String methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -452,7 +475,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
-                                  null,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -465,6 +488,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param setGUID            owning set
      * @param validValueGUID     unique identifier of the member to be removed.
+     * @param effectiveTime      the time that the retrieved elements must be effective for
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -475,6 +499,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                         String externalSourceName,
                                         String setGUID,
                                         String validValueGUID,
+                                        Date   effectiveTime,
                                         String methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -495,6 +520,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -511,6 +537,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param symbolicName        lookup name for valid value
      * @param implementationValue value used in implementation
      * @param additionalValues    additional values stored under the symbolic name
+     * @param effectiveFrom       starting time for this relationship (null for all time)
+     * @param effectiveTo         ending time for this relationship (null for all time)
      * @param methodName          calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -524,6 +552,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                String              symbolicName,
                                                String              implementationValue,
                                                Map<String, String> additionalValues,
+                                               Date                effectiveFrom,
+                                               Date                effectiveTo,
                                                String              methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -571,7 +601,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                   OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -584,6 +614,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param assetGUID          unique identifier of the asset that used to implement the valid value.
+     * @param effectiveTime      the time that the retrieved elements must be effective for
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -594,6 +625,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                    String externalSourceName,
                                                    String validValueGUID,
                                                    String assetGUID,
+                                                   Date   effectiveTime,
                                                    String methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -614,6 +646,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -628,6 +661,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUID     unique identifier of the valid value.
      * @param consumerGUID       unique identifier of the element to link to.
      * @param strictRequirement  the valid values defines the only values that are permitted.
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -639,6 +674,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                            String  validValueGUID,
                                            String  consumerGUID,
                                            boolean strictRequirement,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
                                            String  methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -663,7 +700,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                  relationshipProperties,
+                                  this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -676,6 +713,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param consumerGUID       unique identifier of the element to remove the link from.
+     * @param effectiveTime      the time that the retrieved elements must be effective for
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -686,6 +724,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                String externalSourceName,
                                                String validValueGUID,
                                                String consumerGUID,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -706,6 +745,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
 
     }
@@ -723,6 +763,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param confidence         how confident is the steward that this mapping is correct (0-100).
      * @param steward            identifier of steward
      * @param notes              additional notes from the steward
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -736,6 +778,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                            int    confidence,
                                            String steward,
                                            String notes,
+                                           Date   effectiveFrom,
+                                           Date   effectiveTo,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -782,7 +826,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                  relationshipProperties,
+                                  this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -795,6 +839,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param referenceableGUID  unique identifier of the element to remove the link from.
+     * @param effectiveTime      time that the retrieved elements must be effective for
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -805,6 +850,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                String externalSourceName,
                                                String validValueGUID,
                                                String referenceableGUID,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -825,6 +871,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -841,6 +888,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param confidence             how confident is the steward that this mapping is correct (0-100).
      * @param steward                identifier of steward
      * @param notes                  additional notes from the steward
+     * @param effectiveFrom          starting time for this relationship (null for all time)
+     * @param effectiveTo            ending time for this relationship (null for all time)
      * @param methodName             calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -855,6 +904,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                int    confidence,
                                String steward,
                                String notes,
+                               Date   effectiveFrom,
+                               Date   effectiveTo,
                                String methodName) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
@@ -906,7 +957,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
-                                  relationshipProperties,
+                                  this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -919,6 +970,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param validValue1GUID    unique identifier of the valid value.
      * @param validValue2GUID    unique identifier of the other valid value element to remove the link from.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -929,6 +981,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                  String externalSourceName,
                                  String validValue1GUID,
                                  String validValue2GUID,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -949,6 +1002,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
+                                      effectiveTime,
                                       methodName);
 
     }
@@ -959,6 +1013,7 @@ public class ValidValuesHandler<VALID_VALUE,
      *
      * @param userId         calling user
      * @param validValueGUID unique identifier of the valid value.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      * @return Valid value bean
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -967,6 +1022,7 @@ public class ValidValuesHandler<VALID_VALUE,
      */
     public VALID_VALUE getValidValueByGUID(String userId,
                                            String validValueGUID,
+                                           Date   effectiveTime,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -976,20 +1032,13 @@ public class ValidValuesHandler<VALID_VALUE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        VALID_VALUE validValue = null;
-
-        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                validValueGUID,
-                                                                validValueGUIDParameter,
-                                                                OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                                methodName);
-
-        if (entity != null)
-        {
-            validValue = converter.getNewBean(beanClass, entity, methodName);
-        }
-
-        return validValue;
+        return this.getBeanFromRepository(userId,
+                                          validValueGUID,
+                                          validValueGUIDParameter,
+                                          OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                          supportedZones,
+                                          effectiveTime,
+                                          methodName);
     }
 
 
@@ -1002,6 +1051,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param nameParameterName property that provided the name
      * @param startFrom         starting element (used in paging through large result sets)
      * @param pageSize          maximum number of results to return
+     * @param effectiveTime     the time that the retrieved elements must be effective for
      * @param methodName        calling method
      * @return Valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1013,6 +1063,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                  String nameParameterName,
                                                  int    startFrom,
                                                  int    pageSize,
+                                                 Date   effectiveTime,
                                                  String methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -1035,6 +1086,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1048,6 +1100,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param searchStringParameterName name of parameter providing search string
      * @param startFrom                 paging starting point
      * @param pageSize                  maximum number of return values.
+     * @param effectiveTime             the time that the retrieved elements must be effective for
      * @param methodName                calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1059,6 +1112,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                              String searchStringParameterName,
                                              int    startFrom,
                                              int    pageSize,
+                                             Date   effectiveTime,
                                              String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -1071,6 +1125,7 @@ public class ValidValuesHandler<VALID_VALUE,
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -1083,6 +1138,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueSetGUIDParameter name of parameter providing the validValueSetGUID
      * @param startFrom                  paging starting point
      * @param pageSize                   maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName                 calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1094,6 +1150,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                      String validValueSetGUIDParameter,
                                                      int    startFrom,
                                                      int    pageSize,
+                                                     Date   effectiveTime,
                                                      String methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -1113,6 +1170,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1125,6 +1183,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUIDParameter parameter name providing the validValueGUID
      * @param startFrom               paging starting point
      * @param pageSize                maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName              calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1136,6 +1195,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   String validValueGUIDParameter,
                                                   int    startFrom,
                                                   int    pageSize,
+                                                  Date   effectiveTime,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1155,6 +1215,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -1168,6 +1229,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones   list of zones that define which assets can be retrieved.
      * @param startFrom               paging starting point
      * @param pageSize                maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName              calling method
      * @return list of valid value consumer beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1180,6 +1242,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                           List<String> serviceSupportedZones,
                                                                           int          startFrom,
                                                                           int          pageSize,
+                                                                          Date         effectiveTime,
                                                                           String       methodName) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException
@@ -1195,6 +1258,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1210,6 +1274,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1232,6 +1297,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end1.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
@@ -1241,6 +1307,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   guidParameterName,
                                                   false,
                                                   serviceSupportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         VALID_VALUE_ASSIGNMENT bean = validValueAssignmentConverter.getNewBean(validValueAssignmentClass,
@@ -1279,6 +1346,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param referenceableGUIDParameter name of parameter for referenceableGUID
      * @param startFrom         paging starting point
      * @param pageSize          maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName        calling method
      * @return list of valid value consumer beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1290,6 +1358,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                String referenceableGUIDParameter,
                                                                                int    startFrom,
                                                                                int    pageSize,
+                                                                               Date   effectiveTime,
                                                                                String methodName) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
@@ -1305,6 +1374,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                   false,
                                   supportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1320,6 +1390,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1342,6 +1413,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
@@ -1351,6 +1423,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   guidParameterName,
                                                   false,
                                                   supportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         VALID_VALUE_ASSIGNMENT_DEF bean = validValueAssignmentDefConverter.getNewBean(validValueAssignmentDefClass,
@@ -1390,6 +1463,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones list of zones that define which assets can be retrieved.
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName     calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1402,6 +1476,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                List<String> serviceSupportedZones,
                                                                                int          startFrom,
                                                                                int          pageSize,
+                                                                               Date         effectiveTime,
                                                                                String       methodName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException
@@ -1417,6 +1492,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1432,6 +1508,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1445,24 +1522,26 @@ public class ValidValuesHandler<VALID_VALUE,
         {
             if (relationship != null)
             {
-                EntityProxy end1 = relationship.getEntityOneProxy();
-                if (end1 != null)
+                EntityProxy end2 = relationship.getEntityTwoProxy();
+                if (end2 != null)
                 {
                     try
                     {
                         EntityDetail consumerEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                        end1.getGUID(),
+                                                                                        end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
-                                                  end1.getGUID(),
+                                                  end2.getGUID(),
                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
                                                   serviceSupportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         VALID_VALUE_IMPLEMENTATION bean = validValueImplementationConverter.getNewBean(validValueImplementationClass,
@@ -1502,6 +1581,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param assetGUIDParameter parameter providing the assetGUID value
      * @param startFrom  paging starting point
      * @param pageSize   maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1513,6 +1593,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         String assetGUIDParameter,
                                                                                         int    startFrom,
                                                                                         int    pageSize,
+                                                                                        Date   effectiveTime,
                                                                                         String methodName) throws InvalidParameterException,
                                                                                                                   UserNotAuthorizedException,
                                                                                                                   PropertyServerException
@@ -1528,6 +1609,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                   false,
                                   supportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1543,6 +1625,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1556,24 +1639,26 @@ public class ValidValuesHandler<VALID_VALUE,
         {
             if (relationship != null)
             {
-                EntityProxy end2 = relationship.getEntityTwoProxy();
-                if (end2 != null)
+                EntityProxy end1 = relationship.getEntityOneProxy();
+                if (end1 != null)
                 {
                     try
                     {
                         EntityDetail consumerEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                        end2.getGUID(),
+                                                                                        end1.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
-                                                  end2.getGUID(),
+                                                  end1.getGUID(),
                                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
                                                   supportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         VALID_VALUE_IMPLEMENTATION_DEF bean = validValueImplementationDefConverter.getNewBean(validValueImplementationDefClass,
@@ -1613,6 +1698,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUIDParameter name of parameter supplying the validValueGUID
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName     calling method
      * @return list of mappings to other valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1624,6 +1710,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                            String validValueGUIDParameter,
                                                            int    startFrom,
                                                            int    pageSize,
+                                                           Date   effectiveTime,
                                                            String methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1639,6 +1726,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   false,
                                   supportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1654,6 +1742,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1679,6 +1768,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         proxy.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
@@ -1688,6 +1778,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   guidParameterName,
                                                   false,
                                                   supportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         VALID_VALUE_MAPPING bean = validValueMappingConverter.getNewBean(validValueMappingClass,
@@ -1727,6 +1818,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones list of zones that define which assets can be retrieved
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName     calling method
      * @return list of referenceable beans
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1739,6 +1831,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                               List<String> serviceSupportedZones,
                                                                               int          startFrom,
                                                                               int          pageSize,
+                                                                              Date         effectiveTime,
                                                                               String       methodName) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               PropertyServerException
@@ -1754,6 +1847,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   false,
                                   serviceSupportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1769,6 +1863,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1791,6 +1886,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end1.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
@@ -1800,6 +1896,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   guidParameterName,
                                                   false,
                                                   serviceSupportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         REFERENCE_VALUE_ASSIGNED_ITEM bean = referenceValueAssignedItemConverter.getNewBean(referenceValueAssignedItemClass,
@@ -1838,6 +1935,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param referenceableGUIDParameterName name of parameter for referenceableGUID
      * @param startFrom         paging starting point
      * @param pageSize          maximum number of return values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName        calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1849,6 +1947,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                          String referenceableGUIDParameterName,
                                                                          int    startFrom,
                                                                          int    pageSize,
+                                                                         Date   effectiveTime,
                                                                          String methodName) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
@@ -1864,6 +1963,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                   false,
                                   supportedZones,
+                                  effectiveTime,
                                   methodName);
 
         /*
@@ -1879,6 +1979,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if ((relationships == null) || (relationships.isEmpty()))
@@ -1901,6 +2002,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
                         this.validateAnchorEntity(userId,
@@ -1910,6 +2012,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   guidParameterName,
                                                   false,
                                                   supportedZones,
+                                                  effectiveTime,
                                                   methodName);
 
                         REFERENCE_VALUE_ASSIGNMENT bean = referenceValueAssignmentConverter.getNewBean(referenceValueAssignmentClass,

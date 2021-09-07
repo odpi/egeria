@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
@@ -27,6 +29,7 @@ public abstract class FederationControlBase implements FederationControl
 {
     protected String                            userId;
     protected List<OMRSRepositoryConnector>     cohortConnectors;
+    protected AuditLog                          auditLog;
     protected String                            methodName;
 
 
@@ -35,14 +38,17 @@ public abstract class FederationControlBase implements FederationControl
      *
      * @param userId calling user
      * @param cohortConnectors list of connectors to call
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public FederationControlBase(String                            userId,
-                                 List<OMRSRepositoryConnector>     cohortConnectors,
-                                 String                            methodName)
+    public FederationControlBase(String                        userId,
+                                 List<OMRSRepositoryConnector> cohortConnectors,
+                                 AuditLog                      auditLog,
+                                 String                        methodName)
     {
         this.userId = userId;
         this.cohortConnectors = cohortConnectors;
+        this.auditLog = auditLog;
         this.methodName = methodName;
     }
 
@@ -60,13 +66,15 @@ public abstract class FederationControlBase implements FederationControl
     /**
      * Verify that a cohort member's metadata collection is not null.
      *
+     * @param cohortConnector
      * @param cohortMetadataCollection metadata collection
      * @param methodName name of method
      * @return metadata collection id
      * @throws RepositoryErrorException null metadata collection or null metadata collection id
      */
-    String validateMetadataCollection(OMRSMetadataCollection cohortMetadataCollection,
-                                      String                 methodName) throws RepositoryErrorException
+    String validateMetadataCollection(OMRSRepositoryConnector cohortConnector,
+                                      OMRSMetadataCollection  cohortMetadataCollection,
+                                      String                  methodName) throws RepositoryErrorException
     {
         /*
          * The cohort metadata collection should not be null.  It is in a real mess if this fails.
@@ -87,8 +95,13 @@ public abstract class FederationControlBase implements FederationControl
         {
             return cohortMetadataCollection.getMetadataCollectionId(userId);
         }
-        catch (RepositoryErrorException error)
+        catch (Exception error)
         {
+            auditLog.logException(methodName,
+                                  OMRSAuditCode.SKIPPING_METADATA_COLLECTION.getMessageDefinition(cohortConnector.getRepositoryName(),
+                                                                                                  error.getClass().getName(),
+                                                                                                  error.getMessage()),
+                                  error);
             return null;
         }
     }

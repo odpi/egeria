@@ -3,7 +3,7 @@
 
 # Egeria Design Documentation
 
-ODPi Egeria implements a set of open APIs, metadata type definitions,
+Egeria implements a set of open APIs, metadata type definitions,
 frameworks, connectors and interchange protocols to allow all types of tools and
 metadata repositories to share and exchange metadata.
 

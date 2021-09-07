@@ -395,6 +395,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if (anchorEntity != null)
@@ -458,6 +459,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if (anchorEntity != null)
@@ -519,6 +521,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if (anchorEntity != null)
@@ -665,6 +668,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                               false,
                                                               supportedZones,
+                                                              null,
                                                               methodName);
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
@@ -763,6 +767,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                 annotationGUID,
                                                                 annotationGUIDParameterName,
                                                                 OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                new Date(),
                                                                 methodName);
 
         return converter.getNewBean(beanClass, entity, methodName);
@@ -800,6 +805,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                         null,
                                                                          methodName);
             if (annotationReviewEntity != null)
             {
@@ -812,6 +818,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                     annotationEntity.getGUID(),
                                                                                     null,
                                                                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                    null,
                                                                                     methodName);
 
             return converter.getNewComplexBean(beanClass, annotationEntity, supplementaryEntities, annotationRelationships, methodName);
@@ -829,7 +836,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param rootGUIDParameterName parameter that passed the identifier of the root entity that the annotations are linked directly to.
      * @param rootGUIDTypeName parameter that passed the type name of the anchor for the annotations.
      * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
+     * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
      * @return list of annotations
@@ -845,7 +852,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          String            relationshipTypeGUID,
                                          String            relationshipTypeName,
                                          int               startingFrom,
-                                         int               maximumResults,
+                                         int               pageSize,
                                          String            methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -858,7 +865,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          relationshipTypeName,
                                                                          OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                                          startingFrom,
-                                                                         maximumResults,
+                                                                         pageSize,
+                                                                         new Date(),
                                                                          methodName);
 
         if ((annotationEntities != null) && (! annotationEntities.isEmpty()))
@@ -894,7 +902,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param startingElementTypeName parameter that passed the type name of the anchor for the annotations.
      * @param requestedAnnotationStatus limit the results to this annotation status
      * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
+     * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
      * @return list of annotation beans of the requested status
@@ -911,14 +919,14 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          String relationshipTypeName,
                                          int    requestedAnnotationStatus,
                                          int    startingFrom,
-                                         int    maximumResults,
+                                         int    pageSize,
                                          String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        userId,
@@ -928,6 +936,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                        relationshipTypeName,
                                                                                        startingFrom,
                                                                                        queryPageSize,
+                                                                                       null,
                                                                                        methodName);
 
         List<B> results = new ArrayList<>();
@@ -955,6 +964,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                           entityProxy.getGUID(),
                                                                                           entityProxyGUIDParameterName,
                                                                                           OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                          new Date(),
                                                                                           methodName);
 
                         if ((annotationEntity != null) && (annotationEntity.getGUID() != null))
@@ -986,7 +996,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param userId identifier of calling user
      * @param discoveryReportGUID identifier of the discovery request.
      * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
+     * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
      * @return list of annotations
@@ -998,7 +1008,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
     public List<B> getDiscoveryReportAnnotations(String           userId,
                                                  String           discoveryReportGUID,
                                                  int              startingFrom,
-                                                 int              maximumResults,
+                                                 int              pageSize,
                                                  String           methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1012,7 +1022,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
                                          OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                          startingFrom,
-                                         maximumResults,
+                                         pageSize,
                                          methodName);
     }
 
@@ -1024,7 +1034,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param discoveryReportGUID identifier of the discovery request.
      * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
+     * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
      * @return list of annotations
@@ -1037,7 +1047,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                  String           discoveryReportGUID,
                                                  int              annotationStatus,
                                                  int              startingFrom,
-                                                 int              maximumResults,
+                                                 int              pageSize,
                                                  String           methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1052,7 +1062,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                          annotationStatus,
                                          startingFrom,
-                                         maximumResults,
+                                         pageSize,
                                          methodName);
     }
 
@@ -1064,7 +1074,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param userId identifier of calling user
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param pageSize maximum number of annotations that can be returned.
      * @param methodName calling method
      *
      * @return list of Annotation objects
@@ -1076,7 +1086,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
     public List<B>  getExtendedAnnotations(String userId,
                                            String annotationGUID,
                                            int    startingFrom,
-                                           int    maximumResults,
+                                           int    pageSize,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -1090,7 +1100,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
                                          OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                          startingFrom,
-                                         maximumResults,
+                                         pageSize,
                                          methodName);
     }
 
@@ -1102,7 +1112,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param annotationGUID anchor annotation
      * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param pageSize maximum number of annotations that can be returned.
      * @param methodName calling method
      *
      * @return list of Annotation objects
@@ -1115,7 +1125,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                            String annotationGUID,
                                            int    annotationStatus,
                                            int    startingFrom,
-                                           int    maximumResults,
+                                           int    pageSize,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -1130,7 +1140,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                          annotationStatus,
                                          startingFrom,
-                                         maximumResults,
+                                         pageSize,
                                          methodName);
     }
 
@@ -1143,7 +1153,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom starting position in the list.
-     * @param maximumResults maximum number of elements that can be returned
+     * @param pageSize maximum number of elements that can be returned
      * @param methodName calling method
      * @return list of annotation (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
@@ -1153,7 +1163,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
     public List<B> getAnnotationsForAsset(String userId,
                                           String assetGUID,
                                           int    startingFrom,
-                                          int    maximumResults,
+                                          int    pageSize,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1172,7 +1182,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the asset
      * @param status status value to use on the query
      * @param startingFrom starting position in the list.
-     * @param maximumResults maximum number of elements that can be returned
+     * @param pageSize maximum number of elements that can be returned
      * @param methodName calling method
      * @return list of annotation (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
@@ -1183,7 +1193,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                   String assetGUID,
                                                   int    status,
                                                   int    startingFrom,
-                                                  int    maximumResults,
+                                                  int    pageSize,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException

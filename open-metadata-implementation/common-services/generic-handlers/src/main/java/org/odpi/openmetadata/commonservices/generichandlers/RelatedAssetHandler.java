@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,6 +81,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier for relationship type
      * @param relationshipTypeName unique name for relationship type
      * @param serviceSupportedZones override the default supported zones.
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -93,6 +95,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       relationshipTypeGUID,
                                     String       relationshipTypeName,
                                     List<String> serviceSupportedZones,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -106,6 +109,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        serviceSupportedZones,
                                                        0,
                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                       effectiveTime,
                                                        methodName);
 
         if (relatedAssets == null)
@@ -132,6 +136,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones override the default supported zones.
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -149,6 +154,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      List<String> serviceSupportedZones,
                                      int          startFrom,
                                      int          pageSize,
+                                     Date         effectiveTime,
                                      String       methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -162,6 +168,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   effectiveTime,
                                                                    methodName);
 
         List<B> results = new ArrayList<>();

@@ -17,6 +17,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -266,6 +267,7 @@ public class ExchangeHandlerBase
                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
+                                                                  null,
                                                                   methodName);
             }
         }
@@ -352,6 +354,7 @@ public class ExchangeHandlerBase
                                                                     scopeGUIDParameterName,
                                                                     correlationProperties.getAssetManagerName(),
                                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    null,
                                                                     methodName);
         }
 
@@ -369,6 +372,7 @@ public class ExchangeHandlerBase
      * @param elementTypeName type name of the open metadata element
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of correlation properties
      *
@@ -382,6 +386,7 @@ public class ExchangeHandlerBase
                                                              String elementTypeName,
                                                              String assetManagerGUID,
                                                              String assetManagerName,
+                                                             Date   effectiveTime,
                                                              String methodName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -395,6 +400,7 @@ public class ExchangeHandlerBase
                                                                         assetManagerName,
                                                                         0,
                                                                         invalidParameterHandler.getMaxPagingSize(),
+                                                                        effectiveTime,
                                                                         methodName);
     }
 
@@ -411,6 +417,7 @@ public class ExchangeHandlerBase
      * @param elementGUID unique identifier for the element connected to the supplementary properties
      * @param elementQualifiedName unique name for the element connected to the supplementary properties
      * @param supplementaryProperties properties to save
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

@@ -69,11 +69,18 @@ public class GlossaryFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
-        System.out.println("GlossaryFVT runIt started");
-        GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
-        fvt.run();
-        fvt.deleteRemainingGlossaries();
-        System.out.println("GlossaryFVT runIt finished");
+        try
+        {
+            System.out.println("GlossaryFVT runIt started");
+            GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemainingGlossaries();
+            System.out.println("GlossaryFVT runIt finished");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {

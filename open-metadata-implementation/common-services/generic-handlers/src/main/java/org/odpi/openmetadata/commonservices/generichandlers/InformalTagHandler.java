@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * InformalTagHandler manages InformalTag objects.  These are user-controlled semantic tags. InformalTagHandler runs server-side in
  * the OMAG Server Platform and retrieves InformalTag entities through the OMRSRepositoryConnector.
+ * Since these are informal labels there is no support for effectivity dates because assets are not governed by them.
  */
 public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -89,6 +90,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                     null,
                                      methodName);
     }
 
@@ -130,6 +132,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -173,6 +176,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -383,6 +387,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                           supportedZones,
+                                          null,
                                           methodName);
     }
 
@@ -415,6 +420,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                           serviceSupportedZones,
+                                          null,
                                           methodName);
     }
 
@@ -463,6 +469,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -506,6 +513,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       null,
                                       startFrom,
                                       pageSize,
+                                      null,
                                       methodName);
     }
 
@@ -548,6 +556,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -587,6 +596,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       null,
                                       startFrom,
                                       pageSize,
+                                      null,
                                       methodName);
     }
 
@@ -736,6 +746,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       suppliedSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 }

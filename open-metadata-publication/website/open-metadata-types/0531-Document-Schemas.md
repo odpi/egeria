@@ -16,7 +16,7 @@ recall that the [NestedSchemaAttribute](0505-Schema-Attributes.md) relationship 
 
 ## Deprecated Types
 
-The **SimpleDocumentType**, **StructDocumentType** and **MapDocumentType** types have been deprecated because they
+The **SimpleDocumentType**, **StructDocumentType**, **MapDocumentType**, **ArrayDocumentType**, and **SetDocumentType** types have been deprecated because they
   offer little value since the type is typically stored in the **TypeEmbeddedAttribute** classification.
   This change makes the document schemas consistent with other types of schema.
 

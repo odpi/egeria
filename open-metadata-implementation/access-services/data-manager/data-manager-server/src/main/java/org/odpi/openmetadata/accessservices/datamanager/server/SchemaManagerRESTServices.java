@@ -29,6 +29,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -322,7 +323,13 @@ public class SchemaManagerRESTServices
                                           OpenMetadataAPIDummyBean,
                                           OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getValidValueByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
+                response.setElementList(handler.getValidValueByName(userId,
+                                                                    requestBody.getName(),
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    new Date(),
+                                                                    methodName));
             }
             else
             {
@@ -384,8 +391,13 @@ public class SchemaManagerRESTServices
                                           OpenMetadataAPIDummyBean,
                                           OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(
-                        handler.findValidValues(userId, requestBody.getSearchString(), searchStringParameterName, startFrom, pageSize, methodName));
+                response.setElementList(handler.findValidValues(userId,
+                                                                requestBody.getSearchString(),
+                                                                searchStringParameterName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                new Date(),
+                                                                methodName));
             }
             else
             {
@@ -859,6 +871,7 @@ public class SchemaManagerRESTServices
                                                                           requestBody.getSearchString(),
                                                                           startFrom,
                                                                           pageSize,
+                                                                          new Date(),
                                                                           methodName);
 
                 response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -913,6 +926,7 @@ public class SchemaManagerRESTServices
             SchemaTypeElement result = handler.getSchemaTypeForElement(userId,
                                                                        parentElementGUID,
                                                                        parentElementTypeName,
+                                                                       new Date(),
                                                                        methodName);
 
             response.setElement(setUpVendorProperties(userId, result, handler, methodName));
@@ -971,6 +985,7 @@ public class SchemaManagerRESTServices
                                                                               requestBody.getName(),
                                                                               startFrom,
                                                                               pageSize,
+                                                                              new Date(),
                                                                               methodName);
 
                 response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -1024,6 +1039,7 @@ public class SchemaManagerRESTServices
             SchemaTypeElement result = handler.getSchemaType(userId,
                                                              schemaTypeGUID,
                                                              guidParameterName,
+                                                             new Date(),
                                                              methodName);
 
             response.setElement(setUpVendorProperties(userId, result, handler, methodName));
@@ -1083,6 +1099,7 @@ public class SchemaManagerRESTServices
                                                                           1,
                                                                           0,
                                                                           2,
+                                                                          new Date(),
                                                                           methodName);
             if (relationships != null)
             {
@@ -1101,6 +1118,7 @@ public class SchemaManagerRESTServices
                                                            1,
                                                            0,
                                                            2,
+                                                           new Date(),
                                                            methodName);
 
                 if (relationships != null)

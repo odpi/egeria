@@ -20,7 +20,8 @@ import java.util.Map;
 
 /**
  * GovernanceZoneHandler provides the exchange of metadata about governance zones between the repository and
- * the OMAS.
+ * the OMAS.  There is no support for effectivity dating because just too difficult to manage the zone look up for Assets.
+ * They are also supposed to be long lived.
  */
 public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -265,6 +266,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                         OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                        null,
                                         methodName);
     }
 
@@ -299,6 +301,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             null,
                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                             1,
+                                            null,
                                             methodName);
     }
 
@@ -335,6 +338,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        2,
                                        0,
                                        0,
+                                       null,
                                        methodName);
     }
 
@@ -367,6 +371,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    null,
                                    startFrom,
                                    pageSize,
+                                   null,
                                    methodName);
     }
 
@@ -406,6 +411,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                              null,
                                                              startFrom,
                                                              pageSize,
+                                                             null,
                                                              methodName);
 
         List<B> results = new ArrayList<>();

@@ -41,6 +41,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 class DataEngineRegistrationHandlerTest {
@@ -86,12 +87,12 @@ class DataEngineRegistrationHandlerTest {
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
         doReturn(null).when(registrationHandler).getExternalDataEngine(USER,
-                softwareServerCapability.getQualifiedName());
+                                                                       softwareServerCapability.getQualifiedName());
 
         when(softwareServerCapabilityHandler.createSoftwareServerCapability(USER, null,
-                null, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+               null, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
                 softwareServerCapability.getQualifiedName(),
-                softwareServerCapability.getName(), softwareServerCapability.getDescription(), null,
+                softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                 softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
                 softwareServerCapability.getAdditionalProperties(), null, methodName)).thenReturn(GUID);
 
@@ -143,7 +144,7 @@ class DataEngineRegistrationHandlerTest {
         when(softwareServerCapabilityHandler.createSoftwareServerCapability(USER, null,
                 null, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
                 softwareServerCapability.getQualifiedName(), softwareServerCapability.getName(), softwareServerCapability.getDescription(),
-                null, softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
+                softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
                 softwareServerCapability.getSource(), softwareServerCapability.getAdditionalProperties(),
                 null, methodName)).thenThrow(mockedException);
 

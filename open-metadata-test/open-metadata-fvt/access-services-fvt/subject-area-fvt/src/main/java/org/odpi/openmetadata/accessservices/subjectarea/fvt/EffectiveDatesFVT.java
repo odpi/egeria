@@ -53,11 +53,18 @@ public class EffectiveDatesFVT
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
     synchronized public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("EffectiveDatesFVT runIt started");
-        EffectiveDatesFVT fvt =new EffectiveDatesFVT(url,serverName, userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("EffectiveDatesFVT runIt stopped");
+        try
+        {
+            System.out.println("EffectiveDatesFVT runIt started");
+            EffectiveDatesFVT fvt = new EffectiveDatesFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("EffectiveDatesFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

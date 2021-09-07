@@ -207,25 +207,25 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
                                OMRSAuditLogRecordSeverity.ERROR,
-                               "The local repository's event mapper connector {0} has no connector to an event bus",
+                               "The local repository event mapper connector {0} has no connector to an event bus",
                                "The event mapper connector is unable to receive or send events",
                                "Verify the start up configuration to ensure there is an event bus configured."),
 
     EVENT_MAPPER_LISTENER_REGISTERED("OMRS-AUDIT-0023",
                                      OMRSAuditLogRecordSeverity.STARTUP,
-                                     "The local repository's event mapper connector {0} has registered with an event bus connector connected to topic {1}",
+                                     "The local repository event mapper connector {0} has registered with an event bus connector connected to topic {1}",
                                      "The event mapper connector is getting ready to receive or send events",
                                      "Verify that there are no errors associated with the event mapper."),
 
     EVENT_MAPPER_LISTENER_STARTED("OMRS-AUDIT-0024",
                                   OMRSAuditLogRecordSeverity.STARTUP,
-                                  "The local repository's event mapper connector {0} is ready to send and receive events",
+                                  "The local repository event mapper connector {0} is ready to send and receive events",
                                   "The event mapper connector is able to receive or send events",
                                   "Verify that events are flowing from the real repository into the open metadata repository cohort."),
 
     EVENT_MAPPER_LISTENER_DISCONNECTED("OMRS-AUDIT-0025",
                                        OMRSAuditLogRecordSeverity.SHUTDOWN,
-                                       "The local repository's event mapper connector {0} has disconnected the event bus connectors",
+                                       "The local repository event mapper connector {0} has disconnected the event bus connectors",
                                        "The event mapper connector is no longer able to receive or send events",
                                        "Verify that this is part of the server shutdown of the local repository."),
 
@@ -283,7 +283,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
                                 OMRSAuditLogRecordSeverity.EXCEPTION,
-                                "The connector to the local repository's event mapper failed with a {0} exception and the following error message: {1}",
+                                "The connector to the local repository event mapper failed with a {0} exception and the following error message: {1}",
                                 "The server is unable to start.",
                                 "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
 
@@ -638,7 +638,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     UNEXPECTED_EXCEPTION_FROM_REPOSITORY("OMRS-AUDIT-0136",
                                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                                         "A {0} exception was received from a remote repository with metadata collection id {1} during {2}.  The exception's message was {3}",
+                                         "A {0} exception was received from a remote repository with metadata collection id {1} during {2}.  The exception message was {3}",
                                          "The enterprise connector has received an unexpected exception from a remote repository. " +
                                   "This exception is saved and may be returned to the caller if the other repositories can not satisfy the caller's request.",
                                          "Investigate whether this exception is the result of an underlying issue in the remote repository."),
@@ -913,6 +913,12 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          "The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
                          "The local server stores a copy of the updated type for use in enterprise repository queries - typically from Open Metadata Access Services (OMASs).",
                          "Validate that there is at least once repository in the cohort that supports the storing of this version of the type if you wish to manage metadata of this type."),
+
+    SKIPPING_METADATA_COLLECTION("OMRS-AUDIT-0401",
+                                       OMRSAuditLogRecordSeverity.ACTION,
+                                       "Skipping call to repository {0} since it is not responding correctly.  Error received was {1} with message {2}The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
+                                       "The local server is processing a federated query to all members of the connected cohorts.  However one of the members is not responding correctly and so it has been skipped from the call. The remote server is probably not running, or has been incorrectly configured.",
+                                       "Validate the availability and configuration of the remote server.  It may be a temporary failure due to an outage in the network or the server itself.  However, if the remote server is not configured correctly, or has changed its metadata collection id, then this wil lbe a permanent error and this server will not be included in the federated query until it is fixed."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                           OMRSAuditLogRecordSeverity.ERROR,
