@@ -55,10 +55,17 @@ public class CheckSerializationFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("CheckSerializationFVT runIt started");
-        CheckSerializationFVT fvt = new CheckSerializationFVT(url, serverName, userId);
-        fvt.run();
-        System.out.println("CheckSerializationFVT runIt stopped");
+        try
+        {
+            System.out.println("CheckSerializationFVT runIt started");
+            CheckSerializationFVT fvt = new CheckSerializationFVT(url, serverName, userId);
+            fvt.run();
+            System.out.println("CheckSerializationFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     private void run() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {

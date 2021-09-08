@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * GovernanceDomainHandler provides the exchange of metadata about governance domains between the repository and the OMAS.
  * Note governanceDomains are governance metadata and are always defined with LOCAL-COHORT provenance.
+ * There is no support for effectivity dating.
  *
  * @param <B> class that represents the governance domain
  */
@@ -287,6 +288,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -335,6 +337,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -364,6 +367,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                          null,
                                           methodName);
 
     }

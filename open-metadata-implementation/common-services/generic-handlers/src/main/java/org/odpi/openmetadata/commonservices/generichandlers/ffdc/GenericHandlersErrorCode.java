@@ -125,6 +125,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
              "Investigate why multiple entities exist.  It may be because they have been contributed by different repositories. " +
                      "Then retry the request once the issue is resolved."),
 
+    MULTIPLE_RELATIONSHIPS_FOUND(404, "OMAG-GENERIC-HANDLERS-404-004",
+                            "Multiple {0} relationships where found between {1} entity {2} and {3} entity {4}: the identifiers of the returned relationships are {5}; the calling method is {6} and the server is {7}",
+                            "The system is unable to process a request because multiple relationships have been discovered and it is unsure which relationship to use.",
+                            "Investigate why multiple relationship exist.  Then retry the request once the issue is resolved."),
+
+
 
     INVALID_BEAN_CLASS(500, "OMAG-GENERIC-HANDLERS-500-001",
                        "An unsupported bean class named {0} was passed to the repository services by the {1} request for open metadata access service {2} on " +

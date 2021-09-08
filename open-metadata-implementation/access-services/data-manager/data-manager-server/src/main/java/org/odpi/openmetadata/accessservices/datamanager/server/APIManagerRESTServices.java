@@ -31,6 +31,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -549,6 +550,7 @@ public class APIManagerRESTServices
                                                                   searchStringParameterName,
                                                                   startFrom,
                                                                   pageSize,
+                                                                  new Date(),
                                                                   methodName);
 
                 /*
@@ -618,6 +620,7 @@ public class APIManagerRESTServices
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
                 /*
@@ -687,6 +690,7 @@ public class APIManagerRESTServices
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
             /*
@@ -748,6 +752,7 @@ public class APIManagerRESTServices
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
             /*
@@ -1204,6 +1209,7 @@ public class APIManagerRESTServices
                                                                                 apiGUIDParameterName,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                new Date(),
                                                                                 methodName);
 
             /*
@@ -1259,7 +1265,13 @@ public class APIManagerRESTServices
             {
                 APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
 
-                List<APIOperationElement> elements = handler.getAPIOperationsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
+                List<APIOperationElement> elements = handler.getAPIOperationsByName(userId,
+                                                                                    requestBody.getName(),
+                                                                                    nameParameterName,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    new Date(),
+                                                                                    methodName);
 
                 /*
                  * Set up the vendor properties before adding results to response
@@ -1312,7 +1324,11 @@ public class APIManagerRESTServices
 
             APIOperationHandler<APIOperationElement> handler = instanceHandler.getAPIOperationHandler(userId, serverName, methodName);
 
-            APIOperationElement element = handler.getAPIOperationByGUID(userId, guid, apiOperationGUIDParameterName, methodName);
+            APIOperationElement element = handler.getAPIOperationByGUID(userId,
+                                                                        guid,
+                                                                        apiOperationGUIDParameterName,
+                                                                        new Date(),
+                                                                        methodName);
 
             /*
              * Set up the vendor properties before adding results to response

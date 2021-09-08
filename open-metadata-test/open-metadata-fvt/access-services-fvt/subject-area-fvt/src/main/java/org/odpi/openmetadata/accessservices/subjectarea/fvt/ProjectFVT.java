@@ -79,11 +79,17 @@ public class ProjectFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("ProjectFVT runIt started");
-        ProjectFVT fvt =new ProjectFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemainingProjects();
-        System.out.println("ProjectFVT runIt stopped");
+        try {
+            System.out.println("ProjectFVT runIt started");
+            ProjectFVT fvt = new ProjectFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemainingProjects();
+            System.out.println("ProjectFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getProjectCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         ProjectFVT fvt = new ProjectFVT(url, serverName, userId);

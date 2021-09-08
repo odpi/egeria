@@ -93,12 +93,27 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 setUniqueQualifiedNameIfBlank(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
+
+                Date effectiveFrom = null;
+                Date effectiveTo = null;
+
+                if (suppliedCategory.getEffectiveFromTime() != null) {
+                    effectiveFrom = new Date(suppliedCategory.getEffectiveFromTime());
+                }
+                if (suppliedCategory.getEffectiveToTime() != null) {
+                    effectiveTo = new Date(suppliedCategory.getEffectiveToTime());
+                }
+
                 GlossaryCategoryBuilder builder = new GlossaryCategoryBuilder(suppliedCategory.getQualifiedName(),
                                                                               suppliedCategory.getName(),
                                                                               suppliedCategory.getDescription(),
                                                                               genericHandler.getRepositoryHelper(),
                                                                               genericHandler.getServiceName(),
                                                                               genericHandler.getServerName());
+
+                builder.setEffectivityDates(effectiveFrom, effectiveTo);
+                builder.setAnchors(userId, glossaryGuid, methodName);
+
                 createdCategoryGuid = genericHandler.createBeanInRepository(userId,
                                                                             null,
                                                                             null,
@@ -110,26 +125,15 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                             methodName);
                 if (response.getRelatedHTTPCode() == 200) {
 
-                    // set effectivity dates if required
-                    setNodeEffectivity(userId,
-                                       suppliedCategory,
-                                       methodName,
-                                       createdCategoryGuid,
-                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
+
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
                     SubjectAreaOMASAPIResponse<CategoryAnchor> categoryAnchorResponse = relationshipHandler.createRelationship(methodName, userId, CategoryAnchorMapper.class, categoryAnchor);
                     if (categoryAnchorResponse.getRelatedHTTPCode() == 200) {
                         CategoryAnchor createdCategoryAnchor = categoryAnchorResponse.results().get(0);
-                        String categoryAnchorGuid = createdCategoryAnchor.getGuid();
-                        setRelationshipEffectivity(userId,
-                                                   suppliedCategory,  // copy effectivity from the node
-                                                   methodName,
-                                                   categoryAnchorGuid,
-                                                   OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME);
+                        createdCategoryAnchor.getGuid();
+
                         // set subject area classification if required.
                         if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
                             genericHandler.setClassificationInRepository(userId,
@@ -147,18 +151,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                             CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
                             categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
                             categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
-                            SubjectAreaOMASAPIResponse<CategoryHierarchyLink> categoryHierarchyLinkResponse =
-                                    relationshipHandler.createRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
-                            if (categoryHierarchyLinkResponse.getRelatedHTTPCode() == 200) {
-                                CategoryHierarchyLink createdCategoryHierarchyLink = categoryHierarchyLinkResponse.results().get(0);
-                                String categoryHierarchyLinkGuid = createdCategoryHierarchyLink.getGuid();
-                                setRelationshipEffectivity(userId,
-                                                           suppliedCategory,  // copy effectivity from the node
-                                                           methodName,
-                                                           categoryHierarchyLinkGuid,
-                                                           OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME);
-                            }
+                            relationshipHandler.createRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
                         }
                     }
                     response = getCategoryByGuid(userId, createdCategoryGuid);
@@ -200,7 +193,6 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                null,
                                                                                null,
                                                                                false,
-                                                                               null,
                                                                                methodName);
             CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = categoryMapper.map(entityDetail);
@@ -367,31 +359,39 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
-            response = getCategoryByGuid(userId, guid);
-            if (response.head().isPresent()) {
-                Category storedCategory = response.head().get();
-                CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
 
-                EntityDetail suppliedEntity = categoryMapper.map(suppliedCategory);
-                EntityDetail storedEntity = categoryMapper.map(storedCategory);
-                genericHandler.updateBeanInRepository(userId,
-                                                      null,
-                                                      null,
-                                                      guid,
-                                                      "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                      suppliedEntity.getProperties(),
-                                                      !isReplace,
-                                                      methodName);
-                setNodeEffectivity(userId,
-                                   suppliedCategory,
-                                   methodName,
-                                   guid,
-                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME);
-                response = getCategoryByGuid(userId, guid);
+            Date effectiveFrom = null;
+            Date effectiveTo = null;
+
+            if (suppliedCategory.getEffectiveFromTime() != null) {
+                effectiveFrom = new Date(suppliedCategory.getEffectiveFromTime());
             }
+            if (suppliedCategory.getEffectiveToTime() != null) {
+                effectiveTo = new Date(suppliedCategory.getEffectiveToTime());
+            }
+
+            GlossaryCategoryBuilder builder = new GlossaryCategoryBuilder(suppliedCategory.getQualifiedName(),
+                                                                          suppliedCategory.getName(),
+                                                                          suppliedCategory.getDescription(),
+                                                                          genericHandler.getRepositoryHelper(),
+                                                                          genericHandler.getServiceName(),
+                                                                          genericHandler.getServerName());
+
+            builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+            genericHandler.updateBeanInRepository(userId,
+                                                  null,
+                                                  null,
+                                                  guid,
+                                                  "guid",
+                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                  builder.getInstanceProperties(methodName),
+                                                  !isReplace,
+                                                  methodName);
+
+            response = getCategoryByGuid(userId, guid);
+
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
@@ -528,6 +528,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                          !exactValue,
                                                                                          ignoreCase,
                                                                                          pageSize,
+                                                                                         null, // any date
                                                                                          methodName);
 
                 Set<Term> terms = new HashSet<>();
@@ -604,6 +605,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                          !exactValue,
                                                                                          ignoreCase,
                                                                                          pageSize,
+                                                                                         null, // any date
                                                                                          methodName);
 
                 Set<Category> categories = new HashSet<>();

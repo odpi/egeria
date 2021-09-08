@@ -42,7 +42,7 @@ public class GovernanceActionProcessRESTServices
     private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
                                                                                   instanceHandler.getServiceName());
 
-    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
@@ -455,6 +455,7 @@ public class GovernanceActionProcessRESTServices
                                                         searchStringParameterName,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
                                                         methodName));
             }
             else
@@ -518,6 +519,7 @@ public class GovernanceActionProcessRESTServices
                                                               nameParameterName,
                                                               startFrom,
                                                               pageSize,
+                                                              null,
                                                               methodName));
             }
             else
@@ -630,6 +632,8 @@ public class GovernanceActionProcessRESTServices
                                                                     requestBody.getGovernanceEngineGUID(),
                                                                     requestBody.getRequestType(),
                                                                     requestBody.getRequestParameters(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
             }
             else
@@ -699,6 +703,8 @@ public class GovernanceActionProcessRESTServices
                                                    properties.getGovernanceEngineGUID(),
                                                    properties.getRequestType(),
                                                    properties.getRequestParameters(),
+                                                   null,
+                                                   null,
                                                    methodName);
             }
             else
@@ -810,6 +816,7 @@ public class GovernanceActionProcessRESTServices
                                                                        searchStringParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
                                                                        methodName));
             }
             else
@@ -876,6 +883,7 @@ public class GovernanceActionProcessRESTServices
                                                                             nameParameterName,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            null,
                                                                             methodName));
             }
             else
@@ -923,7 +931,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            response.setElement(handler.getGovernanceActionTypeByGUID(userId, actionTypeGUID, methodName));
+            response.setElement(handler.getGovernanceActionTypeByGUID(userId, actionTypeGUID, null, methodName));
         }
         catch (Exception error)
         {
@@ -972,7 +980,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, methodName);
+            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, null, null, methodName);
         }
         catch (Exception error)
         {
@@ -1014,7 +1022,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            response.setElement(handler.getFirstActionType(userId, processGUID, null, methodName));
+            response.setElement(handler.getFirstActionType(userId, processGUID, null, null, methodName));
         }
         catch (Exception error)
         {
@@ -1059,7 +1067,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            handler.removeFirstActionType(userId, processGUID, methodName);
+            handler.removeFirstActionType(userId, processGUID, null, methodName);
         }
         catch (Exception error)
         {
@@ -1114,6 +1122,8 @@ public class GovernanceActionProcessRESTServices
                                                              requestBody.getGuard(),
                                                              requestBody.getMandatoryGuard(),
                                                              requestBody.getIgnoreMultipleTriggers(),
+                                                             null,
+                                                             null,
                                                              methodName));
             }
             else
@@ -1170,6 +1180,8 @@ public class GovernanceActionProcessRESTServices
                                              requestBody.getGuard(),
                                              requestBody.getMandatoryGuard(),
                                              requestBody.getIgnoreMultipleTriggers(),
+                                             null,
+                                             null,
                                              methodName);
             }
             else
@@ -1221,7 +1233,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            List<Relationship> relationships = handler.getNextGovernanceActionTypes(userId, actionTypeGUID, startFrom, pageSize, methodName);
+            List<Relationship> relationships = handler.getNextGovernanceActionTypes(userId, actionTypeGUID, startFrom, pageSize, null, methodName);
 
             if (relationships != null)
             {
@@ -1249,7 +1261,7 @@ public class GovernanceActionProcessRESTServices
                                                                                               relationship.getProperties(),
                                                                                               methodName));
 
-                        element.setNextActionType(handler.getGovernanceActionTypeByGUID(userId, relationship.getEntityTwoProxy().getGUID(), methodName));
+                        element.setNextActionType(handler.getGovernanceActionTypeByGUID(userId, relationship.getEntityTwoProxy().getGUID(), null, methodName));
 
                         elements.add(element);
                     }

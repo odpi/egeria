@@ -287,6 +287,7 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 	{
 		String methodName = "deleteAssets";
 
+
 		AnalyticsModelingOMASAPIResponse response = serverCapabilityGUID == null
 				? callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
 						serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}",
@@ -294,8 +295,8 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 				: callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
 						serverPlatformURLRoot + urlTemplateSynchronizationWithGUID + "&identifier={4}",
 						serverName, user, serverCapability, serverCapabilityGUID, identifier);
-		
-		handleFailedResponse(response, methodName);
+
+    handleFailedResponse(response, methodName);
 		
 		return ((AssetsResponse) response).getAssetList();
 	}

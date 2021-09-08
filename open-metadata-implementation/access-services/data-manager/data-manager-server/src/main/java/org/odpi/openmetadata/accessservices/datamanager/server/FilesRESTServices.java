@@ -15,6 +15,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -1469,6 +1470,7 @@ public class FilesRESTServices
                                                        guidParameterName,
                                                        startingFrom,
                                                        maxPageSize,
+                                                       new Date(),
                                                        methodName));
         }
         catch (Exception error)
@@ -1522,6 +1524,7 @@ public class FilesRESTServices
                                                      guidParameterName,
                                                      startingFrom,
                                                      maxPageSize,
+                                                     new Date(),
                                                      methodName));
         }
         catch (Exception error)
@@ -1566,7 +1569,7 @@ public class FilesRESTServices
             FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
                     instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            DataFileElement dataFile = handler.getDataFileByGUID(userId, fileGUID, guidParameterName, methodName);
+            DataFileElement dataFile = handler.getDataFileByGUID(userId, fileGUID, guidParameterName, new Date(), methodName);
             response.setDataFile(dataFile);
         }
         catch (Exception error)

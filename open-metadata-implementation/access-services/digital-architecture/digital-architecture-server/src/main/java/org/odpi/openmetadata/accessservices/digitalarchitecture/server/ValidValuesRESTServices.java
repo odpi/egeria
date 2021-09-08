@@ -98,6 +98,8 @@ public class ValidValuesRESTServices
                                                              requestBody.getIsDeprecated(),
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
+                                                             null,
+                                                             null,
                                                              methodName));
             }
             else
@@ -168,6 +170,8 @@ public class ValidValuesRESTServices
                                                                     requestBody.getIsDeprecated(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
             }
             else
@@ -240,6 +244,8 @@ public class ValidValuesRESTServices
                                          requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
+                                         null,
+                                         null,
                                          methodName);
             }
             else
@@ -362,7 +368,14 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.attachValidValueToSet(userId, null, null, setGUID, validValueGUID, methodName);
+            handler.attachValidValueToSet(userId,
+                                          null,
+                                          null,
+                                          setGUID,
+                                          validValueGUID,
+                                          null,
+                                          null,
+                                          methodName);
         }
         catch (Exception error)
         {
@@ -415,7 +428,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, methodName);
+            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, null, methodName);
         }
         catch (Exception error)
         {
@@ -486,6 +499,8 @@ public class ValidValuesRESTServices
                                                    symbolicName,
                                                    implementationValue,
                                                    additionalValues,
+                                                   null,
+                                                   null,
                                                    methodName);
         }
         catch (Exception error)
@@ -585,7 +600,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unlinkValidValueFromImplementation(userId, null, null, validValueGUID, assetGUID, methodName);
+            handler.unlinkValidValueFromImplementation(userId, null, null, validValueGUID, assetGUID, null, methodName);
         }
         catch (Exception error)
         {
@@ -690,7 +705,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.assignValidValueToConsumer(userId, null, null, validValueGUID, consumerGUID, strictRequirement, methodName);
+            handler.assignValidValueToConsumer(userId, null, null, validValueGUID, consumerGUID, strictRequirement, null, null, methodName);
         }
         catch (Exception error)
         {
@@ -743,7 +758,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unassignValidValueFromConsumer(userId, null, null, validValueGUID, consumerGUID, methodName);
+            handler.unassignValidValueFromConsumer(userId, null, null, validValueGUID, consumerGUID, null, methodName);
         }
         catch (Exception error)
         {
@@ -814,6 +829,8 @@ public class ValidValuesRESTServices
                                                confidence,
                                                steward,
                                                notes,
+                                               null,
+                                               null,
                                                methodName);
         }
         catch (Exception error)
@@ -872,6 +889,7 @@ public class ValidValuesRESTServices
                                                    null,
                                                    validValueGUID,
                                                    referenceableGUID,
+                                                   null,
                                                    methodName);
         }
         catch (Exception error)
@@ -945,6 +963,8 @@ public class ValidValuesRESTServices
                                    confidence,
                                    steward,
                                    notes,
+                                   null,
+                                   null,
                                    methodName);
         }
         catch (Exception error)
@@ -998,7 +1018,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unmapValidValues(userId, null, null, validValue1GUID, validValue2GUID, methodName);
+            handler.unmapValidValues(userId, null, null, validValue1GUID, validValue2GUID, null, methodName);
         }
         catch (Exception error)
         {
@@ -1046,7 +1066,7 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValueElement validValue = handler.getValidValueByGUID(userId, validValueGUID, methodName);
+            ValidValueElement validValue = handler.getValidValueByGUID(userId, validValueGUID, null, methodName);
             response.setElement(validValue);
         }
         catch (Exception error)
@@ -1108,6 +1128,7 @@ public class ValidValuesRESTServices
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   null,
                                                                                    methodName);
                 response.setElementList(validValues);
             }
@@ -1171,6 +1192,7 @@ public class ValidValuesRESTServices
                                                                                searchStringParameterName,
                                                                                startFrom,
                                                                                pageSize,
+                                                                               null,
                                                                                methodName);
                 response.setElementList(validValues);
             }
@@ -1231,6 +1253,7 @@ public class ValidValuesRESTServices
                                                                                    validValueGUIDParameter,
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   null,
                                                                                    methodName);
             response.setElementList(validValues);
         }
@@ -1290,6 +1313,7 @@ public class ValidValuesRESTServices
                                                                                 validValueGUIDParameter,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                null,
                                                                                 methodName);
             response.setElementList(validValues);
         }
@@ -1352,10 +1376,10 @@ public class ValidValuesRESTServices
                                                                                                                                                          methodName),
                                                                                                                        startFrom,
                                                                                                                        pageSize,
+                                                                                                                       null,
                                                                                                                        methodName);
 
             response.setElementList(validValueConsumers);
-
         }
         catch (Exception error)
         {
@@ -1414,6 +1438,7 @@ public class ValidValuesRESTServices
                                                                                                                                       referenceableGUIDParameter,
                                                                                                                                       startFrom,
                                                                                                                                       pageSize,
+                                                                                                                                      null,
                                                                                                                                       methodName);
 
             response.setElementList(validValueAssignmentDefinitions);
@@ -1475,6 +1500,7 @@ public class ValidValuesRESTServices
                                                                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                                                                   startFrom,
                                                                                                                                   pageSize,
+                                                                                                                                  null,
                                                                                                                                   methodName);
 
             response.setElementList(validValueImplAssetElements);
@@ -1537,6 +1563,7 @@ public class ValidValuesRESTServices
                                                                                assetGUIDParameterName,
                                                                                startFrom,
                                                                                pageSize,
+                                                                               null,
                                                                                methodName);
 
             response.setElementList(definitions);
@@ -1599,6 +1626,7 @@ public class ValidValuesRESTServices
                                                                                                 validValueGUIDParameter,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                null,
                                                                                                 methodName);
 
             response.setElementList(validValuesMappings);
@@ -1657,13 +1685,14 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValueElement  validValueElement = handler.getValidValueByGUID(userId, validValueGUID, methodName);
+            ValidValueElement  validValueElement = handler.getValidValueByGUID(userId, validValueGUID, null, methodName);
 
             List<ValidValueMappingElement>  validValuesMappings = handler.getValidValueMappings(userId,
                                                                                                 validValueGUID,
                                                                                                 validValueGUIDParameter,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                null,
                                                                                                 methodName);
 
             if ((validValuesMappings != null) && (! validValuesMappings.isEmpty()))
@@ -1759,6 +1788,7 @@ public class ValidValuesRESTServices
                                                                                                                                                 methodName),
                                                                                                               startFrom,
                                                                                                               pageSize,
+                                                                                                              null,
                                                                                                               methodName);
 
             response.setElementList(assignedItems);
@@ -1820,6 +1850,7 @@ public class ValidValuesRESTServices
                                                                                                                               guidParameterName,
                                                                                                                               startFrom,
                                                                                                                               pageSize,
+                                                                                                                              null,
                                                                                                                               methodName);
 
             response.setElementList(referenceValueAssignments);

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -77,6 +78,7 @@ public class OCFMetadataRESTServices
                                                                                                              serverName,
                                                                                                              serviceURLName,
                                                                                                              methodName),
+                                                                           new Date(),
                                                                            methodName));
         }
         catch (Exception error)
@@ -129,6 +131,11 @@ public class OCFMetadataRESTServices
                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                         instanceHandler.getSupportedZones(userId,
+                                                                                                           serverName,
+                                                                                                           serviceURLName,
+                                                                                                           methodName),
+                                                                         null,
                                                                          methodName));
         }
         catch (Exception error)
@@ -234,6 +241,7 @@ public class OCFMetadataRESTServices
                                                                                                    serverName,
                                                                                                    serviceURLName,
                                                                                                    methodName),
+                                                                 new Date(),
                                                                  methodName));
         }
         catch (Exception error)
@@ -308,6 +316,8 @@ public class OCFMetadataRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            Date effectiveTime = new Date();
+
             String assetSummary = null;
             if (connectionGUID != null)
             {
@@ -319,6 +329,7 @@ public class OCFMetadataRESTServices
                                                                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                  connectionGUID,
                                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
                 if (relationship != null)
@@ -335,21 +346,22 @@ public class OCFMetadataRESTServices
                                                              assetGUIDParameterName,
                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                              supportedZones,
+                                                             effectiveTime,
                                                              methodName);
             if (asset != null)
             {
                 asset.setShortDescription(assetSummary);
                 response.setAsset(asset);
-                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, methodName));
-                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, methodName));
-                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, methodName));
-                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, methodName));
-                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, methodName));
+                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, effectiveTime, methodName));
+                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, effectiveTime, methodName));
+                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, effectiveTime, methodName));
+                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, effectiveTime, methodName));
+                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, effectiveTime, methodName));
                 response.setInformalTagCount(informalTagHandler.countTags(userId, assetGUID, methodName));
-                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, methodName));
+                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, effectiveTime, methodName));
                 response.setLikeCount(likeHandler.countLikes(userId, assetGUID, methodName));
                 response.setKeywordCount(keywordHandler.countKeywords(userId, assetGUID, methodName));
-                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, methodName));
+                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, effectiveTime, methodName));
                 response.setNoteLogsCount(noteLogHandler.countAttachedNoteLogs(userId, assetGUID, methodName));
                 response.setRatingsCount(ratingHandler.countRatings(userId, assetGUID, methodName));
                 response.setRelatedAssetCount(relatedAssetHandler.getRelatedAssetCount(userId,
@@ -359,9 +371,10 @@ public class OCFMetadataRESTServices
                                                                                        null,
                                                                                        null,
                                                                                        supportedZones,
+                                                                                       effectiveTime,
                                                                                        methodName));
-                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID, methodName));
-                response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName, methodName));
+                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID, effectiveTime, methodName));
+                response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName, effectiveTime, methodName));
             }
         }
         catch (Exception error)
@@ -471,6 +484,7 @@ public class OCFMetadataRESTServices
                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                        elementStart,
                                                        maxElements,
+                                                       new Date(),
                                                        methodName));
         }
         catch (Exception error)
@@ -535,6 +549,7 @@ public class OCFMetadataRESTServices
                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                   elementStart,
                                                                   maxElements,
+                                                                  new Date(),
                                                                   methodName);
             List<CommentResponse> results = new ArrayList<>();
 
@@ -547,7 +562,7 @@ public class OCFMetadataRESTServices
                         CommentResponse commentResponse = new CommentResponse();
 
                         commentResponse.setComment(comment);
-                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), methodName));
+                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), new Date(), methodName));
 
                         results.add(commentResponse);
                     }
@@ -696,6 +711,7 @@ public class OCFMetadataRESTServices
                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                             elementStart,
                                                             maxElements,
+                                                            new Date(),
                                                             methodName));
         }
         catch (Exception error)
@@ -751,6 +767,7 @@ public class OCFMetadataRESTServices
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                       elementStart,
                                                                       maxElements,
+                                                                      new Date(),
                                                                       methodName));
         }
         catch (Exception error)
@@ -806,6 +823,7 @@ public class OCFMetadataRESTServices
                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                            elementStart,
                                                            maxElements,
+                                                           new Date(),
                                                            methodName));
         }
         catch (Exception error)
@@ -916,6 +934,7 @@ public class OCFMetadataRESTServices
                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                  elementStart,
                                                  maxElements,
+                                                 new Date(),
                                                  methodName));
         }
         catch (Exception error)
@@ -1026,6 +1045,7 @@ public class OCFMetadataRESTServices
                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                   elementStart,
                                                   maxElements,
+                                                  new Date(),
                                                   methodName));
         }
         catch (Exception error)
@@ -1277,6 +1297,7 @@ public class OCFMetadataRESTServices
                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                       elementStart,
                                                       maxElements,
+                                                      new Date(),
                                                       methodName));
         }
         catch (Exception error)
@@ -1335,6 +1356,7 @@ public class OCFMetadataRESTServices
                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                         elementStart,
                                                         maxElements,
+                                                        new Date(),
                                                         methodName));
             response.setStartingFromElement(elementStart);
         }
@@ -1391,6 +1413,7 @@ public class OCFMetadataRESTServices
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
+                                                     new Date(),
                                                      methodName));
         }
         catch (Exception error)

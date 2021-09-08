@@ -94,6 +94,26 @@ class ConfigRepositoryServicesViewResource {
                                                 @PathVariable String serverToBeConfiguredName) {
         return serverAPI.setReadOnlyLocalRepository(userId, serverName, serverToBeConfiguredName);
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    @PostMapping(path = "/local-repository/mode/plugin-repository/connection")
+    public FFDCResponseBase setPluginRepositoryConnection(@PathVariable String     userId,
+                                                      @PathVariable String     serverName,
+                                                      @PathVariable String     serverToBeConfiguredName,
+                                                      @RequestBody  Connection connection)
+    {
+        return serverAPI.setPluginRepositoryConnection(userId, serverName, serverToBeConfiguredName, connection);
+    }
 
     /*
      * =============================================================
@@ -215,6 +235,47 @@ class ConfigRepositoryServicesViewResource {
                                                @RequestBody Connection connection) {
         return serverAPI.addAuditLogDestination(userId, serverName, serverToBeConfiguredName, connection);
     }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PutMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
+    public ServerAuthorConfigurationResponse updateAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     serverToBeConfiguredName,
+                                                  @PathVariable String     auditLogDestinationName,
+                                                  @RequestBody  Connection auditLogDestination)
+    {
+        return serverAPI.updateAuditLogDestination(userId, serverName, serverToBeConfiguredName, auditLogDestinationName, auditLogDestination);
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @DeleteMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
+    public ServerAuthorConfigurationResponse deleteAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     serverToBeConfiguredName,
+                                                  @PathVariable String     auditLogDestinationName)
+    {
+        return serverAPI.deleteAuditLogDestination(userId, serverName, serverToBeConfiguredName, auditLogDestinationName);
+    }
 
     /**
      * Get the audit log supported severities for the server being configured
@@ -231,6 +292,23 @@ class ConfigRepositoryServicesViewResource {
                                                                                          @PathVariable String serverName,
                                                                                          @PathVariable String serverToBeConfiguredName) {
         return serverAPI.getAuditLogDestinationSupportedSeverities(userId, serverName, serverToBeConfiguredName);
+    }
+
+    /**
+     * Clear  the audit log destinations associated with the the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/audit-log-destinations")
+    public FFDCResponseBase deleteAuditLogDestinationSupportedSeverities(@PathVariable String userId,
+                                                                                         @PathVariable String serverName,
+                                                                                         @PathVariable String serverToBeConfiguredName) {
+        return serverAPI.clearAuditLogDestinations(userId, serverName, serverToBeConfiguredName);
     }
 
     /**

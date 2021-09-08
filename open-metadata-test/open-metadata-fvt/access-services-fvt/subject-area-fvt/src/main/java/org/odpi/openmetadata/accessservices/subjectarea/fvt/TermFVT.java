@@ -87,11 +87,17 @@ public class TermFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("TermFVT runIt started");
-        TermFVT fvt =new TermFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("TermFVT runIt stopped");
+        try {
+            System.out.println("TermFVT runIt started");
+            TermFVT fvt =new TermFVT(url,serverName,userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("TermFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getTermCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         TermFVT fvt = new TermFVT(url, serverName, userId);

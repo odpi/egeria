@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
+
 public class GovernedAssetContextBuilder
 {
 
@@ -26,7 +28,7 @@ public class GovernedAssetContextBuilder
 
     public Context buildContextForColumn(String userID, String assetId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "buildContextForColumn";
-        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, methodName);
+        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, new Date(), methodName);
         if (column != null && isRelationalColumn(column)) {
             return getDatabaseContextForColumn(userID, column);
         }
@@ -73,6 +75,7 @@ public class GovernedAssetContextBuilder
                                                               Constants.RELATIONAL_COLUMN,
                                                               Constants.NESTED_SCHEMA_ATTRIBUTE_GUID,
                                                               Constants.NESTED_SCHEMA_ATTRIBUTE,
+                                                              new Date(),
                                                               methodName);
     }
 

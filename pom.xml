@@ -222,7 +222,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.14.2</thrift.version>
-        <elasticsearch.version>7.14.0</elasticsearch.version>
+        <elasticsearch.version>7.14.1</elasticsearch.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
@@ -234,7 +234,7 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.14.0</maven-pmd.version>
-        <owasp.version>6.3.0</owasp.version>
+        <owasp.version>6.3.1</owasp.version>
         <spotbugs-maven.version>4.3.0</spotbugs-maven.version>
         <maven-download.version>1.6.7</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>

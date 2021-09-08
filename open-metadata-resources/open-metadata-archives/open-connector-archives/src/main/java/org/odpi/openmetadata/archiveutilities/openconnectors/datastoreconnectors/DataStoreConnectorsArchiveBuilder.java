@@ -232,7 +232,7 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
 
         super.addConnectorType(fileConnectorCategoryGUID,
                                connectorType.getGUID(),
-                               connectorType.getQualifiedName(),
+                               connectorType.getQualifiedName() + jsonFileAssetTypeName,
                                connectorType.getDisplayName(),
                                connectorType.getDescription(),
                                jsonFileAssetTypeName,
@@ -252,7 +252,7 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
 
         super.addConnectorType(fileConnectorCategoryGUID,
                                connectorType.getGUID(),
-                               connectorType.getQualifiedName(),
+                               connectorType.getQualifiedName() + mediaFileAssetTypeName,
                                connectorType.getDisplayName(),
                                connectorType.getDescription(),
                                mediaFileAssetTypeName,
@@ -272,7 +272,7 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
 
         super.addConnectorType(fileConnectorCategoryGUID,
                                connectorType.getGUID(),
-                               connectorType.getQualifiedName(),
+                               connectorType.getQualifiedName() + documentAssetTypeName,
                                connectorType.getDisplayName(),
                                connectorType.getDescription(),
                                documentAssetTypeName,

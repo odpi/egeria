@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
-;
+
 import java.util.Date;
 
 
@@ -70,25 +70,19 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             if (instanceProperties == null) {
                 instanceProperties = new InstanceProperties();
             }
-            Date effectiveFromtime = instanceProperties.getEffectiveFromTime();
-            if (effectiveFromtime == null) {
-                // if not supplied set the effective from Date to now.
-                instanceProperties.setEffectiveFromTime(new Date());
-                omrsRelationship.setProperties(instanceProperties);
-            }
             String proxy1TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(relationship.getEnd1().getNodeTypeName());
             String proxy2TypeName = NodeTypeMapper.mapNodeTypeNameToEntityTypeName(relationship.getEnd2().getNodeTypeName());
 
-            String end1TypeGuid =  invalidParameterHandler.validateTypeName(proxy1TypeName,
-                                                                            proxy1TypeName,
+            invalidParameterHandler.validateTypeName(proxy1TypeName,
+                                                     proxy1TypeName,
                                                      genericHandler.getServiceName(),
                                                      restAPIName,
                                                      genericHandler.getRepositoryHelper());
-            String end2TypeGuid =  invalidParameterHandler.validateTypeName(proxy2TypeName,
-                                                                            proxy2TypeName,
-                                                                            genericHandler.getServiceName(),
-                                                                            restAPIName,
-                                                                            genericHandler.getRepositoryHelper());
+           invalidParameterHandler.validateTypeName(proxy2TypeName,
+                                                    proxy2TypeName,
+                                                    genericHandler.getServiceName(),
+                                                    restAPIName,
+                                                    genericHandler.getRepositoryHelper());
 
            String guid =  genericHandler.linkElementToElement(
                                  userId,
@@ -141,6 +135,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                     genericHandler.getRepositoryHandler().getRelationshipByGUID(userId, guid,
                                                                         "guid",
                                                                        typeDefName,
+                                                                       null, // any effective time
                                                                        restAPIName);
 
                 R omasRelationship = mapper.map(oMRSRelationship);
@@ -267,6 +262,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                     genericHandler.getRepositoryHandler().getRelationshipByGUID(userId, guid,
                                                                                 "guid",
                                                                                 mapper.getTypeName(),
+                                                                                null, // any effective time
                                                                                 restAPIName);
 
             genericHandler.unlinkElementFromElement(userId,

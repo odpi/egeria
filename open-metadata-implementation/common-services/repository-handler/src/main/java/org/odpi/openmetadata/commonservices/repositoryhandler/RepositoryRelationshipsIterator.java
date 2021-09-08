@@ -9,6 +9,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +32,7 @@ public class RepositoryRelationshipsIterator
     private String             relationshipTypeName;
     private int                startingFrom;
     private int                requesterPageSize;
+    private Date               effectiveTime;
     private String             methodName;
     private List<Relationship> relationshipsCache = null;
 
@@ -45,6 +48,7 @@ public class RepositoryRelationshipsIterator
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return by this iterator.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositoryRelationshipsIterator(RepositoryHandler repositoryHandler,
@@ -55,6 +59,7 @@ public class RepositoryRelationshipsIterator
                                            String            relationshipTypeName,
                                            int               startingFrom,
                                            int               requesterPageSize,
+                                           Date              effectiveTime,
                                            String            methodName)
     {
         this.repositoryHandler      = repositoryHandler;
@@ -65,7 +70,9 @@ public class RepositoryRelationshipsIterator
         this.relationshipTypeName   = relationshipTypeName;
         this.startingFrom           = startingFrom;
         this.requesterPageSize      = requesterPageSize;
+        this.effectiveTime          = effectiveTime;
         this.methodName             = methodName;
+
         if (log.isDebugEnabled())
         {
             log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
@@ -85,19 +92,34 @@ public class RepositoryRelationshipsIterator
     {
         if ((relationshipsCache == null) || (relationshipsCache.isEmpty()))
         {
-            relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
-                                                                          startingEntityGUID,
-                                                                          startingEntityTypeName,
-                                                                          relationshipTypeGUID,
-                                                                          relationshipTypeName,
-                                                                          startingFrom,
-                                                                          requesterPageSize,
-                                                                          methodName);
+            relationshipsCache = new ArrayList<>();
 
-            if (relationshipsCache != null) {
-                if (log.isDebugEnabled()) {
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((relationshipsCache != null) && (relationshipsCache.isEmpty()))
+            {
+                relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
+                                                                              startingEntityGUID,
+                                                                              startingEntityTypeName,
+                                                                              relationshipTypeGUID,
+                                                                              relationshipTypeName,
+                                                                              startingFrom,
+                                                                              requesterPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                startingFrom = startingFrom + requesterPageSize;
+            }
+
+            if (relationshipsCache != null)
+            {
+                if (log.isDebugEnabled())
+                {
                     log.debug("relationshipsCache");
-                    for (Relationship relationship : relationshipsCache) {
+                    for (Relationship relationship : relationshipsCache)
+                    {
                         log.debug("relationship guid" + relationship.getGUID() +
                                           " end1 " +
                                           relationship.getEntityOneProxy().getGUID() +
@@ -105,12 +127,10 @@ public class RepositoryRelationshipsIterator
                                           relationship.getEntityTwoProxy().getGUID());
                     }
                 }
-
-                startingFrom = startingFrom + relationshipsCache.size();
             }
         }
 
-        return ! ((relationshipsCache == null) || (relationshipsCache.isEmpty()));
+        return (relationshipsCache != null);
     }
 
 

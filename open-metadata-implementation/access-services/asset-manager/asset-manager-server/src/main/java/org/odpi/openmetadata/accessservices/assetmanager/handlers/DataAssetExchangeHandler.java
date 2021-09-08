@@ -129,6 +129,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                  assetManagerGUID,
                                                                                  assetManagerName,
+                                                                                 null,
                                                                                  methodName));
                 }
             }
@@ -513,6 +514,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                  searchStringParameterName,
                                                                  startFrom,
                                                                  pageSize,
+                                                                 null,
                                                                  methodName);
         
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -551,6 +553,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
+                                                                null,
                                                                 methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -596,6 +599,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
                                                                        methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -645,6 +649,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                null,
                                                                                                 methodName);
 
         if (assetEntities != null)
@@ -666,6 +671,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                              assetManagerGUID,
                                                                                              assetManagerName,
+                                                                                             null,
                                                                                              methodName));
 
                         results.add(dataAssetElement);
@@ -724,6 +730,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                       assetManagerGUID,
                                                                       assetManagerName,
+                                                                      null,
                                                                       methodName));
         }
 

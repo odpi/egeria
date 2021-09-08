@@ -105,6 +105,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                        OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                        supportedZones,
+                                       null,
                                        methodName);
     }
 
@@ -137,6 +138,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                       OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                       false,
                                       supportedZones,
+                                      null,
                                       methodName);
     }
 
@@ -174,6 +176,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                  OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                                                  false,
                                                                  supportedZones,
+                                                                 null,
                                                                  methodName);
 
         if ((contributionRecord != null) && (karmaPointIncrement > 0))

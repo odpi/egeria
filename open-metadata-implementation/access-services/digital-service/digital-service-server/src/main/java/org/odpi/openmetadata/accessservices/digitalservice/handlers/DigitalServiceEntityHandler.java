@@ -13,13 +13,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
  * The Egeria DigitalService entity handler.
  */
-public class DigitalServiceEntityHandler {
-
+public class DigitalServiceEntityHandler
+{
     private OMRSRepositoryHelper repositoryHelper;
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
@@ -31,11 +32,13 @@ public class DigitalServiceEntityHandler {
      * @param repositoryHandler       the repository handler
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public DigitalServiceEntityHandler(OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler) {
+    public DigitalServiceEntityHandler(OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler)
+    {
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.invalidParameterHandler = invalidParameterHandler;
     }
+
 
     /**
      * Create digital service referencable string.
@@ -50,7 +53,8 @@ public class DigitalServiceEntityHandler {
                                              String serverName,
                                              DigitalService digitalService) throws PropertyServerException,
                                                                                    UserNotAuthorizedException,
-                                                                                   InvalidParameterException {
+                                                                                   InvalidParameterException
+    {
 
         String methodName = "createDigitalServiceEntity";
 
@@ -66,16 +70,17 @@ public class DigitalServiceEntityHandler {
 
 
 
-            String digitalServiceGUID = repositoryHandler.createEntity(userId,
-                                                                       DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_GUID,
-                                                                       DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_NAME,
-                                                                       null,
-                                                                       null,
-                                                                       digitalServiceBuilder.getInstanceProperties(methodName),
-                                                                       methodName);
+        return repositoryHandler.createEntity(userId,
+                                              DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_GUID,
+                                              DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_NAME,
+                                              null,
+                                              null,
+                                              digitalServiceBuilder.getInstanceProperties(methodName),
+                                              null,
+                                              InstanceStatus.ACTIVE,
+                                              methodName);
 
 
-        return digitalServiceGUID;
     }
 
 }

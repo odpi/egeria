@@ -168,6 +168,11 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
+        /*
+         * The classification is set up with the same effectivity dates as the entity so can search on classifications.
+         */
+        super.setEffectivityDates(properties);
+
         try
         {
             Classification classification = repositoryHelper.getNewClassification(serviceName,
