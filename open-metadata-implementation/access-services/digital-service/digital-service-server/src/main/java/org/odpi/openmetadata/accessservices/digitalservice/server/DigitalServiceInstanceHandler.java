@@ -27,6 +27,7 @@ class DigitalServiceInstanceHandler extends OMASServiceInstanceHandler
         DigitalServiceRegistration.registerAccessService();
     }
 
+
     /**
      * Retrieve the DigitalServiceEntityHandler for the access service
      *
@@ -37,13 +38,16 @@ class DigitalServiceInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public DigitalServiceEntityHandler getDigitalServiceEntityHandler(String userId, String serverName, String serviceOperationName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public DigitalServiceEntityHandler getDigitalServiceEntityHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
 
         DigitalServiceServicesInstance instance = (DigitalServiceServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+                                                                                                                  serverName,
+                                                                                                                  serviceOperationName);
 
         if (instance != null) { return instance.getDigitalServiceEntityHandler(); }
 

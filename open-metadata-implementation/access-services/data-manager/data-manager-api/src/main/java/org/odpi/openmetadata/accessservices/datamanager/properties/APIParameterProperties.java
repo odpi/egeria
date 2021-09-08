@@ -79,7 +79,7 @@ public class APIParameterProperties extends SchemaAttributeProperties
     /**
      * Return the type of parameter - for example for REST APIs, is it a PathVariable or a RequestParameter?
      *
-     * @return string
+     * @return string name
      */
     public String getParameterType()
     {
@@ -90,7 +90,7 @@ public class APIParameterProperties extends SchemaAttributeProperties
     /**
      * Set up the type of parameter - for example for REST APIs, is it a PathVariable or a RequestParameter?
      *
-     * @param parameterType
+     * @param parameterType string name
      */
     public void setParameterType(String parameterType)
     {

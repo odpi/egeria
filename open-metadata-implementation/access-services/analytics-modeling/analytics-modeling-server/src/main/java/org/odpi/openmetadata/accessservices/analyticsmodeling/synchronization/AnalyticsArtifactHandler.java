@@ -1293,7 +1293,7 @@ public class AnalyticsArtifactHandler {
 						IdMap.ASSET_TYPE_GUID,
 						IdMap.ASSET_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, methodName);
+						null, null, 0, 0, null, methodName);
 
 			if (ret != null) {
 				// only objects from the requested server

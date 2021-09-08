@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return on this call.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositoryFindEntitiesIterator(RepositoryHandler     repositoryHandler,
@@ -65,9 +67,10 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
                                           SequencingOrder       sequencingOrder,
                                           int                   startingFrom,
                                           int                   requesterPageSize,
+                                          Date                  effectiveTime,
                                           String                methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingProperty, startingFrom, requesterPageSize, methodName);
+        super(repositoryHandler, userId, entityTypeGUID, null, sequencingProperty, startingFrom, requesterPageSize, effectiveTime, methodName);
 
         this.entitySubtypeGUIDs    = entitySubtypeGUIDs;
         this.searchProperties      = searchProperties;
@@ -92,25 +95,32 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
     {
         if ((entitiesCache == null) || (entitiesCache.isEmpty()))
         {
-            entitiesCache = repositoryHandler.findEntities(userId,
-                                                           entityTypeGUID,
-                                                           entitySubtypeGUIDs,
-                                                           searchProperties,
-                                                           limitResultsByStatus,
-                                                           searchClassifications,
-                                                           asOfTime,
-                                                           sequencingProperty,
-                                                           sequencingOrder,
-                                                           startingFrom,
-                                                           pageSize,
-                                                           methodName);
+            entitiesCache = new ArrayList<>();
 
-            if (entitiesCache != null)
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((entitiesCache != null) && (entitiesCache.isEmpty()))
             {
-                startingFrom = startingFrom + entitiesCache.size();
+                entitiesCache = repositoryHandler.findEntities(userId,
+                                                               entityTypeGUID,
+                                                               entitySubtypeGUIDs,
+                                                               searchProperties,
+                                                               limitResultsByStatus,
+                                                               searchClassifications,
+                                                               asOfTime,
+                                                               sequencingProperty,
+                                                               sequencingOrder,
+                                                               startingFrom,
+                                                               pageSize,
+                                                               effectiveTime,
+                                                               methodName);
+
+                startingFrom = startingFrom + pageSize;
             }
         }
 
-        return entitiesCache != null;
+        return (entitiesCache != null);
     }
 }

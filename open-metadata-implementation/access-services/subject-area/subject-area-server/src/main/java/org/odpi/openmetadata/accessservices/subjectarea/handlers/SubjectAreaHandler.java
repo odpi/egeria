@@ -92,8 +92,7 @@ public abstract class SubjectAreaHandler {
                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                            null,
                                                                            null,
-                                                                           false,
-                                                                           null,
+                                                                           (Date)null,
                                                                            restAPIName);
         GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
         Glossary glossary = glossaryMapper.map(entityDetail);
@@ -126,7 +125,6 @@ public abstract class SubjectAreaHandler {
                                                                            null,
                                                                            null,
                                                                            false,
-                                                                           null,
                                                                            restAPIName);
             CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = CategoryMapper.map(entityDetail);
@@ -195,6 +193,7 @@ public abstract class SubjectAreaHandler {
                                                               findRequest.getSequencingProperty(),
                                                               findRequest.getStartingFrom(),
                                                               findRequest.getPageSize(),
+                                                              null, // any effective date
                                                               methodName);
         } else {
             FindRequest sanitisedFindRequest = sanitiseFindRequest(findRequest, exactValue, ignoreCase);
@@ -208,6 +207,7 @@ public abstract class SubjectAreaHandler {
                                                         findRequest.getSequencingProperty(),
                                                         findRequest.getStartingFrom(),
                                                         findRequest.getPageSize(),
+                                                        null, // any effective date
                                                         methodName);
         }
         if (entityDetails != null) {
@@ -282,6 +282,7 @@ public abstract class SubjectAreaHandler {
                                                   null,
                                                   findRequest.getStartingFrom(),
                                                   findRequest.getPageSize(),
+                                                  null, // any effective time
                                                   restAPIName);
 
 
@@ -329,6 +330,7 @@ public abstract class SubjectAreaHandler {
                                                   attachmentEntityTypeName,
                                                   findRequest.getStartingFrom(),
                                                   findRequest.getPageSize(),
+                                                  null, // any effective time
                                                   restAPIName);
 
         return getRelationshipsFromRelationships(relationships);
@@ -419,15 +421,14 @@ public abstract class SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               null,
+                                                                               (Date)null,
                                                                                methodName);
 
             return entityDetail.getGUID();
 
         } else {
             // error - glossary is mandatory
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition();
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY.getMessageDefinition(methodName);
             throw new InvalidParameterException(
                     messageDefinition,
                     className,

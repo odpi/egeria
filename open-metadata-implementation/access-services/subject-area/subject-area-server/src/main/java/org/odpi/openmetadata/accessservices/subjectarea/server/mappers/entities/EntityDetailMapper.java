@@ -255,7 +255,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
 
         Long effectiveFromTime = node.getEffectiveFromTime();
-        Long effectiveToTime =node.getEffectiveToTime();
+        Long effectiveToTime = node.getEffectiveToTime();
         if (effectiveFromTime != null ) {
             instanceProperties.setEffectiveFromTime(new Date(effectiveFromTime));
         }

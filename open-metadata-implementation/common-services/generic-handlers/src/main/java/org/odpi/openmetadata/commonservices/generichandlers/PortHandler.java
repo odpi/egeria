@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Manages the maintenance of port entities.
+ * Manages the maintenance of port entities. It does not currently support effectivity dates but probably
+ * should give that option.
  *
  * @param <B> class of bean for returning the port attributes
  */
@@ -69,7 +70,6 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
               publishZones,
               auditLog);
     }
-
 
 
     /**
@@ -336,6 +336,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -424,6 +425,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -511,6 +513,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -585,6 +588,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -626,6 +630,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         2,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -667,6 +672,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         1,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -704,6 +710,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    2,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                   null,
                                                    methodName);
 
         if ((results == null) || (results.isEmpty()))
@@ -772,6 +779,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 

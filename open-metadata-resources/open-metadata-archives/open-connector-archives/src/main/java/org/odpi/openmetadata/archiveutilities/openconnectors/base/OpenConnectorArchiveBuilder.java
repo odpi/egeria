@@ -277,7 +277,9 @@ public class OpenConnectorArchiveBuilder
                                       List<String>        recognizedAdditionalProperties,
                                       Map<String, String> additionalProperties)
     {
-        idToGUIDMap.setGUID(qualifiedName, connectorTypeGUID);
+        String newGUID = idToGUIDMap.getGUID(qualifiedName);
+
+        idToGUIDMap.setGUID(qualifiedName, newGUID);
 
         return this.addConnectorType(connectorCategoryGUID,
                                      qualifiedName,

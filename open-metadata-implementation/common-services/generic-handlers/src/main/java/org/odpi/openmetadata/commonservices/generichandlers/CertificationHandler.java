@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,24 +75,27 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
      * Count the number of Certifications attached to an anchor entity.
      *
      * @param userId     calling user
-     * @param anchorGUID identifier for the entity that the object is attached to
+     * @param connectedEntityGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countCertifications(String   userId,
-                                   String   anchorGUID,
-                                   String   methodName) throws InvalidParameterException,
+    public int countCertifications(String userId,
+                                   String connectedEntityGUID,
+                                   Date   effectiveTime,
+                                   String methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
         return super.countAttachments(userId,
-                                      anchorGUID,
+                                      connectedEntityGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -104,6 +108,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
      * @param parentGUIDParameterName parameter name for the parentGUID
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the input properties are invalid
@@ -115,11 +120,19 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       String       parentGUIDParameterName,
                                       int          startFrom,
                                       int          pageSize,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        return this.getCertifications(userId, parentGUID, parentGUIDParameterName, supportedZones, startFrom, pageSize, methodName);
+        return this.getCertifications(userId,
+                                      parentGUID,
+                                      parentGUIDParameterName,
+                                      supportedZones,
+                                      startFrom,
+                                      pageSize,
+                                      effectiveTime,
+                                      methodName);
     }
 
 
@@ -133,6 +146,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the input properties are invalid
@@ -145,6 +159,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       List<String> serviceSupportedZones,
                                       int          startFrom,
                                       int          pageSize,
+                                      Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -158,6 +173,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    effectiveTime,
                                                                     methodName);
         if (relationships != null)
         {
@@ -179,7 +195,9 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                                                            OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
                                                                            null,
                                                                            null,
+                                                                           true,
                                                                            serviceSupportedZones,
+                                                                           effectiveTime,
                                                                            methodName);
 
 

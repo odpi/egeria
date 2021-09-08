@@ -16,7 +16,6 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
     private int        starRating;
     private String     review;
     private boolean    isPublic;
-    private String     anchorGUID;
 
     /**
      * Constructor.
@@ -46,7 +45,6 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
         this.starRating = starRating;
         this.review = review;
         this.isPublic = isPublic;
-        this.anchorGUID = parentGUID;
     }
 
 

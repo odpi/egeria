@@ -75,7 +75,7 @@ public class AppointmentHandler
     {
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
 
-        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId, domainIdentifier, startFrom, pageSize, methodName);
+        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId, domainIdentifier, startFrom, pageSize, null, methodName);
 
         if (governanceRoles != null)
         {
@@ -98,6 +98,7 @@ public class AppointmentHandler
                                                                                                   1,
                                                                                                   0,
                                                                                                   0,
+                                                                                                  null,
                                                                                                   methodName);
 
                     if (appointmentRelationships != null)
@@ -190,6 +191,7 @@ public class AppointmentHandler
                                                                                           1,
                                                                                           0,
                                                                                           0,
+                                                                                          null,
                                                                                           methodName);
 
             if (appointmentRelationships != null)
@@ -285,6 +287,7 @@ public class AppointmentHandler
             ProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                           relationship.getEntityOneProxy().getGUID(),
                                                                           profileGUIDParameterName,
+                                                                          null,
                                                                           methodName);
 
             appointee.setProfile(profile);

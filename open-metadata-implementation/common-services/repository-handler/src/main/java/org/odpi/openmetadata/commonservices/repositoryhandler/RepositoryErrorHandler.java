@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +90,7 @@ public class RepositoryErrorHandler
         {
             repositoryConnector.getMetadataCollection();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new PropertyServerException(RepositoryHandlerErrorCode.NO_METADATA_COLLECTION.getMessageDefinition(methodName),
                                               this.getClass().getName(),
@@ -109,11 +110,11 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException mismatch on properties
      */
-    void    validateProperties(String               instanceGUID,
-                               String               validatingPropertyName,
-                               String               validatingProperty,
-                               InstanceProperties   retrievedProperties,
-                               String               methodName) throws InvalidParameterException
+    void validateProperties(String             instanceGUID,
+                            String             validatingPropertyName,
+                            String             validatingProperty,
+                            InstanceProperties retrievedProperties,
+                            String             methodName) throws InvalidParameterException
     {
         if ((validatingPropertyName != null) && (validatingProperty != null) && (retrievedProperties != null))
         {
@@ -486,7 +487,7 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException invalid property
      */
-    public void handleUnsupportedProperty(Throwable  error,
+    public void handleUnsupportedProperty(Exception  error,
                                           String     methodName,
                                           String     propertyName) throws InvalidParameterException
     {
@@ -535,7 +536,7 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException invalid property
      */
-    public void handleUnsupportedType(Throwable  error,
+    public void handleUnsupportedType(Exception  error,
                                       String     methodName,
                                       String     typeName) throws InvalidParameterException
     {
@@ -594,7 +595,7 @@ public class RepositoryErrorHandler
      *
      * @throws PropertyServerException unexpected exception from property server
      */
-    public void handleRepositoryError(Throwable  error,
+    public void handleRepositoryError(Exception  error,
                                       String     methodName) throws PropertyServerException
     {
         final String localMethodName = "handleRepositoryError";
@@ -612,7 +613,7 @@ public class RepositoryErrorHandler
      *
      * @throws PropertyServerException unexpected exception from property server
      */
-    public void handleRepositoryError(Throwable  error,
+    public void handleRepositoryError(Exception  error,
                                       String     methodName,
                                       String     localMethodName) throws PropertyServerException
     {
@@ -645,7 +646,7 @@ public class RepositoryErrorHandler
     /**
      * Throw an exception if there is a problem with the entity guid
      *
-     * @param error  caught exception
+     * @param error  caught exception (or null)
      * @param entityGUID  unique identifier for the requested entity
      * @param entityTypeName expected type of asset
      * @param methodName  name of the method making the call
@@ -653,21 +654,92 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException unexpected exception from property server
      */
-    public void handleUnknownEntity(Throwable  error,
+    public void handleUnknownEntity(Exception  error,
                                     String     entityGUID,
                                     String     entityTypeName,
                                     String     methodName,
                                     String     guidParameterName) throws InvalidParameterException
     {
-        throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_ENTITY.getMessageDefinition(entityTypeName,
-                                                                                                           entityGUID,
-                                                                                                           methodName,
-                                                                                                           serviceName,
-                                                                                                           serverName,
-                                                                                                           error.getMessage()),
+        if (error != null)
+        {
+            throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_ENTITY.getMessageDefinition(entityTypeName,
+                                                                                                               entityGUID,
+                                                                                                               methodName,
+                                                                                                               serviceName,
+                                                                                                               serverName,
+                                                                                                               error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                guidParameterName);
+        }
+        else
+        {
+            throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_ENTITY.getMessageDefinition(entityTypeName,
+                                                                                                               entityGUID,
+                                                                                                               methodName,
+                                                                                                               serviceName,
+                                                                                                               serverName,
+                                                                                                               null),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                guidParameterName);
+        }
+    }
+
+
+
+
+    /**
+     * Throw an exception if there is a problem with and elements effectivity dates
+     *
+     * @param elementGUID  unique identifier for the requested entity
+     * @param elementTypeName expected type of element
+     * @param properties properties of the element
+     * @param methodName  name of the method making the call
+     * @param guidParameterName name of the parameter that passed the GUID
+     * @param effectiveDate date to retrieve from
+     *
+     * @throws InvalidParameterException unexpected exception from property server
+     */
+    public void handleNotEffectiveElement(String             elementGUID,
+                                          String             elementTypeName,
+                                          InstanceProperties properties,
+                                          String             methodName,
+                                          String             guidParameterName,
+                                          Date               effectiveDate) throws InvalidParameterException
+    {
+        String fromTime = "<null>";
+        String toTime = "<null>";
+        String requestedEffectiveTime = "<any time>";
+
+        if (properties != null)
+        {
+            if (properties.getEffectiveFromTime() != null)
+            {
+                fromTime = properties.getEffectiveFromTime().toString();
+            }
+            if (properties.getEffectiveToTime() != null)
+            {
+                toTime = properties.getEffectiveToTime().toString();
+            }
+        }
+
+        if (effectiveDate != null)
+        {
+            requestedEffectiveTime = effectiveDate.toString();
+        }
+
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.NOT_EFFECTIVE_ELEMENT.getMessageDefinition(elementTypeName,
+                                                                                                                  elementGUID,
+                                                                                                                  methodName,
+                                                                                                                  serviceName,
+                                                                                                                  serverName,
+                                                                                                                  fromTime,
+                                                                                                                  toTime,
+                                                                                                                  requestedEffectiveTime),
                                             this.getClass().getName(),
                                             methodName,
-                                            error,
                                             guidParameterName);
 
     }
@@ -684,7 +756,7 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException unexpected exception from property server
      */
-    public void handleUnknownRelationship(Throwable error,
+    public void handleUnknownRelationship(Exception error,
                                           String    relationshipGUID,
                                           String    relationshipTypeName,
                                           String    methodName,
@@ -723,7 +795,7 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException unexpected exception from property server
      */
-    public void handleEntityProxy(Throwable  error,
+    public void handleEntityProxy(Exception  error,
                                   String     entityGUID,
                                   String     entityTypeName,
                                   String     methodName,

@@ -17,7 +17,7 @@ The other major use of IT Infrastructure OMAS is
 to manually catalog the key pieces of IT Infrastructure used by an organization.
 Often the creation of this metadata is used to kick of the
 automated cataloging of the capabilities and assets associated
-with the infrastructure.
+with the infrastructure using the [Integration Daemon](../../admin-services/docs/concepts/integration-daemon.md).
 
 ## Basic Concepts
 
@@ -63,6 +63,8 @@ linked to the operating platform using the **OperatingPlatformManifest** relatio
 ![Figure 4](docs/operating-platform-definition.png)
 > **Figure 4:** The software stack definition for an operating platform
 
+Hosts often have storage associated with them.  The same storage volume may be used by
+multiple hosts.  This is shown in figure 5
 Linked to a Host via the **SoftwareServerPlatformDeployment** are the
 **SoftwareServerPlatform**s.  They describe the running
 processes running on the Host that use software described in the Operating Platform.

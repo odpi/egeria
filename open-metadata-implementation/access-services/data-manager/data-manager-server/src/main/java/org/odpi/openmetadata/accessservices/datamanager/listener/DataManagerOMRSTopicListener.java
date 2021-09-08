@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -98,6 +99,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String entityGUIDParameterName = "entity.getGUID()";
 
+        Date effectiveTime = new Date();
+
         String instanceTypeName = this.getInstanceTypeName(sourceName,
                                                            originatorMetadataCollectionId,
                                                            originatorServerName,
@@ -123,6 +126,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         entityGUIDParameterName,
                                                         false,
                                                         supportedZones,
+                                                        effectiveTime,
                                                         methodName);
 
                     /*
@@ -173,6 +177,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
         final String entityProxyOneGUIDParameterName = "relationship.getEntityProxyOne().getGUID()";
         final String entityProxyTwoGUIDParameterName = "relationship.getEntityProxyTwo().getGUID()";
 
+        Date effectiveTime = new Date();
+
         String instanceTypeName = this.getInstanceTypeName(sourceName,
                                                            originatorMetadataCollectionId,
                                                            originatorServerName,
@@ -205,6 +211,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                         false,
                                                         supportedZones,
+                                                        effectiveTime,
                                                         methodName);
 
                     genericHandler.validateAnchorEntity(serverUserId,
@@ -213,6 +220,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                         false,
                                                         supportedZones,
+                                                        effectiveTime,
                                                         methodName);
 
                     /*
