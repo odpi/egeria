@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -93,6 +94,11 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
                     OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
+        }
+
+        if(MapUtils.isNotEmpty(additionalProperties)) {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties,
+                    OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, additionalProperties, methodName);
         }
 
         return properties;
