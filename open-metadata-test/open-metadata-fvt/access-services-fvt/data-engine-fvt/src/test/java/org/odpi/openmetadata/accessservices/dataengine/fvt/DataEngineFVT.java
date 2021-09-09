@@ -47,7 +47,7 @@ public class DataEngineFVT {
     protected static final String DESCRIPTION = "description";
     protected static final String NAME = "name";
     protected static final String TYPE = "type";
-    protected static final String VERSION = "capabilityVersion";
+    protected static final String VERSION = "version";
     protected static final String PATCH_LEVEL = "patchLevel";
     protected static final String QUALIFIED_NAME = "qualifiedName";
     protected static final String DISPLAY_NAME = "displayName";

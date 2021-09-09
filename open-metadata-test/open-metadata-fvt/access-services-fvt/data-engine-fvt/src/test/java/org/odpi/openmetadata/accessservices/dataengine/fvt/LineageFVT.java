@@ -54,7 +54,7 @@ public class LineageFVT extends DataEngineFVT{
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
         List<Process> processes = lineageSetupService.createJobProcessWithContent(userId, dataEngineClient);
         for(Process process : processes){
             validate(process, repositoryService);
@@ -201,14 +201,14 @@ public class LineageFVT extends DataEngineFVT{
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
-        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
         assertDatabase(database, databases);
 
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
-        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient, null);
 
         List<LineageMapping> lineageMappings = new ArrayList<>();
         lineageMappings.add(lineageSetupService.createLineageMapping(dataFile.getQualifiedName(), process.getQualifiedName()));

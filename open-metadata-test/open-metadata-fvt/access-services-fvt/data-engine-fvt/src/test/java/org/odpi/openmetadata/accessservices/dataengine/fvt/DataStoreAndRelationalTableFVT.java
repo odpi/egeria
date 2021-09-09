@@ -7,8 +7,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,10 +24,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
@@ -43,8 +47,8 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
-        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
 
         // assert Database
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
@@ -63,15 +67,50 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteDatabase(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
+
+        // assert Database
+        List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
+        EntityDetail databaseAsEntityDetail = assertDatabase(database, databases);
+
+        // delete Database
+        dataStoreAndRelationalTableSetupService.deleteDatabase(userId, dataEngineClient, database.getQualifiedName(),
+                databaseAsEntityDetail.getGUID());
+        List<EntityDetail> databasesAfterDelete = repositoryService
+                .findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
+        assertNull(databasesAfterDelete);
+    }
+
+    private Database getDatabaseToDelete(){
+        Database database = new Database();
+        database.setQualifiedName("to-delete-database-qualified-name");
+        database.setDisplayName("to-delete-database-display-name");
+        database.setDescription("to-delete-database-description");
+        database.setDatabaseType("to-delete-database-type");
+        database.setDatabaseVersion("to-delete-database-version");
+        database.setDatabaseInstance("to-delete-database-instance");
+        database.setDatabaseImportedFrom("to-delete-database-imported-from");
+        return database;
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void upsertRelationalTable(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
-        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient, null);
 
         // assert Relational Table
         List<EntityDetail> relationalTables = repositoryService
@@ -103,14 +142,63 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteRelationalTable(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService
+                .upsertRelationalTable(userId, dataEngineClient, getRelationalTableToDelete());
+
+        // assert Relational Table
+        List<EntityDetail> relationalTables = repositoryService
+                .findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
+        EntityDetail relationalTableAsEntityDetail = assertRelationalTable(relationalTable, relationalTables);
+
+        // delete Relational Table
+        dataStoreAndRelationalTableSetupService.deleteRelationalTable(userId, dataEngineClient, relationalTable.getQualifiedName(),
+                relationalTableAsEntityDetail.getGUID());
+        List<EntityDetail> relationalTablesToDelete = repositoryService
+                .findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
+        assertNull(relationalTablesToDelete);
+    }
+
+    private RelationalTable getRelationalTableToDelete(){
+        RelationalTable relationalTable = new RelationalTable();
+        relationalTable.setQualifiedName("to-delete-to-delete-relational-table-qualified-name");
+        relationalTable.setDisplayName("to-delete-relational-table-display-name");
+        relationalTable.setDescription("to-delete-relational-table-description");
+        relationalTable.setType("to-delete-relational-table-type");
+        relationalTable.setColumns(buildToDeleteRelationalColumns());
+        return relationalTable;
+    }
+
+    private List<RelationalColumn> buildToDeleteRelationalColumns(){
+        List<RelationalColumn> columns = new ArrayList<>();
+
+        RelationalColumn column = new RelationalColumn();
+        column.setQualifiedName("to-delete-relational-column-qualified-name");
+        column.setDisplayName("to-delete-relational-column-display-name");
+        column.setDescription("to-delete-relational-column-description");
+        column.setDataType("to-delete-relational-column-data-type");
+        columns.add(column);
+
+        return columns;
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void upsertDataFile(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
-        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
 
         // assert Data File
         List<EntityDetail> dataFiles = repositoryService
@@ -139,6 +227,56 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(dataFile.getColumns().get(0).getDescription(),
                 tabularColumnAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteDataFile(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService
+                .upsertDataFile(userId, dataEngineClient, getDataFileToDelete());
+
+        // assert Data File
+        List<EntityDetail> dataFiles = repositoryService
+                .findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
+        EntityDetail dataFileAsEntityDetail = assertDataFile(dataFile, dataFiles);
+
+        // delete Data File
+        dataStoreAndRelationalTableSetupService.deleteDataFile(userId, dataEngineClient, dataFile.getQualifiedName(),
+                dataFileAsEntityDetail.getGUID());
+        List<EntityDetail> dataFilesToDelete = repositoryService
+                .findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
+        assertNull(dataFilesToDelete);
+    }
+
+    private DataFile getDataFileToDelete(){
+        DataFile dataFile = new DataFile();
+        dataFile.setQualifiedName("to-delete-data-file-qualified-name");
+        dataFile.setDisplayName("to-delete-data-file-display-name");
+        dataFile.setDescription("to-delete-data-file-description");
+        dataFile.setFileType("to-delete-data-file-type");
+        dataFile.setProtocol("to-delete-data-file-protocol");
+        dataFile.setNetworkAddress("to-delete-data-file-network-address");
+        dataFile.setPathName("/to-delete-data-file-pathname");
+        dataFile.setColumns(buildTabularColumns());
+        return dataFile;
+    }
+
+    private List<Attribute> buildTabularColumns(){
+        List<Attribute> columns = new ArrayList<>();
+
+        Attribute column = new Attribute();
+        column.setQualifiedName("to-delete-column-qualified-name");
+        column.setDisplayName("to-delete-column-display-name");
+        column.setDescription("to-delete-column-description");
+        columns.add(column);
+
+        return columns;
     }
 
 }
