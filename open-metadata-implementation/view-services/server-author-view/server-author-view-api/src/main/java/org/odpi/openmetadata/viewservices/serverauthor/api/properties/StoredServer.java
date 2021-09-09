@@ -131,6 +131,11 @@ public class StoredServer {
         return toString(new StringBuilder()).toString();
     }
 
+    /**
+     * toString builder
+     * @param sb StringBuffer to build details in
+     * @return updated StringBuffer
+     */
     public StringBuilder toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
