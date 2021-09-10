@@ -2,6 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeClusterResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -12,13 +24,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Inc
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -45,7 +50,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     /* this buffer is for consumed events */
     private final List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
-    private KafkaProducerExecutor executor = null;
+    private KafkaConsumerExecutor consumerExecutor = null;
+    private KafkaProducerExecutor producerExecutor = null;
 
     final String                   threadHeader = "Kafka-";
     Thread                         consumerThread;
@@ -61,15 +67,37 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         @Override
         public void afterExecute(Runnable r, Throwable t) {
             super.afterExecute(r, t);
+            /*/
+            This code is executed when the producer thread dies because an wasn't handled.
+            If the Exception was a checked Exception then t is null
+            If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
+             */
+            initializeProducerAndProducerThread();
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                producerExecutor.execute(producerThread);
+            }
+        }
+    }
+    
+    /* mock up a a SingleThreadProducer with an override for afterExecute */
+    private class KafkaConsumerExecutor extends ThreadPoolExecutor {
+        KafkaConsumerExecutor() {
+            super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
+        }
+
+        @Override
+        public void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
 
             /*/
             This code is executed when the producer thread dies because an wasn't handled.
             If the Exception was a checked Exception then t is null
             If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
              */
-            producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
-            producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-            executor.execute(producerThread);
+            initializeConsumerAndConsumerThread();
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                consumerExecutor.execute(consumerThread);
+            }
         }
     }
 
@@ -262,17 +290,30 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                     kafkaStatus.getLastException());
         }
 
+        initializeConsumerAndConsumerThread();
+        consumerExecutor = new KafkaConsumerExecutor();
+        consumerExecutor.execute(consumerThread);
+
+        initializeProducerAndProducerThread();
+        producerExecutor = new KafkaProducerExecutor();
+        producerExecutor.execute(producerThread);
+
+        super.start();
+    }
+
+
+    private void initializeConsumerAndConsumerThread() {
+
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
-        consumerThread.start();
+    }
+
+
+    private void initializeProducerAndProducerThread() {
 
         producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-        executor = new KafkaProducerExecutor();
-        executor.execute(producerThread);
-
-        super.start();
     }
 
 
