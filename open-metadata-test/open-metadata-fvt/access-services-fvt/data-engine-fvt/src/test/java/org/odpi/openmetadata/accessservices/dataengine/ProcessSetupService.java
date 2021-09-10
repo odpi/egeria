@@ -48,4 +48,27 @@ public class ProcessSetupService {
         return process;
     }
 
+    /**
+     * Delete a Process using the dataEngineClient provided
+     *
+     * @param userId user
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     *
+     * @return process
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void deleteProcess(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete External Tool. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteProcess(userId, qualifiedName, guid);
+    }
+
 }

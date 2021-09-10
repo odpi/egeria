@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.fvt;
 
-
 import org.odpi.openmetadata.accessservices.dataengine.DataStoreAndRelationalTableSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.LineageSetupService;
+import org.odpi.openmetadata.accessservices.dataengine.PortSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.ProcessSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.SoftwareServerCapabilitySetupService;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -20,10 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
- * covering the creation of an external data engine source and a whole job process containing stages.
- * Depending on the number of the series of parameters of each test method, the tests will run or not multiple times.
- * The parameters are computed in the method indicated in the @MethodSource annotation.
+ * Base class for FVTs in data-engine-fvt module
  */
 public class DataEngineFVT {
 
@@ -46,8 +44,6 @@ public class DataEngineFVT {
 
     protected static final String DESCRIPTION = "description";
     protected static final String NAME = "name";
-    protected static final String TYPE = "type";
-    protected static final String VERSION = "version";
     protected static final String CAPABILITY_VERSION = "capabilityVersion";
     protected static final String PATCH_LEVEL = "patchLevel";
     protected static final String QUALIFIED_NAME = "qualifiedName";
@@ -72,8 +68,9 @@ public class DataEngineFVT {
     protected final SoftwareServerCapabilitySetupService softwareServerCapabilitySetupServer = new SoftwareServerCapabilitySetupService();
     protected final DataStoreAndRelationalTableSetupService dataStoreAndRelationalTableSetupService = new DataStoreAndRelationalTableSetupService();
     protected final ProcessSetupService processSetupService = new ProcessSetupService();
+    protected final PortSetupService portSetupService = new PortSetupService();
 
-    protected void assertProcess(Process process, List<EntityDetail> processes) {
+    protected EntityDetail assertProcess(Process process, List<EntityDetail> processes) {
         assertNotNull(processes);
         assertEquals(1, processes.size());
 
@@ -83,6 +80,8 @@ public class DataEngineFVT {
         assertEquals(process.getName(), processAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
         assertEquals(process.getDescription(), processAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         assertEquals(process.getOwner(), getOwnership(processAsEntityDetail));
+
+        return processAsEntityDetail;
     }
 
     private String getOwnership(EntityDetail entityDetail){
@@ -129,6 +128,20 @@ public class DataEngineFVT {
         assertEquals(dataFile.getDescription(), dataFileAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         assertEquals(dataFile.getFileType(), dataFileAsEntityDetail.getProperties().getPropertyValue(FILE_TYPE).valueAsString());
         return dataFileAsEntityDetail;
+    }
+
+    protected EntityDetail assertPort(Port port, List<EntityDetail> ports) {
+        assertNotNull(ports);
+        assertEquals(1, ports.size());
+
+        EntityDetail portImplementationAsEntityDetail = ports.get(0);
+        assertEquals(port.getQualifiedName(),
+                portImplementationAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(port.getDisplayName(),
+                portImplementationAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(port.getPortType().getName(),
+                portImplementationAsEntityDetail.getProperties().getPropertyValue(PORT_TYPE).valueAsString());
+        return portImplementationAsEntityDetail;
     }
 
 }

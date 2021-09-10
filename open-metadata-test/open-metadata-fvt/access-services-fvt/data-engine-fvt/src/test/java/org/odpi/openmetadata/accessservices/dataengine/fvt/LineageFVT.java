@@ -39,10 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
- * covering the creation of an external data engine source and a whole job process containing stages.
- * Depending on the number of the series of parameters of each test method, the tests will run or not multiple times.
- * The parameters are computed in the method indicated in the @MethodSource annotation.
+ * Holds FVTs related to feature lineage
  */
 public class LineageFVT extends DataEngineFVT{
 

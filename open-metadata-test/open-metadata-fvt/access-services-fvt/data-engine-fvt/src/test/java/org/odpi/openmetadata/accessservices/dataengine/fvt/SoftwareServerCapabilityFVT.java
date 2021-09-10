@@ -22,13 +22,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
- * covering the creation of an external data engine source and a whole job process containing stages.
- * Depending on the number of the series of parameters of each test method, the tests will run or not multiple times.
- * The parameters are computed in the method indicated in the @MethodSource annotation.
+ * Holds FVTs related to type SoftwareServerCapability
  */
 public class SoftwareServerCapabilityFVT extends DataEngineFVT {
 
@@ -82,14 +80,12 @@ public class SoftwareServerCapabilityFVT extends DataEngineFVT {
                 softwareServerCapabilityAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
                 softwareServerCapabilityAsEntityDetail.getGUID());
 
-        List<EntityDetail> emptySoftwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+        List<EntityDetail> futureEmptySoftwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                 toDeleteSoftwareServerCapability.getQualifiedName());
         // TODO: add verification for to be deleted softwareServerCapability once the method is implemented
         //  in this moment, a FunctionNotSupportedException is thrown
         // on searching the so called deleted capability, we still receive it as the result
-        if (emptySoftwareServerCapabilities == null || softwareServerCapabilities.isEmpty()) {
-            fail();
-        }
+        assertNotNull(futureEmptySoftwareServerCapabilities);
     }
 
     private SoftwareServerCapability getToDeleteSoftwareServerCapability(){
