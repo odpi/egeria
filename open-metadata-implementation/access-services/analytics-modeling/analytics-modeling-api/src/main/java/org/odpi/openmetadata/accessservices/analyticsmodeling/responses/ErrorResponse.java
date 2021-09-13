@@ -3,40 +3,44 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.responses;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.AnalyticsMessage;
 
 /**
  * Response to return error.
  * 
  * Sample of an error:
  *{
- *	"msg": "MSR_GEN_0097 Error while getting catalogs and schemas...",
- *	"code": "MSR_GEN_0097",
- *	"exceptionCauseMsg": "com.ibm.AppException: Cannot open ..."
+ *  "class" : "ErrorResponse",
+ *  "relatedHTTPCode" : 500,
+ *  "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException",
+ *  "exceptionCausedBy": "org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException",
+ *  "actionDescription": "getModule",
+ *  "exceptionErrorMessage": "OMAG-COMMON-400-016 An unexpected org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException exception was caught by getModule; error message was OMAS-ANALYTICS-MODELING-003 Relationship AttributeForSchema for entity gen!RDBST@(host)=vottcteds4.canlab.ibm.com::(database)=adventworksDW::(database_schema)=dbo could not be fetched.",
+ *  "exceptionErrorMessageId": "OMAG-COMMON-400-016",
+ *  "exceptionErrorMessageParameters": [
+ *      "org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException",
+ *      "getModule",
+ *      "OMAS-ANALYTICS-MODELING-003 Relationship AttributeForSchema for entity gen!RDBST@(host)=vottcteds4.canlab.ibm.com::(database)=adventworksDW::(database_schema)=dbo could not be fetched."
+ *  ],
+ *  "exceptionSystemAction": "The system is unable to process the request.",
+ *  "exceptionUserAction": "Review the error message and other diagnostics created at the same time.", 
+ *  "errors" : [
+ *		{
+ *			org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.AnalyticsMessage
+ *		},
+ *		...
+ *	]
  *}
  *
  */
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorResponse extends AnalyticsModelingOMASAPIResponse {
 
-	@JsonProperty("msg") 
-	private String message;
+    private List<AnalyticsMessage> errors;
 
-	@JsonProperty("code")
-	private String errorCode;
-
-	@JsonProperty("exceptionCauseMsg")
-	private String exceptionCause;
 	
 	public ErrorResponse() {
 		// required to deserialize
@@ -47,56 +51,49 @@ public class ErrorResponse extends AnalyticsModelingOMASAPIResponse {
 	 */
 	public ErrorResponse(AnalyticsModelingCheckedException source) {
 		setRelatedHTTPCode(source.getReportedHTTPCode());
-		message = source.getMessage();
-		errorCode = source.getReportedErrorMessageId();
-		exceptionCause = source.getErrorCause();
-	}
-	/**
-	 * Get error message 
-	 * @return error message.
-	 */
-	public String getMessage() {
-		return message;
+		
+		AnalyticsMessage error = AnalyticsMessage.createError(Integer.toString(source.getReportedHTTPCode()), 
+				source.getReportedErrorMessageId(),	source.getMessage(), source.getErrorCause());
+		
+		errors = new ArrayList<>();
+		errors.add(error);
 	}
 
-	/**
-	 * Set error message.
-	 * @param message to set.
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    /**
+     * Get the errors.
+     * @return the response errors.
+     */
+    public List<AnalyticsMessage> getErrors() {
+        return errors;
+    }
 
-	/**
-	 * Get error code.
-	 * @return error code.
-	 */
-	public String getErrorCode() {
-		return errorCode;
-	}
+    /**
+     * Set response errors.
+     * @param errors response errors.
+     */
+    protected void setErrors(List<AnalyticsMessage> errors) {
+        this.errors = errors;
+    }
 
-	/**
-	 * Set error code.
-	 * @param errorCode to set.
-	 */
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
 
-	/**
-	 * Get message of original cause - details.
-	 * @return message of original cause.
-	 */
-	public String getExceptionCause() {
-		return exceptionCause;
-	}
+    /**
+     * Add error to the response.
+     * @param messageId of the error.
+     * @param httpStatus of the error.
+     * @param message title.
+     * @param detail of the error.
+     */
+	public void addError(String messageId, String httpStatus, String message, String detail) {
+		if (errors == null) {
+			errors = new ArrayList<>();
+		}
 
-	/**
-	 * Set details of the error.
-	 * @param exceptionCause description of details.
-	 */
-	public void setExceptionCause(String exceptionCause) {
-		this.exceptionCause = exceptionCause;
-	}
+		AnalyticsMessage error = new AnalyticsMessage();
+		errors.add(error);
+		error.setCode(messageId);
+		error.setStatus(httpStatus);
+		error.setTitle(message);
+		error.setDetail(detail);
+	}  
 
 }

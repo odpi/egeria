@@ -5,14 +5,15 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-
 
 /**
  * The class is base for all responses of Analytics Modeling OMAS.<br>
@@ -37,28 +38,22 @@ public class AnalyticsModelingOMASAPIResponse extends FFDCResponseBase {
 	
 	private static final long serialVersionUID = 1L;
 	
-//    private List<? extends ResponseContainer> data;
-//
-//    /**
-//     * Get data of the response.
-//     * @return data of the response.
-//     */
-//    public List<? extends ResponseContainer> getData() {
-//        return data;
-//    }
-//
-//    /**
-//     * Set response data.
-//     * @param data response data.
-//     */
-//    protected void setData(List<? extends ResponseContainer> data) {
-//        this.data = data;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "AnalyticsModelingOMASAPIResponse{" +
-//                " data =" + data +
-//               '}';
-//    }
+	private Messages meta;
+	
+	@Override
+    public String toString() {
+        return "AnalyticsModelingOMASAPIResponse{" +
+               '}';
+    }
+
+	public Messages getMeta() {
+		return meta;
+	}
+
+	public void setMeta(Messages meta) {
+		this.meta = meta;
+	}
+	
+
+
 }
