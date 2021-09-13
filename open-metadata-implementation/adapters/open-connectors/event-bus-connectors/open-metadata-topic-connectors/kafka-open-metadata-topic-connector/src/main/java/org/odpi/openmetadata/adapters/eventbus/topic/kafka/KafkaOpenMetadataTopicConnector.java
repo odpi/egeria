@@ -2,6 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.DescribeClusterResult;
+import org.apache.kafka.clients.admin.KafkaAdminClient;
+import org.apache.kafka.common.Node;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,17 +24,6 @@ import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.DescribeClusterResult;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.apache.kafka.common.Node;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
@@ -461,8 +461,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         boolean getRunningBrokers(Properties connectionProperties ) {
 
             boolean found = false;
-            AdminClient adminClient = KafkaAdminClient.create(connectionProperties);
+            AdminClient adminClient = null;
             try {
+                adminClient = KafkaAdminClient.create(connectionProperties);
                 DescribeClusterResult describeClusterResult = adminClient.describeCluster();
                 Collection<Node> brokers = describeClusterResult.nodes().get();
                 if (!brokers.isEmpty()) {
