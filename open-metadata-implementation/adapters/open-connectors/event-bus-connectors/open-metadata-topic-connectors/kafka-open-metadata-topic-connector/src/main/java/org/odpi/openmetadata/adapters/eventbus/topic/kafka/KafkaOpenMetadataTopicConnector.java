@@ -381,8 +381,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         final String           actionDescription = "disconnect";
 
 
-        consumer.safeCloseConsumer();
-        producer.safeCloseProducer();
+        if (consumer!=null) {
+            consumer.safeCloseConsumer();
+        }
+
+        if (producer!=null) {
+            producer.safeCloseProducer();
+        }
 
         /*
         * Ensure Kafka client threads have stopped
