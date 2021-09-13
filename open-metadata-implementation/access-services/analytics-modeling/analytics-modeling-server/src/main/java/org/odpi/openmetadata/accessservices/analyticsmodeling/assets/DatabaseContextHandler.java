@@ -26,6 +26,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.GlossaryT
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
@@ -217,7 +218,7 @@ public class DatabaseContextHandler {
 	 * @return schema entity.
 	 */
 	private EntityDetail getSchemaEntityFromRelationship(Relationship r) {
-		return this.getEntityByGuidNoThrow(r.getEntityTwoProxy().getGUID());
+		return getEntityByGuidNoThrow(r.getEntityTwoProxy().getGUID());
 	}
 
 	/**
@@ -362,12 +363,19 @@ public class DatabaseContextHandler {
 			relationshipsTableColumns = omEntityDao.getRelationshipsForEntity(entityTable,
 					Constants.NESTED_SCHEMA_ATTRIBUTE);
 		} catch (AnalyticsModelingCheckedException e) {
-			// skip the table
+			// exclude the table
+			if (e.getReportedCaughtException() != null) {
+				ctx.addMessage(AnalyticsModelingErrorCode.TABLE_COLUMN_RELATIONSHIPS_EXCEPTION.getMessageDefinition(ret.getName()),
+						e.getReportedCaughtException().getLocalizedMessage());
+			} else {
+				ctx.addMessage(AnalyticsModelingErrorCode.TABLE_COLUMN_RELATIONSHIPS_EXCEPTION.getMessageDefinition(ret.getName()));
+			}
 			return null;
 		}
 
 		if (relationshipsTableColumns == null || relationshipsTableColumns.isEmpty()) {
 			// report table without columns, don't create empty table
+			ctx.addTableWithoutColumns(ret.getName());
 			return null;
 		}
 
@@ -381,6 +389,7 @@ public class DatabaseContextHandler {
 
 		if (items.isEmpty()) {
 			// report table without columns, don't create such table
+			ctx.addTableWithoutColumns(ret.getName());
 			return null;
 		}
 
@@ -421,10 +430,13 @@ public class DatabaseContextHandler {
 		} catch (UserNotAuthorizedException | PropertyServerException 
 				| org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
 			// report warning with business terms
+			ctx.addMessage(AnalyticsModelingErrorCode.GLOSSARY_TERM_EXCEPTION.getMessageDefinition(entity.getGUID()),
+					e.getLocalizedMessage());
 		}
 	}
 
-	private String buildGlossaryTerm(GlossaryTerm term) {
+	private String buildGlossaryTerm(GlossaryTerm term)
+	{
 		Map<String, String> json;
 		if (term.getName() != null && term.getGuid() != null) {
 			json = new TreeMap<>();
@@ -446,6 +458,9 @@ public class DatabaseContextHandler {
 			return new ObjectMapper().writeValueAsString(json);
 		} catch (JsonProcessingException e) {
 			// log warning in context
+			ctx.addMessage(AnalyticsModelingErrorCode.BUILD_GLOSSARY_TERM_EXCEPTION.getMessageDefinition(term.getName()),
+					e.getLocalizedMessage());
+
 			return null;
 		}
 	}
@@ -518,20 +533,23 @@ public class DatabaseContextHandler {
 							fkColumn.setPkCatalog(getEntityStringProperty(catalogEntity, Constants.ATTRIBUTE_NAME));							
 						} catch (AnalyticsModelingCheckedException exCatalog) {
 							// log foreign key from unknown catalog
+							ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_CATALOG
+									.getMessageDefinition(fkColumn.getColumnName()));
 							return;
 						}
 						
 					} catch (AnalyticsModelingCheckedException exTable) {
 						// log foreign key from unknown schema
+						ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_SCHEMA
+								.getMessageDefinition(fkColumn.getColumnName()));
 						return;
 					}
 				} catch (AnalyticsModelingCheckedException exSchema) {
 					// log foreign key from unknown table
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_TABLE
+							.getMessageDefinition(fkColumn.getColumnName()));
 					return;
 				}
-				
-				
-				
 			});
 			
 		});
@@ -568,7 +586,8 @@ public class DatabaseContextHandler {
 		try {
 			return omEntityDao.getEntityByGuid(guid);
 		} catch (Exception ex) {
-			// log entity is loaded
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_ENTITY_NOT_FOUND.getMessageDefinition(guid),
+					ex.getLocalizedMessage());
 		}
 		return null;
 	}
@@ -602,6 +621,9 @@ public class DatabaseContextHandler {
 			columnEntity = omEntityDao.getEntityByGuid(tableTypeToColumns.getEntityTwoProxy().getGUID());
 		} catch (AnalyticsModelingCheckedException e) {
 			// skip the item
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_COLUMN_NOT_FOUND
+					.getMessageDefinition(tableTypeToColumns.getEntityTwoProxy().getGUID()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
 		TableItem item = new TableItem();
@@ -636,6 +658,8 @@ public class DatabaseContextHandler {
 
 		} catch (AnalyticsModelingCheckedException e) {
 			// column is useless without data type information
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_COLUMN_NOT_FOUND.getMessageDefinition(tableColumn.getName()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
 		
@@ -697,7 +721,7 @@ public class DatabaseContextHandler {
 						this.getClass().getSimpleName(),
 						"getSchemaEntityByName"));
 	}
-
+	
 	/**
 	 * Get GUIDs of the columns referenced as foreign key
 	 * @param columnEntity for the column.
@@ -710,6 +734,8 @@ public class DatabaseContextHandler {
 			columnForeignKeys = omEntityDao.getRelationshipsForEntity(columnEntity, Constants.FOREIGN_KEY);
 		} catch (AnalyticsModelingCheckedException e) {
 			// no foreign keys
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY.getMessageDefinition(columnEntity.getGUID()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
 
@@ -737,5 +763,9 @@ public class DatabaseContextHandler {
 
 	private int getEntityIntProperty(EntityDetail entity, String name) {
 		return entity == null ? null : omEntityDao.getEntityIntProperty(entity, name);
+	}
+	
+	public Messages getMessages() {
+		return ctx.getMessages();
 	}
 }
