@@ -123,9 +123,9 @@ public class DataEngineRelationalDataHandler {
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
 
         if (database.getProtocol() != null && database.getNetworkAddress() != null) {
-            this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
-                    DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
-                    externalSourceGUID, externalSourceName, userId, methodName);
+            dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
+                    databaseGUID, DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
+                    externalSourceGUID, externalSourceName, userId);
         }
 
         return databaseGUID;
