@@ -290,9 +290,11 @@ public class AnalyticsModelingRestClient extends FFDCRESTClient
 		AnalyticsModelingOMASAPIResponse response = serverCapabilityGUID == null
 				? callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
 						serverPlatformURLRoot + urlTemplateSynchronization + "&identifier={3}",
+						null,
 						serverName, user, serverCapability, identifier)
 				: callDeleteRESTCall(methodName, AnalyticsModelingOMASAPIResponse.class, 
 						serverPlatformURLRoot + urlTemplateSynchronizationWithGUID + "&identifier={4}",
+						null,
 						serverName, user, serverCapability, serverCapabilityGUID, identifier);
 		
 		handleFailedResponse(response, methodName);
