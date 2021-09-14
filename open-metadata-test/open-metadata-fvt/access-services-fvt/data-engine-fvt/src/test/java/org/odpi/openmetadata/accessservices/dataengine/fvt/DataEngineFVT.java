@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.fvt;
 
+import org.odpi.openmetadata.accessservices.dataengine.ConnectionAndEndpointSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.DataStoreAndRelationalTableSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.LineageSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.PortSetupService;
@@ -41,6 +42,8 @@ public class DataEngineFVT {
     protected static final String ASSET_SCHEMA_TYPE_RELATIONSHIP_GUID = "815b004d-73c6-4728-9dd9-536f4fe803cd";
     protected static final String DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP_GUID = "b827683c-2924-4df3-a92d-7be1888e23c0";
     protected static final String NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
+    protected static final String CONNECTION_TYPE_GUID = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
+    protected static final String ENDPOINT_TYPE_GUID = "dbc20663-d705-4ff0-8424-80c262c6b8e7";
 
     protected static final String DESCRIPTION = "description";
     protected static final String NAME = "name";
@@ -69,6 +72,7 @@ public class DataEngineFVT {
     protected final DataStoreAndRelationalTableSetupService dataStoreAndRelationalTableSetupService = new DataStoreAndRelationalTableSetupService();
     protected final ProcessSetupService processSetupService = new ProcessSetupService();
     protected final PortSetupService portSetupService = new PortSetupService();
+    protected final ConnectionAndEndpointSetupService connectionAndEndpointSetupService = new ConnectionAndEndpointSetupService();
 
     protected EntityDetail assertProcess(Process process, List<EntityDetail> processes) {
         assertNotNull(processes);
