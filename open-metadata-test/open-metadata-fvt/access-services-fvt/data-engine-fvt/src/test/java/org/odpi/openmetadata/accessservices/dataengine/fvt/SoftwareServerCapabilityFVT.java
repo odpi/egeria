@@ -51,7 +51,6 @@ public class SoftwareServerCapabilityFVT extends DataEngineFVT {
         EntityDetail entity = entityDetails.get(0);
         assertEquals(softwareServerCapability.getDescription(), entity.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         assertEquals(softwareServerCapability.getName(), entity.getProperties().getPropertyValue(NAME).valueAsString());
-        assertEquals(softwareServerCapability.getEngineVersion(), entity.getProperties().getPropertyValue(CAPABILITY_VERSION).valueAsString());
         assertEquals(softwareServerCapability.getPatchLevel(), entity.getProperties().getPropertyValue(PATCH_LEVEL).valueAsString());
         assertEquals(softwareServerCapability.getQualifiedName(), entity.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
         assertEquals(softwareServerCapability.getSource(), entity.getProperties().getPropertyValue(SOURCE).valueAsString());
@@ -80,12 +79,12 @@ public class SoftwareServerCapabilityFVT extends DataEngineFVT {
                 softwareServerCapabilityAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
                 softwareServerCapabilityAsEntityDetail.getGUID());
 
-        List<EntityDetail> futureEmptySoftwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+        List<EntityDetail> deletedSoftwareServerCapabilities = repositoryService.findEntityByPropertyValue(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                 toDeleteSoftwareServerCapability.getQualifiedName());
         // TODO: add verification for to be deleted softwareServerCapability once the method is implemented
         //  in this moment, a FunctionNotSupportedException is thrown
         // on searching the so called deleted capability, we still receive it as the result
-        assertNotNull(futureEmptySoftwareServerCapabilities);
+        assertNotNull(deletedSoftwareServerCapabilities);
     }
 
     private SoftwareServerCapability getToDeleteSoftwareServerCapability(){
