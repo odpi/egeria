@@ -376,61 +376,56 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException
-    {
-        final String           actionDescription = "disconnect";
+    public void disconnect() throws ConnectorCheckedException {
+        final String actionDescription = "disconnect";
 
 
-        if (consumer!=null) {
+        if (consumer != null) {
             consumer.safeCloseConsumer();
         }
 
-        if (producer!=null) {
+        if (producer != null) {
             producer.safeCloseProducer();
         }
 
         /*
-        * Ensure Kafka client threads have stopped
-        * before returning.
+         * Ensure Kafka client threads have stopped
+         * before returning.
          */
-        try {
-            consumerThread.join();
-        }
-        catch ( InterruptedException e )
-        {
-            //expected exception and don't care
-        }
-        catch ( Exception error ) {
-            if (auditLog != null)
-            {
-                final String command = "consumerThread.join";
-                auditLog.logException(actionDescription,
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                    topicName,
-                                                                                                                    command,
-                                                                                                                    error.getMessage()),
-                                                                                                                    error);
+        if (consumerThread != null) {
+            try {
+                consumerThread.join();
+            } catch (InterruptedException e) {
+                //expected exception and don't care
+            } catch (Exception error) {
+                if (auditLog != null) {
+                    final String command = "consumerThread.join";
+                    auditLog.logException(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                    topicName,
+                                    command,
+                                    error.getMessage()),
+                            error);
+                }
             }
         }
+        if (producerThread != null) {
+            try {
+                producerThread.join();
+            } catch (InterruptedException e) {
+                //expected and don't care
+            } catch (Exception error) {
+                if (auditLog != null) {
+                    final String command = "producerThread.join";
 
-        try {
-            producerThread.join();
-        } catch (InterruptedException e) {
-            //expected and don't care
-        }
-        catch ( Exception error ){
-            if (auditLog != null)
-            {
-                final String command = "producerThread.join";
-
-                auditLog.logException(actionDescription,
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                    topicName,
-                                                                                                                    command,
-                                                                                                                    error.getMessage()),
-                                                                                                                    error);
+                    auditLog.logException(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                    topicName,
+                                    command,
+                                    error.getMessage()),
+                            error);
+                }
             }
-
         }
 
         super.disconnect();
@@ -466,8 +461,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         boolean getRunningBrokers(Properties connectionProperties ) {
 
             boolean found = false;
-            try  (AdminClient adminClient = KafkaAdminClient.create(connectionProperties))
-            {
+            AdminClient adminClient = null;
+            try {
+                adminClient = KafkaAdminClient.create(connectionProperties);
                 DescribeClusterResult describeClusterResult = adminClient.describeCluster();
                 Collection<Node> brokers = describeClusterResult.nodes().get();
                 if (!brokers.isEmpty()) {
@@ -477,6 +473,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 //gulp down any exceptions, the waiting method will control any audit logging
                 //but keep a copy for reference
                 lastException = e;
+            } finally {
+            	if (adminClient != null) {
+            		adminClient.close(Duration.ZERO);
+            	}
             }
 
             return found;
