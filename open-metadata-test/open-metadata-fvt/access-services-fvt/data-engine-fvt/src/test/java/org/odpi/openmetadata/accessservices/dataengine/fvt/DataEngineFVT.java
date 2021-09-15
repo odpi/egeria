@@ -44,10 +44,11 @@ public class DataEngineFVT {
     protected static final String NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
     protected static final String CONNECTION_TYPE_GUID = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
     protected static final String ENDPOINT_TYPE_GUID = "dbc20663-d705-4ff0-8424-80c262c6b8e7";
+    protected static final String FILE_FOLDER_TYPE_GUID = "229ed5cc-de31-45fc-beb4-9919fd247398";
+    protected static final String TABULAR_SCHEMA_TYPE_TYPE_GUID = "248975ec-8019-4b8a-9caf-084c8b724233";
 
     protected static final String DESCRIPTION = "description";
     protected static final String NAME = "name";
-    protected static final String CAPABILITY_VERSION = "capabilityVersion";
     protected static final String PATCH_LEVEL = "patchLevel";
     protected static final String QUALIFIED_NAME = "qualifiedName";
     protected static final String DISPLAY_NAME = "displayName";

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -68,7 +69,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
@@ -143,7 +144,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
         dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
@@ -228,13 +229,14 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
-    public void deleteDataFile(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+    public void deleteDataFileAndFileFolder(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        SoftwareServerCapability softwareServerCapability = softwareServerCapabilitySetupServer
+                .createExternalDataEngine(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService
                 .upsertDataFile(userId, dataEngineClient, getDataFileToDelete());
 
@@ -249,6 +251,19 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         List<EntityDetail> dataFilesToDelete = repositoryService
                 .findEntityByPropertyValue(DATAFILE_TYPE_GUID, dataFile.getQualifiedName());
         assertNull(dataFilesToDelete);
+
+        // delete FileFolder
+        String fileFolderQualifiedName = softwareServerCapability.getQualifiedName() + "::/to-delete-data-file-pathname";
+        List<EntityDetail> fileFolders = repositoryService.findEntityByPropertyValue(FILE_FOLDER_TYPE_GUID, fileFolderQualifiedName);
+        assertNotNull(fileFolders);
+        assertEquals(1, fileFolders.size());
+        EntityDetail fileFolderAsEntityDetail = fileFolders.get(0);
+
+        dataStoreAndRelationalTableSetupService.deleteFolder(userId, dataEngineClient, fileFolderQualifiedName,
+                fileFolderAsEntityDetail.getGUID());
+        List<EntityDetail> fileFoldersToDelete = repositoryService
+                .findEntityByPropertyValue(FILE_FOLDER_TYPE_GUID, fileFolderQualifiedName);
+        assertNull(fileFoldersToDelete);
     }
 
     private DataFile getDataFileToDelete(){
@@ -259,7 +274,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         dataFile.setFileType("to-delete-data-file-type");
         dataFile.setProtocol("to-delete-data-file-protocol");
         dataFile.setNetworkAddress("to-delete-data-file-network-address");
-        dataFile.setPathName("/to-delete-data-file-pathname");
+        dataFile.setPathName("/to-delete-data-file-pathname/to-delete-data-file-display-name");
         dataFile.setColumns(buildTabularColumns());
         return dataFile;
     }
@@ -274,6 +289,33 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         columns.add(column);
 
         return columns;
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteSchemaType(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService
+                .upsertDataFile(userId, dataEngineClient, getDataFileToDelete());
+
+        // delete Tabular Schema Type
+        String tabularSchemaTypeQualifiedName = dataFile.getQualifiedName() + "::schema";
+        List<EntityDetail> tabularSchemaTypes = repositoryService
+                .findEntityByPropertyValue(TABULAR_SCHEMA_TYPE_TYPE_GUID, tabularSchemaTypeQualifiedName);
+        assertNotNull(tabularSchemaTypes);
+        assertEquals(1, tabularSchemaTypes.size());
+        EntityDetail tabularSchemaTypeAsEntityDetail = tabularSchemaTypes.get(0);
+
+        dataStoreAndRelationalTableSetupService.deleteSchemaType(userId, dataEngineClient, tabularSchemaTypeQualifiedName,
+                tabularSchemaTypeAsEntityDetail.getGUID());
+        List<EntityDetail> tabularSchemaTypeToDelete = repositoryService
+                .findEntityByPropertyValue(TABULAR_SCHEMA_TYPE_TYPE_GUID, tabularSchemaTypeQualifiedName);
+        assertNull(tabularSchemaTypeToDelete);
     }
 
 }

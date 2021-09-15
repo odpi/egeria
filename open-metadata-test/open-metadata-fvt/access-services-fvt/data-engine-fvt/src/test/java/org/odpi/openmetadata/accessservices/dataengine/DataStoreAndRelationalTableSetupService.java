@@ -188,4 +188,37 @@ public class DataStoreAndRelationalTableSetupService {
         dataEngineClient.deleteRelationalTable(userId, qualifiedName, guid);
     }
 
+    /**
+     * Delete a FileFolder using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteFolder(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete FileFolder. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteFolder(userId, qualifiedName, guid);
+    }
+
+    /**
+     * Delete a SchemaType using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteSchemaType(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete SchemaType. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteSchemaType(userId, qualifiedName, guid);
+    }
 }
