@@ -90,6 +90,7 @@ allprojects {
         junitjupiterVersion = '5.7.2'
         tomcatVersion = '9.0.52'
         httpcoreVersion = '4.4.14'
+        jenaVersion = '4.1.0'
     }
 
     dependencies {
@@ -137,7 +138,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpcore:${httpcoreVersion}")
             implementation("org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}")
             implementation("org.apache.httpcomponents:httpcore-osgi:${httpcoreVersion}")
-            implementation("org.apache.jena:jena-core:3.17.0")
+            implementation("org.apache.jena:jena-core:${jenaVersion}")
             implementation("org.apache.kafka:kafka-clients:2.8.0")
             implementation("org.apache.lucene:lucene-core:${luceneVersion}")
             implementation("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
@@ -204,7 +205,7 @@ allprojects {
             runtimeOnly("joda-time:joda-time:2.10.10")
             implementation("org.yaml:snakeyaml:1.29")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
-            runtimeOnly("org.apache.jena:jena-arq:3.17.0")
+            runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:1.9.14-atlassian-6")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:1.9.14-atlassian-6")
             runtimeOnly("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
