@@ -3,15 +3,20 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SoftwareServerCapabilityConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -40,6 +45,10 @@ public class ExecutionContext {
 	
 	private SoftwareServerCapabilityHandler softwareServerCapabilityHandler;
 	private SoftwareServerCapability softwareServerCapability;
+	
+	private Messages messages = new Messages();
+	private List<String> tablesWithoutColumns = new ArrayList<>();
+	private Map<String, List<String>> tableColumnsIgnored = new TreeMap<>();
 
 	
 	public ExecutionContext(
@@ -70,6 +79,7 @@ public class ExecutionContext {
 	
 	public void initialize(String userId)
 	{
+		messages = new Messages();
 		this.userId = userId;
 	}
 
@@ -79,7 +89,7 @@ public class ExecutionContext {
 		
 		String methodName = "InitializeExecutionContext";
 		
-		this.userId = userId;
+		initialize(userId);
 
 		softwareServerCapabilityHandler = new SoftwareServerCapabilityHandler(
 				new SoftwareServerCapabilityConverter(repositoryHelper, serviceName, serverName),
@@ -211,4 +221,43 @@ public class ExecutionContext {
 	{
 		return repositoryHelper.getStringProperty(serviceName, propName, properties, methodName);
 	}
+
+	public synchronized void addTableWithoutColumns(String name) {
+		tablesWithoutColumns.add(name);
+	}
+	
+	public synchronized void addIgnoredTableColumn(String nameTable, String nameColumn) {
+		List<String> columns = tableColumnsIgnored.get(nameTable);
+		if (columns == null) {
+			columns = new ArrayList<>();
+			tableColumnsIgnored.put(nameTable, columns);
+		}
+		columns.add(nameColumn);
+	}
+	
+	public Messages getMessages() {
+		
+		if (!tablesWithoutColumns.isEmpty()) {
+			ExceptionMessageDefinition def;
+			if (tablesWithoutColumns.size() == 1) {
+				def = AnalyticsModelingErrorCode.WARNING_TABLE_NO_COLUMNS.getMessageDefinition(tablesWithoutColumns.get(0));
+			} else {
+				tablesWithoutColumns.sort(null);	// sort by names helps to find table in question and preserves order. 
+				def = AnalyticsModelingErrorCode.WARNING_TABLES_NO_COLUMNS.getMessageDefinition(String.join(", ", tablesWithoutColumns));
+			}
+			messages.addWarning(def);
+			tablesWithoutColumns.clear();
+		}
+		
+		return (messages.getMessages() == null || messages.getMessages().isEmpty()) ? null : messages;
+	}
+
+	public void addMessage(ExceptionMessageDefinition message, String detail) {
+		messages.addWarning(message, detail);
+	}
+	
+	public void addMessage(ExceptionMessageDefinition message) {
+		messages.addWarning(message);
+	}
+	
 }
