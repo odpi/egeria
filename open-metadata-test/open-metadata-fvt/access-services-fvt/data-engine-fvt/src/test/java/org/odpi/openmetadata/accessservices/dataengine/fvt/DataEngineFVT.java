@@ -54,6 +54,7 @@ public class DataEngineFVT {
     protected static final String DISPLAY_NAME = "displayName";
     protected static final String SOURCE = "source";
     protected static final String FILE_TYPE = "fileType";
+    protected static final String CAPABILITY_VERSION = "capabilityVersion";
     protected static final String DEPLOYED_IMPLEMENTATION_TYPE = "deployedImplementationType";
     protected static final String DATABASE_VERSION = "databaseVersion";
     protected static final String INSTANCE = "instance";
