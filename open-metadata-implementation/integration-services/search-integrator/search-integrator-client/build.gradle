@@ -9,7 +9,8 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-api')
-
+    implementation 'org.springframework:spring-core'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Search Integrator Client-side'

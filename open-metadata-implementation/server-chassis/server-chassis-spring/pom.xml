@@ -80,7 +80,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>search-integration-connector</artifactId>
+            <artifactId>elasticsearch-integration-connector</artifactId>
             <scope>runtime</scope>
         </dependency>
 
