@@ -169,8 +169,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(softwareServerCapability);
 
-//        setExternalSourceName(softwareServerCapability.getQualifiedName());
-
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
