@@ -162,7 +162,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                 String operationDescription = "remove properties of relationship of type " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("relationshipTypeGUID", relationshipDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
             try {
@@ -186,7 +186,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("currentTypeDefSummary", relationshipDef.getName());
                 parameters.put("newTypeDefSummary", subTypeName);
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
             try {
@@ -210,7 +210,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("currentTypeDefSummary", subTypeName);
                 parameters.put("newTypeDefSummary", relationshipDef.getName());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

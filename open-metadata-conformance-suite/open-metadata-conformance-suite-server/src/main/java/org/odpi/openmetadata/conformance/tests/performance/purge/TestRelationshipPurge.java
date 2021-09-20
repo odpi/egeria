@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,11 +18,11 @@ import java.util.stream.Collectors;
 /**
  * Test performance of relationship purge operations.
  */
-public class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
+public abstract class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
 {
 
-    private static final String TEST_CASE_ID   = "repository-relationship-purge-performance";
-    private static final String TEST_CASE_NAME = "Repository relationship purge performance test case";
+    protected static final String TEST_CASE_ID   = "repository-relationship-purge-performance";
+    protected static final String TEST_CASE_NAME = "Repository relationship purge performance test case";
 
     private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationshipsByProperty";
     private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType deleted instances of type: ";
@@ -31,17 +30,12 @@ public class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_RELATIONSHIPS_RC     = TEST_CASE_ID + "-findRelationshipsByProperty-rc";
     private static final String A_FIND_RELATIONSHIPS_RC_MSG = "Repository performs search for unordered first instancesPerType reference copy instances of type: ";
 
-    private static final String A_DELETE     = TEST_CASE_ID + "-deleteRelationship";
-    private static final String A_DELETE_MSG = "Repository performs delete of instances of type: ";
+    protected final RelationshipDef     relationshipDef;
+    protected String                    testTypeName;
 
-    private static final String A_PURGE     = TEST_CASE_ID + "-purgeRelationship";
-    private static final String A_PURGE_MSG = "Repository purge of instances of type: ";
-
-    private static final String A_PURGE_RC     = TEST_CASE_ID + "-purgeRelationshipReferenceCopy";
-    private static final String A_PURGE_RC_MSG = "Repository purge of reference copy instances of type: ";
-
-    private final RelationshipDef     relationshipDef;
-    private final String              testTypeName;
+    protected static Map<String, Set<String>> guidsByType = new HashMap<>();
+    protected static Map<String, Set<String>> guidsByTypeRC = new HashMap<>();
+    protected static OMRSMetadataCollection metadataCollection = null;
 
 
     /**
@@ -49,17 +43,37 @@ public class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
      *
      * @param workPad place for parameters and results
      * @param relationshipDef type of valid relationships
+     * @param testCaseId unique ID for the test case
+     * @param testCaseName name for the test case
+     * @throws Exception on any initialization error
      */
     public TestRelationshipPurge(PerformanceWorkPad workPad,
-                                 RelationshipDef    relationshipDef)
+                                 RelationshipDef    relationshipDef,
+                                 String             testCaseId,
+                                 String             testCaseName) throws Exception
     {
         super(workPad, PerformanceProfile.RELATIONSHIP_PURGE.getProfileId());
 
         this.relationshipDef = relationshipDef;
 
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
-                TEST_CASE_ID,
-                TEST_CASE_NAME);
+                testCaseId,
+                testCaseName);
+
+        String typeDefName = relationshipDef.getName();
+        int numInstances = super.getInstancesPerType();
+        if (metadataCollection == null)
+        {
+            metadataCollection = super.getMetadataCollection();
+        }
+        if (guidsByType.get(typeDefName) == null)
+        {
+            guidsByType.put(typeDefName, getKeys(metadataCollection, numInstances));
+        }
+        if (guidsByTypeRC.get(typeDefName) == null)
+        {
+            guidsByTypeRC.put(typeDefName, getReferenceCopyKeys(metadataCollection, numInstances));
+        }
     }
 
 
@@ -68,19 +82,7 @@ public class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
-    protected void run() throws Exception
-    {
-        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
-        int numInstances = super.getInstancesPerType();
-
-        Set<String> keys = getKeys(metadataCollection, numInstances);
-        deleteRelationships(metadataCollection, keys);
-        purgeRelationships(metadataCollection, keys);
-        Set<String> rcKeys = getReferenceCopyKeys(metadataCollection, numInstances);
-        purgeRelationshipReferenceCopies(metadataCollection, rcKeys);
-
-        super.setSuccessMessage("Relationship purge performance tests complete for: " + testTypeName);
-    }
+    protected abstract void run() throws Exception;
 
     /**
      * Retrieve a list of relationships that are homed in the technology under test's repository.
@@ -158,137 +160,5 @@ public class TestRelationshipPurge extends OpenMetadataPerformanceTestCase
         return relationships == null ? null : relationships.stream().map(Relationship::getGUID).collect(Collectors.toSet());
     }
 
-    /**
-     * Attempt to delete a number of existing relationships.
-     * @param metadataCollection through which to call deleteRelationship
-     * @param keys GUIDs of relationships to delete
-     * @throws Exception on any errors
-     */
-    private void deleteRelationships(OMRSMetadataCollection metadataCollection, Set<String> keys) throws Exception
-    {
-
-        final String methodName = "deleteRelationship";
-
-        try {
-
-            for (String guid : keys) {
-                long start = System.nanoTime();
-                Relationship result = metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
-                        relationshipDef.getGUID(),
-                        relationshipDef.getName(),
-                        guid);
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
-
-                assertCondition(result != null,
-                        A_DELETE,
-                        A_DELETE_MSG + testTypeName,
-                        PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
-            }
-
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_DELETE,
-                    A_DELETE_MSG + testTypeName,
-                    PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),
-                    null);
-        } catch (Exception exc) {
-            String operationDescription = "delete relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", relationshipDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
-        }
-
-    }
-
-    /**
-     * Attempt to purge a number of deleted relationships.
-     * @param metadataCollection through which to call purgeRelationship
-     * @param keys GUIDs of relationships to purge
-     * @throws Exception on any errors
-     */
-    private void purgeRelationships(OMRSMetadataCollection metadataCollection, Set<String> keys) throws Exception
-    {
-
-        final String methodName = "purgeRelationship";
-
-        try {
-
-            for (String guid : keys) {
-                long start = System.nanoTime();
-                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
-                        relationshipDef.getGUID(),
-                        relationshipDef.getName(),
-                        guid);
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
-
-                assertCondition(true,
-                        A_PURGE,
-                        A_PURGE_MSG + testTypeName,
-                        PerformanceProfile.RELATIONSHIP_PURGE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
-            }
-
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_PURGE,
-                    A_PURGE_MSG + testTypeName,
-                    PerformanceProfile.RELATIONSHIP_PURGE.getProfileId(),
-                    null);
-        } catch (Exception exc) {
-            String operationDescription = "purge deleted relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", relationshipDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
-        }
-
-    }
-
-    /**
-     * Attempt to purge a number of reference copy relationships.
-     * @param metadataCollection through which to call purgeRelationshipReferenceCopy
-     * @param keys GUIDs of relationships to purge
-     * @throws Exception on any errors
-     */
-    private void purgeRelationshipReferenceCopies(OMRSMetadataCollection metadataCollection, Set<String> keys) throws Exception
-    {
-
-        final String methodName = "purgeRelationshipReferenceCopy";
-
-        try {
-            for (String guid : keys) {
-                long start = System.nanoTime();
-                metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(),
-                        guid,
-                        relationshipDef.getGUID(),
-                        relationshipDef.getName(),
-                        performanceWorkPad.getReferenceCopyMetadataCollectionId());
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
-                assertCondition(true,
-                        A_PURGE_RC,
-                        A_PURGE_RC_MSG + testTypeName,
-                        PerformanceProfile.RELATIONSHIP_PURGE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
-            }
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_PURGE_RC,
-                    A_PURGE_RC_MSG + testTypeName,
-                    PerformanceProfile.RELATIONSHIP_PURGE.getProfileId(),
-                    null);
-        } catch (Exception exc) {
-            String operationDescription = "purge reference copy relationship of type " + relationshipDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", relationshipDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
-        }
-
-    }
 
 }
