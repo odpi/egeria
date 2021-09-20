@@ -15,7 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +50,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     /* this buffer is for consumed events */
     private final List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
-    private KafkaProducerExecutor executor = null;
+    private KafkaConsumerExecutor consumerExecutor = null;
+    private KafkaProducerExecutor producerExecutor = null;
 
     final String                   threadHeader = "Kafka-";
     Thread                         consumerThread;
@@ -61,15 +67,37 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         @Override
         public void afterExecute(Runnable r, Throwable t) {
             super.afterExecute(r, t);
+            /*/
+            This code is executed when the producer thread dies because an wasn't handled.
+            If the Exception was a checked Exception then t is null
+            If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
+             */
+            initializeProducerAndProducerThread();
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                producerExecutor.execute(producerThread);
+            }
+        }
+    }
+    
+    /* mock up a a SingleThreadProducer with an override for afterExecute */
+    private class KafkaConsumerExecutor extends ThreadPoolExecutor {
+        KafkaConsumerExecutor() {
+            super(1, 1, Long.MAX_VALUE, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(1));
+        }
+
+        @Override
+        public void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
 
             /*/
             This code is executed when the producer thread dies because an wasn't handled.
             If the Exception was a checked Exception then t is null
             If the thread encounters a RuntimeException or a JVM Error then this is passed in a t
              */
-            producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, KafkaOpenMetadataTopicConnector.this, auditLog);
-            producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-            executor.execute(producerThread);
+            initializeConsumerAndConsumerThread();
+            if(KafkaOpenMetadataTopicConnector.this.isActive()) {
+                consumerExecutor.execute(consumerThread);
+            }
         }
     }
 
@@ -262,17 +290,30 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                     kafkaStatus.getLastException());
         }
 
+        initializeConsumerAndConsumerThread();
+        consumerExecutor = new KafkaConsumerExecutor();
+        consumerExecutor.execute(consumerThread);
+
+        initializeProducerAndProducerThread();
+        producerExecutor = new KafkaProducerExecutor();
+        producerExecutor.execute(producerThread);
+
+        super.start();
+    }
+
+
+    private void initializeConsumerAndConsumerThread() {
+
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
-        consumerThread.start();
+    }
+
+
+    private void initializeProducerAndProducerThread() {
 
         producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
-        executor = new KafkaProducerExecutor();
-        executor.execute(producerThread);
-
-        super.start();
     }
 
 
@@ -335,56 +376,56 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException
-    {
-        final String           actionDescription = "disconnect";
+    public void disconnect() throws ConnectorCheckedException {
+        final String actionDescription = "disconnect";
 
 
-        consumer.safeCloseConsumer();
-        producer.safeCloseProducer();
+        if (consumer != null) {
+            consumer.safeCloseConsumer();
+        }
+
+        if (producer != null) {
+            producer.safeCloseProducer();
+        }
 
         /*
-        * Ensure Kafka client threads have stopped
-        * before returning.
+         * Ensure Kafka client threads have stopped
+         * before returning.
          */
-        try {
-            consumerThread.join();
-        }
-        catch ( InterruptedException e )
-        {
-            //expected exception and don't care
-        }
-        catch ( Exception error ) {
-            if (auditLog != null)
-            {
-                final String command = "consumerThread.join";
-                auditLog.logException(actionDescription,
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                    topicName,
-                                                                                                                    command,
-                                                                                                                    error.getMessage()),
-                                                                                                                    error);
+        if (consumerThread != null) {
+            try {
+                consumerThread.join();
+            } catch (InterruptedException e) {
+                //expected exception and don't care
+            } catch (Exception error) {
+                if (auditLog != null) {
+                    final String command = "consumerThread.join";
+                    auditLog.logException(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                    topicName,
+                                    command,
+                                    error.getMessage()),
+                            error);
+                }
             }
         }
+        if (producerThread != null) {
+            try {
+                producerThread.join();
+            } catch (InterruptedException e) {
+                //expected and don't care
+            } catch (Exception error) {
+                if (auditLog != null) {
+                    final String command = "producerThread.join";
 
-        try {
-            producerThread.join();
-        } catch (InterruptedException e) {
-            //expected and don't care
-        }
-        catch ( Exception error ){
-            if (auditLog != null)
-            {
-                final String command = "producerThread.join";
-
-                auditLog.logException(actionDescription,
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                    topicName,
-                                                                                                                    command,
-                                                                                                                    error.getMessage()),
-                                                                                                                    error);
+                    auditLog.logException(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                    topicName,
+                                    command,
+                                    error.getMessage()),
+                            error);
+                }
             }
-
         }
 
         super.disconnect();
@@ -420,8 +461,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         boolean getRunningBrokers(Properties connectionProperties ) {
 
             boolean found = false;
-            try  (AdminClient adminClient = KafkaAdminClient.create(connectionProperties))
-            {
+            AdminClient adminClient = null;
+            try {
+                adminClient = KafkaAdminClient.create(connectionProperties);
                 DescribeClusterResult describeClusterResult = adminClient.describeCluster();
                 Collection<Node> brokers = describeClusterResult.nodes().get();
                 if (!brokers.isEmpty()) {
@@ -431,6 +473,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 //gulp down any exceptions, the waiting method will control any audit logging
                 //but keep a copy for reference
                 lastException = e;
+            } finally {
+            	if (adminClient != null) {
+            		adminClient.close(Duration.ZERO);
+            	}
             }
 
             return found;

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.server;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ErrorRes
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -75,9 +77,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, null, null, startFrom, pageSize, methodName);
 			
 			DatabasesResponse response = new DatabasesResponse();
-			List<ResponseContainerDatabase> databases = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(userId, startFrom, pageSize);
+			DatabaseContextHandler handler = getHandler().getDatabaseContextHandler(serverName, userId, methodName);
+			List<ResponseContainerDatabase> databases = handler.getDatabases(userId, startFrom, pageSize);
 			response.setDatabasesList(databases);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -108,11 +111,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, startFrom, pageSize, methodName);
 
 			SchemasResponse response = new SchemasResponse();
-			List<ResponseContainerDatabaseSchema> databasesSchemas = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName)
-					.getDatabaseSchemas(userId, databaseGuid, startFrom, pageSize);
-			
+			DatabaseContextHandler handler = getHandler().getDatabaseContextHandler(serverName, userId, methodName);
+			List<ResponseContainerDatabaseSchema> databasesSchemas = handler.getDatabaseSchemas(userId, databaseGuid, startFrom, pageSize);
 			response.setSchemaList(databasesSchemas);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -141,9 +143,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, null, null, methodName);
 
 			SchemaTablesResponse response = new SchemaTablesResponse();
-			ResponseContainerSchemaTables tables = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
+			DatabaseContextHandler handler = getHandler().getDatabaseContextHandler(serverName, userId, methodName);
+			ResponseContainerSchemaTables tables = handler.getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -176,9 +179,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, null, null, methodName);
 
 			ModuleResponse response = new ModuleResponse();
-			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, methodName)
-					.getModule(userId, databaseGuid, catalog, schema, request);
+			DatabaseContextHandler handler = getHandler().getDatabaseContextHandler(serverName, userId, methodName);
+			ResponseContainerModule module = handler.getModule(userId, databaseGuid, catalog, schema, request);
 			response.setModule(module);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -207,9 +211,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
 
 			AssetsResponse response = new AssetsResponse();
-			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
-					.createAssets(userId, serverCapability, artifact);
+			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
+			ResponseContainerAssets assets = handler.createAssets(userId, serverCapability, artifact);
 			response.setAssetList(assets);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -238,9 +243,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
 
 			AssetsResponse response = new AssetsResponse();
-			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
-					.updateAssets(userId, serverCapability, artifact);
+			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
+			ResponseContainerAssets assets = handler.updateAssets(userId, serverCapability, artifact);
 			response.setAssetList(assets);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -270,9 +276,10 @@ public class AnalyticsModelingRestServices {
 			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
 
 			AssetsResponse response = new AssetsResponse();
-			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
-					.deleteAssets(userId, serverCapability, identifier);
+			AnalyticsArtifactHandler handler = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName);
+			ResponseContainerAssets assets = handler.deleteAssets(userId, serverCapability, identifier);
 			response.setAssetList(assets);
+			response.setMeta(handler.getMessages());
 			ret = response;
 		} catch (Exception e) {
 			ret = handleErrorResponse(e, methodName);
@@ -317,7 +324,7 @@ public class AnalyticsModelingRestServices {
 	 * @param methodName context
 	 * @return response with error definition.
 	 */
-	private AnalyticsModelingOMASAPIResponse handleErrorResponse(Exception exception, String methodName)	{
+	private AnalyticsModelingOMASAPIResponse handleErrorResponse(Exception exception, String methodName) {
 		AnalyticsModelingCheckedException error = createAnalyticsException(exception, methodName);
 		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
 		getExceptionHandler().captureExceptions(ret, exception, methodName);

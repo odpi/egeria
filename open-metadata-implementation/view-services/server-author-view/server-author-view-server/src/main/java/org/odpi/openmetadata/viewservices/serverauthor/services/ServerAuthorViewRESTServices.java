@@ -201,6 +201,7 @@ public class ServerAuthorViewRESTServices {
      * @param serverName  local server name.
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
+     * @return FFDCResponseBase VoidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
@@ -681,6 +682,74 @@ public class ServerAuthorViewRESTServices {
     }
 
     /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse updateAuditLogDestination(String userId, String serverName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination) {
+        final String methodName = "updateAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.updateAuditLogDestination(className, methodName, serverToBeConfiguredName, auditLogDestinationName, auditLogDestination);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public ServerAuthorConfigurationResponse deleteAuditLogDestination(String userId, String serverName, String serverToBeConfiguredName, String auditLogDestinationName) {
+        final String methodName = "deleteAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.deleteAuditLogDestination(className, methodName, serverToBeConfiguredName, auditLogDestinationName);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+
+    }
+
+    /**
      * Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.
      *
      * @param userId                  user that is issuing the request
@@ -963,7 +1032,7 @@ public class ServerAuthorViewRESTServices {
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @return void response or
+     * @return VoidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      */

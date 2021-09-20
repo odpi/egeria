@@ -175,7 +175,7 @@
         <commons-io.version>2.11.0</commons-io.version>
 	    <commons-text.version>1.9</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <jena.version>3.17.0</jena.version>
+        <jena.version>4.1.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
@@ -3209,6 +3209,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>${maven-assembly-plugin.version}</version>
+                    <configuration>
+                        <tarLongFileMode>posix</tarLongFileMode>
+                    </configuration>
                 </plugin>
 
                 <plugin>

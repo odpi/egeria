@@ -336,9 +336,7 @@ public class ServerAuthorViewHandler {
      * @param methodName               current operation
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
-     * OMAGConfigurationErrorException the local repository mode has not been set
+     * @throws ServerAuthorViewServiceException a server author exception
      */
     public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
         try {
@@ -688,13 +686,62 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @throws ServerAuthorViewServiceException a server author exception
+     */
+    public void updateAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination)
+        throws ServerAuthorViewServiceException {
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.updateAuditLogDestination(auditLogDestinationName, auditLogDestination);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @throws ServerAuthorViewServiceException a server author exception
+     */
+    public void deleteAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName) throws ServerAuthorViewServiceException{
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.deleteAuditLogDestination(auditLogDestinationName);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
 
     /**
      * Get the active configuration of the named server
      *
      * @param className            class name used for diagnostics
      * @param methodName           the current operation
-     * @param serverToRetrieveName the server to retrive name
+     * @param serverToRetrieveName the server to retrieve name
      * @return the activate configuration or
      * @throws ServerAuthorViewServiceException a server author exception
      */
@@ -771,8 +818,8 @@ public class ServerAuthorViewHandler {
      * Clear the audit log destinations associated with the the server being configured
      *
      * @param serverToBeConfiguredName name of the server to be configured.
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * @throws ServerAuthorViewServiceException a server author exception
+     *
      */
     public void clearAuditLogDestinations(String serverToBeConfiguredName)  throws ServerAuthorViewServiceException {
         final String methodName = "clearAuditLogDestinations";
@@ -845,6 +892,5 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
-
 }
 

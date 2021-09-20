@@ -235,6 +235,47 @@ class ConfigRepositoryServicesViewResource {
                                                @RequestBody Connection connection) {
         return serverAPI.addAuditLogDestination(userId, serverName, serverToBeConfiguredName, connection);
     }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PutMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
+    public ServerAuthorConfigurationResponse updateAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     serverToBeConfiguredName,
+                                                  @PathVariable String     auditLogDestinationName,
+                                                  @RequestBody  Connection auditLogDestination)
+    {
+        return serverAPI.updateAuditLogDestination(userId, serverName, serverToBeConfiguredName, auditLogDestinationName, auditLogDestination);
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @DeleteMapping(path = "/audit-log-destinations/connection/{auditLogDestinationName}")
+    public ServerAuthorConfigurationResponse deleteAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     serverToBeConfiguredName,
+                                                  @PathVariable String     auditLogDestinationName)
+    {
+        return serverAPI.deleteAuditLogDestination(userId, serverName, serverToBeConfiguredName, auditLogDestinationName);
+    }
 
     /**
      * Get the audit log supported severities for the server being configured

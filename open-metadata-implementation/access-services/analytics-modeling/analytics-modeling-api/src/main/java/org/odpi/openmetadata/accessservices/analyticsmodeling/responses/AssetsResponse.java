@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AssetsResponse extends AnalyticsModelingOMASAPIResponse {
 	
 	private List<ResponseContainerAssets> data;
