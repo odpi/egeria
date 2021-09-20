@@ -3,4 +3,4 @@
 /**
  * TODO
  */
-package org.odpi.openmetadata.adapters.connectors.integration.search;
+package org.odpi.openmetadata.adapters.connectors.integration.elasticsearch;
