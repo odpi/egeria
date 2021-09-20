@@ -2202,6 +2202,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-manager-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -3102,6 +3110,31 @@
                 <artifactId>httpcore-osgi</artifactId>
                 <version>${httpcore.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-server</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-spring</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-client</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-api</artifactId>
+                <version>${open-metadata.version}</version>
             </dependency>
 
         </dependencies>

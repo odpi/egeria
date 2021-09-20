@@ -74,6 +74,7 @@
                 <include>org.odpi.egeria:kafka-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:omrs-rest-repository-connector:*</include>
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
+                <include>org.odpi.egeria:search-integrator-api:*</include>
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>

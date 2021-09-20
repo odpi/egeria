@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>integration-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.2-SNAPSHOT</version>
     </parent>
@@ -21,19 +21,23 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Integration Connectors</name>
+
+    <name>Search Integrator OMIS</name>
     <description>
-        Integration Connectors contain OCF connectors that use the integration services running in an Integration
-        Daemon OMAG Server.
+        Provides the Search Integrator integration service.
     </description>
 
-    <artifactId>integration-connectors</artifactId>
+    <artifactId>search-integrator</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>files-integration-connectors</module>
-        <module>kafka-integration-connector</module>
-        <module>openapi-integration-connector</module>
-        <module>elasticsearch-integration-connector</module>
+        <module>search-integrator-api</module>
+        <module>search-integrator-client</module>
+        <module>search-integrator-server</module>
+        <module>search-integrator-spring</module>
     </modules>
+
+    <dependencies>
+
+    </dependencies>
 
 </project>

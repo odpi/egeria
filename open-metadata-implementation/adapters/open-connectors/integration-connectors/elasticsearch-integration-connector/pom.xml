@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>integration-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.2-SNAPSHOT</version>
     </parent>
@@ -21,19 +21,23 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Integration Connectors</name>
+    <name>Elasticsearch Connector</name>
     <description>
-        Integration Connectors contain OCF connectors that use the integration services running in an Integration
-        Daemon OMAG Server.
+        Elasticsearch connector for the search solution
     </description>
 
-    <artifactId>integration-connectors</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>files-integration-connectors</module>
-        <module>kafka-integration-connector</module>
-        <module>openapi-integration-connector</module>
-        <module>elasticsearch-integration-connector</module>
-    </modules>
+    <artifactId>elasticsearch-integration-connector</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
