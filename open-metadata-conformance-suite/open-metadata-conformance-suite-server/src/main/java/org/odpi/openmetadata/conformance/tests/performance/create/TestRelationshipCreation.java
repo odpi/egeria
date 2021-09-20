@@ -176,7 +176,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
             parameters.put("typeGUID", relationshipDef.getGUID());
             parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
             parameters.put("initialStatus", "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -251,7 +251,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
             parameters.put("typeGUID", relationshipDef.getGUID());
             parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
             parameters.put("initialStatus", "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 

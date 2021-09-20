@@ -117,8 +117,10 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
         final String methodName = "restoreEntity";
 
         if (keys != null) {
+            String lastGuid = null;
             try {
                 for (String guid : keys) {
+                    lastGuid = guid;
                     long start = System.nanoTime();
                     EntityDetail result = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
                             guid);
@@ -140,7 +142,8 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
                 String operationDescription = "restore deleted entity of type " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                parameters.put("deletedEntityGUID", lastGuid);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

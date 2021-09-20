@@ -204,7 +204,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 String operationDescription = "declassify an entity with " + classificationDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", classificationDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -259,7 +259,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 String operationDescription = "purge reference copy classification " + classificationDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", classificationDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
