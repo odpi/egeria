@@ -57,7 +57,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
-    private static final String EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME = "createExternalDataEngine";
+    private static final String EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME = "deleteExternalDataEngine";
     private static final String SCHEMA_TYPE_METHOD_NAME = "createOrUpdateSchemaType";
     private static final String SCHEMA_TYPE_DELETE_METHOD_NAME = "deleteSchemaType";
     private static final String PORT_IMPLEMENTATION_METHOD_NAME = "createOrUpdatePortImplementation";
@@ -168,8 +168,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(softwareServerCapability);
-
-        setExternalSourceName(softwareServerCapability.getQualifiedName());
 
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
