@@ -24,7 +24,7 @@ public class SearchIntegratorRESTServices
     private static IntegrationDaemonInstanceHandler instanceHandler = new IntegrationDaemonInstanceHandler();
 
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SearchIntegratorRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+                                        instanceHandler.getServiceName());
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 

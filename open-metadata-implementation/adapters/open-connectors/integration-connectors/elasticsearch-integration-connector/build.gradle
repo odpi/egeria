@@ -9,6 +9,12 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-api')
 
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+
+    implementation 'org.slf4j:slf4j-api'
 }
 
 description = 'Elasticsearch connector for the search solution'

@@ -53,7 +53,6 @@ include(':open-metadata-implementation:adapters:open-connectors:data-store-conne
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
-include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
 // todo - convert to integration connectors and governance action connectors
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
@@ -414,6 +413,7 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-archi
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 //TODO: restore tests once ready
 //include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
 //include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
@@ -452,7 +452,6 @@ project(':open-metadata-implementation:adapters:open-connectors:data-store-conne
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/files-integration-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/kafka-integration-connector')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/openapi-integration-connector')
-project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/elasticsearch-integration-connector')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors')
 // todo convert to integration connectors and governance action connectors
 //project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors')
@@ -814,6 +813,8 @@ project(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt')
 project(':open-metadata-test:open-metadata-fvt:fvt-utilities').projectDir = file('open-metadata-test/open-metadata-fvt/fvt-utilities')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')
+project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/elasticsearch-integration-connector')
+
 //TODO: restore tests
 //project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test-generator')
 //project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test')
