@@ -178,7 +178,7 @@ public class TestGraphQueries extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve relationships of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -264,7 +264,7 @@ public class TestGraphQueries extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve neighborhood of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -319,7 +319,7 @@ public class TestGraphQueries extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve related entities of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -381,7 +381,7 @@ public class TestGraphQueries extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve linking entities of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 

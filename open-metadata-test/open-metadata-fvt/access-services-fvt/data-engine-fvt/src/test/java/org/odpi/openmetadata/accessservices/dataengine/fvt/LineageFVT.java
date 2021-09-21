@@ -39,10 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
- * covering the creation of an external data engine source and a whole job process containing stages.
- * Depending on the number of the series of parameters of each test method, the tests will run or not multiple times.
- * The parameters are computed in the method indicated in the @MethodSource annotation.
+ * Holds FVTs related to feature lineage
  */
 public class LineageFVT extends DataEngineFVT{
 
@@ -54,7 +51,7 @@ public class LineageFVT extends DataEngineFVT{
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
         List<Process> processes = lineageSetupService.createJobProcessWithContent(userId, dataEngineClient);
         for(Process process : processes){
             validate(process, repositoryService);
@@ -201,14 +198,14 @@ public class LineageFVT extends DataEngineFVT{
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
             PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient);
-        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient);
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
         assertDatabase(database, databases);
 
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
-        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient);
+        DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient, null);
 
         List<LineageMapping> lineageMappings = new ArrayList<>();
         lineageMappings.add(lineageSetupService.createLineageMapping(dataFile.getQualifiedName(), process.getQualifiedName()));

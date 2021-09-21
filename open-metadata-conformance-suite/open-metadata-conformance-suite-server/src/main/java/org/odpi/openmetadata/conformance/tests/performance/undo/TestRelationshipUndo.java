@@ -154,7 +154,7 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
                 String operationDescription = "undo a relationship update of type: " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

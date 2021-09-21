@@ -126,8 +126,10 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
         final String methodName = "deleteEntity";
 
         if (keys != null) {
+            String lastGuid = null;
             try {
                 for (String guid : keys) {
+                    lastGuid = guid;
                     long start = System.nanoTime();
                     EntityDetail result = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                             entityDef.getGUID(),
@@ -150,8 +152,10 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
             } catch (Exception exc) {
                 String operationDescription = "delete entity of type " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();
-                parameters.put("typeGUID", entityDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                parameters.put("typeDefGUID", entityDef.getGUID());
+                parameters.put("typeDefName", entityDef.getName());
+                parameters.put("obsoleteEntityGUID", lastGuid);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
