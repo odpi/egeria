@@ -163,7 +163,7 @@ public class TestRelationshipReHome extends OpenMetadataPerformanceTestCase
             parameters.put("homeMetadataCollectionId", performanceWorkPad.getReferenceCopyMetadataCollectionId());
             parameters.put("newHomeMetadataCollectionId", performanceWorkPad.getTutMetadataCollectionId());
             parameters.put("newHomeMetadataCollectionName", metadataCollectionName);
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 

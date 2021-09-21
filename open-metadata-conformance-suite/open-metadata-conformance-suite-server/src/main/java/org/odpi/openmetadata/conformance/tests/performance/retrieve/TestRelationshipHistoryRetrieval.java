@@ -160,7 +160,7 @@ public class TestRelationshipHistoryRetrieval extends OpenMetadataPerformanceTes
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -205,7 +205,7 @@ public class TestRelationshipHistoryRetrieval extends OpenMetadataPerformanceTes
             String operationDescription = "retrieve full history of instance of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 

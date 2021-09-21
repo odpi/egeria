@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class is used in DataEngineFVT to generate test data of type RelationalTable and subtypes of DataStore.
- *
+ * Generates test data of type RelationalTable and subtypes of DataStore, and triggers requests via client for aforementioned types
  */
 public class DataStoreAndRelationalTableSetupService {
 
@@ -29,11 +28,20 @@ public class DataStoreAndRelationalTableSetupService {
      *
      * @param userId user id
      * @param dataEngineClient data engine client
+     * @param database database to upsert. If null, a default will be used
      *
      * @return Database instance containing sent values
      */
-    public Database upsertDatabase(String userId, DataEngineClient dataEngineClient)
+    public Database upsertDatabase(String userId, DataEngineClient dataEngineClient, Database database)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(database == null){
+            database = getDefaultDatabase();
+        }
+        dataEngineClient.upsertDatabase(userId, database);
+        return database;
+    }
+
+    private Database getDefaultDatabase(){
         Database database = new Database();
         database.setQualifiedName(DATABASE_QUALIFIED_NAME);
         database.setDisplayName("database-display-name");
@@ -42,8 +50,24 @@ public class DataStoreAndRelationalTableSetupService {
         database.setDatabaseVersion("database-version");
         database.setDatabaseInstance("database-instance");
         database.setDatabaseImportedFrom("database-imported-from");
-        dataEngineClient.upsertDatabase(userId, database);
         return database;
+    }
+
+    /**
+     * Delete a Database using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteDatabase(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete Database. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteDatabase(userId, qualifiedName, guid);
     }
 
     /**
@@ -51,11 +75,20 @@ public class DataStoreAndRelationalTableSetupService {
      *
      * @param userId user id
      * @param dataEngineClient data engine client
+     * @param dataFile data file to upsert. If null, a default will be used
      *
      * @return DataFile instance containing sent values
      */
-    public DataFile upsertDataFile(String userId, DataEngineClient dataEngineClient)
+    public DataFile upsertDataFile(String userId, DataEngineClient dataEngineClient, DataFile dataFile)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(dataFile == null){
+            dataFile = getDefaultDataFile();
+        }
+        dataEngineClient.upsertDataFile(userId, dataFile);
+        return dataFile;
+    }
+
+    private DataFile getDefaultDataFile(){
         DataFile dataFile = new DataFile();
         dataFile.setQualifiedName("data-file-qualified-name");
         dataFile.setDisplayName("data-file-display-name");
@@ -65,7 +98,6 @@ public class DataStoreAndRelationalTableSetupService {
         dataFile.setNetworkAddress("data-file-network-address");
         dataFile.setPathName("/data-file-pathname");
         dataFile.setColumns(buildTabularColumns());
-        dataEngineClient.upsertDataFile(userId, dataFile);
         return dataFile;
     }
 
@@ -82,22 +114,47 @@ public class DataStoreAndRelationalTableSetupService {
     }
 
     /**
+     * Delete a DataFile using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteDataFile(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete RelationalTable. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteDataFile(userId, qualifiedName, guid);
+    }
+
+    /**
      * Upsert a RelationalTable using the dataEngineClient received
      *
      * @param userId user id
      * @param dataEngineClient data engine client
+     * @param relationalTable relational table to upsert. If null, a default will be used
      *
      * @return RelationalTable instance containing sent values
      */
-    public RelationalTable upsertRelationalTable(String userId, DataEngineClient dataEngineClient)
+    public RelationalTable upsertRelationalTable(String userId, DataEngineClient dataEngineClient, RelationalTable relationalTable)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(relationalTable == null){
+            relationalTable = getDefaultRelationalTable();
+        }
+        dataEngineClient.upsertRelationalTable(userId, relationalTable, DATABASE_QUALIFIED_NAME);
+        return relationalTable;
+    }
+
+    private RelationalTable getDefaultRelationalTable(){
         RelationalTable relationalTable = new RelationalTable();
         relationalTable.setQualifiedName("relational-table-qualified-name");
         relationalTable.setDisplayName("relational-table-display-name");
         relationalTable.setDescription("relational-table-description");
         relationalTable.setType("relational-table-type");
         relationalTable.setColumns(buildRelationalColumns());
-        dataEngineClient.upsertRelationalTable(userId, relationalTable, DATABASE_QUALIFIED_NAME);
         return relationalTable;
     }
 
@@ -114,4 +171,54 @@ public class DataStoreAndRelationalTableSetupService {
         return columns;
     }
 
+    /**
+     * Delete a Database using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteRelationalTable(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete RelationalTable. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteRelationalTable(userId, qualifiedName, guid);
+    }
+
+    /**
+     * Delete a FileFolder using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteFolder(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete FileFolder. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteFolder(userId, qualifiedName, guid);
+    }
+
+    /**
+     * Delete a SchemaType using the dataEngineClient received
+     *
+     * @param userId user id
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     */
+    public void deleteSchemaType(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete SchemaType. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteSchemaType(userId, qualifiedName, guid);
+    }
 }

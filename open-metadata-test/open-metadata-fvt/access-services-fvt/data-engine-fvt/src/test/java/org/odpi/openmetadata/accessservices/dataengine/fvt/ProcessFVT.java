@@ -21,11 +21,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 /**
- * This class holds functional verification tests written with the help of the Junit framework. There are parametrized tests
- * covering the creation of an external data engine source and a whole job process containing stages.
- * Depending on the number of the series of parameters of each test method, the tests will run or not multiple times.
- * The parameters are computed in the method indicated in the @MethodSource annotation.
+ * Holds FVTs related to type Process
  */
 public class ProcessFVT extends DataEngineFVT{
 
@@ -53,6 +52,36 @@ public class ProcessFVT extends DataEngineFVT{
         List<EntityDetail> updatedProcesses =
                 repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, updatedProcess.getQualifiedName());
         assertProcess(updatedProcess, updatedProcesses);
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteProcess(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, getProcessToDelete());
+
+        List<EntityDetail> processes = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
+        EntityDetail processAsEntityDetail = assertProcess(process, processes);
+
+        //delete Process
+        processSetupService.deleteProcess(userId, dataEngineClient, process.getQualifiedName(), processAsEntityDetail.getGUID());
+        List<EntityDetail> processesToDelete = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
+        assertNull(processesToDelete);
+    }
+
+    private Process getProcessToDelete() {
+        Process process;
+        process = new Process();
+        process.setQualifiedName("to-delete-simple-process-qualified-name");
+        process.setDisplayName("to-delete-simple-process-display-name");
+        process.setName("to-delete-simple-process-name");
+        process.setDescription("to-delete-simple-process-description");
+        process.setOwner("to-delete-simple-process-owner");
+        return process;
     }
 
 }

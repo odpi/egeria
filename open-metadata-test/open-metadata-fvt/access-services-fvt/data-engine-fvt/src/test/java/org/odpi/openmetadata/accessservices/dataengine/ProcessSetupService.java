@@ -10,20 +10,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
- * The class is used in the DataEngineFVT in order to generate a job process containing stages, port implementations with
- * their schemas and attributes. It creates virtual assets for a CSV file with 4 columns and a database table with the same
- * number of columns. The process contains 3 stages which read from the CSV, rename the columns, then write the values into a
- * database table.
- * The class also helps the setup with creating an external data engine using a SoftwareServerCapability object.
+ * Generates test data of type Process, and triggers requests via client for aforementioned type
  */
 public class ProcessSetupService {
 
     /**
      * Creates a simple process or updates one.
      *
-     * @param userId           the user which creates the data engine
+     * @param userId the user which creates the data engine
      * @param dataEngineClient the data engine client that is used to create the external data engine
-     * @param process          null to create a simple process, or the instance to update
+     * @param process process to upsert. If null, a default will be used
      *
      * @return process
      *
@@ -35,15 +31,44 @@ public class ProcessSetupService {
     public Process createOrUpdateSimpleProcess(String userId, DataEngineClient dataEngineClient, Process process)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
         if(process == null) {
-            process = new Process();
-            process.setQualifiedName("simple-process-qualified-name");
-            process.setDisplayName("simple-process-display-name");
-            process.setName("simple-process-name");
-            process.setDescription("simple-process-description");
-            process.setOwner("simple-process-owner");
+            process = getDefaultProcess();
         }
         dataEngineClient.createOrUpdateProcess(userId, process);
         return process;
+    }
+
+    private Process getDefaultProcess() {
+        Process process;
+        process = new Process();
+        process.setQualifiedName("simple-process-qualified-name");
+        process.setDisplayName("simple-process-display-name");
+        process.setName("simple-process-name");
+        process.setDescription("simple-process-description");
+        process.setOwner("simple-process-owner");
+        return process;
+    }
+
+    /**
+     * Delete a Process using the dataEngineClient provided
+     *
+     * @param userId user
+     * @param dataEngineClient data engine client
+     * @param qualifiedName qualified name
+     * @param guid guid
+     *
+     * @return process
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void deleteProcess(String userId, DataEngineClient dataEngineClient, String qualifiedName, String guid)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException {
+        if(qualifiedName == null || guid == null){
+            throw new IllegalArgumentException("Unable to delete External Tool. QualifiedName and Guid are both required. Missing at least one");
+        }
+        dataEngineClient.deleteProcess(userId, qualifiedName, guid);
     }
 
 }

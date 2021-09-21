@@ -181,7 +181,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -256,7 +256,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getExactMatchRegex(exact));
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -293,7 +293,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getStartsWithRegex(startsWith));
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -330,7 +330,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getContainsRegex(contains));
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -367,7 +367,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getEndsWithRegex(endsWith));
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -404,7 +404,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", regex);
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -522,7 +522,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("matchProperties", oneProperty.toString());
                 parameters.put("matchCriteria", "ALL");
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -564,7 +564,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ALL");
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -603,7 +603,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ANY");
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -642,7 +642,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "NONE");
                 parameters.put("asOfTime", asOfTime.toString());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
