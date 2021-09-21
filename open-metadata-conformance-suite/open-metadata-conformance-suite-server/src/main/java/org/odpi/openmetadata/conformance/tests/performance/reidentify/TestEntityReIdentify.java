@@ -133,8 +133,10 @@ public class TestEntityReIdentify extends OpenMetadataPerformanceTestCase
         final String methodName = "reIdentifyEntity";
 
         if (keys != null) {
+            String lastGuid = null;
             try {
                 for (String guid : keys) {
+                    lastGuid = guid;
                     long start = System.nanoTime();
                     EntityDetail result = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                             entityDef.getGUID(),
@@ -155,7 +157,8 @@ public class TestEntityReIdentify extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeDefGUID", entityDef.getGUID());
                 parameters.put("typeDefName", entityDef.getName());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                parameters.put("entityGUID", lastGuid);
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
