@@ -18,6 +18,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  */
 public class DataEngineConnectionAndEndpointHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(DataEngineConnectionAndEndpointHandler.class);
     private static final int START_FROM = 0;
     private static final int PAGE_SIZE = 10;
     private static final String SEARCH_STRING_PARAMETER_NAME = "searchString";
@@ -42,13 +45,20 @@ public class DataEngineConnectionAndEndpointHandler {
     private static final String CONNECTION = " Connection";
     private static final String ASSET_GUID = "assetGUID";
     private static final String ENDPOINT = " Endpoint";
-    public static final String GUID = "guid";
-    public static final String QUALIFIED_NAME = "qualifiedName";
-    public static final String TYPE_NAME = "typeName";
-    public static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
-    public static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
-    public static final String PROTOCOL = "protocol";
-    public static final String NETWORK_ADDRESS = "networkAddress";
+    private static final String GUID = "guid";
+    private static final String QUALIFIED_NAME = "qualifiedName";
+    private static final String TYPE_NAME = "typeName";
+    private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
+    private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
+    private static final String PROTOCOL = "protocol";
+    private static final String NETWORK_ADDRESS = "networkAddress";
+    private static final String CONNECTION_CREATED = "A new Connection for asset [{}] was created. Connection qualified name is [{}]." +
+            " The Connection has relationships to an Endpoint and a ConnectorType.";
+    private static final String ENDPOINT_UPDATED = "The existing Endpoint for asset [{}] was updated. Endpoint qualified name is [{}].";
+    private static final String ASSET_NOT_FOUND = "[{}] asset could not be found. Connection and Endpoint creation is aborted.";
+    private static final String PROPER_CONNECTOR_TYPE_NOT_FOUND = "A proper ConnectorType for the asset type name [{}] " +
+            "could not be found. Connection and Endpoint creation is aborted for asset [{}].";
+    private static final String EXISTING_ENDPOINT_NOT_FOUND = "Existing Endpoint [{}] for asset [{}] was not found and could not be updated.";
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -111,11 +121,13 @@ public class DataEngineConnectionAndEndpointHandler {
                 userID);
         Optional<EntityDetail> existingAsset = dataEngineCommonHandler.findEntity(userID, assetQualifiedName, assetTypeName);
         if (existingAsset.isEmpty()) {
+            log.debug(ASSET_NOT_FOUND, assetQualifiedName);
             return;
         }
 
         Optional<ConnectorType> properConnectorType = getProperConnectorType(assetTypeName, userID);
         if (properConnectorType.isEmpty()) {
+            log.debug(PROPER_CONNECTOR_TYPE_NOT_FOUND, assetTypeName, assetQualifiedName);
             return;
         }
 
@@ -128,6 +140,7 @@ public class DataEngineConnectionAndEndpointHandler {
                     assetTypeName, assetQualifiedName, true, null,
                     connectorTypeClassName, networkAddress, protocol, null,
                     null, null, methodName);
+            log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName);
         } else {
             updateEndpoint(protocol, networkAddress, assetTypeName, assetQualifiedName, externalSourceGUID,
                     externalSourceName, userID);
@@ -211,14 +224,20 @@ public class DataEngineConnectionAndEndpointHandler {
         String endpointQualifiedName = getEndpointQualifiedName(assetTypeName, assetQualifiedName);
         Optional<EntityDetail> existingEndpoint = dataEngineCommonHandler.findEntity(userID, endpointQualifiedName,
                 ENDPOINT_TYPE_NAME);
-        if (existingEndpoint.isPresent()) {
-            EndpointBuilder endpointBuilder = getEndpointBuilder(protocol, networkAddress, endpointQualifiedName);
 
-            String endpointGUID = existingEndpoint.get().getGUID();
-            endpointHandler.updateBeanInRepository(userID, externalSourceGUID, externalSourceName,
-                    endpointGUID, GUID, ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
-                    endpointBuilder.getInstanceProperties(methodName), false, methodName);
+        if (existingEndpoint.isEmpty()) {
+            log.debug(EXISTING_ENDPOINT_NOT_FOUND, endpointQualifiedName, assetQualifiedName);
+            return;
         }
+        EndpointBuilder endpointBuilder = getEndpointBuilder(protocol, networkAddress, endpointQualifiedName);
+
+        String endpointGUID = existingEndpoint.get().getGUID();
+        endpointHandler.updateBeanInRepository(userID, externalSourceGUID, externalSourceName,
+                endpointGUID, GUID, ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
+                endpointBuilder.getInstanceProperties(methodName), false, methodName);
+
+        log.debug(ENDPOINT_UPDATED, assetQualifiedName, endpointQualifiedName);
+
     }
 
     private String getEndpointQualifiedName(String assetTypeName, String assetQualifiedName) {

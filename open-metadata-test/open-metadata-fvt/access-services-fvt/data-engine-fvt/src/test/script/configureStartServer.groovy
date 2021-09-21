@@ -1,5 +1,6 @@
 #!/usr/local/bin/groovy
 import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
 
 // SPDX-License-Identifier: Apache-2.0
 // Copyright Contributors to the ODPi Egeria project.
@@ -8,21 +9,20 @@ import javax.net.ssl.HttpsURLConnection
 
 // Will configure a server chassis - which should already be running - for FVT testing
 
-import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
-import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
 // Maven plugin works best with properties, gradle with system properties, so use either
-user=(properties["user"] ?: System.properties["user"]) ?: "admin";
-baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999";
-serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem";
-serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph";
+user=(properties["user"] ?: System.properties["user"]) ?: "admin"
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999"
+serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem"
+serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph"
 maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
 delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
+File connectorTypeArchive = new File("../../../../content-packs/DataStoreConnectorTypes.json")
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
@@ -98,6 +98,21 @@ if(addDataEngineToInMemoryServerResponse.equals(200)) {
     println(addDataEngineToInMemoryServerRequest.getInputStream().getText())
 }
 
+// --- Adding connector types archive for OMAS startup - any errors here and we exit
+System.out.println("=== Adding the connector types archive for: " + serverMem + " ===")
+addConnectorTypeArchiveToInMemoryServerRequest = (HttpURLConnection) new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/open-metadata-archives/file" ).openConnection()
+addConnectorTypeArchiveToInMemoryServerRequest.setRequestMethod("POST")
+addConnectorTypeArchiveToInMemoryServerRequest.setRequestProperty("Content-Type", "application/json")
+addConnectorTypeArchiveToInMemoryServerRequest.setDoOutput(true)
+try( OutputStreamWriter writerToInMemoryRequest = new OutputStreamWriter( addConnectorTypeArchiveToInMemoryServerRequest.getOutputStream())) {
+    writerToInMemoryRequest.write( connectorTypeArchive.getAbsolutePath() )
+}
+println("Calea absoluta:" + connectorTypeArchive.getAbsolutePath())
+addConnectorTypeArchiveToInMemoryServerResponse = addConnectorTypeArchiveToInMemoryServerRequest.getResponseCode()
+println(addConnectorTypeArchiveToInMemoryServerResponse)
+if(addConnectorTypeArchiveToInMemoryServerResponse.equals(200)) {
+    println(addConnectorTypeArchiveToInMemoryServerRequest.getInputStream().getText())
+}
 
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverMem + " ===")
@@ -133,6 +148,20 @@ if(addDataEngineToLocalGraphServerResponse.equals(200)) {
     println(addDataEngineToLocalGraphServerRequest.getInputStream().getText())
 }
 
+// --- Adding connector types archive for OMAS startup - any errors here and we exit
+System.out.println("=== Adding the connector types archive for: " + serverGraph + " ===")
+addConnectorTypeArchiveToLocalGraphServerRequest = (HttpURLConnection) new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/open-metadata-archives/file" ).openConnection()
+addConnectorTypeArchiveToLocalGraphServerRequest.setRequestMethod("POST")
+addConnectorTypeArchiveToLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
+addConnectorTypeArchiveToLocalGraphServerRequest.setDoOutput(true)
+try(OutputStreamWriter writerToLocalGraphRequest = new OutputStreamWriter(addConnectorTypeArchiveToLocalGraphServerRequest.getOutputStream())) {
+    writerToLocalGraphRequest.write(connectorTypeArchive.getAbsolutePath())
+}
+addConnectorTypeArchiveToLocalGraphServerResponse = addConnectorTypeArchiveToLocalGraphServerRequest.getResponseCode()
+println(addConnectorTypeArchiveToLocalGraphServerResponse)
+if(addConnectorTypeArchiveToLocalGraphServerResponse.equals(200)) {
+    println(addConnectorTypeArchiveToLocalGraphServerRequest.getInputStream().getText())
+}
 
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverGraph + " ===")
