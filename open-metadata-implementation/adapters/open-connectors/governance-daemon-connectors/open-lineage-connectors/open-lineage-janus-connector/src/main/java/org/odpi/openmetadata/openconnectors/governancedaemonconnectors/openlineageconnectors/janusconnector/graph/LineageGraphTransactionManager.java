@@ -20,6 +20,8 @@ public class LineageGraphTransactionManager {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphTransactionManager.class);
 
+    private LineageGraphTransactionManager() {}
+
     /**
      * Commits a transaction after calling method apply on incoming function
      *

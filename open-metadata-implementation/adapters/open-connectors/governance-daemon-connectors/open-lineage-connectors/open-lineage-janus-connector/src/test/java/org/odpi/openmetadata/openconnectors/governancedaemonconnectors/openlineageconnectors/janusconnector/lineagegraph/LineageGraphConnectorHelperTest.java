@@ -54,7 +54,7 @@ public class LineageGraphConnectorHelperTest {
 
 
     @Test
-    public void ultimateSourceColumnLevel() {
+    void ultimateSourceColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c32";
         expectedNodeIDs.add("c11");
@@ -68,7 +68,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void ultimateDestinationColumnLevel() {
+    void ultimateDestinationColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c11";
         expectedNodeIDs.add("c41");
@@ -83,7 +83,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void sourceAndDestinationColumnLevel() {
+    void sourceAndDestinationColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c21";
         expectedNodeIDs.add("c11");
@@ -101,7 +101,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void endToEndColumnLevel() {
+    void endToEndColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c22";
         expectedNodeIDs.add("c11");
@@ -124,9 +124,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void verticalLineage() {
-        JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = cyclicGlossaryGraph.traversal();
+    void verticalLineage() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "g2";
         expectedNodeIDs.add("g1");
@@ -144,7 +142,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void problematicCyclicGraphSourceDestination() {
+    void problematicCyclicGraphSourceDestination() {
         //A triangle of three nodes
         JanusGraph problematicCyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = problematicCyclicGraph.traversal();
@@ -163,7 +161,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void ultimateSourceTableLevel() {
+    void ultimateSourceTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("d1");
@@ -176,7 +174,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void ultimateDestinationTableLevel() {
+    void ultimateDestinationTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("p2");
@@ -190,7 +188,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void sourceAndDestinationTableLevel() {
+    void sourceAndDestinationTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("d1");
@@ -207,7 +205,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void endToEndTableLevel() {
+    void endToEndTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("d1");
@@ -223,7 +221,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void ultimateSourceTableLevelViaLineageMapping() {
+    void ultimateSourceTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
@@ -236,7 +234,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void ultimateDestinationTableLevelViaLineageMapping() {
+    void ultimateDestinationTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("p20");
@@ -250,7 +248,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void sourceAndDestinationTableLevelViaLineageMapping() {
+    void sourceAndDestinationTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
@@ -266,7 +264,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void endToEndTableLevelViaLineageMapping() {
+    void endToEndTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
