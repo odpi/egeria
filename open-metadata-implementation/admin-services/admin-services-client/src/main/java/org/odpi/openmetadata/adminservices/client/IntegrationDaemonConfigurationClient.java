@@ -222,6 +222,45 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
                                         serviceURLMarker);
     }
 
+    /**
+     * Disable a single integration service.
+     *
+     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this integration service is running
+     * @param partnerOMASServerName name of server where the access service used by this integration service is running
+     * @param serviceURLMarker string indicating which integration service it is configuring
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void disableIntegrationService(String                           partnerOMASServerURLRoot,
+                                            String                           partnerOMASServerName,
+                                            String                           serviceURLMarker,
+                                            Map<String, Object>              integrationServiceOptions,
+                                            List<IntegrationConnectorConfig> integrationConnectorConfigs) throws OMAGNotAuthorizedException,
+                                                                                                                 OMAGInvalidParameterException,
+                                                                                                                 OMAGConfigurationErrorException
+    {
+        final String methodName    = "disableIntegrationService";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/integration-services/{2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
 
     /**
      * Add configuration for a single integration service to the server's config document.

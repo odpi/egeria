@@ -216,8 +216,6 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
     /**
      * Enable a single engine service.
      *
-     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this engine service is running
-     * @param partnerOMASServerName name of server where the access service used by this engine service is running
      * @param serviceURLMarker string indicating which engine service it is configuring
      * @param engineServiceOptions property name/value pairs used to configure the engine service
      * @param engines list of qualified names of the engines and optional user information
@@ -226,9 +224,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureEngineService(String              partnerOMASServerURLRoot,
-                                       String              partnerOMASServerName,
-                                       String              serviceURLMarker,
+    public void configureEngineService(String              serviceURLMarker,
                                        Map<String, Object> engineServiceOptions,
                                        List<EngineConfig>  engines) throws OMAGNotAuthorizedException,
                                                                            OMAGInvalidParameterException,
@@ -249,14 +245,47 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
         EngineServiceRequestBody requestBody = new EngineServiceRequestBody();
 
-        requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
-        requestBody.setOMAGServerName(partnerOMASServerName);
+        requestBody.setOMAGServerPlatformRootURL(serverPlatformRootURL);
+        requestBody.setOMAGServerName(serverName);
         requestBody.setEngineServiceOptions(engineServiceOptions);
         requestBody.setEngines(engines);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         engineServiceOptions,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
+    /**
+     * Disable a single engine service.
+     *
+     * @param serviceURLMarker string indicating which engine service it is disabling
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void disableEngineService(String              serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                           OMAGInvalidParameterException,
+                                                                           OMAGConfigurationErrorException
+    {
+        final String methodName    = "disableEngineService";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/engine-services/{2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
                                         adminUserId,
                                         serverName,
                                         serviceURLMarker);
