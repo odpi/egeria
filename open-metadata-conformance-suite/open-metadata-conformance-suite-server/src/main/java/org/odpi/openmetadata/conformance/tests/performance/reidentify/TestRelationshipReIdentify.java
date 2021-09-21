@@ -154,7 +154,7 @@ public class TestRelationshipReIdentify extends OpenMetadataPerformanceTestCase
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeDefGUID", relationshipDef.getGUID());
             parameters.put("typeDefName", relationshipDef.getName());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
