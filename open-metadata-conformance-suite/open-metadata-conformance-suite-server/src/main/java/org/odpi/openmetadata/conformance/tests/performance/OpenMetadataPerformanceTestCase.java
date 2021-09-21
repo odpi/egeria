@@ -500,16 +500,15 @@ public abstract class OpenMetadataPerformanceTestCase extends OpenMetadataTestCa
                                            String methodName,
                                            String operationDescription,
                                            Map<String,String> parameters,
-                                           String originalExceptionClassName,
-                                           String originalExceptionMessage) {
+                                           Throwable cause) {
 
         StringBuilder msg = new StringBuilder();
         msg.append("CTS test ").append(testName);
-        msg.append(" caught exception ").append(originalExceptionClassName);
+        msg.append(" caught exception ").append(cause.getClass().getSimpleName());
         msg.append(" from method ").append(methodName);
         msg.append(" whilst trying to ").append(operationDescription);
         msg.append(". ");
-        msg.append(" Exception message was : ").append(originalExceptionMessage);
+        msg.append(" Exception message was : ").append(cause.getMessage());
         msg.append(". ");
         msg.append(" Method was invoked with parameters: ");
         if (parameters != null) {
@@ -525,7 +524,16 @@ public abstract class OpenMetadataPerformanceTestCase extends OpenMetadataTestCa
                 }
             }
         }
+        msg.append(", Causes: ");
+        while (cause != null) {
+            StackTraceElement[] stackTraceElements = cause.getStackTrace();
+            if (stackTraceElements != null && stackTraceElements.length > 0) {
+                msg.append("/").append(cause.getClass().getSimpleName()).append("@").append(stackTraceElements[0].toString());
+            }
+            cause = cause.getCause();
+        }
         return msg.toString();
     }
+
 
 }

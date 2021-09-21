@@ -150,7 +150,7 @@ public class TestEntityRetrieval extends OpenMetadataPerformanceTestCase
             String operationDescription = "check existence of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -185,7 +185,7 @@ public class TestEntityRetrieval extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve summary of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -220,7 +220,7 @@ public class TestEntityRetrieval extends OpenMetadataPerformanceTestCase
             String operationDescription = "retrieve instance of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
