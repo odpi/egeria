@@ -4,10 +4,13 @@
 package org.odpi.openmetadata.adapters.connectors.integration.elasticsearch;
 
 
+import org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc.ElasticsearchIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -17,6 +20,8 @@ import java.util.Map;
  */
 public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
 {
+    private static final Logger log = LoggerFactory.getLogger(ElasticsearchIntegrationConnector.class);
+
     private String targetRootURL = null;
 
     private SearchIntegratorContext myContext = null;
@@ -86,10 +91,11 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
         final String methodName = "disconnect";
 
 
-        System.out.println("disconnecting");
+        log.debug("disconnecting");
         if (auditLog != null)
         {
-
+            auditLog.logMessage(methodName,
+                    ElasticsearchIntegrationConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
         }
 
         super.disconnect();

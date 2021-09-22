@@ -68,19 +68,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-lineage-janus-connector</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>search-integrator-api</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>elasticsearch-integration-connector</artifactId>
             <scope>runtime</scope>
         </dependency>
 
