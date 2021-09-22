@@ -256,8 +256,6 @@ public class DataEngineConnectionAndEndpointHandler {
         final String methodName = "validateParameters";
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME, methodName);
         invalidParameterHandler.validateName(typeName, TYPE_NAME, methodName);
-        invalidParameterHandler.validateName(protocol, PROTOCOL, methodName);
-        invalidParameterHandler.validateName(networkAddress, NETWORK_ADDRESS, methodName);
         invalidParameterHandler.validateName(externalSourceGuid, EXTERNAL_SOURCE_GUID, methodName);
         invalidParameterHandler.validateName(externalSourceName, EXTERNAL_SOURCE_NAME, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);

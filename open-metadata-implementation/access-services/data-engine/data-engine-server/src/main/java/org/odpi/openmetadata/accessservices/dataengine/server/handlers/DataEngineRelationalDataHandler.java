@@ -122,11 +122,9 @@ public class DataEngineRelationalDataHandler {
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
 
-        if (database.getProtocol() != null && database.getNetworkAddress() != null) {
-            dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
-                    databaseGUID, DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
-                    externalSourceGUID, externalSourceName, userId);
-        }
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(), databaseGUID,
+                DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(), externalSourceGUID,
+                externalSourceName, userId);
 
         return databaseGUID;
     }
