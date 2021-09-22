@@ -47,7 +47,7 @@ def serverLocalGraph = applicationProperties.getProperty('server.local-graph.nam
 def delay = applicationProperties.getProperty('delay')
 def user = applicationProperties.getProperty('user')
 def port = applicationProperties.getProperty('server.port')
-def connectorTypeArchive = file("src/test/resources/DataStoreConnectorTypes.json").absolutePath
+def connectorTypeArchive = file("src/test/resources/DataStoreConnectorTypes.json")
 
 // Local properties to use
 ext
