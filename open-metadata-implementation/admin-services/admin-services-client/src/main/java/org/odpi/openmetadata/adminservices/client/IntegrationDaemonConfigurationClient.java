@@ -225,19 +225,13 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
     /**
      * Disable a single integration service.
      *
-     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this integration service is running
-     * @param partnerOMASServerName name of server where the access service used by this integration service is running
      * @param serviceURLMarker string indicating which integration service it is configuring
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void disableIntegrationService(String                           partnerOMASServerURLRoot,
-                                            String                           partnerOMASServerName,
-                                            String                           serviceURLMarker,
-                                            Map<String, Object>              integrationServiceOptions,
-                                            List<IntegrationConnectorConfig> integrationConnectorConfigs) throws OMAGNotAuthorizedException,
+    public void disableIntegrationService(String serviceURLMarker) throws OMAGNotAuthorizedException,
                                                                                                                  OMAGInvalidParameterException,
                                                                                                                  OMAGConfigurationErrorException
     {

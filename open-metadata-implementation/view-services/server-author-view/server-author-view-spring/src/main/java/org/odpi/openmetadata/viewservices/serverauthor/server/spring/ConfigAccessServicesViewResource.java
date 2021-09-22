@@ -68,7 +68,7 @@ public class ConfigAccessServicesViewResource
     @DeleteMapping(path = "/access-services/{serviceURLMarker}")
     public ServerAuthorConfigurationResponse disableAccessService(  @PathVariable                   String              userId,
                                                                     @PathVariable                   String              serverName,
-                                                                    @PathVariable                   String serverToBeConfiguredName,
+                                                                    @PathVariable                   String              serverToBeConfiguredName,
                                                                     @PathVariable                   String              serviceURLMarker)
     {
         return adminAPI.disableAccessService(userId, serverName, serverToBeConfiguredName, serviceURLMarker);
