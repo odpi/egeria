@@ -12,8 +12,7 @@ import org.odpi.openmetadata.conformance.tests.performance.delete.TestRelationsh
 import org.odpi.openmetadata.conformance.tests.performance.environment.TestEnvironment;
 import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphHistoryQueries;
 import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphQueries;
-import org.odpi.openmetadata.conformance.tests.performance.purge.TestEntityPurge;
-import org.odpi.openmetadata.conformance.tests.performance.purge.TestRelationshipPurge;
+import org.odpi.openmetadata.conformance.tests.performance.purge.*;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestEntityReHome;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestRelationshipReHome;
 import org.odpi.openmetadata.conformance.tests.performance.reidentify.TestEntityReIdentify;
@@ -24,8 +23,7 @@ import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityHi
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityRetrieval;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipHistoryRetrieval;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipRetrieval;
-import org.odpi.openmetadata.conformance.tests.performance.retype.TestEntityRetype;
-import org.odpi.openmetadata.conformance.tests.performance.retype.TestRelationshipRetype;
+import org.odpi.openmetadata.conformance.tests.performance.retype.*;
 import org.odpi.openmetadata.conformance.tests.performance.search.*;
 import org.odpi.openmetadata.conformance.tests.performance.undo.TestEntityUndo;
 import org.odpi.openmetadata.conformance.tests.performance.undo.TestRelationshipUndo;
@@ -432,10 +430,12 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
         // 23. Retype entity instances
         if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RETYPE.getProfileName()))
         {
+
+            // 23a. null properties
             for (EntityDef entityDef : entityDefs.values())
             {
-                TestEntityRetype testEntityRetype = new TestEntityRetype(workPad, entityDef);
-                testEntityRetype.executeTest();
+                TestEntityRetypeNullProperties nullProperties = new TestEntityRetypeNullProperties(workPad, entityDef);
+                nullProperties.executeTest();
             }
 
             workPad.getAuditLog().logRecord(methodName,
@@ -446,6 +446,39 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                     waiting.getSystemAction(),
                     waiting.getUserAction());
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+            // 23b. re-type to subtype
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityRetypeSub retypeSub = new TestEntityRetypeSub(workPad, entityDef);
+                retypeSub.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+            // 23c. re-type to supertype
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityRetypeSuper retypeSuper = new TestEntityRetypeSuper(workPad, entityDef);
+                retypeSuper.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
         }
 
         // 24. Retype relationship instances
@@ -584,21 +617,59 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
         // 31. Purge relationship instances
         if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_PURGE.getProfileName()))
         {
+
+            // 31a. soft-delete relationships
             for (RelationshipDef relationshipDef : relationshipDefs.values())
             {
-                TestRelationshipPurge testRelationshipPurge = new TestRelationshipPurge(workPad, relationshipDef);
+                TestRelationshipPurgeSoft testRelationshipPurge = new TestRelationshipPurgeSoft(workPad, relationshipDef);
                 testRelationshipPurge.executeTest();
             }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+            // 31b. purge relationships
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipPurgeHard testRelationshipPurge = new TestRelationshipPurgeHard(workPad, relationshipDef);
+                testRelationshipPurge.executeTest();
+            }
+
         }
 
         // 32. Purge entity instances
         if (!profilesToSkip.contains(PerformanceProfile.ENTITY_PURGE.getProfileName()))
         {
+
+            // 32a. soft-delete entities
             for (EntityDef entityDef : entityDefs.values())
             {
-                TestEntityPurge testEntityPurge = new TestEntityPurge(workPad, entityDef);
+                TestEntityPurgeSoft testEntityPurge = new TestEntityPurgeSoft(workPad, entityDef);
                 testEntityPurge.executeTest();
             }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+            // 32b. purge entities
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityPurgeHard testEntityPurge = new TestEntityPurgeHard(workPad, entityDef);
+                testEntityPurge.executeTest();
+            }
+
         }
 
         TestEnvironment testEnvironment = new TestEnvironment(workPad);

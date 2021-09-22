@@ -137,8 +137,10 @@ public class TestEntityReHome extends OpenMetadataPerformanceTestCase
         final String methodName = "reHomeEntity";
 
         if (keys != null) {
+            String lastGuid = null;
             try {
                 for (String guid : keys) {
+                    lastGuid = guid;
                     long start = System.nanoTime();
                     EntityDetail result = metadataCollection.reHomeEntity(workPad.getLocalServerUserId(),
                             guid,
@@ -159,12 +161,13 @@ public class TestEntityReHome extends OpenMetadataPerformanceTestCase
             } catch (Exception exc) {
                 String operationDescription = "re-home entity of type " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", lastGuid);
                 parameters.put("typeDefGUID", entityDef.getGUID());
                 parameters.put("typeDefName", entityDef.getName());
                 parameters.put("homeMetadataCollectionId", performanceWorkPad.getReferenceCopyMetadataCollectionId());
                 parameters.put("newHomeMetadataCollectionId", performanceWorkPad.getTutMetadataCollectionId());
                 parameters.put("newHomeMetadataCollectionName", metadataCollectionName);
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
