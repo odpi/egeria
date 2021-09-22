@@ -104,10 +104,10 @@ addConnectorTypeArchiveToInMemoryServerRequest = (HttpURLConnection) new URL(bas
 addConnectorTypeArchiveToInMemoryServerRequest.setRequestMethod("POST")
 addConnectorTypeArchiveToInMemoryServerRequest.setRequestProperty("Content-Type", "application/json")
 addConnectorTypeArchiveToInMemoryServerRequest.setDoOutput(true)
-try(OutputStreamWriter writerToInMemoryRequest = new OutputStreamWriter(addConnectorTypeArchiveToInMemoryServerRequest.getOutputStream())) {
-    writerToInMemoryRequest.write(connectorTypeArchive)
+try( OutputStreamWriter writerToInMemoryRequest = new OutputStreamWriter( addConnectorTypeArchiveToInMemoryServerRequest.getOutputStream())) {
+    writerToInMemoryRequest.write(connectorTypeArchive.getAbsolutePath())
 }
-println("Absolute path to ConnectorTypes archive for" +  serverMem + ":" + connectorTypeArchive)
+println("Absolute path to ConnectorTypes archive for" +  serverMem + ":" + connectorTypeArchive.getAbsolutePath())
 addConnectorTypeArchiveToInMemoryServerResponse = addConnectorTypeArchiveToInMemoryServerRequest.getResponseCode()
 println(addConnectorTypeArchiveToInMemoryServerResponse)
 if(addConnectorTypeArchiveToInMemoryServerResponse.equals(200)) {
@@ -155,9 +155,9 @@ addConnectorTypeArchiveToLocalGraphServerRequest.setRequestMethod("POST")
 addConnectorTypeArchiveToLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
 addConnectorTypeArchiveToLocalGraphServerRequest.setDoOutput(true)
 try(OutputStreamWriter writerToLocalGraphRequest = new OutputStreamWriter(addConnectorTypeArchiveToLocalGraphServerRequest.getOutputStream())) {
-    writerToLocalGraphRequest.write(connectorTypeArchive)
+    writerToLocalGraphRequest.write(connectorTypeArchive.getAbsolutePath())
 }
-println("Absolute path to ConnectorTypes archive for" +  serverGraph + ":" + connectorTypeArchive)
+println("Absolute path to ConnectorTypes archive for " +  serverGraph + ":" + connectorTypeArchive.getAbsolutePath())
 addConnectorTypeArchiveToLocalGraphServerResponse = addConnectorTypeArchiveToLocalGraphServerRequest.getResponseCode()
 println(addConnectorTypeArchiveToLocalGraphServerResponse)
 if(addConnectorTypeArchiveToLocalGraphServerResponse.equals(200)) {

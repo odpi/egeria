@@ -113,7 +113,8 @@ public class DataEngineDataFileHandler {
                 userId, methodName);
 
         dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileGuid, fileTypeName,
-                    file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
+                file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
+
         return fileGuid;
     }
 

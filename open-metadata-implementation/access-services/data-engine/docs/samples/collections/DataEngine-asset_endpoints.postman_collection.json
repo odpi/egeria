@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "191db52f-13ce-4036-9a46-a72621fac47f",
+		"_postman_id": "6cbf38c5-605b-42c8-b0d3-4c9c026b03e4",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -102,7 +102,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\",\n        \"networkAddress\" : \"localhost\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
@@ -238,7 +238,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -304,7 +304,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"

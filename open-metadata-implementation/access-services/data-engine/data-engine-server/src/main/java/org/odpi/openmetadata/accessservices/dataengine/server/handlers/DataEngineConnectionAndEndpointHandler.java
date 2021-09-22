@@ -50,7 +50,6 @@ public class DataEngineConnectionAndEndpointHandler {
     private static final String TYPE_NAME = "typeName";
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
-    private static final String PROTOCOL = "protocol";
     private static final String NETWORK_ADDRESS = "networkAddress";
     private static final String CONNECTION_CREATED = "A new Connection for asset [{}] was created. Connection qualified name is [{}]." +
             " The Connection has relationships to an Endpoint and a ConnectorType.";
@@ -117,8 +116,7 @@ public class DataEngineConnectionAndEndpointHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         final String methodName = "upsertConnectionAndEndpoint";
-        validateParameters(assetQualifiedName, assetTypeName, protocol, networkAddress, externalSourceGUID, externalSourceName,
-                userID);
+        validateParameters(assetQualifiedName, assetTypeName, networkAddress, externalSourceGUID, externalSourceName, userID, methodName);
         Optional<EntityDetail> existingAsset = dataEngineCommonHandler.findEntity(userID, assetQualifiedName, assetTypeName);
         if (existingAsset.isEmpty()) {
             log.debug(ASSET_NOT_FOUND, assetQualifiedName);
@@ -249,13 +247,13 @@ public class DataEngineConnectionAndEndpointHandler {
                 ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
-    private void validateParameters(String qualifiedName, String typeName, String protocol, String networkAddress,
-                                    String externalSourceGuid, String externalSourceName, String userId)
+    private void validateParameters(String qualifiedName, String typeName, String networkAddress,
+                                    String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException {
 
-        final String methodName = "validateParameters";
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME, methodName);
         invalidParameterHandler.validateName(typeName, TYPE_NAME, methodName);
+        invalidParameterHandler.validateName(networkAddress, NETWORK_ADDRESS, methodName);
         invalidParameterHandler.validateName(externalSourceGuid, EXTERNAL_SOURCE_GUID, methodName);
         invalidParameterHandler.validateName(externalSourceName, EXTERNAL_SOURCE_NAME, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
