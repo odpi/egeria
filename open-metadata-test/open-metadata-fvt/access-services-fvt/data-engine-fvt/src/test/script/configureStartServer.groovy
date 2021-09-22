@@ -20,9 +20,9 @@ user=(properties["user"] ?: System.properties["user"]) ?: "admin"
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999"
 serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem"
 serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph"
-maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
-delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
-File connectorTypeArchive = new File("../../../../content-packs/DataStoreConnectorTypes.json")
+maxRetries=Integer.parseInt((properties["retries"].toString() ?: System.properties["retries"].toString()) ?: 12 as String)
+delay=Integer.parseInt((properties["delay"].toString() ?: System.properties["delay"].toString()) ?: 10 as String)
+File connectorTypeArchive = new File(properties["connectorTypeArchivePath"].toString())
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
