@@ -42,7 +42,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
             super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
                                            cloudInformationModelArchiveBuilder.getOpenMetadataArchive());
         }
-        catch (Throwable  error)
+        catch (Exception error)
         {
             System.out.println("error is " + error.toString());
         }
@@ -70,7 +70,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 
             archiveWriter.writeOpenMetadataArchive();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.err.println("Exception: " + error.toString());
             System.exit(-1);

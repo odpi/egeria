@@ -2599,6 +2599,12 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>catalog-builder</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-create-avro-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>

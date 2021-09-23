@@ -139,11 +139,11 @@ class CloudInformationModelParser
              */
             if (!errorReport.isEmpty())
             {
-                System.out.println("Error Report");
+                System.out.println("Error Report from parsing Source Model");
                 System.out.println(errorReport);
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("error is " + error.toString());
         }
@@ -814,7 +814,7 @@ class CloudInformationModelParser
                 errorReport.add("ERROR: no id for concept" + schemaProperties.toString());
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             System.out.println("error is " + error.toString());
         }
