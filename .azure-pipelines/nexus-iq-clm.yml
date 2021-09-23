@@ -58,6 +58,12 @@ stages:
                   --batch-mode
                   -e
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -DskipFVT
+                  -DskipTests
+                  -Dmaven.javadoc.skip=true 
+                  -Dmaven.source.skip=true
+                  -Denforcer.skip=true 
+                  -Djacocoskip=true
                   -Dclm.stage="build"
                   -Dclm.applicationId="$(Nexus.IQ.AppId)"
                   -Dclm.serverUrl="$(Nexus.IQ.Server)"
