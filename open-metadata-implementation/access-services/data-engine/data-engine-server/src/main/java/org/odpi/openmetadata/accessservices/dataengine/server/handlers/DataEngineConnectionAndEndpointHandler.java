@@ -57,6 +57,7 @@ public class DataEngineConnectionAndEndpointHandler {
     private static final String ASSET_NOT_FOUND = "[{}] asset could not be found. Connection and Endpoint creation is aborted.";
     private static final String PROPER_CONNECTOR_TYPE_NOT_FOUND = "A proper ConnectorType for the asset type name [{}] " +
             "could not be found. Connection and Endpoint creation is aborted for asset [{}].";
+    private static final String PROPER_CONNECTOR_TYPE_FOUND = "A proper ConnectorType for the asset type name [{}] was found: [{}].";
     private static final String EXISTING_ENDPOINT_NOT_FOUND = "Existing Endpoint [{}] for asset [{}] was not found and could not be updated.";
 
     private final InvalidParameterHandler invalidParameterHandler;
@@ -123,17 +124,20 @@ public class DataEngineConnectionAndEndpointHandler {
             return;
         }
 
-        Optional<ConnectorType> properConnectorType = getProperConnectorType(assetTypeName, userID);
-        if (properConnectorType.isEmpty()) {
+        Optional<ConnectorType> optionalConnectorType = getProperConnectorType(assetTypeName, userID);
+        if (optionalConnectorType.isEmpty()) {
             log.debug(PROPER_CONNECTOR_TYPE_NOT_FOUND, assetTypeName, assetQualifiedName);
             return;
         }
+
+        ConnectorType connectorType = optionalConnectorType.get();
+        log.debug(PROPER_CONNECTOR_TYPE_FOUND, assetTypeName, connectorType.getQualifiedName());
 
         String connectionQualifiedName = getConnectionQualifiedName(assetTypeName, assetQualifiedName);
         Optional<EntityDetail> existingConnection = dataEngineCommonHandler.findEntity(userID, connectionQualifiedName,
                 CONNECTION_TYPE_NAME);
         if (existingConnection.isEmpty()) {
-            String connectorTypeClassName = properConnectorType.get().getClass().getSimpleName();
+            String connectorTypeClassName = connectorType.getClass().getSimpleName();
             connectionHandler.addAssetConnection(userID, externalSourceGUID, externalSourceName, assetGUID, ASSET_GUID,
                     assetTypeName, assetQualifiedName, true, null,
                     connectorTypeClassName, networkAddress, protocol, null,
