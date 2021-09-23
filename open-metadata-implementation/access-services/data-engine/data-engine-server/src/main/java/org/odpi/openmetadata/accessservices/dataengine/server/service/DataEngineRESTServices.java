@@ -1458,9 +1458,10 @@ public class DataEngineRESTServices {
     /**
      * Create the process with ports, schema types and lineage mappings
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
-     * @param process    properties of the process
+     * @param serverName            name of server instance to call
+     * @param userId                the name of the calling user
+     * @param process               properties of the process
+     * @param externalSourceName    the name of the external source
      *
      * @return the unique identifier (guid) of the created process
      */

@@ -22,7 +22,7 @@ serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) 
 serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph"
 maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
 delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
-File connectorTypeArchive = new File(properties["connectorTypeArchivePath"].toString())
+File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "src/test/resources/DataStoreConnectorTypes.json")
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
@@ -107,7 +107,7 @@ addConnectorTypeArchiveToInMemoryServerRequest.setDoOutput(true)
 try( OutputStreamWriter writerToInMemoryRequest = new OutputStreamWriter( addConnectorTypeArchiveToInMemoryServerRequest.getOutputStream())) {
     writerToInMemoryRequest.write(connectorTypeArchive.getAbsolutePath())
 }
-println("Absolute path to ConnectorTypes archive for" +  serverMem + ":" + connectorTypeArchive.getAbsolutePath())
+println("Absolute path to ConnectorTypes archive for " +  serverMem + ":" + connectorTypeArchive.getAbsolutePath())
 addConnectorTypeArchiveToInMemoryServerResponse = addConnectorTypeArchiveToInMemoryServerRequest.getResponseCode()
 println(addConnectorTypeArchiveToInMemoryServerResponse)
 if(addConnectorTypeArchiveToInMemoryServerResponse.equals(200)) {
