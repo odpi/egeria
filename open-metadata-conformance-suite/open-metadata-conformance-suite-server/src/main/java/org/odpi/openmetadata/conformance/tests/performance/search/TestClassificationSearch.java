@@ -168,7 +168,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
             parameters.put("typeGUID", classificationDef.getGUID());
             parameters.put("matchProperties", "null");
             parameters.put("matchCriteria", "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -209,7 +209,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", classificationDef.getGUID());
                 parameters.put("matchProperties", oneProperty.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -251,7 +251,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", classificationDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -290,7 +290,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", classificationDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ANY");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -329,7 +329,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", classificationDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "NONE");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 

@@ -181,7 +181,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
             String operationDescription = "search relationships of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -255,7 +255,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getExactMatchRegex(exact));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -291,7 +291,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getStartsWithRegex(startsWith));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -327,7 +327,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getContainsRegex(contains));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -363,7 +363,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getEndsWithRegex(endsWith));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -399,7 +399,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("searchCriteria", regex);
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -516,7 +516,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("matchProperties", oneProperty.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -557,7 +557,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -595,7 +595,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ANY");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -633,7 +633,7 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", relationshipDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "NONE");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
