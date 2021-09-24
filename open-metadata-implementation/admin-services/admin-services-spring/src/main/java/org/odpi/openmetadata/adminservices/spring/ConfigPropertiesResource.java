@@ -85,6 +85,24 @@ public class ConfigPropertiesResource
         return adminAPI.setOrganizationName(userId, serverName, name);
     }
 
+    /**
+     * Set up the description of this server. The default value is null.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server description.
+     * @param description  String description of the server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or organizationName parameter.
+     */
+    @PostMapping(path = "/server-description")
+    public VoidResponse setServerDescription(@PathVariable String userId,
+                                            @PathVariable String serverName,
+                                            @RequestParam String description)
+    {
+        return adminAPI.setServerDescription(userId, serverName, description);
+    }
+
 
     /**
      * Set up the user id to use when there is no external user driving the work (for example when processing events

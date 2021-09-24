@@ -250,7 +250,7 @@ public class OMAGServerConfigurationClient
                                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "setOrganizationName";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/organization-name?name={2}";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/organization-name?{2}";
 
         NullRequestBody requestBody = new NullRequestBody();
 
@@ -260,6 +260,31 @@ public class OMAGServerConfigurationClient
                                         adminUserId,
                                         serverName,
                                         organizationName);
+    }
+
+    /**
+     * Set up the description of this server. The default value is null.
+     *
+     * @param description  String description of the server
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setServerDescription(String   description) throws OMAGNotAuthorizedException,
+                                                                       OMAGInvalidParameterException,
+                                                                       OMAGConfigurationErrorException
+    {
+        final String methodName  = "setOrganizationName";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-description?{2}";
+
+        NullRequestBody requestBody = new NullRequestBody();
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        adminUserId,
+                                        serverName,
+                                        description);
     }
 
 

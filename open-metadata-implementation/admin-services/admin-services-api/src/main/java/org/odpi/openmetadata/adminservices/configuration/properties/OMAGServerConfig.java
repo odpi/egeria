@@ -92,6 +92,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     private String                          localServerId                   = UUID.randomUUID().toString();
     private String                          localServerName                 = null;
+    private String                          localServerDescription          = null;
     private String                          localServerType                 = null;
     private String                          organizationName                = defaultLocalOrganizationName;
     private String                          localServerURL                  = defaultLocalServerURL;
@@ -134,6 +135,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             versionId                       = template.getVersionId();
             localServerId                   = template.getLocalServerId();
             localServerName                 = template.getLocalServerName();
+            localServerDescription          = template.getLocalServerDescription();
             localServerType                 = template.getLocalServerType();
             organizationName                = template.getOrganizationName();
             localServerURL                  = template.getLocalServerURL();
@@ -198,6 +200,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.localServerId = localServerId;
     }
 
+
+    /**
+     * Return the description of the local server.
+     *
+     * @return String server description
+     */
+    public String getLocalServerDescription()
+    {
+        return localServerDescription;
+    }
+
+
+    /**
+     * Set up the description of the local server.
+     *
+     * @param localServerDescription String local server description
+     */
+    public void setLocalServerDescription(String localServerDescription)
+    {
+        this.localServerDescription = localServerDescription;
+    }
 
     /**
      * Return the name of the local server.
@@ -657,6 +680,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getVersionId(), that.getVersionId()) &&
                        Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
                        Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
+                       Objects.equals(getLocalServerDescription(), that.getLocalServerDescription()) &&
                        Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
                        Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
                        Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
@@ -684,7 +708,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
+        return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerDescription(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(),
                             getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
                             getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
