@@ -469,7 +469,7 @@ public class ServerAuthorViewHandler {
             MetadataAccessPointConfigurationClient client = new MetadataAccessPointConfigurationClient(this.userId,
                                                                                                        serverToBeConfiguredName,
                                                                                                        this.platformURL);
-            client.configureAccessService(serviceURLMarker);
+            client.disableAccessService(serviceURLMarker);
         } catch (OMAGNotAuthorizedException error) {
             throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
