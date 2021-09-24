@@ -29,15 +29,21 @@ public interface OpenMetadataStore
      * Retrieve the metadata element using its unique identifier.
      *
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByGUID(String elementGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    OpenMetadataElement getMetadataElementByGUID(String  elementGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -45,16 +51,22 @@ public interface OpenMetadataStore
      *
      * @param uniqueName unique name for the metadata element
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByUniqueName(String uniqueName,
-                                                       String uniquePropertyName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+    OpenMetadataElement getMetadataElementByUniqueName(String  uniqueName,
+                                                       String  uniquePropertyName,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**
@@ -62,22 +74,31 @@ public interface OpenMetadataStore
      *
      * @param uniqueName unique name for the metadata element
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    String getMetadataElementGUIDByUniqueName(String uniqueName,
-                                              String uniquePropertyName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    String getMetadataElementGUIDByUniqueName(String  uniqueName,
+                                              String  uniquePropertyName,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param searchString name to retrieve
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -86,11 +107,14 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String searchString,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing,
+                                                             Date    effectiveTime,
+                                                             int     startFrom,
+                                                             int     pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
     /**
@@ -99,6 +123,9 @@ public interface OpenMetadataStore
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -107,13 +134,16 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> getRelatedMetadataElements(String elementGUID,
-                                                            int    startingAtEnd,
-                                                            String relationshipTypeName,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    List<RelatedMetadataElement> getRelatedMetadataElements(String  elementGUID,
+                                                            int     startingAtEnd,
+                                                            String  relationshipTypeName,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            int     startFrom,
+                                                            int     pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**
@@ -129,6 +159,9 @@ public interface OpenMetadataStore
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -144,6 +177,9 @@ public interface OpenMetadataStore
                                                    SearchClassifications matchClassifications,
                                                    String                sequencingProperty,
                                                    SequencingOrder       sequencingOrder,
+                                                   boolean               forLineage,
+                                                   boolean               forDuplicateProcessing,
+                                                   Date                  effectiveTime,
                                                    int                   startFrom,
                                                    int                   pageSize) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
@@ -159,6 +195,9 @@ public interface OpenMetadataStore
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -171,6 +210,9 @@ public interface OpenMetadataStore
                                                                            SearchProperties searchProperties,
                                                                            String           sequencingProperty,
                                                                            SequencingOrder  sequencingOrder,
+                                                                           boolean          forLineage,
+                                                                           boolean          forDuplicateProcessing,
+                                                                           Date             effectiveTime,
                                                                            int              startFrom,
                                                                            int              pageSize) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
