@@ -410,7 +410,7 @@ public class AnalyticsArtifactHandler {
 			// global calculation connects to the schema
 			assetHandler.linkElementToElement(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
 					parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, false, false,
 					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_GUID,
 					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME, null, methodName);
 		}
@@ -520,7 +520,7 @@ public class AnalyticsArtifactHandler {
 			// top level items connects to the schema
 			assetHandler.linkElementToElement(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
 					parentGUID, Constants.PARAM_NAME_PARENT_GUID, IdMap.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
+					guid, "guid", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, false, false,
 					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_GUID,
 					IdMap.SCHEMATYPE_TO_SCHEMAATTRIBUTE_NAME, null, methodName);
 		}
@@ -1259,7 +1259,8 @@ public class AnalyticsArtifactHandler {
 						IdMap.ASSET_TYPE_GUID,
 						IdMap.ASSET_TYPE_NAME,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, null, methodName);
+						null, null, false, false,0,
+						0, null, methodName);
 
 			if (ret != null) {
 				// only objects from the requested server

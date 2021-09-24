@@ -1117,14 +1117,14 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}")
 
-    public VoidResponse  linkElementsAsDuplicates(@PathVariable String          serverName,
-                                                  @PathVariable String          userId,
-                                                  @PathVariable String          element1GUID,
-                                                  @PathVariable String          element2GUID,
-                                                  @RequestBody (required = false)
-                                                                NullRequestBody requestBody)
+    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @PathVariable String          element1GUID,
+                                                     @PathVariable String          element2GUID,
+                                                     @RequestBody (required = false)
+                                                                   NullRequestBody requestBody)
     {
-        return restAPI.linkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
+        return restAPI.linkElementsAsPeerDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
     }
 
 
@@ -1144,13 +1144,13 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}/delete")
 
-    public VoidResponse  unlinkElementsAsDuplicates(@PathVariable String          serverName,
-                                                    @PathVariable String          userId,
-                                                    @PathVariable String          element1GUID,
-                                                    @PathVariable String          element2GUID,
-                                                    @RequestBody (required = false)
-                                                                  NullRequestBody requestBody)
+    public VoidResponse unlinkElementsAsPeerDuplicates(@PathVariable String          serverName,
+                                                       @PathVariable String          userId,
+                                                       @PathVariable String          element1GUID,
+                                                       @PathVariable String          element2GUID,
+                                                       @RequestBody (required = false)
+                                                                     NullRequestBody requestBody)
     {
-        return restAPI.unlinkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
+        return restAPI.unlinkElementsAsPeerDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
     }
 }

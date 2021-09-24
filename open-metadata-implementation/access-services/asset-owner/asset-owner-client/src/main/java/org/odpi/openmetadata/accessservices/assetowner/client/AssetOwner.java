@@ -37,8 +37,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                     AssetClassificationInterface,
                                                                     AssetConnectionManagementInterface,
                                                                     AssetReviewInterface,
-                                                                    AssetDecommissioningInterface,
-                                                                    AssetDuplicateManagementInterface
+                                                                    AssetDecommissioningInterface
 
 {
     protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
@@ -2702,86 +2701,5 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                         serverName,
                                         userId,
                                         assetGUID);
-    }
-
-
-    /*
-     * ==============================================
-     * AssetDuplicateManagementInterface
-     * ==============================================
-     */
-
-    /**
-     * Create a simple relationship between two elements in an Asset description (typically the asset itself or
-     * attributes in their schema).
-     *
-     * @param userId calling user
-     * @param element1GUID unique identifier of first element
-     * @param element2GUID unique identifier of second element
-
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  linkElementsAsDuplicates(String userId,
-                                          String element1GUID,
-                                          String element2GUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        final String methodName = "linkElementsAsDuplicates";
-
-        final String element1GUIDParameter = "element1GUID";
-        final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/duplicate-of/{3}";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(element2GUID, element2GUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        element1GUID,
-                                        element2GUID);
-    }
-
-
-    /**
-     * Remove the relationship between two elements that marks them as duplicates.
-     *
-     * @param userId calling user
-     * @param element1GUID unique identifier of first element
-     * @param element2GUID unique identifier of second element
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  unlinkElementsAsDuplicates(String userId,
-                                            String element1GUID,
-                                            String element2GUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        final String methodName = "unlinkElementsAsDuplicates";
-
-        final String element1GUIDParameter = "element1GUID";
-        final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/duplicate-of/{3}/delete";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(element2GUID, element2GUIDParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        element1GUID,
-                                        element2GUID);
     }
 }

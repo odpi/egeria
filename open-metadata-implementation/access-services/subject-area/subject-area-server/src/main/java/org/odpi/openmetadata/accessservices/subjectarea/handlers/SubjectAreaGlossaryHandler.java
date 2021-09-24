@@ -179,7 +179,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               (Date)null,
+                                                                               false,
+                                                                               false,
+                                                                               null,
                                                                                methodName);
             GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
             response.addResult(glossaryMapper.map(entityDetail));
@@ -296,8 +298,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                   "guid",
                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                  false,
+                                                  false,
                                                   builder.getInstanceProperties(methodName),
                                                   !isReplace,
+                                                  null,
                                                   methodName);
             response = getGlossaryByGuid(userId, guid);
 
@@ -360,6 +365,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                       OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,    // true for sub types
                                                       OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,    // true for sub types
                                                       null,
+                                                      null,
+                                                      false,
+                                                      false,
                                                       null,
                                                       methodName);
             }

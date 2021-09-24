@@ -174,6 +174,9 @@ public class AppointmentHandler
                                                                                  governanceRoleGUID,
                                                                                  governanceRoleGUIDParameterName,
                                                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
                                                                                  methodName);
 
         if ((governanceRole != null) && (governanceRole.getElementHeader() != null))
