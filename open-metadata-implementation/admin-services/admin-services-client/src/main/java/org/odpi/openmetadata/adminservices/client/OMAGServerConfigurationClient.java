@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
@@ -250,7 +251,7 @@ public class OMAGServerConfigurationClient
                                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "setOrganizationName";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/organization-name?{2}";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/organization-name?name={2}";
 
         NullRequestBody requestBody = new NullRequestBody();
 
@@ -275,10 +276,10 @@ public class OMAGServerConfigurationClient
                                                                        OMAGConfigurationErrorException
     {
         final String methodName  = "setOrganizationName";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-description?{2}";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-description";
 
-        NullRequestBody requestBody = new NullRequestBody();
-
+        StringRequestBody requestBody = new StringRequestBody();
+        requestBody.setString(description);
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
