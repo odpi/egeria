@@ -181,7 +181,7 @@ public class ServerAuthorViewHandler {
                         StoredServer storedServer = new StoredServer();
                         storedServer.setStoredServerName(serverName);
                         storedServer.setServerType(omagServerConfig.getLocalServerType());
-                        // do not have a description of the server yet.
+                        storedServer.setStoredServerDescription(omagServerConfig.getLocalServerDescription());
                         platform.addStoredServer(storedServer);
                     }
                     PlatformServicesClient platformServicesClient = new PlatformServicesClient(platformName, platFormEndpoint);
