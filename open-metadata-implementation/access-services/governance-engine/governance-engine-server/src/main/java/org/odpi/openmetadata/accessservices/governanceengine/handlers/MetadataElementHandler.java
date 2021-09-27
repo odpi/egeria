@@ -370,6 +370,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                     attachmentAtEnd,
+                                                                    forDuplicateProcessing,
                                                                     startFrom,
                                                                     pageSize,
                                                                     effectiveTime,

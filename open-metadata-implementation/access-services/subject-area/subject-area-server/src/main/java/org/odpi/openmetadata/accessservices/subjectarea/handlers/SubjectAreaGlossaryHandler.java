@@ -569,6 +569,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                                                                                !exactValue,
                                                                                ignoreCase,
                                                                                pageSize,
+                                                                               false,
                                                                                null,
                                                                                methodName);
                 Set<Category> categories = new HashSet<>();

@@ -696,6 +696,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                      OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     false,
                                                                                      0, 0,
                                                                                      null,
                                                                                      methodName);
@@ -858,6 +859,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                        OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                                        null,
@@ -986,6 +988,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                              discoveryEngineGUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             false,
                                                                                              null,
                                                                                              methodName);
 

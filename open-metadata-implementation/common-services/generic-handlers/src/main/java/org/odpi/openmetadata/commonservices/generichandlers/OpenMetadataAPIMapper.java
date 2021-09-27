@@ -97,8 +97,6 @@ public class OpenMetadataAPIMapper
     public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archiveMethod";
     public static final String ARCHIVE_PROPERTIES_PROPERTY_NAME                  = "archiveProperties";
 
-
-
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_GUID              = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_NAME              = "MoreInformation";
     /* End1 = Referenceable; End 2 = more info Referenceable */
@@ -1137,6 +1135,8 @@ public class OpenMetadataAPIMapper
     public static final String STATUS_PROPERTY_NAME                              = "status";
     public static final String CONFIDENCE_PROPERTY_NAME                          = "confidence";
     public static final String STEWARD_PROPERTY_NAME                             = "steward";
+    public static final String STEWARD_TYPE_NAME_PROPERTY_NAME                   = "stewardTypeName";
+    public static final String STEWARD_PROPERTY_NAME_PROPERTY_NAME               = "stewardPropertyName";
     public static final String CREATED_BY_PROPERTY_NAME                          = "createdBy";
 
 
@@ -1283,9 +1283,7 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME = "GovernanceResponsibilityAssignment";    /* from Area 4 */
     /* End1 = PersonRole; End 2 = GovernanceResponsibility */
 
-    public static final String DOMAIN_PROPERTY_NAME                      = "domain";                    /* Deprecated */
     public static final String DOMAIN_IDENTIFIER_PROPERTY_NAME           = "domainIdentifier";          /* from many governance entities */
-    public static final String LEVEL_IDENTIFIER_PROPERTY_NAME            = "levelIdentifier";           /* from many governance entities */
     public static final String CRITERIA_PROPERTY_NAME                    = "criteria";                  /* from many governance entities */
 
     public static final String TITLE_PROPERTY_NAME                       = "title";                     /* from GovernanceDefinition entity */
@@ -1302,10 +1300,29 @@ public class OpenMetadataAPIMapper
 
     public static final String GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_GUID = "37142317-4125-4046-9514-71dc5031563f";
     public static final String GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME = "GovernanceProject";
+    /* Attached to Project */
 
     public static final String GOVERNANCE_CLASSIFICATION_LEVEL_TYPE_GUID   = "8af91d61-2ae8-4255-992e-14d7f745a556";
     public static final String GOVERNANCE_CLASSIFICATION_LEVEL_TYPE_NAME   = "GovernanceClassificationLevel";
     /* Referenceable */
+
+    public static final String LEVEL_IDENTIFIER_PROPERTY_NAME              = "levelIdentifier";           /* from many governance entities and classifications */
+    public static final String SEVERITY_IDENTIFIER_PROPERTY_NAME           = "severityIdentifier";        /* from Impact classification */
+    public static final String BASIS_IDENTIFIER_PROPERTY_NAME              = "basisIdentifier";           /* from Retention classification */
+
+    public static final String GOVERNANCE_CLASSIFICATION_SET_TYPE_GUID     = "d92b7f31-c92d-418d-b345-ea45bb3f73f5";
+    public static final String GOVERNANCE_CLASSIFICATION_SET_TYPE_NAME     = "GovernanceClassificationSet";
+    /* Attached to Collection */
+
+    public static final String GOVERNANCE_STATUS_LEVEL_TYPE_GUID           = "a518de03-0f72-4944-9cd5-e05b43ae9c5e";
+    public static final String GOVERNANCE_STATUS_LEVEL_TYPE_NAME           = "GovernanceStatusLevel";
+    /* Referenceable */
+
+    public static final String STATUS_IDENTIFIER_PROPERTY_NAME             = "statusIdentifier";
+
+    public static final String GOVERNANCE_STATUS_SET_TYPE_GUID             = "c13261bb-0cfe-4540-a44a-cca2b14f412b";
+    public static final String GOVERNANCE_STATUS_SET_TYPE_NAME             = "GovernanceStatusSet";
+    /* Attached to Collection */
 
     public static final String GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_GUID   = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
     public static final String GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_NAME   = "GovernanceClassificationStatus";
@@ -1351,9 +1368,7 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME        = "notes";
 
     public static final String CONFIDENTIALITY_LEVEL_PROPERTY_NAME                  = "level";
-    public static final String CONFIDENCE_LEVEL_PROPERTY_NAME                       = "level";
     public static final String CRITICALITY_LEVEL_PROPERTY_NAME                      = "level";
-    public static final String IMPACT_LEVEL_PROPERTY_NAME                           = "level";
     public static final String RETENTION_BASIS_PROPERTY_NAME                        = "basis";
     public static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME              = "associatedGUID";
     public static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";
@@ -1418,6 +1433,17 @@ public class OpenMetadataAPIMapper
 
     public static final String ZONE_MEMBERSHIP_PROPERTY_NAME             = "zoneMembership";                       /* from Area 4 */
 
+    public static final String PROJECT_CHARTER_TYPE_GUID                 = "f96b5a32-42c1-4a74-8f77-70a81cec783d";
+    public static final String PROJECT_CHARTER_TYPE_NAME                 = "ProjectCharter";
+    /* Referenceable */
+
+    public static final String PROJECT_CHARTER_LINK_TYPE_GUID            = "f081808d-545a-41cb-a9aa-c4f074a16c78";
+    public static final String PROJECT_CHARTER_LINK_TYPE_NAME            = "ProjectCharterLink";
+    /* End1 = Project; End 2 = ProjectCharter */
+
+    public static final String PROJECT_TYPE_PROPERTY_NAME                = "projectType";                             /* from Area 4 */
+    public static final String PURPOSES_PROPERTY_NAME                    = "purposes";                                /* from Area 4 */
+
     public static final String ASSET_OWNERSHIP_CLASSIFICATION_GUID       = "d531c566-03d2-470a-be69-6f52cabd5fb9";
     public static final String ASSET_OWNERSHIP_CLASSIFICATION_NAME       = "AssetOwnership";
 
@@ -1439,16 +1465,23 @@ public class OpenMetadataAPIMapper
     public static final int    PROFILE_ID_OWNER_TYPE_ORDINAL             = 1;
     public static final int    OTHER_OWNER_TYPE_ORDINAL                  = 99;
 
-    public static final String PROJECT_CHARTER_TYPE_GUID                 = "f96b5a32-42c1-4a74-8f77-70a81cec783d";
-    public static final String PROJECT_CHARTER_TYPE_NAME                 = "ProjectCharter";
+
+    public static final String GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID    = "fcda7261-865d-464d-b279-7d9880aaab39";
+    public static final String GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME    = "GovernanceExpectations";
     /* Referenceable */
 
-    public static final String PROJECT_CHARTER_LINK_TYPE_GUID            = "f081808d-545a-41cb-a9aa-c4f074a16c78";
-    public static final String PROJECT_CHARTER_LINK_TYPE_NAME            = "ProjectCharterLink";
-    /* End1 = Project; End 2 = ProjectCharter */
+    public static final String COUNTS_PROPERTY_NAME                       = "counts";                 /* from Area 4 */
+    public static final String VALUES_PROPERTY_NAME                       = "values";                 /* from Area 4 */
+    public static final String FLAGS_PROPERTY_NAME                        = "flags";                  /* from Area 4 */
 
-    public static final String PROJECT_TYPE_PROPERTY_NAME                = "projectType";                             /* from Area 4 */
-    public static final String PURPOSES_PROPERTY_NAME                    = "purposes";                                /* from Area 4 */
+
+    public static final String GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID = "9d99d962-0214-49ba-83f7-c9b1f9f5bed4";
+    public static final String GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME = "GovernanceMeasurements";
+    /* Referenceable */
+
+    public static final String MEASUREMENT_COUNTS_PROPERTY_NAME           = "measurementCounts";                 /* from Area 4 */
+    public static final String MEASUREMENT_VALUES_PROPERTY_NAME           = "measurementValues";                 /* from Area 4 */
+    public static final String MEASUREMENT_FLAGS_PROPERTY_NAME            = "measurementFlags";                  /* from Area 4 */
 
     public static final String EXECUTION_POINT_DEFINITION_TYPE_GUID      = "d7f8d1d2-8cec-4fd2-b9fd-c8307cad750d";
     public static final String EXECUTION_POINT_DEFINITION_TYPE_NAME      = "ExecutionPointDefinition";
@@ -1610,21 +1643,17 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME      = "GovernanceActionExecutor";
     /* End1 = GovernanceAction; End 2 = GovernanceEngine */
 
-    public static final String DUPLICATE_TYPE_ENUM_TYPE_GUID             = "2f6a3dc1-aa98-4b92-add4-68de53b7369c";
-    public static final String DUPLICATE_TYPE_ENUM_TYPE_NAME             = "DuplicateType";
-    public static final int    PEER_ORDINAL                              = 0;
-    public static final int    CONSOLIDATED_ORDINAL                      = 1;
-    public static final int    OTHER_DUPLICATE_ORDINAL                   = 99;
-
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID  = "e55062b2-907f-44bd-9831-255642285731";
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME  = "KnownDuplicate";
     /* Referenceable */
 
-    public static final String KNOWN_DUPLICATE_LINK_TYPE_GUID            = "7540d9fb-1848-472e-baef-97a44b9f0c45";
-    public static final String KNOWN_DUPLICATE_LINK_TYPE_NAME            = "KnownDuplicateLink";
-    /* End1 = Referenceable; End 2 = Referenceable */
+    public static final String PEER_DUPLICATE_LINK_TYPE_GUID             = "a94b2929-9e62-4b12-98ab-8ac45691e5bd";
+    public static final String PEER_DUPLICATE_LINK_TYPE_NAME             = "PeerDuplicateLink";
+    /* End1 = Referenceable (Oldest); End 2 = Referenceable (Newest) */
 
-    public static final String DUPLICATE_TYPE_PROPERTY_NAME              = "duplicateType";      /* from KnowDuplicateLink relationship */
+    public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID     = "a1fabffd-d6ec-4b2d-bfe4-646f27c07c82";
+    public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME     = "ConsolidatedDuplicateLink";
+    /* End1 = Referenceable (Detected Duplicate); End 2 = Referenceable (Result) */
 
     public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_GUID     = "a9d4f64b-fa24-4eb8-8bf6-308926ef2c14";
     public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_NAME     = "IncidentReportStatus";
@@ -2177,6 +2206,7 @@ public class OpenMetadataAPIMapper
     public static final String ANNOTATION_TYPE_NAME    = "Annotation";
 
     public static final String ANNOTATION_TYPE_PROPERTY_NAME       = "annotationType";        /* from Annotation entity */
+    public static final String CONFIDENCE_LEVEL_PROPERTY_NAME      = "confidenceLevel";       /* from Annotation entity */
     public static final String EXPLANATION_PROPERTY_NAME           = "explanation";           /* from Annotation entity */
     public static final String JSON_PROPERTIES_PROPERTY_NAME       = "jsonProperties";        /* from Annotation entity */
 

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -159,9 +160,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     keywordGUIDParameterName,
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                    false,
+                                    false,
                                     serviceSupportedZones,
                                     properties,
                                     true,
+                                    new Date(),
                                     methodName);
     }
 
@@ -200,6 +204,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                                                   false,
                                                                    null,
                                                                    methodName) == 0)
             {
@@ -212,6 +217,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                                null,
                                                null,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
             else
@@ -284,12 +292,19 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -326,12 +341,19 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                        UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         startingKeywordGUID,
                                         startingKeywordGUIDParameterName,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -366,8 +388,10 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                          false,
+                                          false,
                                           serviceSupportedZones,
-                                          null,
+                                          new Date(),
                                           methodName);
     }
 
@@ -411,6 +435,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     serviceSupportedZones,
                                     null,
@@ -503,6 +528,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   keywordGUID,
                                   keywordGUIDParameterName,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                  false,
+                                  false,
                                   serviceSupportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
@@ -553,6 +580,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       keywordGUIDParameterName,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                      false,
+                                      false,
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
@@ -599,6 +628,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   keywordTwoGUID,
                                   keywordTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                  false,
+                                  false,
                                   serviceSupportedZones,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
@@ -647,6 +678,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       keywordTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                      false,
+                                      false,
                                       serviceSupportedZones,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                       OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,

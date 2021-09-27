@@ -67,7 +67,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String serviceName = "serviceName";
 		String serverName = "serverName";
 		
-		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog, 
+		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog,
+				omrsRepositoryHelper,
 				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
 				metadataCollection,
 	            PAGE_SIZE);

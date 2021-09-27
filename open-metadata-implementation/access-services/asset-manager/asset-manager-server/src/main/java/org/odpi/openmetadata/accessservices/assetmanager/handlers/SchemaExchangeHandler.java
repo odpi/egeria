@@ -936,6 +936,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                        null,
                                                                                        null,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                                        null,

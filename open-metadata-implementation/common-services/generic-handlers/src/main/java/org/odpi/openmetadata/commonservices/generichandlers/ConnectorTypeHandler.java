@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +112,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                      null,
                                                      null,
                                                      false,
+                                                     false,
                                                      supportedZones,
                                                      null,
                                                      methodName) != null)
@@ -136,6 +138,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              supportedZones,
                                                              null,
                                                              methodName);
@@ -149,6 +153,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              supportedZones,
                                                              null,
                                                              methodName);
@@ -470,6 +476,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                     null,
                                                                     null,
                                                                     false,
+                                                                    false,
                                                                     supportedZones,
                                                                     null,
                                                                     0,
@@ -586,6 +593,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                 OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                false,
+                                                                false,
                                                                 supportedZones,
                                                                 null,
                                                                 methodName);
@@ -734,9 +743,12 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     connectorTypeGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -773,6 +785,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -857,6 +872,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -891,6 +907,10 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

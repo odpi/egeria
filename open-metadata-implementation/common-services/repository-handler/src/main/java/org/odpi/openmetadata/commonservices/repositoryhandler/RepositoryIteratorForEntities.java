@@ -24,6 +24,8 @@ public abstract class RepositoryIteratorForEntities
     protected int                pageSize;
     protected String             methodName;
     protected String             sequencingPropertyName;
+    protected boolean            forLineage;
+    protected boolean            forDuplicateProcessing;
     protected Date               effectiveTime;
 
     protected List<EntityDetail> entitiesCache = null;
@@ -37,20 +39,24 @@ public abstract class RepositoryIteratorForEntities
      * @param entityTypeGUID  identifier for the type of entity to retrieve
      * @param entityTypeName  name for the type of entity to retrieve
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
-    public RepositoryIteratorForEntities(RepositoryHandler  repositoryHandler,
-                                         String             userId,
-                                         String             entityTypeGUID,
-                                         String             entityTypeName,
-                                         String             sequencingPropertyName,
-                                         int                startingFrom,
-                                         int                pageSize,
-                                         Date               effectiveTime,
-                                         String             methodName)
+    public RepositoryIteratorForEntities(RepositoryHandler repositoryHandler,
+                                         String            userId,
+                                         String            entityTypeGUID,
+                                         String            entityTypeName,
+                                         String            sequencingPropertyName,
+                                         boolean           forLineage,
+                                         boolean           forDuplicateProcessing,
+                                         int               startingFrom,
+                                         int               pageSize,
+                                         Date              effectiveTime,
+                                         String            methodName)
     {
         this.repositoryHandler      = repositoryHandler;
         this.userId                 = userId;
@@ -59,6 +65,8 @@ public abstract class RepositoryIteratorForEntities
         this.sequencingPropertyName = sequencingPropertyName;
         this.startingFrom           = startingFrom;
         this.pageSize               = pageSize;
+        this.forLineage             = forLineage;
+        this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime          = effectiveTime;
         this.methodName             = methodName;
     }
