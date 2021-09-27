@@ -28,13 +28,9 @@
         Utilities for creating open metadata archives containing sample metadata.
     </description>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>simple-catalogs</artifactId>
-        </dependency>
-
-    </dependencies>
+    <packaging>pom</packaging>
+    <modules>
+        <module>simple-catalogs</module>
+    </modules>
 
 </project>
