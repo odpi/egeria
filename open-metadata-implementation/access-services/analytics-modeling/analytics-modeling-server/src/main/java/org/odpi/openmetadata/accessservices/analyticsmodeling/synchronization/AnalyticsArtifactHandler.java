@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaType;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.builders.AnalyticsMetadataBuilder;
@@ -97,16 +98,17 @@ public class AnalyticsArtifactHandler {
 	 * Create assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
+	public ResponseContainerAssets createAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
-		ctx.initializeSoftwareServerCapability(user, serverCapability);
+		ctx.initializeSoftwareServerCapability(user, serverCapability, serverCapabilityGUID);
 		
 		List<String> guids = new ArrayList<>();
 		
@@ -140,9 +142,10 @@ public class AnalyticsArtifactHandler {
 	 * @throws InvalidParameterException
 	 * @throws PropertyServerException
 	 * @throws UserNotAuthorizedException
+	 * @throws AnalyticsModelingCheckedException 
 	 */
 	private String createModuleAsset(AnalyticsAsset asset) 
-			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AnalyticsModelingCheckedException
 	{
 		resolver = new IdentifierResolver(ctx, asset);
 		
@@ -193,6 +196,8 @@ public class AnalyticsArtifactHandler {
 						assetGUID, ref.getGuid(), null, methodName);
 			} else {
 				// unresolved reference
+				ctx.addMessage(AnalyticsModelingErrorCode.WARNING_UNRESOLVED_REFERENCE
+						.getMessageDefinition(asset.getDisplayName(), ref.getAlias()));
 			}
 		}
 	}
@@ -281,9 +286,10 @@ public class AnalyticsArtifactHandler {
 	 * @throws InvalidParameterException 
 	 * 
 	 * Note: use resolver from InformationView asset.
+	 * @throws AnalyticsModelingCheckedException 
 	 */
 	private String createVisualizationAsset(AnalyticsAsset report) 
-			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
+			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AnalyticsModelingCheckedException 
 	{
 		if (resolver == null || !AnalyticsAssetUtils.hasMetadataModule(report)) {
 			resolver = new IdentifierResolver(ctx, report);
@@ -684,6 +690,9 @@ public class AnalyticsArtifactHandler {
 				metadata.remove(i);	// relationship replaced the GUID
 			} catch (UserNotAuthorizedException | PropertyServerException e) {
 				// log warning in execution context
+				ctx.addMessage(AnalyticsModelingErrorCode.WARNING_CREATE_METADATA_LINK
+						.getMessageDefinition(item.getGuid(), srcGUID), e.getLocalizedMessage());
+
 				++i;	// leave GUID for relationship which was not created
 			}
 			
@@ -720,6 +729,9 @@ public class AnalyticsArtifactHandler {
 			}
 		} catch (UserNotAuthorizedException | PropertyServerException e1) {
 			// log warning in execution context: relationships for item are not fetched from repository.
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_UPDATE_METADATA_LINK
+					.getMessageDefinition(item.getGuid(), e1.getLocalizedMessage()));
+
 		}
 		
 		metadata.forEach(srcGUID->{
@@ -734,6 +746,8 @@ public class AnalyticsArtifactHandler {
 							item.getGuid(), srcGUID, null, methodName);
 				} catch (UserNotAuthorizedException | PropertyServerException e) {
 					// log warning in execution context: relationship for item is not created
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_CREATE_METADATA_LINK
+							.getMessageDefinition(item.getGuid(), srcGUID), e.getLocalizedMessage());
 				}
 			}
 		});
@@ -746,6 +760,8 @@ public class AnalyticsArtifactHandler {
 						relationship, methodName);
 			} catch (UserNotAuthorizedException | PropertyServerException e) {
 				// log warning in execution context: old relationship for item is not removed
+				ctx.addMessage(AnalyticsModelingErrorCode.WARNING_DELETE_METADATA_LINK
+						.getMessageDefinition(relationship.getGUID(), item.getGuid()), e.getLocalizedMessage());
 			}
 		});
 	}
@@ -787,16 +803,17 @@ public class AnalyticsArtifactHandler {
 	 * Update assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
+	public ResponseContainerAssets updateAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
-		ctx.initializeSoftwareServerCapability(user, serverCapability);
+		ctx.initializeSoftwareServerCapability(user, serverCapability, serverCapabilityGUID);
 		
 		List<String> guids = new ArrayList<>();
 		
@@ -878,16 +895,28 @@ public class AnalyticsArtifactHandler {
 					String alias = reference.get().getAlias() + IdentifierResolver.NAME_SEPARATOR;
 					Map<String, String> uid2guid = newItem.entrySet().stream().collect(Collectors.toMap(e->alias + e.getKey(), Entry::getValue));
 
-					List<EntityDetail> items = resolver.getSchemaAttributes(assetRepo.getQualifiedName(), methodName);
+					List<EntityDetail> items;
+					try {
+						items = resolver.getSchemaAttributes(assetRepo.getQualifiedName(), methodName);
+					} catch (AnalyticsModelingCheckedException e1) {
+						ctx.addMessage(AnalyticsModelingErrorCode.WARNING_ASSET_NO_UPDATE
+								.getMessageDefinition(assetRepo.getDisplayName(),(e1.getReportedErrorMessage())));
+						continue;
+					}
 					for (EntityDetail item : items) {
 						updateDependentItemRelationship(item, converter, uid2guid);
 					}
 				} else {
 					// log reference property is not found
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_LINKED_ASSET_NO_REFERENCE
+							.getMessageDefinition(guid, assetRepo.getDisplayName()));
+					
 				}
 			}
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
 			// log to execution context
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_MANUAL_UPDATE_DEPENDENTS
+					.getMessageDefinition(guid), e.getLocalizedMessage());
 		}
 		
 	}
@@ -923,6 +952,8 @@ public class AnalyticsArtifactHandler {
 								item.getGUID(), guidReferenced, null, methodName);
 					} catch (UserNotAuthorizedException | PropertyServerException e) {
 						// log warning in execution context: relationship for item is not created
+						ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FAILED_RESTORE_METADATA_LINK
+								.getMessageDefinition(item.getGUID(), guidReferenced), e.getLocalizedMessage());
 					}
 				}
 			});
@@ -1116,6 +1147,8 @@ public class AnalyticsArtifactHandler {
 					String alias = ref.getAlias();
 					if (alias == null || alias.isEmpty()) {
 						// asset reference cannot be used in the module without alias: skip it.
+						ctx.addMessage(AnalyticsModelingErrorCode.WARNING_REVERENCE_NO_ALIAS
+								.getMessageDefinition(asset.getDisplayName(), guid));
 						continue;
 					}
 					
@@ -1131,6 +1164,8 @@ public class AnalyticsArtifactHandler {
 					
 				} else {
 					// log unresolved reference
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_REVERENCE_NO_GUID
+							.getMessageDefinition(asset.getDisplayName(), ref.getAlias()));
 				}
 			}
 		}
@@ -1186,16 +1221,17 @@ public class AnalyticsArtifactHandler {
 	 * 
 	 * @param userId to perform the action.
 	 * @param serverCapability source of artifact.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
+	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String serverCapabilityGUID, String identifier) 
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException 
 	{
 		String methodName = "deleteAssets";
-		ctx.initializeSoftwareServerCapability(userId, serverCapability);
+		ctx.initializeSoftwareServerCapability(userId, serverCapability, serverCapabilityGUID);
 		resolver = new IdentifierResolver(ctx, null);
 		
 		List<String> guids = new ArrayList<>();
@@ -1244,8 +1280,9 @@ public class AnalyticsArtifactHandler {
 	 * 
 	 * @param identifier of the artifact.
 	 * @return list assets.
+	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
-	public List<EntityDetail> getArtifactAssets(String identifier) {
+	public List<EntityDetail> getArtifactAssets(String identifier) throws AnalyticsModelingCheckedException {
 		
 		String methodName = "getArtifactAssets";
 		// like "(SoftwareServerCapability)=name::(InformationView | DeployedReport)=identifier"
@@ -1270,10 +1307,20 @@ public class AnalyticsArtifactHandler {
 							.startsWith(ctx.getServerSoftwareCapability().getQualifiedName())).collect(Collectors.toList());
 			}
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-			e.printStackTrace();
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_FIND_ARTIFACT_ASSETS.getMessageDefinition(ctx.getUserId(), identifier, e.getLocalizedMessage()),
+					this.getClass().getSimpleName(),
+					methodName,
+					e);
 		}
 		return Collections.emptyList();
 	}
 
-
+	/**
+	 * Get messages about non critical action issues.
+	 * @return null if there is no issues, container with messages otherwise.
+	 */
+	public Messages getMessages() {
+		return ctx.getMessages();
+	}
 }

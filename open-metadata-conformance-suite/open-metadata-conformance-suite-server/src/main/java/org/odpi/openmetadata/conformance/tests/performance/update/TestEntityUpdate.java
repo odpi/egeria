@@ -161,7 +161,7 @@ public class TestEntityUpdate extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("properties", instProps != null ? instProps.toString() : "null");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

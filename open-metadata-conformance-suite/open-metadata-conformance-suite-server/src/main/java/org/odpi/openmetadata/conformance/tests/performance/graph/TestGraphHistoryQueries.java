@@ -183,7 +183,7 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -270,7 +270,7 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -326,7 +326,7 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -389,7 +389,7 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 

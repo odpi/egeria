@@ -2,18 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.serverauthor.handlers;
 
-import org.odpi.openmetadata.adminservices.client.MetadataAccessPointConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.*;
 import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
-import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
-import org.odpi.openmetadata.adminservices.client.OMAGServerPlatformConfigurationClient;
-import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
-import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -186,7 +181,7 @@ public class ServerAuthorViewHandler {
                         StoredServer storedServer = new StoredServer();
                         storedServer.setStoredServerName(serverName);
                         storedServer.setServerType(omagServerConfig.getLocalServerType());
-                        // do not have a description of the server yet.
+                        storedServer.setStoredServerDescription(omagServerConfig.getLocalServerDescription());
                         platform.addStoredServer(storedServer);
                     }
                     PlatformServicesClient platformServicesClient = new PlatformServicesClient(platformName, platFormEndpoint);
@@ -336,9 +331,7 @@ public class ServerAuthorViewHandler {
      * @param methodName               current operation
      * @param serverToBeConfiguredName name of the server to be configured.
      * @param connection  connection to the OMRS repository connector.
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
-     * OMAGConfigurationErrorException the local repository mode has not been set
+     * @throws ServerAuthorViewServiceException a server author exception
      */
     public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
         try {
@@ -463,6 +456,30 @@ public class ServerAuthorViewHandler {
     }
 
     /**
+     * Disable an access service
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to being configured
+     * @param serviceURLMarker         identifier of the access service to configure
+     * @throws ServerAuthorViewServiceException server author exception
+     */
+    public void disableAccessService(String className, String methodName, String serverToBeConfiguredName, String serviceURLMarker) throws ServerAuthorViewServiceException {
+        try {
+            MetadataAccessPointConfigurationClient client = new MetadataAccessPointConfigurationClient(this.userId,
+                                                                                                       serverToBeConfiguredName,
+                                                                                                       this.platformURL);
+            client.disableAccessService(serviceURLMarker);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+
+    /**
      * Configure all access services
      *
      * @param className                class Name for diagnostic purposes
@@ -488,6 +505,109 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+
+    /**
+     * Configure an view service
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to being configured
+     * @param serviceURLMarker         identifier of the view service to configure
+     * @param viewServiceOptions     view service options
+     * @throws ServerAuthorViewServiceException server author exception
+     */
+    public void configureViewService(String className, String methodName, String serverToBeConfiguredName, String serviceURLMarker, Map<String, Object> viewServiceOptions) throws ServerAuthorViewServiceException {
+        try {
+            ViewServerConfigurationClient client = new ViewServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            if (viewServiceOptions == null) {
+                viewServiceOptions = new HashMap<>();
+            }
+            client.configureViewService(serviceURLMarker, viewServiceOptions);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+
+    /**
+     * Disable an view service
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to being configured
+     * @param serviceURLMarker         identifier of the view service to configure
+     * @throws ServerAuthorViewServiceException server author exception
+     */
+    public void disableViewService(String className, String methodName, String serverToBeConfiguredName, String serviceURLMarker) throws ServerAuthorViewServiceException {
+        try {
+            ViewServerConfigurationClient client = new ViewServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.disableViewService(serviceURLMarker);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+
+    /**
+     * Configure an engine service
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to being configured
+     * @param serviceURLMarker         identifier of the engine service to configure
+     * @param engineServiceOptions     engine service options
+     * @param engines                  engines
+     * @throws ServerAuthorViewServiceException server author exception
+     */
+    public void configureEngineService(String className, String methodName, String serverToBeConfiguredName, String serviceURLMarker, Map<String, Object> engineServiceOptions, List<EngineConfig> engines) throws ServerAuthorViewServiceException {
+        try {
+            EngineHostConfigurationClient client = new EngineHostConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.configureEngineService(serviceURLMarker, engineServiceOptions, engines);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+
+    /**
+     * Disable an view service
+     *
+     * @param className                class Name for diagnostic purposes
+     * @param methodName               current operation
+     * @param serverToBeConfiguredName name of the server to being configured
+     * @param serviceURLMarker         identifier of the view service to configure
+     * @throws ServerAuthorViewServiceException server author exception
+     */
+    public void disableEngineService(String className, String methodName, String serverToBeConfiguredName, String serviceURLMarker) throws ServerAuthorViewServiceException {
+        try {
+            ViewServerConfigurationClient client = new ViewServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.disableViewService(serviceURLMarker);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+
 
     /**
      * set the Enterprise Access config
@@ -688,13 +808,62 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @throws ServerAuthorViewServiceException a server author exception
+     */
+    public void updateAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination)
+        throws ServerAuthorViewServiceException {
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.updateAuditLogDestination(auditLogDestinationName, auditLogDestination);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param className            class name used for diagnostics
+     * @param methodName           the current operation
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @throws ServerAuthorViewServiceException a server author exception
+     */
+    public void deleteAuditLogDestination(String className, String methodName, String serverToBeConfiguredName, String auditLogDestinationName) throws ServerAuthorViewServiceException{
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.deleteAuditLogDestination(auditLogDestinationName);
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
 
     /**
      * Get the active configuration of the named server
      *
      * @param className            class name used for diagnostics
      * @param methodName           the current operation
-     * @param serverToRetrieveName the server to retrive name
+     * @param serverToRetrieveName the server to retrieve name
      * @return the activate configuration or
      * @throws ServerAuthorViewServiceException a server author exception
      */
@@ -768,6 +937,28 @@ public class ServerAuthorViewHandler {
        return OMRSAuditLogRecordSeverity.getSeverityList();
     }
     /**
+     * Clear the audit log destinations associated with the the server being configured
+     *
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @throws ServerAuthorViewServiceException a server author exception
+     *
+     */
+    public void clearAuditLogDestinations(String serverToBeConfiguredName)  throws ServerAuthorViewServiceException {
+        final String methodName = "clearAuditLogDestinations";
+        try {
+            OMAGServerConfigurationClient client = new OMAGServerConfigurationClient(this.userId,
+                                                                                     serverToBeConfiguredName,
+                                                                                     this.platformURL);
+            client.clearAuditLogDestinations();
+        } catch (OMAGNotAuthorizedException error) {
+            throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
+        } catch (OMAGInvalidParameterException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
+        } catch (OMAGConfigurationErrorException error) {
+            throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
+        }
+    }
+    /**
      * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
      *
      * A cohort is a group of open metadata
@@ -823,6 +1014,5 @@ public class ServerAuthorViewHandler {
             throw ServerAuthorExceptionHandler.mapOMAGConfigurationErrorException(className, methodName, error);
         }
     }
-
 }
 

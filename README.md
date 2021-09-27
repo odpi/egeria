@@ -81,12 +81,11 @@ Minutes of past maintainers meetings can be found on the
 
 ## Monthly community webinars
 
-The Egeria community are running a monthly webinar series
-covering a variety of topics.
+The Egeria community are running a monthly webinar series covering a variety of topics.
 
-Follow [this link](https://github.com/odpi/data-governance/tree/master/webinars)
-for details of the webinar schedule, and links to download
-the presentations from past webinars.
+Follow [this link](https://odpi.github.io/egeria-docs/education/previous-webinars/) to see previous webinars.
+Follow [this link](https://odpi.github.io/egeria-docs/education/planned-webinars/) to see planned webinars.
+
 
 ## Acknowledgements
 

@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test.responses;
 
-import static org.testng.Assert.assertEquals;
-
 import org.testng.annotations.Test;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
@@ -13,16 +11,18 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUti
 
 public class ErrorResponseTest {
 	
-	private static final String	MESSAGE = "short message";
-	private static final String	CODE = "MSR_OMS_001";
-	private static final String	EXCEPTIONCAUSE = "com.ibm.AppException: Cannot open ...";
 
 	String master = String.format("{%n" + 
 			"  \"class\" : \"ErrorResponse\",%n" + 
 			"  \"relatedHTTPCode\" : 500,%n" + 
-			"  \"msg\" : \"short message\",%n" + 
-			"  \"code\" : \"MSR_OMS_001\",%n" + 
-			"  \"exceptionCauseMsg\" : \"com.ibm.AppException: Cannot open ...\"%n" + 
+			"  \"errors\" : [ {%n" + 
+			"    \"status\" : \"500\",%n" + 
+			"    \"code\" : \"OMAS-ANALYTICS-MODELING-007\",%n" + 
+			"    \"title\" : \"OMAS-ANALYTICS-MODELING-007 The model for entity guidEntity is not correct: error description\",%n" + 
+			"    \"meta\" : {%n" + 
+			"      \"severity\" : \"error\"%n" + 
+			"    }%n" + 
+			"  } ]%n" + 
 			"}");
 
 	@Test
@@ -35,9 +35,6 @@ public class ErrorResponseTest {
 		
 		ErrorResponse er = new ErrorResponse(ex);
 		
-		er.setMessage(MESSAGE);
-		er.setErrorCode(CODE);
-		er.setExceptionCause(EXCEPTIONCAUSE);
 		
 		TestUtilities.assertObjectJson(er, master);
 	}
@@ -47,9 +44,6 @@ public class ErrorResponseTest {
 		
 		ErrorResponse er = TestUtilities.readObjectJson(master, ErrorResponse.class);
 
-		assertEquals(MESSAGE, er.getMessage());
-		assertEquals(CODE, er.getErrorCode());
-		assertEquals(EXCEPTIONCAUSE, er.getExceptionCause());
 
 	}
 
