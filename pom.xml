@@ -2174,6 +2174,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>simple-catalogs</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-integrator-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
