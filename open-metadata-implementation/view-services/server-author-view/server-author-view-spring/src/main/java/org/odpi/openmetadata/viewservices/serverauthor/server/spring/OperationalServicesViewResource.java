@@ -48,7 +48,7 @@ public class OperationalServicesViewResource
 
     @Operation(summary="Activate server with stored configuration document",
                description="Activate the named OMAG server using the appropriate configuration document found in the configuration store.",
-            externalDocs=@ExternalDocumentation(description="Configuration Documents",
+               externalDocs=@ExternalDocumentation(description="Configuration Documents",
                     url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
 
     public ServerAuthorConfigurationResponse activateWithStoredConfig(@PathVariable String userId,

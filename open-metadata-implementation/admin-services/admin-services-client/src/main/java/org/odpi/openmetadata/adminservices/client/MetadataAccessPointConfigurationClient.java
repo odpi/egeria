@@ -166,6 +166,39 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         this.configureAccessService(serviceURLMarker, new HashMap<>());
     }
 
+    /**
+     * Disable a single access service.
+     *
+     * @param serviceURLMarker string indicating which access service it is disabling
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void disableAccessService(String  serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                        OMAGInvalidParameterException,
+                                                                        OMAGConfigurationErrorException
+    {
+        final String methodName    = "disableAccessService";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
 
     /**
      * Enable a single access service.
