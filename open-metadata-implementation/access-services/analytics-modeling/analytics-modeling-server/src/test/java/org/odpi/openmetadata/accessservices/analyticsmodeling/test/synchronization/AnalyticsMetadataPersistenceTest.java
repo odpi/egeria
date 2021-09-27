@@ -67,7 +67,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 				null, // publishZones,
 				auditLog);
 		
-		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET);
+		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, null);
 		
 		metadataHandler = new SchemaAttributeHandler<>(
 				new AnalyticsMetadataConverter(ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName()),

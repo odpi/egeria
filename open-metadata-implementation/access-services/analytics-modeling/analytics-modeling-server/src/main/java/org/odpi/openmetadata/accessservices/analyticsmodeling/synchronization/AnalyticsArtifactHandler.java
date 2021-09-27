@@ -98,16 +98,17 @@ public class AnalyticsArtifactHandler {
 	 * Create assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param asset definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets createAssets(String user, String serverCapability, AnalyticsAsset asset)
+	public ResponseContainerAssets createAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "createAssets";
-		ctx.initializeSoftwareServerCapability(user, serverCapability);
+		ctx.initializeSoftwareServerCapability(user, serverCapability, serverCapabilityGUID);
 		
 		List<String> guids = new ArrayList<>();
 		
@@ -802,16 +803,17 @@ public class AnalyticsArtifactHandler {
 	 * Update assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
+	public ResponseContainerAssets updateAssets(String user, String serverCapability, String serverCapabilityGUID, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		String methodName = "updateAssets";
-		ctx.initializeSoftwareServerCapability(user, serverCapability);
+		ctx.initializeSoftwareServerCapability(user, serverCapability, serverCapabilityGUID);
 		
 		List<String> guids = new ArrayList<>();
 		
@@ -1219,16 +1221,17 @@ public class AnalyticsArtifactHandler {
 	 * 
 	 * @param userId to perform the action.
 	 * @param serverCapability source of artifact.
+	 * @param serverCapabilityGUID source of artifact.
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 * @throws UserNotAuthorizedException in case of error.
 	 */
-	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
+	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String serverCapabilityGUID, String identifier) 
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException 
 	{
 		String methodName = "deleteAssets";
-		ctx.initializeSoftwareServerCapability(userId, serverCapability);
+		ctx.initializeSoftwareServerCapability(userId, serverCapability, serverCapabilityGUID);
 		resolver = new IdentifierResolver(ctx, null);
 		
 		List<String> guids = new ArrayList<>();
