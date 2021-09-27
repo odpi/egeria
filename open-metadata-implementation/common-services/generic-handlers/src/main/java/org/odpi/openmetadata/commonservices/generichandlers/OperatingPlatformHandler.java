@@ -225,6 +225,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
+        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -232,8 +234,12 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     operatingPlatformGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -278,6 +284,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   operatingPlatformGUID,
                                   operatingPlatformGUIDParameterName,
                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                   OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -325,6 +334,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       operatingPlatformGUIDParameterName,
                                       OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                       OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
                                       OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
                                       effectiveTime,
@@ -364,6 +375,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
     
@@ -428,8 +442,10 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
-                                   supportedZones,
                                    null,
+                                   false,
+                                   false,
+                                   supportedZones,
                                    startingFrom,
                                    pageSize,
                                    effectiveTime,

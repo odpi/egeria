@@ -121,12 +121,10 @@ public class OMRSArchiveGUIDMap
 
                 FileUtils.writeStringToFile(idFile, mapContents, (String)null,false);
             }
-
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             log.error("Unusable Map Store :(", exc);
-
         }
     }
 

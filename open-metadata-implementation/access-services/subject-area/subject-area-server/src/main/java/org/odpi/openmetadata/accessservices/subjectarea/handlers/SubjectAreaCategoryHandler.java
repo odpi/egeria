@@ -193,6 +193,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                null,
                                                                                null,
                                                                                false,
+                                                                               false,
+                                                                               null,
                                                                                methodName);
             CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = categoryMapper.map(entityDetail);
@@ -386,8 +388,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                   "guid",
                                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                  false,
+                                                  false,
                                                   builder.getInstanceProperties(methodName),
                                                   !isReplace,
+                                                  null,
                                                   methodName);
 
             response = getCategoryByGuid(userId, guid);
@@ -433,6 +438,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                                       null,
+                                                      null,
+                                                      false,
+                                                      false,
                                                       null,
                                                       methodName);
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {

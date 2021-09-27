@@ -110,7 +110,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         {
             try
             {
-                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, null);
+                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, null, false, false, null);
             }
             catch (OCFCheckedExceptionBase error)
             {
@@ -321,6 +321,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                                                       2,
                                                                                                                                       relationshipName,
+                                                                                                                                      false,
+                                                                                                                                      false,
+                                                                                                                                      null,
                                                                                                                                       0,
                                                                                                                                       0);
 

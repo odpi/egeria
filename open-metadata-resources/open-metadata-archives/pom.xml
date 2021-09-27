@@ -34,6 +34,7 @@
         <module>open-connector-archives</module>
         <module>open-metadata-types</module>
         <module>open-metadata-types-utility</module>
+        <module>catalog-builder</module>
     </modules>
 
 </project>

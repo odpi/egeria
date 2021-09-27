@@ -34,6 +34,7 @@
         <module>admin-services-samples</module>
         <module>open-metadata-security-samples</module>
         <module>governance-services-sample</module>
+        <module>sample-metadata</module>
     </modules>
 
 </project>

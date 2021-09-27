@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,12 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdatePropertiesRequestBody implements Serializable
+public class UpdatePropertiesRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private boolean           replaceProperties   = false;
-    private ElementProperties properties          = null;
+
+    private boolean           replaceProperties = false;
+    private ElementProperties properties        = null;
 
 
     /**
@@ -44,6 +44,8 @@ public class UpdatePropertiesRequestBody implements Serializable
      */
     public UpdatePropertiesRequestBody(UpdatePropertiesRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             replaceProperties = template.getReplaceProperties();
@@ -98,7 +100,6 @@ public class UpdatePropertiesRequestBody implements Serializable
     }
 
 
-
     /**
      * JSON-style toString.
      *
@@ -108,8 +109,11 @@ public class UpdatePropertiesRequestBody implements Serializable
     public String toString()
     {
         return "UpdatePropertiesRequestBody{" +
-                       ", replaceProperties=" + replaceProperties +
+                       "replaceProperties=" + replaceProperties +
                        ", properties=" + properties +
+                       ", forLineage=" + getForLineage() +
+                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -131,8 +135,13 @@ public class UpdatePropertiesRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         UpdatePropertiesRequestBody that = (UpdatePropertiesRequestBody) objectToCompare;
-        return replaceProperties == that.replaceProperties && Objects.equals(properties, that.properties);
+        return replaceProperties == that.replaceProperties &&
+                       Objects.equals(properties, that.properties);
     }
 
 
@@ -144,6 +153,6 @@ public class UpdatePropertiesRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(replaceProperties, properties);
+        return Objects.hash(super.hashCode(), replaceProperties, properties);
     }
 }

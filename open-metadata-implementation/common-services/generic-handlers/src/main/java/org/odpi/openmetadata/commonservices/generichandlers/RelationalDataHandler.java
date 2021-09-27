@@ -264,7 +264,13 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, false, null, methodName);
+        databaseHandler.verifyExternalSourceIdentity(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     false,
+                                                     false,
+                                                     null,
+                                                     methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 
@@ -356,6 +362,8 @@ public class RelationalDataHandler<DATABASE,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      relationshipProperties,
@@ -435,7 +443,13 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, false, null, methodName);
+        databaseHandler.verifyExternalSourceIdentity(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     false,
+                                                     false,
+                                                     null,
+                                                     methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 
@@ -495,6 +509,9 @@ public class RelationalDataHandler<DATABASE,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                               classificationProperties,
                                                               false,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName);
             }
 
@@ -519,6 +536,8 @@ public class RelationalDataHandler<DATABASE,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      relationshipProperties,
@@ -1028,12 +1047,14 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         databaseHandler.removeLinkedDataSet(userId,
                                             databaseManagerGUID,
                                             databaseManagerName,
                                             databaseGUID,
                                             OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                            null,
+                                            effectiveTime,
                                             methodName);
 
         databaseHandler.deleteBeanInRepository(userId,
@@ -1045,6 +1066,9 @@ public class RelationalDataHandler<DATABASE,
                                                OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               effectiveTime,
                                                methodName);
     }
 
@@ -1225,7 +1249,7 @@ public class RelationalDataHandler<DATABASE,
         /*
          * This call checks type of entity, zones and security.
          */
-        return databaseHandler.getBeanFromRepository(userId, guid, guidParameterName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null, methodName);
+        return databaseHandler.getBeanFromRepository(userId, guid, guidParameterName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, false, false,null, methodName);
     }
 
 
@@ -1278,7 +1302,13 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseSchemaHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, false, null, methodName);
+        databaseSchemaHandler.verifyExternalSourceIdentity(userId,
+                                                           databaseManagerGUID,
+                                                           databaseManagerName,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 
@@ -1320,6 +1350,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseSchemaGUID,
                                                    createdElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                    null,
@@ -1394,7 +1426,13 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseSchemaHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, false, null, methodName);
+        databaseSchemaHandler.verifyExternalSourceIdentity(userId,
+                                                           databaseManagerGUID,
+                                                           databaseManagerName,
+                                                           false,
+                                                           false,
+                                                           null,
+                                                           methodName);
 
         String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 
@@ -1442,6 +1480,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseSchemaGUID,
                                                    createdElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                    null,
@@ -1526,6 +1566,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseSchemaGUID,
                                                    createdElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                    null,
@@ -1761,6 +1803,9 @@ public class RelationalDataHandler<DATABASE,
                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      qualifiedName,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -1914,6 +1959,9 @@ public class RelationalDataHandler<DATABASE,
                                                            guid,
                                                            guidParameterName,
                                                            OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName);
     }
 
@@ -2166,6 +2214,8 @@ public class RelationalDataHandler<DATABASE,
                                                           databaseTableGUID,
                                                           databaseTableGUIDParameterName,
                                                           OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                          false,
+                                                          false,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                           null,
@@ -2359,6 +2409,9 @@ public class RelationalDataHandler<DATABASE,
                                                     OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                     qualifiedName,
+                                                    false,
+                                                    false,
+                                                    new Date(),
                                                     methodName);
     }
 
@@ -2820,6 +2873,9 @@ public class RelationalDataHandler<DATABASE,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                           properties,
                                                           false,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName);
     }
 
@@ -3102,7 +3158,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                                                          null,
                                                                                          null,
-                                                                                         (Date)null,
+                                                                                         false,
+                                                                                         false,
+                                                                                         new Date(),
                                                                                          methodName);
 
         if (databaseTableEntity != null)
@@ -3178,6 +3236,8 @@ public class RelationalDataHandler<DATABASE,
                                                                              OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                              2,
+                                                                             false,
+                                                                             false,
                                                                              null,
                                                                              methodName);
 
@@ -3268,6 +3328,8 @@ public class RelationalDataHandler<DATABASE,
                                                            databaseColumnGUID,
                                                            databaseColumnGUIDParameterName,
                                                            OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                           false,
+                                                           false,
                                                            parentAttachmentTypeGUID,
                                                            parentAttachmentTypeName,
                                                            null,
@@ -3351,6 +3413,8 @@ public class RelationalDataHandler<DATABASE,
                                                    queryTargetGUID,
                                                    targetElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
                                                    properties,
@@ -3415,7 +3479,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                                                          null,
                                                                                          null,
-                                                                                         (Date)null,
+                                                                                         false,
+                                                                                         false,
+                                                                                         new Date(),
                                                                                          methodName);
 
 
@@ -3466,6 +3532,8 @@ public class RelationalDataHandler<DATABASE,
                                                                           OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                           2,
+                                                                          false,
+                                                                          false,
                                                                           null,
                                                                           methodName);
             }
@@ -3526,6 +3594,8 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseColumnGUID,
                                                        databaseColumnGUIDParameterName,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                       false,
+                                                       false,
                                                        parentAttachmentTypeGUID,
                                                        parentAttachmentTypeName,
                                                        null,
@@ -3751,7 +3821,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                            OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                                                            null,
                                                                                            null,
-                                                                                           (Date)null,
+                                                                                           false,
+                                                                                           false,
+                                                                                           new Date(),
                                                                                            methodName);
 
         if (columnSchemaAttribute != null)
@@ -3870,6 +3942,9 @@ public class RelationalDataHandler<DATABASE,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      qualifiedName,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -4094,6 +4169,9 @@ public class RelationalDataHandler<DATABASE,
                                                             OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
                                                             properties,
                                                             false,
+                                                            false,
+                                                            false,
+                                                            new Date(),
                                                             methodName);
     }
 
@@ -4132,6 +4210,9 @@ public class RelationalDataHandler<DATABASE,
                                                                  OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
     }
 
@@ -4212,6 +4293,8 @@ public class RelationalDataHandler<DATABASE,
                                                    foreignKeyColumnGUID,
                                                    foreignElementGUIDParameterName,
                                                    OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
                                                    properties,
@@ -4260,6 +4343,8 @@ public class RelationalDataHandler<DATABASE,
                                                        foreignElementGUIDParameterName,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                       false,
+                                                       false,
                                                        OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                        OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
                                                        null,

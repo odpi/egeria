@@ -44,7 +44,7 @@ public class RemediationGovernanceContext extends GovernanceContext
                                         Map<String, String>        requestParameters,
                                         List<RequestSourceElement> requestSourceElements,
                                         List<ActionTargetElement>  actionTargetElements,
-                                        OpenMetadataClient openMetadataStore)
+                                        OpenMetadataClient         openMetadataStore)
     {
         super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }
@@ -117,7 +117,10 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties new properties for the metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -125,11 +128,19 @@ public class RemediationGovernanceContext extends GovernanceContext
      */
     public void updateMetadataElement(String            metadataElementGUID,
                                       boolean           replaceProperties,
-                                      ElementProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      ElementProperties properties,
+                                      Date              effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        openMetadataStore.updateMetadataElementInStore(metadataElementGUID, replaceProperties, properties);
+        openMetadataStore.updateMetadataElementInStore(metadataElementGUID,
+                                                       replaceProperties,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       properties,
+                                                       effectiveTime);
     }
 
 
@@ -139,22 +150,34 @@ public class RemediationGovernanceContext extends GovernanceContext
      * through specific APIs.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param newElementStatus new status value - or null to leave as is
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateMetadataElementStatus(String        metadataElementGUID,
+                                            boolean       forLineage,
+                                            boolean       forDuplicateProcessing,
                                             ElementStatus newElementStatus,
                                             Date          effectiveFrom,
-                                            Date          effectiveTo) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                            Date          effectiveTo,
+                                            Date          effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        openMetadataStore.updateMetadataElementStatusInStore(metadataElementGUID, newElementStatus, effectiveFrom, effectiveTo);
+        openMetadataStore.updateMetadataElementStatusInStore(metadataElementGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             newElementStatus,
+                                                             effectiveFrom,
+                                                             effectiveTo,
+                                                             effectiveTime);
     }
 
 
@@ -162,16 +185,25 @@ public class RemediationGovernanceContext extends GovernanceContext
      * Delete a specific metadata element.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void deleteMetadataElement(String metadataElementGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void deleteMetadataElement(String  metadataElementGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        openMetadataStore.deleteMetadataElementInStore(metadataElementGUID);
+        openMetadataStore.deleteMetadataElementInStore(metadataElementGUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime);
     }
 
 
@@ -181,8 +213,11 @@ public class RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -191,11 +226,21 @@ public class RemediationGovernanceContext extends GovernanceContext
      */
     public void classifyMetadataElement(String            metadataElementGUID,
                                         String            classificationName,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID, classificationName, null, null, properties);
+        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
+                                                         classificationName,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         null,
+                                                         null,
+                                                         properties,
+                                                         effectiveTime);
     }
 
 
@@ -205,10 +250,13 @@ public class RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this classification is active - null for active now
      * @param effectiveTo the date when this classification becomes inactive - null for active until deleted
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -217,13 +265,23 @@ public class RemediationGovernanceContext extends GovernanceContext
      */
     public void classifyMetadataElement(String            metadataElementGUID,
                                         String            classificationName,
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID, classificationName, effectiveFrom, effectiveTo, properties);
+        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
+                                                         classificationName,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveFrom,
+                                                         effectiveTo,
+                                                         properties,
+                                                         effectiveTime);
     }
 
 
@@ -234,7 +292,10 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @param classificationName unique name of the classification to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties new properties for the classification
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -244,11 +305,20 @@ public class RemediationGovernanceContext extends GovernanceContext
     public void reclassifyMetadataElement(String            metadataElementGUID,
                                           String            classificationName,
                                           boolean           replaceProperties,
-                                          ElementProperties properties) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                          boolean           forLineage,
+                                          boolean           forDuplicateProcessing,
+                                          ElementProperties properties,
+                                          Date              effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        openMetadataStore.reclassifyMetadataElementInStore(metadataElementGUID, classificationName, replaceProperties, properties);
+        openMetadataStore.reclassifyMetadataElementInStore(metadataElementGUID,
+                                                           classificationName,
+                                                           replaceProperties,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           properties,
+                                                           effectiveTime);
     }
 
 
@@ -259,21 +329,33 @@ public class RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateClassificationStatus(String metadataElementGUID,
-                                           String classificationName,
-                                           Date   effectiveFrom,
-                                           Date   effectiveTo) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void updateClassificationStatus(String  metadataElementGUID,
+                                           String  classificationName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
+                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        openMetadataStore.updateClassificationStatusInStore(metadataElementGUID, classificationName, effectiveFrom, effectiveTo);
+        openMetadataStore.updateClassificationStatusInStore(metadataElementGUID,
+                                                            classificationName,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            effectiveFrom,
+                                                            effectiveTo,
+                                                            effectiveTime);
     }
 
 
@@ -282,17 +364,27 @@ public class RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to remove
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void unclassifyMetadataElement(String metadataElementGUID,
-                                          String classificationName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public void unclassifyMetadataElement(String  metadataElementGUID,
+                                          String  classificationName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        openMetadataStore.unclassifyMetadataElementInStore(metadataElementGUID, classificationName);
+        openMetadataStore.unclassifyMetadataElementInStore(metadataElementGUID,
+                                                           classificationName,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime);
     }
 
 
@@ -304,7 +396,10 @@ public class RemediationGovernanceContext extends GovernanceContext
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties the properties of the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new relationship
      *
@@ -316,11 +411,22 @@ public class RemediationGovernanceContext extends GovernanceContext
     public String createRelatedElements(String            relationshipTypeName,
                                         String            metadataElement1GUID,
                                         String            metadataElement2GUID,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName, metadataElement1GUID, metadataElement2GUID, null, null, properties);
+        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
+                                                              metadataElement1GUID,
+                                                              metadataElement2GUID,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              null,
+                                                              null,
+                                                              properties,
+                                                              effectiveTime);
     }
 
 
@@ -332,9 +438,12 @@ public class RemediationGovernanceContext extends GovernanceContext
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties the properties of the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new relationship
      *
@@ -346,13 +455,24 @@ public class RemediationGovernanceContext extends GovernanceContext
     public String createRelatedElements(String            relationshipTypeName,
                                         String            metadataElement1GUID,
                                         String            metadataElement2GUID,
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName, metadataElement1GUID, metadataElement2GUID, effectiveFrom, effectiveTo, properties);
+        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
+                                                              metadataElement1GUID,
+                                                              metadataElement2GUID,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveFrom,
+                                                              effectiveTo,
+                                                              properties,
+                                                              effectiveTime);
     }
 
 
