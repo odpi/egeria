@@ -780,7 +780,7 @@ project(':open-metadata-resources:open-metadata-samples:access-services-samples:
 project(':open-metadata-resources:open-metadata-samples:access-services-samples').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples')
 project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').projectDir = file('open-metadata-resources/open-metadata-samples/admin-services-samples/admin-services-config-metadata-server-sample')
 project(':open-metadata-resources:open-metadata-samples:admin-services-samples').projectDir = file('open-metadata-resources/open-metadata-samples/admin-services-samples')
-project(':open-metadata-resources:open-metadata-samples:simple-catalogs').projectDir = file('open-metadata-resources/open-metadata-samples/simple-catalogs')
+project(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-catalogs').projectDir = file('open-metadata-resources/open-metadata-samples/sample-metadata/simple-catalogs')
 project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').projectDir = file('open-metadata-resources/open-metadata-samples/open-metadata-security-samples')
 project(':open-metadata-resources:open-metadata-samples:governance-services-sample').projectDir = file('open-metadata-resources/open-metadata-samples/governance-services-sample')
 project(':open-metadata-resources:open-metadata-samples').projectDir = file('open-metadata-resources/open-metadata-samples')
