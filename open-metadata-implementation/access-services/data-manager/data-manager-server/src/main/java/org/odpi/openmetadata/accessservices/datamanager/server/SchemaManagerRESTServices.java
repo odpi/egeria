@@ -1097,6 +1097,7 @@ public class SchemaManagerRESTServices
                                                                           null,
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                           1,
+                                                                          false,
                                                                           0,
                                                                           2,
                                                                           new Date(),
@@ -1116,6 +1117,7 @@ public class SchemaManagerRESTServices
                                                            null,
                                                            OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                                            1,
+                                                           false,
                                                            0,
                                                            2,
                                                            new Date(),
@@ -1370,6 +1372,8 @@ public class SchemaManagerRESTServices
                                                      schemaTypeGUID,
                                                      schemaTypeGUIDParameterName,
                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      relationshipTypeDef.getGUID(),
                                                      relationshipTypeDef.getName(),
                                                      null,
@@ -1593,6 +1597,9 @@ public class SchemaManagerRESTServices
                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                null,
                                                null,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
             else
@@ -1914,6 +1921,9 @@ public class SchemaManagerRESTServices
                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                   builder.getCalculatedValueProperties(requestBody.getFormula(), methodName),
                                                   false,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
         }
         catch (Exception error)
@@ -1968,6 +1978,9 @@ public class SchemaManagerRESTServices
                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                        OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                        OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName);
         }
         catch (Exception error)

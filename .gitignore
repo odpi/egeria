@@ -100,8 +100,11 @@ egeria-lineage-repositories/**
 /CloudInformationModel.json
 /DataStoreConnectorTypes.json
 /OpenMetadataTypes.json
+/SimpleAPICatalog.json
+/SimpleDataCatalog.json
+/SimpleEventCatalog.json
+/SimpleGovernanceCatalog.json
 /*Archive.json
-/*GUIDMap.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json

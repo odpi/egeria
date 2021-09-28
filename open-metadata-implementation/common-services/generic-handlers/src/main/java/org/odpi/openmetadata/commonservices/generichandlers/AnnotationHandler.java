@@ -394,8 +394,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               discoveryReportGUIDParameterName,
                                                               OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                               false,
+                                                              false,
+                                                              false,
                                                               supportedZones,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         if (anchorEntity != null)
@@ -416,6 +418,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       discoveryReportGUID,
                                       discoveryReportGUIDParameterName,
                                       OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
                                       OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                       null,
@@ -458,8 +463,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               dataFieldGUIDParameterName,
                                                               OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
                                                               false,
+                                                              false,
+                                                              false,
                                                               supportedZones,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         if (anchorEntity != null)
@@ -480,6 +487,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       annotationGUID,
                                       annotationParameterName,
                                       OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_GUID,
                                       OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_NAME,
                                       null,
@@ -520,8 +530,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               parentAnnotationGUIDParameterName,
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                               false,
+                                                              false,
+                                                              false,
                                                               supportedZones,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         if (anchorEntity != null)
@@ -542,6 +554,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       annotationGUID,
                                       annotationParameterName,
                                       OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                       null,
@@ -592,8 +607,12 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                     annotationGUIDParameterName,
                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_GUID,
                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -667,8 +686,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               annotationGUIDParameterName,
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                               false,
+                                                              false,
+                                                              false,
                                                               supportedZones,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
@@ -697,6 +718,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       annotationReviewGUID,
                                       annotationReviewGUIDParameterName,
                                       OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
                                       OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
                                       builder.getReviewLinkInstanceProperties(methodName),
@@ -733,6 +757,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -767,6 +794,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                 annotationGUID,
                                                                 annotationGUIDParameterName,
                                                                 OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                false,
+                                                                false,
                                                                 new Date(),
                                                                 methodName);
 
@@ -805,6 +834,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                         false,
+                                                                         false,
+                                                                         supportedZones,
                                                                          null,
                                                                          methodName);
             if (annotationReviewEntity != null)
@@ -818,6 +850,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                     annotationEntity.getGUID(),
                                                                                     null,
                                                                                     OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                    false,
                                                                                     null,
                                                                                     methodName);
 
@@ -864,6 +897,11 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          relationshipTypeGUID,
                                                                          relationshipTypeName,
                                                                          OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         supportedZones,
                                                                          startingFrom,
                                                                          pageSize,
                                                                          new Date(),
@@ -934,6 +972,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                        startingElementTypeName,
                                                                                        relationshipTypeGUID,
                                                                                        relationshipTypeName,
+                                                                                       false,
                                                                                        startingFrom,
                                                                                        queryPageSize,
                                                                                        null,
@@ -964,6 +1003,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                           entityProxy.getGUID(),
                                                                                           entityProxyGUIDParameterName,
                                                                                           OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                          false,
+                                                                                          false,
                                                                                           new Date(),
                                                                                           methodName);
 

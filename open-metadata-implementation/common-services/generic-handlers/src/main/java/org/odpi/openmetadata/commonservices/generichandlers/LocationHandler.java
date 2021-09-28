@@ -271,6 +271,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
 
         locationBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
+        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     null,
                                     null,
@@ -278,8 +280,12 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     locationGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     locationBuilder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -530,6 +536,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   locationChildGUID,
                                   locationChildGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -573,6 +582,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       locationChildGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -616,6 +627,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   locationTwoGUID,
                                   locationTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -659,6 +673,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       locationTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -702,6 +718,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   assetGUID,
                                   assetGUIDParameterName,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -745,6 +764,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -780,6 +801,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -878,12 +902,19 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                  UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                         OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
                                         OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,

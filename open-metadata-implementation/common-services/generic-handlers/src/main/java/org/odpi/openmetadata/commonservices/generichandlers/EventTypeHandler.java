@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -190,6 +191,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                       eventTypeGUID,
                                       eventTypeGUIDParameterName,
                                       OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                       null,
@@ -283,6 +287,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                   eventTypeGUID,
                                   eventTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                   null,
@@ -384,8 +391,12 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     eventTypeGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -424,6 +435,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -550,6 +564,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -585,6 +600,8 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
+        Date effectiveTime = new Date();
+
         /*
          * The event types are attached via an event list.
          */
@@ -596,8 +613,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
                                                                   false,
+                                                                  false,
                                                                   supportedZones,
-                                                                  null,
+                                                                  effectiveTime,
                                                                   methodName);
 
         if (eventTypeListEntity != null)
@@ -614,9 +632,11 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             2,
+                                            false,
+                                            false,
                                             startFrom,
                                             pageSize,
-                                            null,
+                                            effectiveTime,
                                             methodName);
         }
 
@@ -660,8 +680,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
                                                               false,
+                                                              false,
                                                               supportedZones,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         if (eventListEntity == null)
@@ -698,6 +719,9 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                           eventTypeListGUID,
                                           eventTypeListGUIDParameterName,
                                           OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
@@ -742,6 +766,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

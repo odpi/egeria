@@ -126,6 +126,7 @@ public class DatabaseContextHandler {
 			throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		
 		String methodName = "getDatabases";
+		ctx.initialize(userId);
 		setContext(methodName);
 		
 		List<Database> databases = findDatabases(userId, startFrom, pageSize, methodName);
@@ -175,6 +176,7 @@ public class DatabaseContextHandler {
 			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 
 		String methodName = "getDatabaseSchemas";
+		ctx.initialize(userId);
 		setContext(methodName);
 		
 		ctx.getInvalidParameterHandler().validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
@@ -224,16 +226,18 @@ public class DatabaseContextHandler {
 	/**
 	 * Get tables for schema.
 	 * 
+	 * @param userId of the request.
 	 * @param guidDataSource of the schema.
 	 * @param schema         name.
 	 * @return list of table names.
 	 * @throws AnalyticsModelingCheckedException if failed
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema)
+	public ResponseContainerSchemaTables getSchemaTables(String userId, String guidDataSource, String schema)
 			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getSchemaTables";
+		ctx.initialize(userId);
 		setContext(context);
 
 		ctx.getInvalidParameterHandler().validateGUID(guidDataSource, DATA_SOURCE_GUID, context);

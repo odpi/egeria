@@ -84,9 +84,12 @@ public class UpdateStatusRequestBody extends UpdateEffectivityDatesRequestBody
     public String toString()
     {
         return "UpdateStatusRequestBody{" +
-                       "initialStatus=" + newStatus +
+                       "newStatus=" + newStatus +
                        ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() + '\'' +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", forLineage=" + getForLineage() +
+                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -108,8 +111,12 @@ public class UpdateStatusRequestBody extends UpdateEffectivityDatesRequestBody
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         UpdateStatusRequestBody that = (UpdateStatusRequestBody) objectToCompare;
-        return newStatus == that.newStatus ;
+        return newStatus == that.newStatus;
     }
 
 
@@ -121,6 +128,6 @@ public class UpdateStatusRequestBody extends UpdateEffectivityDatesRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(newStatus);
+        return Objects.hash(super.hashCode(), newStatus);
     }
 }

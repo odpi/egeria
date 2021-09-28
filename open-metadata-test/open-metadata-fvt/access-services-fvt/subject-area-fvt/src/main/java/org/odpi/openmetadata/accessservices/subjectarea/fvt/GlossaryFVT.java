@@ -218,7 +218,7 @@ public class GlossaryFVT {
         glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
-        System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
+        System.out.println("Created Glossary " + newGlossary.getName() + " with GUID " + newGlossary.getSystemAttributes().getGUID());
 
         return newGlossary;
     }

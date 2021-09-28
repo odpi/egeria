@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -215,8 +216,12 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     governanceDomainGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -250,6 +255,9 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -333,6 +341,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -367,6 +376,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                          false,
+                                          false,
                                           null,
                                           methodName);
 

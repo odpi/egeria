@@ -278,8 +278,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     glossaryGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -320,6 +324,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
                                            builder.getTaxonomyProperties(organizingPrinciple, methodName),
                                            false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -353,6 +360,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -393,6 +403,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
                                            builder.getCanonicalVocabularyProperties(scope, methodName),
                                            false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -423,6 +436,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -456,6 +472,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -543,6 +562,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -577,6 +597,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

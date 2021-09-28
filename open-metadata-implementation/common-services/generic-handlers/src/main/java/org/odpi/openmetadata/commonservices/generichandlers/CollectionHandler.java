@@ -364,8 +364,12 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     collectionGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -408,6 +412,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
                                            builder.getFolderProperties(orderBy, orderPropertyName, methodName),
                                            false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -441,6 +448,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -488,6 +498,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                   memberGUID,
                                   memberGUIDParameterName,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                   properties,
@@ -535,6 +548,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                       memberGUIDParameterName,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -575,6 +590,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -662,6 +680,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -696,6 +715,10 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

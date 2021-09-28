@@ -216,6 +216,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   connectionGUID,
                                   connectionGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
@@ -272,6 +274,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
@@ -310,10 +314,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                assetGUID,
                                assetGUIDParameterName,
                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                               false,
+                               false,
                                supportedZones,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                               null,
+                               new Date(),
                                methodName);
     }
 
@@ -356,6 +362,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       assetGUID,
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                       null,
@@ -396,6 +405,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           false,
+                                           false,
                                            supportedZones,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
@@ -497,7 +508,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        Date effectiveTime = new Date();
+        Date effectiveTime = null;
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 displayName,
@@ -529,6 +540,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                      false,
                                                                                                       effectiveTime,
                                                                                                       methodName);
 
@@ -541,6 +553,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                             false,
                                                                                                              effectiveTime,
                                                                                                              methodName);
                 if (connectionEndpointRelationship != null)
@@ -555,6 +568,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                                                null,
                                                                                null,
+                                                                               false,
                                                                                false,
                                                                                supportedZones,
                                                                                effectiveTime,
@@ -1162,9 +1176,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     assetGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
                                     suppliedSupportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -1229,6 +1246,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  false,
                                                                                                   effectiveTime,
                                                                                                   methodName);
         if (connection == null)
@@ -1240,6 +1258,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         assetGUID,
                                         assetGUIDParameterName,
                                         typeName,
+                                        false,
+                                        false,
                                         supportedZones,
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
@@ -1295,6 +1315,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                  relationshipProperties,
+                                                                 false,
                                                                  effectiveTime,
                                                                  methodName);
             }
@@ -1315,12 +1336,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public void  classifyAssetAsReferenceData(String       userId,
-                                              String       assetGUID,
-                                              String       assetGUIDParameterName,
-                                              String       methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void  classifyAssetAsReferenceData(String userId,
+                                              String assetGUID,
+                                              String assetGUIDParameterName,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         this.setClassificationInRepository(userId,
                                            null,
@@ -1332,6 +1353,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
                                            null,
                                            false,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
     }
 
@@ -1349,12 +1373,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public void  declassifyAssetAsReferenceData(String       userId,
-                                                String       assetGUID,
-                                                String       assetGUIDParameterName,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void  declassifyAssetAsReferenceData(String userId,
+                                                String assetGUID,
+                                                String assetGUIDParameterName,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -1364,6 +1388,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                 OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
     }
 
@@ -1412,6 +1439,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       organizationGUIDParameterName,
                                       OpenMetadataAPIMapper.ORGANIZATION_TYPE_NAME,
                                       false,
+                                      false,
+                                      false,
                                       supportedZones,
                                       effectiveFromTime,
                                       methodName);
@@ -1423,6 +1452,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       businessCapabilityGUID,
                                       businessCapabilityGUIDParameterName,
                                       OpenMetadataAPIMapper.BUSINESS_CAPABILITY_TYPE_NAME,
+                                      false,
+                                      false,
                                       false,
                                       supportedZones,
                                       effectiveFromTime,
@@ -1451,6 +1482,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                            properties,
                                            false,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
     }
 
@@ -1481,6 +1515,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                 OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
                                                 OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
     }
 
@@ -1569,6 +1606,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
                                            false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -1650,6 +1690,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            0,
+                                           false,
+                                           false,
                                            serviceSupportedZones,
                                            null,
                                            methodName);
@@ -1687,6 +1729,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        assetTypeName,
                                                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        0,
                                                                                        effectiveTime,
@@ -1709,6 +1752,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
                                             null,
                                             null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -1798,6 +1844,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 assetTypeName,
                                                                 null,
                                                                 null,
+                                                                false,
                                                                 false,
                                                                 supportedZones,
                                                                 effectiveTime,
@@ -1899,8 +1946,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              assetTypeGUID,
                                                              assetTypeName,
-                                                             supportedZones,
                                                              null,
+                                                             false,
+                                                             false,
+                                                             supportedZones,
                                                              startFrom,
                                                              pageSize,
                                                              effectiveTime,
@@ -1961,6 +2010,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   assetEntity.getType().getTypeDefName(),
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  false,
                                                                                                   effectiveTime,
                                                                                                   methodName);
 
@@ -1978,6 +2028,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                     null,
                                                                     null,
+                                                                    false,
                                                                     false,
                                                                     supportedZones,
                                                                     effectiveTime,
@@ -2035,6 +2086,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                 entityProxy.getType().getTypeDefName(),
                                                                                                 null,
                                                                                                 null,
+                                                                                                false,
                                                                                                 false,
                                                                                                 supportedZones,
                                                                                                 effectiveTime,
@@ -2094,6 +2146,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
+                                                                                           false,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -2368,6 +2421,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 false,
+                                                                                 false,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  effectiveTime,
@@ -2460,6 +2515,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 false,
+                                                                                 false,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  effectiveTime,
@@ -2598,6 +2655,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
+                                    false,
                                     serviceSupportedZones,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     startFrom,
@@ -2823,6 +2882,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     serviceSupportedZones,
                                     null,
                                     startFrom,
@@ -2890,6 +2950,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     supportedZones,
                                     null,
@@ -3089,6 +3150,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         assetGUID,
                                                         networkAddressParameterName,
                                                         assetTypeName,
+                                                        false,
+                                                        false,
                                                         supportedZones,
                                                         effectiveTime,
                                                         methodName);
@@ -3341,6 +3404,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                             OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            false,
+                                            false,
                                             supportedZones,
                                             startFrom,
                                             pageSize,
@@ -3377,12 +3442,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                             UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         tagGUID,
                                         tagGUIDParameterName,
                                         OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -3425,6 +3497,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                             OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            false,
+                                            false,
                                             supportedZones,
                                             startFrom,
                                             pageSize,
@@ -3460,12 +3534,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         keywordGUID,
                                         keywordGUIDParameterName,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -3501,12 +3582,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                            UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         termGUID,
                                         termGUIDParameterName,
                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startFrom,
                                         pageSize,

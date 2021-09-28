@@ -87,7 +87,8 @@ public class InMemoryRepositoryTest {
         
         metadataCollection = repositoryConnector.getMetadataCollection();
         
-		repositoryHandler = new RepositoryHandler(auditLog, 
+		repositoryHandler = new RepositoryHandler(auditLog,
+				omrsRepositoryHelper,
 				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
 				metadataCollection,
 	            PAGE_SIZE);

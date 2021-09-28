@@ -141,6 +141,8 @@ public class APIManagerRESTServices
                                                      endpointGUID,
                                                      endpointGUIDParameterName,
                                                      OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
                                                      OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
                                                      null,
@@ -242,6 +244,8 @@ public class APIManagerRESTServices
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
                                                  OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
                                                  null,
@@ -488,6 +492,9 @@ public class APIManagerRESTServices
                                                OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
             else
@@ -688,6 +695,11 @@ public class APIManagerRESTServices
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       0,
+                                                                       false,
+                                                                       false,
                                                                        startFrom,
                                                                        pageSize,
                                                                        new Date(),
@@ -750,6 +762,11 @@ public class APIManagerRESTServices
                                                                        OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       0,
+                                                                       false,
+                                                                       false,
                                                                        startFrom,
                                                                        pageSize,
                                                                        new Date(),
@@ -805,6 +822,9 @@ public class APIManagerRESTServices
                                                                   guid,
                                                                   guidParameterName,
                                                                   OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
 
             /*
