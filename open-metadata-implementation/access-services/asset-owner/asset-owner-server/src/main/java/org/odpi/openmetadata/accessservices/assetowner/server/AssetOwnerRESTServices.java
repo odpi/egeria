@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -530,6 +531,8 @@ public class AssetOwnerRESTServices
                                          schemaTypeGUID,
                                          schemaTypeGUIDParameterName,
                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                          null,
@@ -2239,6 +2242,8 @@ public class AssetOwnerRESTServices
                                                             assetGUID,
                                                             assetGUIDParameter,
                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            false,
+                                                            false,
                                                             null,
                                                             methodName));
         }
@@ -2473,6 +2478,9 @@ public class AssetOwnerRESTServices
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -2509,13 +2517,13 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse  linkElementsAsDuplicates(String          serverName,
-                                                  String          userId,
-                                                  String          element1GUID,
-                                                  String          element2GUID,
-                                                  NullRequestBody requestBody)
+    public VoidResponse linkElementsAsPeerDuplicates(String          serverName,
+                                                     String          userId,
+                                                     String          element1GUID,
+                                                     String          element2GUID,
+                                                     NullRequestBody requestBody)
     {
-        final String methodName = "linkElementsAsDuplicates";
+        final String methodName = "linkElementsAsPeerDuplicates";
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
@@ -2530,12 +2538,19 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.linkElementsAsDuplicates(userId,
-                                             element1GUID,
-                                             element1GUIDParameter,
-                                             element2GUID,
-                                             element2GUIDParameter,
-                                             methodName);
+            handler.linkElementsAsPeerDuplicates(userId,
+                                                 element1GUID,
+                                                 element1GUIDParameter,
+                                                 element2GUID,
+                                                 element2GUIDParameter,
+                                                 true,
+                                                 1,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 methodName);
         }
         catch (Exception error)
         {
@@ -2562,13 +2577,13 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse  unlinkElementsAsDuplicates(String          serverName,
-                                                    String          userId,
-                                                    String          element1GUID,
-                                                    String          element2GUID,
-                                                    NullRequestBody requestBody)
+    public VoidResponse unlinkElementsAsPeerDuplicates(String          serverName,
+                                                       String          userId,
+                                                       String          element1GUID,
+                                                       String          element2GUID,
+                                                       NullRequestBody requestBody)
     {
-        final String methodName = "unlinkElementsAsDuplicates";
+        final String methodName = "unlinkElementsAsPeerDuplicates";
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
@@ -2583,13 +2598,13 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.unlinkElementsAsDuplicates(userId,
-                                               element1GUID,
-                                               element1GUIDParameter,
-                                               element2GUID,
-                                               element2GUIDParameter,
-                                               null,
-                                               methodName);
+            handler.unlinkElementsAsPeerDuplicates(userId,
+                                                   element1GUID,
+                                                   element1GUIDParameter,
+                                                   element2GUID,
+                                                   element2GUIDParameter,
+                                                   null,
+                                                   methodName);
         }
         catch (Exception error)
         {

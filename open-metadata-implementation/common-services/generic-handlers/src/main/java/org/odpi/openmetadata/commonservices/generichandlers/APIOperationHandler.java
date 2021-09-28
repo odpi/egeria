@@ -191,6 +191,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                       apiOperationGUID,
                                       apiOperationGUIDParameterName,
                                       OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
                                       null,
@@ -284,6 +287,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                   apiOperationGUID,
                                   apiOperationGUIDParameterName,
                                   OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                   null,
@@ -385,8 +391,12 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     apiOperationGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -425,6 +435,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -513,6 +526,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -561,6 +575,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
                                                                   false,
+                                                                  false,
                                                                   supportedZones,
                                                                   effectiveTime,
                                                                   methodName);
@@ -579,6 +594,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             2,
+                                            false,
+                                            false,
                                             startFrom,
                                             pageSize,
                                             effectiveTime,
@@ -625,6 +642,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
                                                                   false,
+                                                                  false,
                                                                   supportedZones,
                                                                   null,
                                                                   methodName);
@@ -663,6 +681,9 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           apiSchemaTypeGUID,
                                           apiSchemaTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
@@ -709,6 +730,8 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                          false,
+                                          false,
                                           effectiveTime,
                                           methodName);
 

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.builders.SoftwareServerCapabilityBuilder;
@@ -105,9 +106,11 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 		return this.getBeanByValue(userId, identifier,
                 "identifier",
                 IdMap.CAPABILITY_TYPE_GUID,
-                IdMap.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                IdMap.CAPABILITY_TYPE_NAME,
                 Arrays.asList("source"),
-                null,
+                false,
+                false,
+                new Date(),
                 methodName);
 	}
 	
@@ -130,7 +133,7 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 			String guidParameter,
 			String methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
 	{
-		return this.getBeanFromRepository(userId, guid, guidParameter, IdMap.CAPABILITY_TYPE_NAME,
+		return this.getBeanFromRepository(userId, guid, guidParameter, IdMap.CAPABILITY_TYPE_NAME, false, false, new Date(),
 				methodName);
 	}
 

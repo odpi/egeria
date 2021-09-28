@@ -198,6 +198,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                                                            null,
                                                                            null,
                                                                            false,
+                                                                           false,
                                                                            serviceSupportedZones,
                                                                            effectiveTime,
                                                                            methodName);

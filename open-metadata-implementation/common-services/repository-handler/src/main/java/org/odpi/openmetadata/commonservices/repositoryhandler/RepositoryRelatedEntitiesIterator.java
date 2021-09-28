@@ -41,6 +41,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -53,6 +55,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              String            relationshipTypeGUID,
                                              String            relationshipTypeName,
                                              String            sequencingPropertyName,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
                                              int               startingFrom,
                                              int               pageSize,
                                              Date              effectiveTime,
@@ -63,6 +67,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
               null,
               null,
               sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
               startingFrom,
               pageSize,
               effectiveTime,
@@ -75,7 +81,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
 
         if (log.isDebugEnabled())
         {
-            log.debug("RepositoryRelatedEntitiesIterator :startingFrom=" + startingFrom + ",startingEntityGUID=" + startingEntityGUID);
+            log.debug("RepositoryRelatedEntitiesIterator: startingFrom=" + startingFrom + ", startingEntityGUID=" + startingEntityGUID);
         }
     }
 
@@ -90,6 +96,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
@@ -103,6 +111,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              String            relationshipTypeGUID,
                                              String            relationshipTypeName,
                                              String            sequencingPropertyName,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
                                              int               startingFrom,
                                              int               pageSize,
                                              int               selectionEnd,
@@ -116,6 +126,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
              relationshipTypeGUID,
              relationshipTypeName,
              sequencingPropertyName,
+             forLineage,
+             forDuplicateProcessing,
              startingFrom,
              pageSize,
              effectiveTime,
@@ -154,6 +166,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                                                                      relationshipTypeGUID,
                                                                                      relationshipTypeName,
                                                                                      null,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
                                                                                      startingFrom,
                                                                                      pageSize,
                                                                                      effectiveTime,
@@ -174,6 +188,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                                                                     startAtEnd1,
                                                                                     relationshipTypeGUID,
                                                                                     relationshipTypeName,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     startingFrom,
                                                                                     pageSize,
                                                                                     effectiveTime,

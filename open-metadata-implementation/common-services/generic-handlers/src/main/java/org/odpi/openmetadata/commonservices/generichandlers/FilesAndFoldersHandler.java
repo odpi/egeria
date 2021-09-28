@@ -25,12 +25,12 @@ import java.util.*;
  */
 public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 {
-    private String                          serviceName;
-    private String                          serverName;
-    private String                          localServerUserId;
-    private OMRSRepositoryHelper            repositoryHelper;
-    private RepositoryHandler               repositoryHandler;
-    private InvalidParameterHandler         invalidParameterHandler;
+    private String                  serviceName;
+    private String                  serverName;
+    private String                  localServerUserId;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private RepositoryHandler       repositoryHandler;
+    private InvalidParameterHandler invalidParameterHandler;
 
     private SoftwareServerCapabilityHandler<FILESYSTEM> fileSystemHandler;
     private AssetHandler<FOLDER>                        folderHandler;
@@ -91,7 +91,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         this.serverName              = serverName;
         this.localServerUserId       = localServerUserId;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler       = repositoryHandler;
+        this.repositoryHandler = repositoryHandler;
         this.repositoryHelper        = repositoryHelper;
 
         this.fileSystemHandler       = new SoftwareServerCapabilityHandler<>(fileSystemConverter,
@@ -136,8 +136,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                          publishZones,
                                                          auditLog);
 
-        OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummyConverter =
-                new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
+        OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummyConverter = new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper,
+                                                                                                                             serviceName,
+                                                                                                                             serverName);
 
         this.connectionHandler = new ConnectionHandler<>(dummyConverter,
                                                          OpenMetadataAPIDummyBean.class,
@@ -542,6 +543,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    folderGUID,
                                                    folderParameterName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                    null,
@@ -558,6 +561,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    folderGUID,
                                                    folderParameterName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID,
                                                    OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME,
                                                    null,
@@ -740,6 +745,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            folderGUID,
                                            folderGUIDParameterName,
                                            OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                           false,
+                                           false,
                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                            null,
@@ -785,6 +792,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                folderGUIDParameterName,
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                               false,
+                                               false,
                                                OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                null,
@@ -829,6 +838,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          fileGUID,
                                          fileGUIDParameterName,
                                          OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.LINKED_FILE_TYPE_GUID,
                                          OpenMetadataAPIMapper.LINKED_FILE_TYPE_NAME,
                                          null,
@@ -876,6 +887,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                folderGUIDParameterName,
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                               false,
+                                               false,
                                                OpenMetadataAPIMapper.LINKED_FILE_TYPE_GUID,
                                                OpenMetadataAPIMapper.LINKED_FILE_TYPE_NAME,
                                                null,
@@ -913,19 +926,21 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     {
         final String endpointGUIDParameterName = "endpointGUID";
 
+        Date effectiveTime = new Date();
+
         String newFolderPathName = folderHandler.getBeanStringPropertyFromRepository(userId,
                                                                                      newParentFolder,
                                                                                      newParentFolderGUIDParameterName,
                                                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                     null,
+                                                                                     effectiveTime,
                                                                                      methodName);
         String existingFilePathName = fileHandler.getBeanStringPropertyFromRepository(userId,
                                                                                       newParentFolder,
                                                                                       newParentFolderGUIDParameterName,
                                                                                       OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                      null,
+                                                                                      effectiveTime,
                                                                                       methodName);
         String fileName = this.getFileName(existingFilePathName);
         String fullPathName = newFolderPathName + "/" + fileName;
@@ -954,6 +969,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                    fullPathName,
+                                                   false,
+                                                   false,
+                                                   effectiveTime,
                                                    methodName);
 
         List<String> relationshipPath = new ArrayList<>();
@@ -971,7 +989,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                               0,
                                                               invalidParameterHandler.getMaxPagingSize(),
-                                                              null,
+                                                              effectiveTime,
                                                               methodName);
 
             if (endpointGUIDs.isEmpty())
@@ -993,6 +1011,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
                                                                          fullPathName,
+                                                                         false,
+                                                                         false,
+                                                                         effectiveTime,
                                                                          methodName);
                     }
                 }
@@ -1088,6 +1109,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                           OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                           fileSystemName,
                                                                           pathNameParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName);
 
             if (fileSystemGUID == null)
@@ -1164,6 +1188,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                    null,
@@ -1180,6 +1206,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME,
                                                    null,
@@ -2220,6 +2248,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
 
+        Date effectiveTime = new Date();
+
         fileHandler.archiveBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
@@ -2227,10 +2257,13 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             dataFileGUIDParameterName,
                                             OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                             builder.getMementoProperties(archiveDate,
-                                                                                 userId,
-                                                                                 archiveProcess,
-                                                                                 archiveProperties,
-                                                                                 methodName),
+                                                                         userId,
+                                                                         archiveProcess,
+                                                                         archiveProperties,
+                                                                         methodName),
+                                            false,
+                                            false,
+                                            effectiveTime,
                                             methodName);
 
         String connectionGUID = fileHandler.getAttachedElementGUID(userId,
@@ -2241,7 +2274,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                    0,
-                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if (connectionGUID != null)
@@ -2257,6 +2292,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                      null,
                                                      null,
+                                                     false,
+                                                     false,
+                                                     effectiveTime,
                                                      methodName);
         }
     }
@@ -2299,6 +2337,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
 
+        Date effectiveTime = new Date();
+
         fileHandler.archiveBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
@@ -2306,10 +2346,13 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             dataFolderGUIDParameterName,
                                             OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
                                             builder.getMementoProperties(archiveDate,
-                                                                                 userId,
-                                                                                 archiveProcess,
-                                                                                 archiveProperties,
-                                                                                 methodName),
+                                                                         userId,
+                                                                         archiveProcess,
+                                                                         archiveProperties,
+                                                                         methodName),
+                                            false,
+                                            false,
+                                            effectiveTime,
                                             methodName);
 
         String connectionGUID = fileHandler.getAttachedElementGUID(userId,
@@ -2320,7 +2363,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                    0,
-                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if (connectionGUID != null)
@@ -2336,6 +2381,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                      null,
                                                      null,
+                                                     false,
+                                                     false,
+                                                     effectiveTime,
                                                      methodName);
         }
     }
@@ -2378,6 +2426,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            fullPathname,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
     }
 
@@ -2420,6 +2471,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            fullPathname,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
     }
 
@@ -2449,6 +2503,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        softwareServerCapabilityGUID,
                                                        guidParameterName,
                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName);
     }
 
@@ -2537,6 +2594,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    folderGUID,
                                                    guidName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
     }
 
@@ -2567,6 +2627,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                         OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                         pathName,
                                                         nameName,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName);
     }
 
@@ -2628,8 +2691,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                       pathName,
                                                       nameName,
+                                                      false,
+                                                      false,
                                                       0,
                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                      new Date(),
                                                       methodName);
     }
 
@@ -2699,6 +2765,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      startingFrom,
                                                      pageSize,
                                                      new Date(),
@@ -2739,6 +2807,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID,
                                                      OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME,
                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      startingFrom,
                                                      pageSize,
                                                      new Date(),
@@ -2780,6 +2850,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_GUID,
                                                    OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    startingFrom,
                                                    pageSize,
                                                    effectiveTime,
@@ -2814,6 +2886,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                  dataFileGUID,
                                                  dataFileGUIDParameterName,
                                                  OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  effectiveTime,
                                                  methodName);
     }
@@ -2880,8 +2954,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                                                     pathName,
                                                     pathNameParameterName,
+                                                    false,
+                                                    false,
                                                     startingFrom,
                                                     pageSize,
+                                                    new Date(),
                                                     methodName);
     }
 

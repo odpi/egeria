@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -144,6 +145,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
                                                                     displayName,
                                                                     description,
@@ -174,8 +177,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                      null,
                                                                      null,
                                                                      false,
+                                                                     false,
                                                                      supportedZones,
-                                                                     null,
+                                                                     effectiveTime,
                                                                      methodName);
 
             String parentElementTypeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
@@ -201,6 +205,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                       schemaAttributeGUID,
                                       schemaAttributeGUIDParameterName,
                                       builder.getTypeName(),
+                                      false,
+                                      false,
+                                      supportedZones,
                                       parentElementRelationshipTypeGUID,
                                       parentElementRelationshipTypeName,
                                       null,
@@ -252,6 +259,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                  null,
                                                                  null,
+                                                                 false,
                                                                  false,
                                                                  supportedZones,
                                                                  null,
@@ -603,6 +611,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                       schemaAttributeGUID,
                                       schemaAttributeGUIDParameterName,
                                       schemaAttributeBuilder.getTypeName(),
+                                      false,
+                                      false,
+                                      supportedZones,
                                       parentAttributeRelationshipTypeGUID,
                                       parentAttributeRelationshipTypeName,
                                       null,
@@ -715,10 +726,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 requiredClassificationName,
                                                                 omittedClassificationName,
                                                                 false,
+                                                                false,
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                new Date(),
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -786,6 +798,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                  null,
                                                                  null,
+                                                                 false,
                                                                  false,
                                                                  supportedZones,
                                                                  null,
@@ -904,10 +917,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 null,
                                                                 null,
                                                                 false,
+                                                                false,
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                new Date(),
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -941,6 +955,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         false,
+                                                         false,
+                                                         supportedZones,
                                                          null,
                                                          methodName);
 
@@ -1221,6 +1238,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                           requiredClassificationName,
                                                                           omittedClassificationName,
                                                                           false,
+                                                                          false,
                                                                           supportedZones,
                                                                           null,
                                                                           methodName);
@@ -1329,11 +1347,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               requiredClassificationName,
                                                                               omittedClassificationName,
                                                                               false,
+                                                                              false,
                                                                               serviceSupportedZones,
                                                                               null,
                                                                               startFrom,
                                                                               pageSize,
-                                                                              null,
+                                                                              new Date(),
                                                                               methodName);
 
         return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
@@ -1535,8 +1554,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     parameterName,
                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     instanceProperties,
                                     true,
+                                    this.getEffectiveTime(instanceProperties),
                                     methodName);
     }
 
@@ -1575,8 +1598,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     schemaAttributeGUIDParameterName,
                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     instanceProperties,
                                     isMergeUpdate,
+                                    this.getEffectiveTime(instanceProperties),
                                     methodName);
     }
 

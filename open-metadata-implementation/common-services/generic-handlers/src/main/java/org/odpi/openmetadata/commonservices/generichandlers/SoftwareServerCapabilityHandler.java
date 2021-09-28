@@ -397,6 +397,9 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                            classificationName,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            false,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
 
     }
@@ -432,8 +435,10 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanGUIDsByType(userId,
                                        typeGUID,
                                        typeName,
-                                       supportedZones,
                                        null,
+                                       false,
+                                       false,
+                                       supportedZones,
                                        startingFrom,
                                        maxPageSize,
                                        effectiveTime,
@@ -471,8 +476,10 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
-                                   supportedZones,
                                    null,
+                                   false,
+                                   false,
+                                   supportedZones,
                                    startingFrom,
                                    maxPageSize,
                                    effectiveTime,
@@ -508,6 +515,8 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByClassification(userId,
                                              OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                                              classificationName,
+                                             false,
+                                             false,
                                              startingFrom,
                                              maxPageSize,
                                              effectiveTime,
@@ -541,8 +550,11 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanGUIDsByClassification(userId,
                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
                                                  classificationName,
+                                                 false,
+                                                 false,
                                                  startingFrom,
                                                  maxPageSize,
+                                                 new Date(),
                                                  methodName);
     }
 }

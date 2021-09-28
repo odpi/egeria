@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -182,6 +183,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       glossaryTermGUID,
                                       glossaryTermGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
                                       OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
                                       null,
@@ -317,8 +321,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     glossaryTermGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -354,9 +362,12 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                           glossaryTermGUIDParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          false,
+                                          false,
                                           supportedZones,
                                           glossaryTermStatus,
                                           glossaryTermStatusParameterName,
+                                          new Date(),
                                           methodName);
     }
 
@@ -403,6 +414,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                   builder.getTermCategorizationProperties(description, relationshipStatus, methodName),
@@ -448,6 +462,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       glossaryTermGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
                                       null,
@@ -515,6 +531,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   glossaryTermTwoGUID,
                                   glossaryTermTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   builder.getTermRelationshipProperties(expression,
@@ -648,6 +667,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       glossaryTermTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      false,
+                                      false,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
                                       null,
@@ -1148,6 +1169,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -1189,6 +1213,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     supportedZones,
                                     null,
@@ -1237,6 +1262,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -1270,6 +1296,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameter,
                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          false,
+                                          false,
                                           null,
                                           methodName);
     }
@@ -1381,16 +1409,23 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        new Date(),
                                         methodName);
     }
 

@@ -88,12 +88,12 @@ public class GovernedAssetHandler {
         List<EntityDetail> response = new ArrayList<>();
 
         if (CollectionUtils.isEmpty(entityTypes)) {
-            response = repositoryHandler.getEntitiesForClassificationType(userId, null, Constants.SECURITY_TAG, offset, pageSize, new Date(), methodName);
+            response = repositoryHandler.getEntitiesForClassificationType(userId, null, Constants.SECURITY_TAG, false, false, offset, pageSize, new Date(), methodName);
         } else {
             for (String typeName : entityTypes) {
                 TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeName);
                 if (typeDefByName != null && typeDefByName.getGUID() != null) {
-                    response.addAll(repositoryHandler.getEntitiesForClassificationType(userId, typeDefByName.getGUID(), Constants.SECURITY_TAG, offset, pageSize, new Date(), methodName));
+                    response.addAll(repositoryHandler.getEntitiesForClassificationType(userId, typeDefByName.getGUID(), Constants.SECURITY_TAG, false, false, offset, pageSize, new Date(), methodName));
                 }
             }
         }
@@ -252,7 +252,7 @@ public class GovernedAssetHandler {
             throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
         String methodName = "getEntityDetailsByGUID";
 
-        return repositoryHandler.getEntityByGUID(userId, guid, "guid", entityType, new Date(), methodName);
+        return repositoryHandler.getEntityByGUID(userId, guid, "guid", entityType, methodName);
     }
 
     private SoftwareServerCapability convertSoftwareServerCapability(EntityDetail entityDetail) {

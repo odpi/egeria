@@ -23,17 +23,12 @@
 
     <name>Cloud Information Model</name>
     <description>
-        Cloud Information Model provides a utility to create an egeria import file from the Clouf Information Model standard.
+        Cloud Information Model provides a utility to create an egeria import file from the Cloud Information Model standard.
     </description>
 
     <artifactId>cloud-information-model</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>design-model-archive-base</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -43,6 +38,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-archive-utilities</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>catalog-builder</artifactId>
         </dependency>
 
         <dependency>

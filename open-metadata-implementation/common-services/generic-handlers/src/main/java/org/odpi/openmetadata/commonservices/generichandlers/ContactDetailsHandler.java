@@ -93,12 +93,19 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         profileGUID,
                                         profileGUIDParameterName,
                                         OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                         OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
                                         OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
@@ -172,6 +179,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       contactMethodGUID,
                                       contactMethodGUIDParameterName,
                                       OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
                                       null,
@@ -214,6 +224,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 }

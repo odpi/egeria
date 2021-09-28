@@ -260,6 +260,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          roleGUID,
                                          roleGUIDParameterName,
                                          OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                         false,
+                                         false,
                                          supportedZones,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
@@ -436,6 +438,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -484,6 +488,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -539,6 +545,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -587,6 +595,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -676,6 +686,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
         roleBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
+        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -683,8 +695,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     roleGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     roleBuilder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -718,6 +734,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -805,6 +824,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -854,6 +874,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     supportedZones,
                                     null,
@@ -905,6 +926,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -948,8 +970,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
             return this.getBeansByType(userId,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                       supportedZones,
                                        null,
+                                       false,
+                                       false,
+                                       supportedZones,
                                        startFrom,
                                        pageSize,
                                        effectiveTime,
@@ -963,6 +987,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                        null,
                                        null,
+                                       false,
                                        false,
                                        supportedZones,
                                        null,

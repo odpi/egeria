@@ -92,7 +92,9 @@ public abstract class SubjectAreaHandler {
                                                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                            null,
                                                                            null,
-                                                                           (Date)null,
+                                                                           false,
+                                                                           false,
+                                                                           null,
                                                                            restAPIName);
         GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
         Glossary glossary = glossaryMapper.map(entityDetail);
@@ -125,6 +127,8 @@ public abstract class SubjectAreaHandler {
                                                                            null,
                                                                            null,
                                                                            false,
+                                                                           false,
+                                                                           null,
                                                                            restAPIName);
             CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = CategoryMapper.map(entityDetail);
@@ -189,8 +193,9 @@ public abstract class SubjectAreaHandler {
               entityDetails = genericHandler.getEntitiesByType(userId,
                                                               typeEntityGuid,
                                                               typeEntityName,
-                                                              null,
                                                               findRequest.getSequencingProperty(),
+                                                              false,
+                                                              false,
                                                               findRequest.getStartingFrom(),
                                                               findRequest.getPageSize(),
                                                               null, // any effective date
@@ -421,7 +426,9 @@ public abstract class SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               (Date)null,
+                                                                               false,
+                                                                               false,
+                                                                               null,
                                                                                methodName);
 
             return entityDetail.getGUID();
@@ -484,6 +491,8 @@ public abstract class SubjectAreaHandler {
                                        "guid",
                                        typeGUID,
                                        typeName,
+                                       false,
+                                       false,
                                        effectiveFrom,
                                        effectiveTo,
                                        methodName);

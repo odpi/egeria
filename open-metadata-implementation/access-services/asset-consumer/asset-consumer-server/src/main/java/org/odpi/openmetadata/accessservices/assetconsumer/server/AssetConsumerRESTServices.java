@@ -904,6 +904,8 @@ public class AssetConsumerRESTServices
                                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              false,
+                                                              false,
                                                               startFrom,
                                                               pageSize,
                                                               new Date(),
