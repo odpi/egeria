@@ -120,8 +120,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
                                                              @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
-        return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+    ) { return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
