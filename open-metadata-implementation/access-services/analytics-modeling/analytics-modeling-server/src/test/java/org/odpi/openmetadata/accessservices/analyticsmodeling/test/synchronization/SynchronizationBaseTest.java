@@ -60,6 +60,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 
 	protected static final String GUID_TO_COMPARE= "bce54b72-afa8-4ee6-b7d0-b2bb7632e8bd";
 
+	protected String SoftwareServerCapability_GUID;
+
 	// initialize execution context
 	ExecutionContext ctx;
 	
@@ -83,7 +85,9 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 				null, // publishZones,
 				auditLog);
 		
-		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET);
+		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, null);
+		
+		SoftwareServerCapability_GUID = ctx.getServerSoftwareCapability().getGUID();
 		
 		obj = new AnalyticsArtifactHandler(ctx);
 	}

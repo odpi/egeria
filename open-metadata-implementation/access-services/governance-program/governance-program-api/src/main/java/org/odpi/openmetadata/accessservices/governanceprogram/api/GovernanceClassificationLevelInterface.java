@@ -51,7 +51,7 @@ public interface GovernanceClassificationLevelInterface
 
 
     /* =====================================================================================================================
-     * The GovernanceLevelIdentifierSet entity is the top level element in a collection of related governance domains.
+     * The GovernanceLevelIdentifierSet entity is the top level element in a collection of related governance classification level identifiers.
      */
 
 

@@ -67,7 +67,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String serviceName = "serviceName";
 		String serverName = "serverName";
 		
-		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog, 
+		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog,
+				omrsRepositoryHelper,
 				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
 				metadataCollection,
 	            PAGE_SIZE);
@@ -256,7 +257,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
-		ResponseContainerSchemaTables tables = databaseContextHandler.getSchemaTables(entityDB.getGUID(), SCHEMA_DBO);
+		ResponseContainerSchemaTables tables = databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(), SCHEMA_DBO);
 		assertTrue(tables.getTablesList().isEmpty(), "Table list expected to be empty.");
 	}
 
@@ -267,7 +268,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String schemaName = "NonExistingSchemaName";
 
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getSchemaTables(entityDB.getGUID(), schemaName));
+				() -> databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(), schemaName));
 
 		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
@@ -283,7 +284,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createSchemaTable(entitySchema, "A");
 		createSchemaTable(entitySchema, "B");
 
-		ResponseContainerSchemaTables tableResponse = databaseContextHandler.getSchemaTables(entityDB.getGUID(),
+		ResponseContainerSchemaTables tableResponse = databaseContextHandler.getSchemaTables(USER_ID, entityDB.getGUID(),
 				SCHEMA_DBO);
 		assertNotNull(tableResponse);
 		List<String> tables = tableResponse.getTablesList();
@@ -420,7 +421,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getSchemaTablesInvalidParameter() {
 
 		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
-				() -> databaseContextHandler.getSchemaTables(null, SCHEMA_DBO));
+				() -> databaseContextHandler.getSchemaTables(USER_ID, null, SCHEMA_DBO));
 		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 

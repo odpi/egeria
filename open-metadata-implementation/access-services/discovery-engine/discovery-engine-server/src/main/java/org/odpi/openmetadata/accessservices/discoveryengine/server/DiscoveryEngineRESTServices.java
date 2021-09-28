@@ -127,8 +127,11 @@ public class DiscoveryEngineRESTServices
                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                   name,
                                                                   nameParameterName,
+                                                                  false,
+                                                                  false,
                                                                   startFrom,
                                                                   pageSize,
+                                                                  new Date(),
                                                                   methodName));
         }
         catch (Exception error)

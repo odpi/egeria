@@ -290,8 +290,12 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     profileGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -336,6 +340,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   profile2GUID,
                                   profile2GUIDParameterName,
                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME,
@@ -385,6 +391,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       profile2GUIDParameterName,
                                       OpenMetadataAPIMapper.PERSON_TYPE_GUID,
                                       OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME,
@@ -439,6 +447,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   subTeamGUID,
                                   subTeamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
@@ -487,6 +497,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       subTeamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
@@ -528,6 +540,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -642,6 +657,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               null,
                                                               null,
                                                               false,
+                                                              false,
                                                               supportedZones,
                                                               null,
                                                               startFrom,
@@ -718,6 +734,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               null,
                                                               null,
                                                               false,
+                                                              false,
                                                               supportedZones,
                                                               null,
                                                               startFrom,
@@ -783,6 +800,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                            null,
                                                            null,
                                                            false,
+                                                           false,
                                                            supportedZones,
                                                            effectiveTime,
                                                            methodName);
@@ -828,6 +846,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                            null,
                                                            null,
                                                            false,
+                                                           false,
                                                            supportedZones,
                                                            effectiveTime,
                                                            methodName);
@@ -870,6 +889,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                         OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                                         profileUserId,
                                                                         profileUserIdParameterName,
+                                                                        false,
+                                                                        false,
                                                                         effectiveTime,
                                                                         methodName);
 
@@ -882,6 +903,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                          OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                          OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                         false,
+                                                         false,
+                                                         supportedZones,
                                                          effectiveTime,
                                                          methodName);
 
@@ -924,6 +948,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                         OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                                         profileUserId,
                                                                         profileUserIdParameterName,
+                                                                        false,
+                                                                        false,
                                                                         effectiveTime,
                                                                         methodName);
 
@@ -936,6 +962,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                 OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                                 OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                false,
+                                                                false,
+                                                                supportedZones,
                                                                 effectiveTime,
                                                                 methodName);
 
@@ -977,6 +1006,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                   qualifiedName,
                                                                   qualifiedNameParameterName,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
                                                                   methodName);
 
         if (entity != null)
@@ -1018,6 +1050,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
                                                                   qualifiedName,
                                                                   qualifiedNameParameterName,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
                                                                   methodName);
 
         if (entity != null)
@@ -1065,7 +1100,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                                      null,
-                                                                    null,
+                                                                     null,
+                                                                     false,
                                                                      false,
                                                                      supportedZones,
                                                                      0,
@@ -1088,6 +1124,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                      OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
                                                                      null,
                                                                      null,
+                                                                     false,
                                                                      false,
                                                                      supportedZones,
                                                                      0,
@@ -1145,6 +1182,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                       primaryEntity.getGUID(),
                                                                       profileGUIDParameterName,
                                                                       OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                      false,
                                                                       effectiveTime,
                                                                       methodName);
 
@@ -1167,6 +1205,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       null,
                                                                       false,
+                                                                      false,
                                                                       supportedZones,
                                                                       effectiveTime,
                                                                       methodName);
@@ -1187,6 +1226,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       null,
                                                                       false,
+                                                                      false,
                                                                       supportedZones,
                                                                       effectiveTime,
                                                                       methodName);
@@ -1206,6 +1246,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                       OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                                                       null,
                                                                       null,
+                                                                      false,
                                                                       false,
                                                                       supportedZones,
                                                                       effectiveTime,

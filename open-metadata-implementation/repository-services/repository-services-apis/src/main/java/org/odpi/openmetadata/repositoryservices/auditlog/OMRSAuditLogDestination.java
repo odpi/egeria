@@ -124,7 +124,7 @@ public class OMRSAuditLogDestination extends AuditLogDestination
                     {
                         auditLogStore.storeLogRecord(new OMRSAuditLogRecord(logRecord));
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         log.error("Error: " + error + " writing audit log: " + logRecord + " to destination " + auditLogStore.getClass().getName());
                     }

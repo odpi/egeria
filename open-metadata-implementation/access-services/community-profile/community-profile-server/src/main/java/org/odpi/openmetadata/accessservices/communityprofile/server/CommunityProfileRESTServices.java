@@ -18,6 +18,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabi
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The DataManagerRESTServices provides the server-side implementation of the services
@@ -186,6 +188,9 @@ public class CommunityProfileRESTServices
                                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -234,6 +239,9 @@ public class CommunityProfileRESTServices
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
                                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)

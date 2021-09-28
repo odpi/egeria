@@ -907,6 +907,8 @@ public class LocationRESTServices
                                                                           true,
                                                                           null,
                                                                           null,
+                                                                          false,
+                                                                          false,
                                                                           null,
                                                                           startFrom,
                                                                           pageSize,
@@ -959,6 +961,9 @@ public class LocationRESTServices
                                                                      locationGUID,
                                                                      locationGUIDParameter,
                                                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
             response.setElement(location);
         }

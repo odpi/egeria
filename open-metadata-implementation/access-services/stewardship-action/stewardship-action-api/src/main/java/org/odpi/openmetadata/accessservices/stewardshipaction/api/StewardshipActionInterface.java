@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
-package org.odpi.openmetadata.accessservices.stewardshipaction;
+package org.odpi.openmetadata.accessservices.stewardshipaction.api;
 
 /**
  * StewardshipActionInterface defines the client-side interface for the Stewardship Action OMAS.  This includes

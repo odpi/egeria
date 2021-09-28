@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -159,6 +160,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                       userIdentityGUID,
                                       userIdentityGUIDParameterName,
                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
@@ -231,8 +234,12 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     userIdentityGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -272,6 +279,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -314,6 +324,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                        profileGUID,
                                        profileGUIDParameterName,
                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                       false,
+                                       false,
                                        supportedZones,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
@@ -360,6 +372,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                       userIdentityGUIDParameterName,
                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
@@ -432,6 +446,10 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

@@ -12,14 +12,20 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * RepositoryHandler issues common calls to the open metadata repository to retrieve and store metadata.  It converts the
@@ -29,7 +35,20 @@ import java.util.Map;
  */
 public class RepositoryHandler
 {
+    private static final String consolidatedDuplicate         = "ConsolidatedDuplicate";
+    private static final String consolidatedDuplicateLink     = "ConsolidatedDuplicateLink";
+    private static final String consolidatedDuplicateLinkGUID = "a1fabffd-d6ec-4b2d-bfe4-646f27c07c82";
+    private static final String knownDuplicate                = "KnownDuplicate";
+    private static final String peerDuplicateLink             = "PeerDuplicateLink";
+    private static final String peerDuplicateLinkGUID         = "a94b2929-9e62-4b12-98ab-8ac45691e5bd";
+
+    private static final String statusPropertyName = "statusIdentifier";
+    private static final int    statusThreshold = 1;
+
+    private static final String memento                       = "Memento";
+
     private RepositoryErrorHandler errorHandler;
+    private OMRSRepositoryHelper   repositoryHelper;
     private OMRSMetadataCollection metadataCollection;
     private int                    maxPageSize;
     private AuditLog               auditLog;
@@ -41,16 +60,19 @@ public class RepositoryHandler
      * Construct the basic handler with information needed to call the repository services and report any error.
      *
      * @param auditLog           logging destination
+     * @param repositoryHelper   helper class for manipulating OMRS objects
      * @param errorHandler       generates error messages and exceptions
      * @param metadataCollection access to the repository content.
      * @param maxPageSize        maximum number of instances that can be returned on a single call
      */
     public RepositoryHandler(AuditLog               auditLog,
+                             OMRSRepositoryHelper   repositoryHelper,
                              RepositoryErrorHandler errorHandler,
                              OMRSMetadataCollection metadataCollection,
                              int                    maxPageSize)
     {
         this.auditLog = auditLog;
+        this.repositoryHelper = repositoryHelper;
         this.errorHandler = errorHandler;
         this.metadataCollection = metadataCollection;
         this.maxPageSize = maxPageSize;
@@ -94,91 +116,241 @@ public class RepositoryHandler
 
 
     /**
-     * Filter entity results that do not match the effective time - it is possible that an empty list is returned.  This will occur
-     * if all retrieved elements were filtered out.  The callers should issue another retrieve if more elements are needed.
-     *
-     * @param retrievedEntities list of entities retrieved from the repositories
-     * @param effectiveTime     effective time to match against
-     *
-     * @return matching entities
+     * Accumulates relationships from multiple retrieval requests.
      */
-    private List<EntityDetail> returnEffectiveEntities(List<EntityDetail> retrievedEntities,
-                                                       Date               effectiveTime)
+    private class RelationshipAccumulator
     {
-        if (retrievedEntities != null)
-        {
-            List<EntityDetail> results = new ArrayList<>();
+        private Map<String, List<Relationship>> relationshipMap = null;
+        private OMRSRepositoryHelper            repositoryHelper;
+        private RepositoryHandler               repositoryHandler;
+        private boolean                         forDuplicateProcessing;
+        private Date                            effectiveTime;
+        private String                          methodName;
 
-            for (EntityDetail entity : retrievedEntities)
+
+        RelationshipAccumulator(OMRSRepositoryHelper   repositoryHelper,
+                                RepositoryHandler      repositoryHandler,
+                                boolean                forDuplicateProcessing,
+                                Date                   effectiveTime,
+                                String                 methodName)
+        {
+            this.repositoryHelper = repositoryHelper;
+            this.repositoryHandler = repositoryHandler;
+            this.effectiveTime = effectiveTime;
+            this.forDuplicateProcessing = forDuplicateProcessing;
+            this.methodName = methodName;
+        }
+
+
+        /**
+         * Add relationships that have just been retrieved.
+         *
+         * @param retrievedRelationships list of relationships from the repositories.
+         */
+        void addRelationships(List<Relationship> retrievedRelationships)
+        {
+            if (retrievedRelationships != null)
             {
-                if (entity != null)
+                if (relationshipMap == null)
                 {
-                    if (this.isCorrectEffectiveTime(entity.getProperties(), effectiveTime))
+                    relationshipMap = new HashMap<>();
+                }
+
+                /*
+                 * Sort relationships by type into the relationship map - removing those that are not effective at this time.
+                 */
+                for (Relationship relationship : retrievedRelationships)
+                {
+                    if (relationship != null)
                     {
-                        results.add(entity);
+                        if (repositoryHandler.isCorrectEffectiveTime(relationship.getProperties(), effectiveTime))
+                        {
+                            List<Relationship> similarRelationships = relationshipMap.get(relationship.getType().getTypeDefName());
+
+                            if (similarRelationships == null)
+                            {
+                                similarRelationships = new ArrayList<>();
+                            }
+
+                            similarRelationships.add(relationship);
+
+                            relationshipMap.put(relationship.getType().getTypeDefName(), similarRelationships);
+                        }
+                    }
+                }
+
+                /*
+                 * The map contains list of relationships sorted by type.
+                 */
+
+                if (log.isDebugEnabled())
+                {
+                    log.debug("There are " + relationshipMap.size() + " different types of relationships after filtering for effective time " + effectiveTime);
+                }
+            }
+            else if (log.isDebugEnabled())
+            {
+                log.debug("No relationships returned");
+            }
+
+        }
+
+
+        /**
+         * Return the list of filtered relationships.
+         *
+         * @return list of relationships.  Null means no relationships were retrieved from the repositories; Empty list means all retrieved relationships
+         * were filtered out and can retrieve again.
+         */
+        List<Relationship> getRelationships()
+        {
+            if (relationshipMap != null)
+            {
+                List<Relationship> results = new ArrayList<>();
+
+                for (String relationshipTypeName : relationshipMap.keySet())
+                {
+                    if (relationshipTypeName != null)
+                    {
+                        List<Relationship> similarRelationships = relationshipMap.get(relationshipTypeName);
+
+                        if (forDuplicateProcessing)
+                        {
+                            results.addAll(similarRelationships);
+                        }
+                        else if (similarRelationships != null)
+                        {
+                            List<Relationship> filteredRelationships = this.filterOutDuplicateRelationships(relationshipTypeName, similarRelationships);
+
+                            if (filteredRelationships != null)
+                            {
+                                results.addAll(filteredRelationships);
+                            }
+                        }
+                    }
+                }
+
+                return results;
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Return the relationships that should be returned to the caller.   Null means no relationships exist.  Empty list means all relationships
+         * filtered out.
+         *
+         * @param relationshipTypeName type of relationship
+         * @param retrievedRelationships list of relationships retrieved from the repository
+         * @return list of filtered relationships
+         */
+        private List<Relationship> filterOutDuplicateRelationships(String             relationshipTypeName,
+                                                                   List<Relationship> retrievedRelationships)
+        {
+            if ((retrievedRelationships != null) && (!retrievedRelationships.isEmpty()))
+            {
+                TypeDef typeDef = repositoryHelper.getTypeDefByName(methodName, relationshipTypeName);
+
+                if (typeDef instanceof RelationshipDef)
+                {
+                    RelationshipDef relationshipDef = (RelationshipDef)typeDef;
+
+                    if ((relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE) ||
+                                (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
+                    {
+                        Map<String, Relationship> usedGUIDs = new HashMap<>();
+                        List<Relationship>        results = new ArrayList<>();
+
+                        /*
+                         * Search for duplicates at end 1
+                         */
+                        if (relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+                        {
+                            for (Relationship relationship : retrievedRelationships)
+                            {
+                                if (relationship != null)
+                                {
+                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityTwoProxy().getGUID());
+
+                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                    {
+                                        /*
+                                         * Replacing the relationship with the previous one because it is newer.
+                                         */
+                                        usedGUIDs.put(relationship.getEntityTwoProxy().getGUID(), relationship);
+                                    }
+                                }
+                            }
+
+                            /*
+                             * Is end1 independent of end2?
+                             */
+                            if (! relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                            {
+                                /*
+                                 * The attribute names are different at either end of the relationship.  This means the ends have a particular
+                                 * direction and we can process each end independently.
+                                 */
+                                if (! usedGUIDs.isEmpty())
+                                {
+                                    results.addAll(usedGUIDs.values());
+                                    usedGUIDs = new HashMap<>();
+                                }
+                            }
+                        }
+
+                        /*
+                         * Search for duplicates at end 2 (note check that the relationship is not 0..1 to 0..1)
+                         */
+                        if ((relationshipDef.getEndDef1().getAttributeCardinality() != RelationshipEndCardinality.AT_MOST_ONE) &&
+                                    (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
+                        {
+                            for (Relationship relationship : retrievedRelationships)
+                            {
+                                if (relationship != null)
+                                {
+                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityOneProxy().getGUID());
+
+                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                    {
+                                        /*
+                                         * Replacing the existing relationship with the previous one because it is newer.
+                                         */
+                                        usedGUIDs.put(relationship.getEntityOneProxy().getGUID(), relationship);
+                                    }
+                                }
+                            }
+                        }
+
+                        /*
+                         * Add filtered relationships to the results.
+                         */
+                        if (! usedGUIDs.isEmpty())
+                        {
+                            results.addAll(usedGUIDs.values());
+                        }
+
+                        return results;
                     }
                 }
             }
 
-            return results;
-        }
-        else if (log.isDebugEnabled())
-        {
-            log.debug("No entities returned");
+            return retrievedRelationships;
         }
 
-        return null;
+
     }
 
 
     /**
-     * Filter relationship results that do not match the effective time - it is possible that an empty list is returned.  This will occur
-     * if all retrieved elements were filtered out.  The callers should issue another retrieve if more elements are needed.
-     *
-     * @param retrievedRelationships list of relationships retrieved from the repositories
-     * @param effectiveTime          effective time to match against
-     *
-     * @return matching relationships
-     */
-    private List<Relationship> returnEffectiveRelationships(List<Relationship> retrievedRelationships,
-                                                            Date               effectiveTime)
-    {
-        if (retrievedRelationships != null)
-        {
-            List<Relationship> results = new ArrayList<>();
-
-            for (Relationship relationship : retrievedRelationships)
-            {
-                if (relationship != null)
-                {
-                    if (this.isCorrectEffectiveTime(relationship.getProperties(), effectiveTime))
-                    {
-                        results.add(relationship);
-                    }
-                }
-            }
-
-            return results;
-        }
-        else if (log.isDebugEnabled())
-        {
-            log.debug("No entities returned");
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Validate that the supplied GUID is for a real entity and map exceptions if not.  The entity may not be effective at the time is it retrieved
-     * and that will also result in an invalid parameter exception.
+     * Validate that the supplied GUID is for a real entity and map exceptions if not.
      *
      * @param userId            user making the request.
      * @param guid              unique identifier of the entity.
+     * @param guidParameterName name of parameter that passed the guid
      * @param entityTypeName    expected type of asset.
      * @param methodName        name of method called.
-     * @param guidParameterName name of parameter that passed the guid
-     * @param effectiveTime     time when the element should be effective
      *
      * @return retrieved entity
      *
@@ -188,12 +360,11 @@ public class RepositoryHandler
      */
     public EntityDetail validateEntityGUID(String userId,
                                            String guid,
-                                           String entityTypeName,
-                                           String methodName,
                                            String guidParameterName,
-                                           Date   effectiveTime) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                           String entityTypeName,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String localMethodName = "validateEntityGUID";
 
@@ -204,19 +375,9 @@ public class RepositoryHandler
             if (entity != null)
             {
                 errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
-
-                if (isCorrectEffectiveTime(entity.getProperties(), effectiveTime))
-                {
-                    return entity;
-                }
-
-                errorHandler.handleNotEffectiveElement(guid,
-                                                       entityTypeName,
-                                                       entity.getProperties(),
-                                                       methodName,
-                                                       guidParameterName,
-                                                       effectiveTime);
             }
+            
+            return entity;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
         {
@@ -240,6 +401,503 @@ public class RepositoryHandler
 
 
     /**
+     * Validate an entity retrieved from the repository is suitable for the requester.
+     *
+     * There are three considerations: (1) Are the effectivity dates in the entity's properties indicating that this entity
+     * is effective at this time? (2) If the entity is a memento (ie it has the Memento classification attached) then it should only be
+     * returned if the request is for lineage. (3) If the entity is a known duplicate (ie it has the KnownDuplicate classification attached)
+     * and this request is not for duplicate processing then retrieve and combine the duplicate entities.
+     *
+     * @param userId calling user
+     * @param entity retrieved entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime   time when the examined elements must be effective
+     * @param methodName calling method
+     * @return entity to return to the caller - or null to mean the retrieved entity is not appropriate for the
+     */
+    public EntityDetail validateRetrievedEntity(String       userId,
+                                                EntityDetail entity,
+                                                String       entityTypeName,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                Date         effectiveTime,
+                                                String       methodName) throws UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        if (entity == null)
+        {
+            log.debug("no supplied entity");
+            return null;
+        }
+
+        DuplicateEntityIterator duplicateEntityIterator = new DuplicateEntityIterator(this,
+                                                                                      userId,
+                                                                                      entity,
+                                                                                      entityTypeName,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+        EntityDetail resultingEntity = duplicateEntityIterator.getPrincipleEntity();
+
+        if ((resultingEntity != null) && (duplicateEntityIterator.morePeersToReceive()))
+        {
+            log.debug("Deduping");
+
+            /*
+             * Consolidating the classification across the peer entities.
+             */
+            resultingEntity = new EntityDetail(resultingEntity);
+
+            Map<String, Classification> classificationMap = new HashMap<>();
+
+            if (entity.getClassifications() != null)
+            {
+                for (Classification classification : entity.getClassifications())
+                {
+                    if (classification != null)
+                    {
+                        classificationMap.put(classification.getName(), classification);
+                    }
+                }
+            }
+
+            while (duplicateEntityIterator.morePeersToReceive())
+            {
+                EntityDetail peerEntity = duplicateEntityIterator.getNextPeer();
+
+                if ((peerEntity != null) && (peerEntity.getClassifications() != null))
+                {
+                    for (Classification peerClassification : peerEntity.getClassifications())
+                    {
+                        if (peerClassification != null)
+                        {
+                            Classification existingClassification = classificationMap.get(peerClassification.getName());
+
+                            if (existingClassification == null)
+                            {
+                                classificationMap.put(peerClassification.getName(), peerClassification);
+                            }
+                            else if (errorHandler.validateIsLatestUpdate(existingClassification, peerClassification))
+                            {
+                                classificationMap.put(peerClassification.getName(), peerClassification);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (log.isDebugEnabled())
+        {
+            if (resultingEntity == null)
+            {
+                log.debug("no resulting entity");
+            }
+            else
+            {
+                log.debug("Resulting entity: " + resultingEntity.getGUID());
+            }
+        }
+
+
+        return resultingEntity;
+    }
+
+
+    /**
+     * DuplicateEntityIterator retrieves the list of entities that need to be processed for a specific entity.
+     * The first entity returned is the principle entity or its consolidated replacement.  After that are the peer duplicates.
+     */
+    private class DuplicateEntityIterator
+    {
+        RepositoryHandler               repositoryHandler;
+        String                          userId;
+        String                          entityTypeName;
+        String                          methodName;
+        boolean                         forLineage;
+        boolean                         forDuplicateProcessing;
+        Date                            effectiveTime;
+        EntityDetail                    principleEntity;
+        EntityDetail                    cachedEntity    = null;
+        RepositoryRelationshipsIterator peerIterator    = null;
+
+
+        /**
+         * Construct the duplicate entity iterator.
+         *
+         * @param repositoryHandler this repository handler
+         * @param userId calling user
+         * @param principleEntity entity to start processing on
+         * @param entityTypeName type of entities that the iterator is working with
+         * @param forLineage is this a lineage request
+         * @param forDuplicateProcessing is this a duplicate processing request
+         * @param effectiveTime what is the effective time needed by the caller
+         * @param methodName calling method
+         */
+        public DuplicateEntityIterator(RepositoryHandler repositoryHandler,
+                                       String            userId,
+                                       EntityDetail      principleEntity,
+                                       String            entityTypeName,
+                                       boolean           forLineage,
+                                       boolean           forDuplicateProcessing,
+                                       Date              effectiveTime,
+                                       String            methodName)
+        {
+            this.repositoryHandler = repositoryHandler;
+            this.userId = userId;
+            this.entityTypeName = entityTypeName;
+            this.forLineage = forLineage;
+            this.forDuplicateProcessing = forDuplicateProcessing;
+            this.effectiveTime = effectiveTime;
+            this.methodName = methodName;
+
+            this.principleEntity = principleEntity;
+
+            fillCache();
+
+            if (cachedEntity != null)
+            {
+                log.debug("cachedEntity=" + cachedEntity.getGUID());
+            }
+            else
+            {
+                log.debug("No cached Entity");
+            }
+        }
+
+
+        /**
+         * Initialize the iterator based on the callers specification and the content of the principle entity.
+         */
+        void fillCache()
+        {
+            /*
+             * If the principle element is effective at this time, it can be used.
+             */
+            if (isCorrectEffectiveTime(principleEntity.getProperties(), effectiveTime))
+            {
+                log.debug("Effective");
+
+                try
+                {
+                    boolean deduplicationNeeded = false;
+                    boolean mementoDetected     = false;
+
+                    if (principleEntity.getClassifications() != null)
+                    {
+                        for (Classification classification : principleEntity.getClassifications())
+                        {
+                            if (classification != null)
+                            {
+                                /*
+                                 * Ignore any classification that is not active at this time.
+                                 */
+                                if (isCorrectEffectiveTime(classification.getProperties(), effectiveTime))
+                                {
+                                    if (knownDuplicate.equals(classification.getName()))
+                                    {
+                                        if (forDuplicateProcessing)
+                                        {
+                                            log.debug("Ignoring KnownDuplicate classification");
+                                        }
+                                        else
+                                        {
+                                            log.debug("KnownDuplicate classification detected");
+                                            deduplicationNeeded = true;
+                                        }
+                                    }
+                                    else if (memento.equals(classification.getName()))
+                                    {
+                                        /*
+                                         * The Memento classification means that the element is logically deleted but kept active in the repository
+                                         * to support the linkage needed for lineage.
+                                         */
+                                        log.debug("Memento classification detected");
+
+                                        mementoDetected = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    /*
+                     * The Memento classification prevents further processing of the entity unless this is a lineage request.
+                     */
+                    if ((! mementoDetected) || forLineage)
+                    {
+                        log.debug("Set up cached entity");
+
+                        cachedEntity = principleEntity;
+
+                        if (deduplicationNeeded)
+                        {
+                            /*
+                             * First look to see if there is a consolidated entity.  This will take precedence.  Notice that the type of the retrieved
+                             * entity is used to validate the type of the consolidated entity.
+                             */
+                            EntityDetail consolidatedEntity = repositoryHandler.getEntityForRelationshipType(userId,
+                                                                                                             this.principleEntity,
+                                                                                                             this.principleEntity.getType().getTypeDefName(),
+                                                                                                             consolidatedDuplicateLinkGUID,
+                                                                                                             consolidatedDuplicateLink,
+                                                                                                             statusPropertyName,
+                                                                                                             statusThreshold,
+                                                                                                             this.principleEntity.getType().getTypeDefName(),
+                                                                                                             forLineage,
+                                                                                                             true,
+                                                                                                             effectiveTime,
+                                                                                                             methodName);
+
+                            /*
+                             * If a consolidated entity is returned, it must have an appropriate status before it can be used.
+                             */
+                            if ((consolidatedEntity != null) && (consolidatedEntity.getClassifications() != null))
+                            {
+                                /*
+                                 * Need to check the ConsolidatedDuplicate classification
+                                 */
+                                for (Classification classification : consolidatedEntity.getClassifications())
+                                {
+                                    if (classification != null)
+                                    {
+                                        if (consolidatedDuplicate.equals(classification.getName()))
+                                        {
+                                            if (errorHandler.validateStatus(statusPropertyName, 1, classification.getProperties(), methodName))
+                                            {
+                                                log.debug("Valid consolidated entity: %s", consolidatedEntity.getGUID());
+
+                                                cachedEntity = consolidatedEntity;
+                                                deduplicationNeeded = false;
+                                            }
+                                            else
+                                            {
+                                                log.debug("Ignoring consolidated entity: %s due to status setting", consolidatedEntity.getGUID());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (deduplicationNeeded)
+                            {
+                                peerIterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                   userId,
+                                                                                   this.principleEntity.getGUID(),
+                                                                                   entityTypeName,
+                                                                                   peerDuplicateLinkGUID,
+                                                                                   peerDuplicateLink,
+                                                                                   forDuplicateProcessing,
+                                                                                   0,
+                                                                                   maxPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignoring principle entity due to Memento classification");
+                    }
+
+                    if (log.isDebugEnabled())
+                    {
+                        if (cachedEntity != null)
+                        {
+                            log.debug("Cached Entity: %s", cachedEntity.getGUID());
+                        }
+                        else
+                        {
+                            log.debug("Cached Entity is null");
+                        }
+                        if (peerIterator != null)
+                        {
+                            log.debug("Peer Iterator is set up");
+                        }
+                        else
+                        {
+                            log.debug("Peer Iterator is null");
+                        }
+                    }
+                }
+                catch (Exception ignoredError)
+                {
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Ignored exception", ignoredError);
+                    }
+                }
+            }
+            else
+            {
+                log.debug("Ignoring principle entity due to effectivity dates");
+            }
+        }
+
+
+        /**
+         * Is there a possibility of more peer entities to process?
+         *
+         * @return flag is not exhausted the possibilities
+         * @throws UserNotAuthorizedException broader security error
+         * @throws PropertyServerException logic error
+         */
+        boolean morePeersToReceive() throws UserNotAuthorizedException, PropertyServerException
+        {
+            if (peerIterator != null)
+            {
+                return peerIterator.moreToReceive();
+            }
+
+            return false;
+        }
+
+
+        /**
+         * Retrieve the principle entity in the deduplication
+         *
+         * @return entity or null
+         * @throws UserNotAuthorizedException broader security failure
+         * @throws PropertyServerException logic error
+         */
+        EntityDetail getPrincipleEntity()
+        {
+            return cachedEntity;
+        }
+
+
+        /**
+         * Retrieve the next peer entity in the deduplication
+         *
+         * @return entity or null
+         * @throws UserNotAuthorizedException broader security failure
+         * @throws PropertyServerException logic error
+         */
+        EntityDetail getNextPeer() throws UserNotAuthorizedException,
+                                          PropertyServerException
+        {
+            if (peerIterator != null)
+            {
+                while (peerIterator.moreToReceive())
+                {
+                    try
+                    {
+                        Relationship relationship = peerIterator.getNext();
+
+                        if (errorHandler.validateStatus(statusPropertyName, statusThreshold, relationship.getProperties(), methodName))
+                        {
+                            EntityProxy peerProxy = repositoryHandler.getOtherEnd(principleEntity.getGUID(), relationship);
+
+                            return repositoryHandler.getEntityForRelationship(userId,
+                                                                              peerProxy,
+                                                                              entityTypeName,
+                                                                              forLineage,
+                                                                              true,
+                                                                              effectiveTime,
+                                                                              methodName);
+                        }
+                    }
+                    catch (Exception ignoredError)
+                    {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Ignored unreachable relationship/entity", ignoredError);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+
+
+    /**
+     * Filter entity results that do not match the requester's criteria.  If all entities are filtered out, an empty list is
+     * returned to show that the caller can issue another retrieve if more elements are needed.
+     *
+     * @param userId calling user
+     * @param retrievedEntities list of entities retrieved from the repositories
+     * @param expectedEntityTypeName type name to validate
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime  effective time to match against
+     * @param methodName calling method
+     *
+     * @return matching entities
+     * @throws UserNotAuthorizedException unexpected security error
+     * @throws PropertyServerException logic error
+     */
+    private List<EntityDetail> validateEntities(String             userId,
+                                                List<EntityDetail> retrievedEntities,
+                                                String             expectedEntityTypeName,
+                                                boolean            forLineage,
+                                                boolean            forDuplicateProcessing,
+                                                Date               effectiveTime,
+                                                String             methodName) throws UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        Set<String> acceptedGUIDs = new HashSet<>();
+
+        if (retrievedEntities != null)
+        {
+            List<EntityDetail> results = new ArrayList<>();
+
+            for (EntityDetail entity : retrievedEntities)
+            {
+                if (entity != null)
+                {
+                    EntityDetail validatedEntity = this.validateRetrievedEntity(userId,
+                                                                                entity,
+                                                                                expectedEntityTypeName,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName);
+
+                    if (validatedEntity != null)
+                    {
+                        if (! acceptedGUIDs.contains(validatedEntity.getGUID()))
+                        {
+                            acceptedGUIDs.add(validatedEntity.getGUID());
+                            results.add(validatedEntity);
+                        }
+                        else
+                        {
+                            log.debug("Skipping entity since already retrieved - because using consolidated entities");
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Skipping entity since unavailable for some reason");
+                    }
+                }
+            }
+
+            if (log.isDebugEnabled())
+            {
+                log.debug(results.size() + " entities returned");
+            }
+
+            return results;
+
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("No entities returned");
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Validate that the supplied GUID is for a real entity that is effective.  Return null if not.
      *
      * @param userId         user making the request.
@@ -253,37 +911,36 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public EntityDetail isEntityKnown(String userId,
-                                      String guid,
-                                      String entityTypeName,
-                                      String methodName,
-                                      Date   effectiveTime) throws UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public EntityDetail isEntityKnown(String  userId,
+                                      String  guid,
+                                      String  guidParameterName,
+                                      String  entityTypeName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String localMethodName = "isEntityKnown";
 
         try
         {
-            EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
-
-            if (entity != null)
-            {
-                errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
-
-                if (isCorrectEffectiveTime(entity.getProperties(), effectiveTime))
-                {
-                    return entity;
-                }
-            }
+            return this.getEntityByGUID(userId,
+                                        guid,
+                                        guidParameterName,
+                                        entityTypeName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException |
-                       org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException error)
+        catch (InvalidParameterException error)
         {
             return null;
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException | PropertyServerException error)
         {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
+            throw error;
         }
         catch (Exception error)
         {
@@ -291,43 +948,6 @@ public class RepositoryHandler
         }
 
         return null;
-    }
-
-
-    /**
-     * Create a new entity in the open metadata repository with the ACTIVE instance status.
-     *
-     * @param userId             calling user
-     * @param entityTypeGUID     type of entity to create
-     * @param entityTypeName     name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties         properties for the entity
-     * @param methodName         name of calling method
-     *
-     * @return unique identifier of new entity
-     *
-     * @throws PropertyServerException    problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String createEntity(String             userId,
-                               String             entityTypeGUID,
-                               String             entityTypeName,
-                               String             externalSourceGUID,
-                               String             externalSourceName,
-                               InstanceProperties properties,
-                               String             methodName) throws UserNotAuthorizedException,
-                                                                     PropertyServerException
-    {
-        return this.createEntity(userId,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 externalSourceGUID,
-                                 externalSourceName,
-                                 properties,
-                                 null,
-                                 InstanceStatus.ACTIVE,
-                                 methodName);
     }
 
 
@@ -402,6 +1022,15 @@ public class RepositoryHandler
                                                                        PropertyServerException
     {
         final String localMethodName = "createEntity";
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -458,6 +1087,9 @@ public class RepositoryHandler
      * @param entityTypeGUID     type of entity to create
      * @param entityTypeName     name of the entity's type
      * @param updateProperties   properties for the entity
+     * @param forLineage         is this part of a lineage request?
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime      the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         name of calling method
      *
      * @return updated entity
@@ -470,26 +1102,30 @@ public class RepositoryHandler
                                                String             externalSourceGUID,
                                                String             externalSourceName,
                                                String             entityGUID,
+                                               String             entityGUIDParameterName,
                                                String             entityTypeGUID,
                                                String             entityTypeName,
                                                InstanceProperties updateProperties,
+                                               boolean            forLineage,
+                                               boolean            forDuplicateProcessing,
+                                               Date               effectiveTime,
                                                String             methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        final String guidParameterName = "entityGUID";
-
         EntityDetail originalEntity = this.getEntityByGUID(userId,
                                                            entityGUID,
-                                                           guidParameterName,
+                                                           entityGUIDParameterName,
                                                            entityTypeName,
-                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
                                                            methodName);
 
         return updateEntityProperties(userId,
                                       externalSourceGUID,
                                       externalSourceName,
-                                      entityGUID,
+                                      originalEntity.getGUID(),
                                       originalEntity,
                                       entityTypeGUID,
                                       entityTypeName,
@@ -505,7 +1141,7 @@ public class RepositoryHandler
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID         unique identifier of entity to update
-     * @param originalEntity     entity retrieved from repository
+     * @param originalEntity     entity retrieved from repository - must not be null
      * @param entityTypeGUID     type of entity to create
      * @param entityTypeName     name of the entity's type
      * @param newProperties      properties for the entity
@@ -531,12 +1167,21 @@ public class RepositoryHandler
     {
         final String localMethodName   = "updateEntityProperties";
         final String guidParameterName = "guid";
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         if (originalEntity != null)
         {
             errorHandler.validateProvenance(userId,
                                             originalEntity,
-                                            entityGUID,
+                                            originalEntity.getGUID(),
                                             externalSourceGUID,
                                             externalSourceName,
                                             methodName);
@@ -587,6 +1232,25 @@ public class RepositoryHandler
 
 
     /**
+     * Extract the classification type from the classification header.
+     *
+     * @param classification incoming classification
+     * @return type def unique identifier or null
+     */
+    private String getClassificationTypeGUID(Classification classification)
+    {
+        InstanceType type = classification.getType();
+
+        if (type != null)
+        {
+            return type.getTypeDefGUID();
+        }
+
+        return null;
+    }
+
+
+    /**
      * Update the classifications for an entity.
      *
      * @param userId                        calling user
@@ -595,6 +1259,7 @@ public class RepositoryHandler
      * @param entityGUID                    entity to update
      * @param existingEntityClassifications existing classifications retrieved from the repository
      * @param classifications               new/updated classifications for the entity
+     * @param forDuplicateProcessing        the query is for duplicate processing and so must not deduplicate
      * @param methodName                    name of calling method
      *
      * @throws InvalidParameterException  problem with the GUID
@@ -605,8 +1270,13 @@ public class RepositoryHandler
                                              String               externalSourceGUID,
                                              String               externalSourceName,
                                              String               entityGUID,
+                                             String               entityGUIDParameterName,
+                                             String               entityTypeName,
                                              List<Classification> existingEntityClassifications,
                                              List<Classification> classifications,
+                                             boolean              forLineage,
+                                             boolean              forDuplicateProcessing,
+                                             Date                 effectiveTime,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -631,10 +1301,16 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 entityGUID,
                                                 null,
+                                                entityGUIDParameterName,
+                                                entityTypeName,
+                                                getClassificationTypeGUID(newClassification),
                                                 newClassification.getName(),
                                                 newClassification.getClassificationOrigin(),
                                                 newClassification.getClassificationOriginGUID(),
                                                 newClassification.getProperties(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
                         }
                     }
@@ -657,9 +1333,14 @@ public class RepositoryHandler
                                               externalSourceGUID,
                                               externalSourceName,
                                               entityGUID,
-                                              null,
+                                              entityGUIDParameterName,
+                                              entityTypeName,
+                                              getClassificationTypeGUID(obsoleteClassification),
                                               obsoleteClassification.getName(),
                                               obsoleteClassification,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
                                               methodName);
                     }
                 }
@@ -689,10 +1370,16 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 entityGUID,
                                                 null,
+                                                entityGUIDParameterName,
+                                                entityTypeName,
+                                                getClassificationTypeGUID(classification),
                                                 classification.getName(),
                                                 classification.getClassificationOrigin(),
                                                 classification.getClassificationOriginGUID(),
                                                 classification.getProperties(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
                         }
                         else /* new and old match */
@@ -705,10 +1392,15 @@ public class RepositoryHandler
                                                           externalSourceGUID,
                                                           externalSourceName,
                                                           entityGUID,
-                                                          null,
+                                                          entityGUIDParameterName,
+                                                          entityTypeName,
+                                                          getClassificationTypeGUID(classification),
                                                           classification.getName(),
                                                           matchingEntityClassification,
                                                           null, // clears all properties
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
                                                           methodName);
                                 }
                             }
@@ -718,10 +1410,15 @@ public class RepositoryHandler
                                                       externalSourceGUID,
                                                       externalSourceName,
                                                       entityGUID,
-                                                      null,
+                                                      entityGUIDParameterName,
+                                                      entityTypeName,
+                                                      getClassificationTypeGUID(classification),
                                                       classification.getName(),
                                                       matchingEntityClassification,
                                                       classification.getProperties(),
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
                                                       methodName);
                             }
 
@@ -740,9 +1437,14 @@ public class RepositoryHandler
                                                   externalSourceGUID,
                                                   externalSourceName,
                                                   entityGUID,
-                                                  null,
+                                                  entityGUIDParameterName,
+                                                  entityTypeName,
+                                                  getClassificationTypeGUID(classification),
                                                   classification.getName(),
                                                   entityClassificationMap.get((entityClassificationName)),
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveTime,
                                                   methodName);
                         }
                     }
@@ -767,6 +1469,9 @@ public class RepositoryHandler
      * @param userId             calling user
      * @param entityGUID         unique identity of the entity - if this entity is not known then an exception occurs
      * @param classificationName name of the classification
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      *
      * @return located classification or null if not found
@@ -775,22 +1480,29 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException calling user does not have appropriate permissions
      * @throws PropertyServerException    internal error
      */
-    private Classification getClassificationForEntity(String userId,
-                                                      String entityGUID,
-                                                      String classificationName,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    private Classification getClassificationForEntity(String  userId,
+                                                      String  entityGUID,
+                                                      String  entityGUIDParameterName,
+                                                      String  entityTypeName,
+                                                      String  classificationName,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveTime,
+                                                      String  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        final String entityGUIDParameterName = "entityGUID";
-
+        /*
+         * This call verifies that the entity is usable by the caller.
+         */
         EntityDetail entity = this.getEntityByGUID(userId,
                                                    entityGUID,
                                                    entityGUIDParameterName,
-                                                   null, // any type allowed
-                                                   null, // any effective time
+                                                   entityTypeName,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
                                                    methodName);
-
 
         if (entity != null)
         {
@@ -845,21 +1557,84 @@ public class RepositoryHandler
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        final String entityGUIDParameterName = "entityGUID";
+
+        return this.updateEntity(userId,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 entityGUID,
+                                 entityGUIDParameterName,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 properties,
+                                 classifications,
+                                 false,
+                                 false,
+                                 new Date(),
+                                 methodName);
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId             calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityGUID         unique identifier entity to update
+     * @param entityTypeGUID     type of entity to create
+     * @param entityTypeName     name of the entity's type
+     * @param properties         properties for the entity
+     * @param classifications    classifications for entity
+     * @param methodName         name of calling method
+     *
+     * @return returned entity containing the update
+     *
+     * @throws InvalidParameterException  problem with the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail updateEntity(String               userId,
+                                     String               externalSourceGUID,
+                                     String               externalSourceName,
+                                     String               entityGUID,
+                                     String               entityGUIDParameterName,
+                                     String               entityTypeGUID,
+                                     String               entityTypeName,
+                                     InstanceProperties   properties,
+                                     List<Classification> classifications,
+                                     boolean              forLineage,
+                                     boolean              forDuplicateProcessing,
+                                     Date                 effectiveTime,
+                                     String               methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
         EntityDetail entity = this.updateEntityProperties(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
                                                           entityGUID,
+                                                          entityGUIDParameterName,
                                                           entityTypeGUID,
                                                           entityTypeName,
                                                           properties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
                                                           methodName);
 
         this.updateEntityClassifications(userId,
                                          externalSourceGUID,
                                          externalSourceName,
                                          entity.getGUID(),
+                                         entityGUIDParameterName,
+                                         entityTypeName,
                                          entity.getClassifications(),
                                          classifications,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
                                          methodName);
 
         return entity;
@@ -895,7 +1670,15 @@ public class RepositoryHandler
                                                                              PropertyServerException
     {
         final String localMethodName = "updateEntityProperties";
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
 
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
         try
         {
             errorHandler.validateProvenance(userId,
@@ -944,6 +1727,9 @@ public class RepositoryHandler
      * @param entityTypeGUID     type of entity to create
      * @param entityTypeName     name of the entity's type
      * @param instanceStatus     initial status (needs to be valid for type)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         name of calling method
      *
      * @throws InvalidParameterException  problem with the GUID
@@ -954,23 +1740,48 @@ public class RepositoryHandler
                                    String         externalSourceGUID,
                                    String         externalSourceName,
                                    String         entityGUID,
+                                   EntityDetail   entity,
                                    String         entityTypeGUID,
                                    String         entityTypeName,
                                    InstanceStatus instanceStatus,
+                                   boolean        forLineage,
+                                   boolean        forDuplicateProcessing,
+                                   Date           effectiveTime,
                                    String         methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
         final String guidParameterName = "entityGUID";
         final String localMethodName   = "updateEntityStatus";
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
 
-        EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, null, methodName);
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
+        EntityDetail retrievedEntity = entity;
+
+        if (retrievedEntity == null)
+        {
+            retrievedEntity = this.getEntityByGUID(userId,
+                                                   entityGUID,
+                                                   guidParameterName,
+                                                   entityTypeName,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+        }
 
         try
         {
             errorHandler.validateProvenance(userId,
-                                            entity,
-                                            entityGUID,
+                                            retrievedEntity,
+                                            retrievedEntity.getGUID(),
                                             externalSourceGUID,
                                             externalSourceName,
                                             methodName);
@@ -1006,13 +1817,19 @@ public class RepositoryHandler
      *
      * @param userId                   calling user
      * @param externalSourceGUID       unique identifier (guid) for the external source, or null for local.
-     * @param externalSourceName       unique name for the external source.
+     * @param externalSourceName       unique name for the external source
      * @param entityGUID               unique identifier of entity to update
+     * @param entityDetail             retrieved entity (may be null)
+     * @param entityGUIDParameterName  parameter supplying entityGUID
+     * @param entityTypeName           type of entity
      * @param classificationTypeGUID   type of classification to create
      * @param classificationTypeName   name of the classification's type
      * @param classificationOrigin     is this classification assigned or propagated?
      * @param classificationOriginGUID which entity did a propagated classification originate from?
      * @param properties               properties for the classification
+     * @param forLineage               the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing   the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime            the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName               name of calling method
      *
      * @return updated entity
@@ -1024,18 +1841,41 @@ public class RepositoryHandler
                                        String               externalSourceGUID,
                                        String               externalSourceName,
                                        String               entityGUID,
+                                       EntityDetail         entityDetail,
+                                       String               entityGUIDParameterName,
+                                       String               entityTypeName,
                                        String               classificationTypeGUID,
                                        String               classificationTypeName,
                                        ClassificationOrigin classificationOrigin,
                                        String               classificationOriginGUID,
                                        InstanceProperties   properties,
+                                       boolean              forLineage,
+                                       boolean              forDuplicateProcessing,
+                                       Date                 effectiveTime,
                                        String               methodName) throws UserNotAuthorizedException,
                                                                                PropertyServerException
     {
         final String localMethodName = "classifyEntity";
 
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                                             typeGUIDParameterName,
+                                             classificationTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
         try
         {
+            if (entityDetail == null)
+            {
+                /*
+                 * This is to check that the entity is in an appropriate state to add the classification.
+                 */
+               this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            }
+
             EntityDetail newEntity = metadataCollection.classifyEntity(userId,
                                                                        entityGUID,
                                                                        classificationTypeName,
@@ -1058,11 +1898,14 @@ public class RepositoryHandler
                 return newEntity;
             }
         }
+        catch (UserNotAuthorizedException | PropertyServerException error)
+        {
+            throw error;
+        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-
         catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
@@ -1079,10 +1922,15 @@ public class RepositoryHandler
      * @param externalSourceGUID           unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName           unique name for the external source.
      * @param entityGUID                   unique identifier of entity to update
+     * @param entityGUIDParameterName      parameter supplying entityGUID
+     * @param entityTypeName               type of entity
      * @param classificationTypeGUID       type of classification to create
      * @param classificationTypeName       name of the classification's type
      * @param existingClassificationHeader current value of classification
      * @param newProperties                properties for the classification
+     * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                   name of calling method
      *
      * @throws InvalidParameterException  invalid parameters passed - probably GUID
@@ -1093,15 +1941,30 @@ public class RepositoryHandler
                                  String              externalSourceGUID,
                                  String              externalSourceName,
                                  String              entityGUID,
+                                 String              entityGUIDParameterName,
+                                 String              entityTypeName,
                                  String              classificationTypeGUID,
                                  String              classificationTypeName,
                                  InstanceAuditHeader existingClassificationHeader,
                                  InstanceProperties  newProperties,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
         final String localMethodName = "reclassifyEntity";
+
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                                             typeGUIDParameterName,
+                                             classificationTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         InstanceAuditHeader auditHeader = existingClassificationHeader;
 
@@ -1110,7 +1973,15 @@ public class RepositoryHandler
          */
         if (auditHeader == null)
         {
-            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+            auditHeader = this.getClassificationForEntity(userId,
+                                                          entityGUID,
+                                                          entityGUIDParameterName,
+                                                          entityTypeName,
+                                                          classificationTypeName,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
         }
 
         if (auditHeader != null)
@@ -1141,7 +2012,7 @@ public class RepositoryHandler
                                                                  methodName);
                 }
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException | PropertyServerException error)
             {
                 /*
                  * This comes from validateProvenance.  The call to validate provenance is in the try..catch
@@ -1164,11 +2035,17 @@ public class RepositoryHandler
                                 externalSourceGUID,
                                 externalSourceName,
                                 entityGUID,
+                                null,
+                                entityGUIDParameterName,
+                                entityTypeName,
                                 classificationTypeGUID,
                                 classificationTypeName,
                                 ClassificationOrigin.ASSIGNED,
                                 null,
                                 newProperties,
+                                forLineage,
+                                forDuplicateProcessing,
+                                effectiveTime,
                                 methodName);
         }
     }
@@ -1181,9 +2058,14 @@ public class RepositoryHandler
      * @param externalSourceGUID           unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName           unique name for the external source.
      * @param entityGUID                   unique identifier of entity to update
+     * @param entityGUIDParameterName      parameter name that passed the entityGUID
+     * @param entityTypeName               type of entity
      * @param classificationTypeGUID       type of classification to create
      * @param classificationTypeName       name of the classification's type
      * @param existingClassificationHeader current value of classification
+     * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                   name of calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid = probably the GUID
@@ -1194,20 +2076,43 @@ public class RepositoryHandler
                                  String              externalSourceGUID,
                                  String              externalSourceName,
                                  String              entityGUID,
+                                 String              entityGUIDParameterName,
+                                 String              entityTypeName,
                                  String              classificationTypeGUID,
                                  String              classificationTypeName,
                                  InstanceAuditHeader existingClassificationHeader,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
         final String localMethodName = "declassifyEntity";
 
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                                             typeGUIDParameterName,
+                                             classificationTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         InstanceAuditHeader auditHeader = existingClassificationHeader;
 
         if (auditHeader == null)
         {
-            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+            auditHeader = this.getClassificationForEntity(userId,
+                                                          entityGUID,
+                                                          entityGUIDParameterName,
+                                                          entityTypeName,
+                                                          classificationTypeName,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
         }
 
         /*
@@ -1289,7 +2194,73 @@ public class RepositoryHandler
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
+        this.removeEntity(userId,
+                          externalSourceGUID,
+                          externalSourceName,
+                          obsoleteEntityGUID,
+                          obsoleteEntityGUIDParameterName,
+                          entityTypeGUID,
+                          entityTypeName,
+                          validatingPropertyName,
+                          validatingProperty,
+                          false,
+                          false,
+                          new Date(),
+                          methodName);
+    }
+
+
+    /**
+     * Remove an entity from the open metadata repository if the validating properties match. The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId                          calling user
+     * @param externalSourceGUID              unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName              unique name for the external source.
+     * @param obsoleteEntityGUID              unique identifier of the entity
+     * @param obsoleteEntityGUIDParameterName name for unique identifier of the entity
+     * @param entityTypeGUID                  type of entity to delete
+     * @param entityTypeName                  name of the entity's type
+     * @param validatingPropertyName          name of property that should be in the entity if we have the correct one.
+     * @param validatingProperty              value of property that should be in the entity if we have the correct one.
+     * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName                      name of calling method
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException  mismatch on properties
+     */
+    public void removeEntity(String  userId,
+                             String  externalSourceGUID,
+                             String  externalSourceName,
+                             String  obsoleteEntityGUID,
+                             String  obsoleteEntityGUIDParameterName,
+                             String  entityTypeGUID,
+                             String  entityTypeName,
+                             String  validatingPropertyName,
+                             String  validatingProperty,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
         final String localMethodName = "removeEntity";
+
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -1297,30 +2268,40 @@ public class RepositoryHandler
                                                                obsoleteEntityGUID,
                                                                obsoleteEntityGUIDParameterName,
                                                                entityTypeName,
-                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
                                                                methodName);
 
             if (obsoleteEntity != null)
             {
                 errorHandler.validateProvenance(userId,
                                                 obsoleteEntity,
-                                                obsoleteEntityGUID,
+                                                obsoleteEntity.getGUID(),
                                                 externalSourceGUID,
                                                 externalSourceName,
                                                 methodName);
 
-                errorHandler.validateProperties(obsoleteEntityGUID,
+                errorHandler.validateProperties(obsoleteEntity.getGUID(),
                                                 validatingPropertyName,
                                                 validatingProperty,
                                                 obsoleteEntity.getProperties(),
                                                 methodName);
 
+                Classification consolidatedDuplicateClassification = errorHandler.isClassifiedAs(obsoleteEntity, consolidatedDuplicate, methodName);
+
+                if (consolidatedDuplicateClassification != null)
+                {
+                    // todo output audit log message
+                }
+
                 this.isolateAndRemoveEntity(userId,
                                             externalSourceGUID,
                                             externalSourceName,
-                                            obsoleteEntityGUID,
+                                            obsoleteEntity.getGUID(),
                                             entityTypeGUID,
                                             entityTypeName,
+                                            forDuplicateProcessing,
                                             methodName);
             }
         }
@@ -1345,24 +2326,36 @@ public class RepositoryHandler
      * @param guidParameterName  name of parameter that passed the entity guid
      * @param entityTypeGUID     unique identifier for the entity's type
      * @param entityTypeName     name of the entity's type
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param methodName         name of calling method
      *
      * @throws InvalidParameterException  the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeEntityOnLastUse(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String obsoleteEntityGUID,
-                                      String guidParameterName,
-                                      String entityTypeGUID,
-                                      String entityTypeName,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void removeEntityOnLastUse(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  obsoleteEntityGUID,
+                                      String  guidParameterName,
+                                      String  entityTypeGUID,
+                                      String  entityTypeName,
+                                      boolean forDuplicateProcessing,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String localMethodName = "removeEntityOnLastUse";
+
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -1384,6 +2377,7 @@ public class RepositoryHandler
                                             obsoleteEntityGUID,
                                             entityTypeGUID,
                                             entityTypeName,
+                                            forDuplicateProcessing,
                                             methodName);
             }
         }
@@ -1414,21 +2408,33 @@ public class RepositoryHandler
      * @param obsoleteEntityGUID unique identifier of the entity
      * @param entityTypeGUID     type of entity to delete
      * @param entityTypeName     name of the entity's type
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param methodName         name of calling method
      *
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private void isolateAndRemoveEntity(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String obsoleteEntityGUID,
-                                        String entityTypeGUID,
-                                        String entityTypeName,
-                                        String methodName) throws UserNotAuthorizedException,
+    private void isolateAndRemoveEntity(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  obsoleteEntityGUID,
+                                        String  entityTypeGUID,
+                                        String  entityTypeName,
+                                        boolean forDuplicateProcessing,
+                                        String  methodName) throws UserNotAuthorizedException,
                                                                   PropertyServerException
     {
         final String localMethodName = "isolateAndRemoveEntity";
+
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         this.removeAllRelationshipsOfType(userId,
                                           externalSourceGUID,
@@ -1437,6 +2443,7 @@ public class RepositoryHandler
                                           entityTypeName,
                                           null,
                                           null,
+                                          forDuplicateProcessing,
                                           null,
                                           methodName);
 
@@ -1475,6 +2482,16 @@ public class RepositoryHandler
                                                       PropertyServerException
     {
         final String localMethodName = "purgeEntity";
+
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -1558,6 +2575,8 @@ public class RepositoryHandler
      * @param userId         user making the request
      * @param entityTypeGUID identifier for the entity's type
      * @param entityTypeName name for the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom   initial position in the stored list.
      * @param pageSize       maximum number of definitions to return on this call.
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1568,61 +2587,61 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<EntityDetail> getEntitiesForType(String userId,
-                                                 String entityTypeGUID,
-                                                 String entityTypeName,
-                                                 int    startingFrom,
-                                                 int    pageSize,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<EntityDetail> getEntitiesForType(String  userId,
+                                                 String  entityTypeGUID,
+                                                 String  entityTypeName,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 int     startingFrom,
+                                                 int     pageSize,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String localMethodName = "getEntitiesForType";
 
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                    entityTypeGUID,
-                                                                                    null,
-                                                                                    null,
-                                                                                    startingFrom,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    pageSize);
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
+                                                                                             entityTypeGUID,
+                                                                                             null,
+                                                                                             null,
+                                                                                             startingFrom,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             pageSize);
 
-            if (entities == null)
+
+            /*
+             * Results will be empty only if all retrieved entities are filtered out - this means the caller should retrieve again to get
+             * more results. (Null means no more to receive.)
+             */
+            if (retrievedEntities != null)
             {
-                return null;
+                return this.validateEntities(userId,
+                                             retrievedEntities,
+                                             entityTypeName,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
             }
-            else if (entities.isEmpty())
+            else if (log.isDebugEnabled())
             {
-                return null;
-            }
-            else
-            {
-                List<EntityDetail> results = new ArrayList<>();
-
-                for (EntityDetail entity : entities)
-                {
-                    if (entity != null)
-                    {
-                        errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
-
-                        if (this.isCorrectEffectiveTime(entity.getProperties(), effectiveTime))
-                        {
-                            results.add(entity);
-                        }
-                    }
-                }
-
-                /*
-                 * Results will be empty only if all retrieved entities are filtered out - this means the caller should retrieve again to get
-                 * more results. (Null means no more to receive.)
-                 */
-                return results;
+                log.debug("No entities of type {}", entityTypeGUID);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -1632,6 +2651,243 @@ public class RepositoryHandler
         catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param requiredEnd  entityProxy from relationship
+     * @param requiredEndTypeName type of retrieved entity
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime time that the entity should be effective for
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws InvalidParameterException guid is invalid
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private EntityDetail getEntityForRelationship(String      userId,
+                                                  EntityProxy requiredEnd,
+                                                  String      requiredEndTypeName,
+                                                  boolean     forLineage,
+                                                  boolean     forDuplicateProcessing,
+                                                  Date        effectiveTime,
+                                                  String      methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String guidParameterName = "requiredEnd.getGUID()";
+
+        return getEntityByGUID(userId,
+                               requiredEnd.getGUID(),
+                               guidParameterName,
+                               requiredEndTypeName,
+                               forLineage,
+                               forDuplicateProcessing,
+                               effectiveTime,
+                               methodName);
+    }
+
+
+
+    /**
+     * Return the entity at the other end of the requested relationship type.  The assumption is that this is a 0..1
+     * relationship so one entity (or null) is returned.  If lots of relationships are found then the
+     * PropertyServerException is thrown.
+     *
+     * @param userId  user making the request
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     * @return retrieved entity or null
+     * @throws InvalidParameterException bad starting entity
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail getEntityForRelationshipType(String userId,
+                                                     String startingEntityGUID,
+                                                     String startingEntityTypeName,
+                                                     String relationshipTypeGUID,
+                                                     String relationshipTypeName,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final  String startingEntityGUIDParameterName= "startingEntityGUID";
+
+        Date effectiveTime = new Date();
+
+        EntityDetail startingEntity = this.getEntityByGUID(userId,
+                                                           startingEntityGUID,
+                                                           startingEntityGUIDParameterName,
+                                                           startingEntityTypeName,
+                                                           false,
+                                                           false,
+                                                           effectiveTime,
+                                                           methodName);
+
+        return getEntityForRelationshipType(userId,
+                                            startingEntity,
+                                            startingEntityTypeName,
+                                            relationshipTypeGUID,
+                                            relationshipTypeName,
+                                            null,
+                                            0,
+                                            null,
+                                            false,
+                                            false,
+                                            effectiveTime,
+                                            methodName);
+    }
+
+
+
+    /**
+     * Return the entity at the other end of the requested relationship type.  The assumption is that this is a 0..1
+     * relationship so one entity (or null) is returned.  If lots of relationships are found then the
+     * PropertyServerException is thrown.
+     *
+     * @param userId  user making the request
+     * @param startingEntity starting entity
+     * @param startingEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param statusPropertyName name of the property to check that that the status is acceptable
+     * @param statusThreshold the value of status that the relationship property must be equal to or greater
+     * @param returningEntityTypeName the type of the resulting entity
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName  name of calling method
+     * @return retrieved entity or null
+     * @throws InvalidParameterException bad starting entity
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail getEntityForRelationshipType(String       userId,
+                                                     EntityDetail startingEntity,
+                                                     String       startingEntityTypeName,
+                                                     String       relationshipTypeGUID,
+                                                     String       relationshipTypeName,
+                                                     String       statusPropertyName,
+                                                     int          statusThreshold,
+                                                     String       returningEntityTypeName,
+                                                     boolean      forLineage,
+                                                     boolean      forDuplicateProcessing,
+                                                     Date         effectiveTime,
+                                                     String       methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String localMethodName = "getEntityForRelationshipType";
+
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
+        DuplicateEntityIterator duplicateEntityIterator = new DuplicateEntityIterator(this,
+                                                                                      userId,
+                                                                                      startingEntity,
+                                                                                      startingEntityTypeName,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+        EntityDetail processingEntity = duplicateEntityIterator.getPrincipleEntity();
+
+        if (processingEntity != null)
+        {
+            RelationshipAccumulator accumulator = new RelationshipAccumulator(repositoryHelper,
+                                                                              this,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+            do
+            {
+                try
+                {
+                    List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                                    processingEntity.getGUID(),
+                                                                                                    relationshipTypeGUID,
+                                                                                                    0,
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    100);
+
+                    accumulator.addRelationships(relationships);
+                }
+                catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+                {
+                    errorHandler.handleUnauthorizedUser(userId, methodName);
+                }
+                catch (Exception error)
+                {
+                    errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                }
+
+            } while (duplicateEntityIterator.morePeersToReceive());
+
+            List<Relationship> filteredRelationships = accumulator.getRelationships();
+            Relationship       resultingRelationship = null;
+
+            if ((filteredRelationships != null) && (filteredRelationships.size() == 1))
+            {
+                resultingRelationship = filteredRelationships.get(0);
+
+                if (! errorHandler.validateStatus(statusPropertyName, statusThreshold, resultingRelationship.getProperties(), methodName))
+                {
+                    resultingRelationship = null;
+                }
+            }
+            else if ((filteredRelationships != null) && (filteredRelationships.size() > 1))
+            {
+                errorHandler.handleAmbiguousRelationships(startingEntity.getGUID(),
+                                                          startingEntityTypeName,
+                                                          relationshipTypeName,
+                                                          filteredRelationships,
+                                                          methodName);
+            }
+
+            if (resultingRelationship != null)
+            {
+                EntityProxy requiredEnd = resultingRelationship.getEntityOneProxy();
+                EntityProxy startingEnd = resultingRelationship.getEntityTwoProxy();
+
+                if (startingEntity.getGUID().equals(requiredEnd.getGUID()))
+                {
+                    requiredEnd = resultingRelationship.getEntityTwoProxy();
+                    startingEnd = resultingRelationship.getEntityOneProxy();
+                }
+
+                errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
+                errorHandler.validateInstanceType(requiredEnd, returningEntityTypeName, methodName, localMethodName);
+
+                return this.getEntityForRelationship(userId,
+                                                     requiredEnd,
+                                                     returningEntityTypeName,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+            }
         }
 
         return null;
@@ -1672,6 +2928,8 @@ public class RepositoryHandler
                                                    relationshipTypeGUID,
                                                    relationshipTypeName,
                                                    null,
+                                                   false,
+                                                   false,
                                                    startingFrom,
                                                    pageSize,
                                                    new Date(),
@@ -1688,6 +2946,8 @@ public class RepositoryHandler
      * @param relationshipTypeGUID   identifier for the relationship to follow
      * @param relationshipTypeName   type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom           initial position in the stored list.
      * @param pageSize               maximum number of definitions to return on this call
      * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1698,20 +2958,31 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<EntityDetail> getEntitiesForRelationshipType(String userId,
-                                                             String startingEntityGUID,
-                                                             String startingEntityTypeName,
-                                                             String relationshipTypeGUID,
-                                                             String relationshipTypeName,
-                                                             String sequencingPropertyName,
-                                                             int    startingFrom,
-                                                             int    pageSize,
-                                                             Date   effectiveTime,
-                                                             String methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<EntityDetail> getEntitiesForRelationshipType(String  userId,
+                                                             String  startingEntityGUID,
+                                                             String  startingEntityTypeName,
+                                                             String  relationshipTypeGUID,
+                                                             String  relationshipTypeName,
+                                                             String  sequencingPropertyName,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing,
+                                                             int     startingFrom,
+                                                             int     pageSize,
+                                                             Date    effectiveTime,
+                                                             String  methodName) throws UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String localMethodName = "getEntitiesForRelationshipType";
 
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         SequencingOrder sequencingOrder = null;
 
@@ -1742,7 +3013,13 @@ public class RepositoryHandler
                     {
                         EntityProxy requiredEnd = getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
 
-                        EntityDetail entity = this.getEntityForRelationship(userId, requiredEnd, effectiveTime, methodName);
+                        EntityDetail entity = this.getEntityForRelationship(userId,
+                                                                            requiredEnd,
+                                                                            requiredEnd.getType().getTypeDefName(),
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            effectiveTime,
+                                                                            methodName);
 
                         if (entity != null)
                         {
@@ -1782,6 +3059,7 @@ public class RepositoryHandler
     }
 
 
+
     /**
      * Return the list of entities by the requested classification type.
      *
@@ -1807,29 +3085,68 @@ public class RepositoryHandler
                                                                String methodName) throws UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        return this.getEntitiesForClassificationType(userId, entityEntityTypeGUID, classificationName, false, false, startingFrom, pageSize, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the list of entities by the requested classification type.
+     *
+     * @param userId               user making the request
+     * @param entityTypeGUID starting entity's GUID
+     * @param classificationName   type name for the classification to follow
+     * @param forLineage           the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom         initial position in the stored list.
+     * @param pageSize             maximum number of definitions to return on this call.
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName           name of calling method
+     *
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
+     *
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getEntitiesForClassificationType(String  userId,
+                                                               String  entityTypeGUID,
+                                                               String  classificationName,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               int     startingFrom,
+                                                               int     pageSize,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
         final String localMethodName = "getEntitiesForClassificationType";
 
         try
         {
-            List<EntityDetail> entitiesByClassification = metadataCollection.findEntitiesByClassification(userId,
-                                                                                                          entityEntityTypeGUID,
-                                                                                                          classificationName,
-                                                                                                          null,
-                                                                                                          MatchCriteria.ALL,
-                                                                                                          startingFrom,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          SequencingOrder.ANY,
-                                                                                                          pageSize);
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByClassification(userId,
+                                                                                                   entityTypeGUID,
+                                                                                                   classificationName,
+                                                                                                   null,
+                                                                                                   MatchCriteria.ALL,
+                                                                                                   startingFrom,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   SequencingOrder.ANY,
+                                                                                                   pageSize);
 
-            if (entitiesByClassification != null)
+            if (retrievedEntities != null)
             {
-                return this.returnEffectiveEntities(entitiesByClassification, effectiveTime);
+                return this.validateEntities(userId,
+                                             retrievedEntities,
+                                             null,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
             }
             else if (log.isDebugEnabled())
             {
-                log.debug("No entities of type {} with classification {}.", entityEntityTypeGUID, classificationName);
+                log.debug("No entities of type {} with classification {}.", entityTypeGUID, classificationName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -1843,6 +3160,8 @@ public class RepositoryHandler
 
         return null;
     }
+
+
 
 
     /**
@@ -1874,16 +3193,18 @@ public class RepositoryHandler
                                                             String  methodName) throws UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return getEntitiesForRelationshipEnd(userId,
-                                             startEntityGUID,
-                                             startEntityTypeName,
-                                             startAtEnd1,
-                                             relationshipTypeGUID,
-                                             relationshipTypeName,
-                                             startingFrom,
-                                             pageSize,
-                                             new Date(),
-                                             methodName);
+        return this.getEntitiesForRelationshipEnd(userId,
+                                                  startEntityGUID,
+                                                  startEntityTypeName,
+                                                  startAtEnd1,
+                                                  relationshipTypeGUID,
+                                                  relationshipTypeName,
+                                                  false,
+                                                  false,
+                                                  startingFrom,
+                                                  pageSize,
+                                                  new Date(),
+                                                  methodName);
     }
 
 
@@ -1896,6 +3217,8 @@ public class RepositoryHandler
      * @param startAtEnd1 indicates that the match of the starting entity must be at end 1 (otherwise it is at end two)
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1910,6 +3233,8 @@ public class RepositoryHandler
                                                             boolean startAtEnd1,
                                                             String  relationshipTypeGUID,
                                                             String  relationshipTypeName,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
                                                             int     startingFrom,
                                                             int     pageSize,
                                                             Date    effectiveTime,
@@ -1917,6 +3242,17 @@ public class RepositoryHandler
                                                                                        PropertyServerException
     {
         final String localMethodName = "getEntitiesForRelationshipEnd";
+
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+        final String requiredEndParameterName = "requiredEndProxy.getGUID()";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         List<EntityDetail> results = new ArrayList<>();
 
@@ -1949,7 +3285,14 @@ public class RepositoryHandler
 
                         if (startEntityGUID.equals(startEndProxy.getGUID()))
                         {
-                            EntityDetail requiredEntity = metadataCollection.getEntityDetail(userId, requiredEndProxy.getGUID());
+                            EntityDetail requiredEntity = this.getEntityByGUID(userId,
+                                                                               requiredEndProxy.getGUID(),
+                                                                               requiredEndParameterName,
+                                                                               requiredEndProxy.getType().getTypeDefName(),
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               effectiveTime,
+                                                                               methodName);
 
                             if (requiredEntity != null)
                             {
@@ -1985,221 +3328,6 @@ public class RepositoryHandler
         {
             return results;
         }
-    }
-
-
-    /**
-     * Return the list of entities at the other end of the requested relationship type that were created or edited by
-     * the requesting user.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param attachedEntityTypeGUID  identifier for the relationship to follow
-     * @param attachedEntityTypeName  type name for the relationship to follow
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     * @return retrieved entities or null
-     * @throws InvalidParameterException the entity at the other end is not of the expected type
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public EntityDetail getAttachedEntityFromUser(String  userId,
-                                                  String  startingEntityGUID,
-                                                  String  startingEntityTypeName,
-                                                  String  relationshipTypeGUID,
-                                                  String  relationshipTypeName,
-                                                  String  attachedEntityTypeGUID,
-                                                  String  attachedEntityTypeName,
-                                                  Date    effectiveTime,
-                                                  String  methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        final String localMethodName = "getAttachedEntityFromUser";
-
-        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
-                                                                                           userId,
-                                                                                           startingEntityGUID,
-                                                                                           startingEntityTypeName,
-                                                                                           relationshipTypeGUID,
-                                                                                           relationshipTypeName,
-                                                                                           null,
-                                                                                           0,
-                                                                                           maxPageSize,
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-
-
-
-        while (iterator.moreToReceive())
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
-                    return entity;
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the list of entities at the other end of the requested relationship type that were created or
-     * edited by the requesting user.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param attachedEntityTypeGUID  identifier for the relationship to follow
-     * @param attachedEntityTypeName  type name for the relationship to follow
-     * @param sequencingPropertyName name of property used to sequence the results - needed for paging
-     * @param startingFrom initial position in the stored list
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     * @return retrieved entities or null
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     * @throws InvalidParameterException one of the parameters is in error
-     */
-    public List<EntityDetail> getAttachedEntitiesFromUser(String  userId,
-                                                          String  startingEntityGUID,
-                                                          String  startingEntityTypeName,
-                                                          String  relationshipTypeGUID,
-                                                          String  relationshipTypeName,
-                                                          String  attachedEntityTypeGUID,
-                                                          String  attachedEntityTypeName,
-                                                          String  sequencingPropertyName,
-                                                          int     startingFrom,
-                                                          int     pageSize,
-                                                          Date    effectiveTime,
-                                                          String  methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String localMethodName = "getAttachedEntitiesFromUser";
-
-        List<EntityDetail> results = new ArrayList<>();
-
-        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
-                                                                                           userId,
-                                                                                           startingEntityGUID,
-                                                                                           startingEntityTypeName,
-                                                                                           relationshipTypeGUID,
-                                                                                           relationshipTypeName,
-                                                                                           sequencingPropertyName,
-                                                                                           startingFrom,
-                                                                                           pageSize,
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-        while ((iterator.moreToReceive() && ((pageSize == 0) || (results.size() < pageSize))))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                if ((userId.equals(entity.getCreatedBy()) ||
-                             (userId.equals(entity.getUpdatedBy())) ||
-                             ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
-                    results.add(entity);
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
-    }
-
-
-    /**
-     * Return the list of entity proxies for the entities at the far end of the relationships linked to the
-     * starting entity.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @throws InvalidParameterException the starting entity is not of the expected type
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     * @return list of entity proxies
-     */
-    public List<EntityProxy>  getRelatedEntityProxies(String userId,
-                                                      String startingEntityGUID,
-                                                      String startingEntityTypeName,
-                                                      String relationshipTypeGUID,
-                                                      String relationshipTypeName,
-                                                      int    startingFrom,
-                                                      int    pageSize,
-                                                      Date   effectiveTime,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                       startingEntityGUID,
-                                                                       startingEntityTypeName,
-                                                                       relationshipTypeGUID,
-                                                                       relationshipTypeName,
-                                                                       startingFrom,
-                                                                       pageSize,
-                                                                       effectiveTime,
-                                                                       methodName);
-
-        if (relationships != null)
-        {
-            List<EntityProxy>  entityProxies = new ArrayList<>();
-
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    EntityProxy relatedEntityProxy = this.getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
-
-                    if (relatedEntityProxy != null)
-                    {
-                        entityProxies.add(relatedEntityProxy);
-                    }
-                }
-            }
-
-            if (entityProxies.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return entityProxies;
-            }
-        }
-
-        return null;
     }
 
 
@@ -2270,148 +3398,6 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of entities at the other end of the requested relationship type.
-     *
-     * @param userId  user making the request
-     * @param requiredEnd  entityProxy from relationship
-     * @param effectiveTime time that the entity should be effective for
-     * @param methodName  name of calling method
-     * @return retrieved entities or null
-     * @throws InvalidParameterException guid is invalid
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    private EntityDetail getEntityForRelationship(String      userId,
-                                                  EntityProxy requiredEnd,
-                                                  Date        effectiveTime,
-                                                  String      methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        final String guidParameterName = "requiredEnd.getGUID()";
-
-        return validateEntityGUID(userId, requiredEnd.getGUID(), null, methodName, guidParameterName, effectiveTime);
-    }
-
-
-    /**
-     * Return the entity at the other end of the requested relationship type.  The assumption is that this is a 0..1
-     * relationship so one entity (or null) is returned.  If lots of relationships are found then the
-     * PropertyServerException is thrown.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param methodName  name of calling method
-     * @return retrieved entity or null
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public EntityDetail getEntityForRelationshipType(String userId,
-                                                     String startingEntityGUID,
-                                                     String startingEntityTypeName,
-                                                     String relationshipTypeGUID,
-                                                     String relationshipTypeName,
-                                                     String methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return getEntityForRelationshipType(userId,
-                                            startingEntityGUID,
-                                            startingEntityTypeName,
-                                            relationshipTypeGUID,
-                                            relationshipTypeName,
-                                            new Date(),
-                                            methodName);
-    }
-
-
-    /**
-     * Return the entity at the other end of the requested relationship type.  The assumption is that this is a 0..1
-     * relationship so one entity (or null) is returned.  If lots of relationships are found then the
-     * PropertyServerException is thrown.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     * @return retrieved entity or null
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public EntityDetail getEntityForRelationshipType(String userId,
-                                                     String startingEntityGUID,
-                                                     String startingEntityTypeName,
-                                                     String relationshipTypeGUID,
-                                                     String relationshipTypeName,
-                                                     Date   effectiveTime,
-                                                     String methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String localMethodName = "getEntityForRelationshipType";
-
-        try
-        {
-            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            startingEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            100);
-
-            List<Relationship> effectiveRelationships = returnEffectiveRelationships(relationships, effectiveTime);
-
-            if ((effectiveRelationships == null) || (effectiveRelationships.isEmpty()))
-            {
-                return null;
-            }
-            else if (effectiveRelationships.size() == 1)
-            {
-                Relationship  relationship = effectiveRelationships.get(0);
-
-                EntityProxy requiredEnd = relationship.getEntityOneProxy();
-                EntityProxy startingEnd = relationship.getEntityTwoProxy();
-
-                if (startingEntityGUID.equals(requiredEnd.getGUID()))
-                {
-                    requiredEnd = relationship.getEntityTwoProxy();
-                    startingEnd = relationship.getEntityOneProxy();
-                }
-
-                errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
-
-                return this.getEntityForRelationship(userId, requiredEnd, effectiveTime, methodName);
-            }
-            else
-            {
-                errorHandler.handleAmbiguousRelationships(startingEntityGUID,
-                                                          startingEntityTypeName,
-                                                          relationshipTypeName,
-                                                          effectiveRelationships,
-                                                          methodName);
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Return the requested entity, converting any errors from the repository services into the local
      * OMAS exceptions.
      *
@@ -2435,7 +3421,14 @@ public class RepositoryHandler
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return validateEntityGUID(userId, guid, entityTypeName, methodName, guidParameterName, new Date());
+        return getEntityByGUID(userId,
+                               guid,
+                               guidParameterName,
+                               entityTypeName,
+                               false,
+                               false,
+                               new Date(),
+                               methodName);
     }
 
 
@@ -2447,6 +3440,7 @@ public class RepositoryHandler
      * @param guid unique identifier for the entity
      * @param guidParameterName name of the guid parameter for error handling
      * @param entityTypeName expected type of the entity
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method name
      *
@@ -2456,16 +3450,113 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public EntityDetail   getEntityByGUID(String userId,
-                                          String guid,
-                                          String guidParameterName,
-                                          String entityTypeName,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public EntityDetail   getEntityByGUID(String  userId,
+                                          String  guid,
+                                          String  guidParameterName,
+                                          String  entityTypeName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        return validateEntityGUID(userId, guid, entityTypeName, methodName, guidParameterName, effectiveTime);
+        final String localMethodName = "getEntityByGUID";
+
+        EntityDetail entity = validateEntityGUID(userId, guid, guidParameterName, entityTypeName, methodName);
+
+        if (entity != null)
+        {
+            log.debug("retrievedEntity=" + entity.getGUID());
+        }
+        else
+        {
+            log.debug("No retrievedEntity");
+        }
+
+        EntityDetail verifiedEntity = this.validateRetrievedEntity(userId,
+                                                                   entity,
+                                                                   entityTypeName,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if (verifiedEntity != null)
+        {
+            log.debug("verifiedEntity=" + verifiedEntity.getGUID());
+            return verifiedEntity;
+        }
+        else if (entity != null)
+        {
+            log.debug("No verifiedEntity");
+
+            List<String> classificationNames = new ArrayList<>();
+
+            if (entity.getClassifications() != null)
+            {
+                for (Classification classification : entity.getClassifications())
+                {
+                    if (classification != null)
+                    {
+                        classificationNames.add(classification.getName());
+                    }
+                }
+            }
+
+            String effectiveFromString = "<null>";
+            String effectiveToString   = "<null>";
+            String effectiveTimeString = "<null>";
+
+            if (effectiveTime != null)
+            {
+                effectiveTimeString = effectiveTime.toString() + " (" + effectiveTime.getTime() + ")";
+            }
+
+            if (entity.getProperties() != null)
+            {
+                if (entity.getProperties().getEffectiveFromTime() != null)
+                {
+                    effectiveFromString = entity.getProperties().getEffectiveFromTime().toString() + " (" + entity.getProperties().getEffectiveFromTime().getTime() + ")";
+                }
+                if (entity.getProperties().getEffectiveToTime() != null)
+                {
+                    effectiveToString = entity.getProperties().getEffectiveToTime().toString() + " (" + entity.getProperties().getEffectiveToTime().getTime() + ")";
+                }
+            }
+
+
+            InvalidParameterException error = new InvalidParameterException(RepositoryHandlerErrorCode.UNAVAILABLE_ENTITY.getMessageDefinition(entityTypeName,
+                                                                                                                   guid,
+                                                                                                                   localMethodName,
+                                                                                                                   methodName,
+                                                                                                                   userId,
+                                                                                                                   effectiveTimeString,
+                                                                                                                   effectiveFromString,
+                                                                                                                   effectiveToString,
+                                                                                                                   classificationNames.toString()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                guidParameterName);
+
+            auditLog.logException(localMethodName,
+                                  RepositoryHandlerAuditCode.UNAVAILABLE_ENTITY.getMessageDefinition(entityTypeName,
+                                                                                                     guid,
+                                                                                                     localMethodName,
+                                                                                                     methodName,
+                                                                                                     userId,
+                                                                                                     effectiveTimeString,
+                                                                                                     effectiveFromString,
+                                                                                                     effectiveToString,
+                                                                                                     classificationNames.toString()),
+                                  error);
+
+            throw error;
+        }
+
+        throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED.getMessageDefinition(entityTypeName, guid, localMethodName, methodName, userId),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 
 
@@ -2563,12 +3654,16 @@ public class RepositoryHandler
      * @param nameProperties list of name properties to search on
      * @param entityTypeGUID unique identifier of the entity's type
      * @param sequencingPropertyName property name used to sequence the results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list
      * @param pageSize maximum number of definitions to return on this call
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
+     *
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2576,6 +3671,8 @@ public class RepositoryHandler
                                                  InstanceProperties nameProperties,
                                                  String             entityTypeGUID,
                                                  String             sequencingPropertyName,
+                                                 boolean            forLineage,
+                                                 boolean            forDuplicateProcessing,
                                                  int                startingFrom,
                                                  int                pageSize,
                                                  Date               effectiveTime,
@@ -2593,7 +3690,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
                                                                                     entityTypeGUID,
                                                                                     nameProperties,
                                                                                     MatchCriteria.ANY,
@@ -2605,7 +3702,13 @@ public class RepositoryHandler
                                                                                     sequencingOrder,
                                                                                     pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2628,12 +3731,15 @@ public class RepositoryHandler
      * @param properties list of name properties to search on.
      * @param entityTypeGUID unique identifier of the entity's type
      * @param sequencingPropertyName property name used to sequence the results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
+     *
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2641,6 +3747,8 @@ public class RepositoryHandler
                                                           InstanceProperties properties,
                                                           String             entityTypeGUID,
                                                           String             sequencingPropertyName,
+                                                          boolean            forLineage,
+                                                          boolean            forDuplicateProcessing,
                                                           int                startingFrom,
                                                           int                pageSize,
                                                           Date               effectiveTime,
@@ -2658,7 +3766,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
                                                                                     entityTypeGUID,
                                                                                     properties,
                                                                                     MatchCriteria.ALL,
@@ -2670,7 +3778,13 @@ public class RepositoryHandler
                                                                                     sequencingOrder,
                                                                                     pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2691,12 +3805,15 @@ public class RepositoryHandler
      * @param userId calling userId
      * @param properties list of name properties to search on.
      * @param entityTypeGUID unique identifier of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
+     *
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2704,6 +3821,8 @@ public class RepositoryHandler
                                                                 InstanceProperties properties,
                                                                 String             entityTypeGUID,
                                                                 String             sequencingPropertyName,
+                                                                boolean            forLineage,
+                                                                boolean            forDuplicateProcessing,
                                                                 int                startingFrom,
                                                                 int                pageSize,
                                                                 Date               effectiveTime,
@@ -2721,7 +3840,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
                                                                                     entityTypeGUID,
                                                                                     properties,
                                                                                     MatchCriteria.NONE,
@@ -2733,7 +3852,13 @@ public class RepositoryHandler
                                                                                     sequencingOrder,
                                                                                     pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2755,25 +3880,30 @@ public class RepositoryHandler
      * @param userId calling userId
      * @param propertyValue string value to search on - may be a RegEx
      * @param entityTypeGUID unique identifier of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param pageSize maximum number of definitions to return on this call
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
+     *
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesByValue(String userId,
-                                                  String propertyValue,
-                                                  String entityTypeGUID,
-                                                  String sequencingPropertyName,
-                                                  int    startingFrom,
-                                                  int    pageSize,
-                                                  Date   effectiveTime,
-                                                  String methodName) throws UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<EntityDetail>  getEntitiesByValue(String  userId,
+                                                  String  propertyValue,
+                                                  String  entityTypeGUID,
+                                                  String  sequencingPropertyName,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  int     startingFrom,
+                                                  int     pageSize,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String localMethodName = "getEntitiesByValue";
 
@@ -2786,7 +3916,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByPropertyValue(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByPropertyValue(userId,
                                                                                          entityTypeGUID,
                                                                                          propertyValue,
                                                                                          startingFrom,
@@ -2797,7 +3927,13 @@ public class RepositoryHandler
                                                                                          sequencingOrder,
                                                                                          pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2820,6 +3956,8 @@ public class RepositoryHandler
      * @param searchCriteria String Java regular expression used to match against any of the String property values
      *                             within entity instances of the specified type(s).
      *                             This parameter must not be null.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -2831,13 +3969,15 @@ public class RepositoryHandler
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
     public List<EntityDetail>  getEntitiesByPropertyValue(String          userId,
                                                           String          entityTypeGUID,
                                                           String          searchCriteria,
+                                                          boolean         forLineage,
+                                                          boolean         forDuplicateProcessing,
                                                           int             startingFrom,
                                                           int             pageSize,
                                                           Date            asOfTime,
@@ -2851,7 +3991,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByPropertyValue(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByPropertyValue(userId,
                                                                                          entityTypeGUID,
                                                                                          searchCriteria,
                                                                                          startingFrom,
@@ -2862,7 +4002,13 @@ public class RepositoryHandler
                                                                                          sequencingOrder,
                                                                                          pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2888,7 +4034,7 @@ public class RepositoryHandler
      * @param entityTypeName name of the entity's type
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2901,7 +4047,16 @@ public class RepositoryHandler
                                               String             methodName) throws UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return this.getUniqueEntityByName(userId, nameValue, nameParameterName, nameProperties, entityTypeGUID, entityTypeName, new Date(), methodName);
+        return this.getUniqueEntityByName(userId,
+                                          nameValue,
+                                          nameParameterName,
+                                          nameProperties,
+                                          entityTypeGUID,
+                                          entityTypeName,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);
     }
 
 
@@ -2912,12 +4067,14 @@ public class RepositoryHandler
      * @param nameValue property name being searched for
      * @param nameParameterName name of parameter that passed the name value
      * @param nameProperties list of name properties to search on
-     * @param entityTypeGUID type of entity to create
+     * @param entityTypeGUID type of entity to retrieve
      * @param entityTypeName name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2927,15 +4084,26 @@ public class RepositoryHandler
                                               InstanceProperties nameProperties,
                                               String             entityTypeGUID,
                                               String             entityTypeName,
+                                              boolean            forLineage,
+                                              boolean            forDuplicateProcessing,
                                               Date               effectiveTime,
                                               String             methodName) throws UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
         final String localMethodName = "getUniqueEntityByName";
 
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                                             typeGUIDParameterName,
+                                             entityTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
                                                                                     entityTypeGUID,
                                                                                     nameProperties,
                                                                                     MatchCriteria.ANY,
@@ -2947,7 +4115,13 @@ public class RepositoryHandler
                                                                                     null,
                                                                                     2);
 
-            List<EntityDetail> effectiveEntities = this.returnEffectiveEntities(entities, effectiveTime);
+            List<EntityDetail> effectiveEntities = this.validateEntities(userId,
+                                                                         retrievedEntities,
+                                                                         entityTypeName,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime,
+                                                                         methodName);
 
             if ((effectiveEntities == null) || (effectiveEntities.isEmpty()))
             {
@@ -2984,7 +4158,7 @@ public class RepositoryHandler
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -2997,6 +4171,8 @@ public class RepositoryHandler
     {
         return getEntitiesByType(userId,
                                  entityTypeGUID,
+                                 false,
+                                 false,
                                  startingFrom,
                                  pageSize,
                                  null,
@@ -3012,6 +4188,8 @@ public class RepositoryHandler
      *
      * @param userId calling userId
      * @param entityTypeGUID type of entity required
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -3021,12 +4199,14 @@ public class RepositoryHandler
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of returned entities
+     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
     public List<EntityDetail> getEntitiesByType(String          userId,
                                                 String          entityTypeGUID,
+                                                boolean         forLineage,
+                                                boolean         forDuplicateProcessing,
                                                 int             startingFrom,
                                                 int             pageSize,
                                                 Date            asOfTime,
@@ -3040,7 +4220,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
                                                                                     entityTypeGUID,
                                                                                     null,
                                                                                     null,
@@ -3052,7 +4232,13 @@ public class RepositoryHandler
                                                                                     sequencingOrder,
                                                                                     pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -3090,7 +4276,7 @@ public class RepositoryHandler
      *                 unrestricted return results size.
      * @param methodName calling method
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * collection; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -3117,6 +4303,8 @@ public class RepositoryHandler
                                  asOfTime,
                                  sequencingProperty,
                                  sequencingOrder,
+                                 true,
+                                 false,
                                  startingFrom,
                                  pageSize,
                                  new Date(),
@@ -3140,6 +4328,8 @@ public class RepositoryHandler
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -3148,7 +4338,7 @@ public class RepositoryHandler
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * collection; list (even if empty) means more to receive
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
@@ -3161,6 +4351,8 @@ public class RepositoryHandler
                                            Date                  asOfTime,
                                            String                sequencingProperty,
                                            SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
                                            int                   startingFrom,
                                            int                   pageSize,
                                            Date                  effectiveTime,
@@ -3171,7 +4363,7 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> entities = metadataCollection.findEntities(userId,
+            List<EntityDetail> retrievedEntities = metadataCollection.findEntities(userId,
                                                                           entityTypeGUID,
                                                                           entitySubtypeGUIDs,
                                                                           searchProperties,
@@ -3183,7 +4375,13 @@ public class RepositoryHandler
                                                                           sequencingOrder,
                                                                           pageSize);
 
-            return this.returnEffectiveEntities(entities, effectiveTime);
+            return this.validateEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -3219,6 +4417,7 @@ public class RepositoryHandler
      *                                beyond the first page of results. Zero means start from the first element.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return a list of relationships.  Null means no matching relationships.
@@ -3233,6 +4432,7 @@ public class RepositoryHandler
                                                 Date                  asOfTime,
                                                 String                sequencingProperty,
                                                 SequencingOrder       sequencingOrder,
+                                                boolean               forDuplicateProcessing,
                                                 int                   startingFrom,
                                                 int                   pageSize,
                                                 Date                  effectiveTime,
@@ -3243,6 +4443,7 @@ public class RepositoryHandler
 
         try
         {
+
             List<Relationship> relationships = metadataCollection.findRelationships(userId,
                                                                                     relationshipTypeGUID,
                                                                                     relationshipSubtypeGUIDs,
@@ -3254,13 +4455,23 @@ public class RepositoryHandler
                                                                                     sequencingOrder,
                                                                                     pageSize);
 
-            return this.returnEffectiveRelationships(relationships, effectiveTime);
+            if (relationships != null)
+            {
+                RelationshipAccumulator accumulator = new RelationshipAccumulator(repositoryHelper,
+                                                                                  this,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
+                                                                                  methodName);
+
+                accumulator.addRelationships(relationships);
+                return accumulator.getRelationships();
+            }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3360,6 +4571,7 @@ public class RepositoryHandler
                                            startingEntityTypeName,
                                            relationshipTypeGUID,
                                            relationshipTypeName,
+                                           false,
                                            0,
                                            maxPageSize,
                                            new Date(),
@@ -3376,6 +4588,7 @@ public class RepositoryHandler
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing is this call part of duplicate processing?
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3386,18 +4599,29 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
-    public List<Relationship> getRelationshipsByType(String userId,
-                                                     String startingEntityGUID,
-                                                     String startingEntityTypeName,
-                                                     String relationshipTypeGUID,
-                                                     String relationshipTypeName,
-                                                     int    startingFrom,
-                                                     int    pageSize,
-                                                     Date   effectiveTime,
-                                                     String methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<Relationship> getRelationshipsByType(String  userId,
+                                                     String  startingEntityGUID,
+                                                     String  startingEntityTypeName,
+                                                     String  relationshipTypeGUID,
+                                                     String  relationshipTypeName,
+                                                     boolean forDuplicateProcessing,
+                                                     int     startingFrom,
+                                                     int     pageSize,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String localMethodName = "getRelationshipsByType";
+
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -3421,6 +4645,9 @@ public class RepositoryHandler
                 return null;
             }
 
+            /*
+             * Validate the types of the element returned and filter out those relationships that are not effective.
+             */
             List<Relationship>  results = new ArrayList<>();
 
             for (Relationship relationship : relationships)
@@ -3438,7 +4665,18 @@ public class RepositoryHandler
                 }
             }
 
-            return results;
+            /*
+             * This is further filtering for duplicates.
+             */
+            RelationshipAccumulator accumulator = new RelationshipAccumulator(repositoryHelper,
+                                                                              this,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+            accumulator.addRelationships(results);
+
+            return accumulator.getRelationships();
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -3548,68 +4786,6 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of relationships of the requested type connected to the starting entity.
-     * No relationships found results in an exception.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     *
-     * @return retrieved relationships or null
-     *
-     * @throws UserNotAuthorizedException security access problem
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public List<Relationship> getRequiredRelationshipsByType(String               userId,
-                                                             String               startingEntityGUID,
-                                                             String               startingEntityTypeName,
-                                                             String               relationshipTypeGUID,
-                                                             String               relationshipTypeName,
-                                                             int                  startingFrom,
-                                                             List<InstanceStatus> limitResultsByStatus,
-                                                             Date                 asOfTime,
-                                                             String               sequencingProperty,
-                                                             SequencingOrder      sequencingOrder,
-                                                             int                  pageSize,
-                                                             Date                 effectiveTime,
-                                                             String               methodName) throws UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        final String localMethodName = "getRequiredRelationshipsByType";
-
-        try
-        {
-            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            startingEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            startingFrom,
-                                                                                            limitResultsByStatus,
-                                                                                            asOfTime,
-                                                                                            sequencingProperty,
-                                                                                            sequencingOrder,
-                                                                                            pageSize);
-
-            return this.returnEffectiveRelationships(relationships, effectiveTime);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
      * Count the number of relationships of a specific type attached to an starting entity.
      *
      * @param userId  user making the request
@@ -3617,6 +4793,7 @@ public class RepositoryHandler
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -3625,20 +4802,22 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countAttachedRelationshipsByType(String userId,
-                                                String startingEntityGUID,
-                                                String startingEntityTypeName,
-                                                String relationshipTypeGUID,
-                                                String relationshipTypeName,
-                                                Date   effectiveTime,
-                                                String methodName) throws PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public int countAttachedRelationshipsByType(String  userId,
+                                                String  startingEntityGUID,
+                                                String  startingEntityTypeName,
+                                                String  relationshipTypeGUID,
+                                                String  relationshipTypeName,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         List<Relationship> relationships = this.getRelationshipsByType(userId,
                                                                        startingEntityGUID,
                                                                        startingEntityTypeName,
                                                                        relationshipTypeGUID,
                                                                        relationshipTypeName,
+                                                                       forDuplicateProcessing,
                                                                        0, 0,
                                                                        effectiveTime,
                                                                        methodName);
@@ -3669,6 +4848,7 @@ public class RepositoryHandler
      * @param entity2GUID  entity at end 2 GUID
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -3678,22 +4858,35 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
-    public List<Relationship> getRelationshipsBetweenEntities(String userId,
-                                                              String entity1GUID,
-                                                              String entity1TypeName,
-                                                              String entity2GUID,
-                                                              String relationshipTypeGUID,
-                                                              String relationshipTypeName,
-                                                              Date   effectiveTime,
-                                                              String methodName) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<Relationship> getRelationshipsBetweenEntities(String  userId,
+                                                              String  entity1GUID,
+                                                              String  entity1TypeName,
+                                                              String  entity2GUID,
+                                                              String  relationshipTypeGUID,
+                                                              String  relationshipTypeName,
+                                                              boolean forDuplicateProcessing,
+                                                              Date    effectiveTime,
+                                                              String  methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
+        final String localMethodName = "getRelationshipsBetweenEntities";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
                                                                                entity1GUID,
                                                                                entity1TypeName,
                                                                                relationshipTypeGUID,
                                                                                relationshipTypeName,
+                                                                               forDuplicateProcessing,
                                                                                0, 0,
                                                                                effectiveTime,
                                                                                methodName);
@@ -3737,6 +4930,7 @@ public class RepositoryHandler
      * @param entity2GUID  entity at end 2 GUID
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param exactMatchOnEffectivityDates do the effectivity dates have to match exactly (ie this is for a create/update)
@@ -3756,6 +4950,7 @@ public class RepositoryHandler
                                                               String  entity2GUID,
                                                               String  relationshipTypeGUID,
                                                               String  relationshipTypeName,
+                                                              boolean forDuplicateProcessing,
                                                               Date    effectiveFrom,
                                                               Date    effectiveTo,
                                                               boolean exactMatchOnEffectivityDates,
@@ -3763,6 +4958,17 @@ public class RepositoryHandler
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        final String localMethodName = "getRelationshipsBetweenEntities";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         long effectiveFromLong = Long.MIN_VALUE;
         long effectiveToLong   = Long.MAX_VALUE;
 
@@ -3789,6 +4995,7 @@ public class RepositoryHandler
                                                                                entity1TypeName,
                                                                                relationshipTypeGUID,
                                                                                relationshipTypeName,
+                                                                               forDuplicateProcessing,
                                                                                0, 0,
                                                                                null,
                                                                                methodName);
@@ -3988,6 +5195,7 @@ public class RepositoryHandler
                                                    entity2GUID,
                                                    relationshipTypeGUID,
                                                    relationshipTypeName,
+                                                   false,
                                                    new Date(),
                                                    methodName);
     }
@@ -4002,6 +5210,7 @@ public class RepositoryHandler
      * @param entity2GUID  entity at end 2 GUID
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -4011,23 +5220,36 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
-    public Relationship getRelationshipBetweenEntities(String userId,
-                                                       String entity1GUID,
-                                                       String entity1TypeName,
-                                                       String entity2GUID,
-                                                       String relationshipTypeGUID,
-                                                       String relationshipTypeName,
-                                                       Date   effectiveTime,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public Relationship getRelationshipBetweenEntities(String  userId,
+                                                       String  entity1GUID,
+                                                       String  entity1TypeName,
+                                                       String  entity2GUID,
+                                                       String  relationshipTypeGUID,
+                                                       String  relationshipTypeName,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
+        final String localMethodName = "getRelationshipBetweenEntities";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         List<Relationship>  entity1Relationships = this.getRelationshipsBetweenEntities(userId,
                                                                                         entity1GUID,
                                                                                         entity1TypeName,
                                                                                         entity2GUID,
                                                                                         relationshipTypeGUID,
                                                                                         relationshipTypeName,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -4075,7 +5297,16 @@ public class RepositoryHandler
                                                           String methodName) throws UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return this.getPagedRelationshipsByType(userId, startingEntityGUID, startingEntityTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, pageSize, new Date(), methodName);
+        return this.getPagedRelationshipsByType(userId,
+                                                startingEntityGUID,
+                                                startingEntityTypeName,
+                                                relationshipTypeGUID,
+                                                relationshipTypeName,
+                                                false,
+                                                startFrom,
+                                                pageSize,
+                                                new Date(),
+                                                methodName);
     }
 
     
@@ -4103,6 +5334,7 @@ public class RepositoryHandler
                                                           String startingEntityTypeName,
                                                           String relationshipTypeGUID,
                                                           String relationshipTypeName,
+                                                          boolean forDuplicateProcessing,
                                                           int    startFrom,
                                                           int    pageSize,
                                                           Date   effectiveTime,
@@ -4110,6 +5342,15 @@ public class RepositoryHandler
                                                                                     PropertyServerException
     {
         final String localMethodName = "getPagedRelationshipsByType";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -4128,7 +5369,15 @@ public class RepositoryHandler
                 return null;
             }
 
-            return this.returnEffectiveRelationships(relationships, effectiveTime);
+            RelationshipAccumulator accumulator = new RelationshipAccumulator(repositoryHelper,
+                                                                              this,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+            accumulator.addRelationships(relationships);
+
+            return accumulator.getRelationships();
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4153,6 +5402,7 @@ public class RepositoryHandler
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param parentAtEnd1 boolean flag to indicate which end has the parent element
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -4167,11 +5417,22 @@ public class RepositoryHandler
                                                           String  relationshipTypeGUID,
                                                           String  relationshipTypeName,
                                                           boolean parentAtEnd1,
+                                                          boolean forDuplicateProcessing,
                                                           Date    effectiveTime,
                                                           String  methodName) throws UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
         final String localMethodName = "getUniqueParentRelationshipByType";
+
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -4180,6 +5441,7 @@ public class RepositoryHandler
                                                                            startingEntityTypeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
+                                                                           forDuplicateProcessing,
                                                                            0, 2,
                                                                            effectiveTime,
                                                                            methodName);
@@ -4208,6 +5470,7 @@ public class RepositoryHandler
                                                                                                startingEntityTypeName,
                                                                                                relationshipTypeGUID,
                                                                                                relationshipTypeName,
+                                                                                               forDuplicateProcessing,
                                                                                                0,
                                                                                                maxPageSize,
                                                                                                effectiveTime,
@@ -4308,6 +5571,7 @@ public class RepositoryHandler
                                                 startingEntityTypeName,
                                                 relationshipTypeGUID,
                                                 relationshipTypeName,
+                                                false,
                                                 new Date(),
                                                 methodName);
     }
@@ -4323,6 +5587,7 @@ public class RepositoryHandler
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -4331,16 +5596,26 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException problem accessing the property server
      */
-    public Relationship getUniqueRelationshipByType(String userId,
-                                                    String startingEntityGUID,
-                                                    String startingEntityTypeName,
-                                                    String relationshipTypeGUID,
-                                                    String relationshipTypeName,
-                                                    Date   effectiveTime,
-                                                    String methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public Relationship getUniqueRelationshipByType(String  userId,
+                                                    String  startingEntityGUID,
+                                                    String  startingEntityTypeName,
+                                                    String  relationshipTypeGUID,
+                                                    String  relationshipTypeName,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String localMethodName = "getUniqueRelationshipByType";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -4349,6 +5624,7 @@ public class RepositoryHandler
                                                                            startingEntityTypeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
+                                                                           forDuplicateProcessing,
                                                                            0, 0,
                                                                            effectiveTime,
                                                                            methodName);
@@ -4394,6 +5670,7 @@ public class RepositoryHandler
      * @param startAtEnd1 is the starting entity at end 1 of the relationship
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing is this part of duplicate processing?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      *
@@ -4408,6 +5685,7 @@ public class RepositoryHandler
                                                     boolean startAtEnd1,
                                                     String  relationshipTypeGUID,
                                                     String  relationshipTypeName,
+                                                    boolean forDuplicateProcessing,
                                                     Date    effectiveTime,
                                                     String  methodName) throws UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -4421,6 +5699,7 @@ public class RepositoryHandler
                                                                            startingEntityTypeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
+                                                                           forDuplicateProcessing,
                                                                            0, 2,
                                                                            effectiveTime,
                                                                            methodName);
@@ -4562,6 +5841,7 @@ public class RepositoryHandler
      * @param relationshipTypeGUID unique identifier of the relationship's type
      * @param relationshipTypeName unique name of the relationship's type
      * @param relationshipProperties properties for the relationship
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName name of calling method
      *
@@ -4578,45 +5858,58 @@ public class RepositoryHandler
                                    String             relationshipTypeGUID,
                                    String             relationshipTypeName,
                                    InstanceProperties relationshipProperties,
+                                   boolean            forDuplicateProcessing,
                                    Date               effectiveTime,
                                    String             methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-       Relationship relationship = this.getRelationshipBetweenEntities(userId,
-                                                                       end1GUID,
-                                                                       end1TypeName,
-                                                                       end2GUID,
-                                                                       relationshipTypeGUID,
-                                                                       relationshipTypeName,
-                                                                       effectiveTime,
-                                                                       methodName);
-       if (relationship == null)
-       {
-           this.createRelationship(userId, relationshipTypeGUID, externalSourceGUID, externalSourceName, end1GUID, end2GUID, relationshipProperties, methodName);
-       }
-       else
-       {
-           errorHandler.validateProvenance(userId,
-                                           relationship,
-                                           relationship.getGUID(),
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           methodName);
+        final String localMethodName = "ensureRelationship";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
 
-           if ((relationshipProperties != null) || (relationship.getProperties() != null))
-           {
-               /*
-                * This ensures the properties are identical.
-                */
-               this.updateRelationshipProperties(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 relationship,
-                                                 relationshipProperties,
-                                                 methodName);
-           }
-       }
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
+        Relationship relationship = this.getRelationshipBetweenEntities(userId,
+                                                                        end1GUID,
+                                                                        end1TypeName,
+                                                                        end2GUID,
+                                                                        relationshipTypeGUID,
+                                                                        relationshipTypeName,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+        if (relationship == null)
+        {
+            this.createRelationship(userId, relationshipTypeGUID, externalSourceGUID, externalSourceName, end1GUID, end2GUID, relationshipProperties, methodName);
+        }
+        else
+        {
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationship.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
+            if ((relationshipProperties != null) || (relationship.getProperties() != null))
+            {
+                /*
+                 * This ensures the properties are identical.
+                 */
+                this.updateRelationshipProperties(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  relationship,
+                                                  relationshipProperties,
+                                                  methodName);
+            }
+        }
     }
 
 
@@ -4799,6 +6092,15 @@ public class RepositoryHandler
                                                             PropertyServerException
     {
         final String localMethodName = "purgeRelationship";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
 
         try
         {
@@ -4881,28 +6183,42 @@ public class RepositoryHandler
      * @param startingEntityTypeName type of entity
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
+     * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeAllRelationshipsOfType(String userId,
-                                             String externalSourceGUID,
-                                             String externalSourceName,
-                                             String startingEntityGUID,
-                                             String startingEntityTypeName,
-                                             String relationshipTypeGUID,
-                                             String relationshipTypeName,
-                                             Date   effectiveTime,
-                                             String methodName) throws UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void removeAllRelationshipsOfType(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  startingEntityGUID,
+                                             String  startingEntityTypeName,
+                                             String  relationshipTypeGUID,
+                                             String  relationshipTypeName,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
+        final String localMethodName = "removeAllRelationshipsOfType";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
                                                                                        userId,
                                                                                        startingEntityGUID,
                                                                                        startingEntityTypeName,
                                                                                        relationshipTypeGUID,
                                                                                        relationshipTypeName,
+                                                                                       forDuplicateProcessing,
                                                                                        0,
                                                                                        maxPageSize,
                                                                                        effectiveTime,
@@ -4936,6 +6252,7 @@ public class RepositoryHandler
      * @param entity1GUID unique identifier of the entity at end 1 of the relationship to delete
      * @param entity1TypeName type name of the entity at end 1 of the relationship to delete
      * @param entity2GUID unique identifier of the entity at end 1 of the relationship to delete
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName name of calling method
      *
@@ -4943,18 +6260,19 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeRelationshipBetweenEntities(String userId,
-                                                  String externalSourceGUID,
-                                                  String externalSourceName,
-                                                  String relationshipTypeGUID,
-                                                  String relationshipTypeName,
-                                                  String entity1GUID,
-                                                  String entity1TypeName,
-                                                  String entity2GUID,
-                                                  Date   effectiveTime,
-                                                  String methodName) throws UserNotAuthorizedException,
-                                                                            PropertyServerException,
-                                                                            InvalidParameterException
+    public void removeRelationshipBetweenEntities(String  userId,
+                                                  String  externalSourceGUID,
+                                                  String  externalSourceName,
+                                                  String  relationshipTypeGUID,
+                                                  String  relationshipTypeName,
+                                                  String  entity1GUID,
+                                                  String  entity1TypeName,
+                                                  String  entity2GUID,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException,
+                                                                             InvalidParameterException
     {
         Relationship  relationship = this.getRelationshipBetweenEntities(userId,
                                                                          entity1GUID,
@@ -4962,6 +6280,7 @@ public class RepositoryHandler
                                                                          entity2GUID,
                                                                          relationshipTypeGUID,
                                                                          relationshipTypeName,
+                                                                         forDuplicateProcessing,
                                                                          effectiveTime,
                                                                          methodName);
 
@@ -5168,6 +6487,7 @@ public class RepositoryHandler
      * @param relationshipTypeGUID unique identifier of the type of relationship to create.
      * @param relationshipTypeName name of the type of relationship to create.
      *                             parameter
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName name of calling method.
      *
@@ -5184,15 +6504,28 @@ public class RepositoryHandler
                                                String             relationshipTypeGUID,
                                                String             relationshipTypeName,
                                                InstanceProperties properties,
+                                               boolean            forDuplicateProcessing,
                                                Date               effectiveTime,
                                                String             methodName) throws UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        final String localMethodName = "updateUniqueRelationshipByType";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         Relationship  existingRelationshipForEntity1 = this.getUniqueRelationshipByType(userId,
                                                                                         end1GUID,
                                                                                         end1TypeName,
                                                                                         relationshipTypeGUID,
                                                                                         relationshipTypeName,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -5209,6 +6542,7 @@ public class RepositoryHandler
                                                                                         end2TypeName,
                                                                                         relationshipTypeGUID,
                                                                                         relationshipTypeName,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -5245,28 +6579,42 @@ public class RepositoryHandler
      * @param entityTypeName type name of entity
      * @param relationshipTypeGUID unique identifier of the relationship's type
      * @param relationshipTypeName name of the relationship's type
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException there is a problem communicating with the repository.
      */
-    public void removeUniqueRelationshipByType(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String entityGUID,
-                                               String entityTypeName,
-                                               String relationshipTypeGUID,
-                                               String relationshipTypeName,
-                                               Date   effectiveTime,
-                                               String methodName) throws UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void removeUniqueRelationshipByType(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  entityGUID,
+                                               String  entityTypeName,
+                                               String  relationshipTypeGUID,
+                                               String  relationshipTypeName,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
+        final String localMethodName = "removeUniqueRelationshipByType";
+        final String typeGUIDParameterName = "relationshipTypeGUID";
+        final String typeNameParameterName = "relationshipTypeName";
+
+        errorHandler.validateTypeIdentifiers(relationshipTypeGUID,
+                                             typeGUIDParameterName,
+                                             relationshipTypeName,
+                                             typeNameParameterName,
+                                             methodName,
+                                             localMethodName);
+
         Relationship obsoleteRelationship = this.getUniqueRelationshipByType(userId,
                                                                              entityGUID,
                                                                              entityTypeName,
                                                                              relationshipTypeGUID,
                                                                              relationshipTypeName,
+                                                                             forDuplicateProcessing,
                                                                              effectiveTime,
                                                                              methodName);
 

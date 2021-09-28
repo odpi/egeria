@@ -99,6 +99,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         if (endpoint != null)
         {
+            Date effectiveTime = new Date();
+
             if (endpoint.getGUID() != null)
             {
                 try
@@ -110,8 +112,9 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                      null,
                                                      null,
                                                      false,
+                                                     false,
                                                      supportedZones,
-                                                     null,
+                                                     effectiveTime,
                                                      methodName) != null)
                     {
                         return endpoint.getGUID();
@@ -135,8 +138,10 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              supportedZones,
-                                                             null,
+                                                             effectiveTime,
                                                              methodName);
             }
 
@@ -148,8 +153,10 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                              OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              supportedZones,
-                                                             null,
+                                                             effectiveTime,
                                                              methodName);
             }
 
@@ -437,6 +444,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       null,
                                                                       false,
+                                                                      false,
                                                                       supportedZones,
                                                                       null,
                                                                       0,
@@ -560,9 +568,12 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     endpointGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    this.getEffectiveTime(effectiveFrom, effectiveTo),
                                     methodName);
     }
 
@@ -599,6 +610,9 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -644,6 +658,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     serviceSupportedZones,
                                     null,
@@ -738,6 +753,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -772,6 +788,10 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }
