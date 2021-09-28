@@ -6,10 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateEffectivityDatesRequestBody implements Serializable
+public class UpdateEffectivityDatesRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -46,6 +43,8 @@ public class UpdateEffectivityDatesRequestBody implements Serializable
      */
     public UpdateEffectivityDatesRequestBody(UpdateEffectivityDatesRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             effectiveFrom = template.getEffectiveFrom();
@@ -108,7 +107,10 @@ public class UpdateEffectivityDatesRequestBody implements Serializable
     {
         return "UpdateEffectivityDatesRequestBody{" +
                        "effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo + '\'' +
+                       ", effectiveTo=" + effectiveTo +
+                       ", forLineage=" + getForLineage() +
+                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -130,8 +132,13 @@ public class UpdateEffectivityDatesRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         UpdateEffectivityDatesRequestBody that = (UpdateEffectivityDatesRequestBody) objectToCompare;
-        return Objects.equals(effectiveFrom, that.effectiveFrom) && Objects.equals(effectiveTo, that.effectiveTo);
+        return Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo);
     }
 
 
@@ -143,6 +150,6 @@ public class UpdateEffectivityDatesRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash( effectiveFrom, effectiveTo);
+        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo);
     }
 }

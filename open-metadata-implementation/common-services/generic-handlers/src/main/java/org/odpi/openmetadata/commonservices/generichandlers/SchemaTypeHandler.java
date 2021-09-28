@@ -893,6 +893,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
+        InstanceProperties properties = builder.getInstanceProperties(methodName);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -900,8 +902,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     existingSchemaTypeGUIDParameterName,
                                     this.getSchemaTypeTypeGUID(builder),
                                     this.getSchemaTypeTypeName(builder),
-                                    builder.getInstanceProperties(methodName),
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    properties,
                                     isMergeUpdate,
+                                    this.getEffectiveTime(properties),
                                     methodName);
     }
 
@@ -1067,6 +1073,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -1176,6 +1185,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                 relationshipTypeGUID,
                                                                 relationshipTypeName,
                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                false,
+                                                                false,
+                                                                supportedZones,
                                                                 effectiveTime,
                                                                 methodName);
 
@@ -1212,6 +1224,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                       null,
                                                                       null,
+                                                                      false,
                                                                       false,
                                                                       supportedZones,
                                                                       effectiveTime,
@@ -1400,6 +1413,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               null,
                                                               null,
                                                               false,
+                                                              false,
                                                               supportedZones,
                                                               null,
                                                               startFrom,
@@ -1574,6 +1588,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                           false,
+                                                                           false,
+                                                                           supportedZones,
                                                                            effectiveTime,
                                                                            methodName);
 
@@ -1603,6 +1620,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                       false,
+                                                                       false,
+                                                                       supportedZones,
                                                                        effectiveTime,
                                                                        methodName);
 
@@ -1620,6 +1640,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                          false,
+                                                                          false,
+                                                                          supportedZones,
                                                                           effectiveTime,
                                                                           methodName);
 
@@ -1636,6 +1659,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                        false,
+                                                                        false,
+                                                                        supportedZones,
                                                                         effectiveTime,
                                                                         methodName);
 
@@ -1654,6 +1680,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               supportedZones,
                                                                                0,
                                                                                invalidParameterHandler.getMaxPagingSize(),
                                                                                effectiveTime,
@@ -1684,6 +1715,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   2,
+                                                                  false,
                                                                   0,
                                                                   0,
                                                                   effectiveTime,

@@ -176,6 +176,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       commentGUID,
                                       commentGUIDParameter,
                                       OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
@@ -234,8 +237,12 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     commentGUIDParameterName,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
+                                    new Date(),
                                     methodName);
     }
 
@@ -272,6 +279,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -323,6 +333,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -363,12 +375,19 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
@@ -407,12 +426,19 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                             UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,

@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewRelatedElementsRequestBody implements Serializable
+public class NewRelatedElementsRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -51,6 +51,8 @@ public class NewRelatedElementsRequestBody implements Serializable
      */
     public NewRelatedElementsRequestBody(NewRelatedElementsRequestBody template)
     {
+        super (template);
+
         if (template != null)
         {
             typeName = template.getTypeName();
@@ -208,11 +210,14 @@ public class NewRelatedElementsRequestBody implements Serializable
     {
         return "NewRelatedElementsRequestBody{" +
                        "typeName='" + typeName + '\'' +
+                       ", metadataElement1GUID='" + metadataElement1GUID + '\'' +
+                       ", metadataElement2GUID='" + metadataElement2GUID + '\'' +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", properties=" + properties +
-                       ", metadataElement1GUID='" + metadataElement1GUID + '\'' +
-                       ", metadataElement2GUID='" + metadataElement2GUID + '\'' +
+                       ", forLineage=" + getForLineage() +
+                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -234,13 +239,17 @@ public class NewRelatedElementsRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         NewRelatedElementsRequestBody that = (NewRelatedElementsRequestBody) objectToCompare;
         return Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(metadataElement1GUID, that.metadataElement1GUID) &&
+                       Objects.equals(metadataElement2GUID, that.metadataElement2GUID) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(metadataElement1GUID, that.metadataElement1GUID) &&
-                       Objects.equals(metadataElement2GUID, that.metadataElement2GUID);
+                       Objects.equals(properties, that.properties);
     }
 
 
@@ -252,6 +261,6 @@ public class NewRelatedElementsRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeName, effectiveFrom, effectiveTo, properties, metadataElement1GUID, metadataElement2GUID);
+        return Objects.hash(super.hashCode(), typeName, metadataElement1GUID, metadataElement2GUID, effectiveFrom, effectiveTo, properties);
     }
 }

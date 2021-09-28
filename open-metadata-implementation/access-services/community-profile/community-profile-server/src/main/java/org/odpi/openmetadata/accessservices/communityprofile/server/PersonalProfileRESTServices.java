@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +90,9 @@ public class PersonalProfileRESTServices
                                                                                                OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                                                                requestBody.getProfileUserId(),
                                                                                                userParameterName,
+                                                                                               false,
+                                                                                               false,
+                                                                                               new Date(),
                                                                                                methodName);
 
 
@@ -136,6 +140,8 @@ public class PersonalProfileRESTServices
                                                              userIdentity.getGUID(),
                                                              userParameterName,
                                                              OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                              null,

@@ -122,6 +122,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                          false,
+                                                                          false,
                                                                           supportedZones,
                                                                           effectiveTime,
                                                                           methodName);
@@ -132,6 +134,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                       true,
                                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
+                                                                                                      false,
                                                                                                       effectiveTime,
                                                                                                       methodName);
 
@@ -215,6 +218,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                               true,
                                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_GUID,
                                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_NAME,
+                                                                                                              false,
                                                                                                               effectiveTime,
                                                                                                               methodName);
 
@@ -233,6 +237,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                null,
                                                                                null,
+                                                                               false,
                                                                                false,
                                                                                supportedZones,
                                                                                effectiveTime,
@@ -464,6 +469,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           governanceActionGUID,
                                           governanceActionGUIDParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
                                           originatorProperties,
@@ -496,6 +504,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   governanceActionGUID,
                                                   governanceActionGUIDParameterName,
                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                  false,
+                                                  false,
+                                                  supportedZones,
                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_GUID,
                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME,
                                                   originatorProperties,
@@ -546,6 +557,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       governanceEngineGUID,
                                       governanceEngineGUIDParameterName,
                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                       executorProperties,
@@ -611,6 +625,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               actionTargetGUID,
                                               actionTargetGUIDParameterName,
                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                              false,
+                                              false,
+                                              supportedZones,
                                               OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                               OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
                                               properties,
@@ -647,6 +664,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                    OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                   false,
+                                                                   false,
                                                                    supportedZones,
                                                                    new Date(),
                                                                    methodName);
@@ -700,6 +719,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   null,
                                                                   false,
+                                                                  false,
                                                                   supportedZones,
                                                                   effectiveTime,
                                                                   methodName);
@@ -715,6 +735,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                            null,
                                                                                            null,
+                                                                                           false,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -745,6 +766,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                null,
                                                                                null,
                                                                                false,
+                                                                               false,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
@@ -762,6 +784,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                                null,
                                                                                null,
+                                                                               false,
                                                                                false,
                                                                                supportedZones,
                                                                                effectiveTime,
@@ -889,6 +912,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            null,
                                                            false,
+                                                           false,
                                                            supportedZones,
                                                            effectiveTime,
                                                            methodName);
@@ -922,8 +946,12 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            guidParameterName,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                           false,
+                                           false,
+                                           supportedZones,
                                            builder.getClaimInstanceProperties(methodName),
                                            true,
+                                           effectiveTime,
                                            methodName);
                 }
                 else
@@ -993,6 +1021,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            null,
                                                            false,
+                                                           false,
                                                            supportedZones,
                                                            effectiveTime,
                                                            methodName);
@@ -1033,8 +1062,12 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            guidParameterName,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                           false,
+                                           false,
+                                           supportedZones,
                                            properties,
                                            true,
+                                           effectiveTime,
                                            methodName);
                 }
                 else
@@ -1111,6 +1144,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                            null,
                                                                            null,
+                                                                           false,
                                                                            false,
                                                                            supportedZones,
                                                                            effectiveTime,
@@ -1269,6 +1303,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                                 OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                                                                                 OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
+                                                                                                false,
                                                                                                 0, 0,
                                                                                                 effectiveTime,
                                                                                                 methodName);
@@ -1374,6 +1409,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                          false,
                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
+                                                                                                         false,
                                                                                                          effectiveTime,
                                                                                                          methodName);
 
@@ -1400,6 +1436,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                           OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                                                           OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                                          false,
                                                                                           0, 0,
                                                                                           effectiveTime,
                                                                                           methodName);
@@ -1551,6 +1588,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                             OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                                                             OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                                            false,
                                                                                             0, 0,
                                                                                             effectiveTime,
                                                                                             methodName);
@@ -1642,6 +1680,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
                                                                                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
+                                                                                                   false,
                                                                                                    0, 0,
                                                                                                    effectiveTime,
                                                                                                    methodName);
@@ -1657,6 +1696,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                          null,
                                                                                          null,
+                                                                                         false,
                                                                                          false,
                                                                                          supportedZones,
                                                                                          effectiveTime,
@@ -1754,6 +1794,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          null,
                                                                          null,
                                                                          nextGovernanceAction.getGUID(),
+                                                                         nextGovernanceAction,
                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                          entityProperties,
@@ -1800,6 +1841,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                             false,
+                                                                             false,
                                                                              0,
                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                              effectiveTime,
@@ -1862,6 +1905,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                             false,
+                                                                             false,
                                                                              0,
                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                              effectiveTime,
@@ -1946,6 +1991,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                              properties,
                                                                                              MatchCriteria.ANY,
                                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                             false,
+                                                                                             false,
                                                                                              0,
                                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                                              effectiveTime,

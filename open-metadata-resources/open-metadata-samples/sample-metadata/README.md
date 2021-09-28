@@ -14,8 +14,11 @@ identifier of repository backup open metadata archive then the metadata will be 
 If the metadata collection identifier of the target repository is different from the
 repository backup open metadata archive then the metadata from the archive will not load.
 
-There are two utilities that load metadata into a repository:
+The utilities that load metadata into a repository are as follows:
 
+* [Simple Catalogs](simple-catalogs) provides four archives that are each loaded into their own metadata server
+  that are in turn connected together using an open metadata repository connector.
+  
 * [Coco Pharmaceuticals Business Systems](coco-business-systems) provides a catalog of the business systems and the lineage between
 them and the load of their data into the data lake.  This archive simulates the
 type of metadata expected from an ETL tool suite.  It is intended for
@@ -25,9 +28,10 @@ type of metadata expected from an ETL tool suite.  It is intended for
 governance definitions that drive Coco Pharmaceuticals' governance program.
 This is intended for **cocoMDS2** in the open metadata labs.
 
-In addition to the utilities that load metadata into the repository is the utility that
-extracts the metadata from the repository to build the open metadata archive.
-This works on a list of open metadata types
+* [Coco Pharmaceuticals IT Infrastructure](coco-it-infrastructure) provides the
+description of Coco Pharmaceuticals IT infrastructure.
+This is also intended for **cocoMDS2** in the open metadata labs.
+
 
 ----
 

@@ -121,7 +121,7 @@ public class RelationshipsFVT {
         int cat2RelationshipCount = 0;
 
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary userId");
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
@@ -130,14 +130,14 @@ public class RelationshipsFVT {
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary userId");
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary GUID");
         Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossaryGuid);
         term2relationshipcount++;
         glossaryRelationshipCount++;
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
         FVTUtils.validateNode(term2);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary userId");
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary GUID");
         Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossaryGuid);
         FVTUtils.validateNode(term3);
         term3relationshipcount++;

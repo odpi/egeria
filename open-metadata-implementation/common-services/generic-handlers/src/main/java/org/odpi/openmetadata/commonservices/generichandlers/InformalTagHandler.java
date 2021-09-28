@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -123,16 +124,23 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                         OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        new Date(),
                                         methodName);
     }
 
@@ -167,16 +175,23 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                         OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        new Date(),
                                         methodName);
     }
 
@@ -272,9 +287,12 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     tagGUIDParameterName,
                                     OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                     OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                    false,
+                                    false,
                                     supportedZones,
                                     properties,
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -314,7 +332,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
                                     supportedZones,
+                                    new Date(),
                                     methodName);
     }
 
@@ -356,7 +377,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
                                     serviceSupportedZones,
+                                    new Date(),
                                     methodName);
     }
 
@@ -386,8 +410,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                          false,
+                                          false,
                                           supportedZones,
-                                          null,
+                                          new Date(),
                                           methodName);
     }
 
@@ -419,8 +445,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                          false,
+                                          false,
                                           serviceSupportedZones,
-                                          null,
+                                          new Date(),
                                           methodName);
     }
 
@@ -464,6 +492,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
+                                    false,
                                     false,
                                     supportedZones,
                                     null,
@@ -509,6 +538,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                       propertyNames,
                                       true,
+                                      false,
+                                      false,
                                       supportedZones,
                                       null,
                                       startFrom,
@@ -552,6 +583,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -591,6 +623,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                       null,
+                                      false,
+                                      false,
                                       false,
                                       supportedZones,
                                       null,
@@ -693,6 +727,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   tagGUID,
                                   tagGUIDParameterName,
                                   OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                  false,
+                                  false,
                                   suppliedSupportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
@@ -743,6 +779,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       tagGUIDParameterName,
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                      false,
+                                      false,
                                       suppliedSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,

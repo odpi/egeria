@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The DataManagerRESTServices provides the server-side implementation of the services
@@ -543,6 +545,9 @@ public class DataManagerRESTServices
                                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                     requestBody.getName(),
                                                                     parameterName,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
             else

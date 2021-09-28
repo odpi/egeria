@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
@@ -50,6 +49,8 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -65,12 +66,24 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
                                           Date                  asOfTime,
                                           String                sequencingProperty,
                                           SequencingOrder       sequencingOrder,
+                                          boolean               forLineage,
+                                          boolean               forDuplicateProcessing,
                                           int                   startingFrom,
                                           int                   requesterPageSize,
                                           Date                  effectiveTime,
                                           String                methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingProperty, startingFrom, requesterPageSize, effectiveTime, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              null,
+              sequencingProperty,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              requesterPageSize,
+              effectiveTime,
+              methodName);
 
         this.entitySubtypeGUIDs    = entitySubtypeGUIDs;
         this.searchProperties      = searchProperties;
@@ -112,6 +125,8 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
                                                                asOfTime,
                                                                sequencingProperty,
                                                                sequencingOrder,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                startingFrom,
                                                                pageSize,
                                                                effectiveTime,

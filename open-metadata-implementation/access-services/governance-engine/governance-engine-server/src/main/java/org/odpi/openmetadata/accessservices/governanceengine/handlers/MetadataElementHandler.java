@@ -98,6 +98,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param methodName calling method
      *
      * @return metadata element properties
@@ -105,11 +108,14 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public B getMetadataElementByGUID(String userId,
-                                      String elementGUID,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public B getMetadataElementByGUID(String  userId,
+                                      String  elementGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String guidParameterName = "elementGUID";
 
@@ -120,6 +126,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           elementGUID,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          supportedZones,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -131,6 +141,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the look up
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param methodName calling method
      *
      * @return metadata element properties
@@ -138,13 +151,16 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public B getMetadataElementByUniqueName(String userId,
-                                            String uniqueName,
-                                            String uniqueNameParameterName,
-                                            String uniqueNamePropertyName,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public B getMetadataElementByUniqueName(String  userId,
+                                            String  uniqueName,
+                                            String  uniqueNameParameterName,
+                                            String  uniqueNamePropertyName,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String nameParameterName = "uniqueName";
         final String namePropertyName  = "uniqueNamePropertyName";
@@ -170,7 +186,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         uniqueNamePropertyName,
                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                        null,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -182,6 +201,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the look up
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param methodName calling method
      *
      * @return metadata element unique identifier (guid)
@@ -189,13 +211,16 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public String getMetadataElementGUIDByUniqueName(String userId,
-                                                     String uniqueName,
-                                                     String uniqueNameParameterName,
-                                                     String uniqueNamePropertyName,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public String getMetadataElementGUIDByUniqueName(String  userId,
+                                                     String  uniqueName,
+                                                     String  uniqueNameParameterName,
+                                                     String  uniqueNamePropertyName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String nameParameterName = "uniqueName";
 
@@ -216,7 +241,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             uniqueNamePropertyName,
                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                            null,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -227,6 +254,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -236,13 +266,16 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<B> findMetadataElementsWithString(String userId,
-                                                  String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<B> findMetadataElementsWithString(String  userId,
+                                                  String  searchString,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  int     startFrom,
+                                                  int     pageSize,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -254,10 +287,13 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              effectiveTime,
                               methodName);
     }
 
@@ -269,6 +305,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -279,15 +318,18 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
-                                                                   String elementGUID,
-                                                                   int    startingAtEnd,
-                                                                   String relationshipTypeName,
-                                                                   int    startFrom,
-                                                                   int    pageSize,
-                                                                   String methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<RelatedMetadataElement> getRelatedMetadataElements(String  userId,
+                                                                   String  elementGUID,
+                                                                   int     startingAtEnd,
+                                                                   String  relationshipTypeName,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing,
+                                                                   Date    effectiveTime,
+                                                                   int     startFrom,
+                                                                   int     pageSize,
+                                                                   String  methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String guidParameterName = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
@@ -328,9 +370,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                     attachmentAtEnd,
+                                                                    forDuplicateProcessing,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    effectiveTime,
                                                                     methodName);
 
         if (relationships != null)
@@ -351,9 +394,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                                    null,
                                                                                    null,
-                                                                                   false,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
                                                                                    supportedZones,
-                                                                                   null,
+                                                                                   effectiveTime,
                                                                                    methodName);
                         if (otherEndEntity != null)
                         {
@@ -390,6 +434,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -407,6 +454,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         SearchClassifications searchClassifications,
                                         String                sequencingProperty,
                                         SequencingOrder       sequencingOrder,
+                                        boolean               forLineage,
+                                        boolean               forDuplicateProcessing,
+                                        Date                  effectiveTime,
                                         int                   startingFrom,
                                         int                   pageSize,
                                         String                methodName) throws InvalidParameterException,
@@ -422,9 +472,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                null,
                                sequencingProperty,
                                this.getSequencingOrder(sequencingOrder),
+                               forLineage,
+                               forDuplicateProcessing,
                                startingFrom,
                                pageSize,
-                               null, // any effectivity dates
+                               effectiveTime,
                                methodName);
     }
 
@@ -1069,6 +1121,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1083,6 +1138,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    SearchProperties searchProperties,
                                                                                    String           sequencingProperty,
                                                                                    SequencingOrder  sequencingOrder,
+                                                                                   boolean          forLineage,
+                                                                                   boolean          forDuplicateProcessing,
+                                                                                   Date             effectiveTime,
                                                                                    int              startFrom,
                                                                                    int              pageSize,
                                                                                    String           methodName) throws InvalidParameterException,
@@ -1098,9 +1156,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     sequencingProperty,
                                                                     this.getSequencingOrder(sequencingOrder),
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    effectiveTime,
                                                                     methodName);
 
         if (relationships != null)
@@ -1219,6 +1279,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param properties new properties for the metadata element
      * @param methodName calling method
      *
@@ -1229,7 +1292,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateMetadataElementInStore(String            userId,
                                              String            metadataElementGUID,
                                              boolean           replaceProperties,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
                                              ElementProperties properties,
+                                             Date              effectiveTime,
                                              String            methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -1251,8 +1317,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     guidParameterName,
                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     builder.getInstanceProperties(methodName),
                                     ! replaceProperties,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -1265,8 +1334,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param newElementStatus new status value - or null to leave as is
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -1276,8 +1348,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateMetadataElementStatusInStore(String        userId,
                                                    String        metadataElementGUID,
                                                    ElementStatus newElementStatus,
+                                                   boolean       forLineage,
+                                                   boolean       forDuplicateProcessing,
                                                    Date          effectiveFrom,
                                                    Date          effectiveTo,
+                                                   Date          effectiveTime,
                                                    String        methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -1295,8 +1370,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            guidParameterName,
                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            this.getInstanceStatus(newElementStatus),
                                            statusParameterName,
+                                           effectiveTime,
                                            methodName);
 
         super.updateBeanEffectivityDates(userId,
@@ -1306,8 +1384,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                          guidParameterName,
                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                         forLineage,
+                                         forDuplicateProcessing,
                                          effectiveFrom,
                                          effectiveTo,
+                                         effectiveTime,
                                          methodName);
     }
 
@@ -1317,17 +1398,23 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public  void deleteMetadataElementInStore(String userId,
-                                              String metadataElementGUID,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public  void deleteMetadataElementInStore(String  userId,
+                                              String  metadataElementGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String guidParameterName = "metadataElementGUID";
 
@@ -1343,6 +1430,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                      null,
                                      null,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -1358,6 +1448,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param effectiveTo the date when this classification becomes inactive - null for active until deleted
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
@@ -1368,9 +1461,12 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void classifyMetadataElementInStore(String            userId,
                                                String            metadataElementGUID,
                                                String            classificationName,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
                                                ElementProperties properties,
+                                               Date              effectiveTime,
                                                String            methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -1404,6 +1500,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            classificationName,
                                            classificationProperties,
                                            false,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1417,6 +1516,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param properties new properties for the classification
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
@@ -1428,7 +1530,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   String            metadataElementGUID,
                                                   String            classificationName,
                                                   boolean           replaceProperties,
+                                                  boolean           forLineage,
+                                                  boolean           forDuplicateProcessing,
                                                   ElementProperties properties,
+                                                  Date              effectiveTime,
                                                   String            methodName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -1462,6 +1567,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            classificationName,
                                            classificationProperties,
                                            ! replaceProperties,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1473,22 +1581,28 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateClassificationStatusInStore(String userId,
-                                                  String metadataElementGUID,
-                                                  String classificationName,
-                                                  Date   effectiveFrom,
-                                                  Date   effectiveTo,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public void updateClassificationStatusInStore(String  userId,
+                                                  String  metadataElementGUID,
+                                                  String  classificationName,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveFrom,
+                                                  Date    effectiveTo,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
@@ -1511,8 +1625,11 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                    classificationTypeGUID,
                                                    classificationName,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    effectiveFrom,
                                                    effectiveTo,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -1523,24 +1640,31 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to remove
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public  void unclassifyMetadataElementInStore(String userId,
-                                                  String metadataElementGUID,
-                                                  String classificationName,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public  void unclassifyMetadataElementInStore(String  userId,
+                                                  String  metadataElementGUID,
+                                                  String  metadataElementGUIDParameterName,
+                                                  String  metadataElementTypeName,
+                                                  String  classificationName,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
@@ -1552,10 +1676,13 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  null,
                                                  null,
                                                  metadataElementGUID,
-                                                 guidParameterName,
-                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                 metadataElementGUIDParameterName,
+                                                 metadataElementTypeName,
                                                  classificationTypeGUID,
                                                  classificationName,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
                                                  methodName);
     }
 
@@ -1570,9 +1697,12 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties the properties of the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new relationship
@@ -1586,9 +1716,12 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String            relationshipTypeName,
                                                String            metadataElement1GUID,
                                                String            metadataElement2GUID,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
                                                ElementProperties properties,
+                                               Date              effectiveTime,
                                                String            methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -1622,9 +1755,15 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    metadataElement2GUID,
                                    end2ParameterName,
                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   supportedZones,
                                    relationshipTypeGUID,
                                    relationshipTypeName,
                                    relationshipProperties,
+                                   effectiveFrom,
+                                   effectiveTo,
+                                   effectiveTime,
                                    methodName);
 
         return null;
