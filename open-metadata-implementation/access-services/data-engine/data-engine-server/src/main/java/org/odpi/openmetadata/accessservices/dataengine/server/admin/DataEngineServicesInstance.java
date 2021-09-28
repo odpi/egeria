@@ -47,9 +47,9 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -251,8 +251,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                         org.odpi.openmetadata.accessservices.dataengine.model.Connection.class, serviceName, serverName,
                         invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                         supportedZones, defaultZones, publishZones, auditLog);
-        final ReferenceableHandler<Endpoint> endpointHandler =
-                new ReferenceableHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+        final EndpointHandler<Endpoint> endpointHandler =
+                new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
                         Endpoint.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                         localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 

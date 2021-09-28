@@ -11,7 +11,8 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.EndpointB
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -43,22 +44,27 @@ public class DataEngineConnectionAndEndpointHandler {
     private static final String OCF = "Open Connector Framework (OCF)";
     private static final String COLON = ":";
     private static final String CONNECTION = " Connection";
-    private static final String ASSET_GUID = "assetGUID";
     private static final String ENDPOINT = " Endpoint";
-    private static final String GUID = "guid";
+    private static final String CONNECTOR_TYPE = " ConnectorType";
+    private static final String ASSET_GUID = "assetGUID";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String TYPE_NAME = "typeName";
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
     private static final String NETWORK_ADDRESS = "networkAddress";
-    private static final String CONNECTION_CREATED = "A new Connection for asset [{}] was created. Connection qualified name is [{}]." +
-            " The Connection has relationships to an Endpoint and a ConnectorType.";
+    private static final String CONNECTOR_TYPE_GUID_PARAMETER_NAME = "connectorTypeGUID";
+    private static final String ENDPOINT_GUID_PARAMETER_NAME = "endpointGUID";
+    private static final String CONNECTION_CREATED = "A new Connection for asset [{}] was created. Connection qualified name is [{}] " +
+            "and GUID is [{}]. The Connection has relationships to an Endpoint [{}] and a ConnectorType [{}].";
     private static final String ENDPOINT_UPDATED = "The existing Endpoint for asset [{}] was updated. Endpoint qualified name is [{}].";
     private static final String ASSET_NOT_FOUND = "[{}] asset could not be found. Connection and Endpoint creation is aborted.";
     private static final String PROPER_CONNECTOR_TYPE_NOT_FOUND = "A proper ConnectorType for the asset type name [{}] " +
             "could not be found. Connection and Endpoint creation is aborted for asset [{}].";
     private static final String PROPER_CONNECTOR_TYPE_FOUND = "A proper ConnectorType for the asset type name [{}] was found: [{}].";
     private static final String EXISTING_ENDPOINT_NOT_FOUND = "Existing Endpoint [{}] for asset [{}] was not found and could not be updated.";
+    private static final String ACCESS_INFORMATION = "Access information to connect to the actual asset: ";
+    public static final String CONNECTION_GUID_PARAMETER_NAME = "connectionGUID";
+
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -66,7 +72,7 @@ public class DataEngineConnectionAndEndpointHandler {
     private final String serverName;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final ConnectionHandler<Connection> connectionHandler;
-    private final ReferenceableHandler<Endpoint> endpointHandler;
+    private final EndpointHandler<Endpoint> endpointHandler;
     private final ConnectorTypeHandler<ConnectorType> connectorTypeHandler;
 
     /**
@@ -83,7 +89,7 @@ public class DataEngineConnectionAndEndpointHandler {
      */
     public DataEngineConnectionAndEndpointHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                                   String serviceName, String serverName, DataEngineCommonHandler dataEngineCommonHandler,
-                                                  ConnectionHandler<Connection> connectionHandler, ReferenceableHandler<Endpoint> endpointHandler,
+                                                  ConnectionHandler<Connection> connectionHandler, EndpointHandler<Endpoint> endpointHandler,
                                                   ConnectorTypeHandler<ConnectorType> connectorTypeHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
@@ -137,16 +143,42 @@ public class DataEngineConnectionAndEndpointHandler {
         Optional<EntityDetail> existingConnection = dataEngineCommonHandler.findEntity(userID, connectionQualifiedName,
                 CONNECTION_TYPE_NAME);
         if (existingConnection.isEmpty()) {
-            String connectorTypeClassName = connectorType.getClass().getSimpleName();
-            connectionHandler.addAssetConnection(userID, externalSourceGUID, externalSourceName, assetGUID, ASSET_GUID,
-                    assetTypeName, assetQualifiedName, true, null,
-                    connectorTypeClassName, networkAddress, protocol, null,
-                    null, null, methodName);
-            log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName);
+            createConnectionAndRelatedEntities(assetQualifiedName, assetGUID, assetTypeName, protocol, networkAddress,
+                    externalSourceGUID, externalSourceName, userID, methodName, connectorType, connectionQualifiedName);
         } else {
             updateEndpoint(protocol, networkAddress, assetTypeName, assetQualifiedName, externalSourceGUID,
                     externalSourceName, userID);
         }
+    }
+
+    private void createConnectionAndRelatedEntities(String assetQualifiedName, String assetGUID, String assetTypeName, String protocol, String networkAddress, String externalSourceGUID, String externalSourceName, String userID, String methodName, ConnectorType connectorType, String connectionQualifiedName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        String connectorProviderClassName = connectorType.getClass().getSimpleName();
+        String connectorTypeQualifiedName = getConnectorTypeQualifiedName(assetTypeName, assetQualifiedName);
+        String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userID, externalSourceGUID,
+                externalSourceName, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
+                null, assetTypeName, null, connectorProviderClassName,
+                OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                null, null, null, null,
+                null, null, null, null,
+                null, methodName);
+
+        String endpointQualifiedName = getEndpointQualifiedName(assetTypeName, assetQualifiedName);
+        String endpointGUID = endpointHandler.createEndpoint(userID, externalSourceGUID, externalSourceName, null,
+                endpointQualifiedName, endpointQualifiedName, ACCESS_INFORMATION + networkAddress, networkAddress,
+                protocol, null, null, null, null, methodName);
+
+        String connectionGUID = connectionHandler.createConnection(userID, externalSourceGUID, externalSourceName, assetGUID, ASSET_GUID,
+                null, connectionQualifiedName, connectionQualifiedName, null, null,
+                null, null, null, null, null,
+                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME, null, connectorTypeGUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME,
+                endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, null, null, methodName);
+
+        log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName, connectionGUID, endpointGUID, connectorTypeGUID);
+    }
+
+    private String getConnectorTypeQualifiedName(String assetTypeName, String assetQualifiedName) {
+        return assetTypeName + ":" + assetQualifiedName + CONNECTOR_TYPE;
     }
 
     private String getConnectionQualifiedName(String assetTypeName, String assetQualifiedName) {
@@ -171,25 +203,25 @@ public class DataEngineConnectionAndEndpointHandler {
      *
      * @param userId             the name of the calling user
      * @param connectionGUID     unique identifier of the connection to be removed
-     * @param externalSourceName the external data engine
      * @param deleteSemantic     the delete semantic
+     * @param externalSourceName the external data engine
+     * @param externalSourceGUID the external data engine GUID
      *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
-    public void removeConnection(String userId, String connectionGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
-                                                                                                                                 FunctionNotSupportedException,
-                                                                                                                                 InvalidParameterException,
-                                                                                                                                 PropertyServerException,
-                                                                                                                                 UserNotAuthorizedException {
+    public void removeConnection(String userId, String connectionGUID, DeleteSemantic deleteSemantic, String externalSourceName,
+                                 String externalSourceGUID) throws FunctionNotSupportedException, InvalidParameterException,
+            PropertyServerException, UserNotAuthorizedException {
         final String methodName = "removeConnection";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, GUID_PROPERTY_NAME, methodName);
 
-        dataEngineCommonHandler.removeEntity(userId, connectionGUID, CONNECTION_TYPE_NAME, externalSourceName);
+        connectionHandler.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID,
+                CONNECTION_GUID_PARAMETER_NAME, methodName);
     }
 
     /**
@@ -197,25 +229,25 @@ public class DataEngineConnectionAndEndpointHandler {
      *
      * @param userId             the name of the calling user
      * @param endpointGUID     unique identifier of the endpoint to be removed
-     * @param externalSourceName the external data engine
      * @param deleteSemantic     the delete semantic
+     * @param externalSourceName the external data engine
+     * @param externalSourceGUID the external data engine GUID
      *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
-    public void removeEndpoint(String userId, String endpointGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
-                                                                                                                             FunctionNotSupportedException,
-                                                                                                                             InvalidParameterException,
-                                                                                                                             PropertyServerException,
-                                                                                                                             UserNotAuthorizedException {
+    public void removeEndpoint(String userId, String endpointGUID, DeleteSemantic deleteSemantic, String externalSourceName,
+                               String externalSourceGUID) throws FunctionNotSupportedException, InvalidParameterException,
+            PropertyServerException, UserNotAuthorizedException {
         final String methodName = "removeEndpoint";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, GUID_PROPERTY_NAME, methodName);
 
-        dataEngineCommonHandler.removeEntity(userId, endpointGUID, ENDPOINT_TYPE_NAME, externalSourceName);
+        endpointHandler.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID,
+                ENDPOINT_GUID_PARAMETER_NAME, methodName);
     }
 
     private void updateEndpoint(String protocol, String networkAddress, String assetTypeName, String assetQualifiedName,
@@ -231,15 +263,15 @@ public class DataEngineConnectionAndEndpointHandler {
             log.debug(EXISTING_ENDPOINT_NOT_FOUND, endpointQualifiedName, assetQualifiedName);
             return;
         }
-        EndpointBuilder endpointBuilder = getEndpointBuilder(protocol, networkAddress, endpointQualifiedName);
 
         String endpointGUID = existingEndpoint.get().getGUID();
-        endpointHandler.updateBeanInRepository(userID, externalSourceGUID, externalSourceName,
-                endpointGUID, GUID, ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
-                endpointBuilder.getInstanceProperties(methodName), false, methodName);
+        String description = ACCESS_INFORMATION + networkAddress;
+        endpointHandler.updateEndpoint(userID, externalSourceGUID, externalSourceName, endpointGUID, ENDPOINT_GUID_PARAMETER_NAME,
+                endpointQualifiedName, endpointQualifiedName, description, networkAddress,
+                protocol, null, null, null,
+                null, false, null, null, methodName);
 
         log.debug(ENDPOINT_UPDATED, assetQualifiedName, endpointQualifiedName);
-
     }
 
     private String getEndpointQualifiedName(String assetTypeName, String assetQualifiedName) {
