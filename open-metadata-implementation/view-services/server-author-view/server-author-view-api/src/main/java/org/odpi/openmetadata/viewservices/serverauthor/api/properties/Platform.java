@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 
 import java.util.*;
 
@@ -112,6 +113,13 @@ public class Platform {
         this.storedServers = storedServers;
     }
 
+    /**
+     * Get the access services that this platform supports.
+     * @return access services supported by this platform
+     */
+    public List<RegisteredOMAGService> getAccessServices() {
+        return accessServices;
+    }
     /**
      * Set the access services that this platform supports.
      * @param accessServices the access services that this platform supports.
