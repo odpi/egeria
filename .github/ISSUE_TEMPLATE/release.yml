@@ -32,22 +32,23 @@ body:
         - [ ] Remove release notes from branch
         - [ ] update release notes in master & rename
 
+        Generate a release image for testing
+        - [ ] Start release pipeline manually to generate docker image
+
         Updating the React UI (as this is part of the notebook test). Note egeria-ui is out of scope other than inclusion of current release
         - [ ] Create branch
         - [ ] Update version in master
-        - [ ] Update version in new branch of connector, and of prereq egeria artifacts
+        - [ ] Update version in new branch 
         - [ ] Ensure new docker image is available for testing
 
-        Updating the Helm Charts & docker-compose (egeria-charts repo)
+        Updating the Helm Charts (egeria-charts repo)
         - [ ] checker correct docker images are on dockerhub (these are built by the 'merge' build of a release)
-        - [ ] Update image versions for compose (egeria repo)
         - [ ] update image versions for helm charts (egeria-charts repo) (using -prerelease for chart version)
 
         Final tests
         - [ ] Check swagger doc renders (no regressions)
         - [ ] Verify odpi-egeria-lab chart (pods active/ready)
         - [ ] Verify egeria-base chart (pods active/ready)
-        - [ ] Verify docker compose (active/ready)
         - [ ] Check notebooks (config, start, data catalog at a minimum)
         - [ ] Check polymer UI (only possible to check it runs - no demo scenario for more)
         - [ ] Check React UI (rex, tex, glossary author)
