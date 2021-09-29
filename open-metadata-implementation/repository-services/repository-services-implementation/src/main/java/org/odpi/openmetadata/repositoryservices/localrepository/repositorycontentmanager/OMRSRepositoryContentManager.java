@@ -1368,9 +1368,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
         else
         {
-            throw new TypeErrorException(OMRSErrorCode.UNKNOWN_TYPEDEF.getMessageDefinition(sourceName,
-                                                                                            typeDefName,
+            throw new TypeErrorException(OMRSErrorCode.UNKNOWN_TYPEDEF.getMessageDefinition(typeDefName,
                                                                                             typeDefGUID,
+                                                                                            sourceName,
                                                                                             methodName,
                                                                                             nameParameterName,
                                                                                             guidParameterName),
