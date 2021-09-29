@@ -72,7 +72,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of Certifications attached to an anchor entity.
+     * Count the number of Certifications attached to an referenceable entity.
      *
      * @param userId     calling user
      * @param connectedEntityGUID identifier for the entity that the object is attached to
@@ -101,7 +101,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the Certifications attached to an anchor entity.
+     * Return the Certifications attached to an referenceable entity.
      *
      * @param userId     calling user
      * @param parentGUID identifier for the entity that the feedback is attached to
@@ -138,7 +138,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the Certifications attached to an anchor entity.
+     * Return the Certifications attached to an referenceable entity.
      *
      * @param userId     calling user
      * @param parentGUID identifier for the entity that the feedback is attached to
@@ -195,7 +195,8 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                                                            OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
                                                                            null,
                                                                            null,
-                                                                           true,
+                                                                           false,
+                                                                           false,
                                                                            serviceSupportedZones,
                                                                            effectiveTime,
                                                                            methodName);

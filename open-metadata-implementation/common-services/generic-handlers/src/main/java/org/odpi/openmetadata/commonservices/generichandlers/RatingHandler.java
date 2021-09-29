@@ -11,6 +11,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -123,16 +124,23 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                         OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        new Date(),
                                         methodName);
     }
 
@@ -211,6 +219,9 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       ratingGUID,
                                       ratingGUIDParameterName,
                                       OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
@@ -244,6 +255,8 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
     {
+        Date effectiveTime = new Date();
+
         String ratingGUID = this.unlinkConnectedElement(userId,
                                                         true,
                                                         externalSourceGUID,
@@ -251,11 +264,13 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         elementGUID,
                                                         elementGUIDParameterName,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         supportedZones,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                                         OpenMetadataAPIMapper.RATING_TYPE_NAME,
-                                                        null,
+                                                        effectiveTime,
                                                         methodName);
 
         if (ratingGUID != null)
@@ -271,6 +286,9 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.RATING_TYPE_NAME,
                                         null,
                                         null,
+                                        false,
+                                        false,
+                                        effectiveTime,
                                         methodName);
         }
     }

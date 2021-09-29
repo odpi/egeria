@@ -34,8 +34,11 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param properties properties used in the search
      * @param matchCriteria all or any
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
@@ -45,12 +48,24 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               InstanceProperties properties,
                                               MatchCriteria      matchCriteria,
                                               String             sequencingPropertyName,
+                                              boolean            forLineage,
+                                              boolean            forDuplicateProcessing,
                                               int                startingFrom,
                                               int                pageSize,
                                               Date               effectiveTime,
                                               String             methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, effectiveTime, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              null,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
 
         this.properties           = properties;
         this.matchCriteria        = matchCriteria;
@@ -66,22 +81,36 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param searchCriteria value used in the search
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler  repositoryHandler,
-                                              String             userId,
-                                              String             entityTypeGUID,
-                                              String             searchCriteria,
-                                              String             sequencingPropertyName,
-                                              int                startingFrom,
-                                              int                pageSize,
-                                              Date               effectiveTime,
-                                              String             methodName)
+    public RepositorySelectedEntitiesIterator(RepositoryHandler repositoryHandler,
+                                              String            userId,
+                                              String            entityTypeGUID,
+                                              String            searchCriteria,
+                                              String            sequencingPropertyName,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              int               startingFrom,
+                                              int               pageSize,
+                                              Date              effectiveTime,
+                                              String            methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, effectiveTime, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              null,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
 
         this.searchCriteria       = searchCriteria;
         this.properties           = null;
@@ -116,6 +145,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                          searchCriteria,
                                                                          entityTypeGUID,
                                                                          sequencingPropertyName,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
                                                                          startingFrom,
                                                                          pageSize,
                                                                          effectiveTime,
@@ -127,6 +158,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                         properties,
                                                                         entityTypeGUID,
                                                                         sequencingPropertyName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
                                                                         startingFrom,
                                                                         pageSize,
                                                                         effectiveTime,
@@ -138,6 +171,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                                  properties,
                                                                                  entityTypeGUID,
                                                                                  sequencingPropertyName,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
                                                                                  startingFrom,
                                                                                  pageSize,
                                                                                  effectiveTime,
@@ -149,6 +184,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                                        properties,
                                                                                        entityTypeGUID,
                                                                                        sequencingPropertyName,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
                                                                                        startingFrom,
                                                                                        pageSize,
                                                                                        effectiveTime,

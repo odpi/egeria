@@ -218,6 +218,9 @@ public class SubjectAreaRESTServices
                                            OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -276,6 +279,8 @@ public class SubjectAreaRESTServices
                                          childSubjectAreaGUID,
                                          childSubjectAreaGUIDParameterName,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
                                          null,
@@ -338,6 +343,8 @@ public class SubjectAreaRESTServices
                                              childSubjectAreaGUIDParameterName,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
                                              null,
@@ -398,6 +405,8 @@ public class SubjectAreaRESTServices
                                          subjectAreaGUID,
                                          subjectAreaGUIDParameterName,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                          null,
@@ -460,6 +469,8 @@ public class SubjectAreaRESTServices
                                              subjectAreaGUIDParameterName,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                              null,
@@ -508,6 +519,9 @@ public class SubjectAreaRESTServices
                                                               subjectAreaGUID,
                                                               subjectAreaGUIDParameterName,
                                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -647,6 +661,9 @@ public class SubjectAreaRESTServices
                                                                                   subjectAreaGUID,
                                                                                   subjectAreaGUIDParameterName,
                                                                                   OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
                                                                                   methodName);
             if (element != null)
             {

@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -209,6 +210,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                             guid,
                                                             guidParameter,
                                                             OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                            false,
+                                                            false,
+                                                            new Date(),
                                                             methodName);
     }
 
@@ -243,7 +247,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                      specificMatchPropertyNames,
-                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -385,6 +391,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                       OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                       qualifiedNameParameter,
                                                       qualifiedName,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
     }
 
@@ -677,6 +686,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                 discoveryServiceGUID,
                                                 guidParameter,
                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
@@ -684,6 +696,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                      OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     false,
                                                                                      0, 0,
                                                                                      null,
                                                                                      methodName);
@@ -797,6 +810,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                  OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
     }
 
@@ -843,6 +859,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                        OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                                        null,
@@ -929,6 +946,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                     discoveryServiceGUID,
                                                     discoveryServiceGUIDParameter,
                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                    false,
+                                                    false,
                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                     instanceProperties,
@@ -969,6 +988,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                              discoveryEngineGUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             false,
                                                                                              null,
                                                                                              methodName);
 
@@ -1015,6 +1035,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                              false,
+                                                              false,
                                                               startingFrom,
                                                               maximumResults,
                                                               null,
@@ -1058,6 +1080,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                         discoveryServiceGUIDParameter,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                         null,

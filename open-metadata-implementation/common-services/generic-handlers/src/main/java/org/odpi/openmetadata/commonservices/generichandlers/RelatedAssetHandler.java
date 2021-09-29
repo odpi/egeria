@@ -192,7 +192,10 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                otherEnd.getType().getTypeDefName(),
                                                                                null,
                                                                                null,
+                                                                               false,
+                                                                               false,
                                                                                serviceSupportedZones,
+                                                                               new Date(),
                                                                                methodName);
 
                             if (entity != null)

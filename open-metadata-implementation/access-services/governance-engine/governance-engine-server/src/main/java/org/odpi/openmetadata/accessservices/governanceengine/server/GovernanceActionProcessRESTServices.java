@@ -26,6 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +190,7 @@ public class GovernanceActionProcessRESTServices
     {
         final String methodName = "updateGovernanceActionProcess";
         final String processGUIDParameterName = "processGUID";
+        final String newStatusParameterName = "requestBody.getProcessStatus";
 
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -232,8 +234,11 @@ public class GovernanceActionProcessRESTServices
                                                          processGUIDParameterName,
                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                         false,
+                                                         false,
                                                          this.getProcessStatus(requestBody.getProcessStatus()),
-                                                         null,
+                                                         newStatusParameterName,
+                                                         new Date(),
                                                          methodName);
                 }
 
@@ -397,6 +402,9 @@ public class GovernanceActionProcessRESTServices
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -567,10 +575,13 @@ public class GovernanceActionProcessRESTServices
             AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
 
             handler.getBeanFromRepository(userId,
-                                           processGUID,
-                                           processGUIDParameterName,
-                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                           methodName);
+                                          processGUID,
+                                          processGUIDParameterName,
+                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);
         }
         catch (Exception error)
         {

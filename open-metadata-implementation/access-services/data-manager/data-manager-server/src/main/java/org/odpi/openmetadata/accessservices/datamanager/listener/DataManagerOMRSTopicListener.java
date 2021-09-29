@@ -125,6 +125,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         entity,
                                                         entityGUIDParameterName,
                                                         false,
+                                                        false,
+                                                        false,
                                                         supportedZones,
                                                         effectiveTime,
                                                         methodName);
@@ -210,6 +212,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         entityProxyOneGUIDParameterName,
                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                         false,
+                                                        false,
+                                                        false,
                                                         supportedZones,
                                                         effectiveTime,
                                                         methodName);
@@ -218,6 +222,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         relationship.getEntityTwoProxy().getGUID(),
                                                         entityProxyTwoGUIDParameterName,
                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         false,
                                                         supportedZones,
                                                         effectiveTime,

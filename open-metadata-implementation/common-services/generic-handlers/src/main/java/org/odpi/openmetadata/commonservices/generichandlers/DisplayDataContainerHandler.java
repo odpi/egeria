@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -345,6 +346,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                           dataContainerGUID,
                                                           dataContainerGUIDParameterName,
                                                           OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                          false,
+                                                          false,
+                                                          supportedZones,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                           OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                           null,
@@ -483,8 +487,12 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     elementGUIDParameterName,
                                                     attributeTypeId,
                                                     attributeTypeName,
+                                                    false,
+                                                    false,
+                                                    supportedZones,
                                                     properties,
                                                     isMergeUpdate,
+                                                    new Date(),
                                                     methodName);
 
         dataContainerHandler.setVendorProperties(userId, dataContainerGUID, vendorProperties, methodName);
@@ -529,6 +537,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                     qualifiedName,
+                                                    false,
+                                                    false,
+                                                    new Date(),
                                                     methodName);
     }
 

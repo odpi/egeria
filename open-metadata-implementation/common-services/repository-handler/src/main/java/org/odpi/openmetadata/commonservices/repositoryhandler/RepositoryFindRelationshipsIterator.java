@@ -37,6 +37,7 @@ public class RepositoryFindRelationshipsIterator
     private Date                 asOfTime;
     private String               sequencingProperty;
     private SequencingOrder      sequencingOrder;
+    private boolean              forDuplicateProcessing;
     private Date                 effectiveTime;
 
 
@@ -58,6 +59,8 @@ public class RepositoryFindRelationshipsIterator
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return on this call.
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      */
     public RepositoryFindRelationshipsIterator(RepositoryHandler     repositoryHandler,
@@ -71,6 +74,7 @@ public class RepositoryFindRelationshipsIterator
                                                SequencingOrder       sequencingOrder,
                                                int                   startingFrom,
                                                int                   requesterPageSize,
+                                               boolean               forDuplicateProcessing,
                                                Date                  effectiveTime,
                                                String                methodName)
     {
@@ -85,6 +89,7 @@ public class RepositoryFindRelationshipsIterator
         this.sequencingOrder          = sequencingOrder;
         this.startingFrom             = startingFrom;
         this.requesterPageSize        = requesterPageSize;
+        this.forDuplicateProcessing   = forDuplicateProcessing;
         this.effectiveTime            = effectiveTime;
         this.methodName               = methodName;
     }
@@ -118,6 +123,7 @@ public class RepositoryFindRelationshipsIterator
                                                                          asOfTime,
                                                                          sequencingProperty,
                                                                          sequencingOrder,
+                                                                         forDuplicateProcessing,
                                                                          startingFrom,
                                                                          requesterPageSize,
                                                                          effectiveTime,

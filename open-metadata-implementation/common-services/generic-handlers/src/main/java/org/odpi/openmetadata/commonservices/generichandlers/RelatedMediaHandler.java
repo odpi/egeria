@@ -96,6 +96,7 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
+                                                                  false,
                                                                   effectiveTime,
                                                                   methodName);
     }
@@ -133,12 +134,19 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                                                     UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
                                         OpenMetadataAPIMapper.RELATED_MEDIA_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,

@@ -22,7 +22,8 @@ hardware characteristics and software stack (operating system etc) of the host.
 Details of the software stack can be captured in a [Collection](0021-Collections.md)
 linked to the operating platform using the **OperatingPlatformManifest**.
 The collection may contain many different types of details such as configuration files and software packages that can
-organized into nested collections.
+organized into nested collections.  There is a specific sub type of Collection called **SoftwareArchive**
+that describes a software archive such as a Jar file, war file or ear file.
 Collections that list software packages can be classified with the **SoftwarePackageManifest**
 classification.
 
