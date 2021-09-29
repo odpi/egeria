@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The SearchIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -20,32 +20,30 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum SearchIntegratorAuditCode implements AuditLogMessageSet
-{
+public enum SearchIntegratorAuditCode implements AuditLogMessageSet {
     CONTEXT_INITIALIZING("OMIS-SEARCH-INTEGRATOR-0001",
-                        OMRSAuditLogRecordSeverity.STARTUP,
-                        "The search integrator context manager is being initialized for calls to server {0} on platform {1}",
-                        "The search Integrator OMIS is initializing its context manager.",
-                        "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
+            OMRSAuditLogRecordSeverity.STARTUP,
+            "The search integrator context manager is being initialized for calls to server {0} on platform {1}",
+            "The search Integrator OMIS is initializing its context manager.",
+            "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-SEARCH-INTEGRATOR-0002",
-                                   OMRSAuditLogRecordSeverity.STARTUP,
-                                   "Creating context for integration connector {0} ({1}) connecting to third party technology {2} and service options of {3}",
-                                   "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
-                                           "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
-                                   "Verify that this connector is being started with the correct configuration."),
+            OMRSAuditLogRecordSeverity.STARTUP,
+            "Creating context for integration connector {0} ({1}) connecting to third party technology {2} and service options of {3}",
+            "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
+                    "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
+            "Verify that this connector is being started with the correct configuration."),
 
     NULL_CONTEXT("OMIS-SEARCH-INTEGRATOR-0003",
-                 OMRSAuditLogRecordSeverity.ERROR,
-                 "Integration connector {0} has a null context",
-                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
-                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
-                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Integration connector {0} has a null context",
+            "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+            "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                    "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 
     AuditLogMessageDefinition messageDefinition;
-
 
 
     /**
@@ -53,23 +51,22 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * SearchIntegratorAuditCode above.       *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
+     * @param messageId    - unique Id for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param userAction   - instructions for resolving the situation, if any
      */
-    SearchIntegratorAuditCode(String                     messageId,
+    SearchIntegratorAuditCode(String messageId,
                               OMRSAuditLogRecordSeverity severity,
-                              String                     message,
-                              String                     systemAction,
-                              String                     userAction)
-    {
+                              String message,
+                              String systemAction,
+                              String userAction) {
         messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+                severity,
+                message,
+                systemAction,
+                userAction);
     }
 
 
@@ -79,8 +76,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition()
-    {
+    public AuditLogMessageDefinition getMessageDefinition() {
         return messageDefinition;
     }
 
@@ -92,8 +88,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
-    {
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -105,8 +100,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * @return string description
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "SearchIntegratorAuditCode{" +
                 "messageDefinition=" + messageDefinition +
                 '}';

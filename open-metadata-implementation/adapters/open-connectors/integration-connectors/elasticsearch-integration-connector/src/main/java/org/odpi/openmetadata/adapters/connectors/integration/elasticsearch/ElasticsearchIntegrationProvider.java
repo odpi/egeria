@@ -18,7 +18,7 @@ public class ElasticsearchIntegrationProvider extends ConnectorProviderBase
     private static final String connectorTypeGUID          = "4cf65dbf-0808-4968-819b-6a49a9fe537a";
     private static final String connectorTypeQualifiedName = "Egeria:IntegrationConnector:ElasticsearchIntegrationProvider";
     private static final String connectorTypeDisplayName   = "Search Integration Connector";
-    private static final String connectorTypeDescription   = "Elasticsearch connector";
+    private static final String connectorTypeDescription   = "Connector used to connect to a Elasticsearch instance and store metadata for search operations";
 
     static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
 

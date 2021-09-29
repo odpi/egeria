@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * The SearchIntegratorErrorCode error code is used to define first failure data capture (FFDC) for errors that
  * occur when working with the Integration Services.  It is used in conjunction with all exceptions,
  * both Checked and Runtime (unchecked).
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -25,21 +25,20 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-public enum SearchIntegratorErrorCode implements ExceptionMessageSet
-{
+public enum SearchIntegratorErrorCode implements ExceptionMessageSet {
 
-    INVALID_CONNECTOR(400,"OMIS-SEARCH-INTEGRATOR-400-001",
-                  "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
-                  "The integration service fails to start and this in turn causes the integration daemon to fail.",
-                  "The connector was configured through the administration calls for the integration service." +
-                              "Either move it to an appropriate integration service or update the connector implementation " +
-                              "to inherit from the correct class."),
+    INVALID_CONNECTOR(400, "OMIS-SEARCH-INTEGRATOR-400-001",
+            "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
+            "The integration service fails to start and this in turn causes the integration daemon to fail.",
+            "The connector was configured through the administration calls for the integration service." +
+                    "Either move it to an appropriate integration service or update the connector implementation " +
+                    "to inherit from the correct class."),
 
-    NULL_CONTEXT(400,"OMIS-SEARCH-INTEGRATOR-500-001",
-                 "Integration connector {0} has a null context",
-                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
-                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
-                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
+    NULL_CONTEXT(400, "OMIS-SEARCH-INTEGRATOR-500-001",
+            "Integration connector {0} has a null context",
+            "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+            "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                    "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 
@@ -49,24 +48,23 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet
     /**
      * The constructor for SearchIntegratorErrorCode expects to be passed one of the enumeration rows defined in
      * SearchIntegratorErrorCode above.   For example:
-     *
-     *     SearchIntegratorErrorCode   errorCode = SearchIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <p>
+     * SearchIntegratorErrorCode   errorCode = SearchIntegratorErrorCode.UNKNOWN_ENDPOINT;
+     * <p>
      * This will expand out to the 5 parameters shown below.
      *
-     * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param httpErrorCode  error code to use over REST calls
+     * @param errorMessageId unique Id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
-     * @param userAction   instructions for resolving the error
+     * @param userAction     instructions for resolving the error
      */
-    SearchIntegratorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
-    {
+    SearchIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+                errorMessageId,
+                errorMessage,
+                systemAction,
+                userAction);
     }
 
 
@@ -76,8 +74,7 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition()
-    {
+    public ExceptionMessageDefinition getMessageDefinition() {
         return messageDefinition;
     }
 
@@ -89,8 +86,7 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition(String... params)
-    {
+    public ExceptionMessageDefinition getMessageDefinition(String... params) {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -103,10 +99,9 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet
      * @return string of property names and values for this enum
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "SearchIntegratorErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
-                       '}';
+                "messageDefinition=" + messageDefinition +
+                '}';
     }
 }

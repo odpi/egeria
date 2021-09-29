@@ -24,7 +24,7 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
 {
 
 
-    CONNECTOR_STOPPING("OPEN-API-INTEGRATION-CONNECTOR-0009",
+    CONNECTOR_STOPPING("ELASTICSEARCH-INTEGRATION-CONNECTOR-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The {0} integration connector has stopped its monitoring and is shutting down",
             "The connector is disconnecting.",

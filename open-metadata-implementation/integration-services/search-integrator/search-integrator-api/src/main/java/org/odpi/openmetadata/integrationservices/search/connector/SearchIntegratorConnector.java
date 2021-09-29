@@ -9,8 +9,8 @@ import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorAud
 import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorErrorCode;
 
 /**
- * LineageIntegratorConnector is the base class for an integration connector that is managed by the
- * Lineage Integrator OMIS.
+ * SearchIntegratorConnector is the base class for an integration connector that is managed by the
+ * Search Integrator OMIS.
  */
 public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
 {

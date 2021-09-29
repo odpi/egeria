@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 
 
 /**
- * LineageIntegratorAPI is the interface to validate that a connector is suitable to run in the Lineage Integrator OMIS.
+ * SearchIntegratorAPI is the interface to validate that a connector is suitable to run in the Search Integrator OMIS.
  * It validates that it implements the correct interfaces and returns the connector type for the connector.
  */
 public interface SearchIntegratorAPI

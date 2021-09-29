@@ -6,8 +6,8 @@ package org.odpi.openmetadata.integrationservices.search.connector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
- * LineageIntegratorContext provides a wrapper around the Asset Manager OMAS client.
- * It provides the simplified interface to open metadata needed by the LineageIntegratorConnector.
+ * SearchIntegratorContext provides a wrapper around the Asset Catalog OMAS client.
+ * It provides the simplified interface to open metadata needed by the SearchIntegratorConnector.
  */
 public class SearchIntegratorContext
 {
