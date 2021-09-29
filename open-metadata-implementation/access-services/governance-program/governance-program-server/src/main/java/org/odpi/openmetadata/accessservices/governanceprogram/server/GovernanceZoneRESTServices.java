@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -220,6 +221,9 @@ public class GovernanceZoneRESTServices
                                            OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -278,6 +282,8 @@ public class GovernanceZoneRESTServices
                                          childZoneGUID,
                                          childZoneGUIDParameterName,
                                          OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
                                          OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
                                          null,
@@ -340,6 +346,8 @@ public class GovernanceZoneRESTServices
                                              childZoneGUIDParameterName,
                                              OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
                                              OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
                                              null,
@@ -400,6 +408,8 @@ public class GovernanceZoneRESTServices
                                          zoneGUID,
                                          zoneGUIDParameterName,
                                          OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                          null,
@@ -462,6 +472,8 @@ public class GovernanceZoneRESTServices
                                              zoneGUIDParameterName,
                                              OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                              null,
@@ -510,6 +522,9 @@ public class GovernanceZoneRESTServices
                                                               zoneGUID,
                                                               zoneGUIDParameterName,
                                                               OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -649,6 +664,9 @@ public class GovernanceZoneRESTServices
                                                                               zoneGUID,
                                                                               zoneGUIDParameterName,
                                                                               OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                                              false,
+                                                                              false,
+                                                                              new Date(),
                                                                               methodName);
             if (element != null)
             {

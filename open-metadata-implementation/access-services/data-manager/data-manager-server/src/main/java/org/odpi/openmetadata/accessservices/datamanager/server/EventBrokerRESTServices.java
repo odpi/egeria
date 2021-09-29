@@ -134,6 +134,8 @@ public class EventBrokerRESTServices
                                                      topicGUID,
                                                      topicGUIDParameterName,
                                                      OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      null,
@@ -165,6 +167,8 @@ public class EventBrokerRESTServices
                                                      topicGUID,
                                                      topicGUIDParameterName,
                                                      OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      null,
@@ -262,6 +266,8 @@ public class EventBrokerRESTServices
                                                  topicGUID,
                                                  topicGUIDParameterName,
                                                  OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                  null,
@@ -521,6 +527,9 @@ public class EventBrokerRESTServices
                                                OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
             else
@@ -765,6 +774,9 @@ public class EventBrokerRESTServices
                                                                     guid,
                                                                     guidParameterName,
                                                                     OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName);
 
             response.setElement(setUpVendorProperties(userId, topicAsset, handler, methodName));

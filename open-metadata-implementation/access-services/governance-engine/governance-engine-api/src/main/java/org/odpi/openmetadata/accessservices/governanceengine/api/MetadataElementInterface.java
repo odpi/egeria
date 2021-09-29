@@ -24,16 +24,22 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByGUID(String userId,
-                                                 String elementGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    OpenMetadataElement getMetadataElementByGUID(String  userId,
+                                                 String  elementGUID,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -42,17 +48,23 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param uniqueName unique name for the metadata element
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByUniqueName(String userId,
-                                                       String uniqueName,
-                                                       String uniquePropertyName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+    OpenMetadataElement getMetadataElementByUniqueName(String  userId,
+                                                       String  uniqueName,
+                                                       String  uniquePropertyName,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**
@@ -61,17 +73,23 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param uniqueName unique name for the metadata element
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique identifier is null or not known.
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    String getMetadataElementGUIDByUniqueName(String userId,
-                                              String uniqueName,
-                                              String uniquePropertyName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    String getMetadataElementGUIDByUniqueName(String  userId,
+                                              String  uniqueName,
+                                              String  uniquePropertyName,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -79,6 +97,9 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -87,12 +108,15 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String userId,
-                                                             String searchString,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
+                                                             String  searchString,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing,
+                                                             Date    effectiveTime,
+                                                             int     startFrom,
+                                                             int     pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
     /**
@@ -102,23 +126,28 @@ public interface MetadataElementInterface
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
-     *
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
-                                                            String elementGUID,
-                                                            int    startingAtEnd,
-                                                            String relationshipTypeName,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    List<RelatedMetadataElement> getRelatedMetadataElements(String  userId,
+                                                            String  elementGUID,
+                                                            int     startingAtEnd,
+                                                            String  relationshipTypeName,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            int     startFrom,
+                                                            int     pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**
@@ -135,6 +164,9 @@ public interface MetadataElementInterface
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -146,11 +178,14 @@ public interface MetadataElementInterface
     List<OpenMetadataElement> findMetadataElements(String                userId,
                                                    String                metadataElementTypeName,
                                                    List<String>          metadataElementSubtypeName,
-                                                   SearchProperties searchProperties,
+                                                   SearchProperties      searchProperties,
                                                    List<ElementStatus>   limitResultsByStatus,
                                                    SearchClassifications matchClassifications,
                                                    String                sequencingProperty,
-                                                   SequencingOrder sequencingOrder,
+                                                   SequencingOrder       sequencingOrder,
+                                                   boolean               forLineage,
+                                                   boolean               forDuplicateProcessing,
+                                                   Date                  effectiveTime,
                                                    int                   startFrom,
                                                    int                   pageSize) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
@@ -167,6 +202,9 @@ public interface MetadataElementInterface
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -180,6 +218,9 @@ public interface MetadataElementInterface
                                                                            SearchProperties searchProperties,
                                                                            String           sequencingProperty,
                                                                            SequencingOrder  sequencingOrder,
+                                                                           boolean          forLineage,
+                                                                           boolean          forDuplicateProcessing,
+                                                                           Date             effectiveTime,
                                                                            int              startFrom,
                                                                            int              pageSize) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
@@ -227,6 +268,9 @@ public interface MetadataElementInterface
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param properties new properties for the metadata element
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
@@ -236,9 +280,12 @@ public interface MetadataElementInterface
     void updateMetadataElementInStore(String            userId,
                                       String            metadataElementGUID,
                                       boolean           replaceProperties,
-                                      ElementProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      ElementProperties properties,
+                                      Date              effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -248,9 +295,12 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param newElementStatus new status value - or null to leave as is
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -258,11 +308,14 @@ public interface MetadataElementInterface
      */
     void updateMetadataElementStatusInStore(String        userId,
                                             String        metadataElementGUID,
+                                            boolean       forLineage,
+                                            boolean       forDuplicateProcessing,
                                             ElementStatus newElementStatus,
                                             Date          effectiveFrom,
-                                            Date          effectiveTo) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
+                                            Date          effectiveTo,
+                                            Date          effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**
@@ -270,15 +323,21 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void deleteMetadataElementInStore(String userId,
-                                      String metadataElementGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+    void deleteMetadataElementInStore(String  userId,
+                                      String  metadataElementGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
 
     /**
@@ -288,10 +347,13 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this classification is active - null for active now
      * @param effectiveTo the date when this classification becomes inactive - null for active until deleted
      * @param properties properties to store in the new classification.  These must conform to the valid properties associated with the
      *                   classification name
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -301,11 +363,14 @@ public interface MetadataElementInterface
     void classifyMetadataElementInStore(String            userId,
                                         String            metadataElementGUID,
                                         String            classificationName,
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**
@@ -316,7 +381,10 @@ public interface MetadataElementInterface
      * @param classificationName unique name of the classification to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties new properties for the classification
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
@@ -327,7 +395,10 @@ public interface MetadataElementInterface
                                           String            metadataElementGUID,
                                           String            classificationName,
                                           boolean           replaceProperties,
-                                          ElementProperties properties) throws InvalidParameterException,
+                                          boolean           forLineage,
+                                          boolean           forDuplicateProcessing,
+                                          ElementProperties properties,
+                                          Date              effectiveTime) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
 
@@ -339,20 +410,26 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateClassificationStatusInStore(String userId,
-                                           String metadataElementGUID,
-                                           String classificationName,
-                                           Date   effectiveFrom,
-                                           Date   effectiveTo) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    void updateClassificationStatusInStore(String  userId,
+                                           String  metadataElementGUID,
+                                           String  classificationName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
+                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -361,16 +438,22 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to remove
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void unclassifyMetadataElementInStore(String userId,
-                                          String metadataElementGUID,
-                                          String classificationName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    void unclassifyMetadataElementInStore(String  userId,
+                                          String  metadataElementGUID,
+                                          String  classificationName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -382,9 +465,12 @@ public interface MetadataElementInterface
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties the properties of the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return unique identifier of the new relationship
      *
@@ -397,11 +483,14 @@ public interface MetadataElementInterface
                                         String            relationshipTypeName,
                                         String            metadataElement1GUID,
                                         String            metadataElement2GUID,
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+                                        ElementProperties properties,
+                                        Date              effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**

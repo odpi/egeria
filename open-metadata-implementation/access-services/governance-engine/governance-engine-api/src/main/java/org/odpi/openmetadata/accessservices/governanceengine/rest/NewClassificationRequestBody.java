@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewClassificationRequestBody implements Serializable
+public class NewClassificationRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -47,6 +47,8 @@ public class NewClassificationRequestBody implements Serializable
      */
     public NewClassificationRequestBody(NewClassificationRequestBody template)
     {
+        super (template);
+
         if (template != null)
         {
             effectiveFrom = template.getEffectiveFrom();
@@ -133,7 +135,10 @@ public class NewClassificationRequestBody implements Serializable
         return "NewClassificationRequestBody{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
-                       ", properties=" + properties + '\'' +
+                       ", properties=" + properties +
+                       ", forLineage=" + getForLineage() +
+                       ", forDuplicateProcessing=" + getForDuplicateProcessing() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -155,10 +160,14 @@ public class NewClassificationRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         NewClassificationRequestBody that = (NewClassificationRequestBody) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(properties, that.properties) ;
+                       Objects.equals(properties, that.properties);
     }
 
 
@@ -170,6 +179,6 @@ public class NewClassificationRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo, properties);
+        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo, properties);
     }
 }

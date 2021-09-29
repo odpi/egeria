@@ -5,7 +5,6 @@ package org.odpi.openmetadata.metadatasecurity.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,11 +23,11 @@ public class GovernanceClassificationBase implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private GovernanceClassificationStatus status     = null;
-    private int                            confidence = 0;
-    private String                         steward    = null;
-    private String                         source     = null;
-    private String                         notes      = null;
+    private int    status     = 0;
+    private int    confidence = 0;
+    private String steward    = null;
+    private String source     = null;
+    private String notes      = null;
 
 
     /**
@@ -63,7 +62,7 @@ public class GovernanceClassificationBase implements Serializable
      *
      * @return enum
      */
-    public GovernanceClassificationStatus getStatus()
+    public int getStatus()
     {
         return status;
     }
@@ -74,7 +73,7 @@ public class GovernanceClassificationBase implements Serializable
      *
      * @param status enum
      */
-    public void setStatus(GovernanceClassificationStatus status)
+    public void setStatus(int status)
     {
         this.status = status;
     }

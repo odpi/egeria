@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -268,9 +269,12 @@ public class ProvisioningGovernanceContext extends GovernanceContext
             openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
                                                            parentGUID,
                                                            processGUID,
+                                                           false,
+                                                           false,
                                                            null,
                                                            null,
-                                                           relationshipProperties);
+                                                           relationshipProperties,
+                                                           new Date());
         }
 
         return processGUID;
@@ -327,7 +331,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
 
-        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, null, null, null);
+        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, false, false, null, null, null, new Date());
 
         return portGUID;
     }
@@ -360,6 +364,6 @@ public class ProvisioningGovernanceContext extends GovernanceContext
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, null, null, null);
+        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, false, false, null, null, null, new Date());
     }
 }

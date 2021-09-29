@@ -262,6 +262,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                                          false,
+                                                                                                          false,
                                                                                                           new Date(),
                                                                                                           methodName);
 
@@ -704,12 +706,20 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                                                 entity.getGUID(),
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 null,
+                                                                                                 methodName));
 
                 if (previousEntity != null)
                 {
                     watchdogEvent.setPreviousMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
                                                                                                              previousEntity.getGUID(),
+                                                                                                             false,
+                                                                                                             false,
+                                                                                                             null,
                                                                                                              methodName));
                 }
 
@@ -761,7 +771,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), false, false, null, methodName));
                 watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification));
 
                 if (previousClassification != null)
@@ -815,8 +825,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 /*
                  * Validate that the relationship is visible to this service
                  */
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), methodName);
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), false, false, null, methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), false, false, null, methodName);
 
                 /*
                  * OK to publish relationship

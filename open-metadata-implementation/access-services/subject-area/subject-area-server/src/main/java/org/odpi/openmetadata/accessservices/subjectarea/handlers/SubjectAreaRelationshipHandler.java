@@ -94,6 +94,8 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                  omrsRelationship.getEntityTwoProxy().getGUID(),
                                  "end2.guid",
                                  proxy2TypeName,
+                                 false,
+                                 false,
                                  omrsRelationship.getType().getTypeDefGUID(),
                                  omrsRelationship.getType().getTypeDefName(),
                                  instanceProperties,
@@ -276,6 +278,8 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                     "end2,guid",
                                                     oMRSRelationship.getEntityTwoProxy().getType().getTypeDefGUID(),
                                                     oMRSRelationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                    false,
+                                                    false,
                                                     oMRSRelationship.getType().getTypeDefName(),
                                                     oMRSRelationship,
                                                     methodName);

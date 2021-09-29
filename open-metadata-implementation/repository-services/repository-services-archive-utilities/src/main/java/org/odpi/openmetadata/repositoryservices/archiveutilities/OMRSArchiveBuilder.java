@@ -269,7 +269,7 @@ public class OMRSArchiveBuilder
                                             this.addTypeToMaps(updatedTypeDef);
                                         }
                                     }
-                                    catch (Throwable error)
+                                    catch (Exception error)
                                     {
                                         throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
                                                                                                                                   methodName,
@@ -301,7 +301,6 @@ public class OMRSArchiveBuilder
                                     guidMap.put(entity.getGUID(), entity);
 
                                     entityDetailMap.put(entity.getGUID(), entity);
-                                    entityDetailList.add(entity);
                                 }
                             }
                         }
@@ -317,8 +316,6 @@ public class OMRSArchiveBuilder
                                     guidMap.put(relationship.getGUID(), relationship);
 
                                     relationshipMap.put(relationship.getGUID(), relationship);
-                                    relationshipList.add(relationship);
-
                                 }
                             }
                         }
@@ -333,8 +330,7 @@ public class OMRSArchiveBuilder
                                 {
                                     String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
 
-                                    ClassificationEntityExtension   duplicateElement = classificationMap.put(classificationId, classification);
-                                    classificationList.add(classification);
+                                    classificationMap.put(classificationId, classification);
                                 }
                             }
                         }

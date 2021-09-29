@@ -32,6 +32,7 @@ public class RepositoryRelationshipsIterator
     private String             relationshipTypeName;
     private int                startingFrom;
     private int                requesterPageSize;
+    private boolean            forDuplicateProcessing;
     private Date               effectiveTime;
     private String             methodName;
     private List<Relationship> relationshipsCache = null;
@@ -46,6 +47,7 @@ public class RepositoryRelationshipsIterator
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing is this retrieve part of duplicate processing?
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return by this iterator.
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -57,6 +59,7 @@ public class RepositoryRelationshipsIterator
                                            String            startingEntityTypeName,
                                            String            relationshipTypeGUID,
                                            String            relationshipTypeName,
+                                           boolean           forDuplicateProcessing,
                                            int               startingFrom,
                                            int               requesterPageSize,
                                            Date              effectiveTime,
@@ -70,6 +73,7 @@ public class RepositoryRelationshipsIterator
         this.relationshipTypeName   = relationshipTypeName;
         this.startingFrom           = startingFrom;
         this.requesterPageSize      = requesterPageSize;
+        this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime          = effectiveTime;
         this.methodName             = methodName;
 
@@ -105,6 +109,7 @@ public class RepositoryRelationshipsIterator
                                                                               startingEntityTypeName,
                                                                               relationshipTypeGUID,
                                                                               relationshipTypeName,
+                                                                              forDuplicateProcessing,
                                                                               startingFrom,
                                                                               requesterPageSize,
                                                                               effectiveTime,

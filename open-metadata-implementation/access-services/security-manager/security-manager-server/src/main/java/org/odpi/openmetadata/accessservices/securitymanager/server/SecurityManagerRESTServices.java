@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 
 
 /**
@@ -303,6 +304,9 @@ public class SecurityManagerRESTServices
                                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)

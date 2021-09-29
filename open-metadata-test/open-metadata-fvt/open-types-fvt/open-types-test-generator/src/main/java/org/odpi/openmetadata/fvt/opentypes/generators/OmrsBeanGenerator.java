@@ -918,7 +918,7 @@ public class OmrsBeanGenerator {
             reader= new BufferedReader(new FileReader(ENTITY_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
                 replacementMap.put("uname", uEntityName);
                 replacementMap.put("name", entityName);
                 replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uEntityName));

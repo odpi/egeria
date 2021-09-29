@@ -77,7 +77,8 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 		String input = "baseModule";
 		AnalyticsAsset baseModule = getBaseModuleAsset(input);
 
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, baseModule);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, baseModule);
 		
 		assertEquals(guids.getAssetsList().size(), 1, "Single asset should be created.");
 		
@@ -98,9 +99,10 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateModule() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -120,11 +122,12 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateReport() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("module"));
 		
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("report"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -144,11 +147,11 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateDashboard() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("module"));
 		
 		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				createBean("dashboard"));
+				SoftwareServerCapability_GUID, createBean("dashboard"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 

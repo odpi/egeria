@@ -27,6 +27,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param entityTypeName  type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -37,12 +39,24 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                                       String            entityTypeGUID,
                                       String            entityTypeName,
                                       String            sequencingPropertyName,
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
                                       int               startingFrom,
                                       int               pageSize,
                                       Date              effectiveTime,
                                       String            methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, entityTypeName,sequencingPropertyName, startingFrom, pageSize, effectiveTime, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              entityTypeName,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
     }
 
 
@@ -70,6 +84,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                 entitiesCache = repositoryHandler.getEntitiesForType(userId,
                                                                      entityTypeGUID,
                                                                      entityTypeName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      startingFrom,
                                                                      pageSize,
                                                                      effectiveTime,

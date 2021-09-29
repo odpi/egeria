@@ -22,7 +22,7 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
 {
     private static final long     serialVersionUID = 1L;
 
-    private int impactLevel = 0;
+    private int impactSeverityLevel = 0;
 
     /**
      * Default constructor
@@ -44,7 +44,7 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
 
         if (template != null)
         {
-            impactLevel = template.getImpactLevel();
+            impactSeverityLevel = template.getImpactSeverityLevel();
         }
     }
 
@@ -54,20 +54,20 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
      *
      * @return enum
      */
-    public int getImpactLevel()
+    public int getImpactSeverityLevel()
     {
-        return impactLevel;
+        return impactSeverityLevel;
     }
 
 
     /**
      * Set up the definition of how critical this data item is to the organization.
      *
-     * @param impactLevel int
+     * @param impactSeverityLevel int
      */
-    public void setImpactLevel(int impactLevel)
+    public void setImpactSeverityLevel(int impactSeverityLevel)
     {
-        this.impactLevel = impactLevel;
+        this.impactSeverityLevel = impactSeverityLevel;
     }
 
     /**
@@ -79,7 +79,7 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
     public String toString()
     {
         return "ImpactGovernanceClassification{" +
-                "impactLevel=" + impactLevel +
+                "impactSeverityLevel=" + impactSeverityLevel +
                 ", status=" + getStatus() +
                 ", confidence=" + getConfidence() +
                 ", steward='" + getSteward() + '\'' +
@@ -111,7 +111,7 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
             return false;
         }
         ImpactGovernanceClassification that = (ImpactGovernanceClassification) objectToCompare;
-        return impactLevel == that.impactLevel;
+        return impactSeverityLevel == that.impactSeverityLevel;
     }
 
 
@@ -123,6 +123,6 @@ public class ImpactGovernanceClassification extends GovernanceClassificationBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), impactLevel);
+        return Objects.hash(super.hashCode(), impactSeverityLevel);
     }
 }
