@@ -101,13 +101,12 @@ public class OpenMetadataAPIMapper
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_NAME              = "MoreInformation";
     /* End1 = Referenceable; End 2 = more info Referenceable */
 
-
     public static final String SEARCH_KEYWORD_TYPE_GUID                          = "0134c9ae-0fe6-4224-bb3b-e18b78a90b1e";
     public static final String SEARCH_KEYWORD_TYPE_NAME                          = "SearchKeyword";
     public static final String KEYWORD_PROPERTY_NAME                             = "keyword";
     public static final String KEYWORD_DESCRIPTION_PROPERTY_NAME                 = "description";
 
-    public static final String REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID         = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";
+    public static final String REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID         = "d2f8df24-6905-49b8-b389-31b2da156ece";
     public static final String REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME         = "SearchKeywordLink";
     /* End1 = Referenceable; End 2 = SearchKeyword */
 
