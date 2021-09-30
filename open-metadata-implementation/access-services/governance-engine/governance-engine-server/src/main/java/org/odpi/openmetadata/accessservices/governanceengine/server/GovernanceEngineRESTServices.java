@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -125,11 +126,34 @@ public class GovernanceEngineRESTServices
 
 
     /**
+     * The effectiveTime is sent as a long and needs to be converted into a date.
+     *
+     * @param effectiveTime milliseconds since epoch or 0 to mean null (any time)
+     * @return date object or null
+     */
+    private Date getEffectIveTimeFromLong(long effectiveTime)
+    {
+        Date result = null;
+
+        if (effectiveTime != 0)
+        {
+            result = new Date(effectiveTime);
+        }
+
+        return result;
+    }
+
+
+
+    /**
      * Retrieve the metadata element using its unique identifier.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
      * 
@@ -137,9 +161,12 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public OpenMetadataElementResponse getMetadataElementByGUID(String serverName,
-                                                                String userId,
-                                                                String elementGUID)
+    public OpenMetadataElementResponse getMetadataElementByGUID(String  serverName,
+                                                                String  userId,
+                                                                String  elementGUID,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing,
+                                                                long    effectiveTime)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -154,7 +181,13 @@ public class GovernanceEngineRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, methodName));
+
+            response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                 elementGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 this.getEffectIveTimeFromLong(effectiveTime),
+                                                                 methodName));
         }
         catch (Exception error)
         {
@@ -171,6 +204,9 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -180,6 +216,9 @@ public class GovernanceEngineRESTServices
      */
     public OpenMetadataElementResponse getMetadataElementByUniqueName(String          serverName,
                                                                       String          userId,
+                                                                      boolean         forLineage,
+                                                                      boolean         forDuplicateProcessing,
+                                                                      long            effectiveTime,
                                                                       NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
@@ -201,6 +240,9 @@ public class GovernanceEngineRESTServices
                                                                            requestBody.getName(),
                                                                            requestBody.getNameParameterName(),
                                                                            requestBody.getNamePropertyName(),
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           this.getEffectIveTimeFromLong(effectiveTime),
                                                                            methodName));
             }
             else
@@ -223,6 +265,9 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -232,6 +277,9 @@ public class GovernanceEngineRESTServices
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
                                                            String          userId,
+                                                           boolean         forLineage,
+                                                           boolean         forDuplicateProcessing,
+                                                           long            effectiveTime,
                                                            NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
@@ -253,6 +301,9 @@ public class GovernanceEngineRESTServices
                                                                             requestBody.getName(),
                                                                             requestBody.getNameParameterName(),
                                                                             requestBody.getNamePropertyName(),
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            this.getEffectIveTimeFromLong(effectiveTime),
                                                                             methodName));
             }
             else
@@ -276,6 +327,9 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -288,6 +342,9 @@ public class GovernanceEngineRESTServices
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
                                                                        String                  userId,
+                                                                       boolean                 forLineage,
+                                                                       boolean                 forDuplicateProcessing,
+                                                                       long                    effectiveTime,
                                                                        int                     startFrom,
                                                                        int                     pageSize,
                                                                        SearchStringRequestBody requestBody)
@@ -307,7 +364,14 @@ public class GovernanceEngineRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findMetadataElementsWithString(userId, requestBody.getSearchString(), startFrom, pageSize, methodName));
+                response.setElementList(handler.findMetadataElementsWithString(userId,
+                                                                               requestBody.getSearchString(),
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               this.getEffectIveTimeFromLong(effectiveTime),
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName));
             }
             else
             {
@@ -332,6 +396,9 @@ public class GovernanceEngineRESTServices
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -341,13 +408,16 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public RelatedMetadataElementListResponse getRelatedMetadataElements(String serverName,
-                                                                         String userId,
-                                                                         String elementGUID,
-                                                                         String relationshipTypeName,
-                                                                         int    startingAtEnd,
-                                                                         int    startFrom,
-                                                                         int    pageSize)
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(String  serverName,
+                                                                         String  userId,
+                                                                         String  elementGUID,
+                                                                         String  relationshipTypeName,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         long    effectiveTime,
+                                                                         int     startingAtEnd,
+                                                                         int     startFrom,
+                                                                         int     pageSize)
     {
         final String methodName = "getRelatedMetadataElements";
 
@@ -362,7 +432,16 @@ public class GovernanceEngineRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getRelatedMetadataElements(userId, elementGUID, startingAtEnd, relationshipTypeName, startFrom, pageSize, methodName));
+            response.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                       elementGUID,
+                                                                       startingAtEnd,
+                                                                       relationshipTypeName,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       this.getEffectIveTimeFromLong(effectiveTime),
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName));
         }
         catch (Exception error)
         {
@@ -379,6 +458,9 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -390,6 +472,9 @@ public class GovernanceEngineRESTServices
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
                                                              String          userId,
+                                                             boolean         forLineage,
+                                                             boolean         forDuplicateProcessing,
+                                                             long            effectiveTime,
                                                              int             startFrom,
                                                              int             pageSize,
                                                              FindRequestBody requestBody)
@@ -417,6 +502,9 @@ public class GovernanceEngineRESTServices
                                                                      requestBody.getMatchClassifications(),
                                                                      requestBody.getSequencingProperty(),
                                                                      requestBody.getSequencingOrder(),
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     this.getEffectIveTimeFromLong(effectiveTime),
                                                                      startFrom,
                                                                      pageSize,
                                                                      methodName));
@@ -441,6 +529,9 @@ public class GovernanceEngineRESTServices
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -453,6 +544,9 @@ public class GovernanceEngineRESTServices
      */
     public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(String          serverName,
                                                                                         String          userId,
+                                                                                        boolean         forLineage,
+                                                                                        boolean         forDuplicateProcessing,
+                                                                                        long            effectiveTime,
                                                                                         int             startFrom,
                                                                                         int             pageSize,
                                                                                         FindRequestBody requestBody)
@@ -477,6 +571,9 @@ public class GovernanceEngineRESTServices
                                                                                          requestBody.getSearchProperties(),
                                                                                          requestBody.getSequencingProperty(),
                                                                                          requestBody.getSequencingOrder(),
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         this.getEffectIveTimeFromLong(effectiveTime),
                                                                                          startFrom,
                                                                                          pageSize,
                                                                                          methodName));
@@ -594,7 +691,10 @@ public class GovernanceEngineRESTServices
                 handler.updateMetadataElementInStore(userId,
                                                      metadataElementGUID,
                                                      requestBody.getReplaceProperties(),
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
                                                      requestBody.getProperties(),
+                                                     requestBody.getEffectiveTime(),
                                                      methodName);
             }
             else
@@ -651,8 +751,11 @@ public class GovernanceEngineRESTServices
                 handler.updateMetadataElementStatusInStore(userId,
                                                            metadataElementGUID,
                                                            requestBody.getNewStatus(),
+                                                           requestBody.getForLineage(),
+                                                           requestBody.getForDuplicateProcessing(),
                                                            requestBody.getEffectiveFrom(),
                                                            requestBody.getEffectiveTo(),
+                                                           requestBody.getEffectiveTime(),
                                                            methodName);
             }
             else
@@ -685,10 +788,10 @@ public class GovernanceEngineRESTServices
      *  PropertyServerException there is a problem with the metadata store
      */
     @SuppressWarnings(value = "unused")
-    public  VoidResponse deleteMetadataElementInStore(String          serverName,
-                                                      String          userId,
-                                                      String          metadataElementGUID,
-                                                      NullRequestBody requestBody)
+    public  VoidResponse deleteMetadataElementInStore(String            serverName,
+                                                      String            userId,
+                                                      String            metadataElementGUID,
+                                                      UpdateRequestBody requestBody)
     {
         final String methodName = "deleteMetadataElementInStore";
 
@@ -705,7 +808,12 @@ public class GovernanceEngineRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.deleteMetadataElementInStore(userId, metadataElementGUID, methodName);
+                handler.deleteMetadataElementInStore(userId,
+                                                     metadataElementGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
             }
             else
             {
@@ -764,9 +872,12 @@ public class GovernanceEngineRESTServices
                 handler.classifyMetadataElementInStore(userId,
                                                        metadataElementGUID,
                                                        classificationName,
+                                                       requestBody.getForLineage(),
+                                                       requestBody.getForDuplicateProcessing(),
                                                        requestBody.getEffectiveFrom(),
                                                        requestBody.getEffectiveTo(),
                                                        requestBody.getProperties(),
+                                                       requestBody.getEffectiveTime(),
                                                        methodName);
             }
             else
@@ -825,7 +936,10 @@ public class GovernanceEngineRESTServices
                                                          metadataElementGUID,
                                                          classificationName,
                                                          requestBody.getReplaceProperties(),
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
                                                          requestBody.getProperties(),
+                                                         requestBody.getEffectiveTime(),
                                                          methodName);
             }
             else
@@ -883,8 +997,11 @@ public class GovernanceEngineRESTServices
                 handler.updateClassificationStatusInStore(userId,
                                                           metadataElementGUID,
                                                           classificationName,
+                                                          requestBody.getForLineage(),
+                                                          requestBody.getForDuplicateProcessing(),
                                                           requestBody.getEffectiveFrom(),
                                                           requestBody.getEffectiveTo(),
+                                                          requestBody.getEffectiveTime(),
                                                           methodName);
             }
             else
@@ -917,13 +1034,14 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse unclassifyMetadataElementInStore(String          serverName,
-                                                         String          userId,
-                                                         String          metadataElementGUID,
-                                                         String          classificationName,
-                                                         NullRequestBody requestBody)
+    public VoidResponse unclassifyMetadataElementInStore(String            serverName,
+                                                         String            userId,
+                                                         String            metadataElementGUID,
+                                                         String            classificationName,
+                                                         UpdateRequestBody requestBody)
     {
         final String methodName = "unclassifyMetadataElementInStore";
+        final String metadataElementGUIDParameterName = "metadataElementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -938,7 +1056,15 @@ public class GovernanceEngineRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.unclassifyMetadataElementInStore(userId, metadataElementGUID, classificationName, methodName);
+                handler.unclassifyMetadataElementInStore(userId,
+                                                         metadataElementGUID,
+                                                         metadataElementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                         classificationName,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);
             }
             else
             {
@@ -993,9 +1119,12 @@ public class GovernanceEngineRESTServices
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getMetadataElement1GUID(),
                                                                       requestBody.getMetadataElement2GUID(),
+                                                                      requestBody.getForLineage(),
+                                                                      requestBody.getForDuplicateProcessing(),
                                                                       requestBody.getEffectiveFrom(),
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else

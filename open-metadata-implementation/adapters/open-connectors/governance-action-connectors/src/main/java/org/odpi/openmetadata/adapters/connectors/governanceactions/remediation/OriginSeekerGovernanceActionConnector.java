@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +104,10 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                          */
                         governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
                                                                   assetOriginClassification,
-                                                                  originClassifications.get(0));
+                                                                  false,
+                                                                  false,
+                                                                  originClassifications.get(0),
+                                                                  new Date());
 
                         outputGuards.add(OriginSeekerGovernanceActionProvider.ORIGIN_ASSIGNED_GUARD);
                         completionStatus = CompletionStatus.ACTIONED;
@@ -211,6 +215,9 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         List<RelatedMetadataElement> lineageLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                      2,
                                                                                      lineageMappingRelationshipName,
+                                                                                     true,
+                                                                                     false,
+                                                                                     null,
                                                                                      0,
                                                                                      0);
 

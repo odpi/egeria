@@ -159,7 +159,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               (Date)null,
+                                                                               false,
+                                                                               false,
+                                                                               null,
                                                                                methodName);
 
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
@@ -273,8 +275,11 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                           "guid",
                                                           OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
                                                           OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                          false,
+                                                          false,
                                                           suppliedEntity.getProperties(),
                                                           !isReplace,
+                                                          null,
                                                           methodName);
                     setNodeEffectivity(userId,
                                        suppliedProject,
@@ -344,6 +349,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                       OpenMetadataAPIMapper.PROJECT_TYPE_GUID,    // true for sub types
                                                       OpenMetadataAPIMapper.PROJECT_TYPE_NAME,    // true for sub types
                                                       null,
+                                                      null,
+                                                      false,
+                                                      false,
                                                       null,
                                                       methodName);
             }

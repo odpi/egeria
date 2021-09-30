@@ -45,11 +45,33 @@ public class ConfigAccessServicesViewResource
     @PostMapping(path = "/access-services/{serviceURLMarker}")
     public ServerAuthorConfigurationResponse configureAccessService(@PathVariable                   String              userId,
                                                @PathVariable                   String              serverName,
-                                               @PathVariable String serverToBeConfiguredName,
+                                               @PathVariable                   String serverToBeConfiguredName,
                                                @PathVariable                   String              serviceURLMarker,
                                                @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
     {
         return adminAPI.configureAccessService(userId, serverName, serverToBeConfiguredName, serviceURLMarker, accessServiceOptions);
+    }
+
+
+    /**
+     * Disable a single access service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param serviceURLMarker string indicating which access service it is configuring
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/access-services/{serviceURLMarker}")
+    public ServerAuthorConfigurationResponse disableAccessService(  @PathVariable                   String              userId,
+                                                                    @PathVariable                   String              serverName,
+                                                                    @PathVariable                   String              serverToBeConfiguredName,
+                                                                    @PathVariable                   String              serviceURLMarker)
+    {
+        return adminAPI.disableAccessService(userId, serverName, serverToBeConfiguredName, serviceURLMarker);
     }
 
 

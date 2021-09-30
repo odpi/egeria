@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,6 +214,9 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                       apiParameterListGUID,
                                       apiParameterListGUIDParameterName,
                                       OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       relationshipTypeDef.getGUID(),
                                       relationshipTypeDef.getName(),
                                       null,
@@ -302,6 +306,9 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                       apiParameterListGUID,
                                       apiParameterListGUIDParameterName,
                                       OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       relationshipTypeDef.getGUID(),
                                       relationshipTypeDef.getName(),
                                       null,
@@ -405,8 +412,12 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                     apiParameterListGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -445,6 +456,9 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -538,11 +552,12 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                               null,
                                                               null,
                                                               false,
+                                                              false,
                                                               supportedZones,
                                                               null,
                                                               startFrom,
                                                               pageSize,
-                                                              null,
+                                                              new Date(),
                                                               methodName);
 
         return this.getBeansForEntities(userId, entities, nameParameterName, methodName);
@@ -698,6 +713,7 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                            null,
                                                            null,
+                                                           false,
                                                            false,
                                                            supportedZones,
                                                            null,

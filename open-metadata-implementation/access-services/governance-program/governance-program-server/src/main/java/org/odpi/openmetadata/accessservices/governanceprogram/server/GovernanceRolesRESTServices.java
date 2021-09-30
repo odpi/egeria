@@ -18,6 +18,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -252,6 +253,8 @@ public class GovernanceRolesRESTServices
                                              responsibilityGUID,
                                              responsibilityGUIDParameterName,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                              null,
@@ -320,6 +323,8 @@ public class GovernanceRolesRESTServices
                                                  responsibilityGUIDParameterName,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                                  null,
@@ -386,6 +391,8 @@ public class GovernanceRolesRESTServices
                                              governanceRoleGUID,
                                              governanceRoleGUIDParameterName,
                                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                              null,
@@ -454,6 +461,8 @@ public class GovernanceRolesRESTServices
                                                  governanceRoleGUIDParameterName,
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                                  null,
@@ -554,6 +563,9 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUID,
                                                               governanceRoleGUIDParameterName,
                                                               OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)

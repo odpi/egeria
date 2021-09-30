@@ -162,7 +162,7 @@ public class OMRSArchiveWriter
             log.debug("Created connector to open metadata archive store");
 
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             log.error("Unexpected exception occurred: " + error.getMessage());
             log.error("Exception: " + error.toString());

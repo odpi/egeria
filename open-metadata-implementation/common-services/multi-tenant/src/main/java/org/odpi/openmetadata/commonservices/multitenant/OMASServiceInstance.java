@@ -142,7 +142,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.repositoryHelper = repositoryConnector.getRepositoryHelper();
 
                 this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
-                this.repositoryHandler = new RepositoryHandler(auditLog, errorHandler, metadataCollection, maxPageSize);
+                this.repositoryHandler = new RepositoryHandler(auditLog, repositoryHelper, errorHandler, metadataCollection, maxPageSize);
                 this.supportedZones = supportedZones;
                 this.defaultZones = defaultZones;
                 this.publishZones = publishZones;

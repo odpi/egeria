@@ -44,7 +44,8 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 		String baseModule = getBaseModuleJson("baseModule");	// base module definition with fixed GUIDs
 		AnalyticsAsset assetBaseModule = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
 
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, 
+				SoftwareServerCapability_GUID, assetBaseModule);
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -55,7 +56,7 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 		EntityDetail asset = omEntityDao.getEntityByGuid(guid);
 		String assetQName = omEntityDao.getEntityQName(asset);
 
-		guids = obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, UID_STOREID);
+		guids = obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, null, UID_STOREID);
 		
 		List<EntityDetail> elements = getAssetEntities(assetQName, methodName);
 		
@@ -63,7 +64,8 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		// delete should not remove entities referenced by the deleted asset
 		// thus relationships to the entities created outside of the module should be created again 
-		guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class));
+		guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, null,
+				TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class));
 		assertSubgraph(guids.getAssetsList().get(0), "baseModuleSubgraph");
 	}
 
@@ -80,7 +82,8 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 						null,
 						null,
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
-						null, null, 0, 0, null, methodName);
+						null, null, false,
+						 false,0, 0, null, methodName);
 	}
 
 
@@ -99,20 +102,23 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		AnalyticsAsset assetBaseModule = getBaseModuleAsset("baseModule");
 
-		ResponseContainerAssets  guidsBModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, assetBaseModule);
+		ResponseContainerAssets  guidsBModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, assetBaseModule);
 
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("module"));
 
 		assertSubgraph(guidsModule.getAssetsList().get(0), "moduleSubgraph");
 
-		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("dashboard"));
+		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("dashboard"));
 		
 		assertSubgraph(guidsDashBoard.getAssetsList().get(0), "dashboardSubgraph");
 
 		String assetQName = omEntityDao.getEntityQName(omEntityDao.getEntityByGuid(guidsModule.getAssetsList().get(0)));
 
 		// delete an asset (module) referencing and referenced other assets.
-		obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, UID_STOREID_MODULE);
+		obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, UID_STOREID_MODULE);
 
 		//---------------------------------------------------
 		// Verify structure and content of the deleted and related assets. 
@@ -133,9 +139,10 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 
 		String methodName = "testDeleteVisualizationWithModule";
 		
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	createBean("module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("module"));
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, createBean("report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, createBean("report"));
 		
 		assertSubgraph(guidsReport.getAssetsList().get(1), "reportSubgraph");
 		
@@ -143,7 +150,7 @@ class AnalyticsArtifactDeleteTest extends SynchronizationBaseTest {
 		String assetQName2 = omEntityDao.getEntityQName(omEntityDao.getEntityByGuid(guidsReport.getAssetsList().get(1)));
 
 		// delete report assets 
-		guidsReport = obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, UID_STOREID_REPORT);
+		guidsReport = obj.deleteAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, UID_STOREID_REPORT);
 
 		//---------------------------------------------------
 		// Verify repository does not have entities for artifact elements 

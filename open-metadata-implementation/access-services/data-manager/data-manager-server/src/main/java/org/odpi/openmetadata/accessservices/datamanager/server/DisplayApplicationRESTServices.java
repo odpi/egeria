@@ -451,6 +451,9 @@ public class DisplayApplicationRESTServices
                                                OpenMetadataAPIMapper.FORM_TYPE_NAME,
                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
         }
@@ -691,6 +694,8 @@ public class DisplayApplicationRESTServices
                                                                   guid,
                                                                   guidParameterName,
                                                                   OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                  false,
+                                                                  false,
                                                                   new Date(),
                                                                   methodName);
 
@@ -814,6 +819,8 @@ public class DisplayApplicationRESTServices
                                                  reportGUID,
                                                  reportGUIDParameterName,
                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                  null,
@@ -913,6 +920,8 @@ public class DisplayApplicationRESTServices
                                                  reportGUID,
                                                  reportGUIDParameterName,
                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                  null,
@@ -1198,6 +1207,9 @@ public class DisplayApplicationRESTServices
                                                OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
         }
@@ -1438,6 +1450,9 @@ public class DisplayApplicationRESTServices
                                                                       guid,
                                                                       guidParameterName,
                                                                       OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
                                                                       methodName);
 
             response.setElement(setUpVendorProperties(userId, reportAsset, handler, methodName));
@@ -1518,6 +1533,8 @@ public class DisplayApplicationRESTServices
                                                  queryGUID,
                                                  queryGUIDParameterName,
                                                  OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                  null,
@@ -1617,6 +1634,8 @@ public class DisplayApplicationRESTServices
                                                  queryGUID,
                                                  queryGUIDParameterName,
                                                  OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                  null,
@@ -1858,6 +1877,9 @@ public class DisplayApplicationRESTServices
                                            OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            qualifiedName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -2097,6 +2119,9 @@ public class DisplayApplicationRESTServices
                                                                     guid,
                                                                     guidParameterName,
                                                                     OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName);
 
             response.setElement(setUpVendorProperties(userId, queryAsset, handler, methodName));

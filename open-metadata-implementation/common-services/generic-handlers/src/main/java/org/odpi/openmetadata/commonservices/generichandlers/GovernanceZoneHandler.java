@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -233,8 +234,12 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     zoneGUIDParameterName,
                                     OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                     OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -266,7 +271,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                         OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                        null,
+                                        false,
+                                        false,
+                                        supportedZones,
+                                        new Date(),
                                         methodName);
     }
 
@@ -301,7 +309,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             null,
                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                             1,
-                                            null,
+                                            false,
+                                            new Date(),
                                             methodName);
     }
 
@@ -336,9 +345,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        null,
                                        OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                        2,
+                                       false,
                                        0,
                                        0,
-                                       null,
+                                       new Date(),
                                        methodName);
     }
 
@@ -367,11 +377,13 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                    OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                   supportedZones,
                                    null,
+                                   false,
+                                   false,
+                                   supportedZones,
                                    startFrom,
                                    pageSize,
-                                   null,
+                                   new Date(),
                                    methodName);
     }
 
@@ -407,11 +419,13 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                                             supportedZones,
                                                              null,
+                                                             false,
+                                                             false,
+                                                             supportedZones,
                                                              startFrom,
                                                              pageSize,
-                                                             null,
+                                                             new Date(),
                                                              methodName);
 
         List<B> results = new ArrayList<>();

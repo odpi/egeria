@@ -13,8 +13,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.*;
 
 /**
- * The InMemoryOMRSMetadataCollection represents a metadata repository that supports an in-memory repository.
- * Requests to this metadata collection work with the hashmaps used to manage metadata types and instances.
+ * The ReadOnlyOMRSMetadataCollection represents a metadata repository that supports an in-memory repository whose content
+ * is read-only.  It is typically populated by open metadata archives.
  */
 public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollection
 {
@@ -737,62 +737,290 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
     }
 
 
+
+
     /**
-     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
-     * to store classifications for entities that are homed in another repository.
+     * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
+     * entity.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to save.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<Classification> getHomeClassifications(String userId,
-                                                       String entityGUID) throws InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 EntityNotKnownException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 FunctionNotSupportedException
+    public void saveEntityReferenceCopy(String         userId,
+                                        EntityDetail   entity) throws InvalidParameterException,
+                                                                      RepositoryErrorException,
+                                                                      UserNotAuthorizedException
     {
-        final String  methodName = "getHomeClassifications";
+        final String  methodName = "saveEntityReferenceCopy";
+        final String  instanceParameterName = "entity";
 
-        reportUnsupportedOptionalFunction(methodName);
-        return null;
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
     }
 
 
     /**
-     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
-     * to store classifications for entities that are homed in another repository.
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove or
+     * soft delete relationships attached to the entity
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<Classification> getHomeClassifications(String userId,
-                                                       String entityGUID,
-                                                       Date   asOfTime) throws InvalidParameterException,
-                                                                               RepositoryErrorException,
-                                                                               EntityNotKnownException,
-                                                                               UserNotAuthorizedException,
-                                                                               FunctionNotSupportedException
+    public  void deleteEntityReferenceCopy(String         userId,
+                                           EntityDetail   entity) throws InvalidParameterException,
+                                                                         RepositoryErrorException,
+                                                                         UserNotAuthorizedException
     {
-        final String  methodName = "getHomeClassifications (with history)";
+        final String  methodName = "deleteEntityReferenceCopy";
+        final String  instanceParameterName = "entity";
 
-        reportUnsupportedOptionalFunction(methodName);
-        return null;
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.  It is also an opportunity to remove or
+     * soft delete relationships attached to the entity
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to purge.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void purgeEntityReferenceCopy(String         userId,
+                                          EntityDetail   entity) throws InvalidParameterException,
+                                                                        RepositoryErrorException,
+                                                                        UserNotAuthorizedException
+    {
+        final String  methodName = "purgeEntityReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entityGUID the unique identifier for the entity.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeEntityReferenceCopy(String   userId,
+                                         String   entityGUID,
+                                         String   typeDefGUID,
+                                         String   typeDefName,
+                                         String   homeMetadataCollectionId) throws InvalidParameterException,
+                                                                                   RepositoryErrorException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName                = "purgeEntityReferenceCopy";
+        final String entityParameterName       = "entityGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.manageReferenceInstanceParameterValidation(userId,
+                                                        entityGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        entityParameterName,
+                                                        homeMetadataCollectionId,
+                                                        homeParameterName,
+                                                        methodName);
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     */
+    @Override
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification)
+    {
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     */
+    @Override
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification)
+    {
+    }
+
+
+    /**
+     * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
+     * relationship.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to save.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveRelationshipReferenceCopy(String userId,
+                                              Relationship   relationship) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String  methodName = "saveRelationshipReferenceCopy";
+        final String  instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void deleteRelationshipReferenceCopy(String         userId,
+                                                 Relationship   relationship) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String  methodName = "deleteRelationshipReferenceCopy";
+        final String  instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to purge.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void purgeRelationshipReferenceCopy(String         userId,
+                                                Relationship   relationship) throws InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "purgeRelationshipReferenceCopy";
+        final String instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        this.referenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationshipGUID the unique identifier for the relationship.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeRelationshipReferenceCopy(String   userId,
+                                               String   relationshipGUID,
+                                               String   typeDefGUID,
+                                               String   typeDefName,
+                                               String   homeMetadataCollectionId) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName                = "purgeRelationshipReferenceCopy";
+        final String relationshipParameterName = "relationshipGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.manageReferenceInstanceParameterValidation(userId,
+                                                        relationshipGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        relationshipParameterName,
+                                                        homeMetadataCollectionId,
+                                                        homeParameterName,
+                                                        methodName);
     }
 }

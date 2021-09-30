@@ -432,7 +432,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
 		final String activityName = "testInvalidUser_CreateModule";
 		try
         {
-            client.createArtifact(null, "serverCapability", ARTIFACT);
+            client.createArtifact(null, "serverCapability", null, ARTIFACT);
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName + EXCEPTION_EXPECTED);
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -452,7 +452,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
 		final String activityName = "testInvalidUser_UpdateArtifact";
 		try
         {
-            client.updateArtifact(null, "serverCapability", ARTIFACT);
+            client.updateArtifact(null, "serverCapability", null, ARTIFACT);
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName + EXCEPTION_EXPECTED);
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -472,7 +472,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
 		final String activityName = "testInvalidUser_DeleteArtifact";
 		try
         {
-            client.deleteArtifact(null, "serverCapability", "identifier");
+            client.deleteArtifact(null, "serverCapability", null, "identifier");
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName + EXCEPTION_EXPECTED);
         }
         catch (FVTUnexpectedCondition testCaseError)

@@ -28,14 +28,14 @@ public class GovernedAssetContextBuilder
 
     public Context buildContextForColumn(String userID, String assetId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "buildContextForColumn";
-        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, new Date(), methodName);
+        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, methodName);
         if (column != null && isRelationalColumn(column)) {
             return getDatabaseContextForColumn(userID, column);
         }
         return null;
     }
 
-    public Context buildContextForTable(String userID, String assetId) throws UserNotAuthorizedException, PropertyServerException {
+    public Context buildContextForTable(String userID, String assetId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         Context context = new Context();
 
         context.setTable(getTableName(userID, assetId));
@@ -44,7 +44,7 @@ public class GovernedAssetContextBuilder
         return context;
     }
 
-    private Context getDatabaseContextForColumn(String userID, EntityDetail column) throws UserNotAuthorizedException, PropertyServerException {
+    private Context getDatabaseContextForColumn(String userID, EntityDetail column) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getDatabaseContextForColumn";
 
         Context context = new Context();
@@ -57,7 +57,7 @@ public class GovernedAssetContextBuilder
         return context;
     }
 
-    private String getTableName(String userID, String relationalColumnGuid) throws UserNotAuthorizedException, PropertyServerException {
+    private String getTableName(String userID, String relationalColumnGuid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getTableName";
         final EntityDetail relationalTable = getRelationalTable(userID, relationalColumnGuid);
 
@@ -68,14 +68,13 @@ public class GovernedAssetContextBuilder
         return null;
     }
 
-    private EntityDetail getRelationalTable(String userID, String relationalColumnGuid) throws UserNotAuthorizedException, PropertyServerException {
+    private EntityDetail getRelationalTable(String userID, String relationalColumnGuid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationalTable";
         return repositoryHandler.getEntityForRelationshipType(userID,
                                                               relationalColumnGuid,
                                                               Constants.RELATIONAL_COLUMN,
                                                               Constants.NESTED_SCHEMA_ATTRIBUTE_GUID,
                                                               Constants.NESTED_SCHEMA_ATTRIBUTE,
-                                                              new Date(),
                                                               methodName);
     }
 

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEn
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * GovernanceEngineOMASResource supports the REST APIs for running Governance Action Service
  */
@@ -81,6 +83,9 @@ public class GovernanceEngineOMASResource
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
      *
@@ -90,11 +95,14 @@ public class GovernanceEngineOMASResource
      */
     @GetMapping(path = "/open-metadata-store/metadata-elements/{elementGUID}")
 
-    public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String serverName,
-                                                                @PathVariable String userId,
-                                                                @PathVariable String elementGUID)
+    public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
+                                                                @PathVariable String  userId,
+                                                                @PathVariable String  elementGUID,
+                                                                @RequestParam boolean forLineage,
+                                                                @RequestParam boolean forDuplicateProcessing,
+                                                                @RequestParam long    effectiveTime)
     {
-        return restAPI.getMetadataElementByGUID(serverName, userId, elementGUID);
+        return restAPI.getMetadataElementByGUID(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -103,6 +111,9 @@ public class GovernanceEngineOMASResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -114,9 +125,12 @@ public class GovernanceEngineOMASResource
 
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          userId,
+                                                                      @RequestParam boolean         forLineage,
+                                                                      @RequestParam boolean         forDuplicateProcessing,
+                                                                      @RequestParam long            effectiveTime,
                                                                       @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByUniqueName(serverName, userId, requestBody);
+        return restAPI.getMetadataElementByUniqueName(serverName, userId, forLineage, forDuplicateProcessing, effectiveTime, requestBody);
     }
 
 
@@ -125,6 +139,9 @@ public class GovernanceEngineOMASResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -136,9 +153,12 @@ public class GovernanceEngineOMASResource
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          userId,
+                                                           @RequestParam boolean         forLineage,
+                                                           @RequestParam boolean         forDuplicateProcessing,
+                                                           @RequestParam long            effectiveTime,
                                                            @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementGUIDByUniqueName(serverName, userId, requestBody);
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, userId, forLineage, forDuplicateProcessing, effectiveTime, requestBody);
     }
 
 
@@ -147,6 +167,9 @@ public class GovernanceEngineOMASResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -161,11 +184,14 @@ public class GovernanceEngineOMASResource
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  userId,
+                                                                       @RequestParam boolean                 forLineage,
+                                                                       @RequestParam boolean                 forDuplicateProcessing,
+                                                                       @RequestParam long                    effectiveTime,
                                                                        @RequestParam int                     startFrom,
                                                                        @RequestParam int                     pageSize,
                                                                        @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findMetadataElementsWithString(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElementsWithString(serverName, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
 
 
@@ -176,6 +202,9 @@ public class GovernanceEngineOMASResource
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -188,15 +217,27 @@ public class GovernanceEngineOMASResource
      */
     @GetMapping(path = "/open-metadata-store/related-elements/{elementGUID}/type/{relationshipTypeName}")
 
-    public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String serverName,
-                                                                         @PathVariable String userId,
-                                                                         @PathVariable String elementGUID,
-                                                                         @PathVariable String relationshipTypeName,
-                                                                         @RequestParam int    startingAtEnd,
-                                                                         @RequestParam int    startFrom,
-                                                                         @RequestParam int    pageSize)
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String  serverName,
+                                                                         @PathVariable String  userId,
+                                                                         @PathVariable String  elementGUID,
+                                                                         @PathVariable String  relationshipTypeName,
+                                                                         @RequestParam boolean forLineage,
+                                                                         @RequestParam boolean forDuplicateProcessing,
+                                                                         @RequestParam long    effectiveTime,
+                                                                         @RequestParam int     startingAtEnd,
+                                                                         @RequestParam int     startFrom,
+                                                                         @RequestParam int     pageSize)
     {
-        return restAPI.getRelatedMetadataElements(serverName, userId, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize);
+        return restAPI.getRelatedMetadataElements(serverName,
+                                                  userId,
+                                                  elementGUID,
+                                                  relationshipTypeName,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveTime,
+                                                  startingAtEnd,
+                                                  startFrom,
+                                                  pageSize);
     }
 
 
@@ -205,6 +246,9 @@ public class GovernanceEngineOMASResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -218,11 +262,14 @@ public class GovernanceEngineOMASResource
 
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          userId,
+                                                             @RequestParam boolean         forLineage,
+                                                             @RequestParam boolean         forDuplicateProcessing,
+                                                             @RequestParam long            effectiveTime,
                                                              @RequestParam int             startFrom,
                                                              @RequestParam int             pageSize,
                                                              @RequestBody  FindRequestBody requestBody)
     {
-        return restAPI.findMetadataElements(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElements(serverName, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
 
 
@@ -231,6 +278,9 @@ public class GovernanceEngineOMASResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -245,11 +295,14 @@ public class GovernanceEngineOMASResource
 
     public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                         @PathVariable String          userId,
+                                                                                        @RequestParam boolean         forLineage,
+                                                                                        @RequestParam boolean         forDuplicateProcessing,
+                                                                                        @RequestParam long            effectiveTime,
                                                                                         @RequestParam int             startFrom,
                                                                                         @RequestParam int             pageSize,
                                                                                         @RequestBody  FindRequestBody requestBody)
     {
-        return restAPI.findRelationshipsBetweenMetadataElements(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findRelationshipsBetweenMetadataElements(serverName, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
 
 
@@ -349,10 +402,10 @@ public class GovernanceEngineOMASResource
      */
     @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/delete")
 
-    public  VoidResponse deleteMetadataElementInStore(@PathVariable                  String          serverName,
-                                                      @PathVariable                  String          userId,
-                                                      @PathVariable                  String          metadataElementGUID,
-                                                      @RequestBody(required = false) NullRequestBody requestBody)
+    public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
+                                                      @PathVariable String            userId,
+                                                      @PathVariable String            metadataElementGUID,
+                                                      @RequestBody  UpdateRequestBody requestBody)
     {
         return restAPI.deleteMetadataElementInStore(serverName, userId, metadataElementGUID, requestBody);
     }
@@ -461,11 +514,11 @@ public class GovernanceEngineOMASResource
      */
     @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
 
-    public VoidResponse unclassifyMetadataElementInStore(@PathVariable                  String          serverName,
-                                                         @PathVariable                  String          userId,
-                                                         @PathVariable                  String          metadataElementGUID,
-                                                         @PathVariable                  String          classificationName,
-                                                         @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse unclassifyMetadataElementInStore(@PathVariable String            serverName,
+                                                         @PathVariable String            userId,
+                                                         @PathVariable String            metadataElementGUID,
+                                                         @PathVariable String            classificationName,
+                                                         @RequestBody  UpdateRequestBody requestBody)
     {
         return restAPI.unclassifyMetadataElementInStore(serverName, userId, metadataElementGUID, classificationName, requestBody);
     }

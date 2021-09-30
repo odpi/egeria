@@ -12,6 +12,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -407,9 +408,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                           processGUIDParameterName,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                          false,
+                                          false,
                                           supportedZones,
                                           processStatus,
                                           processStatusParameterName,
+                                          new Date(),
                                           methodName);
     }
 
@@ -558,6 +562,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                               null,
                                               null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
     }
 
