@@ -35,6 +35,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -153,6 +154,14 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     @Getter
     private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine search handler.
+     * @return the Data Engine search handler
+     */
+    @Getter
+    private final DataEngineFindHandler dataEngineFindHandler;
 
     /**
      * Sets up the local repository connector that will service the REST Calls
@@ -280,5 +289,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
                 repositoryHandler, dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
                 dataEngineConnectionAndEndpointHandler);
+
+        dataEngineFindHandler = new DataEngineFindHandler(invalidParameterHandler, repositoryHelper, repositoryHandler,
+                serviceName, serverName, dataEngineCommonHandler );
     }
 }

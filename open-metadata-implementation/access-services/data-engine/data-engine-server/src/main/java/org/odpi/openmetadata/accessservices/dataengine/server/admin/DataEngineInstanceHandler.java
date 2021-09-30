@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -262,6 +263,28 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
                 serverName, serviceOperationName);
         return instance.getDataEngineConnectionAndEndpointHandler();
     }
+
+    /**
+     * Retrieve the search handler for the access service
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public DataEngineFindHandler getFindHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+        return instance.getDataEngineFindHandler();
+    }
+
 }
 
 
