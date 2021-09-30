@@ -112,10 +112,8 @@ public class DataEngineDataFileHandler {
         dataEngineFolderHierarchyHandler.upsertFolderHierarchy(fileGuid, file.getPathName(), externalSourceGuid, externalSourceName,
                 userId, methodName);
 
-        if (file.getProtocol() != null && file.getNetworkAddress() != null) {
-            dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileTypeName, file.getProtocol(),
-                    file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId, methodName);
-        }
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileGuid, fileTypeName,
+                file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
 
         return fileGuid;
     }

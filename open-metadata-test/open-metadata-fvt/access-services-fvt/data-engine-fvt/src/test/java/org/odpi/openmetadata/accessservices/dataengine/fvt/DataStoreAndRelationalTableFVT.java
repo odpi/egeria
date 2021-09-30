@@ -95,6 +95,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         database.setDatabaseVersion("to-delete-database-version");
         database.setDatabaseInstance("to-delete-database-instance");
         database.setDatabaseImportedFrom("to-delete-database-imported-from");
+        database.setNetworkAddress("to-delete-database-network-address");
         return database;
     }
 
