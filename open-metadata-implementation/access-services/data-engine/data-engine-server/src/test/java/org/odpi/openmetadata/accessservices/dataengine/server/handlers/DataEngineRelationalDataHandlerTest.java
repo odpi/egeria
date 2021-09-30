@@ -124,7 +124,7 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(), null,
                 DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, "upsertDatabaseSchema");
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
+                GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
     }
 
     private void verifyInvalidParameterHandlerInvocations(String methodName) throws
@@ -161,7 +161,7 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOtherOriginValues(), null, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                 null, null, "upsertDatabaseSchema");
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
+                GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
 
     }
 
@@ -196,7 +196,7 @@ class DataEngineRelationalDataHandlerTest {
                 null, null, "upsertDatabaseSchema");
 
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
+                GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
     }
 
     @Test
