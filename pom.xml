@@ -900,6 +900,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-topic-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-consumer-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

@@ -8,11 +8,12 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
-    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
+    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.slf4j:slf4j-api'
 }
 
-description = 'Search Integrator OMIS API'
+description = 'Asset Catalog OMAS Topic Connectors'
 
 java {
     withJavadocJar()

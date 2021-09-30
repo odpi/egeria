@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.Getter;
+import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -46,13 +48,23 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
      */
     AssetCatalogServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
                                  AuditLog auditLog, String serverUserName, String sourceName,
-                                 List<String> supportedTypesForSearch) throws NewInstanceException {
+                                 List<String> supportedTypesForSearch,
+                                 Connection inTopicEventBusConnection,
+                                 Connection outTopicEventBusConnection) throws NewInstanceException {
 
         super(description.getAccessServiceName() + " OMAS",
                 repositoryConnector,
+                supportedZones,
+                null,
+                null,
                 auditLog,
                 serverUserName,
-                repositoryConnector.getMaxPageSize());
+                repositoryConnector.getMaxPageSize(),
+                null,
+                null,
+                AssetCatalogOutTopicClientProvider.class.getName(),
+                outTopicEventBusConnection);
+
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
