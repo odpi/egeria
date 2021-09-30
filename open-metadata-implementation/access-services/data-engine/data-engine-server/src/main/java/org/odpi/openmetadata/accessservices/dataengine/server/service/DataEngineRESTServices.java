@@ -1339,7 +1339,10 @@ public class DataEngineRESTServices {
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
-        connectionAndEndpointHandler.removeConnection(userId, connectionGUID, deleteSemantic, externalSourceName);
+
+        DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+        String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        connectionAndEndpointHandler.removeConnection(userId, connectionGUID, deleteSemantic, externalSourceName, externalSourceGuid);
 
         log.debug(DEBUG_DELETE_MESSAGE, connectionGUID, CONNECTION_TYPE_NAME);
     }
@@ -1395,7 +1398,9 @@ public class DataEngineRESTServices {
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
-        connectionAndEndpointHandler.removeEndpoint(userId, endpointGUID, deleteSemantic, externalSourceName);
+        DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+        String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        connectionAndEndpointHandler.removeEndpoint(userId, endpointGUID, deleteSemantic, externalSourceName, externalSourceGuid);
 
         log.debug(DEBUG_DELETE_MESSAGE, endpointGUID, ENDPOINT_TYPE_NAME);
     }
@@ -1458,9 +1463,10 @@ public class DataEngineRESTServices {
     /**
      * Create the process with ports, schema types and lineage mappings
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
-     * @param process    properties of the process
+     * @param serverName            name of server instance to call
+     * @param userId                the name of the calling user
+     * @param process               properties of the process
+     * @param externalSourceName    the name of the external source
      *
      * @return the unique identifier (guid) of the created process
      */
