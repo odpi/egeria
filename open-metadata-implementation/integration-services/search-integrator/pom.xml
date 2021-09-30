@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>integration-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
@@ -22,25 +22,22 @@
     </scm>
 
 
-    <name>Integration Services</name>
+    <name>Search Integrator OMIS</name>
     <description>
-        Provides the implementations of the integration services that run in an integration daemon.
+        Provides the Search Integrator integration service.
     </description>
 
-    <artifactId>integration-services</artifactId>
+    <artifactId>search-integrator</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>analytics-integrator</module>
-        <module>api-integrator</module>
-        <module>catalog-integrator</module>
-        <module>files-integrator</module>
-        <module>database-integrator</module>
-        <module>display-integrator</module>
-        <module>lineage-integrator</module>
-        <module>organization-integrator</module>
-        <module>security-integrator</module>
-        <module>topic-integrator</module>
-        <module>search-integrator</module>
+        <module>search-integrator-api</module>
+        <module>search-integrator-client</module>
+        <module>search-integrator-server</module>
+        <module>search-integrator-spring</module>
     </modules>
+
+    <dependencies>
+
+    </dependencies>
 
 </project>
