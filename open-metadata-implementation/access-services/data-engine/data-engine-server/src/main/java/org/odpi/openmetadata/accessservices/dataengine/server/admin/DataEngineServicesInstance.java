@@ -157,8 +157,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
     /**
      * -- GETTER --
-     * Returns the Data Engine search handler.
-     * @return the Data Engine search handler
+     * Returns the Data Engine find handler.
+     * @return the Data Engine find handler
      */
     @Getter
     private final DataEngineFindHandler dataEngineFindHandler;

@@ -1718,9 +1718,11 @@ public class DataEngineRESTServices {
     }
 
     /**
+     * Performs a find for a DataEngine related object
      *
-     *
-     *
+     * @param userId user id
+     * @param serverName server name
+     * @param findRequestBody contains find criteria
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody){
         String methodName = "find";

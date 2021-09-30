@@ -25,26 +25,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Identifiers {
 
     /**
-     * The identifiers name of the entity
+     * The externalSourceName of the entity
      * -- GETTER --
-     * Return the entity identifiers
+     * Return the entity externalSourceName
      *
-     * @return String - identifiers of the entity
+     * @return String - externalSourceName of the entity
      * -- SETTER --
-     * Set up the identifiers of the entity
-     * @param identifiers of the entity
+     * Set up the externalSourceName of the entity
+     * @param externalSourceName of the entity
      */
     private String externalSourceName;;
 
     /**
-     * The type of the entity
+     * The qualifiedName of the entity
      * -- GETTER --
-     * Return the entity type
+     * Return the entity qualifiedName
      *
-     * @return String - type of the entity
+     * @return String - qualifiedName of the entity
      * -- SETTER --
-     * Set up the type of the entity
-     * @param type of the entity
+     * Set up the qualifiedName of the entity
+     * @param qualifiedName of the entity
      */
     private String qualifiedName;
 

@@ -265,7 +265,7 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the search handler for the access service
+     * Retrieve the find handler for the access service
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request

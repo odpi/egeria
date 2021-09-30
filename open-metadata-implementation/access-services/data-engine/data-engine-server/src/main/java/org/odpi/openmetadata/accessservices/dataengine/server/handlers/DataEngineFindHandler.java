@@ -29,7 +29,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 
 
 /**
- * Manages searches for DataEngine related objects
+ * Manages find operations for DataEngine related objects
  */
 public class DataEngineFindHandler {
 
@@ -61,7 +61,7 @@ public class DataEngineFindHandler {
     }
 
     /**
-     * Performs a search for a DataEngine related object
+     * Performs a find for a DataEngine related object
      *
      * @param userId             user id
      * @param findRequestBody  contains search criteria

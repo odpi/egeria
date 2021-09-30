@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9d9a42d6-46ea-4a50-95d7-9a601b7822d5",
+		"_postman_id": "d9f79123-457f-41cc-b90f-d4b861e25a99",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2368,6 +2368,39 @@
 						"users",
 						"{{user-id}}",
 						"endpoints"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.1 Find entity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"identifiers\" : {\n        \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\"\n    },\n    \"type\": \"Referenceable\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/find",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"find"
 					]
 				}
 			},
