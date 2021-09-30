@@ -78,7 +78,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
     waitForPort = Integer.parseInt(port)
-        timeout = 180
+    timeout = 180
 
     //waitForOutput = 'has started'
 }
@@ -96,7 +96,8 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
             'servermem': serverInMemory,
             'servergraph': serverLocalGraph,
             'delay': delay,
-            'user': user
+            'user': user,
+            'connectorTypeArchive': 'src/test/resources/DataStoreConnectorTypes.json'
     ]
 }
 
