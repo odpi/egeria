@@ -113,7 +113,15 @@ public class LineageGraphConnectorHelper {
     private static final String COMMA_SPACE_DELIMITER = ", ";
     private static final String COLUMN_SPACE_DELIMITER = ": ";
     private static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
-
+    private static final String SUB_GRAPH = "subGraph";
+    private static final String GENERIC_QUERY_EXCEPTION = "Exception while querying {} of guid {}: {}. Executed rollback.";
+    private static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
+    private static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
+    private static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";
+    private static final String GLOSSARY_TERM_VERTICAL_LINEAGE = "glossary term vertical lineage";
+    private static final String END_TO_END_HORIZONTAL_LINEAGE = "end to end horizontal lineage";
+    private static final String ULTIMATE_SOURCE_HORIZONTAL_LINEAGE = "ultimate source horizontal lineage";
+    private static final String S = "s";
 
     private final GraphTraversalSource g;
     private final boolean supportingTransactions;
@@ -148,7 +156,7 @@ public class LineageGraphConnectorHelper {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             sourceGraph = queryUltimateSource(guid, LINEAGE_MAPPING);
             sourcesList = querySources(guid, LINEAGE_MAPPING);
-            if (sourceGraph.vertices().hasNext()) {
+            if (sourceGraph!= null && sourceGraph.vertices().hasNext()) {
                 return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
                         SOURCE_CONDENSATION, includeProcesses));
             }
@@ -180,16 +188,15 @@ public class LineageGraphConnectorHelper {
             sourceGraph = (Graph)
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                             until(inE(edgeLabel).count().is(0)).
-                            repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()).
-                            cap("subGraph").next();
+                            repeat(inE(edgeLabel).subgraph(SUB_GRAPH).outV().simplePath()).
+                            cap(SUB_GRAPH).next();
 
             commitTransaction();
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, ULTIMATE_SOURCE_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return sourceGraph;
     }
@@ -215,8 +222,7 @@ public class LineageGraphConnectorHelper {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, ULTIMATE_SOURCE_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return sourceList;
     }
@@ -242,6 +248,9 @@ public class LineageGraphConnectorHelper {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             destinationGraph = queryUltimateDestination(guid, LINEAGE_MAPPING);
             destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
+            if(destinationGraph == null) {
+                return Optional.empty();
+            }
             if (destinationGraph.vertices().hasNext()) {
                 return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
                         DESTINATION_CONDENSATION, includeProcesses));
@@ -250,7 +259,7 @@ public class LineageGraphConnectorHelper {
 
 
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
-        if (!edgeLabelOptional.isPresent()) {
+        if (edgeLabelOptional.isEmpty()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
@@ -275,16 +284,15 @@ public class LineageGraphConnectorHelper {
             destinationGraph = (Graph)
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
                             .until(outE(edgeLabel).count().is(0))
-                            .repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
-                            .cap("subGraph").next();
+                            .repeat(outE(edgeLabel).subgraph(SUB_GRAPH).inV().simplePath())
+                            .cap(SUB_GRAPH).next();
 
             commitTransaction();
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return destinationGraph;
     }
@@ -310,8 +318,7 @@ public class LineageGraphConnectorHelper {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return destinationList;
     }
@@ -336,6 +343,10 @@ public class LineageGraphConnectorHelper {
         if (ASSETS.contains(label)) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             endToEndGraph = queryEndToEnd(guid, LINEAGE_MAPPING);
+            if(endToEndGraph == null) {
+                return Optional.empty();
+            }
+
             if (endToEndGraph.vertices().hasNext()) {
                 return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
             }
@@ -366,18 +377,17 @@ public class LineageGraphConnectorHelper {
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                             union(
                                     until(inE(edgeLabel).count().is(0)).
-                                            repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()),
+                                            repeat((Traversal) inE(edgeLabel).subgraph(SUB_GRAPH).outV().simplePath()),
                                     until(outE(edgeLabel).count().is(0)).
-                                            repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
-                            ).cap("subGraph").next();
+                                            repeat((Traversal) outE(edgeLabel).subgraph(SUB_GRAPH).inV().simplePath())
+                            ).cap(SUB_GRAPH).next();
 
             commitTransaction();
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying end to end horizontal lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, END_TO_END_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return endToEndGraph;
     }
@@ -426,15 +436,14 @@ public class LineageGraphConnectorHelper {
 
         try {
             subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
-                    .subgraph("s").cap("s").next();
+                    .subgraph(S).cap(S).next();
             commitTransaction();
 
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying glossary term vertical lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, GLOSSARY_TERM_VERTICAL_LINEAGE, guid, e.getMessage());
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
@@ -461,8 +470,7 @@ public class LineageGraphConnectorHelper {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying relational column vertical lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, RELATIONAL_COLUMN_VERTICAL_LINEAGE, guid, e.getMessage());
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
@@ -489,8 +497,7 @@ public class LineageGraphConnectorHelper {
             if (supportingTransactions) {
                 g.tx().rollback();
             }
-            log.error("Exception while querying tabular column vertical lineage of guid " + guid + ". Executed rollback.");
-            log.error("Message: " + e.getMessage());
+            log.error(GENERIC_QUERY_EXCEPTION, TABULAR_COLUMN_VERTICAL_LINEAGE, guid, e.getMessage());
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
@@ -565,7 +572,7 @@ public class LineageGraphConnectorHelper {
                                                         String condensationType, boolean includeProcesses) {
 
         Set<LineageVertex> lineageVertices = getLineageVertices(subGraph);
-        Set<LineageEdge> lineageEdges = getLineageEdges(subGraph, SOURCE_CONDENSATION.equalsIgnoreCase(condensationType));
+        Set<LineageEdge> lineageEdges = getLineageEdges(subGraph);
 
         Vertex originalQueriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         commitTransaction();
@@ -715,7 +722,7 @@ public class LineageGraphConnectorHelper {
 
         // only condense vertices if there is more than one process in the response graph
         if (subProcessVerticesNo > 1) {
-            Set<LineageVertex> verticesToRemove = getLineageVerticesToRemove(lineageVertices, lineageEdges, ultimateVertices, queriedVertex);
+            Set<LineageVertex> verticesToRemove = getLineageVerticesToRemove(lineageVertices, ultimateVertices, queriedVertex);
             lineageVertices.removeAll(verticesToRemove);
 
             Set<LineageEdge> edgesToRemove = getLineageEdgesToRemove(lineageEdges, verticesToRemove);
@@ -742,7 +749,7 @@ public class LineageGraphConnectorHelper {
      */
     private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph, boolean includeProcesses) {
         Set<LineageVertex> lineageVertices = getLineageVertices(subGraph);
-        Set<LineageEdge> lineageEdges = getLineageEdges(subGraph, false);
+        Set<LineageEdge> lineageEdges = getLineageEdges(subGraph);
 
         condenseProcesses(includeProcesses, lineageVertices, lineageEdges);
 
@@ -751,16 +758,15 @@ public class LineageGraphConnectorHelper {
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
-    private Set<LineageVertex> getLineageVerticesToRemove(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges,
+    private Set<LineageVertex> getLineageVerticesToRemove(Set<LineageVertex> lineageVertices,
                                                           Set<LineageVertex> ultimateVertices, LineageVertex queriedVertex) {
         Set<LineageVertex> verticesToRemove = new HashSet<>();
-        lineageVertices.stream().filter(lineageVertex -> isVertexToBeCondensed(lineageVertex, queriedVertex, ultimateVertices, lineageEdges))
+        lineageVertices.stream().filter(lineageVertex -> isVertexToBeCondensed(lineageVertex, queriedVertex, ultimateVertices))
                 .forEach(verticesToRemove::add);
         return verticesToRemove;
     }
 
-    private boolean isVertexToBeCondensed(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageVertex> ultimateVertices,
-                                          Set<LineageEdge> lineageEdges) {
+    private boolean isVertexToBeCondensed(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageVertex> ultimateVertices) {
         return !queriedVertex.getGuid().equalsIgnoreCase(lineageVertex.getGuid()) && !ultimateVertices.contains(lineageVertex);
     }
 
@@ -770,7 +776,7 @@ public class LineageGraphConnectorHelper {
                 isInVertexesToRemove(verticesToRemoveIDs, edge)).collect(Collectors.toSet());
     }
 
-    private Set<LineageEdge> getLineageEdges(Graph subGraph, boolean invertedEdges) {
+    private Set<LineageEdge> getLineageEdges(Graph subGraph) {
         Iterator<Edge> originalEdges = subGraph.edges();
         Set<LineageEdge> lineageEdges = new HashSet<>();
         while (originalEdges.hasNext()) {
@@ -792,7 +798,10 @@ public class LineageGraphConnectorHelper {
     }
 
     private Set<LineageVertex> getLineageVertices(List<Vertex> vertexList) {
-        return vertexList.stream().map(this::abstractVertex).collect(Collectors.toSet());
+        if(CollectionUtils.isNotEmpty(vertexList)) {
+            return vertexList.stream().map(this::abstractVertex).collect(Collectors.toSet());
+        }
+        return null;
     }
 
     private void condenseProcesses(boolean includeProcesses, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
@@ -1009,7 +1018,7 @@ public class LineageGraphConnectorHelper {
         properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
 
         Optional<String> connectionDetails = getConnectionDetailsFromNeighborhood(g, vertexId);
-        if (!connectionDetails.isPresent()) {
+        if (connectionDetails.isEmpty()) {
             connectionDetails = getConnectionDetailsFromNeighborhood(g, lastFolderVertexId);
         }
         connectionDetails.ifPresent(s -> properties.put(CONNECTION_KEY, s));
@@ -1021,7 +1030,7 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
         commitTransaction();
         if (connection.hasNext()) {
-            return Optional.of(this.getDisplayNameForVertex(connection.next()));
+            return Optional.ofNullable(this.getDisplayNameForVertex(connection.next()));
         }
         return Optional.empty();
     }
