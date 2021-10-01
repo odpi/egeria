@@ -87,9 +87,12 @@ public class DataEngineFindHandler {
                 Collections.singletonList(InstanceStatus.ACTIVE), null, null, null,
                 SequencingOrder.ANY, 0, 50, methodName);
 
-        searchResponse.setGUIDs(result == null ? null : result.stream()
-                .filter(ed -> externalSourceName == null || externalSourceName.contentEquals(ed.getMetadataCollectionName()))
-                .map(EntityDetail::getGUID).collect(Collectors.toList()));
+        if(result != null){
+            List<String> guids = result.stream()
+                    .filter(ed -> externalSourceName == null || externalSourceName.contentEquals(ed.getMetadataCollectionName()))
+                    .map(EntityDetail::getGUID).collect(Collectors.toList());
+            searchResponse.setGUIDs(guids);
+        }
 
         return searchResponse;
     }
