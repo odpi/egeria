@@ -59,9 +59,7 @@ body:
         - [ ] Run 'release' pipeline on branch to push candidates to oss.sonatype.org
         - [ ] 'close' staging repo & Validate artifacts ok (number, structure, validations) on oss.sonatype.org
         - [ ] Create final github releases for egeria (use release notes from master as text)
-        - [ ] Create final github release for egeria-ui
         - [ ] Close repo on oss.sonatype.org (once updated) for egeria, release
-        - [ ] Close repo on oss.sonatype.org for egeria-react ui
         - [ ] Check 'release' repo on oss.sonatype.org has artifacts
         - [ ] Update final versions of egeria-charts to release ie x.y
         - [ ] Publish that release is now shipped via slack #egeria-announce
@@ -75,5 +73,6 @@ body:
           - [ ] Create branch
           - [ ] Update version in master
           - [ ] Update version in new branch of connector, and of prereq egeria artifacts
+          - [ ] Run release action, check sonatype & release
           - [ ] Create github release
 ---
