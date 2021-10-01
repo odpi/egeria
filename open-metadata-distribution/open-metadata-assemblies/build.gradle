@@ -165,6 +165,8 @@ distributions {
                     include 'NOTICE'
                     include 'LICENSE'
                     include 'truststore.p12'
+                    include 'content-packs'
+                    include 'sample-data'
                 }
                 fileMode = 0755
             }
