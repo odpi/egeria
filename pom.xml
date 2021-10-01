@@ -167,7 +167,7 @@
         <netty.version>4.1.67.Final</netty.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.12</gremlin.version>
-        <spring-data.version>2.5.4</spring-data.version>
+        <spring-data.version>2.5.5</spring-data.version>
         <spring-security.version>5.5.2</spring-security.version>
         <springdoc.version>1.5.10</springdoc.version>
         <spring.version>5.3.9</spring.version>
