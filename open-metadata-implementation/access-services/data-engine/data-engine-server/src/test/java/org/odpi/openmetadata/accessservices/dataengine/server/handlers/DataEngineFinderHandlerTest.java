@@ -101,10 +101,10 @@ class DataEngineFinderHandlerTest {
     private FindRequestBody buildFindRequestBody(){
         Identifiers identifiers = new Identifiers();
         identifiers.setQualifiedName(QUALIFIED_NAME);
-        identifiers.setExternalSourceName(EXTERNAL_SOURCE_NAME);
 
         FindRequestBody findRequestBody = new FindRequestBody();
         findRequestBody.setType(REFERENCEABLE_TYPE_NAME);
+        findRequestBody.setExternalSourceName(EXTERNAL_SOURCE_NAME);
         findRequestBody.setIdentifiers(identifiers);
 
         return findRequestBody;

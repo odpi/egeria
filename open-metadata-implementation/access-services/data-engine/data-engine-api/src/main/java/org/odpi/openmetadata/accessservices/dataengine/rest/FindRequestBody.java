@@ -39,6 +39,18 @@ public class FindRequestBody implements Serializable {
     private Identifiers identifiers;
 
     /**
+     * The externalSourceName of the entity
+     * -- GETTER --
+     * Return the entity externalSourceName
+     *
+     * @return String - externalSourceName of the entity
+     * -- SETTER --
+     * Set up the externalSourceName of the entity
+     * @param externalSourceName of the entity
+     */
+    private String externalSourceName;
+
+    /**
      * The type of the entity
      * -- GETTER --
      * Return the entity type

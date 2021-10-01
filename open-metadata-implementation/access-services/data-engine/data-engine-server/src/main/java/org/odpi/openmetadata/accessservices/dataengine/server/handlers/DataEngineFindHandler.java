@@ -81,7 +81,7 @@ public class DataEngineFindHandler {
         String matchRegex = repositoryHelper.getExactMatchRegex(findRequestBody.getIdentifiers().getQualifiedName(), false);
         String typeGuid = getTypeGuid(userId, findRequestBody.getType());
         SearchProperties searchProperties = buildSearchProperties(userId, matchRegex);
-        final String externalSourceName = findRequestBody.getIdentifiers().getExternalSourceName();
+        final String externalSourceName = findRequestBody.getExternalSourceName();
 
         List<EntityDetail> result = repositoryHandler.findEntities(userId, typeGuid, null, searchProperties,
                 Collections.singletonList(InstanceStatus.ACTIVE), null, null, null,
