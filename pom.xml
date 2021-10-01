@@ -161,10 +161,10 @@
         <jackson.version>2.13.0</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>3.0.0</kafka.version>
-        <janus.version>0.5.3</janus.version>
         <tomcat.version>9.0.53</tomcat.version>
         <netty.version>4.1.68.Final</netty.version>
         <spring-boot.version>2.5.5</spring-boot.version>
+        <janus.version>0.6.0</janus.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.12</gremlin.version>
         <spring-data.version>2.5.5</spring-data.version>
