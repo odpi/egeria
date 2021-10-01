@@ -22,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -87,9 +88,9 @@ public class DataEngineFindHandler {
                 Collections.singletonList(InstanceStatus.ACTIVE), null, null, null,
                 SequencingOrder.ANY, 0, 50, methodName);
 
-        if(result != null){
+        if(!Objects.isNull(result)){
             List<String> guids = result.stream()
-                    .filter(ed -> externalSourceName == null || externalSourceName.contentEquals(ed.getMetadataCollectionName()))
+                    .filter(ed -> Objects.isNull(externalSourceName) || externalSourceName.contentEquals(ed.getMetadataCollectionName()))
                     .map(EntityDetail::getGUID).collect(Collectors.toList());
             searchResponse.setGUIDs(guids);
         }
