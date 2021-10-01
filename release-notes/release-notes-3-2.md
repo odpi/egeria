@@ -31,10 +31,16 @@ This site should offer improved usability including navigation & search.
 
 Please continue to refer to the main documentation site for any missing content until this migration is complete.
 
-### Known Issues
+## Deprecations
 
-* It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or alternatively Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
+* The docker-compose environment was deprecated in release 3.1 . It will be removed in 3.3 . See https://github.com/odpi/egeria/issues/5721 .
 
+## Known Issues
+
+* It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or alternatively Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See https://github.com/odpi/egeria-react-ui/issues/96 .
+* Config documents cannot be displayed in the Egeria React UI (Dino). See https://github.com/odpi/egeria-react-ui/issues/264 .
+* If deploying helm charts to OpenShift, a security policy change is needed. See https://github.com/odpi/egeria-charts/issues/18
+* When using the 'understanding platform services' lab notebook, the query for active servers will fail. See https://github.com/odpi/egeria/issues/5023 .
 
 # Further Help and Support
 
