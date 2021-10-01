@@ -332,12 +332,12 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
         int requestedPageSize = findRequest.getPageSize();
         if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
             // Only need to make one call
-             String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
-             String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
-             completeResponse = callGetRESTCall(methodName, type, expandedURL);
-             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+            String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
+            // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
+            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            completeResponse = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
-
             completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
         }
         if (log.isDebugEnabled()) {

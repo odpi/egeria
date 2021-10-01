@@ -135,6 +135,7 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * Create analytics artifact defined as input.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 * @throws AnalyticsModelingCheckedException error executing request.
@@ -143,18 +144,19 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
-	public ResponseContainerAssets createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets createArtifact(String userId, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
         final String methodName = "createArtifact";
         invalidParameterHandler.validateUserId(userId, methodName);
-		return restClient.createAssets(userId, serverCapability, artifact);
+		return restClient.createAssets(userId, serverCapability, serverCapabilityGUID, artifact);
 	}
 
 	/**
 	 * Update analytics artifact defined as json input.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 * @throws AnalyticsModelingCheckedException error executing request.
@@ -163,18 +165,19 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
-	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
 	{
         final String methodName = "updateArtifact";
         invalidParameterHandler.validateUserId(userId, methodName);
-		return restClient.updateAssets(userId, serverCapability, artifact);
+		return restClient.updateAssets(userId, serverCapability, serverCapabilityGUID, artifact);
 	}
 	
     /**
 	 * Delete assets in repository defined by artifact unique identifier.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param identifier of the artifact in 3rd party system.
 	 * @return errors or list of created assets.
 	 * @throws AnalyticsModelingCheckedException error executing request.
@@ -183,12 +186,12 @@ public class SynchronizationClient implements AnalyticsModelingSynchronization {
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
     @Override
-	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String identifier)
+	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String serverCapabilityGUID, String identifier)
 			throws AnalyticsModelingCheckedException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException
     {
         final String methodName = "deleteArtifact";
         invalidParameterHandler.validateUserId(userId, methodName);
-		return restClient.deleteAssets(userId, serverCapability, identifier);
+		return restClient.deleteAssets(userId, serverCapability, serverCapabilityGUID, identifier);
 	}
 	
 }

@@ -58,6 +58,15 @@ team supported by the server.
 POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/organization-name?name="{organizationName}"
 ```
 
+## Set the server description
+
+The servers description is a meaningful set of words used so that people can identify a particular server's use. 
+
+```
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/server-description"
+```
+The description should be specified in the body of the request. 
+
 ## Set the server's user Id and optional password
 
 The server's user Id is used when processing request that do not have an end user,

@@ -113,6 +113,13 @@ public class Platform {
     }
 
     /**
+     * Get the access services that this platform supports.
+     * @return access services supported by this platform
+     */
+    public List<RegisteredOMAGService> getAccessServices() {
+        return accessServices;
+    }
+    /**
      * Set the access services that this platform supports.
      * @param accessServices the access services that this platform supports.
      */

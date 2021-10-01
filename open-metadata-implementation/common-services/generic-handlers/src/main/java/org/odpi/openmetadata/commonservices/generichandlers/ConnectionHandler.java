@@ -169,6 +169,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                  null,
                                                  null,
                                                  false,
+                                                 false,
                                                  supportedZones,
                                                  effectiveTime,
                                                  methodName) != null)
@@ -194,6 +195,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                         false,
+                                                         false,
                                                          supportedZones,
                                                          effectiveTime,
                                                          methodName);
@@ -207,6 +210,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                         false,
+                                                         false,
                                                          supportedZones,
                                                          effectiveTime,
                                                          methodName);
@@ -347,6 +352,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                      null,
+                                                     false,
                                                      null,
                                                      methodName);
             }
@@ -366,6 +372,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                            OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                            OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                           false,
                                                            null,
                                                            methodName);
         }
@@ -389,6 +396,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                                      null,
+                                                     false,
                                                      null,
                                                      methodName);
             }
@@ -408,6 +416,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                            OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                            OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                           false,
                                                            null,
                                                            methodName);
         }
@@ -423,10 +432,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                connectionGUID,
                                connectionGUIDParameterName,
                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                               false,
+                               false,
                                supportedZones,
                                OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
-                               null,
+                               new Date(),
                                methodName);
 
         if ((embeddedConnections != null) && (! embeddedConnections.isEmpty()))
@@ -592,6 +603,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           assetGUID,
                                           assetGUIDParameterName,
                                           assetTypeName,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                           properties,
@@ -1132,6 +1146,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           assetGUID,
                                           assetGUIDParameterName,
                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                           this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
@@ -1149,6 +1166,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           connectorTypeGUID,
                                           connectorTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                           null,
@@ -1166,6 +1186,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           connectionGUID,
                                           connectionGUIDParameterName,
                                           connectionTypeName,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                           null,
@@ -1248,6 +1271,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   embeddedConnectionGUID,
                                   embeddedConnectionGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                   OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
                                   properties,
@@ -1293,6 +1319,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       embeddedConnectionGUIDParameterName,
                                       OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                       OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
@@ -1446,9 +1474,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     connectionGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    this.getEffectiveTime(effectiveFrom, effectiveTo),
                                     methodName);
     }
 
@@ -1489,6 +1520,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   connectorTypeGUID,
                                   connectorTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                   OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
@@ -1535,10 +1568,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       connectorTypeGUIDParameterName,
                                       OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
-                                      null,
+                                      new Date(),
                                       methodName);
     }
 
@@ -1579,6 +1614,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   connectionGUID,
                                   connectionGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                   OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
@@ -1625,10 +1662,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       connectionGUIDParameterName,
                                       OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
-                                      null,
+                                      new Date(),
                                       methodName);
     }
 
@@ -1676,6 +1715,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   assetGUID,
                                   assetGUIDParameterName,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
@@ -1687,6 +1728,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       connectionGUIDParameterName,
                                       OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                       assetGUID,
+                                      false,
+                                      false,
+                                      null,
                                       methodName);
     }
 
@@ -1729,6 +1773,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
@@ -1769,6 +1815,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -1839,6 +1888,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                          null,
                                                                          null,
+                                                                         false,
                                                                          false,
                                                                          serviceSupportedZones,
                                                                          0,
@@ -1969,6 +2019,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                             null,
                                                                                             null,
                                                                                             false,
+                                                                                            false,
                                                                                             supportedZones,
                                                                                             null,
                                                                                             methodName);
@@ -2021,6 +2072,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
+                                                                                           false,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -2169,6 +2221,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                 null,
                                                                 null,
                                                                 false,
+                                                                false,
                                                                 serviceSupportedZones,
                                                                 startingFrom,
                                                                 pageSize,
@@ -2266,6 +2319,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                null,
                                                                null,
                                                                false,
+                                                               false,
                                                                supportedZones,
                                                                null,
                                                                startFrom,
@@ -2306,6 +2360,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                            null,
                                                            null,
+                                                           false,
                                                            false,
                                                            supportedZones,
                                                            effectiveTime,

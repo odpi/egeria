@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,28 +125,110 @@ public class RepositoryErrorHandler
 
             if (retrievedPropertyValue == null)
             {
-                throw new InvalidParameterException(
-                        RepositoryHandlerErrorCode.UNRECOGNIZED_PROPERTY.getMessageDefinition(validatingPropertyName,
-                                                                                               validatingProperty,
-                                                                                               methodName,
-                                                                                               instanceGUID),
-                        this.getClass().getName(),
-                        methodName,
-                        validatingPropertyName);
+                throw new InvalidParameterException(RepositoryHandlerErrorCode.UNRECOGNIZED_PROPERTY.getMessageDefinition(validatingPropertyName,
+                                                                                                                          validatingProperty,
+                                                                                                                          methodName,
+                                                                                                                          instanceGUID),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    validatingPropertyName);
             }
             else if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
             {
-                throw new InvalidParameterException(
-                        RepositoryHandlerErrorCode.INVALID_PROPERTY_VALUE.getMessageDefinition(validatingPropertyName,
-                                                                                               validatingProperty,
-                                                                                               methodName,
-                                                                                               retrievedPropertyValue.valueAsString(),
-                                                                                               instanceGUID),
-                        this.getClass().getName(),
-                        methodName,
-                        validatingPropertyName);
+                throw new InvalidParameterException(RepositoryHandlerErrorCode.INVALID_PROPERTY_VALUE.getMessageDefinition(validatingPropertyName,
+                                                                                                                           validatingProperty,
+                                                                                                                           methodName,
+                                                                                                                           retrievedPropertyValue.valueAsString(),
+                                                                                                                           instanceGUID),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    validatingPropertyName);
             }
         }
+    }
+
+
+    /**
+     * Return flag to indicate whether the properties contain a status that is greater than or equal to the status threshold.
+     *
+     * @param statusPropertyName property name to test (or null to skip test)
+     * @param statusThreshold threshold to test against
+     * @param properties properties retrieved form the the repositories
+     * @param methodName calling method
+     *
+     * @return true if no status property name is supplied or the property value meets the threshold.
+     */
+    boolean validateStatus(String             statusPropertyName,
+                           int                statusThreshold,
+                           InstanceProperties properties,
+                           String             methodName)
+    {
+        if (statusPropertyName != null)
+        {
+            /*
+             * if the property is missing then the
+             */
+            int status = repositoryHelper.getIntProperty(serviceName,
+                                                         statusPropertyName,
+                                                         properties,
+                                                         methodName);
+
+            return (status >= statusThreshold);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Return flag indicating whether the new element is more recently updated than the original element.
+     *
+     * @param originalElement original element
+     * @param newElement new element
+     * @return is the new one more recently updated?
+     */
+    boolean validateIsLatestUpdate(InstanceAuditHeader originalElement,
+                                   InstanceAuditHeader newElement)
+    {
+        Date originalUpdateTime = originalElement.getUpdateTime();
+        Date newUpdateTime = newElement.getUpdateTime();
+
+        if (originalUpdateTime == null)
+        {
+            originalUpdateTime = originalElement.getCreateTime();
+        }
+
+        if (newUpdateTime == null)
+        {
+            newUpdateTime = newElement.getCreateTime();
+        }
+
+        return (originalUpdateTime.before(newUpdateTime));
+    }
+
+
+    /**
+     * Determine if the entity is a consolidated duplicate.
+     *
+     * @param entity entity to test
+     * @param classificationName name of classification
+     * @param methodName calling method
+     * @return returned classification
+     */
+    Classification isClassifiedAs(EntityDetail entity,
+                                  String       classificationName,
+                                  String       methodName)
+    {
+        try
+        {
+            return repositoryHelper.getClassificationFromEntity(serviceName, entity, classificationName, methodName);
+        }
+        catch (ClassificationErrorException error)
+        {
+            // ignore
+        }
+
+        return null;
     }
 
 
@@ -232,7 +316,8 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Verify whether an instance is of a particular type or not.
+     * Verify whether an instance is of a particular type or not.  If the expected type is null then
+     * the verification is successful.  Any problems result in an exception.
      *
      * @param instanceHeader the entity or relationship header.
      * @param expectedTypeName name of the type to test for
@@ -241,12 +326,12 @@ public class RepositoryErrorHandler
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    void validateInstanceType(InstanceHeader instanceHeader,
-                              String         expectedTypeName,
-                              String         methodName,
-                              String         localMethodName) throws InvalidParameterException
+    public void validateInstanceType(InstanceHeader instanceHeader,
+                                     String         expectedTypeName,
+                                     String         methodName,
+                                     String         localMethodName) throws InvalidParameterException
     {
-        if (instanceHeader != null)
+        if ((instanceHeader != null) || (expectedTypeName != null))
         {
             InstanceType type = instanceHeader.getType();
             if (type != null)
@@ -264,32 +349,68 @@ public class RepositoryErrorHandler
     }
 
 
+    /**
+     * Verify that the type's unique identifier and name are for a single valid type.  Any problems result in an exception.
+     * This is considered a logic error in the handlers or OMASs (or more likely in the mapper) which is why
+     * PropertyServerException is thrown.
+     *
+     * @param typeDefGUID GUID of the type to test for
+     * @param guidParameterName name of parameter passing the GUID
+     * @param typeDefName name of the type to test for
+     * @param methodName calling method
+     * @param localMethodName name of repository handler method
+     *
+     * @throws PropertyServerException The type identifiers are either unknown or mismatched
+     */
+    public void validateTypeIdentifiers(String typeDefGUID,
+                                        String guidParameterName,
+                                        String typeDefName,
+                                        String nameParameterName,
+                                        String methodName,
+                                        String localMethodName) throws PropertyServerException
+    {
+        if ((typeDefGUID != null) && (typeDefName != null))
+        {
+            try
+            {
+                repositoryHelper.getTypeDef(localMethodName,
+                                            guidParameterName,
+                                            nameParameterName,
+                                            typeDefGUID,
+                                            typeDefName,
+                                            methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                /*
+                 * The repository helper has already created details error information, so the PropertyServerException
+                 * can just inherit it.
+                 */
+                throw new PropertyServerException(error);
+            }
+        }
+    }
+
 
     /**
      * Test whether an instance is of a particular type or not.
      *
      * @param instanceHeader the entity or relationship header.
-     * @param entityTypeName name of the type to test for
+     * @param typeName name of the type to test for
      * @param methodName calling method
      *
      * @return boolean flag
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
      */
-    boolean isInstanceATypeOf(InstanceHeader         instanceHeader,
-                              String                 entityTypeName,
-                              String                 methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    boolean isInstanceATypeOf(InstanceHeader instanceHeader,
+                              String         typeName,
+                              String         methodName)
     {
         if (instanceHeader != null)
         {
             InstanceType type = instanceHeader.getType();
             if (type != null)
             {
-                return repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), entityTypeName);
+                return repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), typeName);
             }
         }
 

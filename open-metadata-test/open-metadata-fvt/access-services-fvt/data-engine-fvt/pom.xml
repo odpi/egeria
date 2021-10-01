@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.2-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -170,6 +170,7 @@
                                 <user>${user}</user>
                                 <retries>${retries}</retries>
                                 <delay>${delay}</delay>
+                                <connectorTypeArchivePath>${project.basedir}/src/test/resources/DataStoreConnectorTypes.json</connectorTypeArchivePath>
                             </defaults>
                             <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>

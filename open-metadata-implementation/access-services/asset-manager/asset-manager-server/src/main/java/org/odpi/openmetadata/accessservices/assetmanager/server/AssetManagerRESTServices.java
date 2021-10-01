@@ -26,6 +26,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The AssetManagerRESTServices provides the server-side implementation of the services
@@ -218,6 +220,9 @@ public class AssetManagerRESTServices
                                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 nameParameterName,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
 
         }

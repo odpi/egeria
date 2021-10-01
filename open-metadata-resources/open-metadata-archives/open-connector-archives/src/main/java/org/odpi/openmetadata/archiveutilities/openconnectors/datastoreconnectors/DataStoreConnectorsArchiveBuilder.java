@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.base.OpenConnectorArchiveBuilder;
+import org.odpi.openmetadata.archiveutilities.catalogbuilder.CatalogTypesArchiveBuilder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
@@ -20,7 +20,7 @@ import java.util.Date;
  * contains default connector types for each of the data connectors supported by Egeria.
  * The information for these connector types is extracted from the Connector Provider implementations.
  */
-public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuilder
+public class DataStoreConnectorsArchiveBuilder extends CatalogTypesArchiveBuilder
 {
     /*
      * This is the header information for the archive.
@@ -80,7 +80,8 @@ public class DataStoreConnectorsArchiveBuilder extends OpenConnectorArchiveBuild
               archiveLicense,
               creationDate,
               versionNumber,
-              versionName);
+              versionName,
+              null);
     }
 
 

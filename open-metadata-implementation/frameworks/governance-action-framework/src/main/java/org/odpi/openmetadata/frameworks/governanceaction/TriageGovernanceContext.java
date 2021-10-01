@@ -123,6 +123,9 @@ public class TriageGovernanceContext extends GovernanceContext
                                                                                              null,
                                                                                              null,
                                                                                              null,
+                                                                                             false,
+                                                                                             false,
+                                                                                             new Date(),
                                                                                              0,
                                                                                              0);
 
@@ -192,7 +195,7 @@ public class TriageGovernanceContext extends GovernanceContext
         /*
          * Link the "to do" and the person role
          */
-        openMetadataStore.createRelatedElementsInStore(actionAssignmentTypeName, personRoleGUID, todoGUID, null, null, null);
+        openMetadataStore.createRelatedElementsInStore(actionAssignmentTypeName, personRoleGUID, todoGUID, false, false,null, null, null, new Date());
 
         return todoGUID;
     }

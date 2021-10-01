@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel;
 
 
-import org.odpi.openmetadata.archiveutilities.designmodels.base.DesignModelArchiveBuilder;
+import org.odpi.openmetadata.archiveutilities.catalogbuilder.CatalogTypesArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel.properties.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * The archive builder needs to ensure it uses the same
  */
-class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
+class CloudInformationModelArchiveBuilder extends CatalogTypesArchiveBuilder
 {
     /*
      * This is the header information for the archive.
@@ -61,7 +61,8 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
               archiveLicense,
               creationDate,
               versionNumber,
-              versionName);
+              versionName,
+              null);
 
         this.parser = parser;
     }

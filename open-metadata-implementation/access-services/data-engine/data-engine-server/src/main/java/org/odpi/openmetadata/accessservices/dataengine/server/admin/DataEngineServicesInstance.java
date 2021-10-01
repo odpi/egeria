@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.model.ConnectorType;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectionConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectorTypeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseColumnConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseConverter;
@@ -43,9 +45,11 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -242,18 +246,24 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
 
-        final ReferenceableHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
-                new ReferenceableHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+        final ConnectionHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
+                new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
                         org.odpi.openmetadata.accessservices.dataengine.model.Connection.class, serviceName, serverName,
                         invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                         supportedZones, defaultZones, publishZones, auditLog);
-        final ReferenceableHandler<Endpoint> endpointHandler =
-                new ReferenceableHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+        final EndpointHandler<Endpoint> endpointHandler =
+                new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
                         Endpoint.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                         localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        ConnectorTypeHandler<ConnectorType> connectorTypeHandler = new ConnectorTypeHandler<>(
+                new ConnectorTypeConverter<>(repositoryHelper, serviceName, serverName), ConnectorType.class,
+                serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+                securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
         dataEngineConnectionAndEndpointHandler =
                 new DataEngineConnectionAndEndpointHandler(invalidParameterHandler, repositoryHelper, serviceName, serverName,
-                        dataEngineCommonHandler, connectionHandler, endpointHandler);
+                        dataEngineCommonHandler, connectionHandler, endpointHandler, connectorTypeHandler);
 
         processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
                 assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);

@@ -13,8 +13,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.*;
 
 /**
- * The InMemoryOMRSMetadataCollection represents a metadata repository that supports an in-memory repository.
- * Requests to this metadata collection work with the hashmaps used to manage metadata types and instances.
+ * The ReadOnlyOMRSMetadataCollection represents a metadata repository that supports an in-memory repository whose content
+ * is read-only.  It is typically populated by open metadata archives.
  */
 public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollection
 {
@@ -738,61 +738,113 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
 
 
     /**
-     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
-     * to store classifications for entities that are homed in another repository.
+     * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
+     * entity.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to save.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<Classification> getHomeClassifications(String userId,
-                                                       String entityGUID) throws InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 EntityNotKnownException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 FunctionNotSupportedException
+    public void saveEntityReferenceCopy(String       userId,
+                                        EntityDetail entity) throws InvalidParameterException,
+                                                                    RepositoryErrorException,
+                                                                    TypeErrorException,
+                                                                    PropertyErrorException,
+                                                                    HomeEntityException,
+                                                                    EntityConflictException,
+                                                                    InvalidEntityException,
+                                                                    UserNotAuthorizedException
     {
-        final String  methodName = "getHomeClassifications";
-
-        reportUnsupportedOptionalFunction(methodName);
-        return null;
+        if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                         (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        {
+            super.saveEntityReferenceCopy(userId, entity);
+        }
     }
 
 
     /**
-     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
-     * to store classifications for entities that are homed in another repository.
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
-     * @throws InvalidParameterException the entity is null.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
      */
     @Override
-    public List<Classification> getHomeClassifications(String userId,
-                                                       String entityGUID,
-                                                       Date   asOfTime) throws InvalidParameterException,
-                                                                               RepositoryErrorException,
-                                                                               EntityNotKnownException,
-                                                                               UserNotAuthorizedException,
-                                                                               FunctionNotSupportedException
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException
     {
-        final String  methodName = "getHomeClassifications (with history)";
+        if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                         (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        {
+            super.saveClassificationReferenceCopy(userId, entity, classification);
+        }
+    }
 
-        reportUnsupportedOptionalFunction(methodName);
-        return null;
+
+    /**
+     * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
+     * relationship.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to save.
+     *
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveRelationshipReferenceCopy(String       userId,
+                                              Relationship relationship) throws InvalidParameterException,
+                                                                                RepositoryErrorException,
+                                                                                TypeErrorException,
+                                                                                EntityNotKnownException,
+                                                                                PropertyErrorException,
+                                                                                HomeRelationshipException,
+                                                                                RelationshipConflictException,
+                                                                                InvalidRelationshipException,
+                                                                                UserNotAuthorizedException
+    {
+        if ((relationship != null) && ((relationship.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                       (relationship.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        {
+            super.saveRelationshipReferenceCopy(userId, relationship);
+        }
     }
 }

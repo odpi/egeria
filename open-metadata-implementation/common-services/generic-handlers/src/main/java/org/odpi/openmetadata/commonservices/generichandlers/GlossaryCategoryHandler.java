@@ -158,6 +158,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                       glossaryCategoryGUID,
                                       glossaryCategoryGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                       OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
                                       null,
@@ -287,8 +290,12 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     glossaryCategoryGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -325,6 +332,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                   glossaryChildCategoryGUID,
                                   glossaryChildCategoryGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                   OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
                                   null,
@@ -366,6 +376,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                       glossaryChildCategoryGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
                                       null,
@@ -401,6 +413,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -529,6 +544,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -569,6 +585,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                    null,
                                                    null,
                                                    1,
+                                                   false,
+                                                   false,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
                                                    null,
@@ -631,6 +649,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        false,
+                                        false,
                                         startFrom,
                                         pageSize,
                                         null,
@@ -663,6 +683,10 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

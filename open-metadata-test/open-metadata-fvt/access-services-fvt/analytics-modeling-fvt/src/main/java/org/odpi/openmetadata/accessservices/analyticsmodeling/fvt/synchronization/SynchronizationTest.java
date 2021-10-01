@@ -114,7 +114,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         try {
         	AnalyticsAsset artifact = readObjectJson(INPUT_FOLDER, "create", AnalyticsAsset.class);
            	repositoryClient.createRequiredEntities(artifact);
-        	ResponseContainerAssets assets = client.createArtifact(userId, SERVERCAPABILITY, artifact);
+        	ResponseContainerAssets assets = client.createArtifact(userId, SERVERCAPABILITY, null, artifact);
             
         	if (assets.getAssetsList().size() != 1) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
@@ -139,7 +139,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         try {
         	AnalyticsAsset artifact = readObjectJson(INPUT_FOLDER, "update", AnalyticsAsset.class);
         	repositoryClient.createRequiredEntities(artifact);
-        	ResponseContainerAssets assets = client.updateArtifact(userId, SERVERCAPABILITY, artifact);
+        	ResponseContainerAssets assets = client.updateArtifact(userId, SERVERCAPABILITY, null, artifact);
         	
         	if (assets.getAssetsList().size() != 1) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
@@ -162,7 +162,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
     {
     	String activityName = "testDeleteArtifact";
         try {
-        	ResponseContainerAssets assets = client.deleteArtifact(userId, SERVERCAPABILITY, "iBASEMODULE");	// id from create operation
+        	ResponseContainerAssets assets = client.deleteArtifact(userId, SERVERCAPABILITY, null, "iBASEMODULE");	// id from create operation
         	
         	if (assets.getAssetsList().size() != 1) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);

@@ -78,11 +78,12 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
          if (fileNamePattern != null)
          {
-             nextDestinationFileName = MessageFormat.format(fileNamePattern, sourceFile.getName(), fileIndex);
+             nextDestinationFileName = FilenameUtils.concat(destinationFolderName,
+                                                            MessageFormat.format(fileNamePattern, sourceFile.getName(), fileIndex));
          }
          else
          {
-             nextDestinationFileName = sourceFile.getName();
+             nextDestinationFileName = FilenameUtils.concat(destinationFolderName, sourceFile.getName());
          }
 
          if ((previousDestinationFileName != null) && (previousDestinationFileName.equals(nextDestinationFileName)))
@@ -99,7 +100,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
               * A new file name has been created so return it to try.
               */
              fileIndexMap.put(destinationFolderName, fileIndex);
-             return FilenameUtils.concat(destinationFolderName, nextDestinationFileName);
+             return nextDestinationFileName;
          }
     }
 
@@ -477,6 +478,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             List<RelatedMetadataElement> connectionLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                             2,
                                                                                             connectionRelationshipName,
+                                                                                            false,
+                                                                                            false,
+                                                                                            null,
                                                                                             0,
                                                                                             0);
 
@@ -613,6 +617,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             List<RelatedMetadataElement> endpointLinks = store.getRelatedMetadataElements(connection.getElementGUID(),
                                                                                           2,
                                                                                           endpointRelationshipName,
+                                                                                          false,
+                                                                                          false,
+                                                                                          null,
                                                                                           0,
                                                                                           0);
 
@@ -707,7 +714,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String fileExtension = FilenameUtils.getExtension(destinationFilePathName);
         String newFileGUID;
 
-        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null);
+        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, false, false, null);
         String processGUID;
 
         if (topLevelProcessGUID == null)
@@ -749,11 +756,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID == null)
         {
-            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
+            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", false, false, null);
 
             if (sourceFileGUID == null)
             {
-                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null);
+                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
             }
 
             if (! sourceLineageFromFile)
@@ -771,6 +778,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         else
         {
             String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName,
+                                                                                                                   null,
+                                                                                                                   false,
+                                                                                                                   false,
                                                                                                                    null);
 
             newFileGUID = governanceContext.createAssetFromTemplate(assetTemplateGUID, destinationFilePathName, fileName, null);
@@ -781,7 +791,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             newFileGUID = getFolderGUID(newFileGUID);
         }
 
-        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, null);
+        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, null, false, false, null);
         if (sourceFileGUID != null)
         {
             governanceContext.createLineageMapping(sourceFileGUID, processGUID);
@@ -821,6 +831,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                            2,
                                                                                                            "NestedFile",
+                                                                                                           false,
+                                                                                                           false,
+                                                                                                           null,
                                                                                                            0,
                                                                                                            0);
 

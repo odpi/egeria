@@ -873,7 +873,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -961,7 +961,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -1048,7 +1048,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -2703,7 +2703,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     private void throwHelperLogicError(String     sourceName,
                                        String     originatingMethodName,
                                        String     localMethodName,
-                                       Throwable  unexpectedException)
+                                       Exception  unexpectedException)
     {
         throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
                                                                                                     localMethodName,

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -122,16 +123,23 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                              UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        null,
+                                        new Date(),
                                         methodName);
     }
 
@@ -203,6 +211,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       likeGUID,
                                       likeGUIDParameterName,
                                       OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
@@ -233,6 +244,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
     {
+        Date effectiveTime = new Date();
+
         String ratingGUID = this.unlinkConnectedElement(userId,
                                                         true,
                                                         externalSourceGUID,
@@ -240,11 +253,13 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         elementGUID,
                                                         elementGUIDParameterName,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         supportedZones,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
-                                                        null,
+                                                        effectiveTime,
                                                         methodName);
 
         if (ratingGUID != null)
@@ -260,6 +275,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
                                         null,
                                         null,
+                                        false,
+                                        false,
+                                        effectiveTime,
                                         methodName);
         }
     }

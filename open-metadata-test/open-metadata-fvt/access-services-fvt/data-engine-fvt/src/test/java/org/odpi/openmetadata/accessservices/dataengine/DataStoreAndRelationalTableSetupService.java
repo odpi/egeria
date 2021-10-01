@@ -50,6 +50,7 @@ public class DataStoreAndRelationalTableSetupService {
         database.setDatabaseVersion("database-version");
         database.setDatabaseInstance("database-instance");
         database.setDatabaseImportedFrom("database-imported-from");
+        database.setNetworkAddress("database-network-address");
         return database;
     }
 

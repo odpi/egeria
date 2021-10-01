@@ -17,6 +17,7 @@ public interface AnalyticsModelingSynchronization {
 	 * Create analytics artifact defined as input.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 * @throws PropertyServerException in case REST call failed.
@@ -24,13 +25,14 @@ public interface AnalyticsModelingSynchronization {
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets createArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets createArtifact(String userId, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException;
 
 	/**
 	 * Update analytics artifact defined as input.
 	 * @param userId requested the operation.
 	 * @param serverCapability source where artifact persist.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 * @throws PropertyServerException in case REST call failed.
@@ -38,13 +40,14 @@ public interface AnalyticsModelingSynchronization {
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, AnalyticsAsset artifact)
+	public ResponseContainerAssets updateArtifact(String userId, String serverCapability, String serverCapabilityGUID, AnalyticsAsset artifact)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException;
 	
     /**
 	 * Delete assets in repository defined by artifact unique identifier.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID source where artifact persist.
 	 * @param identifier of the artifact in 3rd party system.
 	 * @return errors or list of created assets.
 	 * @throws PropertyServerException in case REST call failed.
@@ -52,7 +55,7 @@ public interface AnalyticsModelingSynchronization {
 	 * @throws UserNotAuthorizedException in case user unauthorized to perform operation. 
 	 * @throws InvalidParameterException in case any passed parameter is invalid.
 	 */
-	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String identifier)
+	public ResponseContainerAssets deleteArtifact(String userId, String serverCapability, String serverCapabilityGUID, String identifier)
 			throws PropertyServerException, AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException;
 
 }

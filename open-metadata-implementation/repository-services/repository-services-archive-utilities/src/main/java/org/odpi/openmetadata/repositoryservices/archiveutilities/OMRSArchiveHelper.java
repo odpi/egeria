@@ -1387,20 +1387,15 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
 
     /**
-     * Build and entity proxy from an entity.
+     * Build an entity proxy from an entity.
      *
      * @param entity entity to use as a template
      * @return new entity proxy.
      */
-    public EntityProxy getEntityProxy(EntityDetail  entity)
+    public EntityProxy getEntityProxy(EntityDetail entity)
     {
-        EntityProxy  entityProxy = new EntityProxy();
+        EntityProxy  entityProxy = new EntityProxy(entity);
         String       typeName = entity.getType().getTypeDefName();
-
-        this.setInstanceHeader(entityProxy,
-                               typeName,
-                               entity.getGUID(),
-                               entity.getStatus());
 
         entityProxy.setUniqueProperties(this.getUniqueProperties(typeName, entity.getProperties()));
         entityProxy.setClassifications(entity.getClassifications());

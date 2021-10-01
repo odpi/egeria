@@ -119,7 +119,7 @@ class DataEngineDataFileHandlerTest {
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+                guid, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
 
     @Test
@@ -145,7 +145,7 @@ class DataEngineDataFileHandlerTest {
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+                GUID_VALUE, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
 
     @Test
