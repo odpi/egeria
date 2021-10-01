@@ -1103,56 +1103,67 @@ class DataEngineRESTServicesTest {
     void deleteConnection_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                  FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
-        mockConnectionAndEndpointHandler("deleteConnection");
+        String deleteConnection = "deleteConnection";
+        mockConnectionAndEndpointHandler(deleteConnection);
+        mockRegistrationHandler(deleteConnection);
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CONNECTION_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
-
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteConnection(USER, SERVER_NAME, getDeleteRequestBody());
 
-        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeConnection(USER, GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeConnection(USER,
+                GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID);
     }
 
     @Test
     void deleteConnection_withGuid() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                         FunctionNotSupportedException {
-        mockConnectionAndEndpointHandler("deleteConnection");
-
+        String deleteConnection = "deleteConnection";
+        mockConnectionAndEndpointHandler(deleteConnection);
+        mockRegistrationHandler(deleteConnection);
         DeleteRequestBody deleteRequestBody = getDeleteRequestBody();
         deleteRequestBody.setGuid(GUID);
-
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteConnection(USER, SERVER_NAME, deleteRequestBody);
 
-        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeConnection(USER, GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeConnection(USER, GUID,
+                DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID);
     }
 
     @Test
     void deleteEndpoint_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                      FunctionNotSupportedException {
         mockCommonHandler("getEntityDetails");
-        mockConnectionAndEndpointHandler("deleteEndpoint");
+        String deleteEndpoint = "deleteEndpoint";
+        mockConnectionAndEndpointHandler(deleteEndpoint);
+        mockRegistrationHandler(deleteEndpoint);
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, ENDPOINT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
-
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteEndpoint(USER, SERVER_NAME, getDeleteRequestBody());
 
-        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeEndpoint(USER, GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeEndpoint(USER, GUID, DeleteSemantic.SOFT,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID);
     }
 
     @Test
     void deleteEndpoint_withGuid() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                             FunctionNotSupportedException {
-        mockConnectionAndEndpointHandler("deleteEndpoint");
+        String deleteEndpoint = "deleteEndpoint";
+        mockConnectionAndEndpointHandler(deleteEndpoint);
+        mockRegistrationHandler(deleteEndpoint);
 
         DeleteRequestBody deleteRequestBody = getDeleteRequestBody();
         deleteRequestBody.setGuid(GUID);
-
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteEndpoint(USER, SERVER_NAME, deleteRequestBody);
 
-        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeEndpoint(USER, GUID, DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).removeEndpoint(USER, GUID,
+                DeleteSemantic.SOFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID);
     }
 
     private DeleteRequestBody getDeleteRequestBody() {

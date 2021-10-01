@@ -81,6 +81,7 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
@@ -127,6 +128,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
@@ -165,6 +167,8 @@ distributions {
                     include 'NOTICE'
                     include 'LICENSE'
                     include 'truststore.p12'
+                    include 'content-packs'
+                    include 'sample-data'
                 }
                 fileMode = 0755
             }

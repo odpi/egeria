@@ -16,7 +16,7 @@ public class TestRelationshipTypeMapper {
             RelationshipTypeMapper.mapOMASRelationshipTypeToOMRSRelationshipTypeGuid("operation", null);
             assertTrue(false, "Expected null to fail");
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+           // we expect to get here
         }
         for (RelationshipType relationshipType : RelationshipType.values()) {
             if (relationshipType == RelationshipType.Unknown) {
@@ -24,7 +24,7 @@ public class TestRelationshipTypeMapper {
                     RelationshipTypeMapper.mapOMASRelationshipTypeToOMRSRelationshipTypeGuid("operation", relationshipType);
                     assertTrue(false, "Expected unknown to fail");
                 } catch (InvalidParameterException e) {
-                    e.printStackTrace();
+                    // we expect to get here
                 }
             } else {
                 String guid = RelationshipTypeMapper.mapOMASRelationshipTypeToOMRSRelationshipTypeGuid("operation", relationshipType);

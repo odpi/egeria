@@ -33,6 +33,7 @@
         <module>files-integration-connectors</module>
         <module>kafka-integration-connector</module>
         <module>openapi-integration-connector</module>
+        <module>elasticsearch-integration-connector</module>
     </modules>
 
 </project>
