@@ -321,7 +321,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                     governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
                 }
             }
-            catch (Throwable statusError)
+            catch (Exception statusError)
             {
                 auditLog.logException(actionDescription,
                                       GovernanceActionAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getDisplayName(),

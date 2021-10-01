@@ -6989,16 +6989,19 @@ public class OpenMetadataAPIGenericHandler<B>
             String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
             int    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL;
 
-            this.addLatestChangeToAnchor(anchorEntity,
-                                         latestChangeTarget,
-                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
-                                         entityGUID,
-                                         entityTypeName,
-                                         null,
-                                         userId,
-                                         actionDescription,
-                                         methodName);
+            if (anchorEntity != null)
+            {
+                this.addLatestChangeToAnchor(anchorEntity,
+                                             latestChangeTarget,
+                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                             entityGUID,
+                                             entityTypeName,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
         }
     }
 
@@ -7078,17 +7081,34 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 Relationship relationship = iterator.getNext();
 
-                this.archiveAnchoredEntity(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           anchorEntity,
-                                           repositoryHandler.getOtherEnd(entityGUID, entityTypeName, relationship, methodName),
-                                           classificationOriginGUID,
-                                           classificationProperties,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           effectiveTime,
-                                           methodName);
+                if (anchorEntity == null)
+                {
+                    this.archiveAnchoredEntity(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               targetEntity,
+                                               repositoryHandler.getOtherEnd(entityGUID, entityTypeName, relationship, methodName),
+                                               classificationOriginGUID,
+                                               classificationProperties,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
+                }
+                else
+                {
+                    this.archiveAnchoredEntity(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               anchorEntity,
+                                               repositoryHandler.getOtherEnd(entityGUID, entityTypeName, relationship, methodName),
+                                               classificationOriginGUID,
+                                               classificationProperties,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
+                }
             }
 
             repositoryHandler.classifyEntity(userId,
@@ -7116,7 +7136,7 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 String qualifiedName = repositoryHelper.getStringProperty(serviceName,
                                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                          anchorEntity.getProperties(),
+                                                                          targetEntity.getProperties(),
                                                                           methodName) + "_archivedOn_" + new Date().toString();
 
                 String entityTypeGUID = invalidParameterHandler.validateTypeName(entityTypeName,
