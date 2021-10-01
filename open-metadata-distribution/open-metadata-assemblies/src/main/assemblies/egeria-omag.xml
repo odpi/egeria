@@ -188,6 +188,10 @@
                             <include>content-packs/CloudInformationModel.json</include>
                             <include>content-packs/DataStoreConnectorTypes.json</include>
                             <include>content-packs/OpenMetadataTypes.json</include>
+                            <include>content-packs/SimpleAPICatalog.json</include>
+                            <include>content-packs/SimpleDataCatalog.json</include>
+                            <include>content-packs/SimpleEventCatalog.json</include>
+                            <include>content-packs/SimpleGovernanceCatalog.json</include>
                         </includes>
                     </fileSet>
                     <fileSet>
