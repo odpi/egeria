@@ -331,6 +331,12 @@ include(':open-metadata-implementation:integration-services:lineage-integrator:l
 include(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-client')
 include(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-server')
 include(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-spring')
+include(':open-metadata-implementation:integration-services:search-integrator')
+include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-api')
+include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
+include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-server')
+include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
+
 include(':open-metadata-implementation:integration-services:organization-integrator')
 include(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api')
 include(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
@@ -409,6 +415,7 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-archi
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 //TODO: restore tests once ready
 //include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
 //include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
@@ -695,6 +702,16 @@ project(':open-metadata-implementation:integration-services:lineage-integrator:l
 project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-client').projectDir = file('open-metadata-implementation/integration-services/lineage-integrator/lineage-integrator-client')
 project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-server').projectDir = file('open-metadata-implementation/integration-services/lineage-integrator/lineage-integrator-server')
 project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-spring').projectDir = file('open-metadata-implementation/integration-services/lineage-integrator/lineage-integrator-spring')
+
+
+project(':open-metadata-implementation:integration-services:search-integrator').projectDir = file('open-metadata-implementation/integration-services/search-integrator')
+project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-api').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-api')
+project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-client')
+project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-server').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-server')
+project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-spring')
+
+
+
 project(':open-metadata-implementation:integration-services:organization-integrator').projectDir = file('open-metadata-implementation/integration-services/organization-integrator')
 project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api').projectDir = file('open-metadata-implementation/integration-services/organization-integrator/organization-integrator-api')
 project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client').projectDir = file('open-metadata-implementation/integration-services/organization-integrator/organization-integrator-client')
@@ -800,6 +817,8 @@ project(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt')
 project(':open-metadata-test:open-metadata-fvt:fvt-utilities').projectDir = file('open-metadata-test/open-metadata-fvt/fvt-utilities')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')
+project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/elasticsearch-integration-connector')
+
 //TODO: restore tests
 //project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test-generator')
 //project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test')

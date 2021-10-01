@@ -3117,6 +3117,38 @@
                 <scope>compile</scope>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-server</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-spring</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-client</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>search-integrator-api</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>elasticsearch-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

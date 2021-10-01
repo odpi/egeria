@@ -74,6 +74,7 @@
                 <include>org.odpi.egeria:kafka-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:omrs-rest-repository-connector:*</include>
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
+                <include>org.odpi.egeria:elasticsearch-integration-connector:*</include>
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
@@ -187,6 +188,10 @@
                             <include>content-packs/CloudInformationModel.json</include>
                             <include>content-packs/DataStoreConnectorTypes.json</include>
                             <include>content-packs/OpenMetadataTypes.json</include>
+                            <include>content-packs/SimpleAPICatalog.json</include>
+                            <include>content-packs/SimpleDataCatalog.json</include>
+                            <include>content-packs/SimpleEventCatalog.json</include>
+                            <include>content-packs/SimpleGovernanceCatalog.json</include>
                         </includes>
                     </fileSet>
                     <fileSet>

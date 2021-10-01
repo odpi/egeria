@@ -101,4 +101,37 @@ public class Connection extends Referenceable {
      */
     private String userId;
 
+    /**
+     * The connector type
+     * -- GETTER --
+     * Get connector type
+     * @return connector type
+     * -- SETTER --
+     * Set connector type
+     * @param connectorType connector type
+     */
+    private ConnectorType connectorType;
+
+    /**
+     * The endpoint
+     * -- GETTER --
+     * Get endpoint
+     * @return endpoint
+     * -- SETTER --
+     * Set endpoint
+     * @param endpoint the endpoint
+     */
+    private Endpoint endpoint;
+
+    /**
+     * The asset summary
+     * -- GETTER --
+     * Get asset summary
+     * @return asset summary
+     * -- SETTER --
+     * Set asset summary
+     * @param assetSummary the asset summary
+     */
+    private String assetSummary;
+
 }

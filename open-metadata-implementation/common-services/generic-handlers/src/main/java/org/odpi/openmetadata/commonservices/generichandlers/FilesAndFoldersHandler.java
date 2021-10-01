@@ -2261,7 +2261,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          archiveProcess,
                                                                          archiveProperties,
                                                                          methodName),
-                                            false,
+                                            true,
                                             false,
                                             effectiveTime,
                                             methodName);
@@ -2274,7 +2274,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                    0,
-                                                                   false,
+                                                                   true,
                                                                    false,
                                                                    effectiveTime,
                                                                    methodName);
@@ -2292,7 +2292,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                      null,
                                                      null,
-                                                     false,
+                                                     true,
                                                      false,
                                                      effectiveTime,
                                                      methodName);
