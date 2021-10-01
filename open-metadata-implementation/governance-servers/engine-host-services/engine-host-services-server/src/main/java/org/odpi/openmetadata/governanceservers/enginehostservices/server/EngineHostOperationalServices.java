@@ -181,7 +181,6 @@ public class EngineHostOperationalServices
              * for the governance engines.
              */
             EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngineHandlers,
-                                                                                                               configurationClient,
                                                                                                                eventClient,
                                                                                                                auditLog,
                                                                                                                localServerUserId,
