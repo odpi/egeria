@@ -228,7 +228,7 @@ allprojects {
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.15.0")
-            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.14.1")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.15.0")
         }
     }
 
