@@ -39,7 +39,7 @@ body:
         - [ ] Create branch
         - [ ] Update version in master
         - [ ] Update version in new branch 
-        - [ ] Ensure new docker image is available for testing
+        - [ ] Ensure new docker image is available for testing (there is no distinct release pipeline)
 
         Updating the Helm Charts (egeria-charts repo)
         - [ ] checker correct docker images are on dockerhub (these are built by the 'merge' build of a release)
@@ -58,7 +58,6 @@ body:
         Final build and publish
         - [ ] Run 'release' pipeline on branch to push candidates to oss.sonatype.org
         - [ ] 'close' staging repo & Validate artifacts ok (number, structure, validations) on oss.sonatype.org
-        - [ ] Run 'release' pipeline on egeria-reactui & validate artifacts
         - [ ] Create final github releases for egeria (use release notes from master as text)
         - [ ] Create final github release for egeria-ui
         - [ ] Close repo on oss.sonatype.org (once updated) for egeria, release
