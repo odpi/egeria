@@ -116,11 +116,11 @@ public class SoftwareServerCapability implements Serializable {
      * Additional properties
      * -- GETTER --
      * Gets the additional properties
-     * @return the dditional properties
+     * @return the additional properties
      * -- SETTER --
      * Sets the additional properties.
      * @param additionalProperties the additional properties
      */
-    Map<String, String> additionalProperties;
+    private Map<String, String> additionalProperties;
 
 }
