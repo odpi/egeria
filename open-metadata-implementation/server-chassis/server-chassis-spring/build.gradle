@@ -79,6 +79,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-spring')
+    runtimeOnly project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-spring')

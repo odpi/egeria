@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Endpoint extends Referenceable {
 
     private String description;
+    private String displayName;
     private String encryptionMethod;
     private String name;
     private String networkAddress;

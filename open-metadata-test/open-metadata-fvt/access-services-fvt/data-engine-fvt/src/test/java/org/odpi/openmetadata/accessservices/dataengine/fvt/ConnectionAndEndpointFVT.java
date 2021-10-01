@@ -30,7 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Holds FVTs related to types PortImplementation and PortAlias
  */
-public class ConnectionAndEndpointFVT extends DataEngineFVT{
+public class ConnectionAndEndpointFVT extends DataEngineFVT {
+
+    private static final String COLON = ":";
+    private static final String CONNECTION = " Connection";
+    private static final String ENDPOINT = " Endpoint";
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
@@ -44,7 +48,9 @@ public class ConnectionAndEndpointFVT extends DataEngineFVT{
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, getDataFile());
 
         // assert Connection
-        String connectionQualifiedName = "Connection" + "::" + dataFile.getProtocol() + "::" + dataFile.getNetworkAddress();
+        String fileType = dataFile.getFileType();
+        String qualifiedName = dataFile.getQualifiedName();
+        String connectionQualifiedName = getConnectionQualifiedName(fileType, qualifiedName);
         List<EntityDetail> connections = repositoryService.findEntityByPropertyValue(CONNECTION_TYPE_GUID, connectionQualifiedName);
         assertNotNull(connections);
         assertEquals(1, connections.size());
@@ -53,7 +59,7 @@ public class ConnectionAndEndpointFVT extends DataEngineFVT{
         assertEquals(connectionQualifiedName, connectionAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
 
         // assert Endpoint
-        String endpointQualifiedName = "Endpoint" + "::" + dataFile.getProtocol() + "::" + dataFile.getNetworkAddress();
+        String endpointQualifiedName = getEndpointQualifiedName(fileType, qualifiedName);
         List<EntityDetail> endpoints = repositoryService.findEntityByPropertyValue(ENDPOINT_TYPE_GUID, endpointQualifiedName);
         assertNotNull(endpoints);
         assertEquals(1, endpoints.size());
@@ -79,7 +85,7 @@ public class ConnectionAndEndpointFVT extends DataEngineFVT{
         dataFile.setQualifiedName("connection-and-endpoint-data-file-qualified-name");
         dataFile.setDisplayName("connection-and-endpoint-data-file-display-name");
         dataFile.setDescription("connection-and-endpoint-data-file-description");
-        dataFile.setFileType("connection-and-endpoint-data-file-type");
+        dataFile.setFileType("DataFile");
         dataFile.setProtocol("connection-and-endpoint-data-file-protocol");
         dataFile.setNetworkAddress("connection-and-endpoint-data-file-network-address");
         dataFile.setPathName("/connection-and-endpoint-data-file-pathname/");
@@ -97,6 +103,14 @@ public class ConnectionAndEndpointFVT extends DataEngineFVT{
         columns.add(column);
 
         return columns;
+    }
+
+    private String getConnectionQualifiedName(String assetTypeName, String assetQualifiedName) {
+        return assetTypeName + COLON + assetQualifiedName + CONNECTION;
+    }
+
+    private String getEndpointQualifiedName(String assetTypeName, String assetQualifiedName) {
+        return assetTypeName + COLON + assetQualifiedName + ENDPOINT;
     }
 
 }
