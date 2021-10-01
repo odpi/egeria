@@ -206,7 +206,7 @@
         <classgraph.version>4.8.115</classgraph.version>
         <swagger.version>2.1.10</swagger.version>
         <snakeyaml.version>1.29</snakeyaml.version>
-        <groovy.version>3.0.8</groovy.version>
+        <groovy.version>3.0.9</groovy.version>
         <micrometer-registry-prometheus.version>1.7.3</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.32</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
