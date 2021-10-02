@@ -157,13 +157,15 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(entities != null,
-                A_FIND_ENTITIES_RC,
-                A_FIND_ENTITIES_RC_MSG + testTypeName,
-                PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
-                null,
-                "findEntitiesByClassification",
-                elapsedTime);
+        if (entities != null) {
+            assertCondition(true,
+                    A_FIND_ENTITIES_RC,
+                    A_FIND_ENTITIES_RC_MSG + testTypeName,
+                    PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
+                    null,
+                    "findEntitiesByClassification",
+                    elapsedTime);
+        }
         return entities;
     }
 
