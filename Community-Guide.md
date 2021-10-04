@@ -57,7 +57,7 @@ Follow the link to review the [mailing list archives](https://lists.lfaidata.fou
 Below are links to websites and other resources for Egeria.
 
 * [Egeria's Home Page](https://egeria.odpi.org) - documentation for Egeria
-* [Egeria's Webinars](https://github.com/odpi/data-governance/tree/master/webinars) - virtual events covering topics of interest.
+* [Egeria's Webinars](https://wiki.lfaidata.foundation/display/EG/Egeria+Webinar+program) - virtual events covering topics of interest.
 * [Egeria's workshops](https://github.com/odpi/data-governance/tree/master/workshops) - face-to-face workshops promoting discussion and education on Egeria
 * [Presentations on Egeria](https://github.com/odpi/data-governance/tree/master/presentations) - presentations given at conferences and private gatherings
 
