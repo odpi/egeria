@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrat
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.FindEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
@@ -26,6 +27,8 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
@@ -395,6 +398,22 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setEventType(DataEngineEventType.DELETE_ENDPOINT_EVENT);
 
         topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException {
+        FindEvent event = new FindEvent();
+        event.setUserId(userId);
+        event.setFindRequestBody(findRequestBody);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.FIND_EVENT);
+
+        topicConnector.sendEvent(event);
+
+        return null;
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

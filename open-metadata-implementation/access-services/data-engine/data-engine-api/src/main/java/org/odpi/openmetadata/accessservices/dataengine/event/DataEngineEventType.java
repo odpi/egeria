@@ -49,7 +49,8 @@ public enum DataEngineEventType implements Serializable {
     DELETE_CONNECTION_EVENT                 (18,  "DeleteConnectionEvent",  "An event that deletes a connection."),
     DELETE_ENDPOINT_EVENT                   (19,  "DeleteEndpointEvent",  "An event that deletes an endpoint."),
     PROCESS_EVENT                           (20,  "ProcessEvent",  "An event that create or update a process."),
-    DELETE_PROCESS_EVENT                    (21,   "DeleteProcessEvent",  "An event that deletes a process.");
+    DELETE_PROCESS_EVENT                    (21,   "DeleteProcessEvent",  "An event that deletes a process."),
+    FIND_EVENT                              (22,   "FindEvent",  "An event that finds an entity.");
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)

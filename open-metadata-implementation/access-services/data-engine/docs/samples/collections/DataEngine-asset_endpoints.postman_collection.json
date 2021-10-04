@@ -2374,13 +2374,13 @@
 			"response": []
 		},
 		{
-			"name": "7.1 Find entity - all props",
+			"name": "8.1 Find entity - all props",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"type\": \"Referenceable\"\n}\n",
+					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform::/data\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"type\": \"Referenceable\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2407,13 +2407,13 @@
 			"response": []
 		},
 		{
-			"name": "7.1 Find entity - required props",
+			"name": "8.2 Find entity - required props",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\"\n    }\n}\n",
+					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform::/data\"\n    }\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
