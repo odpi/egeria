@@ -187,7 +187,7 @@
         <avro.version>1.10.2</avro.version>
         <plexus.version>3.4.1</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene.version>8.4.1</lucene.version>
+        <lucene.version>8.10.0</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
         <guava.version>31.0.1-jre</guava.version>
         <tink.version>1.6.1</tink.version>
