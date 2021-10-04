@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -378,6 +379,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
+            if (refCopyEntityOne == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion1 + "-" + entityOne.getGUID(),
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
+            }
             if (refCopyEntityOne != null)
                 createdEntityRefCopiesTUT.add(refCopyEntityOne);
         } catch (Exception exc) {
@@ -403,6 +415,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 refCopyEntityTwo = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entityTwo.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
+            }
+            if (refCopyEntityTwo == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion1 + "-" + entityTwo.getGUID(),
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
             }
             if (refCopyEntityTwo != null)
                 createdEntityRefCopiesTUT.add(refCopyEntityTwo);
@@ -435,6 +458,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 refRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
+            }
+            if (refRelationship == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion1 + "-" + newRelationship.getGUID(),
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
             }
             if (refRelationship != null)
                 createdRelationshipRefCopiesTUT.add(refRelationship);
@@ -865,6 +899,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
+            if (refreshedRelationshipRefCopy == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion10,
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
+            }
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -967,6 +1012,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             } while (survivingRelRefCopy != null && remainingCount > 0);
+            if (survivingRelRefCopy == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion12,
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
+            }
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
