@@ -217,6 +217,7 @@ allprojects {
 	        runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
+            testImplementation("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-platform-runner:1.7.0")
