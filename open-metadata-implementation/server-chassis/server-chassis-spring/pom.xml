@@ -439,10 +439,11 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
-        </dependency>
+            <scope>provided</scope>
+        </dependency-->
 
     </dependencies>
 
@@ -483,9 +484,6 @@
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
-                                    javax.annotation:javax.annotation-api:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-security:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
@@ -498,6 +496,14 @@
                                     org.odpi.egeria:search-integrator-api:*
                                 </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
+                            <ignoredDependencies>
+                                <ignoreDependency>
+                                    javax.annotation:javax.annotation-api:*
+                                </ignoreDependency>
+                                <ignoreDependency>
+                                    jakarta.annotation:jakarta.annotation-api:*
+                                </ignoreDependency>
+                            </ignoredDependencies>
                         </configuration>
                     </execution>
                 </executions>
