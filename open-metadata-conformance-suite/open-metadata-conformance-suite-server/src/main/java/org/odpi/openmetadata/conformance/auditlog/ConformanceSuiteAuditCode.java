@@ -144,6 +144,12 @@ public enum ConformanceSuiteAuditCode
             "The execution of tests will now pause for the specified number of seconds, based on the configuration of the workbench.",
             "No action is required.  This is part of the normal operation of the service."),
 
+    POLLING_OVERFLOW("CONFORMANCE-SUITE-0021",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Test execution was polling for events {0} times every {1}ms, and has now overrun",
+            "The execution of subsequent tests will likely fail based on the expectation that these polled events were processed, which due to the overrun they may not (yet) have been processed.",
+            "Increase the polling interval, number of retries, or run on a system with more available resources or lower latency for events."),
+
     ;
 
     private String                     logMessageId;

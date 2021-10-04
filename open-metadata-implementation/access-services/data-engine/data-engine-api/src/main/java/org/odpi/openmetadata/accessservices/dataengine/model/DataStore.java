@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -110,7 +111,7 @@ public class DataStore extends Asset {
      */
     public Map<String, String> getEncodingProperties() {
         if (encodingProperties == null || encodingProperties.isEmpty()) {
-            return null;
+            return Collections.emptyMap();
         }
         return encodingProperties;
     }

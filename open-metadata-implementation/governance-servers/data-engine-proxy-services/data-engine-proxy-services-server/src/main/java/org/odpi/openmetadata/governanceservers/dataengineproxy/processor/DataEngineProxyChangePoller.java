@@ -2,19 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * provide any event-based mechanism to notify on changes.
  */
 public class DataEngineProxyChangePoller implements Runnable {
-
-    private static final Logger log = LoggerFactory.getLogger(DataEngineProxyChangePoller.class);
 
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
@@ -139,7 +142,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
             }
         }
@@ -224,7 +227,7 @@ public class DataEngineProxyChangePoller implements Runnable {
         final String type = "LineageMappings";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<LineageMapping> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
-        if (changedLineageMappings != null && changedLineageMappings.size() > 0) {
+        if (CollectionUtils.isNotEmpty(changedLineageMappings)) {
             if (dataEngineProxyConfig.isEventsClientEnabled()) {
                 for (LineageMapping changedLineageMapping : changedLineageMappings) {
                     // If we are using the event-based interface, send the lineage mappings one-by-one rather than as

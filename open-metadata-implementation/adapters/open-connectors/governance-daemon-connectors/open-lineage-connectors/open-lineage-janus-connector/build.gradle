@@ -2,7 +2,9 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright Contributors to the ODPi Egeria project.
  */
-
+plugins {
+    id "io.freefair.lombok"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
