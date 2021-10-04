@@ -439,6 +439,11 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -476,6 +481,9 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <!-- Spring seems to cause false positives on dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    javax.annotation:javax.annotation-api:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-security:*
