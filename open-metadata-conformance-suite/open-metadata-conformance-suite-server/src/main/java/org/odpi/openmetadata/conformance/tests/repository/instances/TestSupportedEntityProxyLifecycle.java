@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -359,6 +360,17 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                 remainingCount--;
 
             }
+            if (entity1Ref == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion2,
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
+            }
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -530,6 +542,17 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
 
+            }
+            if (entity2Ref == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion2,
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
             }
         } catch (Exception exc) {
             /*
@@ -1216,6 +1239,17 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             } while (survivingEnt1Proxy != null && remainingCount > 0);
+            if (entity1Ref == null && remainingCount == 0) {
+                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+                workPad.getAuditLog()
+                        .logRecord(assertion8,
+                                overflow.getLogMessageId(),
+                                overflow.getSeverity(),
+                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
+                                null,
+                                overflow.getSystemAction(),
+                                overflow.getUserAction());
+            }
         }
         catch (Exception exc) {
             /*
