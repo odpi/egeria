@@ -111,22 +111,24 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
             graph.setRootNodeGuid(guid);
             graph.setNodeFilter(nodeFilterStr);
             graph.setRelationshipFilter(relationshipFilterStr);
-            if (CollectionUtils.isNotEmpty(instanceGraph.getRelationships())) {
-                List<Relationship> relationships = getRelationshipsFromRelationships(instanceGraph.getRelationships());
-                Map<String, Relationship> guidToRelationshipMap = new HashMap<>();
-                for (Relationship relationship : relationships) {
-                    guidToRelationshipMap.put(relationship.getSystemAttributes().getGUID(), relationship);
+            if (instanceGraph != null) {
+                if (CollectionUtils.isNotEmpty(instanceGraph.getRelationships())) {
+                    List<Relationship> relationships = getRelationshipsFromRelationships(instanceGraph.getRelationships());
+                    Map<String, Relationship> guidToRelationshipMap = new HashMap<>();
+                    for (Relationship relationship : relationships) {
+                        guidToRelationshipMap.put(relationship.getSystemAttributes().getGUID(), relationship);
+                    }
+                    graph.setRelationships(guidToRelationshipMap);
                 }
-                graph.setRelationships(guidToRelationshipMap);
-            }
 
-            if (CollectionUtils.isNotEmpty(instanceGraph.getEntities())) {
-                List<Node> nodes = getNodesFromEntityDetails(instanceGraph.getEntities());
-                Map<String, Node> guidToNodeMap = new HashMap<>();
-                for (Node node : nodes) {
-                    guidToNodeMap.put(node.getSystemAttributes().getGUID(), node);
+                if (CollectionUtils.isNotEmpty(instanceGraph.getEntities())) {
+                    List<Node> nodes = getNodesFromEntityDetails(instanceGraph.getEntities());
+                    Map<String, Node> guidToNodeMap = new HashMap<>();
+                    for (Node node : nodes) {
+                        guidToNodeMap.put(node.getSystemAttributes().getGUID(), node);
+                    }
+                    graph.setNodes(guidToNodeMap);
                 }
-                graph.setNodes(guidToNodeMap);
             }
             // end of if after getEntityNeighbourhood call
             response.addResult(graph);
