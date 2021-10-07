@@ -34,7 +34,7 @@ public class SubjectAreaGraphRESTResource {
      * Get the graph of nodes and relationships radiating out from a node.
      *
      * Return the nodes and relationships that radiate out from the supplied node (identified by a GUID).
-     * The results are scoped by types of relationships, types of nodes and classifications as well as level.
+     * The results are scoped by types of relationships, types of nodes and classifications.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
@@ -46,8 +46,6 @@ public class SubjectAreaGraphRESTResource {
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level the number of the relationships (relationships) out from the starting node that the query will traverse to
-     *              gather results. If not specified then it defaults to 3.
      * @return A graph of nodeTypes.
      *
      * <ul>
@@ -65,9 +63,9 @@ public class SubjectAreaGraphRESTResource {
                                                       @RequestParam(value = "asOfTime", required=false) Date asOfTime,
                                                       @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
                                                       @RequestParam(value = "relationshipFilter", required=false)String relationshipFilterStr,
-                                                      @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                      @RequestParam(value = "level", required=false) Integer level ) {
+                                                      @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter   // may need to extend this for controlled terms
+                                                     ) {
 
-        return restAPI.getGraph(serverName,userId,guid,asOfTime,nodeFilterStr,relationshipFilterStr,statusFilter,level);
+        return restAPI.getGraph(serverName,userId,guid,asOfTime,nodeFilterStr,relationshipFilterStr,statusFilter);
     }
 }

@@ -48,19 +48,17 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * Get the graph of nodes and relationships radiating out from a node.
      * <p>
      * Return the nodes and relationships that radiate out from the supplied node (identified by a GUID).
-     * The results are scoped by types of relationships, types of nodes and classifications as well as level.
+     * The results are scoped by types of relationships, types of nodes and classifications.
      *
      * @param userId                userId under which the request is performed
      * @param guid                  the starting point of the query.
+     * @param asOfTime              Requests a historical query of the relationships for the entity.  Null means return the
+     *                              present values.
      * @param nodeFilterStr         Comma separated list of node names to include in the query results.  Null means include
      *                              all entities found, irrespective of their type.
      * @param relationshipFilterStr comma separated list of relationship names to include in the query results.  Null means include
      *                              all relationships found, irrespective of their type.
-     * @param asOfTime              Requests a historical query of the relationships for the entity.  Null means return the
-     *                              present values.
      * @param statusFilter          By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level                 the number of the relationships (relationships) out from the starting node that the query will traverse to
-     *                              gather results. If not specified then it defaults to 3.
      * @return A graph of nodeTypes.
      *
      * <ul>
@@ -76,8 +74,8 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                                                       Date asOfTime,
                                                       String nodeFilterStr,
                                                       String relationshipFilterStr,
-                                                      StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                      Integer level) {
+                                                      StatusFilter statusFilter   // may need to extend this for controlled terms
+                                                     ) {
 
         final String methodName = "getGraph";
         SubjectAreaOMASAPIResponse<Graph> response = new SubjectAreaOMASAPIResponse<>();
@@ -92,9 +90,6 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                     requestedInstanceStatus.add(SubjectAreaUtils.convertStatusToInstanceStatus(omasStatus));
                 }
             }
-            if (level == null) {
-                level = 3;
-            }
 
             InstanceGraph instanceGraph = genericHandler.getRepositoryHandler().getEntityNeighborhood(
                     userId,
@@ -104,7 +99,7 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                     requestedInstanceStatus,
                     null,
                     asOfTime,
-                    level,
+                    1,
                     methodName);
 
             Graph graph = new Graph();

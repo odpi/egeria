@@ -33,20 +33,18 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
      * Get the graph of nodes and relationships radiating out from a node.
      *
      * Return the nodes and relationships that radiate out from the supplied node (identified by a GUID).
-     * The results are scoped by types of relationships, types of nodes and classifications as well as level.
+     * The results are scoped by types of relationships, types of nodes and classifications.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid the starting point of the query.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
      * @param nodeFilterStr Comma separated list of node names to include in the query results.  Null means include
      *                          all entities found, irrespective of their type.
      * @param relationshipFilterStr comma separated list of relationship names to include in the query results.  Null means include
      *                                all relationships found, irrespective of their type.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
      * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level the number of the relationships (relationships) out from the starting node that the query will traverse to
-     *              gather results. If not specified then it defaults to 3.
      * @return A graph of nodeTypes.
      *
      * <ul>
@@ -63,8 +61,8 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                                                       Date asOfTime,
                                                       String nodeFilterStr,
                                                       String relationshipFilterStr,
-                                                      StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                      Integer level ) {
+                                                      StatusFilter statusFilter   // may need to extend this for controlled terms
+                                                     ) {
 
         final String methodName = "getGraph";
         if (log.isDebugEnabled()) {
@@ -76,13 +74,13 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGraphHandler handler = instanceHandler.getSubjectAreaGraphHandler(userId, serverName, methodName);
             response = handler.getGraph(
-                                        userId,
-                                        guid,
-                                        asOfTime,
-                                        nodeFilterStr,
-                                        relationshipFilterStr,
-                                        statusFilter,   // may need to extend this for controlled terms
-                                        level);
+                    userId,
+                    guid,
+                    asOfTime,
+                    nodeFilterStr,
+                    relationshipFilterStr,
+                    statusFilter   // may need to extend this for controlled terms
+                                       );
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);

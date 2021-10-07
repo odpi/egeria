@@ -140,6 +140,6 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
                     .collect(Collectors.toSet());
         }
 
-        return graphClient.getGraph(userId, guid, asOfTime, nodeTypes, relationshipTypes, statusFilter, 1);
+        return graphClient.getGraph(userId, guid, asOfTime, nodeTypes, relationshipTypes, statusFilter);
     }
 }

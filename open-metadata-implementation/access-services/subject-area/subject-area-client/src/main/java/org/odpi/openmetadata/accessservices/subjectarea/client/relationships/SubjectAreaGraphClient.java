@@ -57,6 +57,6 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParamet
         return queryBuilder
                 .addParam("asOfTime", request.getAsOfTime())
                 .addParam("statusFilter", request.getStatusFilter().name())
-                .addParam("level", request.getLevel());
+                ;
     }
 }

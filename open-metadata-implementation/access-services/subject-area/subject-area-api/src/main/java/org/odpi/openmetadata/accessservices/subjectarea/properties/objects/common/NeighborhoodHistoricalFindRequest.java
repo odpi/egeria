@@ -29,7 +29,6 @@ public class NeighborhoodHistoricalFindRequest implements Serializable {
     private Set<NodeType> nodeFilter = null;
     private Set<RelationshipType> relationshipFilter = null;
     private StatusFilter statusFilter = StatusFilter.ACTIVE;
-    private int level = 3;
 
     /**
      * Default constructor */
@@ -81,21 +80,12 @@ public class NeighborhoodHistoricalFindRequest implements Serializable {
         this.statusFilter = statusFilter;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NeighborhoodHistoricalFindRequest that = (NeighborhoodHistoricalFindRequest) o;
-        return level == that.level &&
-                Objects.equals(asOfTime, that.asOfTime) &&
+        return Objects.equals(asOfTime, that.asOfTime) &&
                 Objects.equals(nodeFilter, that.nodeFilter) &&
                 Objects.equals(relationshipFilter, that.relationshipFilter) &&
                 statusFilter == that.statusFilter;
@@ -103,6 +93,6 @@ public class NeighborhoodHistoricalFindRequest implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(asOfTime, nodeFilter, relationshipFilter, statusFilter, level);
+        return Objects.hash(asOfTime, nodeFilter, relationshipFilter, statusFilter);
     }
 }
