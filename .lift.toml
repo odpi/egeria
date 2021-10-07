@@ -1,0 +1,2 @@
+build = "mvn clean install -DskipFVT -DskipTests=true -Denforcer.skip=true -Djacocoskip=true -Drat.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true"
+jdk11 = true
