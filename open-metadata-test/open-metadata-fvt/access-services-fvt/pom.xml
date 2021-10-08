@@ -41,6 +41,7 @@
         <module>governance-engine-fvt</module>
         <module>governance-program-fvt</module>
         <module>subject-area-fvt</module>
+        <module>glossary-author-fvt</module>
     </modules>
 
 </project>
