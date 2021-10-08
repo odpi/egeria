@@ -2,29 +2,37 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.StringJoiner;
 
 public class QueryBuilder {
-    private final Map<Object, Object> paramMap = new LinkedHashMap<>();
-    private final static String PARAM_FORMAT = "%s=%s";
+    private final StringJoiner joiner = new StringJoiner("&", "?", "");
 
     public QueryBuilder() {}
 
     public QueryBuilder addParam(Object key, Object value) {
         if (key != null && value != null) {
-            paramMap.put(key, value);
+            join(key, value);
         }
 
         return this;
     }
 
+    public QueryBuilder addParams(QueryParams queryParams) {
+        if (queryParams != null) {
+            queryParams
+                    .getParamMap()
+                    .forEach(this::join);
+        }
+
+        return this;
+    }
+
+    private void join(Object key, Object value) {
+        joiner.add(key + "=" + value);
+    }
+
     @Override
     public String toString() {
-        StringJoiner joiner = new StringJoiner("&", "?", "");
-        paramMap.forEach((key, value) -> joiner.add(String.format(PARAM_FORMAT, key, value)));
-
         return joiner.toString();
     }
 }
