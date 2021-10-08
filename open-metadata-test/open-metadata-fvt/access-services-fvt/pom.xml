@@ -72,6 +72,7 @@
         <module>governance-program-fvt</module>
         <module>stewardship-action-fvt</module>
         <module>subject-area-fvt</module>
+        <module>glossary-author-fvt</module>
     </modules>
 
 </project>
