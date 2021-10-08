@@ -29,6 +29,7 @@
     <modules>
         <module>fvt-utilities</module>
         <module>access-services-fvt</module>
+        <module>view-services-fvt</module>
         <module>open-types-fvt</module>
     </modules>
 
