@@ -391,7 +391,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Category> categories = ((SubjectAreaTermClient) clients.categories()).getCategories(userId, guid, findRequest);
+            List<Category> categories = ((SubjectAreaTermClient) clients.terms()).getCategories(userId, guid, findRequest);
             response.addAllResults(categories);
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
