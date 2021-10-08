@@ -63,6 +63,11 @@
             <artifactId>http-helper</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
         <!-- Integration Tests will depend on the assembly -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
