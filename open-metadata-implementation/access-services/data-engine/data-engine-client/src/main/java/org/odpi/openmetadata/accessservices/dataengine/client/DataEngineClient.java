@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 
@@ -422,7 +423,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    GUIDListResponse find(String userId, FindRequestBody findRequestBody)
-            throws ConnectorCheckedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException;
+    GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException,
+                                                                                 InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException,
+                                                                                 FunctionNotSupportedException;
 
 }

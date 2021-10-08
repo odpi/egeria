@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrat
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.FindEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
@@ -16,6 +15,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
@@ -31,6 +31,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 
@@ -404,16 +405,11 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException {
-        FindEvent event = new FindEvent();
-        event.setUserId(userId);
-        event.setFindRequestBody(findRequestBody);
-        event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.FIND_EVENT);
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws FunctionNotSupportedException {
+        String methodName = "find";
 
-        topicConnector.sendEvent(event);
-
-        return null;
+        throw new FunctionNotSupportedException(DataEngineErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName),
+                this.getClass().getName(), methodName);
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

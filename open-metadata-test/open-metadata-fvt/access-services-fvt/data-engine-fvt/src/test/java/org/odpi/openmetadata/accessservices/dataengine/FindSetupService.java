@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Objects;
 
@@ -38,7 +39,9 @@ public class FindSetupService {
      */
     public GUIDListResponse find(String userId, DataEngineClient dataEngineOMASClient, String qualifiedName, String type,
                                  String externalSourceName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException,
+            FunctionNotSupportedException {
+
         if(Objects.isNull(qualifiedName)){
             throw new IllegalArgumentException("Parameter required: qualifiedName");
         }
