@@ -76,9 +76,9 @@ public class CalculatedValueClassificationRequestBody implements Serializable
 
 
     /**
-     * Return the scope that the terms in the glossary covers.
+     * Return the formula used to calculate the value.
      *
-     * @return string description
+     * @return string formula with placeholders
      */
     public String getFormula()
     {
@@ -87,7 +87,7 @@ public class CalculatedValueClassificationRequestBody implements Serializable
 
 
     /**
-     * Set up the scope that the terms in the glossary covers.
+     * Set up the formula used to calculate the value.
      *
      * @param formula string description
      */

@@ -24,10 +24,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConne
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -193,6 +195,8 @@ public class GovernanceConfigurationHandler
                                                                      null,
                                                                      null,
                                                                      null,
+                                                                     null,
+                                                                     null,
                                                                      methodName);
     }
 
@@ -222,6 +226,9 @@ public class GovernanceConfigurationHandler
                                                             guid,
                                                             guidParameter,
                                                             OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                             false,
+                                                             false,
+                                                             new Date(),
                                                             methodName);
     }
 
@@ -256,6 +263,9 @@ public class GovernanceConfigurationHandler
                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                                      specificMatchPropertyNames,
+                                                     false,
+                                                     false,
+                                                     null,
                                                      methodName);
     }
 
@@ -286,6 +296,7 @@ public class GovernanceConfigurationHandler
                                                       null,
                                                       startingFrom,
                                                       maximumResults,
+                                                      null,
                                                       methodName);
     }
 
@@ -396,6 +407,9 @@ public class GovernanceConfigurationHandler
                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                                       qualifiedNameParameter,
                                                       qualifiedName,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                       methodName);
     }
 
@@ -436,29 +450,17 @@ public class GovernanceConfigurationHandler
         invalidParameterHandler.validateName(typeName, typeNameParameterName, methodName);
         invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
         String assetGUID = governanceServiceHandler.createAssetInRepository(userId,
-                                                                           null,
-                                                                           null,
-                                                                           qualifiedName,
-                                                                           displayName,
-                                                                           description,
-                                                                           null,
-                                                                           null,
-                                                                           0,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           typeGUID,
-                                                                           typeName,
-                                                                           null,
-                                                                           methodName);
+                                                                            null,
+                                                                            null,
+                                                                            qualifiedName,
+                                                                            displayName,
+                                                                            description,
+                                                                            null,
+                                                                            typeName,
+                                                                            null,
+                                                                            InstanceStatus.ACTIVE,
+                                                                            methodName);
 
         if (assetGUID != null)
         {
@@ -471,7 +473,16 @@ public class GovernanceConfigurationHandler
                                                                                           connectorType.getQualifiedName(),
                                                                                           connectorType.getDisplayName(),
                                                                                           connectorType.getDescription(),
+                                                                                          connectorType.getSupportedAssetTypeName(),
+                                                                                          connectorType.getExpectedDataFormat(),
                                                                                           connectorType.getConnectorProviderClassName(),
+                                                                                          connectorType.getConnectorFrameworkName(),
+                                                                                          connectorType.getConnectorInterfaceLanguage(),
+                                                                                          connectorType.getConnectorInterfaces(),
+                                                                                          connectorType.getTargetTechnologySource(),
+                                                                                          connectorType.getTargetTechnologyName(),
+                                                                                          connectorType.getTargetTechnologyInterfaces(),
+                                                                                          connectorType.getTargetTechnologyVersions(),
                                                                                           connectorType.getRecognizedAdditionalProperties(),
                                                                                           connectorType.getRecognizedSecuredProperties(),
                                                                                           connectorType.getRecognizedConfigurationProperties(),
@@ -505,6 +516,8 @@ public class GovernanceConfigurationHandler
                                                                                      connection.getEncryptedPassword(),
                                                                                      connectorTypeGUID,
                                                                                      connectorTypeGUIDParameterName,
+                                                                                     null,
+                                                                                     null,
                                                                                      methodName);
 
                     List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
@@ -561,6 +574,8 @@ public class GovernanceConfigurationHandler
                                                        connectorTypeGUIDParameterName,
                                                        null,
                                                        null,
+                                                       null,
+                                                       null,
                                                        methodName);
                 }
             }
@@ -594,6 +609,7 @@ public class GovernanceConfigurationHandler
                                                               guid,
                                                               guidParameter,
                                                               OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                              null,
                                                               methodName);
     }
 
@@ -623,6 +639,7 @@ public class GovernanceConfigurationHandler
                                                                      nameParameter,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     null,
                                                                      methodName);
     }
 
@@ -653,6 +670,7 @@ public class GovernanceConfigurationHandler
                                                                   OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
                                                                   startingFrom,
                                                                   maximumResults,
+                                                                  null,
                                                                   methodName);
     }
 
@@ -680,6 +698,8 @@ public class GovernanceConfigurationHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceServiceGUID, guidParameter, methodName);
 
+        Date effectiveTime = new Date();
+
         /*
          * Checks this is a valid, visible service.
          */
@@ -687,6 +707,9 @@ public class GovernanceConfigurationHandler
                                                 governanceServiceGUID,
                                                 guidParameter,
                                                 OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                false,
+                                                false,
+                                                effectiveTime,
                                                 methodName);
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
@@ -694,6 +717,9 @@ public class GovernanceConfigurationHandler
                                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     false,
+                                                                                     0, 0,
+                                                                                     effectiveTime,
                                                                                      methodName);
 
         List<String> results = new ArrayList<>();
@@ -805,6 +831,9 @@ public class GovernanceConfigurationHandler
                                                  OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
     }
 
@@ -851,8 +880,10 @@ public class GovernanceConfigurationHandler
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
 
@@ -936,6 +967,8 @@ public class GovernanceConfigurationHandler
                                                      governanceServiceGUID,
                                                      governanceServiceGUIDParameter,
                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                     false,
+                                                     false,
                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                      instanceProperties,
@@ -976,6 +1009,8 @@ public class GovernanceConfigurationHandler
                                                                                              governanceEngineGUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             false,
+                                                                                             null,
                                                                                              methodName);
 
 
@@ -1021,8 +1056,11 @@ public class GovernanceConfigurationHandler
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                               false,
+                                                               false,
                                                               startingFrom,
                                                               maximumResults,
+                                                              null,
                                                               methodName);
     }
 
@@ -1060,8 +1098,10 @@ public class GovernanceConfigurationHandler
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
 
@@ -1089,6 +1129,8 @@ public class GovernanceConfigurationHandler
                                                                      governanceServiceGUIDParameter,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     false,
+                                                                     false,
                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                                      supportedGovernanceService,
                                                                      methodName);
@@ -1131,8 +1173,10 @@ public class GovernanceConfigurationHandler
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
 
@@ -1157,6 +1201,8 @@ public class GovernanceConfigurationHandler
                                                                      governanceServiceGUIDParameter,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     false,
+                                                                     false,
                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                                      supportedGovernanceService,
                                                                      methodName);

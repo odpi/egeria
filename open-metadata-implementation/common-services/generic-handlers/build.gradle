@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
@@ -15,12 +15,9 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
     testImplementation project(':open-metadata-test:open-metadata-ut')
-    testImplementation 'org.testng:testng:7.4.0'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Generic Handlers'

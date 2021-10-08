@@ -11,7 +11,7 @@ import org.apache.commons.lang3.time.StopWatch;
  */
 public class RESTCallToken
 {
-    static private long nextCallId = 0;
+    static volatile private long nextCallId = 0;
     static final String PLATFORM_NAME = "<*>";
 
     static private synchronized long getNextCallId() { return nextCallId++; }
@@ -22,7 +22,6 @@ public class RESTCallToken
     private String    serverName;
     private String    userId;
     private String    methodName;
-    private String    threadName;
 
     /**
      * Set up the values that will be used in the logging process.
@@ -37,7 +36,6 @@ public class RESTCallToken
         this.serviceName = serviceName;
         this.userId      = userId;
         this.methodName  = methodName;
-        this.threadName  = Thread.currentThread().getName();
 
         this.watch = StopWatch.createStarted();
         this.callId = getNextCallId();
@@ -60,8 +58,6 @@ public class RESTCallToken
      */
     String getRESTCallStartText()
     {
-        Thread.currentThread().setName("REST:" + serviceName + ":" + methodName);
-
         return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId;
     }
 
@@ -74,8 +70,6 @@ public class RESTCallToken
      */
     String getRESTCallReturnText(String response)
     {
-        Thread.currentThread().setName(threadName);
-
         return callId + ":" + serviceName + ":" + serverName + ":" + methodName + " call invoked by " + userId + " returned with response " + response + "; Duration: " + watch.getTime()/1000 + "seconds";
     }
 }

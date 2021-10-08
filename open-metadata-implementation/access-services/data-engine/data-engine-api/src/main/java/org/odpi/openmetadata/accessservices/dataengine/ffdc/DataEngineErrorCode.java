@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 
 public enum DataEngineErrorCode implements ExceptionMessageSet {
+
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
@@ -44,10 +45,10 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "Exception while processing the data engine event {0}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
-    SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005",
-            "SchemaAttribute with qualifiedName {0} was not found",
+    REFERENCEABLE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005",
+            "Referenceable with qualifiedName {0} was not found",
             "The system is unable to create a new LineageMapping relation.",
-            "Correct the code in the caller to provide the correct schema attribute qualified name."),
+            "Correct the code in the caller to provide the correct referenceable qualified name."),
     PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006",
             "Port with qualifiedName {0} was not found",
             "The system is unable to create a new PortDelegation relation.",
@@ -73,14 +74,17 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "The system has issued a call to an open metadata access service input topic using event message broker",
             "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     ENTITY_NOT_DELETED(400, "OMAS-DATA-ENGINE-400-010",
-            "Enity with qualifiedName {0} was not deleted",
-            "The system is unable to cdelete the entity with the provided qualifiedName or guid.",
-            "Correct the code in the caller to provide the correct database qualified name.");
+            "Entity with qualifiedName {0} was not deleted",
+            "The system is unable to delete the entity with the provided qualifiedName or guid.",
+            "Correct the code in the caller to provide the correct database qualified name."),
+    METHOD_NOT_IMPLEMENTED(501, "OMAS-DATA-ENGINE-500-002",
+            "Method {0} is not implemented",
+            "The system performs no action as the method is not implemented.",
+            "No action suggested.");
 
     private static final long serialVersionUID = 1L;
 
-    private ExceptionMessageDefinition messageDefinition;
-
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -108,7 +112,6 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
     public ExceptionMessageDefinition getMessageDefinition() {
         return messageDefinition;
     }
-
 
     /**
      * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.

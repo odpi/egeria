@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -44,7 +45,7 @@ public class CategoryHierarchyLink extends Relationship {
                                                                            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public CategoryHierarchyLink() {
-        super("CategoryHierarchyLink", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.CategoryHierarchyLink.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     @Override

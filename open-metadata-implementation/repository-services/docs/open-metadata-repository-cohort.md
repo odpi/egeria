@@ -28,13 +28,70 @@ These copies are called **[reference copies](home-metadata-repositories.md)** of
 the metadata and they are read-only.
 
 The role of the OMRS is to optimize access to metadata across the cohort by using
-a combination of replication and federated queries, driven by the
+a combination of replication and federated queries, driven by
 the metadata workload from the connected tools.
 
-## Cohort membership
+## Formation of a Cohort
 
-To join an open metadata repository cohort, a metadata repository must integrate
-with the OMRS module. Egeria provides a number or pre-built
+Cohort membership is established dynamically.  This is through the [Cohort Topic(s)](omrs-event-topic.md).
+
+To join an open metadata repository cohort, a server must integrate
+with the OMRS module. OMRS then manages the metadata exchange. When OMRS running inside the server is
+[configured to join a cohort](../../admin-services/docs/user/configuring-registration-to-a-cohort.md)
+it first adds a [Registration Event](event-descriptions/registry-events.md) to the Cohort Topic(s).
+This event identifies the server, its metadata repository (if any) and its capabilities (see figure 1).
+
+![Figure 1](repository-services-formation-of-a-cohort-1.png)
+> **Figure 1:** The first server to join the cohort issues a registration request and waits for others to join.
+
+When another server joins the cohort (figure 2), it also adds its registration event to the Cohort Topic(s)
+and begins to receive the registration events from other members.  The other members respond with
+[Re-Registration Events](event-descriptions/registry-events.md) to ensure the new member has the latest
+information about the originator's capabilities.  The exchange of registration information causes all members to verify
+that they have the latest information about their peers.  This is maintained in their own
+[Cohort Registry Store](component-descriptions/connectors/cohort-registry-store-connector.md)
+so that they can reconfigure themselves on restart
+without needing the other members to resend their registration information.
+
+![Figure 2](repository-services-formation-of-a-cohort-2.png)
+> **Figure 2:** When another server joins the cohort they exchange registration information.
+
+Once the registration information is exchanged and stored in each member's cohort registry store, it is ready to issue
+federated queries across the cohort, and respond to requests for metadata from other members.
+These requests can both retrieve metadata and maintain metadata in the [home metadata repository](home-metadata-repositories.md).
+
+The management of federated queries and the routing of maintenance requests is managed by OMRS's
+[Enterprise Repository Services](subsystem-descriptions/enterprise-repository-services.md).
+The enterprise repository services are configured with the registration information from across the cohort at the
+same time as the cohort registry store is updated.  This process is managed by the [Cohort Registry](component-descriptions/cohort-registry.md)
+component (see figure 3).
+
+![Figure 3](repository-services-formation-of-a-cohort-3.png)
+> **Figure 3:** Once the registration is complete the cohort members can issue federated queries.
+
+Once the cohort membership is established, the server begins publishing information using
+[Instance Events](event-descriptions/instance-events.md) about changes to the
+[home metadata instances](home-metadata-repositories.md) in their repository.
+These events can be used by other members to maintain a cache of reference copies of this metadata to improve
+availability of the metadata and retrieval performance.  Updates to this metadata will, however, be automatically
+routed to the home repository by the enterprise repository services (figure 4).
+
+![Figure 4](repository-services-formation-of-a-cohort-4.png)
+> **Figure 4:** Metadata can also be replicated through the cohort to allow caching for availability and performance.
+
+Finally, as type definitions (TypeDefs) are added and updated, the cohort members send out
+events to allow the other members to verify that this type does not conflict with any of their types (figure 5).
+Any conflicts in the types causes [audit log messages](component-descriptions/audit-log.md) to be logged in all of the
+members, prompting action to resolve the conflicts.
+
+![Figure 5](repository-services-formation-of-a-cohort-5.png)
+> **Figure 4:** TypeDef validation.
+
+
+
+## Enabling Cohort Membership
+
+Egeria provides a number or pre-built
 [cohort members](../../admin-services/docs/concepts/cohort-member.md).
 
 One of them, the [repository proxy](../../admin-services/docs/concepts/repository-proxy.md)

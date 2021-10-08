@@ -24,14 +24,46 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 3.2](release-notes-3-2.md) - October 2021
+  * Open Metadata Type changes
+  * New beta documentation site
+  * Deprecations
+  * Dependency Updates
+  * Bug Fixes
+  
+## Older Releases
+
+* [Release 3.1](release-notes-3-1.md) - September 2021
+  * Open Metadata Type changes
+  * New beta documentation site
+  * Deprecation of Docker Compose environment
+  * Helm charts moved
+  * Changes to the Coco Pharmaceuticals lab environment
+  * Dependency Updates
+  * Bug Fixes
+
+* [Release 3.0](release-notes-3-0.md) - August 2021
+  * Java 11 is now required for build and runtime
+  * Multiple topics are now the default for a new cohort member
+  * Passwords for the demo users in the Egeria UI have been changed
+  * Dependency updates
+  * Additional notes including known issues
+
+* [Release 2.11](release-notes-2-11.md) - July 2021
+  * New option to have multiple topics for a cohort
+  * New support for automatic extraction of metadata from event brokers and API managers
+  * Open Metadata Types - changes
+  * Removed functionality
+  * Bug Fixes
+  * Dependency updates
+  * Additional notes including known issues
+  
 * [Release 2.10](release-notes-2-10.md) - June 2021
   * Changes to metadata types
   * Updates to Governance Program OMAS API
   * Bug Fixes
   * Dependency updates
   * Important notes included on known issues
-  
-## Older Releases
 
 * [Release 2.9](release-notes-2-9.md) - May 2021
   * Updates to open metadata types
@@ -86,15 +118,15 @@ Below are the release notes for the latest Egeria release:
     * Bug fixes
     * Dependency updates
 
- * [Release 2.1](release-notes-2-1.md) - August 2020
-    * Bug fixes
-    * Dependency updates
+* [Release 2.1](release-notes-2-1.md) - August 2020
+   * Bug fixes
+   * Dependency updates
 
- * [Release 2.0](release-notes-2-0.md) - July 2020
-    * https security for server chassis
-    * encrypted file connector
-    * Bug fixes
-    * Dependency updates
+* [Release 2.0](release-notes-2-0.md) - July 2020
+   * https security for server chassis
+   * encrypted file connector
+   * Bug fixes
+   * Dependency updates
 
 * [Release 1.8](release-notes-1-8.md) - June 2020
     * Additional tutorial content in the form of the Egeria Dojo

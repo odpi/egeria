@@ -6,8 +6,10 @@ import org.odpi.openmetadata.conformance.tests.performance.OpenMetadataPerforman
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceProfile;
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
@@ -65,7 +67,8 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keys = getEntityKeys(metadataCollection, numInstances);
+        OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
+        Set<String> keys = getEntityKeys(metadataCollection, repositoryHelper, numInstances);
         updateEntityClassification(metadataCollection, keys);
 
         super.setSuccessMessage("Classification update performance tests complete for: " + testTypeName);
@@ -74,18 +77,27 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
     /**
      * Retrieve a list of entity GUIDs that have this classification.
      * @param metadataCollection through which to call findEntitiesByClassification
+     * @param repositoryHelper utilities to introspect the repository's capabilities
      * @param numInstances number of instances to retrieve
      * @return set of entity GUIDs that have this classification
      * @throws Exception on any errors
      */
-    private Set<String> getEntityKeys(OMRSMetadataCollection metadataCollection, int numInstances) throws Exception
+    private Set<String> getEntityKeys(OMRSMetadataCollection metadataCollection,
+                                      OMRSRepositoryHelper repositoryHelper,
+                                      int numInstances) throws Exception
     {
+        final String methodName = "getEntityKeys";
+        InstanceProperties byMetadataCollectionId = repositoryHelper.addStringPropertyToInstance(testCaseId,
+                null,
+                "metadataCollectionId",
+                repositoryHelper.getExactMatchRegex(performanceWorkPad.getTutMetadataCollectionId()),
+                methodName);
         long start = System.nanoTime();
         List<EntityDetail> entitiesWithClassification = metadataCollection.findEntitiesByClassification(workPad.getLocalServerUserId(),
                 null,
                 classificationDef.getName(),
-                null,
-                null,
+                byMetadataCollectionId,
+                MatchCriteria.ALL,
                 0,
                 null,
                 null,
@@ -119,41 +131,46 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
         final String methodName = "updateEntityClassification";
 
         InstanceProperties instProps = null;
-        try {
+        String lastGuid = null;
+        if (keys != null) {
+            try {
 
-            int count = 0;
-            for (String guid : keys) {
-                instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), classificationDef, count);
+                int count = 0;
+                for (String guid : keys) {
+                    lastGuid = guid;
+                    instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), classificationDef, count);
 
-                long start = System.nanoTime();
-                EntityDetail result = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
-                        guid,
-                        classificationDef.getName(),
-                        instProps);
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
+                    long start = System.nanoTime();
+                    EntityDetail result = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
+                            guid,
+                            classificationDef.getName(),
+                            instProps);
+                    long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                assertCondition(result != null,
-                        A_UPDATE_PROPERTIES,
+                    assertCondition(result != null,
+                            A_UPDATE_PROPERTIES,
+                            A_UPDATE_PROPERTIES_MSG + testTypeName,
+                            PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),
+                            null,
+                            methodName,
+                            elapsedTime);
+                    count++;
+                }
+
+            } catch (FunctionNotSupportedException exception) {
+                super.addNotSupportedAssertion(A_UPDATE_PROPERTIES,
                         A_UPDATE_PROPERTIES_MSG + testTypeName,
                         PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
-                count++;
+                        null);
+            } catch (Exception exc) {
+                String operationDescription = "update properties of classification " + classificationDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("entityGUID", lastGuid);
+                parameters.put("classificationName", classificationDef.getName());
+                parameters.put("properties", instProps != null ? instProps.toString() : "null");
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
+                throw new Exception(msg, exc);
             }
-
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_UPDATE_PROPERTIES,
-                    A_UPDATE_PROPERTIES_MSG + testTypeName,
-                    PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),
-                    null);
-        } catch (Exception exc) {
-            String operationDescription = "update properties of classification " + classificationDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", classificationDef.getGUID());
-            parameters.put("properties", instProps != null ? instProps.toString() : "null");
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
         }
 
     }

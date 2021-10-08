@@ -37,7 +37,9 @@ using these same search keyword elements.
 * [Automated Metadata Discovery](../metadata-discovery)
 
 ----
-Return to [Area 0](Area-0-models.md).
+
+* Return to [Area 0](Area-0-models.md).
+* Return to [Overview](.).
 
 
 ----

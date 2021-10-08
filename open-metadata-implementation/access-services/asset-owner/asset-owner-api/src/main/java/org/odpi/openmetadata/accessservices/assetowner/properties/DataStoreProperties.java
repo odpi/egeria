@@ -252,6 +252,7 @@ public class DataStoreProperties extends AssetProperties
      * @return print out of variables in a JSON-style
      */
     @Override
+    @SuppressWarnings(value = "deprecation")
     public String toString()
     {
         return "DataStoreProperties{" +

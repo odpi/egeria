@@ -90,7 +90,7 @@ public class JobConfiguration {
         }
     }
 
-    private void scheduleJob(Trigger trigger) throws Exception {
+    private void scheduleJob(Trigger trigger) throws SchedulerException {
         if (lineageGraph != null) {
             jobDetail.getJobDataMap().put(JobConstants.OPEN_LINEAGE_GRAPH_STORE, lineageGraph);
             scheduler.scheduleJob(jobDetail, trigger);

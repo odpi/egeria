@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.HasA;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,8 +18,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     public static final String TERM_HASA_RELATIONSHIP = "TermHASARelationship";
 
-    public TermHasARelationshipMapper(OMRSAPIHelper omrsapiHelper) {
-        super(omrsapiHelper);
+    public TermHasARelationshipMapper(OpenMetadataAPIGenericHandler genericHandler){
+        super(genericHandler);
     }
 
     /**
@@ -31,18 +31,18 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     @Override
     protected void mapRelationshipToInstanceProperties(HasA termHasARelationship, InstanceProperties instanceProperties) {
         if (termHasARelationship.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getDescription(), "description");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
         }
         if (termHasARelationship.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSteward(), "steward");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
         }
         if (termHasARelationship.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSource(), "source");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (termHasARelationship.getStatus() != null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(termHasARelationship.getStatus().getOrdinal());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
         }
     }
 
@@ -58,15 +58,15 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     protected boolean mapPrimitiveToRelationship(HasA termHasARelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals("description")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
             termHasARelationship.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("steward")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
             termHasARelationship.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals("source")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
             termHasARelationship.setSource(stringValue);
             foundProperty = true;
         }
@@ -76,7 +76,7 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     @Override
     protected boolean mapEnumToRelationship(HasA termHasARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals("status")) {
+        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             termHasARelationship.setStatus(status);
             foundProperty = true;

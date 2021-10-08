@@ -42,7 +42,7 @@ public class ConnectorBroker
     /**
      * Constructor to supply the audit log to all connectors that implement the AuditLoggingConnector interface.
      *
-     * @param auditLog auditlog to pass on
+     * @param auditLog audit log to pass on to the connector providers
      */
     public ConnectorBroker(AuditLog   auditLog)
     {
@@ -156,7 +156,7 @@ public class ConnectorBroker
         try
         {
             Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-            Object     potentialConnectorProvider = connectorProviderClass.newInstance();
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
             connectorProvider = (ConnectorProvider)potentialConnectorProvider;
         }
@@ -182,14 +182,16 @@ public class ConnectorBroker
                                                  methodName,
                                                  castException);
         }
-        catch (Throwable unexpectedSomething)
+        catch (Exception unexpectedSomething)
         {
             /*
-             * Wrap throwable in a connection exception with error message to say that there was a problem with
+             * Wrap exception in a connection exception with error message to say that there was a problem with
              * the connector provider.
              */
             throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
-                                                                                                              connectionName),
+                                                                                                              connectionName,
+                                                                                                              unexpectedSomething.getClass().getName(),
+                                                                                                              unexpectedSomething.getMessage()),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  unexpectedSomething);
@@ -381,16 +383,16 @@ public class ConnectorBroker
              */
             throw ocfError;
         }
-        catch (Throwable  unexpectedSomething)
+        catch (Exception  unexpectedSomething)
         {
             /*
              * The connector provider threw an unexpected runtime exception or error.  This is wrapped in a
              * ConnectorError and thrown to caller.
              */
             throw new ConnectorCheckedException(OCFErrorCode.CAUGHT_EXCEPTION.getMessageDefinition(),
-                                              this.getClass().getName(),
-                                              "getConnector",
-                                              unexpectedSomething);
+                                                this.getClass().getName(),
+                                                "getConnector",
+                                                unexpectedSomething);
         }
 
 

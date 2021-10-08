@@ -308,7 +308,7 @@ public class OMRSConfigurationFactory
         cohortConfig.setCohortName(newCohortName);
         cohortConfig.setCohortRegistryConnection(connectorConfigurationFactory.getDefaultCohortRegistryConnection(localServerName, newCohortName));
 
-        if ((cohortTopicStructure == null) || (cohortTopicStructure == CohortTopicStructure.SINGLE_TOPIC) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
+        if ((cohortTopicStructure == CohortTopicStructure.SINGLE_TOPIC) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
         {
             cohortConfig.setCohortOMRSTopicConnection(connectorConfigurationFactory.getDefaultSingleCohortOMRSTopicConnection(newCohortName,
                                                                                                                               configurationProperties,
@@ -318,7 +318,7 @@ public class OMRSConfigurationFactory
                                                                                                                               eventBusConfigurationProperties));
         }
 
-        if ((cohortTopicStructure == CohortTopicStructure.DEDICATED_TOPICS) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
+        if ((cohortTopicStructure == null) || (cohortTopicStructure == CohortTopicStructure.DEDICATED_TOPICS) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
         {
             cohortConfig.setCohortOMRSRegistrationTopicConnection(connectorConfigurationFactory.getDefaultRegistrationCohortOMRSTopicConnection(newCohortName,
                                                                                                                                                 configurationProperties,

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -16,28 +17,28 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
     private final String name;
     private final String description;
-    private final String type;
-    private final String version;
+    private final String deployedImplementationType;
+    private final String capabilityVersion;
     private final String source;
     private final String patchLevel;
 
     /**
      * Constructor supporting all properties.
      *
-     * @param qualifiedName        unique name
-     * @param name                 new value for the display name.
-     * @param description          new description for the discovery engine.
-     * @param type                 new description of the type of discovery engine.
-     * @param version              new version number for the discovery engine implementation.
-     * @param patchLevel           new patch level for the discovery engine implementation.
-     * @param source               new source description for the implementation of the discovery engine.
-     * @param additionalProperties additional properties
-     * @param repositoryHelper     helper methods
-     * @param serviceName          name of this OMAS
-     * @param serverName           name of local server
+     * @param qualifiedName              unique name
+     * @param name                       new value for the display name.
+     * @param description                new description for the discovery engine.
+     * @param deployedImplementationType new description of the type of discovery engine.
+     * @param capabilityVersion          new version number for the discovery engine implementation.
+     * @param patchLevel                 new patch level for the discovery engine implementation.
+     * @param source                     new source description for the implementation of the discovery engine.
+     * @param additionalProperties       additional properties
+     * @param repositoryHelper           helper methods
+     * @param serviceName                name of this OMAS
+     * @param serverName                 name of local server
      */
     public ExternalDataEnginePropertiesBuilder(String qualifiedName, String name, String description,
-                                               String type, String version, String patchLevel, String source,
+                                               String deployedImplementationType, String capabilityVersion, String patchLevel, String source,
                                                Map<String, String> additionalProperties,
                                                OMRSRepositoryHelper repositoryHelper, String serviceName,
                                                String serverName) {
@@ -46,8 +47,8 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
         this.name = name;
         this.description = description;
-        this.type = type;
-        this.version = version;
+        this.deployedImplementationType = deployedImplementationType;
+        this.capabilityVersion = capabilityVersion;
         this.patchLevel = patchLevel;
         this.source = source;
     }
@@ -75,14 +76,14 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
         }
 
-        if (type != null) {
+        if (deployedImplementationType != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME_DEP, type, methodName);
+                    OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME, deployedImplementationType, methodName);
         }
 
-        if (version != null) {
+        if (capabilityVersion != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME_DEP, version, methodName);
+                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME, capabilityVersion, methodName);
         }
 
         if (patchLevel != null) {
@@ -93,6 +94,11 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
                     OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
+        }
+
+        if(MapUtils.isNotEmpty(additionalProperties)) {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties,
+                    OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, additionalProperties, methodName);
         }
 
         return properties;

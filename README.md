@@ -20,7 +20,7 @@ value from data, whilst ensuring it is properly governed.
 
 ## Digging deeper
 
-See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md)
+See the [Home Page](index.md) for more information about the project and [Egeria Site Organization Page](Content-Organization.md)
 for details on how the content of the project is organized.  In addition,
 the [release notes](release-notes) show the function that has been
 delivered in each release and our future plans.
@@ -33,7 +33,7 @@ All participation in this project is open and not bound to any corporate affilia
 To understand how to join and contribute, see the 
 [Community Guide](./Community-Guide.md).
 
-All participants are bound to the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+All participants are bound to the Egeria's [Code of Conduct](CODE_OF_CONDUCT.md).
 The governance of the project is described in more detail in the
 [Egeria Operations Guide](./Egeria-Operations.md).
 
@@ -81,12 +81,11 @@ Minutes of past maintainers meetings can be found on the
 
 ## Monthly community webinars
 
-The Egeria community are running a monthly webinar series
-covering a variety of topics.
+The Egeria community are running a monthly webinar series covering a variety of topics.
 
-Follow [this link](https://github.com/odpi/data-governance/tree/master/webinars)
-for details of the webinar schedule, and links to download
-the presentations from past webinars.
+Follow [this link](https://odpi.github.io/egeria-docs/education/previous-webinars/) to see previous webinars.
+Follow [this link](https://odpi.github.io/egeria-docs/education/planned-webinars/) to see planned webinars.
+
 
 ## Acknowledgements
 

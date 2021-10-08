@@ -54,7 +54,7 @@ public class ProjectFVT
         subjectAreaProject = new SubjectAreaProjectClient<>(client);
         this.serverName=serverName;
         this.userId=userId;
-        existingProjectCount = findProjects(".*").size();
+        existingProjectCount = findProjects("").size();
         System.out.println("existingProjectCount " + existingProjectCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -79,11 +79,17 @@ public class ProjectFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("ProjectFVT runIt started");
-        ProjectFVT fvt =new ProjectFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemainingProjects();
-        System.out.println("ProjectFVT runIt stopped");
+        try {
+            System.out.println("ProjectFVT runIt started");
+            ProjectFVT fvt = new ProjectFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemainingProjects();
+            System.out.println("ProjectFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getProjectCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         ProjectFVT fvt = new ProjectFVT(url, serverName, userId);
@@ -96,9 +102,9 @@ public class ProjectFVT
         FVTUtils.validateNode(project);
         Project project2 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME2);
         FVTUtils.validateNode(project2);
-        if (getProjectTerms(project.getSystemAttributes().getGUID()).size() != 0) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected no terms to be in the project. Got " +getProjectTerms(project.getSystemAttributes().getGUID()).size());
-        }
+//        if (getProjectTerms(project.getSystemAttributes().getGUID()).size() != 0) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected no terms to be in the project. Got " +getProjectTerms(project.getSystemAttributes().getGUID()).size());
+//        }
         List<Project> results = findProjects(null);
         if (results.size() !=2 ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
@@ -125,9 +131,6 @@ public class ProjectFVT
         System.out.println("Delete the project again");
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        //TODO - delete a deletedProject should fail
-        System.out.println("Purge a project");
-        purgeProject(guid);
         System.out.println("Create project with the same name as a deleted one");
         project = createProject(serverName + " " + DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
@@ -167,10 +170,10 @@ public class ProjectFVT
         }
         Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
         FindRequest findRequest = new FindRequest();
-        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID(), findRequest);
-        if (terms != null && terms.size() > 0) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
-        }
+//        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID(), findRequest, true, false);
+//        if (terms != null && terms.size() > 0) {
+//            throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
+//        }
         // make sure there is a project with the name
         createProject( DEFAULT_TEST_PROJECT_NAME);
         Project projectForUniqueQFN2= createProject(DEFAULT_TEST_PROJECT_NAME);
@@ -219,11 +222,11 @@ public class ProjectFVT
 
         return project;
     }
-    public  List<Term> getProjectTerms(String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid, findRequest);
-        System.out.println("Got terms from project with userId " + guid);
-        return terms;
-    }
+//    public  List<Term> getProjectTerms(String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+//        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid, findRequest, exactValue, ignoreCase, null);
+//        System.out.println("Got terms from project with userId " + guid);
+//        return terms;
+//    }
     public  Project updateProject(String guid, Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project updatedProject = subjectAreaProject.update(this.userId, guid, project);
         FVTUtils.validateNode(updatedProject);
@@ -244,10 +247,6 @@ public class ProjectFVT
         return restoredProject;
     }
 
-    public  void purgeProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaProject.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
-    }
     public List<Relationship> getProjectRelationships(Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaProject.getAllRelationships(this.userId, project.getSystemAttributes().getGUID());
     }
@@ -259,14 +258,14 @@ public class ProjectFVT
             iter.remove();
             deleteProject(guid);
         }
-        List<Project> projects = findProjects(".*");
+        List<Project> projects = findProjects("");
         if (projects.size() !=existingProjectCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingProjectCount + " Projects to be found, got " + projects.size());
         }
     }
 
-    public List<Term> getProjectTerms(String projectGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        return subjectAreaProject.getProjectTerms(userId, projectGuid, new FindRequest());
-    }
+//    public List<Term> getProjectTerms(String projectGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+//    {
+//        return subjectAreaProject.getProjectTerms(userId, projectGuid, new FindRequest(), false, true, null );
+//    }
 }

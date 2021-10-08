@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -363,8 +364,12 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     collectionGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -398,12 +403,18 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         CollectionBuilder builder = new CollectionBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            collectionGUID,
                                            collectionGUIDParameterName,
                                            OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                            OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
                                            OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
                                            builder.getFolderProperties(orderBy, orderPropertyName, methodName),
+                                           false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -430,11 +441,16 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
                                                 collectionGUID,
                                                 collectionGUIDParameterName,
                                                 OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
                                                 OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -482,6 +498,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                   memberGUID,
                                   memberGUIDParameterName,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                   properties,
@@ -499,6 +518,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param collectionGUIDParameterName parameter supplying the collectionGUID
      * @param memberGUID unique identifier of the element that is being added to the collection
      * @param memberGUIDParameterName parameter supplying the memberGUID
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -512,6 +532,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            String collectionGUIDParameterName,
                                            String memberGUID,
                                            String memberGUIDParameterName,
+                                           Date   effectiveTime,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -527,8 +548,11 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                       memberGUIDParameterName,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -566,6 +590,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -579,6 +606,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -592,6 +620,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                    String searchStringParameterName,
                                    int    startFrom,
                                    int    pageSize,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -604,6 +633,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -617,6 +647,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -630,6 +661,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                           String nameParameterName,
                                           int    startFrom,
                                           int    pageSize,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -648,10 +680,12 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -681,6 +715,10 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

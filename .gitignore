@@ -100,8 +100,11 @@ egeria-lineage-repositories/**
 /CloudInformationModel.json
 /DataStoreConnectorTypes.json
 /OpenMetadataTypes.json
+/SimpleAPICatalog.json
+/SimpleDataCatalog.json
+/SimpleEventCatalog.json
+/SimpleGovernanceCatalog.json
 /*Archive.json
-/*GUIDMap.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
@@ -112,31 +115,6 @@ open-metadata-implementation/access-services/subject-area/subject-area-server/sr
 
 # Ignore fvt Generated output
 open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test/src/**
-
-# Ignore Presentation Server generated output and downloaded content
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/dist/**
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/node_modules/**
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/package-lock.json
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/.vscode
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/*.log
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.lock
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/node/**
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
-open-metadata-implementation/user-interfaces/presentation-server/node/**
-open-metadata-implementation/user-interfaces/presentation-server/package-lock.json
-
-
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/node_modules
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/.env
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/build
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/.vscode
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/*.log
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/yarn.lock
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/node_modules
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/.env
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/.vscode
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/*.log
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/yarn.lock
 
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
@@ -151,12 +129,6 @@ open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/ma
 
 # Ignore private maven repo (jenkins)
 .repository
-
-# Ignore sub-charts
-# when helm pulls in dependencies (dependency.yaml) it keeps the chart locally. We don't want
-# to check these into git as they are not owned by this project and helm will automatically
-# retrieve from the authoritative source
-**/charts/**/charts/**
 
 # exclude temporary lock files
 *.lock

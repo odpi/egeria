@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.glossaryview.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class GlossaryViewEntityDetailResponse extends FFDCResponseBase {
 
     private List<GlossaryViewEntityDetail> result = new ArrayList<>();
@@ -42,10 +44,12 @@ public class GlossaryViewEntityDetailResponse extends FFDCResponseBase {
         this.result.add(glossaryViewEntityDetail);
     }
 
+    @Override
     public String getActionDescription() {
         return actionDescription;
     }
 
+    @Override
     public void setActionDescription(String actionDescription) {
         this.actionDescription = actionDescription;
     }

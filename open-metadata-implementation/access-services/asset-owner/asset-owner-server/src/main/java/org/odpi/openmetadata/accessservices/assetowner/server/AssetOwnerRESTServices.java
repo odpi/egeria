@@ -3,10 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -27,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -150,6 +148,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "deprecation")
     public GUIDResponse  addAssetToCatalog(String           serverName,
                                            String           userId,
                                            String           typeName,
@@ -532,6 +531,8 @@ public class AssetOwnerRESTServices
                                          schemaTypeGUID,
                                          schemaTypeGUIDParameterName,
                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                          null,
@@ -1174,7 +1175,7 @@ public class AssetOwnerRESTServices
 
                 if (connection != null)
                 {
-                    ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+                    ConnectionHandler<ConnectionElement> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
                     connectionHandler.saveConnection(userId,
                                                      null,
@@ -1371,6 +1372,7 @@ public class AssetOwnerRESTServices
                                              assetGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
+                                             null,
                                              methodName);
 
         }
@@ -1429,6 +1431,7 @@ public class AssetOwnerRESTServices
                                              assetElementGUIDParameterName,
                                              glossaryTermGUID,
                                              glossaryTermGUIDParameterName,
+                                             null,
                                              methodName);
 
         }
@@ -1485,6 +1488,8 @@ public class AssetOwnerRESTServices
                                        requestBody.getBusinessCapabilityGUID(),
                                        businessCapabilityGUIDParameterName,
                                        requestBody.getOtherOriginValues(),
+                                       null,
+                                       null,
                                        methodName);
             }
             else
@@ -1701,6 +1706,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value="deprecation")
     public VoidResponse  updateAssetOwner(String           serverName,
                                           String           userId,
                                           String           assetGUID,
@@ -1721,19 +1727,28 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
+                String ownerTypeName = requestBody.getOwnerTypeName();
 
-                if (requestBody.getOwnerType() != null)
+                if ((ownerTypeName == null) && (requestBody.getOwnerType() != null))
                 {
-                    ownerType = requestBody.getOwnerType().getOpenTypeOrdinal();
+                    if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.USER_ID)
+                    {
+                        ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+                    }
+                    else if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.PROFILE_ID)
+                    {
+                        ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+                    }
                 }
 
-                handler.updateAssetOwner(userId,
-                                         assetGUID,
-                                         assetGUIDParameterName,
-                                         requestBody.getOwnerId(),
-                                         ownerType,
-                                         methodName);
+                handler.addOwner(userId,
+                                 assetGUID,
+                                 assetGUIDParameterName,
+                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                 requestBody.getOwnerId(),
+                                 ownerTypeName,
+                                 requestBody.getOwnerPropertyName(),
+                                 methodName);
             }
             else
             {
@@ -2129,6 +2144,7 @@ public class AssetOwnerRESTServices
                                                        nameParameterName,
                                                        startFrom,
                                                        pageSize,
+                                                       null,
                                                        methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -2176,7 +2192,13 @@ public class AssetOwnerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.findAssets(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
+            response.setAssets(handler.findAssets(userId,
+                                                  searchString,
+                                                  searchStringParameter,
+                                                  startFrom,
+                                                  pageSize,
+                                                  null,
+                                                  methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (Exception error)
@@ -2220,6 +2242,9 @@ public class AssetOwnerRESTServices
                                                             assetGUID,
                                                             assetGUIDParameter,
                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            false,
+                                                            false,
+                                                            null,
                                                             methodName));
         }
         catch (Exception error)
@@ -2453,6 +2478,9 @@ public class AssetOwnerRESTServices
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -2489,13 +2517,13 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse  linkElementsAsDuplicates(String          serverName,
-                                                  String          userId,
-                                                  String          element1GUID,
-                                                  String          element2GUID,
-                                                  NullRequestBody requestBody)
+    public VoidResponse linkElementsAsPeerDuplicates(String          serverName,
+                                                     String          userId,
+                                                     String          element1GUID,
+                                                     String          element2GUID,
+                                                     NullRequestBody requestBody)
     {
-        final String methodName = "linkElementsAsDuplicates";
+        final String methodName = "linkElementsAsPeerDuplicates";
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
@@ -2510,12 +2538,19 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.linkElementsAsDuplicates(userId,
-                                             element1GUID,
-                                             element1GUIDParameter,
-                                             element2GUID,
-                                             element2GUIDParameter,
-                                             methodName);
+            handler.linkElementsAsPeerDuplicates(userId,
+                                                 element1GUID,
+                                                 element1GUIDParameter,
+                                                 element2GUID,
+                                                 element2GUIDParameter,
+                                                 true,
+                                                 1,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 methodName);
         }
         catch (Exception error)
         {
@@ -2542,13 +2577,13 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException security access problem
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse  unlinkElementsAsDuplicates(String          serverName,
-                                                    String          userId,
-                                                    String          element1GUID,
-                                                    String          element2GUID,
-                                                    NullRequestBody requestBody)
+    public VoidResponse unlinkElementsAsPeerDuplicates(String          serverName,
+                                                       String          userId,
+                                                       String          element1GUID,
+                                                       String          element2GUID,
+                                                       NullRequestBody requestBody)
     {
-        final String methodName = "unlinkElementsAsDuplicates";
+        final String methodName = "unlinkElementsAsPeerDuplicates";
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
@@ -2563,12 +2598,13 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.unlinkElementsAsDuplicates(userId,
-                                               element1GUID,
-                                               element1GUIDParameter,
-                                               element2GUID,
-                                               element2GUIDParameter,
-                                               methodName);
+            handler.unlinkElementsAsPeerDuplicates(userId,
+                                                   element1GUID,
+                                                   element1GUIDParameter,
+                                                   element2GUID,
+                                                   element2GUIDParameter,
+                                                   null,
+                                                   methodName);
         }
         catch (Exception error)
         {

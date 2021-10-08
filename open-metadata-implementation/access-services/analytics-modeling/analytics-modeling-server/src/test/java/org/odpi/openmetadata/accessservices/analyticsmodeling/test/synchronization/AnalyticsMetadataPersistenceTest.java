@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaType;
@@ -24,6 +23,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.InMemoryRepos
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.JsonMocks;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -67,7 +67,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 				null, // publishZones,
 				auditLog);
 		
-		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET);
+		ctx.initializeSoftwareServerCapability(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, null);
 		
 		metadataHandler = new SchemaAttributeHandler<>(
 				new AnalyticsMetadataConverter(ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName()),
@@ -98,7 +98,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		obj.setDescription(TEST_DESCRIPTION);
 		obj.setType(TEST_ANALYTICS_METADATA_TYPE);
 		
-		obj.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(obj);
 
 		
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
@@ -163,7 +163,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		obj.setDescription(TEST_DESCRIPTION);
 		obj.setType(TEST_ANALYTICS_METADATA_TYPE);
 		
-		obj.prepareAnalyticsMetadataProperties();
+		AnalyticsMetadataConverter.prepareAnalyticsMetadataProperties(obj);
 
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {

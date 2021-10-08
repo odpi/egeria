@@ -2,11 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectionConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectorTypeConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureErrorCode;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -19,6 +29,9 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.IT_INFRASTRUCTURE_OMAS;
 
+    private ConnectionHandler<ConnectionElement>       connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private EndpointHandler<EndpointElement>           endpointHandler;
 
 
     /**
@@ -50,7 +63,47 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            /* Add handlers here */
+            this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                             ConnectionElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+            this.connectorTypeHandler = new ConnectorTypeHandler<>(new ConnectorTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                                   ConnectorTypeElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
+
+            this.endpointHandler = new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                                                         EndpointElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
         }
         else
         {
@@ -60,5 +113,57 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 
         }
     }
+
+
+
+    /**
+     * Return the handler for managing Connection objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectionHandler<ConnectionElement> getConnectionHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectionHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectionHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing ConnectorType objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectorTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectorTypeHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing Endpoint objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EndpointHandler<EndpointElement> getEndpointHandler() throws PropertyServerException
+    {
+        final String methodName = "getEndpointHandler";
+
+        validateActiveRepository(methodName);
+
+        return endpointHandler;
+    }
+
 
 }

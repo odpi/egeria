@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-implementation</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -37,7 +37,6 @@
         <module>asset-owner</module>
         <module>community-profile</module>
         <module>data-manager</module>
-        <module>data-platform</module>
         <module>design-model</module>
         <module>data-science</module>
         <module>dev-ops</module>
@@ -46,7 +45,6 @@
         <module>discovery-engine</module>
         <module>governance-engine</module>
         <module>governance-program</module>
-        <module>information-view</module>
         <module>it-infrastructure</module>
         <module>project-management</module>
         <module>security-manager</module>

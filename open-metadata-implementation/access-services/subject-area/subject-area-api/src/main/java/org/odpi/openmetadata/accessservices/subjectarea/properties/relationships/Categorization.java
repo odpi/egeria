@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -47,7 +48,7 @@ public class Categorization extends Relationship {
     private TermRelationshipStatus status;
 
     public Categorization() {
-        super("TermCategorization", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super(RelationshipType.TermCategorization.name(), RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

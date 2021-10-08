@@ -93,7 +93,9 @@ public class GlossaryAuthorViewCategoryRESTResource {
      *
      * @param serverName         local UI server name
      * @param userId             userid
-     * @param searchCriteria     String expression matching Category property values .
+     * @param searchCriteria     String expression matching Category property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the categories returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -111,13 +113,14 @@ public class GlossaryAuthorViewCategoryRESTResource {
     @GetMapping
     public SubjectAreaOMASAPIResponse<Category> findCategory(@PathVariable String serverName, @PathVariable String userId,
                                                              @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                             @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                             @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                              @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
                                                              @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
-        return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+    ) { return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -189,7 +192,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -198,8 +201,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      *
      * @param serverName local UI server name
      * @param userId     userid
-     * @param guid       guid of the category to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @param guid       guid of the category to be deleted.=
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -211,9 +213,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
     @DeleteMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(@PathVariable String serverName,
                                                                @PathVariable String userId,
-                                                               @PathVariable String guid,
-                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteCategory(serverName, userId, guid, isPurge);
+                                                               @PathVariable String guid){
+        return restAPI.deleteCategory(serverName, userId, guid);
     }
 
     /**
@@ -247,6 +248,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
      * @param searchCriteria String expression to match the categorized Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of terms is categorized by this Category
@@ -262,9 +265,11 @@ public class GlossaryAuthorViewCategoryRESTResource {
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
                                                                 @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                                @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                                @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                                 @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return restAPI.getCategorizedTerms(serverName, userId, guid, searchCriteria, startingFrom, pageSize);
+        return restAPI.getCategorizedTerms(serverName, userId, guid, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize);
     }
 
     /**
@@ -274,6 +279,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the parent category
      * @param searchCriteria String expression matching child Category property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of child categories filtered by the search criteria if one is supplied.
@@ -289,9 +296,11 @@ public class GlossaryAuthorViewCategoryRESTResource {
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid,
                                                                     @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                                    @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                                    @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
-        return restAPI.getCategoryChildren(serverName, userId, guid, searchCriteria, startingFrom, pageSize);
+        return restAPI.getCategoryChildren(serverName, userId, guid, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize);
     }
 }

@@ -119,6 +119,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -142,6 +143,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                         String              scopeTypeName,
                                         int                 permittedSynchronization,
                                         String              synchronizationDescription,
+                                        Date                effectiveTime,
                                         String              methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -155,6 +157,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  scopeGUIDParameterName,
                                                                  scopeQualifiedName,
                                                                  scopeTypeName,
+                                                                 effectiveTime,
                                                                  methodName);
 
         String externalIdGUID;
@@ -205,6 +208,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      elementGUIDParameterName,
                                                                      elementTypeName,
                                                                      externalIdGUID,
+                                                                     effectiveTime,
                                                                      methodName);
 
         if (resourceLink == null)
@@ -376,6 +380,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUIDParameterName parameter name supplying scopeGUID
      * @param scopeQualifiedName unique name of the scope
      * @param scopeTypeName specific type name of the software server capability that represents the third party metadata source
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return the identifier's entity
@@ -394,6 +399,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                String scopeGUIDParameterName,
                                                String scopeQualifiedName,
                                                String scopeTypeName,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -409,6 +415,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  scopeGUIDParameterName,
                                                                  scopeQualifiedName,
                                                                  scopeTypeName,
+                                                                 effectiveTime,
                                                                  methodName);
 
 
@@ -433,6 +440,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      elementGUIDParameterName,
                                                                      elementTypeName,
                                                                      externalIdEntity.getGUID(),
+                                                                     effectiveTime,
                                                                      methodName);
 
         if (resourceLink == null)
@@ -490,6 +498,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeQualifiedName unique name of the software server capability that represents the third metadata source
      * @param scopeTypeName specific type name of the software server capability that represents the third party metadata source
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return ExternalId entity for the supplied identifier and scope
@@ -498,16 +507,17 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private EntityDetail getExternalIdEntity(String              userId,
-                                             String              identifier,
-                                             String              identifierParameterName,
-                                             String              scopeGUID,
-                                             String              scopeGUIDParameterName,
-                                             String              scopeQualifiedName,
-                                             String              scopeTypeName,
-                                             String              methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    private EntityDetail getExternalIdEntity(String userId,
+                                             String identifier,
+                                             String identifierParameterName,
+                                             String scopeGUID,
+                                             String scopeGUIDParameterName,
+                                             String scopeQualifiedName,
+                                             String scopeTypeName,
+                                             Date   effectiveTime,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         invalidParameterHandler.validateGUID(scopeGUID, scopeGUIDParameterName, methodName);
         invalidParameterHandler.validateName(identifier, identifierParameterName, methodName);
@@ -529,8 +539,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                    propertyNames,
                                                                                    true,
                                                                                    null,
+                                                                                   false,
+                                                                                   false,
                                                                                    0,
                                                                                    queryPageSize,
+                                                                                   effectiveTime,
                                                                                    methodName);
 
 
@@ -547,6 +560,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                      scopeGUID,
                                                      scopeQualifiedName,
                                                      scopeTypeName,
+                                                     effectiveTime,
                                                      methodName))
             {
                 return externalIdEntity;
@@ -565,6 +579,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param elementGUIDParameterName parameter supplying elementGUID
      * @param elementTypeName type of the element
      * @param externalIdGUID unique identifier of the ExternalId entity
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return ExternalIdLink relationship between the requested elements - or null
@@ -573,14 +588,15 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private Relationship getResourceLinkRelationship(String              userId,
-                                                     String              elementGUID,
-                                                     String              elementGUIDParameterName,
-                                                     String              elementTypeName,
-                                                     String              externalIdGUID,
-                                                     String              methodName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    private Relationship getResourceLinkRelationship(String userId,
+                                                     String elementGUID,
+                                                     String elementGUIDParameterName,
+                                                     String elementTypeName,
+                                                     String externalIdGUID,
+                                                     Date   effectiveTime,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
@@ -597,6 +613,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                    OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                   effectiveTime,
                                                                    methodName);
 
         if (resourceLinks != null)
@@ -629,7 +646,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUID unique identifier of the software server capability that represents the third metadata source
      * @param scopeQualifiedName unique name of the software server capability that represents the third metadata source
      * @param scopeTypeName specific type name of the software server capability that represents the third party metadata source
-
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -642,6 +659,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                     String       scopeGUID,
                                                     String       scopeQualifiedName,
                                                     String       scopeTypeName,
+                                                    Date         effectiveTime,
                                                     String       methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -666,6 +684,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                           scopeTypeName,
                                                                           0,
                                                                           invalidParameterHandler.getMaxPagingSize(),
+                                                                          effectiveTime,
                                                                           methodName);
 
             if (externalIdScopes != null)
@@ -712,17 +731,17 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String createExternalIdentifier(String              userId,
-                                            String              identifier,
-                                            int                 identifierKeyPattern,
-                                            String              scopeGUID,
-                                            String              scopeGUIDParameterName,
-                                            String              scopeTypeName,
-                                            int                 permittedSynchronization,
-                                            String              synchronizationDescription,
-                                            String              methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    private String createExternalIdentifier(String userId,
+                                            String identifier,
+                                            int    identifierKeyPattern,
+                                            String scopeGUID,
+                                            String scopeGUIDParameterName,
+                                            String scopeTypeName,
+                                            int    permittedSynchronization,
+                                            String synchronizationDescription,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String externalIdGUIDParameterName = "externalIdentifierGUID";
 
@@ -759,6 +778,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                       externalIdGUID,
                                       externalIdGUIDParameterName,
                                       OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
                                       OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                       scopeProperties,
@@ -783,14 +805,14 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private void updateExternalIdentifier(String              userId,
-                                          String              externalIdGUID,
-                                          String              externalIdGUIDParameterName,
-                                          String              identifier,
-                                          int                 identifierKeyPattern,
-                                          String              methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    private void updateExternalIdentifier(String userId,
+                                          String externalIdGUID,
+                                          String externalIdGUIDParameterName,
+                                          String identifier,
+                                          int    identifierKeyPattern,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
@@ -805,8 +827,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                     externalIdGUIDParameterName,
                                     OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
                                     OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
+                                    new Date(),
                                     methodName);
     }
 
@@ -861,6 +887,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                   externalIdGUID,
                                   externalIdGUIDParameterName,
                                   OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                   resourceLinkProperties,
@@ -1000,23 +1029,26 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem detected in the repository services
      */
-    public int countExternalIdentifiers(String   userId,
-                                        String   elementGUID,
-                                        String   methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public int countExternalIdentifiers(String userId,
+                                        String elementGUID,
+                                        Date   effectiveTime,
+                                        String methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -1031,6 +1063,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -1046,6 +1079,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                               List<String> serviceSupportedZones,
                                                               int          startingFrom,
                                                               int          pageSize,
+                                                              Date         effectiveTime,
                                                               String       methodName) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
@@ -1060,6 +1094,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                    null,
                                                    startingFrom,
                                                    pageSize,
+                                                   effectiveTime,
                                                    methodName);
     }
 
@@ -1076,6 +1111,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeQualifiedName unique name of the software server capability that represents the third metadata source
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -1084,18 +1120,19 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<EXTERNAL_ID> getExternalIdentifiersForScope(String       userId,
-                                                            String       elementGUID,
-                                                            String       elementGUIDParameterName,
-                                                            String       elementTypeName,
-                                                            String       scopeGUID,
-                                                            String       scopeTypeName,
-                                                            String       scopeQualifiedName,
-                                                            int          startingFrom,
-                                                            int          pageSize,
-                                                            String       methodName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public List<EXTERNAL_ID> getExternalIdentifiersForScope(String userId,
+                                                            String elementGUID,
+                                                            String elementGUIDParameterName,
+                                                            String elementTypeName,
+                                                            String scopeGUID,
+                                                            String scopeTypeName,
+                                                            String scopeQualifiedName,
+                                                            int    startingFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         return getExternalIdentifiersForScope(userId,
                                               elementGUID,
@@ -1107,6 +1144,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                               scopeQualifiedName,
                                               startingFrom,
                                               pageSize,
+                                              effectiveTime,
                                               methodName);
     }
 
@@ -1124,6 +1162,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeQualifiedName unique name name of the software server capability that represents the third party metadata source
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -1142,6 +1181,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                             String       scopeQualifiedName,
                                                             int          startingFrom,
                                                             int          pageSize,
+                                                            Date         effectiveTime,
                                                             String       methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1158,8 +1198,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                      null,
                                                                      OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                     0,
+                                                                     false,
                                                                      startingFrom,
                                                                      pageSize,
+                                                                     effectiveTime,
                                                                      methodName);
 
         if (externalIdLinks != null)
@@ -1178,7 +1221,10 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                  OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                  null,
                                                                                  null,
+                                                                                 false,
+                                                                                 false,
                                                                                  serviceSupportedZones,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
                     if ((externalIdEntity != null) && (externalIdEntity.getType() != null))
@@ -1191,8 +1237,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                       OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                                       null,
                                                                                       scopeTypeName,
+                                                                                      0,
+                                                                                      false,
                                                                                       startingFrom,
                                                                                       pageSize,
+                                                                                      effectiveTime,
                                                                                       methodName);
 
                         if (externalIdScopes != null)
@@ -1247,6 +1296,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param requestedTypeName unique type name of the elements in the external asset manager
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of element headers
@@ -1262,6 +1312,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                          String requestedTypeName,
                                                          int    startingFrom,
                                                          int    pageSize,
+                                                         Date   effectiveTime,
                                                          String methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -1279,8 +1330,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
                                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                                                      null,
+                                                                                                     false,
+                                                                                                     false,
                                                                                                      0,
                                                                                                      0,
+                                                                                                     effectiveTime,
                                                                                                      methodName);
 
         int skippedResults = 0;
@@ -1299,8 +1353,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
                                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                                                           null,
+                                                                                                          false,
+                                                                                                          false,
                                                                                                           0,
                                                                                                           0,
+                                                                                                          effectiveTime,
                                                                                                           methodName);
 
                 while ((externalIdIterator.moreToReceive()) && ((queryPageSize == 0) || results.size() < queryPageSize))
@@ -1348,6 +1405,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdentifier unique identifier of this element in the external asset manager
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of element headers
@@ -1364,6 +1422,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                String externalIdentifier,
                                                                                int    startingFrom,
                                                                                int    pageSize,
+                                                                               Date   effectiveTime,
                                                                                String methodName) throws InvalidParameterException,
                                                                                                                  UserNotAuthorizedException,
                                                                                                                  PropertyServerException
@@ -1387,10 +1446,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                           null,
                                                                          null,
                                                                          false,
+                                                                         false,
                                                                          supportedZones,
                                                                          null,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
+                                                                         effectiveTime,
                                                                          methodName);
 
 
@@ -1412,6 +1473,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                          OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                          0,
                                                                                          invalidParameterHandler.getMaxPagingSize(),
+                                                                                         effectiveTime,
                                                                                          methodName);
 
                     if ((externalIdRelationships != null) && (externalIdRelationships.isEmpty()))
@@ -1421,6 +1483,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                       matchingEntityGUIDParameterName,
                                                       startingFrom,
                                                       pageSize,
+                                                      effectiveTime,
                                                       methodName);
                     }
                 }
@@ -1440,6 +1503,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdGUIDParameterName unique name of software server capability representing the caller
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of element headers
@@ -1453,6 +1517,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  String externalIdGUIDParameterName,
                                                                  int    startingFrom,
                                                                  int    pageSize,
+                                                                 Date   effectiveTime,
                                                                  String methodName) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -1467,9 +1532,14 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      false,
                                                                       supportedZones,
                                                                       startingFrom,
                                                                       pageSize,
+                                                                      effectiveTime,
                                                                       methodName);
 
         List<OPEN_METADATA_ELEMENT_HEADER> results = new ArrayList<>();

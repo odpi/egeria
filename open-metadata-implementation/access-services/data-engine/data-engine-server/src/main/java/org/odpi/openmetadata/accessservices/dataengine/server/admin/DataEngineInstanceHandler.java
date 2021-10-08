@@ -2,16 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -21,7 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  * DataEngineInstanceHandler retrieves information from the instance map for the access service instances.
  * The instance map is thread-safe. Instances are added and removed by the DataEngineAdmin class.
  */
-public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
+public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
 
     /**
      * Default constructor registers the access service
@@ -62,7 +65,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                                                                                                                            PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        return instance.getDataEngineCollecttionHandler();
+        return instance.getDataEngineCollectionHandler();
     }
 
     /**
@@ -148,7 +151,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                                                                                                                       PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        return instance.getPortHandler();
+        return instance.getDataEnginePortHandler();
     }
 
     /**
@@ -218,6 +221,70 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                 serverName, serviceOperationName);
         return instance.getDataEngineDataFileHandler();
     }
+
+    /**
+     * Retrieve the folder hierarchy handler for the access service
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public DataEngineFolderHierarchyHandler getFolderHierarchyHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+        return instance.getDataEngineFolderHierarchyHandler();
+    }
+
+    /**
+     * Retrieve the connection and endpoint handler for the access service
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public DataEngineConnectionAndEndpointHandler getConnectionAndEndpointHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+        return instance.getDataEngineConnectionAndEndpointHandler();
+    }
+
+    /**
+     * Retrieve the find handler for the access service
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public DataEngineFindHandler getFindHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+        return instance.getDataEngineFindHandler();
+    }
+
 }
 
 

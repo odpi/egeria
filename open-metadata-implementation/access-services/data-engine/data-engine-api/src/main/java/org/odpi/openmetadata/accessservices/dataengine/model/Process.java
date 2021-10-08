@@ -5,9 +5,13 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,225 +22,118 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
+@NoArgsConstructor
 public class Process extends Asset {
+
+    /**
+     * The process name
+     * -- GETTER --
+     * Gets the process name.
+     * @return the name
+     * -- SETTER --
+     * Sets up the process name.
+     * @param name string name
+     */
     private String name;
+
+    /**
+     * The description of the processing performed by this process
+     * -- GETTER --
+     * Return the description of the processing performed by this process.
+     * @return string description
+     * -- SETTER --
+     * Set up the the description of the processing performed by this process.
+     * @param formula string description
+     */
     private String formula;
+
+    /**
+     * The name of the programming language that this process is implemented in
+     * -- GETTER --
+     * Return the name of the programming language that this process is implemented in.
+     * @return string name
+     * -- SETTER --
+     * Set up the name of the programming language that this process is implemented in.
+     * @param implementationLanguage string name
+     */
     private String implementationLanguage;
+
+    /**
+     * The port implementations
+     * -- GETTER --
+     * Gets port implementations.
+     * @return the port implementations
+     * -- SETTER --
+     * Sets port implementations.
+     * @param portImplementations the port implementations
+     */
     private List<PortImplementation> portImplementations;
+
+    /**
+     * The port aliases
+     * -- GETTER --
+     * Gets port aliases.
+     * @return the port aliases
+     * -- SETTER --
+     * Sets port aliases.
+     * @param portAliases the port aliases
+     */
     private List<PortAlias> portAliases;
+
+    /**
+     * The lineage mappings
+     * -- GETTER --
+     * Gets lineage mappings.
+     * @return the lineage mappings
+     * -- SETTER --
+     * Sets lineage mappings.
+     * @param lineageMappings the lineage mappings
+     */
     private List<LineageMapping> lineageMappings;
+
+    /**
+     * The collection to which the process belongs
+     * -- GETTER --
+     * Retrieves the collection to which the process belongs
+     * @return collection the collection to which it belongs
+     * -- SETTER --
+     * Sets the collection.
+     * @param collection the collection to which the process belongs
+     */
     private Collection collection;
+
+    /**
+     * The update semantic
+     * -- SETTER --
+     * Sets update semantic.
+     * @param updateSemantic the update semantic
+     */
     private UpdateSemantic updateSemantic;
+
+    /**
+     * The parent processes
+     * -- GETTER --
+     * Gets parent processes.
+     * @return the parent processes
+     * -- SETTER --
+     * Sets parent processes.
+     * @param parentProcesses the parent processes
+     */
     private List<ParentProcess> parentProcesses;
 
     /**
-     * Instantiates a new Process.
-     */
-    public Process() {
-        super();
-    }
-
-    /**
-     * Gets the process name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets up the process name.
-     *
-     * @param name string name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Return the description of the processing performed by this process.
-     *
-     * @return string description
-     */
-    public String getFormula() {
-        return formula;
-    }
-
-    /**
-     * Set up the the description of the processing performed by this process.
-     *
-     * @param formula string description
-     */
-    public void setFormula(String formula) {
-        this.formula = formula;
-    }
-
-    /**
-     * Return the name of the programming language that this process is implemented in.
-     *
-     * @return string name
-     */
-    public String getImplementationLanguage() {
-        return implementationLanguage;
-    }
-
-    /**
-     * Set up the name of the programming language that this process is implemented in.
-     *
-     * @param implementationLanguage string name
-     */
-    public void setImplementationLanguage(String implementationLanguage) {
-        this.implementationLanguage = implementationLanguage;
-    }
-
-    /**
-     * Gets port implementations.
-     *
-     * @return the port implementations
-     */
-    public List<PortImplementation> getPortImplementations() {
-        return portImplementations;
-    }
-
-    /**
-     * Sets port implementations.
-     *
-     * @param portImplementations the port implementations
-     */
-    public void setPortImplementations(List<PortImplementation> portImplementations) {
-        this.portImplementations = portImplementations;
-    }
-
-    /**
-     * Gets port aliases.
-     *
-     * @return the port aliases
-     */
-    public List<PortAlias> getPortAliases() {
-        return portAliases;
-    }
-
-    /**
-     * Sets port aliases.
-     *
-     * @param portAliases the port aliases
-     */
-    public void setPortAliases(List<PortAlias> portAliases) {
-        this.portAliases = portAliases;
-    }
-
-    /**
-     * Gets lineage mappings.
-     *
-     * @return the lineage mappings
-     */
-    public List<LineageMapping> getLineageMappings() {
-        return lineageMappings;
-    }
-
-    /**
-     * Sets lineage mappings.
-     *
-     * @param lineageMappings the lineage mappings
-     */
-    public void setLineageMappings(List<LineageMapping> lineageMappings) {
-        this.lineageMappings = lineageMappings;
-    }
-
-    /**
      * Gets update semantic.
-     *
      * @return the update semantic
      */
     public UpdateSemantic getUpdateSemantic() {
         if (updateSemantic == null) {
             return UpdateSemantic.REPLACE;
         }
-
         return updateSemantic;
     }
 
-    /**
-     * Sets update semantic.
-     *
-     * @param updateSemantic the update semantic
-     */
-    public void setUpdateSemantic(UpdateSemantic updateSemantic) {
-        this.updateSemantic = updateSemantic;
-    }
-
-    /**
-     * Gets parent processes.
-     *
-     * @return the parent processes
-     */
-    public List<ParentProcess> getParentProcesses() {
-        return parentProcesses;
-    }
-
-    /**
-     * Sets parent processes.
-     *
-     * @param parentProcesses the parent processes
-     */
-    public void setParentProcesses(List<ParentProcess> parentProcesses) {
-        this.parentProcesses = parentProcesses;
-    }
-
-
-    /**
-     *  Retrieves the collection to which the process belongs
-     * */
-    public Collection getCollection() {
-        return collection;
-    }
-
-
-    /**
-     * Sets the collection.
-     *
-     * @param collection the collection to which the process belongs
-     */
-    public void setCollection(Collection collection) {
-        this.collection = collection;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Process process = (Process) o;
-        return Objects.equals(name, process.name) &&
-                Objects.equals(formula, process.formula) &&
-                Objects.equals(implementationLanguage, process.implementationLanguage) &&
-                Objects.equals(portImplementations, process.portImplementations) &&
-                Objects.equals(portAliases, process.portAliases) &&
-                Objects.equals(lineageMappings, process.lineageMappings) &&
-                Objects.equals(collection, process.collection) &&
-                updateSemantic == process.updateSemantic &&
-                Objects.equals(parentProcesses, process.parentProcesses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, formula, implementationLanguage, portImplementations, portAliases, lineageMappings,
-                collection, updateSemantic, parentProcesses);
-    }
-
-    @Override
-    public String toString() {
-        return "Process{" +
-                "name='" + name + '\'' +
-                ", formula='" + formula + '\'' +
-                ", implementationLanguage='" + implementationLanguage + '\'' +
-                ", portImplementations=" + portImplementations +
-                ", portAliases=" + portAliases +
-                ", lineageMappings=" + lineageMappings +
-                ", collection=" + collection +
-                ", updateSemantic=" + updateSemantic +
-                ", parentProcesses=" + parentProcesses +
-                '}';
-    }
 }

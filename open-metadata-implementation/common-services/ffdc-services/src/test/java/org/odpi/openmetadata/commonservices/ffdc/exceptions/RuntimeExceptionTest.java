@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 
@@ -78,10 +79,10 @@ public class RuntimeExceptionTest
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
+        assertTrue(exception.getReportedErrorMessage().equals(reportedErrorMessage));
         assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
         assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
-        assertFalse(exception.getReportedCaughtException().equals(null));
+        assertNotNull(exception.getReportedCaughtException());
         assertTrue(exception.getReportedCaughtException().getMessage().equals("TestReportedCaughtException"));
         assertTrue(exception.getRelatedProperties() == null);
     }

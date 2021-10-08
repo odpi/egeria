@@ -112,6 +112,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param serverName         name of the local UI server.
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Project property values .
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -131,6 +133,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             String userId,
             Date asOfTime,
             String searchCriteria,
+            boolean exactValue,
+            boolean ignoreCase,
             Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
@@ -160,7 +164,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            List<Project> projects = clients.projects().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
+            List<Project> projects = clients.projects().find(userId, findRequest, exactValue, ignoreCase, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(projects);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
@@ -289,7 +293,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * The deletion of a project is only allowed if there is no project content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -299,7 +303,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param serverName         name of the local UI server.
      * @param userId             user identifier
      * @param guid       guid of the project to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -311,8 +314,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
     public SubjectAreaOMASAPIResponse<Project> deleteProject(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteProject";
@@ -325,11 +327,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            if (isPurge) {
-                clients.projects().purge(userId, guid);
-            } else {
-                clients.projects().delete(userId, guid);
-            }
+            clients.projects().delete(userId, guid);
+
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

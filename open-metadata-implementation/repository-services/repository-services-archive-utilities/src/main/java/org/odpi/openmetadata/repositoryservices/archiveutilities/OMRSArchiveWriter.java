@@ -69,7 +69,7 @@ public class OMRSArchiveWriter
             try
             {
                 Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-                Object     potentialConnectorProvider = connectorProviderClass.newInstance();
+                Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
                 ConnectorProvider connectorProvider = (ConnectorProvider)potentialConnectorProvider;
 
@@ -87,7 +87,7 @@ public class OMRSArchiveWriter
                     connectorType.setConnectorProviderClassName(connectorProviderClassName);
                 }
             }
-            catch (Throwable classException)
+            catch (Exception classException)
             {
                 log.error("Bad connectorProviderClassName: " + classException.getMessage());
             }
@@ -162,7 +162,7 @@ public class OMRSArchiveWriter
             log.debug("Created connector to open metadata archive store");
 
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             log.error("Unexpected exception occurred: " + error.getMessage());
             log.error("Exception: " + error.toString());

@@ -36,7 +36,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = IsA.class),
         @JsonSubTypes.Type(value = ValidValue.class),
         @JsonSubTypes.Type(value = UsedInContext.class),
-        @JsonSubTypes.Type(value = IsATypeOf.class),
+        @JsonSubTypes.Type(value = IsATypeOfDeprecated.class),
         @JsonSubTypes.Type(value = TypedBy.class),
         @JsonSubTypes.Type(value = TermAnchor.class),
         @JsonSubTypes.Type(value = CategoryAnchor.class),
@@ -45,7 +45,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LibraryCategoryReference.class),
         @JsonSubTypes.Type(value = LibraryTermReference.class),
         @JsonSubTypes.Type(value = ProjectScope.class),
-        @JsonSubTypes.Type(value = CategoryHierarchyLink.class)
+        @JsonSubTypes.Type(value = CategoryHierarchyLink.class),
+        @JsonSubTypes.Type(value = IsATypeOf.class)
 })
 abstract public class Relationship implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;

@@ -14,9 +14,9 @@ query performance.
 
 ## Digging Deeper
 
-* [User Documentation](docs/user/README.md)
-* [Design Documentation](docs/design/README.md)
-* [Configuring OLS](docs/configuration/README.md)
+* [User Documentation](docs/user)
+* [Design Documentation](docs/design)
+* [Configuring OLS](docs/configuration)
 
 ----
 Return to the [governance-servers](..) module.

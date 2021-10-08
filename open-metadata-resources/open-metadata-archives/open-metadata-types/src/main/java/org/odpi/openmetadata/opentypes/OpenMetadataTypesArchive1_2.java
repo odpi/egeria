@@ -8938,7 +8938,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
         final String name            = "FileSystem";
-        final String description     = "A server that support a file system containing a hierarchy of file folders and data files.";
+        final String description     = "A capability that supports a store of files organized into a hierarchy of file folders.";
         final String descriptionGUID = null;
 
         final String linkedToEntity = "SoftwareServerCapability";
@@ -9636,7 +9636,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
         final String name            = "EnterpriseAccessLayer";
-        final String description     = "Repository services for the open metadata access services (OMAS).";
+        final String description     = "Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts.";
         final String descriptionGUID = null;
 
         final String superTypeName = "SoftwareServerCapability";
@@ -9680,7 +9680,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "42063797-a78a-4720-9353-52026c75f667";
         final String name            = "CohortMember";
-        final String description     = "A data set containing details of the members of an open metadata cohort.";
+        final String description     = "A capability enabling a server to access an open metadata repository cohort.";
         final String descriptionGUID = null;
 
         final String superTypeName = "SoftwareServerCapability";

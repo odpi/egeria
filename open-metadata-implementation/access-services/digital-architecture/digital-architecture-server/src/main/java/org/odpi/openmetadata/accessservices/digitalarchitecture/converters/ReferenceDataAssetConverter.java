@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceDataAssetElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.OwnerCategory;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceDataAssetProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -57,7 +55,7 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof ReferenceDataAssetElement)
             {
@@ -68,7 +66,7 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
@@ -97,7 +95,7 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof ReferenceDataAssetElement)
             {
@@ -108,7 +106,7 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
@@ -147,13 +145,6 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
             referenceDataAssetProperties.setDisplayName(this.removeName(instanceProperties));
             referenceDataAssetProperties.setDescription(this.removeDescription(instanceProperties));
 
-            /* Note this value should be in the classification */
-            referenceDataAssetProperties.setOwner(this.removeOwner(instanceProperties));
-            /* Note this value should be in the classification */
-            referenceDataAssetProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-            /* Note this value should be in the classification */
-            referenceDataAssetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
             /*
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.
@@ -161,100 +152,11 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
             referenceDataAssetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
             referenceDataAssetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-            /*
-             * The values in the classifications override the values in the main properties of the Asset's entity.
-             * Having these properties in the main entity is deprecated.
-             */
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-            referenceDataAssetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-            referenceDataAssetProperties.setOwner(this.getOwner(instanceProperties));
-            referenceDataAssetProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-            referenceDataAssetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-            referenceDataAssetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-            referenceDataAssetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
             bean.setReferenceDataAssetProperties(referenceDataAssetProperties);
         }
         else
         {
             handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
         }
-    }
-
-
-    /**
-     * Retrieve and delete the OwnerCategory enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    private OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties properties)
-    {
-        OwnerCategory ownerCategory = this.getOwnerCategoryFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerCategory;
-    }
-
-
-    /**
-     * Retrieve the OwnerCategory enum property from the instance properties of a classification
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    private OwnerCategory getOwnerCategoryFromProperties(InstanceProperties properties)
-    {
-        OwnerCategory ownerCategory = OwnerCategory.OTHER;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            ownerCategory = OwnerCategory.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerCategory = OwnerCategory.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerCategory = OwnerCategory.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return ownerCategory;
     }
 }

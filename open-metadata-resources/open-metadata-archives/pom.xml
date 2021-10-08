@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,6 +33,8 @@
         <module>design-model-archives</module>
         <module>open-connector-archives</module>
         <module>open-metadata-types</module>
+        <module>open-metadata-types-utility</module>
+        <module>catalog-builder</module>
     </modules>
 
 </project>

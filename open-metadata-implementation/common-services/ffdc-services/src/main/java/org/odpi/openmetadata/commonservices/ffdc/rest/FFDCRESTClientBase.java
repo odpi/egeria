@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
+import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -21,10 +22,11 @@ public class FFDCRESTClientBase
 {
     protected String               serverName;             /* Initialized in constructor */
     protected String               serverPlatformURLRoot;  /* Initialized in constructor */
-    protected AuditLog             auditLog = null;          /* Initialized in constructor */
+    protected AuditLog             auditLog = null;        /* Initialized in constructor */
+
     protected RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
-    private RESTClientConnector clientConnector;          /* Initialized in constructor */
+    private RESTClientConnector    clientConnector;        /* Initialized in constructor */
 
 
     /**
@@ -69,7 +71,7 @@ public class FFDCRESTClientBase
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception     error)
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                 this.getClass().getName(),
@@ -132,7 +134,7 @@ public class FFDCRESTClientBase
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception     error)
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                 this.getClass().getName(),
@@ -162,7 +164,7 @@ public class FFDCRESTClientBase
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
@@ -192,7 +194,7 @@ public class FFDCRESTClientBase
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
@@ -212,15 +214,18 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected  <T> T callGetRESTCall(String    methodName,
+    protected  <T> T callGetRESTCall(String                        methodName,
                                      ParameterizedTypeReference<T> responseType,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
+                                     String                        urlTemplate,
+                                     Object...                     params) throws PropertyServerException
     {
-        try {
+        try
+        {
             SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
             return clientConnector.callGetRESTCall(methodName, responseType, urlTemplate, params);
-        } catch (Throwable error) {
+        }
+        catch (Exception error)
+        {
             logRESTCallException(methodName, error);
         }
 
@@ -250,7 +255,7 @@ public class FFDCRESTClientBase
         {
             return clientConnector.callPostRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
@@ -283,7 +288,7 @@ public class FFDCRESTClientBase
         {
             return clientConnector.callPostRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
@@ -305,16 +310,19 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected  <T> T callPostRESTCall(String    methodName,
+    protected  <T> T callPostRESTCall(String                        methodName,
                                       ParameterizedTypeReference<T> responseType,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
+                                      String                        urlTemplate,
+                                      Object                        requestBody,
+                                      Object...                     params) throws PropertyServerException
     {
-        try {
+        try
+        {
             SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
             return clientConnector.callPostRESTCall(methodName, responseType, urlTemplate, requestBody, params);
-        } catch (Throwable error) {
+        }
+        catch (Exception error)
+        {
             logRESTCallException(methodName, error);
         }
 
@@ -335,16 +343,16 @@ public class FFDCRESTClientBase
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     protected  <T> T callPutRESTCall(String    methodName,
-                                      Class<T>  returnClass,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
+                                     Class<T>  returnClass,
+                                     String    urlTemplate,
+                                     Object    requestBody,
+                                     Object... params) throws PropertyServerException
     {
         try
         {
             return clientConnector.callPutRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
@@ -366,21 +374,25 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected  <T> T callPutRESTCall(String    methodName,
+    protected  <T> T callPutRESTCall(String                        methodName,
                                      ParameterizedTypeReference<T> responseType,
-                                     String    urlTemplate,
-                                     Object    requestBody,
-                                     Object... params) throws PropertyServerException
+                                     String                        urlTemplate,
+                                     Object                        requestBody,
+                                     Object...                     params) throws PropertyServerException
     {
-        try {
+        try
+        {
             SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
             return clientConnector.callPutRESTCall(methodName, responseType, urlTemplate, requestBody, params);
-        } catch (Throwable error) {
+        }
+        catch (Exception error)
+        {
             logRESTCallException(methodName, error);
         }
 
         return null;
     }
+
 
     /**
      * Issue a Delete REST call that returns a response object.
@@ -389,6 +401,7 @@ public class FFDCRESTClientBase
      * @param methodName  name of the method being called.
      * @param returnClass class of the response object.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody body of request
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -397,19 +410,21 @@ public class FFDCRESTClientBase
     protected  <T> T callDeleteRESTCall(String    methodName,
                                         Class<T>  returnClass,
                                         String    urlTemplate,
+                                        Object    requestBody,
                                         Object... params) throws PropertyServerException
     {
         try
         {
-           return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, null, params);
+           return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logRESTCallException(methodName, error);
         }
 
         return null;
     }
+
 
     /**
      * Issue a Delete REST call that returns a response object.
@@ -423,14 +438,17 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected  <T> T callDeleteRESTCall(String    methodName,
+    protected  <T> T callDeleteRESTCall(String                        methodName,
                                         ParameterizedTypeReference<T> responseType,
-                                        String    urlTemplate, Object... params) throws PropertyServerException
+                                        String                        urlTemplate, Object... params) throws PropertyServerException
     {
-        try {
+        try
+        {
             SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
             return clientConnector.callDeleteRESTCall(methodName, responseType, urlTemplate, null, params);
-        } catch (Throwable error) {
+        }
+        catch (Exception error)
+        {
             logRESTCallException(methodName, error);
         }
 
@@ -446,8 +464,18 @@ public class FFDCRESTClientBase
      * @throws PropertyServerException wrapping exception
      */
     private void logRESTCallException(String    methodName,
-                                      Throwable error) throws PropertyServerException
+                                      Exception error) throws PropertyServerException
     {
+        if (auditLog != null)
+        {
+            auditLog.logException(methodName,
+                                  OMAGCommonAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                      serverName,
+                                                                                                      serverPlatformURLRoot,
+                                                                                                      error.getMessage()),
+                                  error);
+        }
+
         throw new PropertyServerException(OMAGCommonErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                               serverName,
                                                                                                               serverPlatformURLRoot,

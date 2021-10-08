@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -136,7 +137,10 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
                         governanceContext.classifyMetadataElement(element.getElementGUID(),
                                                                   assetZoneClassification,
-                                                                  properties);
+                                                                  false,
+                                                                  false,
+                                                                  properties,
+                                                                  new Date());
                     }
                 }
 

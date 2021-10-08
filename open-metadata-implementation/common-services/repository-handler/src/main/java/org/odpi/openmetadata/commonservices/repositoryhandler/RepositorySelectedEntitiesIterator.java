@@ -8,6 +8,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 
 /**
  * RepositorySelectedEntitiesIterator is an iterator class for iteratively retrieving entities based on a search criteria.
@@ -18,9 +21,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private     InstanceProperties properties;
-    private     MatchCriteria      matchCriteria;
-    private     String             searchCriteria;
+    private InstanceProperties properties;
+    private MatchCriteria      matchCriteria;
+    private String             searchCriteria;
 
     /**
      * Constructor takes the parameters used to call the repository handler.
@@ -31,8 +34,12 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param properties properties used in the search
      * @param matchCriteria all or any
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositorySelectedEntitiesIterator(RepositoryHandler  repositoryHandler,
@@ -41,11 +48,24 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               InstanceProperties properties,
                                               MatchCriteria      matchCriteria,
                                               String             sequencingPropertyName,
+                                              boolean            forLineage,
+                                              boolean            forDuplicateProcessing,
                                               int                startingFrom,
                                               int                pageSize,
+                                              Date               effectiveTime,
                                               String             methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              null,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
 
         this.properties           = properties;
         this.matchCriteria        = matchCriteria;
@@ -61,20 +81,36 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param searchCriteria value used in the search
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler  repositoryHandler,
-                                              String             userId,
-                                              String             entityTypeGUID,
-                                              String             searchCriteria,
-                                              String             sequencingPropertyName,
-                                              int                startingFrom,
-                                              int                pageSize,
-                                              String             methodName)
+    public RepositorySelectedEntitiesIterator(RepositoryHandler repositoryHandler,
+                                              String            userId,
+                                              String            entityTypeGUID,
+                                              String            searchCriteria,
+                                              String            sequencingPropertyName,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              int               startingFrom,
+                                              int               pageSize,
+                                              Date              effectiveTime,
+                                              String            methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              null,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
 
         this.searchCriteria       = searchCriteria;
         this.properties           = null;
@@ -95,53 +131,71 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
     {
         if ((entitiesCache == null) || (entitiesCache.isEmpty()))
         {
-            if (searchCriteria != null)
-            {
-                entitiesCache = repositoryHandler.getEntitiesByValue(userId,
-                                                                     searchCriteria,
-                                                                     entityTypeGUID,
-                                                                     sequencingPropertyName,
-                                                                     startingFrom,
-                                                                     pageSize,
-                                                                     methodName);
-            }
-            else if (matchCriteria == MatchCriteria.ANY)
-            {
-                entitiesCache = repositoryHandler.getEntitiesByName(userId,
-                                                                    properties,
-                                                                    entityTypeGUID,
-                                                                    sequencingPropertyName,
-                                                                    startingFrom,
-                                                                    pageSize,
-                                                                    methodName);
-            }
-            else if (matchCriteria == MatchCriteria.ALL)
-            {
-                entitiesCache = repositoryHandler.getEntitiesByAllProperties(userId,
-                                                                             properties,
-                                                                             entityTypeGUID,
-                                                                             sequencingPropertyName,
-                                                                             startingFrom,
-                                                                             pageSize,
-                                                                             methodName);
-            }
-            else /* (matchCriteria == MatchCriteria.NONE) */
-            {
-                entitiesCache = repositoryHandler.getEntitiesWithoutPropertyValues(userId,
-                                                                                   properties,
-                                                                                   entityTypeGUID,
-                                                                                   sequencingPropertyName,
-                                                                                   startingFrom,
-                                                                                   pageSize,
-                                                                                   methodName);
-            }
+            entitiesCache = new ArrayList<>();
 
-            if (entitiesCache != null)
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((entitiesCache != null) && (entitiesCache.isEmpty()))
             {
-                startingFrom = startingFrom + entitiesCache.size();
+                if (searchCriteria != null)
+                {
+                    entitiesCache = repositoryHandler.getEntitiesByValue(userId,
+                                                                         searchCriteria,
+                                                                         entityTypeGUID,
+                                                                         sequencingPropertyName,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         startingFrom,
+                                                                         pageSize,
+                                                                         effectiveTime,
+                                                                         methodName);
+                }
+                else if (matchCriteria == MatchCriteria.ANY)
+                {
+                    entitiesCache = repositoryHandler.getEntitiesByName(userId,
+                                                                        properties,
+                                                                        entityTypeGUID,
+                                                                        sequencingPropertyName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        startingFrom,
+                                                                        pageSize,
+                                                                        effectiveTime,
+                                                                        methodName);
+                }
+                else if (matchCriteria == MatchCriteria.ALL)
+                {
+                    entitiesCache = repositoryHandler.getEntitiesByAllProperties(userId,
+                                                                                 properties,
+                                                                                 entityTypeGUID,
+                                                                                 sequencingPropertyName,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 startingFrom,
+                                                                                 pageSize,
+                                                                                 effectiveTime,
+                                                                                 methodName);
+                }
+                else /* (matchCriteria == MatchCriteria.NONE) */
+                {
+                    entitiesCache = repositoryHandler.getEntitiesWithoutPropertyValues(userId,
+                                                                                       properties,
+                                                                                       entityTypeGUID,
+                                                                                       sequencingPropertyName,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       startingFrom,
+                                                                                       pageSize,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+                }
+
+                startingFrom = startingFrom + pageSize;
             }
         }
 
-        return entitiesCache != null;
+        return (entitiesCache != null);
     }
 }

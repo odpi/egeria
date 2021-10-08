@@ -25,6 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
                 @JsonSubTypes.Type(value = ReferenceDataAssetProperties.class, name = "ReferenceDataAssetProperties"),
+                @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
+                @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
+                @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties")
         })
 public class ReferenceableProperties implements Serializable
@@ -33,7 +36,6 @@ public class ReferenceableProperties implements Serializable
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
-    private List<String>         meanings             = null;
 
     private List<ElementClassification> classifications = null;
 
@@ -60,7 +62,6 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            meanings             = template.getMeanings();
             classifications      = template.getClassifications();
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
@@ -119,41 +120,8 @@ public class ReferenceableProperties implements Serializable
         }
         else
         {
-            return new HashMap<>(additionalProperties);
+            return additionalProperties;
         }
-    }
-
-
-    /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<String> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<String> meanings)
-    {
-        this.meanings = meanings;
     }
 
 
@@ -231,7 +199,7 @@ public class ReferenceableProperties implements Serializable
         }
         else
         {
-            return new HashMap<>(extendedProperties);
+            return extendedProperties;
         }
     }
 
@@ -261,7 +229,6 @@ public class ReferenceableProperties implements Serializable
                 ", additionalProperties=" + additionalProperties +
                 ", typeName=" + typeName +
                 ", extendedProperties=" + getExtendedProperties() +
-                ", meanings=" + meanings +
                 ", classifications=" + getClassifications() +
                 '}';
     }
@@ -287,7 +254,6 @@ public class ReferenceableProperties implements Serializable
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(meanings, that.meanings) &&
                 Objects.equals(classifications, that.classifications) &&
                 Objects.equals(typeName, that.typeName) &&
                 Objects.equals(extendedProperties, that.extendedProperties);
@@ -302,6 +268,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, meanings, classifications, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, classifications, typeName, extendedProperties);
     }
 }

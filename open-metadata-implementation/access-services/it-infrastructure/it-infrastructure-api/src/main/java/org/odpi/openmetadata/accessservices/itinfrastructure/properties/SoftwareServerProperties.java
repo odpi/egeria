@@ -16,13 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = DatabaseServerProperties.class, name = "DatabaseServerProperties"),
-        })
 public class SoftwareServerProperties extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
@@ -157,24 +150,19 @@ public class SoftwareServerProperties extends AssetProperties
     public String toString()
     {
         return "SoftwareServerProperties{" +
-                "softwareServerType='" + softwareServerType + '\'' +
-                ", softwareServerVersion='" + softwareServerVersion + '\'' +
-                ", softwareServerSource='" + softwareServerSource + '\'' +
-                ", softwareServerUserId='" + softwareServerUserId + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "softwareServerType='" + softwareServerType + '\'' +
+                       ", softwareServerVersion='" + softwareServerVersion + '\'' +
+                       ", softwareServerSource='" + softwareServerSource + '\'' +
+                       ", softwareServerUserId='" + softwareServerUserId + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", classifications=" + getClassifications() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

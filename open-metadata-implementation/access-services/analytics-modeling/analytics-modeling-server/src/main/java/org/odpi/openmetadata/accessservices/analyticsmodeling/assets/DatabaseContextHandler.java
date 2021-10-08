@@ -12,27 +12,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The class builds data content of the Analytics Modeling OMAS responses.<br>
@@ -62,8 +72,10 @@ public class DatabaseContextHandler {
 									Object, 
 									Object> relationalDataHandler;
 	
+	private GlossaryTermHandler<GlossaryTerm> handlerGlossaryTerm;
+	
 	private OMEntityDao omEntityDao;
-	private InvalidParameterHandler invalidParameterHandler;
+	private ExecutionContext ctx;
 	
 	
 	private static HashMap<String, String> mapTypes = new HashMap<>();
@@ -75,11 +87,19 @@ public class DatabaseContextHandler {
 	public DatabaseContextHandler(
 		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler, 
 		OMEntityDao omEntityDao, 
-		InvalidParameterHandler invalidParameterHandler) {
+		ExecutionContext ctx) {
 		
 		this.relationalDataHandler = relationalDataHandler;
 		this.omEntityDao = omEntityDao;
-		this.invalidParameterHandler = invalidParameterHandler;
+		this.ctx = ctx;
+		
+		handlerGlossaryTerm = new GlossaryTermHandler<>(
+				new GlossaryTermConverter(ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName()),
+				GlossaryTerm.class, ctx.getServiceName(), ctx.getServerName(),
+				ctx.getInvalidParameterHandler(), ctx.getRepositoryHandler(), ctx.getRepositoryHelper(),
+				ctx.getLocalServerUserId(), ctx.getSecurityVerifier(), 
+				ctx.getSupportedZones(), ctx.getDefaultZones(), ctx.getPublishZones(), 
+				ctx.getAuditLog());
 	}
 	
 	/**
@@ -100,11 +120,13 @@ public class DatabaseContextHandler {
      * @param pageSize	maximum number of results to return
 	 * @return list of database descriptors.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws UserNotAuthorizedException in case of an error.
 	 */
 	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize) 
-			throws AnalyticsModelingCheckedException {
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException {
 		
 		String methodName = "getDatabases";
+		ctx.initialize(userId);
 		setContext(methodName);
 		
 		List<Database> databases = findDatabases(userId, startFrom, pageSize, methodName);
@@ -115,12 +137,11 @@ public class DatabaseContextHandler {
 	}
 
 	private List<Database> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
-			throws AnalyticsModelingCheckedException
+			throws AnalyticsModelingCheckedException, UserNotAuthorizedException
 	{
 		try {
 			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, methodName);
-		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
-				| PropertyServerException ex) {
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASES.getMessageDefinition(),
 					this.getClass().getSimpleName(),
@@ -149,14 +170,16 @@ public class DatabaseContextHandler {
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
+	 * @throws UserNotAuthorizedException in case of an error.
 	 */
 	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String userId, String guidDatabase, Integer startFrom, Integer pageSize) 
-			throws AnalyticsModelingCheckedException, InvalidParameterException {
+			throws AnalyticsModelingCheckedException, InvalidParameterException, UserNotAuthorizedException {
 
 		String methodName = "getDatabaseSchemas";
+		ctx.initialize(userId);
 		setContext(methodName);
 		
-		invalidParameterHandler.validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
+		ctx.getInvalidParameterHandler().validateGUID(guidDatabase, DATA_SOURCE_GUID, methodName);
 		
 		try {
 			Database db = relationalDataHandler.getDatabaseByGUID(userId, guidDatabase, methodName);
@@ -168,8 +191,7 @@ public class DatabaseContextHandler {
 					.map(e->buildSchema(dbName, e))
 					.filter(Objects::nonNull).collect(Collectors.toList());
 			
-		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
-				| PropertyServerException ex) {
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASE_SCHEMAS.getMessageDefinition(guidDatabase),
 					this.getClass().getSimpleName(),
@@ -198,24 +220,27 @@ public class DatabaseContextHandler {
 	 * @return schema entity.
 	 */
 	private EntityDetail getSchemaEntityFromRelationship(Relationship r) {
-		return this.getEntityByGuidNoThrow(r.getEntityTwoProxy().getGUID());
+		return getEntityByGuidNoThrow(r.getEntityTwoProxy().getGUID());
 	}
 
 	/**
 	 * Get tables for schema.
 	 * 
+	 * @param userId of the request.
 	 * @param guidDataSource of the schema.
 	 * @param schema         name.
 	 * @return list of table names.
 	 * @throws AnalyticsModelingCheckedException if failed
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
+	public ResponseContainerSchemaTables getSchemaTables(String userId, String guidDataSource, String schema)
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getSchemaTables";
+		ctx.initialize(userId);
 		setContext(context);
 
-		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
+		ctx.getInvalidParameterHandler().validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
 
@@ -237,7 +262,9 @@ public class DatabaseContextHandler {
 	 * @return list of table entities that belongs to the schema.
 	 * @throws AnalyticsModelingCheckedException 
 	 */
-	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) throws AnalyticsModelingCheckedException {
+	private List<EntityDetail> getTablesForSchema(EntityDetail dbSchemaEntity) 
+			throws AnalyticsModelingCheckedException
+	{
 
 		List<Relationship> allDbSchemaToSchemaType = omEntityDao.getRelationshipsForEntity(dbSchemaEntity, Constants.ASSET_SCHEMA_TYPE);
 
@@ -263,6 +290,7 @@ public class DatabaseContextHandler {
 
 	/**
 	 * Build Analytics Modeling module for database schema
+	 * @param userId for the request.
 	 * @param databaseGuid of the module
 	 * @param catalog of the module
 	 * @param schema of the module
@@ -271,11 +299,12 @@ public class DatabaseContextHandler {
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
+	public ResponseContainerModule getModule(String userId, String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
 			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getModule";
-		invalidParameterHandler.validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
+		ctx.initialize(userId);
+		ctx.getInvalidParameterHandler().validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
 		setContext(context);
 
 		ResponseContainerModule ret = new ResponseContainerModule();
@@ -302,6 +331,7 @@ public class DatabaseContextHandler {
 		ds.setName(catalog + "." + ds.getSchema());
 		ds.setTable(buildTables(databaseGuid, schemaEntity, filter));
 		ds.addProperty(Constants.GUID, schemaEntity.getGUID());
+		processGlossaryTerms(schemaEntity, ds);
 		return ds;
 	}
 
@@ -337,12 +367,19 @@ public class DatabaseContextHandler {
 			relationshipsTableColumns = omEntityDao.getRelationshipsForEntity(entityTable,
 					Constants.NESTED_SCHEMA_ATTRIBUTE);
 		} catch (AnalyticsModelingCheckedException e) {
-			// skip the table
+			// exclude the table
+			if (e.getReportedCaughtException() != null) {
+				ctx.addMessage(AnalyticsModelingErrorCode.TABLE_COLUMN_RELATIONSHIPS_EXCEPTION.getMessageDefinition(ret.getName()),
+						e.getReportedCaughtException().getLocalizedMessage());
+			} else {
+				ctx.addMessage(AnalyticsModelingErrorCode.TABLE_COLUMN_RELATIONSHIPS_EXCEPTION.getMessageDefinition(ret.getName()));
+			}
 			return null;
 		}
 
 		if (relationshipsTableColumns == null || relationshipsTableColumns.isEmpty()) {
 			// report table without columns, don't create empty table
+			ctx.addTableWithoutColumns(ret.getName());
 			return null;
 		}
 
@@ -356,16 +393,80 @@ public class DatabaseContextHandler {
 
 		if (items.isEmpty()) {
 			// report table without columns, don't create such table
+			ctx.addTableWithoutColumns(ret.getName());
 			return null;
 		}
 
 		ret.setTableItem(items);
 
+		processGlossaryTerms(entityTable, ret);
+		
 		processPrimaryKeys(ret, items);
 		
 		processForeignKeys(ret, items);
 
 		return ret;
+	}
+
+	private void processGlossaryTerms(EntityDetail entity, BaseObjectType object)
+	{
+		String methodName = "processGlossaryTerms"; 
+		try {
+			RepositoryHandler handler = ctx.getRepositoryHandler();
+			List<Relationship> relationships = handler.getRelationshipsByType(ctx.getUserId(), 
+					entity.getGUID(), entity.getType().getTypeDefName(),
+					OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+					OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+					methodName);
+
+			if (relationships == null || relationships.isEmpty()) {
+				return;
+			}
+			
+			for (Relationship r : relationships) {
+				GlossaryTerm term = handlerGlossaryTerm.getTerm(ctx.getUserId(), r.getEntityTwoProxy().getGUID(), Constants.GUID, methodName);
+				String value = buildGlossaryTerm(term);
+				
+				if (value != null) {
+					object.addProperty(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME, value);
+				}
+			}
+		} catch (UserNotAuthorizedException | PropertyServerException 
+				| org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+			// report warning with business terms
+			ctx.addMessage(AnalyticsModelingErrorCode.GLOSSARY_TERM_EXCEPTION.getMessageDefinition(entity.getGUID()),
+					e.getLocalizedMessage());
+		}
+	}
+
+	private String buildGlossaryTerm(GlossaryTerm term)
+	{
+		Map<String, String> json;
+		if (term.getName() != null && term.getGuid() != null) {
+			json = new TreeMap<>();
+			json.put(Constants.DISPLAY_NAME, term.getName());
+			json.put(OpenMetadataAPIMapper.GUID_PROPERTY_NAME, term.getGuid());
+		} else {
+			return null;
+		}
+		// long description 
+		if (term.getDescription() != null) {
+			json.put(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, term.getDescription());
+		}
+		// short description
+		if (term.getSummary() != null) {
+			json.put(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME, term.getSummary());
+		}
+		
+		try {
+			return new ObjectMapper().writeValueAsString(json);
+		} catch (JsonProcessingException e) {
+			// log warning in context
+			ctx.addMessage(AnalyticsModelingErrorCode.BUILD_GLOSSARY_TERM_EXCEPTION.getMessageDefinition(term.getName()),
+					e.getLocalizedMessage());
+
+			return null;
+		}
 	}
 
 	private void processPrimaryKeys(Table ret, List<TableItem> items) {
@@ -436,20 +537,23 @@ public class DatabaseContextHandler {
 							fkColumn.setPkCatalog(getEntityStringProperty(catalogEntity, Constants.ATTRIBUTE_NAME));							
 						} catch (AnalyticsModelingCheckedException exCatalog) {
 							// log foreign key from unknown catalog
+							ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_CATALOG
+									.getMessageDefinition(fkColumn.getColumnName()));
 							return;
 						}
 						
 					} catch (AnalyticsModelingCheckedException exTable) {
 						// log foreign key from unknown schema
+						ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_SCHEMA
+								.getMessageDefinition(fkColumn.getColumnName()));
 						return;
 					}
 				} catch (AnalyticsModelingCheckedException exSchema) {
 					// log foreign key from unknown table
+					ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY_UNKNOWN_TABLE
+							.getMessageDefinition(fkColumn.getColumnName()));
 					return;
 				}
-				
-				
-				
 			});
 			
 		});
@@ -486,7 +590,8 @@ public class DatabaseContextHandler {
 		try {
 			return omEntityDao.getEntityByGuid(guid);
 		} catch (Exception ex) {
-			// log entity is loaded
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_ENTITY_NOT_FOUND.getMessageDefinition(guid),
+					ex.getLocalizedMessage());
 		}
 		return null;
 	}
@@ -520,6 +625,9 @@ public class DatabaseContextHandler {
 			columnEntity = omEntityDao.getEntityByGuid(tableTypeToColumns.getEntityTwoProxy().getGUID());
 		} catch (AnalyticsModelingCheckedException e) {
 			// skip the item
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_COLUMN_NOT_FOUND
+					.getMessageDefinition(tableTypeToColumns.getEntityTwoProxy().getGUID()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
 		TableItem item = new TableItem();
@@ -554,8 +662,12 @@ public class DatabaseContextHandler {
 
 		} catch (AnalyticsModelingCheckedException e) {
 			// column is useless without data type information
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_COLUMN_NOT_FOUND.getMessageDefinition(tableColumn.getName()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
+		
+		processGlossaryTerms(columnEntity, tableColumn);
 
 		return item;
 	}
@@ -613,7 +725,7 @@ public class DatabaseContextHandler {
 						this.getClass().getSimpleName(),
 						"getSchemaEntityByName"));
 	}
-
+	
 	/**
 	 * Get GUIDs of the columns referenced as foreign key
 	 * @param columnEntity for the column.
@@ -626,6 +738,8 @@ public class DatabaseContextHandler {
 			columnForeignKeys = omEntityDao.getRelationshipsForEntity(columnEntity, Constants.FOREIGN_KEY);
 		} catch (AnalyticsModelingCheckedException e) {
 			// no foreign keys
+			ctx.addMessage(AnalyticsModelingErrorCode.WARNING_FOREIGN_KEY.getMessageDefinition(columnEntity.getGUID()),
+					e.getReportedCaughtException().getLocalizedMessage());
 			return null;
 		}
 
@@ -654,7 +768,8 @@ public class DatabaseContextHandler {
 	private int getEntityIntProperty(EntityDetail entity, String name) {
 		return entity == null ? null : omEntityDao.getEntityIntProperty(entity, name);
 	}
-
-
 	
+	public Messages getMessages() {
+		return ctx.getMessages();
+	}
 }

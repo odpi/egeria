@@ -64,18 +64,21 @@ public class AnalyticsModelingAdmin extends AccessServiceAdmin
 
         
         try {
-            // initialize Topic Connector
-        	String outTopicName = getTopicName(accessServiceConfig.getAccessServiceOutTopic());
-            analyticsModelingOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
-            		OpenMetadataTopicConnector.class,
-            		auditLog,
-                    AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(),
-                    actionDescription);
-
-            if (analyticsModelingOutTopicConnector != null) {
-                startConnector(actionDescription, outTopicName, analyticsModelingOutTopicConnector);
-            }
-
+        	
+        	if (accessServiceConfig.getAccessServiceOutTopic() != null) {
+	            analyticsModelingOutTopicConnector =  super.getTopicConnector(accessServiceConfig.getAccessServiceOutTopic(),
+	            		OpenMetadataTopicConnector.class,
+	            		auditLog,
+	                    AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(),
+	                    actionDescription);
+	
+	            if (analyticsModelingOutTopicConnector != null) {
+	                // initialize Topic Connector
+	            	String outTopicName = getTopicName(accessServiceConfig.getAccessServiceOutTopic());
+	                startConnector(actionDescription, outTopicName, analyticsModelingOutTopicConnector);
+	            }
+        	}
+        	
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(), auditLog);
 

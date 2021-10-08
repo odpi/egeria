@@ -6,9 +6,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,175 +24,103 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
 public class SoftwareServerCapability implements Serializable {
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The qualified name
+     * -- GETTER --
+     * Gets qualified name.
+     * @return the qualified name
+     * -- SETTER --
+     * Sets qualified name.
+     * @param qualifiedName the qualified name
+     */
     private String qualifiedName;
+
+    /**
+     * The display name
+     * -- GETTER --
+     * Gets display name.
+     * @return the display name
+     * -- SETTER --
+     * Sets display name.
+     * @param name the display name
+     */
     @JsonProperty("displayName")
     private String name;
 
+    /**
+     * The description
+     * -- GETTER --
+     * Gets description.
+     * @return the description
+     * -- SETTER --
+     * Sets description.
+     * @param description the description
+     */
     private String description;
+
+    /**
+     * The engine type
+     * -- GETTER --
+     * Gets engine type.
+     * @return the engine type
+     * -- SETTER --
+     * Sets engine type.
+     * @param engineType the engine type
+     */
     private String engineType;
+
+    /**
+     * The engine version
+     * -- GETTER --
+     * Gets engine version.
+     * @return the engine version
+     * -- SETTER --
+     * Sets engine version.
+     * @param engineVersion the engine version
+     */
     private String engineVersion;
+
+    /**
+     * The patch level
+     * -- GETTER --
+     * Gets patch level.
+     * @return the patch level
+     * -- SETTER --
+     * Sets patch level.
+     * @param patchLevel the patch level
+     */
     private String patchLevel;
+
+    /**
+     * The source
+     * -- GETTER --
+     * Gets source.
+     * @return the source
+     * -- SETTER --
+     * Sets source.
+     * @param source the source
+     */
     private String source;
 
     /**
-     * Gets display name.
-     *
-     * @return the display name
+     * Additional properties
+     * -- GETTER --
+     * Gets the additional properties
+     * @return the additional properties
+     * -- SETTER --
+     * Sets the additional properties.
+     * @param additionalProperties the additional properties
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets display name.
-     *
-     * @param name the display name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets engine type.
-     *
-     * @return the engine type
-     */
-    public String getEngineType() {
-        return engineType;
-    }
-
-    /**
-     * Sets engine type.
-     *
-     * @param engineType the engine type
-     */
-    public void setEngineType(String engineType) {
-        this.engineType = engineType;
-    }
-
-    /**
-     * Gets engine version.
-     *
-     * @return the engine version
-     */
-    public String getEngineVersion() {
-        return engineVersion;
-    }
-
-    /**
-     * Sets engine version.
-     *
-     * @param engineVersion the engine version
-     */
-    public void setEngineVersion(String engineVersion) {
-        this.engineVersion = engineVersion;
-    }
-
-    /**
-     * Gets qualified name.
-     *
-     * @return the qualified name
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    /**
-     * Sets qualified name.
-     *
-     * @param qualifiedName the qualified name
-     */
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
-    /**
-     * Gets description.
-     *
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets description.
-     *
-     * @param description the description
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Gets source.
-     *
-     * @return the source
-     */
-    public String getSource() {
-        return source;
-    }
-
-    /**
-     * Sets source.
-     *
-     * @param source the source
-     */
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    /**
-     * Gets patch level.
-     *
-     * @return the patch level
-     */
-    public String getPatchLevel() {
-        return patchLevel;
-    }
-
-    /**
-     * Sets patch level.
-     *
-     * @param patchLevel the patch level
-     */
-    public void setPatchLevel(String patchLevel) {
-        this.patchLevel = patchLevel;
-    }
-
-    @Override
-    public String toString() {
-        return "DataEngineRegistrationRequestBody{" +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", engineType='" + engineType + '\'' +
-                ", engineVersion='" + engineVersion + '\'' +
-                ", patchLevel='" + patchLevel + '\'' +
-                ", source='" + source + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SoftwareServerCapability that = (SoftwareServerCapability) o;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(engineType, that.engineType) &&
-                Objects.equals(engineVersion, that.engineVersion) &&
-                Objects.equals(patchLevel, that.patchLevel) &&
-                Objects.equals(source, that.source);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(qualifiedName, name, description, engineType, engineVersion, patchLevel, source);
-    }
+    private Map<String, String> additionalProperties;
 
 }

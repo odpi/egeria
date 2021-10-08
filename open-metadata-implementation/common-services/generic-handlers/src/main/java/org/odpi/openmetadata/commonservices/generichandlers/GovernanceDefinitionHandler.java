@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -164,39 +165,15 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               serviceName,
                                                                               serverName);
 
-        String definitionGUID = this.createBeanInRepository(userId,
-                                                            null,
-                                                            null,
-                                                            typeGUID,
-                                                            typeName,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                            builder,
-                                                            methodName);
-
-        if (definitionGUID != null)
-        {
-            /*
-             * Link the definition to its definition.
-             */
-            final String definitionGUIDParameterName = "definitionGUID";
-
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      definitionGUID,
-                                      definitionGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                      definitionGUID,
-                                      definitionGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
-                                      null,
-                                      methodName);
-        }
-
-        return definitionGUID;
+        return this.createBeanInRepository(userId,
+                                           null,
+                                           null,
+                                           typeGUID,
+                                           typeName,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           builder,
+                                           methodName);
     }
     
 
@@ -307,8 +284,12 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     definitionGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -362,6 +343,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                   definitionChildGUID,
                                   definitionChildGUIDParameterName,
                                   definitionChildTypeName,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   properties,
@@ -418,6 +402,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                   definitionChildGUID,
                                   definitionChildGUIDParameterName,
                                   definitionChildTypeName,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   properties,
@@ -469,8 +456,11 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                       definitionChildGUIDParameterName,
                                       definitionChildTypeGUID,
                                       definitionChildTypeName,
+                                      false,
+                                      false,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
+                                      new Date(),
                                       methodName);
     }
 
@@ -503,6 +493,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -545,6 +538,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              new Date(),
                               methodName);
     }
 
@@ -583,14 +577,23 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         definitionGUID,
                                         definitionGUIDParameterName,
                                         definitionTypeName,
                                         relationshipTypeGUID,
                                         relationshipTypeName,
                                         targetElementType,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
+                                        supportedZones,
                                         startFrom,
                                         pageSize,
+                                        new Date(),
                                         methodName);
     }
 
@@ -623,10 +626,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
-                                   supportedZones,
                                    null,
+                                   false,
+                                   false,
+                                   supportedZones,
                                    startFrom,
                                    pageSize,
+                                   new Date(),
                                    methodName);
     }
 
@@ -666,10 +672,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              typeGUID,
                                                              typeName,
-                                                             supportedZones,
                                                              null,
+                                                             false,
+                                                             false,
+                                                             supportedZones,
                                                              startFrom,
                                                              pageSize,
+                                                             new Date(),
                                                              methodName);
 
         List<B> results = new ArrayList<>();
@@ -752,10 +761,12 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    new Date(),
                                     methodName);
     }
 
@@ -805,8 +816,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         typeName,
                                         1,
+                                        false,
                                         startFrom,
                                         pageSize,
+                                       new Date(),
                                         methodName);
     }
 
@@ -850,8 +863,11 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         1,
+                                        false,
+                                        false,
                                         startFrom,
                                         pageSize,
+                                        new Date(),
                                         methodName);
     }
 
@@ -881,6 +897,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

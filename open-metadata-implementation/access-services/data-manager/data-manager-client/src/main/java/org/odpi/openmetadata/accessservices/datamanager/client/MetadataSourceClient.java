@@ -6,10 +6,9 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 import org.odpi.openmetadata.accessservices.datamanager.api.MetadataSourceInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -137,6 +136,149 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      */
 
     /**
+     * Create information about the component that manages APIs.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param apiManagerProperties description of the API manager (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the API manager's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String createAPIManager(String               userId,
+                                   String               externalSourceGUID,
+                                   String               externalSourceName,
+                                   APIManagerProperties apiManagerProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName                  = "createAPIManager";
+        final String propertiesParameterName     = "apiManagerProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(apiManagerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(apiManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/api-managers";
+
+        APIManagerRequestBody requestBody = new APIManagerRequestBody(apiManagerProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create information about the integration daemon that is managing the acquisition of metadata from the
+     * data manager.  Typically this is Egeria's data manager integrator OMIS.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param databaseManagerProperties description of the integration daemon (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the integration daemon's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String createDatabaseManager(String                     userId,
+                                        String                     externalSourceGUID,
+                                        String                     externalSourceName,
+                                        DatabaseManagerProperties  databaseManagerProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName                  = "createDatabaseManager";
+        final String propertiesParameterName     = "databaseManagerProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(databaseManagerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/database-managers";
+
+        DatabaseManagerRequestBody requestBody = new DatabaseManagerRequestBody(databaseManagerProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create information about the integration daemon that is managing the acquisition of metadata from the
+     * data manager.  Typically this is Egeria's data manager proxy.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param eventBrokerProperties description of the event broker (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the event broker's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String createEventBroker(String                userId,
+                                    String                externalSourceGUID,
+                                    String                externalSourceName,
+                                    EventBrokerProperties eventBrokerProperties) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName                  = "createEventBroker";
+        final String propertiesParameterName     = "eventBrokerProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(eventBrokerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(eventBrokerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/event-brokers";
+
+        EventBrokerRequestBody requestBody = new EventBrokerRequestBody(eventBrokerProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Create information about a File System that is being used to store data files.
      *
      * @param userId calling user
@@ -231,42 +373,41 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
 
 
     /**
-     * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager integrator OMIS.
+     * Create information about an application.
      *
      * @param userId calling user
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
-     * @param databaseManagerProperties description of the integration daemon (specify qualified name at a minimum)
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param applicationProperties description of the application (specify qualified name at a minimum)
      *
-     * @return unique identifier of the integration daemon's software server capability
+     * @return unique identifier of the application's software server capability
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public String createDatabaseManager(String                     userId,
-                                        String                     externalSourceGUID,
-                                        String                     externalSourceName,
-                                        DatabaseManagerProperties  databaseManagerProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public String  createApplication(String                userId,
+                                     String                externalSourceGUID,
+                                     String                externalSourceName,
+                                     ApplicationProperties applicationProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        final String methodName                  = "createDatabaseManager";
-        final String propertiesParameterName     = "databaseManagerProperties";
+        final String methodName                  = "createApplication";
+        final String propertiesParameterName     = "applicationProperties";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(databaseManagerProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateObject(applicationProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(applicationProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/database-managers";
-
-        DatabaseManagerRequestBody requestBody = new DatabaseManagerRequestBody(databaseManagerProperties);
+        ApplicationRequestBody requestBody = new ApplicationRequestBody(applicationProperties);
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/applications";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -279,12 +420,61 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
 
 
     /**
-     * Retrieve the unique identifier of the integration daemon.
+     * Create information about a data processing engine - set up typeName in the properties to create sub types such as
+     * ReportingEngine, WorkflowEngine, AnalyticsEngine, DataMovementEngine or DataVirtualizationEngine.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param engineProperties description of the engine (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the engine's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public String  createDataProcessingEngine(String                         userId,
+                                              String                         externalSourceGUID,
+                                              String                         externalSourceName,
+                                              DataProcessingEngineProperties engineProperties) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                  = "createDataProcessingEngine";
+        final String propertiesParameterName     = "engineProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(engineProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(engineProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        DataProcessingEngineRequestBody requestBody = new DataProcessingEngineRequestBody(engineProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-processing-engines";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Retrieve the unique identifier of the data manager.
      *
      * @param userId calling user
      * @param qualifiedName unique name of the integration daemon
      *
-     * @return unique identifier of the integration daemon's software server capability
+     * @return unique identifier of the data manager's software server capability
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -302,13 +492,18 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name";
 
-        GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(qualifiedName);
+        requestBody.setNamePropertyName(qualifiedNameParameterName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
+                                                                  requestBody,
                                                                   serverName,
-                                                                  userId,
-                                                                  qualifiedName);
+                                                                  userId);
 
         return restResult.getGUID();
     }

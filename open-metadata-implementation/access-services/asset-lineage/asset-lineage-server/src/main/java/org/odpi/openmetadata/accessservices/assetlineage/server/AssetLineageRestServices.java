@@ -110,22 +110,20 @@ public class AssetLineageRestServices {
                 Long cutOffTime = System.currentTimeMillis();
                 Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
 
-                if (!entitiesByTypeName.isPresent()) {
+                if (entitiesByTypeName.isEmpty()) {
                     return response;
                 }
 
                 response.setGUIDs(entitiesByTypeName.get().stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
 
                 CompletableFuture.supplyAsync(buildAndPublishLineageContext(auditLog,publisher,entitiesByTypeName, entityType))
-                        .thenAccept((result) ->
+                        .thenAccept(result ->
                             result.ifPresent(publishedItems -> {
                                 sendLineagePublishSummary(publishedItems, cutOffTime, publisher, auditLog);
                                 publishLineageTaskActive.set(false);
                             })
                         );
             }
-
-
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -133,7 +131,6 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
-
         return response;
     }
 
@@ -255,11 +252,9 @@ public class AssetLineageRestServices {
                         typeName, entityDetail.getGUID());
                 break;
         }
-
         if (!context.isEmpty()) {
             return entityDetail.getGUID();
         }
-
         return null;
     }
 
@@ -275,12 +270,12 @@ public class AssetLineageRestServices {
     public GUIDListResponse publishAssetContext(String serverName, String userId, String entityType, String guid) {
         String methodName = "publishAssetContext";
         GUIDListResponse response = new GUIDListResponse();
-
+        AuditLog auditLog = null;
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
             RelationshipsContext assetContext = assetContextHandler.buildAssetContext(userId, entity);
@@ -297,9 +292,8 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
-
         return response;
     }
 
@@ -333,5 +327,4 @@ public class AssetLineageRestServices {
                 });
         return new ArrayList<>(guids);
     }
-
 }

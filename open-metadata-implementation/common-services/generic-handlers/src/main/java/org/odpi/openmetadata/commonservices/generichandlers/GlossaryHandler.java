@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -151,13 +152,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * The template defines additional classifications and relationships that should be added to the new glossary.
      *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
-     * glossary is deleted, any linked terms and categories are deleted as well.
+     * glossary is used as a template, any linked terms and categories are created as well.
      *
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the glossary - used in other configuration
-     * @param displayName short display name for the glossary
-     * @param description description of the governance glossary
+     * @param qualifiedName unique name for the new element - used in other configuration
+     * @param displayName short display name for the new element
+     * @param description description of the new element
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -277,8 +278,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     glossaryGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -310,12 +315,18 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                            OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME,
                                            builder.getTaxonomyProperties(organizingPrinciple, methodName),
+                                           false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -342,11 +353,16 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -378,12 +394,18 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                            OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
                                            builder.getCanonicalVocabularyProperties(scope, methodName),
+                                           false,
+                                           false,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -407,11 +429,16 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                                                           PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                                false,
+                                                false,
+                                                null,
                                                 methodName);
     }
 
@@ -445,6 +472,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -458,6 +488,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -471,6 +502,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                   String searchStringParameterName,
                                   int    startFrom,
                                   int    pageSize,
+                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -483,6 +515,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -496,6 +529,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -509,6 +543,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                          String nameParameterName,
                                          int    startFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -527,10 +562,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -560,6 +597,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
 
     }

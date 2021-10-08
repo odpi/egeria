@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -34,6 +34,7 @@
         <module>admin-services-samples</module>
         <module>open-metadata-security-samples</module>
         <module>governance-services-sample</module>
+        <module>sample-metadata</module>
     </modules>
 
 </project>

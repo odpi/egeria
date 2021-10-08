@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -59,7 +60,7 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof DiscoveryServiceProperties)
             {
@@ -83,37 +84,14 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
                     bean.setDisplayName(this.removeName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    bean.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
+                    bean.setTypeName(primaryEntity.getType().getTypeDefName());
                     bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, primaryEntity);
-
-                    bean.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, primaryEntity);
-
-                    bean.setOwner(this.getOwner(instanceProperties));
-                    bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, primaryEntity);
-
-                    bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     if (supplementaryEntities != null)
                     {
@@ -145,7 +123,7 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

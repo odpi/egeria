@@ -12,6 +12,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +105,10 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                        OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                       false,
+                                       false,
                                        supportedZones,
+                                       null,
                                        methodName);
     }
 
@@ -136,7 +140,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                       OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                       OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                       false,
+                                      false,
                                       supportedZones,
+                                      null,
                                       methodName);
     }
 
@@ -173,7 +179,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                  OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                                                  false,
+                                                                 false,
                                                                  supportedZones,
+                                                                 null,
                                                                  methodName);
 
         if ((contributionRecord != null) && (karmaPointIncrement > 0))
@@ -278,6 +286,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                           contributionRecordGUID,
                                           contributionRecordGUIDParameterName,
                                           OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                           null,
@@ -293,8 +304,12 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         contributionRecordGUIDParameterName,
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                        false,
+                                        false,
+                                        supportedZones,
                                         builder.getInstanceProperties(methodName),
                                         false,
+                                        new Date(),
                                         methodName);
         }
 
@@ -333,6 +348,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
                                         null,
                                         null,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
     }

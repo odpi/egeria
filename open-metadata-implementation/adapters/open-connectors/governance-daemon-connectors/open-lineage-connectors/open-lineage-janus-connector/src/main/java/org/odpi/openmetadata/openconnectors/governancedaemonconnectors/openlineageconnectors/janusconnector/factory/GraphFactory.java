@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ConfigurationConverter;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
@@ -116,17 +116,17 @@ public class GraphFactory extends IndexingFactory {
      *
      * @throws JanusConnectorException if open fails
      */
-    private GraphTraversalSource openRemoteGraph(Map<String, Object> properties) throws JanusConnectorException{
+    private GraphTraversalSource openRemoteGraph(Map<String, Object> properties) throws JanusConnectorException {
         String methodName = "openRemoteGraph";
         this.supportingTransactions = false;
 
         try {
             cluster = openCluster(properties);
             client = cluster.connect(); // client is used to access JanusGraph management API
-            if (properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE)!=null && properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE).toString().equalsIgnoreCase("true")) {
+            if (properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE) != null && properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE).toString().equalsIgnoreCase("true")) {
                 initializeRemoteGraph(client);
             }
-            return traversal().withRemote(DriverRemoteConnection.using(cluster, properties.getOrDefault(LineageGraphRemoteConnectorProvider.SOURCE_NAME,"g").toString()));
+            return traversal().withRemote(DriverRemoteConnection.using(cluster, properties.getOrDefault(LineageGraphRemoteConnectorProvider.SOURCE_NAME, "g").toString()));
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;

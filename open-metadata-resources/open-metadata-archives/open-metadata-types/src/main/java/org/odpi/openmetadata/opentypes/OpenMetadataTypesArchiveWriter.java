@@ -2,14 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.opentypes;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
-import org.slf4j.LoggerFactory;
 
-import java.net.URISyntaxException;
 
 
 /**
@@ -23,7 +17,7 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
     /**
      * Default constructor
      */
-    private OpenMetadataTypesArchiveWriter()
+    public OpenMetadataTypesArchiveWriter()
     {
     }
 
@@ -31,7 +25,7 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
     /**
      * Generates and writes out an open metadata archive containing all of the open metadata types.
      */
-    private void writeOpenMetadataTypesArchive()
+    public void writeOpenMetadataTypesArchive()
     {
         OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
 
@@ -39,29 +33,4 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
                                       openMetadataTypesArchive.getOpenMetadataArchive());
     }
 
-
-    /**
-     * Main program to control the archive writer.
-     * Note: See issue #3392 if logging is needed
-     *
-     * @param args ignored arguments
-     * @throws JoranException something wrong with logback
-     */
-    public static void main(String[] args) throws JoranException
-    {
-        //if logback.xml is not present and no config in the command line, set default configuration to logback-om.xml
-        if (ClassLoader.getSystemResource("logback.xml") == null
-                &&  System.getProperty(ContextInitializer.CONFIG_FILE_PROPERTY) == null)
-        {
-            LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-            context.reset();
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(context);
-            configurator.doConfigure(OpenMetadataTypesArchiveWriter.class.getResourceAsStream("/logback-om.xml"));
-        }
-
-        OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
-
-        archiveWriter.writeOpenMetadataTypesArchive();
-    }
 }

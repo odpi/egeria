@@ -2,25 +2,31 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 
 /**
  * DataFileHandler manages DataFile objects from the property server. It runs server-side in the DataEngine OMAS
@@ -39,16 +45,18 @@ public class DataEngineDataFileHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHelper provides utilities for manipulating the repository services objects
-     * @param dataEngineCommonHandler provides common Data Engine Omas utilities
-     * @param fileHandler provides utilities specific for manipulating DataFile and CSVFile
-     * @param dataEngineSchemaTypeHandler provides utilities specific for manipulating SchemaType
-     * @param dataEngineFolderHierarchyHandler provides utilities specific for manipulating FileFolder
+     * @param invalidParameterHandler                handler for managing parameter errors
+     * @param repositoryHelper                       provides utilities for manipulating the repository services objects
+     * @param repositoryHandler                      manages calls to the repository services
+     * @param dataEngineCommonHandler                provides common Data Engine Omas utilities
+     * @param fileHandler                            provides utilities specific for manipulating DataFile and CSVFile
+     * @param dataEngineSchemaTypeHandler            provides utilities specific for manipulating SchemaType
+     * @param dataEngineFolderHierarchyHandler       provides utilities specific for manipulating FileFolder
+     * @param dataEngineConnectionAndEndpointHandler provides utilities specific for manipulating Connections and Endpoints
      */
     public DataEngineDataFileHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                     DataEngineCommonHandler dataEngineCommonHandler, AssetHandler<DataFile> fileHandler,
-                                     DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler,
+                                     RepositoryHandler repositoryHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                     AssetHandler<DataFile> fileHandler, DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler,
                                      DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler,
                                      DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
@@ -64,21 +72,21 @@ public class DataEngineDataFileHandler {
      * Constructs a DataFile or CSVFile, its specific TabularSchemaType and its TabularColumns. It also calls for the creation
      * of its folder structure, the Connection and Endpoint
      *
-     * @param fileTypeName file type name
-     * @param fileTypeGuid file type guid
-     * @param file actual data file
-     * @param schemaType file schema
-     * @param columns file columns
+     * @param fileTypeName       file type name
+     * @param fileTypeGuid       file type guid
+     * @param file               actual data file
+     * @param schemaType         file schema
+     * @param columns            file columns
      * @param extendedProperties extended properties
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
-     * @param userId user id
-     * @param methodName method name
+     * @param userId             user id
+     * @param methodName         method name
      *
      * @return guid of data file
      *
-     * @throws InvalidParameterException if invalid parameters
-     * @throws PropertyServerException if errors in repository
+     * @throws InvalidParameterException  if invalid parameters
+     * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
     public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, SchemaType schemaType,
@@ -91,7 +99,7 @@ public class DataEngineDataFileHandler {
         Optional<EntityDetail> fileAsEntity = dataEngineCommonHandler.findEntity(userId, file.getQualifiedName(), fileTypeName);
 
         String fileGuid;
-        if(fileAsEntity.isPresent()){
+        if (fileAsEntity.isPresent()) {
             fileGuid = updateFileInRepository(userId, externalSourceGuid, externalSourceName, fileAsEntity.get(), file,
                     extendedProperties, methodName);
         } else {
@@ -104,17 +112,47 @@ public class DataEngineDataFileHandler {
         dataEngineFolderHierarchyHandler.upsertFolderHierarchy(fileGuid, file.getPathName(), externalSourceGuid, externalSourceName,
                 userId, methodName);
 
-        if(file.getProtocol() != null && file.getNetworkAddress() != null) {
-            dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileTypeName, file.getProtocol(),
-                    file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId, methodName);
-        }
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileGuid, fileTypeName,
+                file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
 
         return fileGuid;
     }
 
+    /**
+     * Remove the data file
+     *
+     * @param userId             the name of the calling user
+     * @param dataFileGUID       unique identifier of the file to be removed
+     * @param externalSourceName the external data engine name
+     * @param externalSourceGUID the external data engine unique identifier
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
+    public void removeDataFile(String userId, String dataFileGUID, String externalSourceName, String externalSourceGUID,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                     FunctionNotSupportedException {
+        final String methodName = "removeDataFile";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+
+        Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                DATA_FILE_TYPE_NAME);
+        if (schemaType.isPresent()) {
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
+
+            fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
+                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
+        } else {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
+        }
+    }
+
     private String updateFileInRepository(String userId, String externalSourceGuid, String externalSourceName,
-                                        EntityDetail fileAsEntity, DataFile file, Map<String, Object> extendedProperties,
-                                        String methodName)
+                                          EntityDetail fileAsEntity, DataFile file, Map<String, Object> extendedProperties,
+                                          String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
 
@@ -145,13 +183,12 @@ public class DataEngineDataFileHandler {
         invalidParameterHandler.validateObject(file, "file", methodName);
         invalidParameterHandler.validateName(file.getQualifiedName(), "file.qualifiedName", methodName);
         invalidParameterHandler.validateName(file.getPathName(), "file.pathName", methodName);
-        if( schemaType != null) {
+        if (schemaType != null) {
             invalidParameterHandler.validateObject(schemaType.getQualifiedName(), "schema.qualifiedName", methodName);
         }
         invalidParameterHandler.validateObject(columns, "columns", methodName);
-        for(Attribute column : columns){
+        for (Attribute column : columns) {
             invalidParameterHandler.validateName(column.getQualifiedName(), "columns.column.qualifiedName", methodName);
         }
     }
-
 }

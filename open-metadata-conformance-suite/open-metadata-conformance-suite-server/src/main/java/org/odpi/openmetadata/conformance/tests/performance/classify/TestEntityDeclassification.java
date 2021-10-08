@@ -157,13 +157,15 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(entities != null,
-                A_FIND_ENTITIES_RC,
-                A_FIND_ENTITIES_RC_MSG + testTypeName,
-                PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
-                null,
-                "findEntitiesByClassification",
-                elapsedTime);
+        if (entities != null) {
+            assertCondition(true,
+                    A_FIND_ENTITIES_RC,
+                    A_FIND_ENTITIES_RC_MSG + testTypeName,
+                    PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
+                    null,
+                    "findEntitiesByClassification",
+                    elapsedTime);
+        }
         return entities;
     }
 
@@ -204,7 +206,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 String operationDescription = "declassify an entity with " + classificationDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", classificationDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -259,7 +261,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                 String operationDescription = "purge reference copy classification " + classificationDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", classificationDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

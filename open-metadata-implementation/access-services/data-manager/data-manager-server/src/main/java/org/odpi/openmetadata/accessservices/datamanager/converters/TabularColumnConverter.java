@@ -4,15 +4,14 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TabularColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -62,59 +61,28 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof TabularColumnElement)
             {
-                TabularColumnElement bean = (TabularColumnElement) returnBean;
-                TabularColumnProperties tabularColumnProperties = new TabularColumnProperties();
+                TabularColumnElement    bean = (TabularColumnElement) returnBean;
+                TabularColumnProperties properties = new TabularColumnProperties();
 
                 if (schemaAttributeEntity != null)
                 {
-                    /*
-                     * Check that the entity is of the correct type.
-                     */
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-
-                    /*
-                     * The initial set of values come from the entity.
-                     */
-                    InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                    tabularColumnProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    tabularColumnProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    tabularColumnProperties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    tabularColumnProperties.setDescription(this.removeDescription(instanceProperties));
-
-                    tabularColumnProperties.setElementPosition(this.removePosition(instanceProperties));
-                    tabularColumnProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                    tabularColumnProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                    tabularColumnProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                    tabularColumnProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                    tabularColumnProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                    tabularColumnProperties.setSortOrder(this.removeSortOrder(instanceProperties));
-                    tabularColumnProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                    tabularColumnProperties.setLength(this.removeLength(instanceProperties));
-                    tabularColumnProperties.setPrecision(this.removePrecision(instanceProperties));
-                    tabularColumnProperties.setIsNullable(this.removeIsNullable(instanceProperties));
-                    tabularColumnProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-                    tabularColumnProperties.setAliases(this.removeAliases(instanceProperties));
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    tabularColumnProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    tabularColumnProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    SchemaTypeElement schemaTypeElement = null;
 
                     if (schemaType instanceof SchemaTypeElement)
                     {
-                        SchemaTypeProperties schemaTypeProperties = ((SchemaTypeElement) schemaType).getSchemaTypeProperties();
-
-                        super.addSchemaTypeToColumn(schemaTypeProperties, tabularColumnProperties);
+                        schemaTypeElement = (SchemaTypeElement) schemaType;
                     }
 
-                    bean.setTabularColumnProperties(tabularColumnProperties);
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
+                    super.setUpSchemaAttribute(schemaAttributeEntity, schemaTypeElement, properties);
+
+                    properties.setTypeName(bean.getElementHeader().getType().getTypeName());
+
+                    bean.setTabularColumnProperties(properties);
                 }
                 else
                 {
@@ -124,7 +92,7 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
 
             return returnBean;
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

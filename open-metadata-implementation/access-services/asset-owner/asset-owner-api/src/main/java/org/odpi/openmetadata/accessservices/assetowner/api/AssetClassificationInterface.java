@@ -154,7 +154,29 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     * @param ownerType indicator of the type of Id provided above - or null to clear the field
+     *
+     * @throws InvalidParameterException userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    void updateAssetOwner(String    userId,
+                          String    assetGUID,
+                          String    ownerId,
+                          OwnerType ownerType) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
+
+
+    /**
+     * Update the owner information for a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param ownerId unique identifier/property of the owner - or null to clear the field
+     * @param ownerTypeName name of the type of Id provided above - or null to clear the field
+     * @param ownerPropertyName name of the property that describes the ownerId
      *
      * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
@@ -163,9 +185,10 @@ public interface AssetClassificationInterface
     void updateAssetOwner(String    userId,
                           String    assetGUID,
                           String    ownerId,
-                          OwnerType ownerType) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+                          String    ownerTypeName,
+                          String    ownerPropertyName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
 
 
     /**

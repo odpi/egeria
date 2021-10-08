@@ -7,17 +7,14 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.test.synchronizat
 import static org.testng.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.JsonMocks;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.AnalyticsAssetUtils;
 import org.testng.annotations.Test;
 
 
@@ -78,18 +75,10 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	void testCreateBaseModule() throws Exception {
 
 		String input = "baseModule";
-		AnalyticsAsset baseModule = createBean(input);
+		AnalyticsAsset baseModule = getBaseModuleAsset(input);
 
-		// create entities for columns referenced in base module
-		Map<String, String>guidMap = new HashMap<>();
-		createReferencedEntitiesForMetadataLinks(baseModule.getContainer(), guidMap);
-		String json = TestUtilities.readJsonFile(FOLDER_INPUT, input);
-		// replace GUIDs from input with real GUIDs of created entities
-		for (Entry<String, String> pair : guidMap.entrySet()) {
-			json = json.replace(pair.getKey(), pair.getValue());
-		}
-
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				SoftwareServerCapability_GUID, baseModule);
 		
 		assertEquals(guids.getAssetsList().size(), 1, "Single asset should be created.");
 		
@@ -110,11 +99,10 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateModule() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,	SoftwareServerCapability_GUID, createBean("baseModule"));
 		
 		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+				SoftwareServerCapability_GUID, createBean("module"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -134,12 +122,12 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateReport() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("module"));
 		
 		
 		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
+				SoftwareServerCapability_GUID, createBean("report"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -159,11 +147,11 @@ class AnalyticsArtifactHandlerTest extends SynchronizationBaseTest {
 	@Test
 	void testCreateDashboard() throws Exception {
 
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, SoftwareServerCapability_GUID, createBean("module"));
 		
 		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
+				SoftwareServerCapability_GUID, createBean("dashboard"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 

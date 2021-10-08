@@ -50,7 +50,7 @@ public class SubjectAreaTermRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * <li> ClassificationException              Error processing a classification
@@ -92,6 +92,8 @@ public class SubjectAreaTermRESTResource {
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -110,13 +112,15 @@ public class SubjectAreaTermRESTResource {
     @GetMapping(path = "/users/{userId}/terms")
     public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                     @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                      @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findTerm(serverName, userId, searchCriteria, exactValue, ignoreCase, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -188,7 +192,7 @@ public class SubjectAreaTermRESTResource {
      * Delete a Term instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -198,7 +202,6 @@ public class SubjectAreaTermRESTResource {
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
      * @param guid       guid of the term to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -208,16 +211,14 @@ public class SubjectAreaTermRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
                                                        @PathVariable String userId,
-                                                       @PathVariable String guid,
-                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
-    ) {
-        return restAPI.deleteTerm(serverName, userId, guid, isPurge);
+                                                       @PathVariable String guid
+                                                      ) {
+        return restAPI.deleteTerm(serverName, userId, guid);
     }
 
     /**

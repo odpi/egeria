@@ -18,6 +18,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * The SecurityManagerRESTServices provides the server-side implementation of the services
@@ -126,6 +128,8 @@ public class SecurityManagerRESTServices
                                                           requestBody.getEncryption(),
                                                           requestBody.getAdditionalProperties(),
                                                           requestBody.getVendorProperties(),
+                                                          null,
+                                                          null,
                                                           methodName));
             }
         }
@@ -188,6 +192,8 @@ public class SecurityManagerRESTServices
                                                                         requestBody.getSource(),
                                                                         requestBody.getAdditionalProperties(),
                                                                         requestBody.getVendorProperties(),
+                                                                        null,
+                                                                        null,
                                                                         methodName));
             }
         }
@@ -248,6 +254,8 @@ public class SecurityManagerRESTServices
                                                                     requestBody.getSource(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getVendorProperties(),
+                                                                    null,
+                                                                    null,
                                                                     methodName));
         }
         catch (Exception error)
@@ -296,6 +304,9 @@ public class SecurityManagerRESTServices
                                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)

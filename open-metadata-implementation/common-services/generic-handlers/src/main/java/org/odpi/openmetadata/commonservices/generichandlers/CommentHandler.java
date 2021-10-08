@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,6 +73,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
@@ -81,6 +82,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      */
     public int countAttachedComments(String userId,
                                      String elementGUID,
+                                     Date   effectiveTime,
                                      String methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -90,6 +92,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -173,6 +176,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       commentGUID,
                                       commentGUIDParameter,
                                       OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
@@ -212,7 +218,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String textParameter             = "commentText";
+        final String textParameter = "commentText";
 
         invalidParameterHandler.validateText(commentText, textParameter, methodName);
 
@@ -231,8 +237,12 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     commentGUIDParameterName,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
+                                    new Date(),
                                     methodName);
     }
 
@@ -269,6 +279,9 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -285,6 +298,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for the particular service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -302,6 +316,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startingFrom,
                                 int          pageSize,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -318,9 +333,12 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -335,6 +353,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for the particular service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -350,20 +369,29 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startingFrom,
                                 int          pageSize,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -377,6 +405,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of the anchor entity
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -391,20 +420,29 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                 String   elementTypeName,
                                 int      startingFrom,
                                 int      pageSize,
+                                Date     effectiveTime,
                                 String   methodName) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 }

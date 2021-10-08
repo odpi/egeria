@@ -6,7 +6,11 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +22,8 @@ import java.util.List;
  */
 public class RepositoryRelationshipsIterator
 {
+    private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
+
     private RepositoryHandler  repositoryHandler;
     private String             userId;
     private String             startingEntityGUID;
@@ -26,6 +32,8 @@ public class RepositoryRelationshipsIterator
     private String             relationshipTypeName;
     private int                startingFrom;
     private int                requesterPageSize;
+    private boolean            forDuplicateProcessing;
+    private Date               effectiveTime;
     private String             methodName;
     private List<Relationship> relationshipsCache = null;
 
@@ -39,8 +47,10 @@ public class RepositoryRelationshipsIterator
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param forDuplicateProcessing is this retrieve part of duplicate processing?
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return by this iterator.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositoryRelationshipsIterator(RepositoryHandler repositoryHandler,
@@ -49,8 +59,10 @@ public class RepositoryRelationshipsIterator
                                            String            startingEntityTypeName,
                                            String            relationshipTypeGUID,
                                            String            relationshipTypeName,
+                                           boolean           forDuplicateProcessing,
                                            int               startingFrom,
                                            int               requesterPageSize,
+                                           Date              effectiveTime,
                                            String            methodName)
     {
         this.repositoryHandler      = repositoryHandler;
@@ -61,7 +73,14 @@ public class RepositoryRelationshipsIterator
         this.relationshipTypeName   = relationshipTypeName;
         this.startingFrom           = startingFrom;
         this.requesterPageSize      = requesterPageSize;
+        this.forDuplicateProcessing = forDuplicateProcessing;
+        this.effectiveTime          = effectiveTime;
         this.methodName             = methodName;
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
+        }
     }
 
 
@@ -77,22 +96,46 @@ public class RepositoryRelationshipsIterator
     {
         if ((relationshipsCache == null) || (relationshipsCache.isEmpty()))
         {
-            relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
-                                                                          startingEntityGUID,
-                                                                          startingEntityTypeName,
-                                                                          relationshipTypeGUID,
-                                                                          relationshipTypeName,
-                                                                          startingFrom,
-                                                                          requesterPageSize,
-                                                                          methodName);
+            relationshipsCache = new ArrayList<>();
+
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((relationshipsCache != null) && (relationshipsCache.isEmpty()))
+            {
+                relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
+                                                                              startingEntityGUID,
+                                                                              startingEntityTypeName,
+                                                                              relationshipTypeGUID,
+                                                                              relationshipTypeName,
+                                                                              forDuplicateProcessing,
+                                                                              startingFrom,
+                                                                              requesterPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                startingFrom = startingFrom + requesterPageSize;
+            }
 
             if (relationshipsCache != null)
             {
-                startingFrom = startingFrom + relationshipsCache.size();
+                if (log.isDebugEnabled())
+                {
+                    log.debug("relationshipsCache");
+                    for (Relationship relationship : relationshipsCache)
+                    {
+                        log.debug("relationship guid" + relationship.getGUID() +
+                                          " end1 " +
+                                          relationship.getEntityOneProxy().getGUID() +
+                                          " end2 " +
+                                          relationship.getEntityTwoProxy().getGUID());
+                    }
+                }
             }
         }
 
-        return ! ((relationshipsCache == null) || (relationshipsCache.isEmpty()));
+        return (relationshipsCache != null);
     }
 
 

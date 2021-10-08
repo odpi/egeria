@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: check stale issues and prs
         if: startsWith(github.repository,'odpi/')
-        uses: actions/stale@v3.0.19
+        uses: actions/stale@v4
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: >
@@ -28,6 +28,6 @@ jobs:
           stale-pr-label: 'no-pr-activity'
           days-before-stale: 60
           days-before-close: 20
-          exempt-issue-label: 'pinned'
-          exempt-pr-label: 'pinned'
+          exempt-issue-labels: 'pinned'
+          exempt-pr-labels: 'pinned'
           operations-per-run: 30

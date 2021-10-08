@@ -5,9 +5,12 @@ package org.odpi.openmetadata.accessservices.dataengine.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,45 +21,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProcessListEvent extends DataEngineEventHeader{
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class ProcessListEvent extends DataEngineEventHeader {
 
+    /**
+     * The failed GUIDs
+     * -- GETTER --
+     * Returns the failed GUIDs
+     * @return the failed GUIDs
+     * -- SETTER --
+     * Sets up the failed GUIDs
+     * @param failedGUIDs the failed GUIDs
+     */
     private List<String> failedGUIDs;
 
-    /**
-     * Gets failed gui ds.
-     *
-     * @return the failed gui ds
-     */
-    public List<String> getFailedGUIDs() {
-        return failedGUIDs;
-    }
-
-    /**
-     * Sets failed gui ds.
-     *
-     * @param failedGUIDs the failed gui ds
-     */
-    public void setFailedGUIDs(List<String> failedGUIDs) {
-        this.failedGUIDs = failedGUIDs;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProcessListEvent that = (ProcessListEvent) o;
-        return Objects.equals(failedGUIDs, that.failedGUIDs);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(failedGUIDs);
-    }
-
-    @Override
-    public String toString() {
-        return "ProcessListEvent{" +
-                "failedGUIDs=" + failedGUIDs +
-                "} " + super.toString();
-    }
 }

@@ -15,7 +15,11 @@ part of the activity.
 ![UML](0137-Actions.png#pagewidth)
 > Figure 1: Describing an action for a person
 
-Return to [Area 1](Area-1-models.md).
+----
+
+* Return to [Area 1](Area-1-models.md).
+* Return to [Overview](.).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

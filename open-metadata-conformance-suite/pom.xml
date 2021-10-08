@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Conformance Suite</name>

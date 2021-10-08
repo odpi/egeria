@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -129,6 +130,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                  assetManagerGUID,
                                                                                  assetManagerName,
+                                                                                 null,
                                                                                  methodName));
                 }
             }
@@ -178,12 +180,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             typeName = assetProperties.getTypeName();
         }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
         String assetGUID = assetHandler.createAssetInRepository(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
@@ -191,7 +187,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 assetProperties.getTechnicalName(),
                                                                 assetProperties.getTechnicalDescription(),
                                                                 assetProperties.getAdditionalProperties(),
-                                                                typeGUID,
                                                                 typeName,
                                                                 assetProperties.getExtendedProperties(),
                                                                 InstanceStatus.ACTIVE,
@@ -437,6 +432,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                             null,
                                             null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
     }
 
@@ -520,6 +518,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                  searchStringParameterName,
                                                                  startFrom,
                                                                  pageSize,
+                                                                 new Date(),
                                                                  methodName);
         
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -558,6 +557,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
+                                                                new Date(),
                                                                 methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -603,6 +603,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       new Date(),
                                                                        methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -643,6 +644,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         List<DataAssetElement> results = new ArrayList<>();
 
         List<EntityDetail> assetEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
@@ -652,6 +655,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                effectiveTime,
                                                                                                 methodName);
 
         if (assetEntities != null)
@@ -673,6 +677,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                              assetManagerGUID,
                                                                                              assetManagerName,
+                                                                                             effectiveTime,
                                                                                              methodName));
 
                         results.add(dataAssetElement);
@@ -717,10 +722,15 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
     {
         final String guidParameterName = "openMetadataGUID";
 
+        Date effectiveTime = new Date();
+
         DataAssetElement asset = assetHandler.getBeanFromRepository(userId,
                                                                     openMetadataGUID,
                                                                     guidParameterName,
                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    effectiveTime,
                                                                     methodName);
 
         if (asset != null)
@@ -731,6 +741,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                       assetManagerGUID,
                                                                       assetManagerName,
+                                                                      effectiveTime,
                                                                       methodName));
         }
 

@@ -13,13 +13,21 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
  */
 public class SchemasResponse extends AnalyticsModelingOMASAPIResponse{
 
+	private List<ResponseContainerDatabaseSchema> data;
 	/**
 	 * Set list of schemas available for database.
 	 * @param databaseSchemas set as response.
 	 */
     public void setSchemaList(List<ResponseContainerDatabaseSchema> databaseSchemas) {
-        this.setData(databaseSchemas);
+    	data = databaseSchemas;
     }
 
+	/**
+	 * Get list of schemas available for database.
+	 * @return list of schemas available for database.
+	 */
+	public List<ResponseContainerDatabaseSchema> getSchemaList() {
+        return data;
+    }
 }
 

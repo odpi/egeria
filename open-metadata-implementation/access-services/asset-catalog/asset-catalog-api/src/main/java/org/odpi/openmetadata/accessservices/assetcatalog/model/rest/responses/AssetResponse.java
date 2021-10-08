@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetElements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -27,5 +27,5 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
-    private AssetElements asset;
+    private Elements asset;
 }

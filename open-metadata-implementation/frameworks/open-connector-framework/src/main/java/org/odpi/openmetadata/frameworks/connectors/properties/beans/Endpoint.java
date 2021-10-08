@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The Endpoint describes the network information necessary for a connector to connect to the server
- * where the Asset is accessible from.  The properties for an endpoint are defined in model 0040.
+ * where the Asset is accessible from.  The properties for an endpoint are defined in model 0026.
  * They include:
  * <ul>
  *     <li>

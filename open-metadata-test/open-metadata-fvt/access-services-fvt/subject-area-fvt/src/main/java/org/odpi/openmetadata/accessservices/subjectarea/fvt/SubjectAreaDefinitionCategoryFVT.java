@@ -66,20 +66,27 @@ public class SubjectAreaDefinitionCategoryFVT
         subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.userId=userId;
-        existingSubjectAreaCount = findSubjectAreaDefinitions(".*").size();
+        existingSubjectAreaCount = findSubjectAreaDefinitions("").size();
         System.out.println("existingSubjectAreaCount " + existingSubjectAreaCount);
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("SubjectAreaDefinitionCategoryFVT runIt started");
-        SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,serverName,userId);
-        fvt.run();
-        fvt.deleteRemaining();
-        System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
+        try
+        {
+            System.out.println("SubjectAreaDefinitionCategoryFVT runIt started");
+            SubjectAreaDefinitionCategoryFVT fvt = new SubjectAreaDefinitionCategoryFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemaining();
+            System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
     public static int getSubjectAreaCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         SubjectAreaDefinitionCategoryFVT fvt = new SubjectAreaDefinitionCategoryFVT(url, serverName, userId);
-        return fvt.findSubjectAreaDefinitions(".*").size();
+        return fvt.findSubjectAreaDefinitions("").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -211,7 +218,7 @@ public class SubjectAreaDefinitionCategoryFVT
             iter.remove();
             deleteSubjectAreaDefinition(guid);
         }
-        List<SubjectAreaDefinition> subjectAreas = findSubjectAreaDefinitions(".*");
+        List<SubjectAreaDefinition> subjectAreas = findSubjectAreaDefinitions("");
         if (subjectAreas.size() != existingSubjectAreaCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingSubjectAreaCount + " Subject Area Definitions to be found, got " + subjectAreas.size());
         }

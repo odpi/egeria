@@ -7,8 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class OpenLineageRestServices {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
             log.debug(debugMessage, e);
         }catch (Exception e) {
-            openLineageExceptionHandler.captureThrowable(response, e, methodName);
+            openLineageExceptionHandler.captureExceptions(response, e, methodName);
             log.debug(debugMessage, e);
         }
         return response;
@@ -70,7 +70,7 @@ public class OpenLineageRestServices {
             openLineageExceptionHandler.captureOpenLineageException(response, e);
             log.debug(debugMessage, e);
         }catch (Exception e) {
-            openLineageExceptionHandler.captureThrowable(response, e, methodName);
+            openLineageExceptionHandler.captureExceptions(response, e, methodName);
             log.debug(debugMessage, e);
         }
         return response;

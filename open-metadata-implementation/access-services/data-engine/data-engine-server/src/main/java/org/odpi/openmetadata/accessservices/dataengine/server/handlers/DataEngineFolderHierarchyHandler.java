@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -24,6 +26,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME;
@@ -44,9 +47,9 @@ public class DataEngineFolderHierarchyHandler {
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler manages calls to the repository services
+     * @param repositoryHandler       manages calls to the repository services
      * @param dataEngineCommonHandler provides common Data Engine Omas utilities
-     * @param folderHandler provides utilities specific for manipulating FileFolders
+     * @param folderHandler           provides utilities specific for manipulating FileFolders
      */
     public DataEngineFolderHierarchyHandler(InvalidParameterHandler invalidParameterHandler,
                                             RepositoryHandler repositoryHandler, DataEngineCommonHandler dataEngineCommonHandler,
@@ -62,15 +65,15 @@ public class DataEngineFolderHierarchyHandler {
      * Construct the folder structure in which a data file is stored all the way to the SoftwareServerCapability. Care is
      * taken to maintain uniqueness of the relationship NestedFile that is between the file and the first folder.
      *
-     * @param fileGuid data file guid
-     * @param pathName file path
+     * @param fileGuid           data file guid
+     * @param pathName           file path
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
-     * @param userId user id
-     * @param methodName method name
+     * @param userId             user id
+     * @param methodName         method name
      *
-     * @throws InvalidParameterException if invalid parameters
-     * @throws PropertyServerException if errors in repository
+     * @throws InvalidParameterException  if invalid parameters
+     * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
     public void upsertFolderHierarchy(String fileGuid, String pathName, String externalSourceGuid, String externalSourceName,
@@ -80,11 +83,11 @@ public class DataEngineFolderHierarchyHandler {
         validateParameters(fileGuid, pathName, externalSourceGuid, externalSourceName, userId, methodName);
         List<FileFolder> folders = extractFolders(pathName, externalSourceName, methodName);
 
-        String folderGuid = "" ;
+        String folderGuid = "";
         String previousEntityGuid = fileGuid;
         String relationshipTypeName = NESTED_FILE_TYPE_NAME;
-        for(FileFolder folder : folders){
-            if(relationshipTypeName.equals(NESTED_FILE_TYPE_NAME)){
+        for (FileFolder folder : folders) {
+            if (relationshipTypeName.equals(NESTED_FILE_TYPE_NAME)) {
                 deleteExistingNestedFileRelationships(fileGuid, externalSourceGuid, externalSourceName, userId, methodName);
             }
             folderGuid = upsertFolder(externalSourceGuid, externalSourceName, folder, userId, methodName);
@@ -99,15 +102,41 @@ public class DataEngineFolderHierarchyHandler {
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, externalSourceName, null);
     }
 
-    private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName,
-                                                       String userId, String methodName)
-            throws UserNotAuthorizedException, PropertyServerException {
-        Optional<List<Relationship>> optionalRelationships = Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
-                NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));
-        if(!optionalRelationships.isPresent()){
+    /**
+     * Remove the folder
+     *
+     * @param userId             the name of the calling user
+     * @param folderGUID         unique identifier of the folder to be removed
+     * @param externalSourceName the external data engine name
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
+    public void removeFolder(String userId, String folderGUID, DeleteSemantic deleteSemantic, String externalSourceName) throws
+                                                                                                                         InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException,
+                                                                                                                         FunctionNotSupportedException {
+        String methodName = "removeFolder";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(folderGUID, GUID_PROPERTY_NAME, methodName);
+
+        dataEngineCommonHandler.removeEntity(userId, folderGUID, FILE_FOLDER_TYPE_NAME, externalSourceName);
+    }
+
+    private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
+                                                       String methodName) throws UserNotAuthorizedException, PropertyServerException {
+        Optional<List<Relationship>> optionalRelationships =
+                Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
+                        NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));
+        if (!optionalRelationships.isPresent()) {
             return;
         }
-        for(Relationship relationship : optionalRelationships.get()) {
+        for (Relationship relationship : optionalRelationships.get()) {
             repositoryHandler.removeRelationship(userId, externalSourceGuid, externalSourceName, relationship, methodName);
         }
     }
@@ -116,7 +145,7 @@ public class DataEngineFolderHierarchyHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Optional<EntityDetail> folderAsEntity = dataEngineCommonHandler.findEntity(userId, folder.getQualifiedName(), FILE_FOLDER_TYPE_NAME);
 
-        if(folderAsEntity.isPresent()){
+        if (folderAsEntity.isPresent()) {
             return folderAsEntity.get().getGUID();
         }
 
@@ -128,22 +157,22 @@ public class DataEngineFolderHierarchyHandler {
     }
 
     /**
-    * Extracts each folder path and builds FileFolders, with the qualified name of the form
-    * '<externalSourceName>::<path>'. The order is important, meaning the first folder is the one containing the file
-    * and the last one the root, and used in creating the folder hierarchy structure al the way to the SoftwareServerCapability
-    *
-     * @param pathName file path
+     * Extracts each folder path and builds FileFolders, with the qualified name of the form
+     * '<externalSourceName>::<path>'. The order is important, meaning the first folder is the one containing the file
+     * and the last one the root, and used in creating the folder hierarchy structure al the way to the SoftwareServerCapability
+     *
+     * @param pathName           file path
      * @param externalSourceName name of SoftwareServerCapability
-     * @param methodName method name
+     * @param methodName         method name
      *
      * @return list of FileFolders
-    */
+     */
     private List<FileFolder> extractFolders(String pathName, String externalSourceName, String methodName)
             throws InvalidParameterException {
 
         // java.nio.file.Paths works with backslash '/' alone, so reverse the slash but remember it to set it correctly in FileFolder's pathName
         boolean fileSeparatorReversed = false;
-        if(pathName.contains("\\")){
+        if (pathName.contains("\\")) {
             pathName = pathName.replace("\\", "/");
             fileSeparatorReversed = true;
         }
@@ -154,7 +183,7 @@ public class DataEngineFolderHierarchyHandler {
 
         List<FileFolder> folders = new ArrayList<>();
         // move from parent to parent until the root is reached
-        while(parentFile != null){
+        while (parentFile != null) {
             String parentFilePath = fileSeparatorReversed ? parentFile.getPath().replace("/", "\\") : parentFile.getPath();
             FileFolder folder = buildFileFolder(parentFilePath, externalSourceName);
             folders.add(folder);
@@ -163,8 +192,8 @@ public class DataEngineFolderHierarchyHandler {
         return folders;
     }
 
-    private FileFolder buildFileFolder(String pathName, String externalSourceName){
-        FileFolder fileFolder= new FileFolder();
+    private FileFolder buildFileFolder(String pathName, String externalSourceName) {
+        FileFolder fileFolder = new FileFolder();
         fileFolder.setQualifiedName(externalSourceName + "::" + pathName);
         fileFolder.setPathName(pathName);
         fileFolder.setDisplayName(computeDisplayName(pathName));
@@ -182,7 +211,7 @@ public class DataEngineFolderHierarchyHandler {
      *
      * @return folder name
      */
-    private String computeDisplayName(String pathName){
+    private String computeDisplayName(String pathName) {
         return new File(pathName).getName().length() < 1 ? pathName : new File(pathName).getName();
     }
 
@@ -195,5 +224,4 @@ public class DataEngineFolderHierarchyHandler {
         invalidParameterHandler.validateObject(externalSourceName, "externalSourceName", methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
     }
-
 }

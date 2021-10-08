@@ -226,7 +226,7 @@ class CanonicalGlossaryOwlModelArchiveBuilder extends DesignModelArchiveBuilder 
 
         Map<String, String> resourceSubClassMap = model.getResourceSubClassMap();
         for (String subclass : resourceSubClassMap.keySet()) {
-            super.addISARelationship(subclass, resourceSubClassMap.get(subclass));
+            super.addIsATypeOfRelationship(subclass, resourceSubClassMap.get(subclass));
         }
         for (String containerName : containmentMemberMap.keySet()) {
             super.addCategoryHierarchy(containerName, containmentMemberMap.get(containerName));

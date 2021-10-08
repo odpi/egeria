@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -78,13 +79,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param owner identifier of the owner of this governance action
-     * @param ownerType type of owner (userId or actor profile)
      * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
      * @param requestParameters properties for the request type
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @return unique identifier of the new governance action type
@@ -98,13 +99,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                              int                  domainIdentifier,
                                              String               displayName,
                                              String               description,
-                                             String               owner,
-                                             int                  ownerType,
                                              List<String>         supportedGuards,
                                              Map<String, String>  additionalProperties,
                                              String               governanceEngineGUID,
                                              String               requestType,
                                              Map<String, String>  requestParameters,
+                                             Date                 effectiveFrom,
+                                             Date                 effectiveTo,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -118,13 +119,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              owner,
-                                                                              ownerType,
                                                                               supportedGuards,
                                                                               additionalProperties,
                                                                               repositoryHelper,
                                                                               serviceName,
                                                                               serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String governanceActionTypeGUID = this.createBeanInRepository(userId,
                                                                       null,
@@ -143,6 +144,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                               governanceEngineGUID,
                                               requestType,
                                               requestParameters,
+                                              effectiveFrom,
+                                              effectiveTo,
                                               methodName);
         }
 
@@ -158,6 +161,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
      * @param requestParameters properties for the request type
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -169,6 +174,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                               String              governanceEngineGUID,
                                               String              requestType,
                                               Map<String, String> requestParameters,
+                                              Date                effectiveFrom,
+                                              Date                effectiveTo,
                                               String              methodName)  throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -197,9 +204,12 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                   governanceEngineGUID,
                                   governanceEngineGUIDParameterName,
                                   OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_GUID,
                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_NAME,
-                                  relationshipProperties,
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -214,13 +224,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param owner identifier of the owner of this governance action
-     * @param ownerType type of owner (userId or actor profile)
      * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
      * @param requestParameters properties for the request type
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -234,13 +244,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            int                 domainIdentifier,
                                            String              displayName,
                                            String              description,
-                                           String              owner,
-                                           int                 ownerType,
                                            List<String>        supportedGuards,
                                            Map<String, String> additionalProperties,
                                            String              governanceEngineGUID,
                                            String              requestType,
                                            Map<String, String> requestParameters,
+                                           Date                effectiveFrom,
+                                           Date                effectiveTo,
                                            String              methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -257,6 +267,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
+        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
+
         /*
          * Handle the relationship with the governance engine.
          */
@@ -267,6 +279,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_GUID,
                                                                                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_EXECUTOR_TYPE_NAME,
+                                                                                              false,
+                                                                                              effectiveTime,
                                                                                               methodName);
 
             if (executorRelationship == null)
@@ -281,6 +295,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                   governanceEngineGUID,
                                                   requestType,
                                                   requestParameters,
+                                                  effectiveFrom,
+                                                  effectiveTo,
                                                   methodName);
             }
             else
@@ -304,26 +320,14 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                         /*
                          * Update the properties
                          */
-                        InstanceProperties relationshipProperties = executorRelationship.getProperties();
-
-                        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                              relationshipProperties,
-                                                                                              OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
-                                                                                              requestType,
-                                                                                              methodName);
-
-                        relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                                 relationshipProperties,
-                                                                                                 OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                                 requestParameters,
-                                                                                                 methodName);
-
-                        repositoryHandler.updateRelationshipProperties(userId,
-                                                                       null,
-                                                                       null,
-                                                                       executorRelationship,
-                                                                       relationshipProperties,
-                                                                       methodName);
+                        updateExecutorRelationship(userId,
+                                                   executorRelationship,
+                                                   requestType,
+                                                   requestParameters,
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   true,
+                                                   methodName);
                     }
                 }
                 else if (governanceEngineGUID.equals(executorRelationship.getEntityTwoProxy().getGUID()))
@@ -331,31 +335,14 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                     /*
                      * The governance engine is still correct so only need to update the properties.
                      */
-                    InstanceProperties relationshipProperties =null;
-
-                    if (isMergeUpdate)
-                    {
-                        relationshipProperties = executorRelationship.getProperties();
-                    }
-
-                    relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                          relationshipProperties,
-                                                                                          OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
-                                                                                          requestType,
-                                                                                          methodName);
-
-                    relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                             relationshipProperties,
-                                                                                             OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                             requestParameters,
-                                                                                             methodName);
-
-                    repositoryHandler.updateRelationshipProperties(userId,
-                                                                   null,
-                                                                   null,
-                                                                   executorRelationship,
-                                                                   relationshipProperties,
-                                                                   methodName);
+                    updateExecutorRelationship(userId,
+                                               executorRelationship,
+                                               requestType,
+                                               requestParameters,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               isMergeUpdate,
+                                               methodName);
                 }
                 else
                 {
@@ -373,6 +360,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                       governanceEngineGUID,
                                                       requestType,
                                                       requestParameters,
+                                                      effectiveFrom,
+                                                      effectiveTo,
                                                       methodName);
                 }
             }
@@ -385,13 +374,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              owner,
-                                                                              ownerType,
                                                                               supportedGuards,
                                                                               additionalProperties,
                                                                               repositoryHelper,
                                                                               serviceName,
                                                                               serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
                                     null,
@@ -400,11 +389,65 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     actionTypeGUIDParameterName,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
+
+    /**
+     * Maintain the properties in the relationship between a governance action type and a governance engine.
+     *
+     * @param userId calling user
+     * @param executorRelationship existing relationship
+     * @param requestType type of request
+     * @param requestParameters properties for the request type
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private void updateExecutorRelationship(String              userId,
+                                            Relationship        executorRelationship,
+                                            String              requestType,
+                                            Map<String, String> requestParameters,
+                                            Date                effectiveFrom,
+                                            Date                effectiveTo,
+                                            boolean             isMergeUpdate,
+                                            String              methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        InstanceProperties relationshipProperties = null;
+
+        if (isMergeUpdate)
+        {
+            relationshipProperties = executorRelationship.getProperties();
+        }
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                              requestType,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                 relationshipProperties,
+                                                                                 OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                 requestParameters,
+                                                                                 methodName);
+
+        repositoryHandler.updateRelationshipProperties(userId,
+                                                       null,
+                                                       null,
+                                                       executorRelationship,
+                                                       setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                                       methodName);
+    }
 
     /**
      * Remove the metadata element representing a governance action type.
@@ -437,6 +480,9 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -450,6 +496,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param searchStringParameterName parameter supplying search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -463,6 +510,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                              String searchStringParameterName,
                                              int    startFrom,
                                              int    pageSize,
+                                             Date   effectiveTime,
                                              String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -478,6 +526,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -491,6 +540,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param nameParameterName name of parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -504,6 +554,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                   String nameParameterName,
                                                   int    startFrom,
                                                   int    pageSize,
+                                                  Date   effectiveTime,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -525,10 +576,12 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -538,6 +591,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      *
      * @param userId calling user
      * @param actionTypeGUID unique identifier of the governance action type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -548,6 +602,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      */
     public B getGovernanceActionTypeByGUID(String userId,
                                            String actionTypeGUID,
+                                           Date   effectiveTime,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -558,6 +613,9 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                           actionTypeGUID,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -571,19 +629,23 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param processGUID unique identifier of the governance action process
      * @param actionTypeGUID unique identifier of the governance action type
      * @param guard initial guard to pass to the first governance service called
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupFirstActionType(String               userId,
-                                     String               processGUID,
-                                     String               actionTypeGUID,
-                                     String               guard,
-                                     String               methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void setupFirstActionType(String userId,
+                                     String processGUID,
+                                     String actionTypeGUID,
+                                     String guard,
+                                     Date   effectiveFrom,
+                                     Date   effectiveTo,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         final String processGUIDParameterName = "processGUID";
         final String actionTypeGUIDParameterName = "actionTypeGUID";
@@ -594,8 +656,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                                  guard,
                                                                                                  methodName);
 
-
-
         this.linkElementToElement(userId,
                                   null,
                                   null,
@@ -605,9 +665,12 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                   actionTypeGUID,
                                   actionTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
-                                  relationshipProperties,
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -618,6 +681,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      * @param firstActionTypeLink Governance Action Flow relationship (if known)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the governance action type
@@ -629,6 +693,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
     public B getFirstActionType(String       userId,
                                 String       processGUID,
                                 Relationship firstActionTypeLink,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -637,7 +702,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
 
         if ((firstActionTypeLink != null) && (firstActionTypeLink.getEntityTwoProxy() != null))
         {
-            return this.getGovernanceActionTypeByGUID(userId, firstActionTypeLink.getEntityTwoProxy().getGUID(), methodName);
+            return this.getGovernanceActionTypeByGUID(userId, firstActionTypeLink.getEntityTwoProxy().getGUID(), effectiveTime, methodName);
         }
         else
         {
@@ -648,6 +713,10 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                           false,
+                                           false,
+                                           supportedZones,
+                                           effectiveTime,
                                            methodName);
         }
     }
@@ -658,6 +727,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      *
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the governance action type
@@ -668,6 +738,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      */
     public Relationship getFirstActionTypeLink(String userId,
                                                String processGUID,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -683,6 +754,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                             null,
                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                             2,
+                                            false,
+                                            effectiveTime,
                                             methodName);
     }
 
@@ -692,6 +765,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      *
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -700,6 +774,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      */
     public void removeFirstActionType(String userId,
                                       String processGUID,
+                                      Date   effectiveTime,
                                       String methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -713,9 +788,13 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     processGUID,
                                     processGUIDParameterName,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -731,6 +810,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
      * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @return unique identifier of the new link
@@ -745,6 +826,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                       String  guard,
                                       boolean mandatoryGuard,
                                       boolean ignoreMultipleTriggers,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
                                       String  methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -773,6 +856,10 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
                                                                                ignoreMultipleTriggers,
                                                                                methodName);
+
+        relationshipProperties.setEffectiveFromTime(effectiveFrom);
+        relationshipProperties.setEffectiveToTime(effectiveTo);
+
         return this.linkElementToElement(userId,
                                          null,
                                          null,
@@ -782,6 +869,9 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                          nextActionTypeGUID,
                                          nextGUIDParameterName,
                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                         false,
+                                         false,
+                                         supportedZones,
                                          OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                          OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                          relationshipProperties,
@@ -798,6 +888,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
      * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -809,9 +901,11 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                      String  guard,
                                      boolean mandatoryGuard,
                                      boolean ignoreMultipleTriggers,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String guidParameterName = "nextActionLinkGUID";
 
@@ -836,6 +930,9 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                ignoreMultipleTriggers,
                                                                                methodName);
 
+        relationshipProperties.setEffectiveFromTime(effectiveFrom);
+        relationshipProperties.setEffectiveToTime(effectiveTo);
+
         repositoryHandler.updateRelationshipProperties(userId,
                                                        null,
                                                        null,
@@ -852,6 +949,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param actionTypeGUID unique identifier of the current governance action type
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return return the list of relationships and attached governance action types.
@@ -864,6 +962,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                            String actionTypeGUID,
                                                            int    startFrom,
                                                            int    pageSize,
+                                                           Date   effectiveTime,
                                                            String methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -878,8 +977,10 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                         OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                        false,
                                                         startFrom,
                                                         pageSize,
+                                                        effectiveTime,
                                                         methodName);
     }
 

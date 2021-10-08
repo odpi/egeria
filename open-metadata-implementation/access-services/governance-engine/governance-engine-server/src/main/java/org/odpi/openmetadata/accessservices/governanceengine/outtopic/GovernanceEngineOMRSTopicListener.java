@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
@@ -22,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -118,6 +120,33 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
+     * Process an entity extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param entity entity from the event
+     * @return boolean flag indicating that the event is processed
+     */
+    private boolean excludeGovernanceEngineEvent(String         sourceName,
+                                                 EntityDetail   entity)
+    {
+        if (entity != null)
+        {
+            InstanceType type = entity.getType();
+
+            if (type != null)
+            {
+                return (repositoryHelper.isTypeOf(sourceName,
+                                                  type.getTypeDefName(),
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME));
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
      * Process a relationship extracted from an event.
      *
      * @param sourceName source of the event
@@ -156,6 +185,33 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                         return true;
                     }
                 }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Process a relationship extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param relationship relationship from the event
+     * @return boolean flag indicating that the event is processed
+     */
+    private boolean excludeSupportedGovernanceService(String       sourceName,
+                                                      Relationship relationship)
+    {
+        if (relationship != null)
+        {
+            InstanceType type = relationship.getType();
+
+            if (type != null)
+            {
+                 return repositoryHelper.isTypeOf(sourceName,
+                                                  type.getTypeDefName(),
+                                                  OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
             }
         }
 
@@ -206,6 +262,9 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                                                           OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                                          false,
+                                                                                                          false,
+                                                                                                          new Date(),
                                                                                                           methodName);
 
                                 if (governanceEngine != null)
@@ -233,16 +292,55 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                              */
                             auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(entity.toString()));
                         }
+                        catch (InvalidParameterException error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                                 methodName,
+                                                                                                                 entity.getGUID(),
+                                                                                                                 error.getMessage()));
+                        }
                         catch (Exception error)
                         {
                             auditLog.logException(methodName,
-                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                        sourceName,
+                                                                                                                        methodName,
+                                                                                                                        entity.getGUID(),
+                                                                                                                        error.getMessage()),
                                                   error);
                         }
                     }
 
                     return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Process an entity extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param entity entity from the event
+     * @return boolean flag indicating that the event should be ignored
+     */
+    private boolean excludeGovernanceActionEvent(String       sourceName,
+                                                 EntityDetail entity)
+    {
+        if (entity != null)
+        {
+            InstanceType type = entity.getType();
+
+            if (type != null)
+            {
+                return repositoryHelper.isTypeOf(sourceName,
+                                                 type.getTypeDefName(),
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME);
             }
         }
 
@@ -340,7 +438,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param instanceStatus value from the repository services
      * @return ElementOrigin enum
      */
-    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    private ElementStatus getElementStatus(InstanceStatus instanceStatus)
     {
         if (instanceStatus != null)
         {
@@ -608,20 +706,41 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogMetadataElementEvent watchdogEvent = new WatchdogMetadataElementEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                                                 entity.getGUID(),
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 null,
+                                                                                                 methodName));
 
                 if (previousEntity != null)
                 {
-                    watchdogEvent.setPreviousMetadataElement(
-                            metadataElementHandler.getMetadataElementByGUID(userId, previousEntity.getGUID(), methodName));
+                    watchdogEvent.setPreviousMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                                                             previousEntity.getGUID(),
+                                                                                                             false,
+                                                                                                             false,
+                                                                                                             null,
+                                                                                                             methodName));
                 }
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                      GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                       methodName,
+                                                                                                       entity.getGUID(),
+                                                                                                       error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -652,7 +771,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), false, false, null, methodName));
                 watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification));
 
                 if (previousClassification != null)
@@ -662,10 +781,22 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                     methodName,
+                                                                                                     entity.getGUID(),
+                                                                                                     error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -691,6 +822,15 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         {
             try
             {
+                /*
+                 * Validate that the relationship is visible to this service
+                 */
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), false, false, null, methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), false, false, null, methodName);
+
+                /*
+                 * OK to publish relationship
+                 */
                 WatchdogRelatedElementsEvent watchdogEvent = new WatchdogRelatedElementsEvent();
 
                 watchdogEvent.setEventType(eventType);
@@ -703,10 +843,22 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                     methodName,
+                                                                                                     relationship.getGUID(),
+                                                                                                     error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, relationship.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            relationship.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -1140,8 +1292,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
                     (! excludeGovernanceManagementEvents(sourceName, entity)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
@@ -1460,7 +1612,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
+        if ((! excludeSupportedGovernanceService(sourceName, relationship)) &&
                     (! excludeGovernanceManagementEvents(sourceName, relationship)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);

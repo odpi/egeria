@@ -64,6 +64,40 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
     }
+    /**
+     * Constructor when basic properties are known.
+     *
+     * @param qualifiedName unique name
+     * @param repositoryHelper helper methods
+     * @param displayName display name of glossary term
+     * @param description new description for the glossary term.
+     * @param summary short description
+     * @param examples  example
+     * @param abbreviation abbreviation
+     * @param usage usage guidance
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public GlossaryTermBuilder(String        qualifiedName,
+                        String               displayName,
+                        String               description,
+                        String               summary,
+                        String               examples,
+                        String               abbreviation,
+                        String               usage,
+                        OMRSRepositoryHelper repositoryHelper,
+                        String               serviceName,
+                        String               serverName)
+    {
+        super(qualifiedName, repositoryHelper, serviceName, serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+        this.summary = summary;
+        this.examples = examples;
+        this.abbreviation = abbreviation;
+        this.usage = usage;
+    }
 
 
     /**
@@ -137,7 +171,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
-                                                                      description,
+                                                                      summary,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -149,19 +183,19 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME,
-                                                                      description,
+                                                                      examples,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
-                                                                      description,
+                                                                      abbreviation,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      description,
+                                                                      usage,
                                                                       methodName);
 
         return properties;
@@ -215,7 +249,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
-                                                                      description,
+                                                                      scope,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

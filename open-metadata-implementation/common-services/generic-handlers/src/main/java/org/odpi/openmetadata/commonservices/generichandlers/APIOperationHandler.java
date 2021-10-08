@@ -1,0 +1,739 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * APIOperationHandler provides the exchange of metadata about APIOperation schema types between the repository and the OMAS.
+ *
+ * @param <B> class that represents the API Operation
+ */
+public class APIOperationHandler<B> extends ReferenceableHandler<B>
+{
+    /**
+     * Construct the handler with information needed to work with B objects.
+     *
+     * @param converter specific converter for this bean class
+     * @param beanClass name of bean class that is represented by the generic class B
+     * @param serviceName name of this service
+     * @param serverName name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve B instances from
+     * @param defaultZones list of zones that the access service should set in all new B instances
+     * @param publishZones list of zones that the access service sets up in published B instances
+     * @param auditLog destination for audit log events
+     */
+    public APIOperationHandler(OpenMetadataAPIGenericConverter<B> converter,
+                               Class<B>                           beanClass,
+                               String                             serviceName,
+                               String                             serverName,
+                               InvalidParameterHandler            invalidParameterHandler,
+                               RepositoryHandler                  repositoryHandler,
+                               OMRSRepositoryHelper               repositoryHelper,
+                               String                             localServerUserId,
+                               OpenMetadataServerSecurityVerifier securityVerifier,
+                               List<String>                       supportedZones,
+                               List<String>                       defaultZones,
+                               List<String>                       publishZones,
+                               AuditLog                           auditLog)
+    {
+        super(converter,
+              beanClass,
+              serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+    }
+
+
+    /**
+     * Create the API Operation object.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param apiGUID unique identifier of the owning topic
+     * @param apiGUIDParameterName parameter supplying apiGUID
+     * @param qualifiedName unique name for the API Operation - used in other configuration
+     * @param displayName short display name for the API Operation
+     * @param description description of the API Operation
+     * @param versionNumber version of the schema type.
+     * @param isDeprecated is the schema type deprecated
+     * @param author name of the author
+     * @param usage guidance on how the schema should be used.
+     * @param encodingStandard format of the schema
+     * @param namespace namespace where the schema is defined.
+     * @param additionalProperties additional properties for a API Operation
+     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
+     * @param extendedProperties  properties for a API Operation subtype
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new API Operation object
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String createAPIOperation(String              userId,
+                                     String              externalSourceGUID,
+                                     String              externalSourceName,
+                                     String              apiGUID,
+                                     String              apiGUIDParameterName,
+                                     String              qualifiedName,
+                                     String              displayName,
+                                     String              description,
+                                     String              versionNumber,
+                                     boolean             isDeprecated,
+                                     String              author,
+                                     String              usage,
+                                     String              encodingStandard,
+                                     String              namespace,
+                                     Map<String, String> additionalProperties,
+                                     String              suppliedTypeName,
+                                     Map<String, Object> extendedProperties,
+                                     String              methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(apiGUID, apiGUIDParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        final String apiSchemaTypeGUIDParameterName = "apiSchemaTypeGUID";
+
+        String apiSchemaTypeGUID = this.getAPISchemaTypeGUID(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             apiGUID,
+                                                             apiGUIDParameterName,
+                                                             qualifiedName,
+                                                             methodName);
+
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
+                                                          displayName,
+                                                          description,
+                                                          versionNumber,
+                                                          isDeprecated,
+                                                          author,
+                                                          usage,
+                                                          encodingStandard,
+                                                          namespace,
+                                                          additionalProperties,
+                                                          typeGUID,
+                                                          typeName,
+                                                          extendedProperties,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        builder.setAnchors(userId, apiGUID, methodName);
+
+        String apiOperationGUID = this.createBeanInRepository(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              typeGUID,
+                                                              typeName,
+                                                              qualifiedName,
+                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                              builder,
+                                                              methodName);
+
+        if (apiOperationGUID != null)
+        {
+            /*
+             * Link the API Operation to the topic's event list.
+             */
+            final String apiOperationGUIDParameterName = "apiOperationGUID";
+
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      apiSchemaTypeGUID,
+                                      apiSchemaTypeGUIDParameterName,
+                                      OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                      apiOperationGUID,
+                                      apiOperationGUIDParameterName,
+                                      OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                      null,
+                                      methodName);
+        }
+
+        return apiOperationGUID;
+    }
+
+
+    /**
+     * Create a API Operation from a template.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param apiGUID unique identifier of the owning topic
+     * @param apiGUIDParameterName parameter supplying apiGUID
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param qualifiedName unique name for the API Operation - used in other configuration
+     * @param displayName short display name for the API Operation
+     * @param description description of the API Operation
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createAPIOperationFromTemplate(String userId,
+                                                 String externalSourceGUID,
+                                                 String externalSourceName,
+                                                 String apiGUID,
+                                                 String apiGUIDParameterName,
+                                                 String templateGUID,
+                                                 String qualifiedName,
+                                                 String displayName,
+                                                 String description,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        final String apiSchemaTypeGUIDParameterName = "apiSchemaTypeGUID";
+
+        String apiSchemaTypeGUID = this.getAPISchemaTypeGUID(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             apiGUID,
+                                                             apiGUIDParameterName,
+                                                             qualifiedName,
+                                                             methodName);
+
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
+                                                          displayName,
+                                                          description,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        String apiOperationGUID = this.createBeanFromTemplate(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              templateGUID,
+                                                              templateGUIDParameterName,
+                                                              OpenMetadataAPIMapper.API_OPERATION_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                                              qualifiedName,
+                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                              builder,
+                                                              methodName);
+
+        /*
+         * Link the API Operation to the topic's event list.
+         */
+        final String apiOperationGUIDParameterName = "apiOperationGUID";
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  apiSchemaTypeGUID,
+                                  apiSchemaTypeGUIDParameterName,
+                                  OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                  apiOperationGUID,
+                                  apiOperationGUIDParameterName,
+                                  OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                  null,
+                                  methodName);
+
+        return apiOperationGUID;
+    }
+
+
+    /**
+     * Update the API Operation.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param apiOperationGUID unique identifier for the API Operation to update
+     * @param apiOperationGUIDParameterName parameter supplying the API Operation
+     * @param qualifiedName unique name for the API Operation - used in other configuration
+     * @param displayName short display name for the API Operation
+     * @param description description of the governance API Operation
+     * @param versionNumber version of the schema type.
+     * @param isDeprecated is the schema type deprecated
+     * @param author name of the author
+     * @param usage guidance on how the schema should be used.
+     * @param encodingStandard format of the schema.
+     * @param namespace namespace where the schema is defined.
+     * @param additionalProperties additional properties for an API Operation
+     * @param suppliedTypeName type of term
+     * @param extendedProperties  properties for a governance API Operation subtype
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void   updateAPIOperation(String              userId,
+                                     String              externalSourceGUID,
+                                     String              externalSourceName,
+                                     String              apiOperationGUID,
+                                     String              apiOperationGUIDParameterName,
+                                     String              qualifiedName,
+                                     String              displayName,
+                                     String              description,
+                                     String              versionNumber,
+                                     boolean             isDeprecated,
+                                     String              author,
+                                     String              usage,
+                                     String              encodingStandard,
+                                     String              namespace,
+                                     Map<String, String> additionalProperties,
+                                     String              suppliedTypeName,
+                                     Map<String, Object> extendedProperties,
+                                     boolean             isMergeUpdate,
+                                     String              methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(apiOperationGUID, apiOperationGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
+                                                          displayName,
+                                                          description,
+                                                          versionNumber,
+                                                          isDeprecated,
+                                                          author,
+                                                          usage,
+                                                          encodingStandard,
+                                                          namespace,
+                                                          additionalProperties,
+                                                          typeGUID,
+                                                          typeName,
+                                                          extendedProperties,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        this.updateBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    apiOperationGUID,
+                                    apiOperationGUIDParameterName,
+                                    typeGUID,
+                                    typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    builder.getInstanceProperties(methodName),
+                                    isMergeUpdate,
+                                    new Date(),
+                                    methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a API Operations.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param apiOperationGUID unique identifier of the metadata element to remove
+     * @param apiOperationGUIDParameterName parameter for apiOperationGUID
+     * @param qualifiedName validating property
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeAPIOperation(String userId,
+                                   String externalSourceGUID,
+                                   String externalSourceName,
+                                   String apiOperationGUID,
+                                   String apiOperationGUIDParameterName,
+                                   String qualifiedName,
+                                   String methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    apiOperationGUID,
+                                    apiOperationGUIDParameterName,
+                                    OpenMetadataAPIMapper.API_OPERATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    qualifiedName,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of API Operations metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findAPIOperations(String userId,
+                                     String searchString,
+                                     String searchStringParameterName,
+                                     int    startFrom,
+                                     int    pageSize,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.API_OPERATION_TYPE_GUID,
+                              OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                              null,
+                              startFrom,
+                              pageSize,
+                              null,
+                              methodName);
+    }
+
+
+    /**
+     * Retrieve the list of API Operation metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getAPIOperationsByName(String userId,
+                                            String name,
+                                            String nameParameterName,
+                                            int    startFrom,
+                                            int    pageSize,
+                                            Date   effectiveTime,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.API_OPERATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+
+    /**
+     * Retrieve the API Operations metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param apiGUID unique identifier of the requested metadata element
+     * @param apiGUIDParameterName parameter name of the apiGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of API Operations element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getAPIOperationsForAPI(String userId,
+                                          String apiGUID,
+                                          String apiGUIDParameterName,
+                                          int    startFrom,
+                                          int    pageSize,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        /*
+         * The API Operations are attached via an event list.
+         */
+        EntityDetail apiSchemaTypeEntity = this.getAttachedEntity(userId,
+                                                                  apiGUID,
+                                                                  apiGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                  false,
+                                                                  false,
+                                                                  supportedZones,
+                                                                  effectiveTime,
+                                                                  methodName);
+
+        if (apiSchemaTypeEntity != null)
+        {
+            final String apiSchemaTypeGUIDParameterName = "apiSchemaTypeGUID";
+
+            return this.getAttachedElements(userId,
+                                            apiSchemaTypeEntity.getGUID(),
+                                            apiSchemaTypeGUIDParameterName,
+                                            OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                            OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                            null,
+                                            null,
+                                            2,
+                                            false,
+                                            false,
+                                            startFrom,
+                                            pageSize,
+                                            effectiveTime,
+                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create/retrieve the API schema type for the operation.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param apiGUID topic to retrieve from
+     * @param apiGUIDParameterName parameter name or apiGUID
+     * @param methodName calling method
+     *
+     * @return unique identifier of event list
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private String getAPISchemaTypeGUID(String userId,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
+                                        String apiGUID,
+                                        String apiGUIDParameterName,
+                                        String topicQualifiedName,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        String apiSchemaTypeGUID;
+
+        EntityDetail apiSchemaTypeEntity = this.getAttachedEntity(userId,
+                                                                  apiGUID,
+                                                                  apiGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                  false,
+                                                                  false,
+                                                                  supportedZones,
+                                                                  null,
+                                                                  methodName);
+
+        if (apiSchemaTypeEntity == null)
+        {
+            SchemaTypeBuilder builder = new SchemaTypeBuilder(topicQualifiedName + "_EventList",
+                                                              OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                                              repositoryHelper,
+                                                              serviceName,
+                                                              serverName);
+
+            builder.setAnchors(userId, apiGUID, methodName);
+
+            apiSchemaTypeGUID = repositoryHandler.createEntity(userId,
+                                                               OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               builder.getInstanceProperties(methodName),
+                                                               builder.getEntityClassifications(),
+                                                               builder.getInstanceStatus(),
+                                                               methodName);
+
+            if (apiSchemaTypeGUID != null)
+            {
+                final String apiSchemaTypeGUIDParameterName = "apiSchemaTypeGUID";
+
+                this.linkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          apiGUID,
+                                          apiGUIDParameterName,
+                                          OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                          apiSchemaTypeGUID,
+                                          apiSchemaTypeGUIDParameterName,
+                                          OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          null,
+                                          methodName);
+            }
+            else
+            {
+                errorHandler.logNullInstance(OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME, methodName);
+            }
+        }
+        else
+        {
+            apiSchemaTypeGUID = apiSchemaTypeEntity.getGUID();
+        }
+
+        return apiSchemaTypeGUID;
+    }
+
+
+    /**
+     * Retrieve the API Operation metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of guid
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getAPIOperationByGUID(String userId,
+                                   String guid,
+                                   String guidParameterName,
+                                   Date   effectiveTime,
+                                   String methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        return this.getBeanFromRepository(userId,
+                                          guid,
+                                          guidParameterName,
+                                          OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                          false,
+                                          false,
+                                          effectiveTime,
+                                          methodName);
+
+    }
+}

@@ -75,7 +75,7 @@ public class AppointmentHandler
     {
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
 
-        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId, domainIdentifier, startFrom, pageSize, methodName);
+        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId, domainIdentifier, startFrom, pageSize, null, methodName);
 
         if (governanceRoles != null)
         {
@@ -96,8 +96,10 @@ public class AppointmentHandler
                                                                                                   null,
                                                                                                   OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                                   1,
+                                                                                                  false,
                                                                                                   0,
                                                                                                   0,
+                                                                                                  null,
                                                                                                   methodName);
 
                     if (appointmentRelationships != null)
@@ -173,6 +175,9 @@ public class AppointmentHandler
                                                                                  governanceRoleGUID,
                                                                                  governanceRoleGUIDParameterName,
                                                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
                                                                                  methodName);
 
         if ((governanceRole != null) && (governanceRole.getElementHeader() != null))
@@ -188,8 +193,10 @@ public class AppointmentHandler
                                                                                           null,
                                                                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                           1,
+                                                                                          false,
                                                                                           0,
                                                                                           0,
+                                                                                          null,
                                                                                           methodName);
 
             if (appointmentRelationships != null)
@@ -285,6 +292,7 @@ public class AppointmentHandler
             ProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                           relationship.getEntityOneProxy().getGUID(),
                                                                           profileGUIDParameterName,
+                                                                          null,
                                                                           methodName);
 
             appointee.setProfile(profile);

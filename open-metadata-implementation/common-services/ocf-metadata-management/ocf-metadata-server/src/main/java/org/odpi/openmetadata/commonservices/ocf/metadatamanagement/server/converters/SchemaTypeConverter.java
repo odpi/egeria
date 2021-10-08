@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B testBean = beanClass.newInstance();
+            B testBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (testBean instanceof SchemaType)
             {
@@ -149,7 +150,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
                 }
             }
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

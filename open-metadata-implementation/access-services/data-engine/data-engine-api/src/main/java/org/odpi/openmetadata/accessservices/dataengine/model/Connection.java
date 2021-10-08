@@ -5,9 +5,12 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -15,173 +18,120 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Connection extends Referenceable{
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Connection extends Referenceable {
 
+    /**
+     * The clear password
+     * -- GETTER --
+     * Get clear password
+     * @return clear password
+     * -- SETTER --
+     * Set clear password
+     * @param clearPassword clear password
+     */
     private String clearPassword;
+
+    /**
+     * The configuration properties
+     * -- GETTER --
+     * Get configuration properties
+     * @return configuration properties
+     * -- SETTER --
+     * Set configuration properties
+     * @param configurationProperties configuration properties
+     */
     private Map<String, String> configurationProperties;
+
+    /**
+     * The description
+     * -- GETTER --
+     * Get description
+     * @return description
+     * -- SETTER --
+     * Set description
+     * @param description description
+     */
     private String description;
+
+    /**
+     * The display name
+     * -- GETTER --
+     * Get display name
+     * @return display name
+     * -- SETTER --
+     * Set display name
+     * @param displayName display name
+     */
     private String displayName;
+
+    /**
+     * The encrypted password
+     * -- GETTER --
+     * Get encrypted password
+     * @return encrypted password
+     * -- SETTER --
+     * Set encrypted password
+     * @param encryptedPassword encrypted password
+     */
     private String encryptedPassword;
+
+    /**
+     * The secured properties
+     * -- GETTER --
+     * Get secured properties
+     * @return secured properties
+     * -- SETTER --
+     * Set secured properties
+     * @param securedProperties secured properties
+     */
     private Map<String, String> securedProperties;
+
+    /**
+     * The user id
+     * -- GETTER --
+     * Get user id
+     * @return user id
+     * -- SETTER --
+     * Set user id
+     * @param userId user ID
+     */
     private String userId;
 
     /**
-     * Get clear password
-     *
-     * @return clear password
+     * The connector type
+     * -- GETTER --
+     * Get connector type
+     * @return connector type
+     * -- SETTER --
+     * Set connector type
+     * @param connectorType connector type
      */
-    public String getClearPassword() {
-        return clearPassword;
-    }
+    private ConnectorType connectorType;
 
     /**
-     * Set clear password
-     *
-     * @param clearPassword
+     * The endpoint
+     * -- GETTER --
+     * Get endpoint
+     * @return endpoint
+     * -- SETTER --
+     * Set endpoint
+     * @param endpoint the endpoint
      */
-    public void setClearPassword(String clearPassword) {
-        this.clearPassword = clearPassword;
-    }
+    private Endpoint endpoint;
 
     /**
-     * Get configuration properties
-     *
-     * @return configuration properties
+     * The asset summary
+     * -- GETTER --
+     * Get asset summary
+     * @return asset summary
+     * -- SETTER --
+     * Set asset summary
+     * @param assetSummary the asset summary
      */
-    public Map<String, String> getConfigurationProperties() {
-        return configurationProperties;
-    }
-
-    /**
-     * Set configuration properties
-     *
-     * @param configurationProperties
-     */
-    public void setConfigurationProperties(Map<String, String> configurationProperties) {
-        this.configurationProperties = configurationProperties;
-    }
-
-    /**
-     * Get description
-     *
-     * @return description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param description
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Get display name
-     *
-     * @return display name
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     * Set display name
-     *
-     * @param displayName
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
-     * Get encrypted password
-     *
-     * @return encrypted password
-     */
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    /**
-     * Set encrypted password
-     *
-     * @param encryptedPassword
-     */
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    /**
-     * Get secured properties
-     *
-     * @return secured properties
-     */
-    public Map<String, String> getSecuredProperties() {
-        return securedProperties;
-    }
-
-    /**
-     * Get secured properties
-     *
-     * @param securedProperties
-     */
-    public void setSecuredProperties(Map<String, String> securedProperties) {
-        this.securedProperties = securedProperties;
-    }
-
-    /**
-     * Get user id
-     *
-     * @return user id
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * Get user id
-     *
-     * @param userId
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "Endpoint{" +
-                "clearPassword='" + clearPassword + '\'' +
-                ", configurationProperties=" + configurationProperties +
-                ", description=" + description +
-                ", displayName=" + displayName +
-                ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", securedProperties=" + securedProperties +
-                ", userId=" + userId +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Connection dataStore = (Connection) o;
-        return Objects.equals(clearPassword, dataStore.clearPassword) &&
-                Objects.equals(configurationProperties, dataStore.configurationProperties) &&
-                Objects.equals(description, dataStore.description) &&
-                Objects.equals(displayName, dataStore.displayName) &&
-                Objects.equals(encryptedPassword, dataStore.encryptedPassword) &&
-                Objects.equals(securedProperties, dataStore.securedProperties) &&
-                Objects.equals(userId, dataStore.userId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(clearPassword, configurationProperties, description, displayName, encryptedPassword,
-                securedProperties, userId);
-    }
+    private String assetSummary;
 
 }

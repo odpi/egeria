@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -17,17 +18,22 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -120,7 +126,8 @@ class DataEngineCommonHandlerTest {
 
     @Test
     void updateEntity_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException, InvocationTargetException,
-            NoSuchMethodException, InstantiationException, IllegalAccessException, InvalidParameterException {
+                                                                NoSuchMethodException, InstantiationException, IllegalAccessException,
+                                                                InvalidParameterException {
         String methodName = "updateEntity";
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(repositoryHandler).updateEntity(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
@@ -184,13 +191,17 @@ class DataEngineCommonHandlerTest {
 
     @Test
     void upsertExternalRelationship_existingRelationship() throws InvalidParameterException, PropertyServerException,
-            UserNotAuthorizedException {
+                                                                  UserNotAuthorizedException {
         final String methodName = "upsertExternalRelationship";
 
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
-
         Relationship mockedRelationship = mock(Relationship.class);
+        EntityProxy firstEntityProxy = mockEntityProxy(FIRST_GUID);
+        EntityProxy secondEntityProxy = mockEntityProxy(SECOND_GUID);
+        when(mockedRelationship.getEntityOneProxy()).thenReturn(firstEntityProxy);
+        when(mockedRelationship.getEntityTwoProxy()).thenReturn(secondEntityProxy);
         when(mockedRelationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
+
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
                 RELATIONSHIP_TYPE_NAME, "findRelationship")).thenReturn(mockedRelationship);
 
@@ -243,12 +254,17 @@ class DataEngineCommonHandlerTest {
     void findRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         Relationship mockedRelationship = mock(Relationship.class);
+        EntityProxy firstEntityProxy = mockEntityProxy(FIRST_GUID);
+        EntityProxy secondEntityProxy = mockEntityProxy(SECOND_GUID);
+        when(mockedRelationship.getEntityOneProxy()).thenReturn(firstEntityProxy);
+        when(mockedRelationship.getEntityTwoProxy()).thenReturn(secondEntityProxy);
 
         String methodName = "findRelationship";
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
                 RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
 
-        Optional<Relationship> result = dataEngineCommonHandler.findRelationship(USER, FIRST_GUID, SECOND_GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_NAME);
+        Optional<Relationship> result =
+                dataEngineCommonHandler.findRelationship(USER, FIRST_GUID, SECOND_GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_NAME);
 
         assertTrue(result.isPresent());
         assertEquals(mockedRelationship, result.get());
@@ -258,11 +274,114 @@ class DataEngineCommonHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(SECOND_GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
     }
 
+    @Test
+    void getEntityDetails() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "getEntityDetails";
+        EntityDetail mockedEntity = mock(EntityDetail.class);
+        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, methodName))
+                .thenReturn(mockedEntity);
+
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
+        assertTrue(result.isPresent());
+        assertEquals(mockedEntity, result.get());
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void getEntityDetails_noEntity() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "getEntityDetails";
+        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, methodName))
+                .thenReturn(null);
+
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
+        assertFalse(result.isPresent());
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+    @Test
+    void getEntitiesForRelationship() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
+        final String methodName = "getEntitiesForRelationship";
+        mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
+        EntityDetail mockedEntity = mock(EntityDetail.class);
+        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME,
+                0, 0, methodName)).thenReturn(Collections.singletonList(mockedEntity));
+
+        Set<EntityDetail> result = dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
+        assertEquals(1, result.size());
+        assertTrue(result.contains(mockedEntity));
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void getEntitiesForRelationship_noEntities() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
+        final String methodName = "getEntitiesForRelationship";
+        mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
+
+        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME,
+                0, 0, methodName)).thenReturn(null);
+
+        Set<EntityDetail> result = dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
+        assertTrue(result.isEmpty());
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void getEntityForRelationship() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
+        final String methodName = "getEntityForRelationship";
+        mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
+        EntityDetail mockedEntity = mock(EntityDetail.class);
+        when(repositoryHandler.getEntityForRelationshipType(USER, GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, methodName))
+                .thenReturn(mockedEntity);
+
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
+        assertTrue(result.isPresent());
+        assertEquals(mockedEntity, result.get());
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void getEntityForRelationship_noEntity() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
+        final String methodName = "getEntityForRelationship";
+        mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
+
+        when(repositoryHandler.getEntityForRelationshipType(USER, GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, methodName))
+                .thenReturn(null);
+
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
+        assertFalse(result.isPresent());
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void validateDeleteSemantic_Hard() {
+        assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineCommonHandler.validateDeleteSemantic(DeleteSemantic.HARD, "test"));
+    }
+
+    @Test
+    void validateDeleteSemantic_Memento() {
+        assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineCommonHandler.validateDeleteSemantic(DeleteSemantic.MEMENTO, "test"));
+    }
+
     private void mockTypeDef(String typeName, String typeGUID) {
         TypeDef entityTypeDef = mock(TypeDef.class);
         when(repositoryHelper.getTypeDefByName(USER, typeName)).thenReturn(entityTypeDef);
 
         when(entityTypeDef.getName()).thenReturn(typeName);
         when(entityTypeDef.getGUID()).thenReturn(typeGUID);
+    }
+
+    private EntityProxy mockEntityProxy(String guid) {
+        EntityProxy entityProxy = mock(EntityProxy.class);
+        when(entityProxy.getGUID()).thenReturn(guid);
+
+        return entityProxy;
     }
 }

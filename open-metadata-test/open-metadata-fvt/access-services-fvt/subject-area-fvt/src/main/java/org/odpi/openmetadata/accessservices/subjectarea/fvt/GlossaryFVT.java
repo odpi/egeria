@@ -46,7 +46,7 @@ public class GlossaryFVT {
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
-        existingGlossaryCount = findGlossaries(".*").size();
+        existingGlossaryCount = findGlossaries("").size();
         System.out.println("existingGlossaryCount " + existingGlossaryCount);
     }
 
@@ -69,16 +69,23 @@ public class GlossaryFVT {
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
-        System.out.println("GlossaryFVT runIt started");
-        GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
-        fvt.run();
-        fvt.deleteRemainingGlossaries();
-        System.out.println("GlossaryFVT runIt finished");
+        try
+        {
+            System.out.println("GlossaryFVT runIt started");
+            GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
+            fvt.run();
+            fvt.deleteRemainingGlossaries();
+            System.out.println("GlossaryFVT runIt finished");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
         GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
-        return fvt.findGlossaries(".*").size();
+        return fvt.findGlossaries("").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -118,15 +125,12 @@ public class GlossaryFVT {
         System.out.println("Delete the glossary again");
         deleteGlossary(guid);
         //FVTUtils.validateNode(gotGlossary);
-        //TODO - delete a deletedGlossary should fail
-        System.out.println("Purge a glossary");
-        purgeGlossary(guid);
         System.out.println("Create glossary with the same name as a deleted one");
         glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
 
         System.out.println("create glossaries to find");
-        Glossary glossaryForFind1 = getGlossaryForInput("abc");
+        Glossary glossaryForFind1 = getGlossaryForInput("qrs");
         glossaryForFind1.setQualifiedName("yyy");
         glossaryForFind1 = issueCreateGlossary(glossaryForFind1);
         FVTUtils.validateNode(glossaryForFind1);
@@ -172,7 +176,7 @@ public class GlossaryFVT {
             iter.remove();
             deleteGlossary(guid);
         }
-        List<Glossary> glossaries = findGlossaries(".*");
+        List<Glossary> glossaries = findGlossaries("");
         if (glossaries.size() != existingGlossaryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
         }
@@ -214,7 +218,7 @@ public class GlossaryFVT {
         glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
-        System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
+        System.out.println("Created Glossary " + newGlossary.getName() + " with GUID " + newGlossary.getSystemAttributes().getGUID());
 
         return newGlossary;
     }
@@ -284,11 +288,6 @@ public class GlossaryFVT {
         createdGlossariesSet.add(restoredGlossary.getSystemAttributes().getGUID());
         System.out.println("Restored Glossary name is " + restoredGlossary.getName());
         return restoredGlossary;
-    }
-
-    public void purgeGlossary(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaGlossary.purge(this.userId, guid);
-        System.out.println("Purge succeeded");
     }
 
     public List<Relationship> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

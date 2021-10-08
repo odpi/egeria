@@ -18,6 +18,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -187,6 +188,8 @@ public class GovernanceRolesRESTServices
                                          requestBody.getTypeName(),
                                          extendedProperties,
                                          isMergeUpdate,
+                                         null,
+                                         null,
                                          methodName);
             }
             else
@@ -250,6 +253,8 @@ public class GovernanceRolesRESTServices
                                              responsibilityGUID,
                                              responsibilityGUIDParameterName,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                              null,
@@ -318,8 +323,11 @@ public class GovernanceRolesRESTServices
                                                  responsibilityGUIDParameterName,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 null,
                                                  methodName);
             }
             else
@@ -383,6 +391,8 @@ public class GovernanceRolesRESTServices
                                              governanceRoleGUID,
                                              governanceRoleGUIDParameterName,
                                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                              null,
@@ -451,8 +461,11 @@ public class GovernanceRolesRESTServices
                                                  governanceRoleGUIDParameterName,
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 false,
+                                                 false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 null,
                                                  methodName);
             }
             else
@@ -550,6 +563,9 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUID,
                                                               governanceRoleGUIDParameterName,
                                                               OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -616,7 +632,6 @@ public class GovernanceRolesRESTServices
      * @param roleId  the unique identifier of the governance role.
      * @return governance role object or
      * InvalidParameterException the governanceRoleGUID or governance domain is either null or invalid or
-     * AppointmentIdNotUniqueException more than one governance role entity was retrieved for this governanceRoleGUID
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
@@ -642,6 +657,7 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUIDParameterName,
                                                               0,
                                                               0,
+                                                              null,
                                                               methodName));
         }
         catch (Exception error)
@@ -689,6 +705,7 @@ public class GovernanceRolesRESTServices
                                                                    domainIdentifier,
                                                                    startFrom,
                                                                    pageSize,
+                                                                   null,
                                                                    methodName));
 
         }
@@ -739,6 +756,7 @@ public class GovernanceRolesRESTServices
                                                                 titleParameterName,
                                                                 startFrom,
                                                                 pageSize,
+                                                                null,
                                                                 methodName));
         }
         catch (Exception error)

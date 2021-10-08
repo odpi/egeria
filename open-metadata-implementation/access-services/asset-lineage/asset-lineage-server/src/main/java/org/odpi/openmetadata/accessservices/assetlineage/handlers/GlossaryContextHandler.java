@@ -9,14 +9,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,14 +43,12 @@ public class GlossaryContextHandler {
      * Construct the handler information needed to interact with the repository services
      *
      * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
+     * @param handlerHelper           the helper handler
      */
-    public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                  RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
-                                  Set<String> lineageClassificationTypes) {
+    public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler,  AssetContextHandler assetContextHandler,
+                                  HandlerHelper handlerHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.handlerHelper = handlerHelper;
         this.assetContextHandler = assetContextHandler;
     }
 
@@ -238,7 +234,7 @@ public class GlossaryContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Set<EntityDetail> getSchemaElementsAttached(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+    private Set<EntityDetail> getSchemaElementsAttached(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), GLOSSARY_TERM);
 
         Set<EntityDetail> schemaElements = new HashSet<>();

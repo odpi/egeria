@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-archives</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -46,6 +46,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>catalog-builder</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
@@ -65,10 +70,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-data-store-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>avro-file-connector</artifactId>
         </dependency>
         <dependency>
@@ -82,6 +83,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-folder-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>kafka-open-metadata-topic-connector</artifactId>
         </dependency>
 
     </dependencies>

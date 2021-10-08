@@ -1,4 +1,6 @@
 {
+  "id" : "GOSALES_dbo",
+  "type" : "module",
   "attributes" : {
     "physicalDefinition" : {
       "identifier" : "physicalmodule",
@@ -7,6 +9,9 @@
         "property" : [ {
           "name" : "guid",
           "value" : "DataSource@GOSALES.dbo"
+        }, {
+          "name" : "GlossaryTerm",
+          "value" : "{\"displayName\":\"Go Sales\",\"guid\":\"GlossaryTerm_DataSource@GOSALES.dbo\"}"
         } ],
         "schema" : "dbo",
         "catalog" : "GOSALES",
@@ -15,6 +20,9 @@
           "property" : [ {
             "name" : "guid",
             "value" : "Table@Date"
+          }, {
+            "name" : "GlossaryTerm",
+            "value" : "{\"displayName\":\"Calendar\",\"guid\":\"GlossaryTerm_Table@Date\"}"
           } ],
           "name" : "Date",
           "tableItem" : [ {
@@ -22,6 +30,9 @@
               "property" : [ {
                 "name" : "guid",
                 "value" : "Column@DateKey"
+              }, {
+                "name" : "GlossaryTerm",
+                "value" : "{\"description\":\"Primary key for Date used in sales orders.\",\"displayName\":\"Date Key\",\"guid\":\"GlossaryTerm_Column@DateKey\",\"summary\":\"Primary key for Date.\"}"
               } ],
               "name" : "DateKey",
               "vendorType" : "INT32",
@@ -291,7 +302,5 @@
         } ]
       } ]
     }
-  },
-  "id" : "GOSALES_dbo",
-  "type" : "module"
+  }
 }

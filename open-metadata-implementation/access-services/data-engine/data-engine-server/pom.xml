@@ -10,7 +10,7 @@
     <parent>
         <artifactId>data-engine</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -157,6 +157,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>generic-handlers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
     </dependencies>

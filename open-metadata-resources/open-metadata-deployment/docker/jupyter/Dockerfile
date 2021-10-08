@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
-FROM jupyter/base-notebook:latest
-ARG version=2.11-SNAPSHOT
+FROM docker.io/jupyter/base-notebook:latest
+ARG version=3.3-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

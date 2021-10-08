@@ -11,6 +11,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,19 +72,21 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countRelatedMedia(String   userId,
-                                 String   elementGUID,
-                                 String   methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public int countRelatedMedia(String userId,
+                                 String elementGUID,
+                                 Date   effectiveTime,
+                                 String methodName) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
-        final String guidParameterName      = "elementGUID";
+        final String guidParameterName = "elementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -93,6 +96,8 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
+                                                                  false,
+                                                                  effectiveTime,
                                                                   methodName);
     }
 
@@ -107,6 +112,7 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -122,20 +128,29 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                     List<String> serviceSupportedZones,
                                     int          startingFrom,
                                     int          pageSize,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
                                         OpenMetadataAPIMapper.RELATED_MEDIA_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 }

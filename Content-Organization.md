@@ -47,7 +47,6 @@ The Egeria core repository contains the core Egeria functionality, and is organi
  
   * **[adapters](open-metadata-implementation/adapters)** - pluggable component implementations.
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
-    * **[governance-engines-plugins](open-metadata-implementation/adapters/governance-engines-plugins)** support plugins to governance engines to enable them to use open metadata settings in their validation and enforcement decisions, and the resulting actions they take.
     * **[open-connectors](open-metadata-implementation/adapters/open-connectors)** are connectors that support the Open Connector Framework (OCF).
       * **[configuration-store-connectors](open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)** contains the connectors that manage the open metadata configuration.
       * **[connector-configuration-factory](open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)** creates **Connection** objects to configure the open connectors.
@@ -94,12 +93,14 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
  
   * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md) OMAG Server.
+    * **[api-integrator](open-metadata-implementation/integration-services/api-integrator)** - services to catalog APIs supported by API Managers.
     * **[catalog-integrator](open-metadata-implementation/integration-services/catalog-integrator)** - services to exchange metadata with asset managers and catalogs.
     * **[database-integrator](open-metadata-implementation/integration-services/database-integrator)** - services to capture metadata from file systems and file management applications.
     * **[files-integrator](open-metadata-implementation/integration-services/files-integrator)** - services to exchange metadata with relational databases.
     * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
     * **[lineage-integrator](open-metadata-implementation/integration-services/lineage-integrator)** - services to load lineage metadata.
     * **[security-integrator](open-metadata-implementation/integration-services/security-integrator)** - services to push security tags to an external security enforcement point.
+    * **[topic-integrator](open-metadata-implementation/integration-services/topic-integrator)** - services to catalog topics and their event types from an Event Broker.
 
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
 

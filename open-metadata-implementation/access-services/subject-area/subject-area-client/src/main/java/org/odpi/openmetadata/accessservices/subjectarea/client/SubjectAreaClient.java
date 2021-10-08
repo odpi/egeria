@@ -65,7 +65,7 @@ public interface SubjectAreaClient<T> {
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
     {
-       return find(userId, EMPTY_FIND_REQUEST);
+       return find(userId, EMPTY_FIND_REQUEST, false, true);
     }
 
     /**
@@ -84,7 +84,7 @@ public interface SubjectAreaClient<T> {
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
     {
-        return find(userId, EMPTY_FIND_REQUEST, maximumPageSizeOnRestCall);
+        return find(userId, EMPTY_FIND_REQUEST, false, true,  maximumPageSizeOnRestCall);
     }
 
     /**
@@ -99,6 +99,21 @@ public interface SubjectAreaClient<T> {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
     List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException;
+
+    /**
+     * Request to find Glossary Artifacts of the type T.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param findRequest information Glossary Artifact for find calls.
+     * @return list Glossary Artifacts of the T type relevant in the findRequest information.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    List<T> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException;
 
@@ -111,6 +126,8 @@ public interface SubjectAreaClient<T> {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
      * @param findRequest information Glossary Artifact for find calls.
+     * @param exactValue  exactValue - when false values with trailing characters will match
+     * @param ignoreCase  ignore the case when matching
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
      * @return list Glossary Artifacts of the T type relevant in the findRequest information.
      *
@@ -118,7 +135,10 @@ public interface SubjectAreaClient<T> {
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-   List<T> find(String userId, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+   List<T> find(String userId, FindRequest findRequest,
+                boolean exactValue,
+                boolean ignoreCase,
+                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException;
 
@@ -182,49 +202,14 @@ public interface SubjectAreaClient<T> {
      *
      * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    void delete(String userId, String guid, boolean isPurge) throws InvalidParameterException,
+    void delete(String userId, String guid) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException;
-
-    /**
-     * Purge a Glossary Artifact.
-     *
-     * @param guid    unique identifier of the Glossary Artifact.
-     * @param userId  unique identifier for requesting user, under which the request is performed.
-     *
-     * @throws PropertyServerException    something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    default void purge(String userId, String guid) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
-    {
-        delete(userId, guid, true);
-    }
-
-    /**
-     * Soft delete a Glossary Artifact.
-     *
-     * @param guid    unique identifier of the Glossary Artifact.
-     * @param userId  unique identifier for requesting user, under which the request is performed.
-     *
-     * @throws PropertyServerException    something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    default void delete(String userId, String guid) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
-    {
-        delete(userId, guid, false);
-    }
 
     /**
      * Restore of a soft deleted Glossary Artifact.

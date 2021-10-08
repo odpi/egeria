@@ -2944,7 +2944,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
          * The caller can update the entity provided:
          * The entity is locally mastered
          * OR
-         * The entity has instanceProvenanceType set to external and replicatedBy is set to the local metadataColelctionId.
+         * The entity has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
          * Any other combination suggest that this is either a reference copy of an instance from the local cohort or a reference
          * copy of an external entity (and something else is responsible for replication).
          *
@@ -4526,7 +4526,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * Probably a class cast error which should never occur.
              */
-            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(sourceName, methodName),
+            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(error.getClass().getName(),
+                                                                                                            searchCriteria,
+                                                                                                            methodName,
+                                                                                                            sourceName,
+                                                                                                            error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
@@ -4642,7 +4646,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             /*
              * Probably a class cast error which should never occur.
              */
-            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(sourceName, methodName),
+            throw new RepositoryErrorException(OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE.getMessageDefinition(error.getClass().getName(),
+                                                                                                            searchPropertyValue,
+                                                                                                            methodName,
+                                                                                                            sourceName,
+                                                                                                            error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
@@ -4697,8 +4705,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param sourceName source of the request (used for logging)
      * @param instance instance to test
      * @param typeName name of the type
-     * @param localMethodName local method that deleted the error
-     * @return boolean
+     * @param localMethodName  local method that is calling isATypeOf
+     * @return true if typeName is instance type or a supertype of it, otherwise false
      */
     @Override
     public boolean isATypeOf(String               sourceName,

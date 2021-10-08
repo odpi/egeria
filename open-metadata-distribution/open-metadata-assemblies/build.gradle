@@ -30,10 +30,11 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
@@ -70,12 +71,17 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
+    implementation project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
@@ -83,7 +89,7 @@ dependencies {
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
-    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
@@ -115,12 +121,14 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
@@ -132,7 +140,7 @@ distributions {
             into('utilities') {
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility').shadowJar }
                 fileMode = 0755
             }
             into('samples') {
@@ -159,6 +167,8 @@ distributions {
                     include 'NOTICE'
                     include 'LICENSE'
                     include 'truststore.p12'
+                    include 'content-packs'
+                    include 'sample-data'
                 }
                 fileMode = 0755
             }
@@ -178,14 +188,6 @@ distributions {
                 exclude '**/target/**'
                 exclude '**/build/**'
                 exclude 'build.gradle'
-                fileMode = 0755
-            }
-            into('charts') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:charts').projectDir}")
-                exclude '**/charts**'
-                exclude '**/*.lock'
-                exclude '**/*.swp'
-
                 fileMode = 0755
             }
             into('docker-compose') {

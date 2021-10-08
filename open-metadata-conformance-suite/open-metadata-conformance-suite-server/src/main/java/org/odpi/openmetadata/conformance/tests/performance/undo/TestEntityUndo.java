@@ -155,7 +155,7 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
                 String operationDescription = "undo an entity update of type: " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }

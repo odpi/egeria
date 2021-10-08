@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
+
 public class GovernedAssetContextBuilder
 {
 
@@ -33,7 +35,7 @@ public class GovernedAssetContextBuilder
         return null;
     }
 
-    public Context buildContextForTable(String userID, String assetId) throws UserNotAuthorizedException, PropertyServerException {
+    public Context buildContextForTable(String userID, String assetId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         Context context = new Context();
 
         context.setTable(getTableName(userID, assetId));
@@ -42,7 +44,7 @@ public class GovernedAssetContextBuilder
         return context;
     }
 
-    private Context getDatabaseContextForColumn(String userID, EntityDetail column) throws UserNotAuthorizedException, PropertyServerException {
+    private Context getDatabaseContextForColumn(String userID, EntityDetail column) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getDatabaseContextForColumn";
 
         Context context = new Context();
@@ -55,7 +57,7 @@ public class GovernedAssetContextBuilder
         return context;
     }
 
-    private String getTableName(String userID, String relationalColumnGuid) throws UserNotAuthorizedException, PropertyServerException {
+    private String getTableName(String userID, String relationalColumnGuid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getTableName";
         final EntityDetail relationalTable = getRelationalTable(userID, relationalColumnGuid);
 
@@ -66,7 +68,7 @@ public class GovernedAssetContextBuilder
         return null;
     }
 
-    private EntityDetail getRelationalTable(String userID, String relationalColumnGuid) throws UserNotAuthorizedException, PropertyServerException {
+    private EntityDetail getRelationalTable(String userID, String relationalColumnGuid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationalTable";
         return repositoryHandler.getEntityForRelationshipType(userID,
                                                               relationalColumnGuid,

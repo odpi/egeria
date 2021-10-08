@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -129,7 +130,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private void addCorrelationPropertiesToSchemaTypes(String                userId,
+    private void addCorrelationPropertiesToSchemaTypes(String                  userId,
                                                        String                  assetManagerGUID,
                                                        String                  assetManagerName,
                                                        List<SchemaTypeElement> results,
@@ -139,17 +140,18 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement glossary : results)
+            for (MetadataElement element : results)
             {
-                if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
+                if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
-                    glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                 glossary.getElementHeader().getGUID(),
-                                                                                 schemaTypeGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                                 assetManagerGUID,
-                                                                                 assetManagerName,
-                                                                                 methodName));
+                    element.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                element.getElementHeader().getGUID(),
+                                                                                schemaTypeGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                                assetManagerGUID,
+                                                                                assetManagerName,
+                                                                                null,
+                                                                                methodName));
                 }
             }
         }
@@ -189,6 +191,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                          assetManagerGUID,
                                                                                          assetManagerName,
+                                                                                         null,
                                                                                          methodName));
                 }
             }
@@ -556,6 +559,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                    null,
@@ -572,6 +577,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                    schemaTypeGUID,
                                                    schemaTypeGUIDParameterName,
                                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                   false,
+                                                   false,
                                                    OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                    OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                    null,
@@ -610,6 +617,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
                                                                          OpenMetadataAPIMapper.PORT_TYPE_NAME))
@@ -625,8 +634,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        schemaTypeGUIDParameterName,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                       false,
+                                                       false,
                                                        OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                        OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                       effectiveTime,
                                                        methodName);
         }
         else
@@ -642,8 +654,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        schemaTypeGUIDParameterName,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                       false,
+                                                       false,
                                                        OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                        OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                       effectiveTime,
                                                        methodName);
         }
     }
@@ -687,6 +702,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                       null,
                                                       null,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
     }
 
@@ -723,6 +741,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                             searchString,
                                                                             startFrom,
                                                                             pageSize,
+                                                                            new Date(),
                                                                             methodName);
 
         addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -763,6 +782,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         SchemaTypeElement schemaTypeElement;
 
+        Date effectiveTime = new Date();
+
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
                                                                          OpenMetadataAPIMapper.PORT_TYPE_NAME))
@@ -770,6 +791,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement = schemaTypeHandler.getSchemaTypeForPort(userId,
                                                                        parentElementGUID,
                                                                        guidParameterName,
+                                                                       effectiveTime,
                                                                        methodName);
         }
         else
@@ -777,6 +799,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
             schemaTypeElement = schemaTypeHandler.getSchemaTypeForAsset(userId,
                                                                         parentElementGUID,
                                                                         guidParameterName,
+                                                                        effectiveTime,
                                                                         methodName);
         }
 
@@ -788,6 +811,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
+                                                                                  effectiveTime,
                                                                                   methodName));
         }
 
@@ -823,7 +847,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, name, startFrom, pageSize, methodName);
+        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, name, startFrom, pageSize, new Date(), methodName);
 
         addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, methodName);
 
@@ -859,6 +883,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         SchemaTypeElement schemaTypeElement = schemaTypeHandler.getSchemaType(userId,
                                                                               schemaTypeGUID,
                                                                               guidParameterName,
+                                                                              new Date(),
                                                                               methodName);
 
         if (schemaTypeElement != null)
@@ -869,6 +894,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
+                                                                                  null,
                                                                                   methodName));
         }
 
@@ -910,8 +936,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                        null,
                                                                                        null,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -932,6 +960,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                       relationship.getEntityOneProxy().getGUID(),
                                                                                       parentGUIDParameterName,
                                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                      null,
+                                                                                      null,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
                                                                                       methodName);
 
                 ElementHeaderConverter<ElementHeader> headerConverter = new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName);
@@ -1242,6 +1275,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                              properties,
                                                              false,
+                                                             false,
+                                                             false,
+                                                             new Date(),
                                                              methodName);
     }
 
@@ -1277,6 +1313,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
     }
 
@@ -1348,6 +1387,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                              OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
                                                              properties,
                                                              false,
+                                                             false,
+                                                             false,
+                                                             new Date(),
                                                              methodName);
     }
 
@@ -1381,6 +1423,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
     }
 
@@ -1428,6 +1473,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                     foreignKeyGUID,
                                                     foreignKeyGUIDParameterName,
                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                    false,
+                                                    false,
                                                     OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                     OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
                                                     this.getForeignKeyProperties(foreignKeyProperties, methodName),
@@ -1569,8 +1616,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                         foreignKeyGUIDParameterName,
                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
                                                         OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                        new Date(),
                                                         methodName);
     }
 
@@ -1613,6 +1663,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                       null,
                                                       null,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
     }
 
@@ -1775,10 +1828,15 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         final String guidParameterName = "schemaAttributeGUID";
 
+        Date effectiveTime = new Date();
+
         SchemaAttributeElement schemaAttributeElement = schemaAttributeHandler.getBeanFromRepository(userId,
                                                                                                      schemaAttributeGUID,
                                                                                                      guidParameterName,
                                                                                                      OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                                     false,
+                                                                                                     false,
+                                                                                                     effectiveTime,
                                                                                                      methodName);
 
         if (schemaAttributeElement != null)
@@ -1789,6 +1847,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        assetManagerGUID,
                                                                                        assetManagerName,
+                                                                                       effectiveTime,
                                                                                        methodName));
         }
 

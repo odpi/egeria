@@ -6,6 +6,9 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 
 /**
  * RepositoryEntitiesIterator is an iterator class for iteratively retrieving entities (possibly restricting
@@ -24,8 +27,11 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param entityTypeName  type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
     public RepositoryEntitiesIterator(RepositoryHandler repositoryHandler,
@@ -33,11 +39,24 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                                       String            entityTypeGUID,
                                       String            entityTypeName,
                                       String            sequencingPropertyName,
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
                                       int               startingFrom,
                                       int               pageSize,
+                                      Date              effectiveTime,
                                       String            methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, entityTypeName,sequencingPropertyName, startingFrom, pageSize, methodName);
+        super(repositoryHandler,
+              userId,
+              entityTypeGUID,
+              entityTypeName,
+              sequencingPropertyName,
+              forLineage,
+              forDuplicateProcessing,
+              startingFrom,
+              pageSize,
+              effectiveTime,
+              methodName);
     }
 
 
@@ -54,19 +73,28 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
     {
         if ((entitiesCache == null) || (entitiesCache.isEmpty()))
         {
-            entitiesCache = repositoryHandler.getEntitiesForType(userId,
-                                                                 entityTypeGUID,
-                                                                 entityTypeName,
-                                                                 startingFrom,
-                                                                 pageSize,
-                                                                 methodName);
+            entitiesCache = new ArrayList<>();
 
-            if (entitiesCache != null)
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((entitiesCache != null) && (entitiesCache.isEmpty()))
             {
-                startingFrom = startingFrom + entitiesCache.size();
+                entitiesCache = repositoryHandler.getEntitiesForType(userId,
+                                                                     entityTypeGUID,
+                                                                     entityTypeName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     startingFrom,
+                                                                     pageSize,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+                startingFrom = startingFrom + pageSize;
             }
         }
 
-        return entitiesCache != null;
+        return (entitiesCache != null);
     }
 }

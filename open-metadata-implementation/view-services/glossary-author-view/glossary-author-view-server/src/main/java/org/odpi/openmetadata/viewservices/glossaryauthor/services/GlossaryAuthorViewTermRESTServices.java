@@ -109,6 +109,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Term property values .
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -128,6 +130,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             String userId,
             Date asOfTime,
             String searchCriteria,
+            boolean exactValue,
+            boolean ignoreCase,
             Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
@@ -157,7 +161,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            List<Term> terms = clients.terms().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
+            List<Term> terms = clients.terms().find(userId, findRequest, exactValue, ignoreCase, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(terms);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
@@ -286,7 +290,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -296,7 +300,6 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param guid       guid of the term to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -308,8 +311,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
     public SubjectAreaOMASAPIResponse<Term> deleteTerm(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteTerm";
@@ -322,11 +324,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            if (isPurge) {
-                clients.terms().purge(userId, guid);
-            } else {
-                clients.terms().delete(userId, guid);
-            }
+            clients.terms().delete(userId, guid);
+
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

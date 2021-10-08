@@ -143,6 +143,96 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Return an instance properties that only contains the properties that uniquely identify the entity.
+     * This is used when creating entity proxies.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @param allProperties all of the instance's properties
+     * @return just the unique properties
+     */
+    public InstanceProperties getUniqueProperties(String              sourceName,
+                                                  String              typeName,
+                                                  InstanceProperties  allProperties)
+    {
+        InstanceProperties uniqueProperties = null;
+
+        if (allProperties != null)
+        {
+            uniqueProperties = new InstanceProperties();
+
+            uniqueProperties.setEffectiveFromTime(allProperties.getEffectiveFromTime());
+            uniqueProperties.setEffectiveToTime(allProperties.getEffectiveToTime());
+
+            /*
+             * Walk the type hierarchy to pick up the list of unique properties. eg qualifiedName in Referenceable.
+             */
+            TypeDef typeDef = this.getTypeDefByName(sourceName, typeName);
+
+            if (typeDef != null)
+            {
+                /*
+                 * Determine the list of names of unique properties
+                 */
+                List<String> uniquePropertyNames = this.getUniquePropertiesList(typeDef.getPropertiesDefinition(), null);
+                TypeDef superType = null;
+
+                if (typeDef.getSuperType() != null)
+                {
+                    superType = this.getTypeDefByName(sourceName, typeDef.getSuperType().getName());
+                }
+
+                while (superType != null)
+                {
+                    uniquePropertyNames = this.getUniquePropertiesList(superType.getPropertiesDefinition(),
+                                                                       uniquePropertyNames);
+
+                    if (superType.getSuperType() != null)
+                    {
+                        superType = this.getTypeDefByName(sourceName, superType.getSuperType().getName());
+                    }
+                    else
+                    {
+                        superType = null;
+                    }
+                }
+
+                if (uniquePropertyNames != null)
+                {
+                    /*
+                     * Create a new InstanceProperties object containing only the unique properties.
+                     */
+                    Map<String, InstancePropertyValue> allInstancePropertiesMap = allProperties.getInstanceProperties();
+                    Map<String, InstancePropertyValue> uniqueInstancePropertiesMap = new HashMap<>();
+
+                    if (allInstancePropertiesMap != null)
+                    {
+                        for (String propertyName : allInstancePropertiesMap.keySet())
+                        {
+                            if (propertyName != null)
+                            {
+                                if (uniquePropertyNames.contains(propertyName))
+                                {
+                                    uniqueInstancePropertiesMap.put(propertyName, allInstancePropertiesMap.get(propertyName));
+                                }
+                            }
+                        }
+                    }
+
+                    if (! uniqueInstancePropertiesMap.isEmpty())
+                    {
+                        uniqueProperties.setInstanceProperties(uniqueInstancePropertiesMap);
+                    }
+                }
+            }
+        }
+
+        return uniqueProperties;
+    }
+
+
+
+    /**
      * Return the TypeDef identified by the name supplied by the caller.  This is used in the connectors when
      * validating the actual types of the repository with the known open metadata types. It is looking specifically
      * for types of the same name but with different content.
@@ -218,9 +308,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     {
         if (relationship != null)
         {
-            RelationshipDef relationshipTypeDef = (RelationshipDef)this.getTypeDefByName(sourceName,
-                                                                                         relationship.getType().getTypeDefName());
-
             EntityProxy entityProxy = relationship.getEntityOneProxy();
 
             if (entityProxy != null)
@@ -580,6 +667,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @throws TypeErrorException the type name is not recognized.
      */
     @Override
+    @Deprecated
     public EntityDetail getSkeletonEntity(String                 sourceName,
                                           String                 metadataCollectionId,
                                           InstanceProvenanceType provenanceType,
@@ -643,6 +731,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @throws TypeErrorException  the type name is not recognized.
      */
     @Override
+    @Deprecated
     public EntitySummary getSkeletonEntitySummary(String                 sourceName,
                                                   String                 metadataCollectionId,
                                                   InstanceProvenanceType provenanceType,
@@ -1779,6 +1868,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                                                                           methodName);
                         InstanceProperties uniqueAttributes = new InstanceProperties();
 
+                        uniqueAttributes.setEffectiveFromTime(entityProperties.getEffectiveFromTime());
+                        uniqueAttributes.setEffectiveToTime(entityProperties.getEffectiveToTime());
+
                         if (propertiesDefinition != null)
                         {
                             for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
@@ -1800,7 +1892,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                             }
                         }
 
-                        if (uniqueAttributes.getPropertyCount() > 0)
+                        if ((uniqueAttributes.getPropertyCount() > 0) || (uniqueAttributes.getEffectiveFromTime() != null) || (uniqueAttributes.getEffectiveToTime() != null))
                         {
                             entityProxy.setUniqueProperties(uniqueAttributes);
                         }
@@ -1831,7 +1923,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param provenanceType        origin of the entity
      * @param userName              name of the creator
      * @param typeName              name of the type
-     * @param properties            properties for the entity
+     * @param properties            properties for the entity proxy
      * @param classifications       list of classifications for the entity
      * @return                      an entity that is filled out
      * @throws TypeErrorException   the type name is not recognized as an entity type
@@ -2133,11 +2225,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        if (pageSize == 0)
-        {
-            return fullResults;
-        }
-
         int fullResultsSize = fullResults.size();
 
         if (fromElement >= fullResultsSize)
@@ -2165,15 +2252,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
         }
 
-        if ((fromElement == 0) && (pageSize > fullResultsSize))
+        if ((fromElement == 0) && (pageSize == 0 || pageSize > fullResultsSize))
         {
             return fullResults;
         }
-
-
-
-        int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
-
+        int toIndex = fullResultsSize;
+        
+        if (pageSize != 0)
+        {
+          toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        }
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
     }
 

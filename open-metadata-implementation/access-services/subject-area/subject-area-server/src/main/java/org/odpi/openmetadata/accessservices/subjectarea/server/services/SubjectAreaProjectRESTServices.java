@@ -120,6 +120,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Project property values. If not specified then all projects are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime the projects returned as they were at this time. null indicates at the current time.
      * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -138,6 +140,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     public SubjectAreaOMASAPIResponse<Project> findProject(String serverName,
                                                            String userId,
                                                            String searchCriteria,
+                                                           boolean exactValue,
+                                                           boolean ignoreCase,
                                                            Date asOfTime,
                                                            Integer startingFrom,
                                                            Integer pageSize,
@@ -160,7 +164,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
-            response = handler.findProject(userId,findRequest);
+            response = handler.findProject(userId,findRequest, exactValue,ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -231,50 +235,50 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         return response;
     }
 
-    /**
-     * Get the terms in this project.
-     *
-     * @param serverName     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId         unique identifier for requesting user, under which the request is performed
-     * @param guid           guid of the Project
-     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     * @return a response which when successful contains the Project Terms
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
-                                                            String userId,
-                                                            String guid,
-                                                            Integer startingFrom,
-                                                            Integer pageSize) {
-        String methodName = "getProjectTerms";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId );
-        }
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-        AuditLog auditLog = null;
-        try {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
-        } catch (OCFCheckedExceptionBase e) {
-            response.setExceptionInfo(e, className);
-        } catch (Exception exception) {
-            response = getResponseForException(exception, auditLog, className, methodName);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
-
-        return response;
-    }
+//    /**
+//     * Get the terms in this project.
+//     *
+//     * @param serverName     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+//     * @param userId         unique identifier for requesting user, under which the request is performed
+//     * @param guid           guid of the Project
+//     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
+//     *                 beyond the first page of results. Zero means the results start from the first element.
+//     * @param pageSize the maximum number of elements that can be returned on this request.
+//     * @return a response which when successful contains the Project Terms
+//     * when not successful the following Exception responses can occur
+//     * <ul>
+//     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+//     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+//     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+//     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+//     * </ul>
+//     */
+//    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
+//                                                            String userId,
+//                                                            String guid,
+//                                                            Integer startingFrom,
+//                                                            Integer pageSize) {
+//        String methodName = "getProjectTerms";
+//        if (log.isDebugEnabled()) {
+//            log.debug("==> Method: " + methodName + ",userId=" + userId );
+//        }
+//        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+//        AuditLog auditLog = null;
+//        try {
+//            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+//            SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
+//            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
+//        } catch (OCFCheckedExceptionBase e) {
+//            response.setExceptionInfo(e, className);
+//        } catch (Exception exception) {
+//            response = getResponseForException(exception, auditLog, className, methodName);
+//        }
+//        if (log.isDebugEnabled()) {
+//            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+//        }
+//
+//        return response;
+//    }
 
     /**
      * Update a Project
@@ -326,7 +330,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * Delete a Project instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the Project instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -336,7 +340,6 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  unique identifier for requesting user, under which the request is performed
      * @param guid    guid of the Project to be deleted.
-     * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -344,12 +347,11 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the Project was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the Project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String serverName, String userId, String guid) {
         final String methodName = "deleteProject";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -359,7 +361,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = handler.deleteProject(userId, guid,isPurge);
+            response = handler.deleteProject(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

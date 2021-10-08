@@ -130,8 +130,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Correct the caller's code and try the request again."),
     NULL_METADATA_COLLECTION(400, "OMRS-REPOSITORY-400-025",
             "Local metadata repository has not initialized correctly because it has a null metadata collection.",
-            "The system is unable to process requests for this repository.",
-            "Verify that the repository connector is correctly configured in the OMAG server."),
+            "The system is unable to process requests for this repository without a metadata collection.",
+            "The repository connector for the local repository has not initialized correctly.  This may be an " +
+                    "error in the repository connector's logic, or a missing or incorrect property in the connector's connection object stored in " +
+                    "the server's configuration document, or a missing resource, or permission needed by the connector.  The repository connector should " +
+                    "have output diagnostics either through an exception or message to the audit log that details the problem.  If no other diagnostics " +
+                    "are present, contact the developers of the repository connector to request that the diagnostics are improved, particularly " +
+                    "around initialization.  Use the diagnostics from the connector to diagnose the root cause of the problem and then correct " +
+                    "either the repository connector's logic, or its configuration or runtime environment as appropriate."),
     NULL_CLASSIFICATION_NAME(400, "OMRS-REPOSITORY-400-026",
             "A null classification name has been passed as the {0} parameter on a {1} request to open metadata repository {2}",
             "The system is unable to access the local metadata repository.",
@@ -190,7 +196,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request because the unique identifiers are needed.",
             "Correct the caller's code to provide compatible type identifiers and retry the request."),
     BAD_PROPERTY_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-040",
-            "An invalid property has been found in a metadata instance stored in repository {0} during the {1} operation",
+            "Unexpected exception {0} occurred when comparing properties against a search string of {1} during the {2} operation from {3}. Error message was {4}",
             "The system is unable to perform the request because the unique identifier must be provided.",
             "Correct the error in the requesting code and retry."),
     NULL_REFERENCE_INSTANCE(400, "OMRS-REPOSITORY-400-041",
@@ -803,7 +809,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     METADATA_COLLECTION_ID_MISMATCH(500, "OMRS-REST-REPOSITORY-CONNECTOR-500-001",
             "A remote open metadata repository {0} returned a metadata collection identifier of {1} on its REST API after it registered with the cohort using a metadata collection identifier of {2}",
             "There is a configuration error in the remote open metadata repository.",
-            "Review the set up of the remote repository.  It may be that the server-url-root parameter is incorrectly set and is clashing with the setting in another server registered with the same cohort."),
+            "Review the set up of the remote repository.  Has it be reconfigured and changed its metadata collection Id? It may be that the server-url-root parameter is incorrectly set and is clashing with the setting in another server registered with the same cohort."),
     NULL_REMOTE_METADATA_COLLECTION_ID(500, "OMRS-REST-REPOSITORY-CONNECTOR-500-002",
             "A remote open metadata repository {0} returned a null metadata collection identifier on its REST API.  It registered with the cohort using a metadata collection identifier of {1}",
             "There is an internal error in the remote open metadata repository.",

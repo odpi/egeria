@@ -10,13 +10,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * SchemaElementHandler manages common methods fof SchemaType and Schema Attribute objects.  It runs server-side in
  * the OMAG Server Platform and retrieves SchemaElement entities and relationships through the OMRSRepositoryConnector.
+ * This handler does not support effectivity dates but probably should.
  */
 class SchemaElementHandler<B> extends ReferenceableHandler<B>
 {
@@ -110,6 +113,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                              assetGUIDParameterName,
                                                                              assetTypeName,
                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                             null,
                                                                              methodName);
 
         if (assetQualifiedName == null)
@@ -134,6 +138,10 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                schemaTypeTypeName,
+                                                               false,
+                                                               false,
+                                                               supportedZones,
+                                                               null,
                                                                methodName);
 
         if (schemaTypeEntity == null)
@@ -175,6 +183,9 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
                                           schemaTypeTypeName,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           null,
@@ -221,7 +232,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
         final String externalParameterName = "externalSchemaType";
         final String optionParameterName = "optionSchemaType";
 
-        if (OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME.equals(schemaTypeBuilder.getTypeName()))
+        if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
         {
             String externalSchemaGUID = schemaTypeBuilder.getExternalSchemaTypeGUID();
 
@@ -236,72 +247,86 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                           externalSchemaGUID,
                                           externalParameterName,
                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                           null,
                                           methodName);
             }
         }
-        else if (OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME.equals(schemaTypeBuilder.getTypeName()))
+        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
         {
+            /*
+             * The caller may have set up the maps as builders (requiring the schema type to be created first) or as GUIDs.
+             */
             SchemaTypeBuilder mapFromBuilder = schemaTypeBuilder.getMapFrom();
             SchemaTypeBuilder mapToBuilder   = schemaTypeBuilder.getMapTo();
+            String mapFromGUID = schemaTypeBuilder.getMapFromGUID();
+            String mapToGUID = schemaTypeBuilder.getMapToGUID();
 
             if (mapFromBuilder != null)
             {
-                String mapFromGUID = addSchemaType(userId,
-                                                   externalSourceGUID,
-                                                   externalSourceName,
-                                                   mapFromBuilder.qualifiedName,
-                                                   mapFromBuilder,
-                                                   methodName);
+                mapFromGUID = addSchemaType(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            mapFromBuilder.qualifiedName,
+                                            mapFromBuilder,
+                                            methodName);
+            }
 
-                if (mapFromGUID != null)
-                {
-                    this.linkElementToElement(userId,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              schemaTypeGUID,
-                                              schemaTypeGUIDParameterName,
-                                              schemaTypeTypeName,
-                                              mapFromGUID,
-                                              mapFromParameterName,
-                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                              OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                              OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
-                                              null,
-                                              methodName);
-                }
+            if (mapFromGUID != null)
+            {
+                this.linkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          schemaTypeGUID,
+                                          schemaTypeGUIDParameterName,
+                                          schemaTypeTypeName,
+                                          mapFromGUID,
+                                          mapFromParameterName,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                          null,
+                                          methodName);
             }
 
             if (mapToBuilder != null)
             {
-                String mapToGUID = addSchemaType(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 mapToBuilder.qualifiedName,
-                                                 mapToBuilder,
-                                                 methodName);
+                mapToGUID = addSchemaType(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          mapToBuilder.qualifiedName,
+                                          mapToBuilder,
+                                          methodName);
+            }
 
-                if (mapToGUID != null)
-                {
-                    this.linkElementToElement(userId,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              schemaTypeGUID,
-                                              schemaTypeGUIDParameterName,
-                                              schemaTypeTypeName,
-                                              mapToGUID,
-                                              mapToParameterName,
-                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                              OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                              OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
-                                              null,
-                                              methodName);
-                }
+            if (mapToGUID != null)
+            {
+                this.linkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          schemaTypeGUID,
+                                          schemaTypeGUIDParameterName,
+                                          schemaTypeTypeName,
+                                          mapToGUID,
+                                          mapToParameterName,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                          null,
+                                          methodName);
             }
         }
-        else if (OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME.equals(schemaTypeBuilder.getTypeName()))
+        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
         {
             List<SchemaTypeBuilder>  schemaOptionBuilders = schemaTypeBuilder.getSchemaOptions();
 
@@ -329,6 +354,9 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                       optionGUID,
                                                       optionParameterName,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                      false,
+                                                      false,
+                                                      supportedZones,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_GUID,
                                                       OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
                                                       null,
@@ -418,6 +446,8 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
 
 
@@ -428,9 +458,202 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
         }
 
         return count;
     }
+
+
+    /**
+     * Create a new query relationship for a derived schema element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
+     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param schemaElementGUID unique identifier of the schema element that this query supports
+     * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
+     * @param schemaElementTypeName name of type for schema element
+     * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
+     * @param query the query that is made on the targetGUID
+     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
+     * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupQueryTargetRelationship(String userId,
+                                             String externalSourceGUID,
+                                             String externalSourceName,
+                                             String schemaElementGUID,
+                                             String schemaElementGUIDParameterName,
+                                             String schemaElementTypeName,
+                                             String queryId,
+                                             String query,
+                                             String queryTargetGUID,
+                                             String queryTargetGUIDParameterName,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String queryParameterName = "query";
+
+        invalidParameterHandler.validateObject(query, queryParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                                                     query,
+                                                                                     methodName);
+
+        if (queryId != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                      queryId,
+                                                                      methodName);
+        }
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  schemaElementGUID,
+                                  schemaElementGUIDParameterName,
+                                  schemaElementTypeName,
+                                  queryTargetGUID,
+                                  queryTargetGUIDParameterName,
+                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  methodName);
+    }
+
+
+    /**
+     * Update the query properties for a query relationship for a derived schema element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
+     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param schemaElementGUID unique identifier of the schema element that this query supports
+     * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
+     * @param schemaElementTypeName name of type for schema element
+     * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
+     * @param query the query that is made on the targetGUID
+     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
+     * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateQueryTargetRelationship(String userId,
+                                              String externalSourceGUID,
+                                              String externalSourceName,
+                                              String schemaElementGUID,
+                                              String schemaElementGUIDParameterName,
+                                              String schemaElementTypeName,
+                                              String queryId,
+                                              String query,
+                                              String queryTargetGUID,
+                                              String queryTargetGUIDParameterName,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String queryParameterName = "query";
+
+        invalidParameterHandler.validateObject(query, queryParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                                                     query,
+                                                                                     methodName);
+
+        if (queryId != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                      queryId,
+                                                                      methodName);
+        }
+
+        this.updateElementToElementLink(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        schemaElementGUID,
+                                        schemaElementGUIDParameterName,
+                                        schemaElementTypeName,
+                                        queryTargetGUID,
+                                        queryTargetGUIDParameterName,
+                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                        properties,
+                                        methodName);
+    }
+
+
+
+    /**
+     * Update the query properties for a query relationship for a derived schema element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
+     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param schemaElementGUID unique identifier of the schema element that this query supports
+     * @param schemaElementGUIDParameterName  parameter name for schemaElementGUID
+     * @param schemaElementTypeName name of type for schema element
+     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a schema attribute)
+     * @param queryTargetGUIDParameterName parameter supplying queryTargetGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearQueryTargetRelationship(String userId,
+                                             String externalSourceGUID,
+                                             String externalSourceName,
+                                             String schemaElementGUID,
+                                             String schemaElementGUIDParameterName,
+                                             String schemaElementTypeName,
+                                             String queryTargetGUID,
+                                             String queryTargetGUIDParameterName,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      schemaElementGUID,
+                                      schemaElementGUIDParameterName,
+                                      schemaElementTypeName,
+                                      queryTargetGUID,
+                                      queryTargetGUIDParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                      null,
+                                      methodName);
+    }
+
+
 }

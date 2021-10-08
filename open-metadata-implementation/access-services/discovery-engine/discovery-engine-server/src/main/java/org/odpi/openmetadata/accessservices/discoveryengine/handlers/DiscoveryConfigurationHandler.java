@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -178,6 +179,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                      null,
                                                                      null,
                                                                      null,
+                                                                     null,
+                                                                     null,
                                                                      methodName);
     }
 
@@ -195,18 +198,21 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public  DiscoveryEngineProperties getDiscoveryEngineByGUID(String    userId,
-                                                               String    guid) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public  DiscoveryEngineProperties getDiscoveryEngineByGUID(String userId,
+                                                               String guid) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        final  String   methodName = "getDiscoveryEngineByGUID";
-        final  String   guidParameter = "guid";
+        final String methodName = "getDiscoveryEngineByGUID";
+        final String guidParameter = "guid";
 
         return discoveryEngineHandler.getBeanFromRepository(userId,
                                                             guid,
                                                             guidParameter,
                                                             OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                            false,
+                                                            false,
+                                                            new Date(),
                                                             methodName);
     }
 
@@ -224,13 +230,13 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public  DiscoveryEngineProperties getDiscoveryEngineByName(String    userId,
-                                                               String    name) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public  DiscoveryEngineProperties getDiscoveryEngineByName(String userId,
+                                                               String name) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        final  String   methodName = "getDiscoveryEngineByName";
-        final  String   nameParameter = "name";
+        final String methodName = "getDiscoveryEngineByName";
+        final String nameParameter = "name";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -241,6 +247,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                      specificMatchPropertyNames,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName);
     }
 
@@ -271,6 +280,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      startingFrom,
                                                      maximumResults,
+                                                     null,
                                                      methodName);
     }
 
@@ -296,19 +306,19 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery engine definition.
      */
-    public  void    updateDiscoveryEngine(String                userId,
-                                          String                guid,
-                                          String                qualifiedName,
-                                          String                displayName,
-                                          String                description,
-                                          String                typeDescription,
-                                          String                version,
-                                          String                patchLevel,
-                                          String                source,
-                                          Map<String, String>   additionalProperties,
-                                          Map<String, Object>   extendedProperties) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public void updateDiscoveryEngine(String                userId,
+                                      String                guid,
+                                      String                qualifiedName,
+                                      String                displayName,
+                                      String                description,
+                                      String                typeDescription,
+                                      String                version,
+                                      String                patchLevel,
+                                      String                source,
+                                      Map<String, String>   additionalProperties,
+                                      Map<String, Object>   extendedProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "updateDiscoveryEngine";
         final String guidParameter = "guid";
@@ -381,6 +391,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                       OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                       qualifiedNameParameter,
                                                       qualifiedName,
+                                                      false,
+                                                      false,
+                                                      new Date(),
                                                       methodName);
     }
 
@@ -424,15 +437,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                            displayName,
                                                                            description,
                                                                            null,
-                                                                           null,
-                                                                           0,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                            null,
+                                                                           InstanceStatus.ACTIVE,
                                                                            methodName);
 
         if (assetGUID != null)
@@ -446,7 +453,16 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                           connectorType.getQualifiedName(),
                                                                                           connectorType.getDisplayName(),
                                                                                           connectorType.getDescription(),
+                                                                                          connectorType.getSupportedAssetTypeName(),
+                                                                                          connectorType.getExpectedDataFormat(),
                                                                                           connectorType.getConnectorProviderClassName(),
+                                                                                          connectorType.getConnectorFrameworkName(),
+                                                                                          connectorType.getConnectorInterfaceLanguage(),
+                                                                                          connectorType.getConnectorInterfaces(),
+                                                                                          connectorType.getTargetTechnologySource(),
+                                                                                          connectorType.getTargetTechnologyName(),
+                                                                                          connectorType.getTargetTechnologyInterfaces(),
+                                                                                          connectorType.getTargetTechnologyVersions(),
                                                                                           connectorType.getRecognizedAdditionalProperties(),
                                                                                           connectorType.getRecognizedSecuredProperties(),
                                                                                           connectorType.getRecognizedConfigurationProperties(),
@@ -480,6 +496,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                      connection.getEncryptedPassword(),
                                                                                      connectorTypeGUID,
                                                                                      connectorTypeGUIDParameterName,
+                                                                                     null,
+                                                                                     null,
                                                                                      methodName);
 
                     List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
@@ -536,6 +554,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                        connectorTypeGUIDParameterName,
                                                        null,
                                                        null,
+                                                       null,
+                                                       null,
                                                        methodName);
                 }
             }
@@ -570,6 +590,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                               guid,
                                                               guidParameter,
                                                               OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                              null,
                                                               methodName);
     }
 
@@ -599,6 +620,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                     nameParameter,
                                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                    null,
                                                                     methodName);
     }
 
@@ -629,6 +651,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                   OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                   startingFrom,
                                                                   maximumResults,
+                                                                  null,
                                                                   methodName);
     }
 
@@ -645,10 +668,10 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public  List<String>  getDiscoveryServiceRegistrations(String   userId,
-                                                           String   discoveryServiceGUID) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public  List<String>  getDiscoveryServiceRegistrations(String userId,
+                                                           String discoveryServiceGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final  String   methodName = "getAllDiscoveryServices";
         final  String   guidParameter = "discoveryServiceGUID";
@@ -663,6 +686,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                 discoveryServiceGUID,
                                                 guidParameter,
                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
@@ -670,6 +696,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                      OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     false,
+                                                                                     0, 0,
+                                                                                     null,
                                                                                      methodName);
 
         List<String> results = new ArrayList<>();
@@ -781,6 +810,9 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                  OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
     }
 
@@ -827,8 +859,10 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                        OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                                       null,
                                                                                        methodName);
 
 
@@ -912,6 +946,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                     discoveryServiceGUID,
                                                     discoveryServiceGUIDParameter,
                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                    false,
+                                                    false,
                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                     instanceProperties,
@@ -952,6 +988,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                              discoveryEngineGUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             false,
+                                                                                             null,
                                                                                              methodName);
 
 
@@ -997,8 +1035,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                              false,
+                                                              false,
                                                               startingFrom,
                                                               maximumResults,
+                                                              null,
                                                               methodName);
     }
 
@@ -1039,8 +1080,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                         discoveryServiceGUIDParameter,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                        false,
+                                                        false,
                                                         OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                        null,
                                                         methodName);
     }
 }

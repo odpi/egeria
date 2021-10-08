@@ -2,12 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 
@@ -16,13 +27,12 @@ import java.util.List;
  * schemas and relationships.
  */
 public interface DataEngineClient {
-
     /**
-     * Create or update the processes, with all the ports, schema types and corresponding relationships including
-     * process hierarchy relationships.
+     * Create or update the process, with all the ports, schema types and corresponding relationships including
+     * the process hierarchy relationship.
      *
-     * @param userId    the name of the calling user
-     * @param processes list of processes
+     * @param userId  the name of the calling user
+     * @param process the process
      *
      * @return unique identifier of the process in the repository
      *
@@ -31,27 +41,28 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        ConnectorCheckedException;
+    String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException,
+                                                                        ConnectorCheckedException;
 
     /**
-     * Delete a list of processes
+     * Delete a process
      *
-     * @param userId         the name of the calling user
-     * @param qualifiedNames the qualified names of the processes to be deleted
-     * @param guids          the unique identifiers of the processes to be deleted
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the process to be deleted
+     * @param guid          the unique identifier of the process to be deleted
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
      */
-    void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                ConnectorCheckedException;
+    void deleteProcess(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException,
+                                                                                ConnectorCheckedException;
+
 
     /**
      * Create or update the software server capability entity
@@ -110,8 +121,8 @@ public interface DataEngineClient {
      * Delete the schema type
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of schema type
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of the schema type
+     * @param guid          the unique identifier of the schema type
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -148,8 +159,8 @@ public interface DataEngineClient {
      * Delete the port implementation
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of port
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of port implementation
+     * @param guid          the unique identifier of the port implementation
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -184,8 +195,8 @@ public interface DataEngineClient {
      * Delete the port alias
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of port
-     * @param guid          the unique identifier of the external data engine
+     * @param qualifiedName the qualified name of the port alias
+     * @param guid          the unique identifier of the port alias
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -244,4 +255,178 @@ public interface DataEngineClient {
      * @return Source system name
      */
     String getExternalSourceName();
+
+    /**
+     * Create or update the database entity
+     *
+     * @param userId   the name of the calling user
+     * @param database the database bean
+     *
+     * @return unique identifier of database in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertDatabase(String userId, Database database) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
+
+    /**
+     * Create or update the relational table entity
+     *
+     * @param userId          the name of the calling user
+     * @param relationalTable the relational table bean
+     *
+     * @return unique identifier of the relational table in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException;
+
+    /**
+     * Create or update the data file entity
+     *
+     * @param userId   the name of the calling user
+     * @param dataFile the data file  bean
+     *
+     * @return unique identifier of the relational table in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
+
+    /**
+     * Delete the database
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the database
+     * @param guid          the unique identifier of the database
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
+
+    /**
+     * Delete the relational table
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the relational table
+     * @param guid          the unique identifier of the relational table
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        ConnectorCheckedException;
+
+    /**
+     * Delete the data file
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the data file
+     * @param guid          the unique identifier of the data file
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
+
+    /**
+     * Delete the folder
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the data file
+     * @param guid          the unique identifier of the folder
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException,
+                                                                               ConnectorCheckedException;
+
+    /**
+     * Delete the connection
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the connection
+     * @param guid          the unique identifier of the connection
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   ConnectorCheckedException;
+
+    /**
+     * Delete the endpoint
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the endpoint
+     * @param guid          the unique identifier of the endpoint
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
+
+    /**
+     * Find an entity
+     *
+     * @param userId          the name of the calling user
+     * @param findRequestBody request body
+     *
+     * @return list of found entities
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException,
+                                                                                 InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException,
+                                                                                 FunctionNotSupportedException;
+
 }

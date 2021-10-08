@@ -97,8 +97,22 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
         if (producer == null)
         {
-            log.debug("Creating Producer");
-            producer = new KafkaProducer<>(producerProperties);
+            try
+            {
+                producer = new KafkaProducer<>(producerProperties);
+            }
+            catch ( Exception error )
+            {
+                if( auditLog != null)
+                {
+                    auditLog.logException(methodName, KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(topicName), error);
+                }
+
+                throw new ConnectorCheckedException( KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
+            }
         }
         while (!eventSent)
         {
@@ -158,7 +172,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             {
                 log.error("Wake up for shut down " + error.toString());
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 producer.close();
                 producer = null;
@@ -220,7 +234,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             {
                 log.info("Woken up from sleep " + error.getMessage());
             }
-            catch (Throwable   error)
+            catch (Exception   error)
             {
                 log.error("Bad exception from sending events " + error.getMessage());
 
@@ -345,15 +359,20 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         running = false;
     }
 
-    private boolean isExceptionRetryable( Throwable throwable)
+    private boolean isExceptionRetryable( Exception error)
     {
 
+        /*
+        This code would probably be more elegant if it used Throwables
+        however I don't want to add Throwabales to the search and I didn't want to cast
+         */
         Throwable nested = null;
-        while ((nested = throwable.getCause()) != null) {
+        while ((nested =  error.getCause()) != null) {
              if( nested instanceof RetriableException) {
                  return true;
              }
-           throwable = throwable.getCause();
+
+           error = new Exception(error.getCause());
        }
         return false;
     }

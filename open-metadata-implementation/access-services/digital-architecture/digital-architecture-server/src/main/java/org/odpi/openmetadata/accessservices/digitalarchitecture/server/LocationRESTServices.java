@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,6 +82,8 @@ public class LocationRESTServices
                                                         locationProperties.getAdditionalProperties(),
                                                         locationProperties.getTypeName(),
                                                         locationProperties.getExtendedProperties(),
+                                                        null,
+                                                        null,
                                                         methodName));
             }
             else
@@ -158,6 +161,7 @@ public class LocationRESTServices
      *
      * @param serverName name of calling server
      * @param userId             calling user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationGUID       unique identifier of the metadata element to update
      * @param locationProperties new properties for this element
      * @return void or
@@ -168,6 +172,7 @@ public class LocationRESTServices
     public VoidResponse updateLocation(String             serverName,
                                        String             userId,
                                        String             locationGUID,
+                                       boolean            isMergeUpdate,
                                        LocationProperties locationProperties)
     {
         final String methodName = "updateLocation";
@@ -195,6 +200,9 @@ public class LocationRESTServices
                                        locationProperties.getAdditionalProperties(),
                                        locationProperties.getTypeName(),
                                        locationProperties.getExtendedProperties(),
+                                       isMergeUpdate,
+                                       null,
+                                       null,
                                        methodName);
             }
             else
@@ -611,6 +619,8 @@ public class LocationRESTServices
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
+                                        null,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -664,6 +674,7 @@ public class LocationRESTServices
                                         parentLocationGUIDParameter,
                                         childLocationGUID,
                                         childLocationGUIDParameter,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -717,6 +728,8 @@ public class LocationRESTServices
                                         locationOneGUIDParameter,
                                         locationTwoGUID,
                                         locationTwoGUIDParameter,
+                                        null,
+                                        null,
                                         methodName);
         }
         catch (Exception error)
@@ -770,6 +783,7 @@ public class LocationRESTServices
                                        locationOneGUIDParameter,
                                        locationTwoGUID,
                                        locationTwoGUIDParameter,
+                                       null,
                                        methodName);
         }
         catch (Exception error)
@@ -828,6 +842,7 @@ public class LocationRESTServices
                                                                     null,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    new Date(),
                                                                     methodName);
                 response.setElementList(locations);
             }
@@ -892,9 +907,12 @@ public class LocationRESTServices
                                                                           true,
                                                                           null,
                                                                           null,
+                                                                          false,
+                                                                          false,
                                                                           null,
                                                                           startFrom,
                                                                           pageSize,
+                                                                          new Date(),
                                                                           methodName);
                 response.setElementList(locations);
             }
@@ -943,6 +961,9 @@ public class LocationRESTServices
                                                                      locationGUID,
                                                                      locationGUIDParameter,
                                                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
             response.setElement(location);
         }

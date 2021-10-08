@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -22,7 +22,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
@@ -72,7 +78,7 @@ public class CommonHandler {
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
 
         if (typeDefByName != null) {
             if (repositoryHelper.getKnownTypeDefGallery() == null
@@ -102,7 +108,7 @@ public class CommonHandler {
     Type getTypeByTypeDefName(String userId, String typeDefName) {
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
 
         if (typeDefByName != null) {
             return converter.convertType(typeDefByName);
@@ -225,7 +231,7 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
-        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {

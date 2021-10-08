@@ -3,16 +3,13 @@
 
 # 0120 Collections
 
-Collections provide a general mechanism for grouping
-resources together.
+Collections are now located in model [0021](0021-Collections.md).
 
-![UML](0120-Collections.png#pagewidth)
+----
 
-The classifications associated with Collection allows it
-to be specialized for particular uses.
+* Return to [Area 1](Area-1-models.md).
+* Return to [Overview](.).
 
-
-Return to [Area 1](Area-1-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

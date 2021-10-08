@@ -51,10 +51,16 @@ public class ConfigFVT
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
     synchronized public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("ConfigFVT runIt started");
-        ConfigFVT fvt =new ConfigFVT(url, serverName, userId);
-        fvt.run();
-        System.out.println("ConfigFVT runIt stopped");
+        try {
+            System.out.println("ConfigFVT runIt started");
+            ConfigFVT fvt =new ConfigFVT(url, serverName, userId);
+            fvt.run();
+            System.out.println("ConfigFVT runIt stopped");
+        }
+        catch (Exception error) {
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

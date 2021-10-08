@@ -11,8 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,13 @@ public class AssetLineageClientTest {
     private static final String SERVER_NAME = "TestServer";
     private static final String USER_ID = "zebra91";
     private static final String ENTITY_TYPE = "GlossaryTerm";
-    private static final LocalDateTime UPDATED_AFTER_DATE = LocalDateTime.now().minusDays(1);
+    private static final String UPDATED_AFTER_DATE ;
+
+    static {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        UPDATED_AFTER_DATE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(calendar.getTime());
+    }
 
     private AssetLineage assetLineage;
 
@@ -39,7 +46,7 @@ public class AssetLineageClientTest {
 
     @Before
     public void before() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         assetLineage = new AssetLineage(SERVER_NAME, SERVER_URL);
         Field connectorField = ReflectionUtils.findField(AssetLineage.class, "clientConnector");
@@ -70,7 +77,7 @@ public class AssetLineageClientTest {
         List<String> GUIDs = assetLineage.publishEntities(SERVER_NAME,
                 USER_ID,
                 ENTITY_TYPE,
-                Optional.of(UPDATED_AFTER_DATE));
+                Optional.of(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(UPDATED_AFTER_DATE)));
 
 
         assertArrayEquals(GUIDs.toArray(new String[0]), response.getGUIDs().toArray(new String[0]));

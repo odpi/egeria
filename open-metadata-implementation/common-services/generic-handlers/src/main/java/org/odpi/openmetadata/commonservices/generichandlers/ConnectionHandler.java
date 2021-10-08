@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import java.util.Map;
  * ConnectionHandler manages Connection objects.  These describe the network addresses where services are running.  They are used by connection
  * objects to describe the service that the connector should call.  They are linked to servers to show their network address where the services that
  * they are hosting are running.
- * 
+ *
  * Most OMASs that work with Connection objects use the Open Connector Framework (OCF) Bean since this can be passed to the OCF Connector
  * Broker to create an instance of a connector to the attached asset.  Therefore this handler has a default bean and converter which
  * is the one that works with the OCF bean.  The call can either use these values or override with their own bean/converter implementations.
@@ -115,7 +116,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                auditLog);
     }
 
-    
+
     /*
      * ========================================================
      * This first set of methods work with OCF Connection Beans
@@ -130,6 +131,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connectionGUID unique Id
      * @param qualifiedName unique name
      * @param displayName human readable name
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return unique identifier of the connection or null
@@ -138,13 +140,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String findConnection(String               userId,
-                                  String               connectionGUID,
-                                  String               qualifiedName,
-                                  String               displayName,
-                                  String               methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    private String findConnection(String userId,
+                                  String connectionGUID,
+                                  String qualifiedName,
+                                  String displayName,
+                                  Date   effectiveTime,
+                                  String methodName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
         final String guidParameterName        = "connectionGUID";
         final String qualifiedNameParameter   = "qualifiedName";
@@ -163,6 +166,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                  connectionGUID,
                                                  guidParameterName,
                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                 null,
+                                                 null,
+                                                 false,
+                                                 false,
+                                                 supportedZones,
+                                                 effectiveTime,
                                                  methodName) != null)
                 {
                     return connectionGUID;
@@ -186,7 +195,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                         false,
+                                                         false,
                                                          supportedZones,
+                                                         effectiveTime,
                                                          methodName);
         }
 
@@ -198,7 +210,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                         false,
+                                                         false,
                                                          supportedZones,
+                                                         effectiveTime,
                                                          methodName);
         }
 
@@ -253,6 +268,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                             connection.getGUID(),
                                                             connection.getQualifiedName(),
                                                             connection.getDisplayName(),
+                                                            null,
                                                             methodName);
         if (existingConnectionGUID == null)
         {
@@ -273,9 +289,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     externalSourceGUID,
                                     externalSourceName,
                                     anchorGUID,
-                                    assetGUID,
-                                    assetGUIDParameterName,
-                                    assetTypeName,
                                     existingConnectionGUID,
                                     connection,
                                     methodName);
@@ -290,9 +303,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param anchorGUID unique identifier of the anchor entity if applicable
-     * @param assetGUID unique identifier of linked asset (or null)
-     * @param assetGUIDParameterName  parameter name supplying assetGUID
-     * @param assetTypeName type of asset
      * @param connectionGUID unique identifier of connected connection
      * @param endpoint endpoint object or null
      * @param connectorType connector type object or null
@@ -307,9 +317,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   String                   externalSourceGUID,
                                                   String                   externalSourceName,
                                                   String                   anchorGUID,
-                                                  String                   assetGUID,
-                                                  String                   assetGUIDParameterName,
-                                                  String                   assetTypeName,
                                                   String                   connectionGUID,
                                                   Endpoint                 endpoint,
                                                   ConnectorType            connectorType,
@@ -345,6 +352,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                      null,
+                                                     false,
+                                                     null,
                                                      methodName);
             }
         }
@@ -363,6 +372,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                            OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                            OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                           false,
+                                                           null,
                                                            methodName);
         }
 
@@ -385,6 +396,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                                      null,
+                                                     false,
+                                                     null,
                                                      methodName);
             }
         }
@@ -403,6 +416,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                            OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                            OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                           false,
+                                                           null,
                                                            methodName);
         }
 
@@ -417,9 +432,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                connectionGUID,
                                connectionGUIDParameterName,
                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                               false,
+                               false,
                                supportedZones,
                                OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
+                               new Date(),
                                methodName);
 
         if ((embeddedConnections != null) && (! embeddedConnections.isEmpty()))
@@ -433,10 +451,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                     String realConnectionGUID = this.saveConnection(userId,
                                                                     externalSourceGUID,
                                                                     externalSourceName,
-                                                                    assetGUID,
+                                                                    anchorGUID,
                                                                     null,
                                                                     null,
-                                                                    assetTypeName,
+                                                                    null,
                                                                     realConnection,
                                                                     null,
                                                                     methodName);
@@ -450,6 +468,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
+
+                        embeddedConnectionBuilder.setAnchors(userId, anchorGUID, methodName);
 
                         repositoryHandler.createRelationship(userId,
                                                              OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
@@ -555,9 +575,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceGUID,
                                                   externalSourceName,
                                                   anchorGUID,
-                                                  assetGUID,
-                                                  assetGUIDParameterName,
-                                                  assetTypeName,
                                                   connectionGUID,
                                                   connection.getEndpoint(),
                                                   connection.getConnectorType(),
@@ -586,6 +603,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           assetGUID,
                                           assetGUIDParameterName,
                                           assetTypeName,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                           properties,
@@ -604,9 +624,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param anchorGUID unique identifier ofr the anchor GUID if applicable
-     * @param assetGUID unique identifier of linked asset (or null)
-     * @param assetGUIDParameterName  parameter name supplying assetGUID
-     * @param assetTypeName type of asset
      * @param existingConnectionGUID unique identifier of the existing connection entity
      * @param connection new connection values
      * @param methodName calling method
@@ -621,9 +638,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     String     externalSourceGUID,
                                     String     externalSourceName,
                                     String     anchorGUID,
-                                    String     assetGUID,
-                                    String     assetGUIDParameterName,
-                                    String     assetTypeName,
                                     String     existingConnectionGUID,
                                     Connection connection,
                                     String     methodName) throws InvalidParameterException,
@@ -634,13 +648,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateObject(connection.getConnectorType(), parameterName, methodName);
 
-        String                   connectionTypeGUID  = OpenMetadataAPIMapper.CONNECTION_TYPE_GUID;
         String                   connectionTypeName  = OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
         List<EmbeddedConnection> embeddedConnections = null;
 
         if (connection instanceof VirtualConnection)
         {
-            connectionTypeGUID = OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_GUID;
             connectionTypeName = OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME;
 
             VirtualConnection  virtualConnection = (VirtualConnection)connection;
@@ -662,9 +674,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                               connection.getUserId(),
                               connection.getClearPassword(),
                               connection.getEncryptedPassword(),
-                              connectionTypeGUID,
                               connectionTypeName,
                               connection.getExtendedProperties(),
+                              false,
+                              null,
+                              null,
                               methodName);
 
 
@@ -672,9 +686,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                               externalSourceGUID,
                                               externalSourceName,
                                               anchorGUID,
-                                              assetGUID,
-                                              assetGUIDParameterName,
-                                              assetTypeName,
                                               existingConnectionGUID,
                                               connection.getEndpoint(),
                                               connection.getConnectorType(),
@@ -690,7 +701,159 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * =========================================================
      * This next set of beans work with any bean implementation of a connection
      */
-    
+
+
+    /**
+     * If possible, create a connection for the supplied asset.  The new connection is linked to the asset.
+     *
+     * @param userId           userId of user making request
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param assetGUID         unique identifier of the asset
+     * @param assetGUIDParameterName parameter name supplying the asset guid
+     * @param assetTypeName type of asset being created
+     * @param assetQualifiedName fully qualified path name of the asset
+     * @param anchorEndpointToAsset set to true if the network address is unique for the asset and should not be reused. False if this is an endpoint
+     *                              that is relevant for multiple assets.
+     * @param configurationProperties configuration properties for the connection
+     * @param connectorProviderClassName Java class name for the connector provider
+     * @param networkAddress the network address (typically the URL but this depends on the protocol)
+     * @param protocol the name of the protocol to use to connect to the endpoint
+     * @param encryptionMethod encryption method to use when passing data to this endpoint
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void addAssetConnection(String              userId,
+                                   String              externalSourceGUID,
+                                   String              externalSourceName,
+                                   String              assetGUID,
+                                   String              assetGUIDParameterName,
+                                   String              assetTypeName,
+                                   String              assetQualifiedName,
+                                   boolean             anchorEndpointToAsset,
+                                   Map<String, Object> configurationProperties,
+                                   String              connectorProviderClassName,
+                                   String              networkAddress,
+                                   String              protocol,
+                                   String              encryptionMethod,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   String              methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
+
+        String connectorTypeGUID;
+        Date   effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
+
+        if (connectorProviderClassName != null)
+        {
+            /*
+             * The caller has provided the connector provider class name so that is used. If an existing connector type is found, it is
+             * used, otherwise a new connector type is created.  Notice it is not anchored to the asset.
+             */
+            String connectorTypeName = assetTypeName + ":" + assetQualifiedName + " ConnectorType";
+
+            connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   connectorTypeName,
+                                                                                   connectorTypeName,
+                                                                                   null,
+                                                                                   assetTypeName,
+                                                                                   null,
+                                                                                   connectorProviderClassName,
+                                                                                   OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT,
+                                                                                   OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   methodName);
+        }
+        else
+        {
+            /*
+             * No explicit connector provider class name is provided so look up if there is a standard connector type for this asset type.
+             */
+            connectorTypeGUID = connectorTypeHandler.getConnectorTypeForAsset(userId, assetTypeName, methodName);
+        }
+
+        if (connectorTypeGUID != null)
+        {
+            final String endpointGUIDParameterName = "endpointGUID";
+            final String endpointDescription       = "Access information to connect to the actual asset: ";
+
+            /*
+             * A connector type is present so it is possible to create a connection.
+             */
+            String endpointName   = assetTypeName + ":" + assetQualifiedName + " Endpoint";
+            String connectionName = assetTypeName + ":" + assetQualifiedName + " Connection";
+
+            String anchorGUID = null;
+
+            /*
+             * The endpoint is anchored to the asset if the caller requests.
+             */
+            if (anchorEndpointToAsset)
+            {
+                anchorGUID = assetGUID;
+            }
+
+            String endpointGUID = endpointHandler.getEndpointForConnection(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           anchorGUID,
+                                                                           endpointName,
+                                                                           endpointName,
+                                                                           endpointDescription + networkAddress,
+                                                                           networkAddress,
+                                                                           protocol,
+                                                                           encryptionMethod,
+                                                                           null,
+                                                                           effectiveTime,
+                                                                           methodName);
+            this.createConnection(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  assetGUID,
+                                  assetGUIDParameterName,
+                                  null,
+                                  connectionName,
+                                  connectionName,
+                                  null,
+                                  null,
+                                  null,
+                                  configurationProperties,
+                                  null,
+                                  null,
+                                  null,
+                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  null,
+                                  connectorTypeGUID,
+                                  connectorTypeGUIDParameterName,
+                                  endpointGUID,
+                                  endpointGUIDParameterName,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  methodName);
+        }
+    }
+
+
+
     /**
      * Creates a new connection, connects it to the asset and returns the unique identifier for it.
      *
@@ -713,6 +876,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
      * @param endpointGUID unique identifier of the endpoint to used for this connection
      * @param endpointGUIDParameterName the parameter supplying endpointGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @return GUID for new connection
@@ -740,6 +905,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                    String              connectorTypeGUIDParameterName,
                                    String              endpointGUID,
                                    String              endpointGUIDParameterName,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
                                    String              methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -750,8 +917,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      assetGUID,
                                      assetGUIDParameterName,
                                      assetSummary,
-                                     OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                      qualifiedName,
                                      displayName,
                                      description,
@@ -761,10 +926,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      connectorUserId,
                                      clearPassword,
                                      encryptedPassword,
+                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                     null,
                                      connectorTypeGUID,
                                      connectorTypeGUIDParameterName,
                                      endpointGUID,
                                      endpointGUIDParameterName,
+                                     effectiveFrom,
+                                     effectiveTo,
                                      methodName);
     }
 
@@ -789,6 +958,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param encryptedPassword encrypted password that the connector needs to decrypt before use
      * @param connectorTypeGUID unique identifier of the connector type to used for this connection
      * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @return GUID for new connection
@@ -814,6 +985,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           String              encryptedPassword,
                                           String              connectorTypeGUID,
                                           String              connectorTypeGUIDParameterName,
+                                          Date                effectiveFrom,
+                                          Date                effectiveTo,
                                           String              methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -824,8 +997,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      assetGUID,
                                      assetGUIDParameterName,
                                      assetSummary,
-                                     OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_GUID,
-                                     OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME,
                                      qualifiedName,
                                      displayName,
                                      description,
@@ -835,10 +1006,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      connectorUserId,
                                      clearPassword,
                                      encryptedPassword,
+                                     OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME,
+                                     null,
                                      connectorTypeGUID,
                                      connectorTypeGUIDParameterName,
-                                     null,
-                                     null,
+                                     effectiveFrom,
+                                     effectiveTo,
                                      methodName);
     }
 
@@ -853,8 +1026,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID the unique identifier for the asset entity (null for stand alone connections)
      * @param assetGUIDParameterName the parameter supplying assetGUID
      * @param assetSummary brief description of the asset for the relationship between the asset and the connection
-     * @param connectionTypeId type identifier for the connection
-     * @param connectionTypeName type name for the connection
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
      * @param description new description for the connection.
@@ -864,10 +1035,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connectorUserId user identity that the connector should use
      * @param clearPassword password for the userId in clear text
      * @param encryptedPassword encrypted password that the connector needs to decrypt before use
+     * @param connectionTypeName type name for the connection
+     * @param extendedProperties parameters from a subtype
      * @param connectorTypeGUID unique identifier of the connector type to used for this connection
      * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
      * @param endpointGUID unique identifier of the endpoint to used for this connection
      * @param endpointGUIDParameterName the parameter supplying endpointGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @return GUID for new connection
@@ -882,8 +1057,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     String              assetGUID,
                                     String              assetGUIDParameterName,
                                     String              assetSummary,
-                                    String              connectionTypeId,
-                                    String              connectionTypeName,
                                     String              qualifiedName,
                                     String              displayName,
                                     String              description,
@@ -893,10 +1066,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     String              connectorUserId,
                                     String              clearPassword,
                                     String              encryptedPassword,
+                                    String              connectionTypeName,
+                                    Map<String, Object> extendedProperties,
                                     String              connectorTypeGUID,
                                     String              connectorTypeGUIDParameterName,
                                     String              endpointGUID,
                                     String              endpointGUIDParameterName,
+                                    Date                effectiveFrom,
+                                    Date                effectiveTo,
                                     String              methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -905,6 +1082,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         final String connectionGUIDParameterName = "connectionGUID";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+
+        String connectionTypeId = invalidParameterHandler.validateTypeName(connectionTypeName,
+                                                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                           serviceName,
+                                                                           methodName,
+                                                                           repositoryHelper);
 
         ConnectionBuilder builder = new ConnectionBuilder(qualifiedName,
                                                           displayName,
@@ -917,10 +1100,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                           encryptedPassword,
                                                           connectionTypeId,
                                                           connectionTypeName,
-                                                          null,
+                                                          extendedProperties,
                                                           repositoryHelper,
                                                           serviceName,
                                                           serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         if (assetGUID != null)
         {
@@ -961,9 +1146,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           assetGUID,
                                           assetGUIDParameterName,
                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                          relationshipProperties,
+                                          this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
                                           methodName);
             }
 
@@ -978,6 +1166,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           connectorTypeGUID,
                                           connectorTypeGUIDParameterName,
                                           OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                           null,
@@ -995,6 +1186,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           connectionGUID,
                                           connectionGUIDParameterName,
                                           connectionTypeName,
+                                          false,
+                                          false,
+                                          supportedZones,
                                           OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                           OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                           null,
@@ -1077,12 +1271,121 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   embeddedConnectionGUID,
                                   embeddedConnectionGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                   OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
                                   properties,
                                   methodName);
     }
 
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
+     * @param embeddedConnectionGUIDParameterName parameter for embeddedConnectionGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEmbeddedConnection(String userId,
+                                         String externalSourceGUID,
+                                         String externalSourceName,
+                                         String connectionGUID,
+                                         String connectionGUIDParameterName,
+                                         String embeddedConnectionGUID,
+                                         String embeddedConnectionGUIDParameterName,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      connectionGUID,
+                                      connectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME,
+                                      embeddedConnectionGUID,
+                                      embeddedConnectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME,
+                                      null,
+                                      methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateGUIDParameterName parameter name for templateGUID
+     * @param qualifiedName unique name for the element - used in other configuration
+     * @param qualifiedNameParameterName parameter name for qualifiedName
+     * @param displayName short display name for the new element
+     * @param description description of the new element
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String userId,
+                                               String externalSourceGUID,
+                                               String externalSourceName,
+                                               String templateGUID,
+                                               String templateGUIDParameterName,
+                                               String qualifiedName,
+                                               String qualifiedNameParameterName,
+                                               String displayName,
+                                               String description,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        ConnectionBuilder builder = new ConnectionBuilder(qualifiedName,
+                                                          displayName,
+                                                          description,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        return this.createBeanFromTemplate(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           templateGUID,
+                                           templateGUIDParameterName,
+                                           OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           builder,
+                                           methodName);
+    }
 
 
     /**
@@ -1102,9 +1405,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param connectorUserId user identity that the connector should use
      * @param clearPassword password for the userId in clear text
      * @param encryptedPassword encrypted password that the connector needs to decrypt before use
-     * @param typeGUID identifier of the type that is a subtype of connection - or null to create standard type
      * @param typeName name of the type that is a subtype of connection - or null to create standard type
      * @param extendedProperties additional properties for the subtype
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1125,16 +1430,24 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                    String              connectorUserId,
                                    String              clearPassword,
                                    String              encryptedPassword,
-                                   String              typeGUID,
                                    String              typeName,
                                    Map<String, Object> extendedProperties,
+                                   boolean             isMergeUpdate,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
                                    String              methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         final String nameParameter = "qualifiedName";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
 
         ConnectionBuilder builder = new ConnectionBuilder(qualifiedName,
                                                           displayName,
@@ -1152,6 +1465,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -1159,18 +1474,360 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     connectionGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    true,
+                                    isMergeUpdate,
+                                    this.getEffectiveTime(effectiveFrom, effectiveTo),
                                     methodName);
     }
 
 
     /**
-     * Count the number of informal connections attached to a supplied asset.
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param connectionGUID unique identifier of the connection
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param connectorTypeGUID unique identifier of the connector type
+     * @param connectorTypeGUIDParameterName parameter for connectorTypeGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addConnectionConnectorType(String userId,
+                                           String externalSourceGUID,
+                                           String externalSourceName,
+                                           String connectionGUID,
+                                           String connectionGUIDParameterName,
+                                           String connectorTypeGUID,
+                                           String connectorTypeGUIDParameterName,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  connectionGUID,
+                                  connectionGUIDParameterName,
+                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  connectorTypeGUID,
+                                  connectorTypeGUIDParameterName,
+                                  OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                  OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                  null,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the relationship between a connection and a connector type.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param connectionGUID unique identifier of the connection
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param connectorTypeGUID unique identifier of the connector type
+     * @param connectorTypeGUIDParameterName parameter for connectorTypeGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnectionConnectorType(String userId,
+                                              String externalSourceGUID,
+                                              String externalSourceName,
+                                              String connectionGUID,
+                                              String connectionGUIDParameterName,
+                                              String connectorTypeGUID,
+                                              String connectorTypeGUIDParameterName,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      connectionGUID,
+                                      connectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      connectorTypeGUID,
+                                      connectorTypeGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                      new Date(),
+                                      methodName);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param connectionGUID unique identifier of the connection
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param endpointGUID unique identifier of the endpoint
+     * @param endpointGUIDParameterName parameter for endpointGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addConnectionEndpoint(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String connectionGUID,
+                                      String connectionGUIDParameterName,
+                                      String endpointGUID,
+                                      String endpointGUIDParameterName,
+                                      String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  endpointGUID,
+                                  endpointGUIDParameterName,
+                                  OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                  connectionGUID,
+                                  connectionGUIDParameterName,
+                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                  OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                  null,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the relationship between a connection and an endpoint.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param endpointGUID unique identifier of the connector type in the external data manager
+     * @param endpointGUIDParameterName parameter for endpointGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnectionEndpoint(String userId,
+                                         String externalSourceGUID,
+                                         String externalSourceName,
+                                         String connectionGUID,
+                                         String connectionGUIDParameterName,
+                                         String endpointGUID,
+                                         String endpointGUIDParameterName,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      endpointGUID,
+                                      endpointGUIDParameterName,
+                                      OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                      connectionGUID,
+                                      connectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                      new Date(),
+                                      methodName);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the asset
+     * @param assetGUIDParameterName parameter for assetGUID
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addConnectionToAsset(String userId,
+                                     String externalSourceGUID,
+                                     String externalSourceName,
+                                     String connectionGUID,
+                                     String connectionGUIDParameterName,
+                                     String assetGUID,
+                                     String assetGUIDParameterName,
+                                     String assetSummary,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                     assetSummary,
+                                                                                     methodName);
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  connectionGUID,
+                                  connectionGUIDParameterName,
+                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  assetGUID,
+                                  assetGUIDParameterName,
+                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                  properties,
+                                  methodName);
+
+        this.addAnchorsClassification(userId,
+                                      connectionGUID,
+                                      connectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      assetGUID,
+                                      false,
+                                      false,
+                                      null,
+                                      methodName);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the asset
+     * @param assetGUIDParameterName parameter for assetGUID
+     * @param connectionGUID unique identifier of the connection
+     * @param connectionGUIDParameterName parameter for connectionGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnectionToAsset(String userId,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
+                                        String connectionGUID,
+                                        String connectionGUIDParameterName,
+                                        String assetGUID,
+                                        String assetGUIDParameterName,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      connectionGUID,
+                                      connectionGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                      assetGUID,
+                                      assetGUIDParameterName,
+                                      OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                      null,
+                                      methodName);
+    }
+
+
+    /**
+     * Remove the metadata element.  This will delete all elements anchored to it.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param guid unique identifier of the metadata element to remove
+     * @param guidParameterName parameter supplying the guid
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String userId,
+                                 String externalSourceGUID,
+                                 String externalSourceName,
+                                 String guid,
+                                 String guidParameterName,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    guid,
+                                    guidParameterName,
+                                    OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    methodName);
+    }
+
+
+    /**
+     * Count the number of connections attached to a supplied asset.
      *
      * @param userId     calling user
      * @param assetGUID identifier for the asset
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
@@ -1179,6 +1836,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      */
     public int countConnections(String userId,
                                 String assetGUID,
+                                Date   effectiveTime,
                                 String methodName) throws InvalidParameterException,
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
@@ -1188,41 +1846,20 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                      OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                      OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                     effectiveTime,
                                      methodName);
     }
 
 
     /**
      * Retrieve the list of connection objects attached to the requested asset object.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset object
-     * @param assetGUIDParameterName parameter name supplying assetGUID
-     * @param methodName calling method
-     * @return Connection bean
-     *
-     * @throws InvalidParameterException the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public B getConnectionForAsset(String       userId,
-                                   String       assetGUID,
-                                   String       assetGUIDParameterName,
-                                   String       methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        return this.getConnectionForAsset(userId, assetGUID, assetGUIDParameterName, supportedZones, methodName);
-    }
-
-
-    /**
-     * Retrieve the list of connection objects attached to the requested asset object.
+     * This includes the endpoint and connector type.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset object
      * @param assetGUIDParameterName parameter name supplying assetGUID
      * @param serviceSupportedZones list of supported zones for the calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return Connection bean
      *
@@ -1234,6 +1871,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                    String       assetGUID,
                                    String       assetGUIDParameterName,
                                    List<String> serviceSupportedZones,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -1251,9 +1889,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          null,
                                                                          null,
                                                                          false,
+                                                                         false,
                                                                          serviceSupportedZones,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
+                                                                         effectiveTime,
                                                                          methodName);
 
         EntityDetail selectedEntity = null;
@@ -1310,7 +1950,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             }
         }
 
-        return getConnection(userId, selectedEntity, methodName);
+        return getFullConnection(userId, selectedEntity, effectiveTime, methodName);
     }
 
 
@@ -1321,17 +1961,19 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param connectionEntity entity for root connection object
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return connection object
      * @throws InvalidParameterException the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private B getConnection(String       userId,
-                            EntityDetail connectionEntity,
-                            String       methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    private B getFullConnection(String       userId,
+                                EntityDetail connectionEntity,
+                                Date         effectiveTime,
+                                String       methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         if ((connectionEntity != null) && (connectionEntity.getType() != null))
         {
@@ -1341,7 +1983,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
              * matching the properties in the EmbeddedConnection relationship with the Connection bean it links to.
              * So the entire graph of instances for the connection are retrieved and passed to the converter.
              */
-            List<Relationship> supplementaryRelationships = this.getEmbeddedRelationships(userId, connectionEntity, methodName);
+            List<Relationship> supplementaryRelationships = this.getEmbeddedRelationships(userId, connectionEntity, effectiveTime, methodName);
             List<EntityDetail> supplementaryEntities = new ArrayList<>();
 
             if (supplementaryRelationships != null)
@@ -1355,9 +1997,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                         if ((repositoryHelper.isTypeOf(serviceName,
                                                        relationship.getType().getTypeDefName(),
                                                        OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
-                                || (repositoryHelper.isTypeOf(serviceName,
-                                                              relationship.getType().getTypeDefName(),
-                                                              OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME)))
+                                    || (repositoryHelper.isTypeOf(serviceName,
+                                                                  relationship.getType().getTypeDefName(),
+                                                                  OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME)))
                         {
                             entityProxy = relationship.getEntityTwoProxy();
                         }
@@ -1374,6 +2016,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                             entityProxy.getGUID(),
                                                                                             entityGUIDParameterName,
                                                                                             entityProxy.getType().getTypeDefName(),
+                                                                                            null,
+                                                                                            null,
+                                                                                            false,
+                                                                                            false,
+                                                                                            supportedZones,
+                                                                                            null,
                                                                                             methodName);
                             if (supplementaryEntity != null)
                             {
@@ -1395,13 +2043,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         return null;
     }
 
-
+    
     /**
      * Recursively retrieve the list of relationships within a connection object.  The recursion occurs in VirtualConnections
      * that embed connections within themselves.
      *
      * @param userId calling user
      * @param connectionEntity entity for root connection object
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return list of relationships
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -1409,6 +2058,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      */
     private List<Relationship> getEmbeddedRelationships(String        userId,
                                                         EntitySummary connectionEntity,
+                                                        Date          effectiveTime,
                                                         String        methodName) throws PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
@@ -1422,8 +2072,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
+                                                                                           false,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                                           effectiveTime,
                                                                                            methodName);
 
 
@@ -1436,12 +2088,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
                                                    OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME))
-                        || (repositoryHelper.isTypeOf(serviceName,
-                                                      relationship.getType().getTypeDefName(),
-                                                     OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME))
-                            || (repositoryHelper.isTypeOf(serviceName,
-                                                          relationship.getType().getTypeDefName(),
-                                                          OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME)))
+                                || (repositoryHelper.isTypeOf(serviceName,
+                                                              relationship.getType().getTypeDefName(),
+                                                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME))
+                                || (repositoryHelper.isTypeOf(serviceName,
+                                                              relationship.getType().getTypeDefName(),
+                                                              OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME)))
                     {
                         supplementaryRelationships.add(relationship);
                     }
@@ -1456,6 +2108,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                         {
                             List<Relationship> embeddedConnectionRelationships = this.getEmbeddedRelationships(userId,
                                                                                                                embeddedConnectionEnd,
+                                                                                                               effectiveTime,
                                                                                                                methodName);
 
                             if (embeddedConnectionRelationships != null)
@@ -1475,6 +2128,55 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         return supplementaryRelationships;
     }
+
+
+    /**
+     * Convert a list of connection entities into a list of beans.
+     * 
+     * @param userId calling user
+     * @param entities retrieved entities
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *                   
+     * @return list of beans
+     *
+     * @throws InvalidParameterException the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    private List<B> getFullConnections(String             userId,
+                                       List<EntityDetail> entities,
+                                       Date               effectiveTime,
+                                       String             methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        List<B> results = new ArrayList<>();
+
+        if (entities != null)
+        {
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    B bean = this.getFullConnection(userId, entity, effectiveTime, methodName);
+
+                    if (bean != null)
+                    {
+                        results.add(bean);
+                    }
+                }
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
+    }
+    
     
 
     /**
@@ -1486,9 +2188,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for the calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
-     * @return list of Connection bean
+     * @return list of Connection beans
      *
      * @throws InvalidParameterException the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -1500,6 +2203,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           List<String> serviceSupportedZones,
                                           int          startingFrom,
                                           int          pageSize,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
@@ -1507,44 +2211,166 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         /*
          * The generic handler calls to the security verifier as each connector is retrieved.
          */
-        List<EntityDetail> connectionEntities = super.getAttachedEntities(userId,
-                                                                          assetGUID,
-                                                                          assetGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                                                          null,
-                                                                          null,
-                                                                          false,
-                                                                          serviceSupportedZones,
-                                                                          startingFrom,
-                                                                          pageSize,
-                                                                          methodName);
+        List<EntityDetail> entities = super.getAttachedEntities(userId,
+                                                                assetGUID,
+                                                                assetGUIDParameterName,
+                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                null,
+                                                                null,
+                                                                false,
+                                                                false,
+                                                                serviceSupportedZones,
+                                                                startingFrom,
+                                                                pageSize,
+                                                                effectiveTime,
+                                                                methodName);
+
+        return getFullConnections(userId, entities, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression. This only retrieves the connection entity.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findConnections(String userId,
+                                   String searchString,
+                                   String searchStringParameterName,
+                                   int    startFrom,
+                                   int    pageSize,
+                                   Date   effectiveTime,
+                                   String methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        List<EntityDetail> entities = this.findEntities(userId,
+                                                        searchString,
+                                                        searchStringParameterName,
+                                                        OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        startFrom,
+                                                        pageSize,
+                                                        effectiveTime,
+                                                        methodName);
+
+        return getFullConnections(userId, entities, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified name or display name.
+     * There are no wildcards supported on this request. This only retrieves the connection entity.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getConnectionsByName(String userId,
+                                        String name,
+                                        String nameParameterName,
+                                        int    startFrom,
+                                        int    pageSize,
+                                        Date   effectiveTime,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
         
-        if ((connectionEntities != null) && (! connectionEntities.isEmpty()))
+        List<EntityDetail> entities =  this.getEntitiesByValue(userId,
+                                                               name,
+                                                               nameParameterName,
+                                                               OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                               specificMatchPropertyNames,
+                                                               true,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               false,
+                                                               supportedZones,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               effectiveTime,
+                                                               methodName);
+
+        return getFullConnections(userId, entities, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of guid
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getConnectionByGUID(String userId,
+                                 String guid,
+                                 String guidParameterName,
+                                 Date   effectiveTime,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                           null,
+                                                           null,
+                                                           false,
+                                                           false,
+                                                           supportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+        if (entity != null)
         {
-            List<B> results = new ArrayList<>();
-            
-            for (EntityDetail entity : connectionEntities)
-            {
-                if (entity != null)
-                {
-                    B bean = this.getConnection(userId, entity, methodName);
-                    
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
-                }
-            }
-            
-            if (! results.isEmpty())
-            {
-                return results;
-            }
+            return getFullConnection(userId, entity, effectiveTime, methodName);
         }
-        
+
         return null;
     }
 }

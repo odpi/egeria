@@ -2,13 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.serverauthor.services;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.rest.EngineServiceRequestBody;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,6 +23,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEn
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorResourceEndpointListResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.SupportedAuditLogSeveritiesResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.handlers.ServerAuthorViewHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.initialization.ServerAuthorViewInstanceHandler;
 import org.slf4j.Logger;
@@ -84,7 +88,7 @@ public class ServerAuthorViewRESTServices {
         } catch (UserNotAuthorizedException error) {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
     }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -118,7 +122,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -152,7 +156,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -185,12 +189,48 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param connection  connection to the OMRS repository connector.
+     * @return FFDCResponseBase VoidResponse or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    public FFDCResponseBase setPluginRepositoryConnection(String userId, String serverName, String serverToBeConfiguredName, Connection connection) {
+        final String methodName = "setPluginRepositoryConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        FFDCResponseBase response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.setPluginRepositoryConnection(className, methodName, serverToBeConfiguredName, connection);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
 
     /**
      * Return the stored configuration document for the server.
@@ -217,7 +257,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -251,7 +291,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -322,7 +362,41 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Disable a single access service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param serviceURLMarker         string indicating which access service it is configuring
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse disableAccessService(String userId, String serverName, String serverToBeConfiguredName, String serviceURLMarker) {
+        final String methodName = "disableAccessService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.disableAccessService(className, methodName, serverToBeConfiguredName, serviceURLMarker);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -357,7 +431,145 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Enable a single view service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param viewServiceOptions     property name/value pairs used to configure the view services
+     * @param serviceURLMarker         string indicating which view service it is configuring
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse configureViewService(String userId, String serverName, String serverToBeConfiguredName, String serviceURLMarker, Map<String, Object> viewServiceOptions) {
+        final String methodName = "configureViewService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.configureViewService(className, methodName, serverToBeConfiguredName, serviceURLMarker, viewServiceOptions);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Disable a single view service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param serviceURLMarker         string indicating which view service it is configuring
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse disableViewService(String userId, String serverName, String serverToBeConfiguredName, String serviceURLMarker) {
+        final String methodName = "disableViewService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.disableViewService(className, methodName, serverToBeConfiguredName, serviceURLMarker);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Enable a single engine service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param serviceURLMarker         string indicating which engine service it is configuring
+     * @param requestBody  request body
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse configureEngineService(String userId, String serverName, String serverToBeConfiguredName, String serviceURLMarker, EngineServiceRequestBody requestBody) {
+        final String methodName = "configureEngineService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.configureEngineService(className, methodName, serverToBeConfiguredName, serviceURLMarker, requestBody.getEngineServiceOptions(), requestBody.getEngines());
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Disable a single engine service.
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param serviceURLMarker         string indicating which engine service it is configuring
+     * @return the current stored configuration or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse disableEngineService(String userId, String serverName, String serverToBeConfiguredName, String serviceURLMarker) {
+        final String methodName = "disableEngineService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.disableEngineService(className, methodName, serverToBeConfiguredName, serviceURLMarker);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -394,7 +606,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -435,7 +647,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -467,7 +679,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -536,7 +748,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -569,7 +781,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -602,7 +814,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -635,11 +847,79 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be updated
+     * @param auditLogDestination connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public ServerAuthorConfigurationResponse updateAuditLogDestination(String userId, String serverName, String serverToBeConfiguredName, String auditLogDestinationName, Connection auditLogDestination) {
+        final String methodName = "updateAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.updateAuditLogDestination(className, methodName, serverToBeConfiguredName, auditLogDestinationName, auditLogDestination);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @param auditLogDestinationName name of the audit log destination to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public ServerAuthorConfigurationResponse deleteAuditLogDestination(String userId, String serverName, String serverToBeConfiguredName, String auditLogDestinationName) {
+        final String methodName = "deleteAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            serverAuthorViewHandler.deleteAuditLogDestination(className, methodName, serverToBeConfiguredName, auditLogDestinationName);
+            response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+
     }
 
     /**
@@ -670,7 +950,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -704,7 +984,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -781,6 +1061,7 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -793,9 +1074,11 @@ public class ServerAuthorViewRESTServices {
      * OMAGInvalidParameterException the server name is invalid or
      * ServerAuthorViewServiceException The Server Author has detected an error.
      */
-    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId, String serverName) {
         String methodName = "getKnownPlatforms";
-
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
         ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
 
         AuditLog auditLog = null;
@@ -803,15 +1086,149 @@ public class ServerAuthorViewRESTServices {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             // get the defined platforms from the config
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName, auditLog));
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         } catch (Exception exception) {
-            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
         }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
         return response;
     }
+    /**
+     * Get the audit log supported severities for the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public SupportedAuditLogSeveritiesResponse getAuditLogDestinationSupportedSeverities(String userId, String serverName, String serverToBeConfiguredName) {
+        String methodName = " getAuditLogDestinationSupportedSeverities";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
+        SupportedAuditLogSeveritiesResponse response = new SupportedAuditLogSeveritiesResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            response.setSeverities(handler.getSupportedAuditLogSeverities());
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+
+    }
+    /**
+     * Clear the audit log destinations associated with the the server being configured
+     *
+     * @param userId                   user that is issuing the request.
+     * @param serverName               local server name.
+     * @param serverToBeConfiguredName name of the server to be configured.
+     * @return a list of supported audit log severities
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse clearAuditLogDestinations(String userId, String serverName, String serverToBeConfiguredName) {
+        String methodName = "clearAuditLogDestinations";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+           handler.clearAuditLogDestinations(serverToBeConfiguredName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+    }
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverToBeConfiguredName server to be configured
+     * @param cohortName  name of the cohort.
+     * @return VoidResponse or
+     * ServerAuthorException if the supplied userId is not authorized to issue this command or
+     * invalid serverName, cohortName or serviceMode parameter or
+     * or the cohort registration failed
+     */
+    public VoidResponse addCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "addCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // register new cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.addCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+    }
+    /**
+     * Unregister this server from an open metadata repository cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return VoidResponse or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
+     */
+    public VoidResponse removeCohortRegistration(String userId, String serverName, String serverToBeConfiguredName, String cohortName) {
+        String methodName = "removeCohortRegistration";
+        if (log.isDebugEnabled()) {
+            log.debug("Entering method: " + methodName + " with serverName " + serverName + " server To Be Configured Name " + serverToBeConfiguredName);
+        }
+        VoidResponse response = new VoidResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // unregister cohort
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            handler.removeCohortRegistration(serverToBeConfiguredName, cohortName);
+        } catch (Exception exception) {
+            restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        }
+        return response;
+    }
+
 }

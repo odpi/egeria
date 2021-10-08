@@ -7,16 +7,12 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
@@ -35,7 +29,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -45,23 +38,18 @@ public class ProcessContextHandler {
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
     private final AssetContextHandler assetContextHandler;
-    private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
     private final HandlerHelper handlerHelper;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
-     * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
+     * @param assetContextHandler the asset context handler
+     * @param handlerHelper       the helper handler
+     * @param supportedZones      configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
-    public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                 RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler, List<String> supportedZones,
-                                 Set<String> lineageClassificationTypes) {
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+    public ProcessContextHandler(AssetContextHandler assetContextHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
+        this.handlerHelper = handlerHelper;
         this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
     }
@@ -78,47 +66,45 @@ public class ProcessContextHandler {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     public Multimap<String, RelationshipsContext> buildProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
-
         final String methodName = "buildProcessContext";
+        handlerHelper.validateAsset(process, methodName, supportedZones);
 
         String processGUID = process.getGUID();
-        invalidParameterHandler.validateAssetInSupportedZone(processGUID, GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(process.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
-
-        List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
-        if (CollectionUtils.isEmpty(processPorts)) {
-            log.warn("No relationships Process Port has been found for the Process with guid {}", processGUID);
-            return ArrayListMultimap.create();
-        }
-
-        RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
-
-        for (Relationship processPort : processPorts) {
-            EntityDetail port = handlerHelper.getEntityAtTheEnd(userId, processGUID, processPort);
-            addContextForPort(userId, port, relationshipsContext.getRelationships());
-        }
 
         Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
-        context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
 
         List<Relationship> collection = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
         if (!CollectionUtils.isEmpty(collection)) {
             RelationshipsContext collectionMembershipContext = handlerHelper.buildContextForRelationships(userId, processGUID, collection);
             for (Relationship collectionMembership : collection) {
                 EntityDetail collectionEntity = handlerHelper.getEntityAtTheEnd(userId, processGUID, collectionMembership);
-                handlerHelper.addContextForRelationships(userId, collectionEntity, COLLECTION_MEMBERSHIP, collectionMembershipContext.getRelationships());
+                handlerHelper
+                        .addContextForRelationships(userId, collectionEntity, COLLECTION_MEMBERSHIP, collectionMembershipContext.getRelationships());
             }
             context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), collectionMembershipContext);
         }
 
-        Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
-                .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))
-                .map(GraphContext::getToVertex).collect(Collectors.toSet());
+        List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
+        if (CollectionUtils.isEmpty(processPorts)) {
+            log.debug("No relationship ProcessPort has been found for the Process with guid {}", processGUID);
+        } else {
+            RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
 
-        for (LineageEntity tabularColumn : tabularColumns) {
-            addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+            for (Relationship processPort : processPorts) {
+                EntityDetail port = handlerHelper.getEntityAtTheEnd(userId, processGUID, processPort);
+                addContextForPort(userId, port, relationshipsContext.getRelationships());
+            }
+
+            context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
+
+            Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
+                    .filter(relationship -> ATTRIBUTE_FOR_SCHEMA.equalsIgnoreCase(relationship.getRelationshipType()))
+                    .map(GraphContext::getToVertex).collect(Collectors.toSet());
+
+            for (LineageEntity tabularColumn : tabularColumns) {
+                addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+            }
         }
-
         return context;
     }
 
@@ -133,8 +119,8 @@ public class ProcessContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addLineageContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID, String typeDefName) throws
-                                                                                                                                                  OCFCheckedExceptionBase {
+    private void addLineageContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID,
+                                            String typeDefName) throws OCFCheckedExceptionBase {
         List<Relationship> lineageMappings = handlerHelper.getRelationshipsByType(userId, columnGUID, LINEAGE_MAPPING, typeDefName);
 
         context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(),

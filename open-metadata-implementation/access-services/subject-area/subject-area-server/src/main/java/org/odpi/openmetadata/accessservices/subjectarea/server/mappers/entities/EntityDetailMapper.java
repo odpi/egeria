@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications.ClassificationFactory;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -25,16 +25,16 @@ import java.util.*;
  */
 abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<N> {
     protected final OMRSRepositoryHelper repositoryHelper;
-    protected final OMRSAPIHelper omrsapiHelper;
-    public EntityDetailMapper(OMRSAPIHelper omrsapiHelper) {
-        this.omrsapiHelper = omrsapiHelper;
-        this.repositoryHelper =  omrsapiHelper.getOMRSRepositoryHelper();
+    protected final OpenMetadataAPIGenericHandler genericHandler;
+    public EntityDetailMapper(OpenMetadataAPIGenericHandler genericHandler){
+        this.genericHandler = genericHandler;
+        this.repositoryHelper = genericHandler.getRepositoryHelper();
     }
 
     /**
      * map the EntityDetail to the Node
      * @param node to be mapped to (the target of the map)
-     * @param omrsEntityDetail entitytDetail to be mapped from (the source of the mapping)
+     * @param omrsEntityDetail entityDetail to be mapped from (the source of the mapping)
      */
     protected void mapEntityDetailToNode(N node, EntityDetail omrsEntityDetail)  {
 
@@ -55,29 +55,48 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     /**
      * Map EntityDetail properties to Node properties. This method calls out to methods that are overridden for the different Nodes.
      * @param node supplied Node to be updated
-     * @param omrsEntityDetailProperties entity detail properties
+     * @param instanceProperties entity detail properties
      */
-    private void mapEntityDetailPropertiesToNode(N node, InstanceProperties omrsEntityDetailProperties) {
+    private void mapEntityDetailPropertiesToNode(N node, InstanceProperties instanceProperties) {
         // copy over effectivity
         Date effectivityFromtime = null;
         Date effectivityTotime = null;
-        if (omrsEntityDetailProperties.getEffectiveFromTime() != null) {
-            effectivityFromtime = omrsEntityDetailProperties.getEffectiveFromTime();
+        if (instanceProperties.getEffectiveFromTime() != null) {
+            effectivityFromtime = instanceProperties.getEffectiveFromTime();
             node.setEffectiveFromTime(effectivityFromtime.getTime());
         }
-        if (omrsEntityDetailProperties.getEffectiveToTime() !=null) {
-            effectivityTotime = omrsEntityDetailProperties.getEffectiveToTime();
+        if (instanceProperties.getEffectiveToTime() !=null) {
+            effectivityTotime = instanceProperties.getEffectiveToTime();
             node.setEffectiveToTime(effectivityTotime.getTime());
         }
 
+//        instanceProperties.setQualifiedName(removePropertyByNameFromInstanceProperties(instanceProperties, ));
+//        instanceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+//        instanceProperties.setDisplayName(this.removeName(instanceProperties));
+//        instanceProperties.setDescription(this.removeDescription(instanceProperties));
+//        instanceProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+//        instanceProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
+//        instanceProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+//        instanceProperties.setSource(this.removeSource(instanceProperties));
+//
+//        /*
+//         * Any remaining properties are returned in the extended properties.  They are
+//         * assumed to be defined in a subtype.
+//         */
+//        instanceProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+//        instanceProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+//
+//        bean.setSoftwareServerCapabilitiesProperties(instanceProperties);
+
+
         // copy over properties
-        Iterator<String> omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
+        Iterator<String> omrsPropertyIterator = instanceProperties.getPropertyNames();
         NodeType nodeType = node.getNodeType();
         while (omrsPropertyIterator.hasNext()) {
             String propertyName = omrsPropertyIterator.next();
             //TODO check if this is a property we expect or whether the type has been added to.
             // this is a property we expect
-            InstancePropertyValue value = omrsEntityDetailProperties.getPropertyValue(propertyName);
+            InstancePropertyValue value = instanceProperties.getPropertyValue(propertyName);
 
             // supplied guid matches the expected type
 
@@ -86,44 +105,45 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                 case PRIMITIVE:
                     PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                     actualValue = primitivePropertyValue.getPrimitiveValue();
-                    // All nodes as Referenceables at this time so they all have qualifiedName
-                    if (propertyName.equals("qualifiedName")) {
+                    // All nodes are Referenceables at this time so they all have qualifiedName
+                    if (propertyName.equals(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME)) {
                         if (actualValue != null) {
                             node.setQualifiedName((String) actualValue);
                         }
-                    } else if (propertyName.equals("displayName") || propertyName.equals("name")) {
+                    } else if (propertyName.equals(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME) || propertyName.equals(OpenMetadataAPIMapper.NAME_PROPERTY_NAME)) {
                         if (actualValue!=null) {
                             node.setName((String) actualValue);
                         }
-                    } else if (propertyName.equals("description")) {
+                    } else if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
                         // if the node is Taxonomy or TaxonomyAndCanonicalGlossary then it can have a scope attribute
-                    } else if (propertyName.equals("scope") && (nodeType == NodeType.Taxonomy || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
+                    } else if (propertyName.equals(OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME) && (nodeType == NodeType.Taxonomy || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
                         // if the node is CanonicalGlossary or TaxonomyAndCanonicalGlossary then it can have an organisingPrinciple attribute
-                    } else if (propertyName.equals("organisingPrinciple") && (nodeType == NodeType.CanonicalGlossary || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
+                    } else if (propertyName.equals(OpenMetadataAPIMapper.ORGANIZING_PRINCIPLE_PROPERTY_NAME) && (nodeType == NodeType.CanonicalGlossary || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
                     } else if (!mapPrimitiveToNode(node, propertyName, actualValue)) {
-                        // there are properties we are not aware of, as they have been added by a subtype, put them in the extraAttributes
-                        if (null==node.getAdditionalProperties())  {
-                            node.setAdditionalProperties(new HashMap<String, String>());
+                        // there are properties we are not aware of, as they have been added by a subtype, put them in the extended properties
+                        if (null==node.getExtendedProperties())  {
+                            node.setExtendedProperties(new HashMap<String, Object>());
                         }
-                        node.getAdditionalProperties().put(propertyName, (String)actualValue);
+                        node.getExtendedProperties().put(propertyName, actualValue);
                     }
                     break;
                 case ENUM:
                     EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                    if (!mapEnumToNode(node, propertyName,enumPropertyValue)) {
-                        if (null==node.getAdditionalProperties())  {
-                            node.setAdditionalProperties(new HashMap<String, String>());
+                    if (!mapEnumToNode(node, propertyName, enumPropertyValue)) {
+                        // there are properties we are not aware of, as they have been added by a subtype, put them in the extended properties
+                        if (null==node.getExtendedProperties())  {
+                            node.setExtendedProperties(new HashMap<String, Object>());
                         }
-                        node.getAdditionalProperties().put(propertyName, enumPropertyValue.valueAsString());
+                        node.getExtendedProperties().put(propertyName,  enumPropertyValue);
                     }
 
                     break;
@@ -131,7 +151,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                     MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                     InstanceProperties instancePropertyForMap = mapPropertyValue.getMapValues();
                     // All nodes as Referenceables at this time so they all have additionalProperties.
-                    if (propertyName.equals("additionalProperties")) {
+                    if (propertyName.equals(OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
                         // Only support Map<String,String> at this time.
                         Map<String, String> actualMap = new HashMap<>();
                         Iterator<String> iter = instancePropertyForMap.getPropertyNames();
@@ -142,16 +162,56 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                             actualMap.put(mapkey, mapvalue);
                         }
                         node.setAdditionalProperties(actualMap);
+                    } else if (!mapMapToNode(node, propertyName, mapPropertyValue)) {
+                        // there are properties we are not aware of, as they have been added by a subtype, put them in the extended properties
+                        if (null==node.getExtendedProperties())  {
+                            node.setExtendedProperties(new HashMap<>());
+                        }
+                        node.getExtendedProperties().put(propertyName, mapPropertyValue);
                     }
                     break;
                 case ARRAY:
+                    if (null==node.getExtendedProperties())  {
+                        node.setExtendedProperties(new HashMap<>());
+                    }
+                    node.getExtendedProperties().put(propertyName, value);
+                    break;
                 case STRUCT:
+                    if (null==node.getExtendedProperties())  {
+                        node.setExtendedProperties(new HashMap<>());
+                    }
+                    node.getExtendedProperties().put(propertyName, value);
                 case UNKNOWN:
-                    // error
+                    // Error ?
+                    if (null==node.getExtendedProperties())  {
+                        node.setExtendedProperties(new HashMap<>());
+                    }
+                    node.getExtendedProperties().put(propertyName, value);
                     break;
             }
 
         }   // end while
+    }
+    /**
+     * Extract and delete the qualifiedName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @param propertyName name of the property to remove from the instanceProperties
+     * @return string name or null
+     */
+    protected String removePropertyByNameFromInstanceProperties(InstanceProperties  instanceProperties, String propertyName)
+    {
+        final String methodName = "removeQualifiedName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(genericHandler.getServiceName(),
+                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
     }
     /**
      * Map an omrs entityDetail primitive property to a Subject Area Node property.
@@ -175,6 +235,17 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     protected boolean mapEnumToNode(N node, String propertyName, EnumPropertyValue enumPropertyValue) {
         return false;
     }
+    /**
+     * Map an omrs entityDetail map property to a Subject Area Node property.
+     * The child class is expected to override this method if the type has map properties
+     * @param node the node to be updated
+     * @param propertyName the omrs property name
+     * @param mapPropertyValue the omrs map property value
+     * @return true if it was a property we were expecting , otherwise false;
+     */
+    protected boolean mapMapToNode(N node, String propertyName, MapPropertyValue mapPropertyValue) {
+        return false;
+    }
 
     /**
      * Map the effectivity dates from node to the InstanceProperties
@@ -184,7 +255,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
 
         Long effectiveFromTime = node.getEffectiveFromTime();
-        Long effectiveToTime =node.getEffectiveToTime();
+        Long effectiveToTime = node.getEffectiveToTime();
         if (effectiveFromTime != null ) {
             instanceProperties.setEffectiveFromTime(new Date(effectiveFromTime));
         }
@@ -195,7 +266,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
         if (CollectionUtils.isNotEmpty(omrsclassifications)) {
-            ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
+            ClassificationFactory classficationFactory = new ClassificationFactory(genericHandler);
             List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification>
                     existingClassifications = node.getClassifications();
             if (existingClassifications == null) {
@@ -235,7 +306,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsClassifications = new ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification>();
             for (org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification : omasClassifications) {
 
-                ClassificationFactory classificationFactory = new ClassificationFactory(omrsapiHelper);
+                ClassificationFactory classificationFactory = new ClassificationFactory(genericHandler);
                 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = classificationFactory.getOMRSClassification(omasClassification);
                 //classificationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
 
@@ -285,25 +356,27 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         mapNodeEffectivityToInstanceProperties(node, instanceProperties);
         //  map the Referencable node properties to instanceproperties
         if (node.getQualifiedName()!=null) {
-            repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"qualifiedName",node.getQualifiedName(),methodName);
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,node.getQualifiedName(),methodName);
         }
         if (node.getName()!=null) {
             if (node.getNodeType() == NodeType.Project || node.getNodeType() == NodeType.GlossaryProject) {
-                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "name");
-                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "name", node.getName(), methodName);
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataAPIMapper.NAME_PROPERTY_NAME, node.getName(), methodName);
             } else {
-                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
-                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "displayName", node.getName(), methodName);
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, node.getName(), methodName);
             }
         }
 
-        if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), "description");
-           repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"description",node.getDescription(),methodName);
+        if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+           repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,node.getDescription(),methodName);
         }
         // if there are additionalProperties then we should honour them and send them through to omrs.
         if (node.getAdditionalProperties()!=null) {
             populateAdditionalProperties(node, instanceProperties);
         }
+        // TODO assume we do not need tp populate extended properties here. Or do we need to maintain them in the Node
+
         //  map the other node properties to instanceproperties
         mapNodeToInstanceProperties(node, instanceProperties);
 
@@ -341,7 +414,13 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      */
     @Override
     public String getTypeDefGuid() {
-        return omrsapiHelper.getTypeDefGUID(getTypeName());
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(genericHandler.getServiceName(),
+                                                             getTypeName());
+        String guid = null;
+        if (typeDef != null) {
+            guid = typeDef.getGUID();
+        }
+        return guid;
     }
 
     protected void populateAdditionalProperties(N node, InstanceProperties instanceProperties) {
@@ -355,7 +434,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             mapPropertyValue.setMapValue(key,primitivePropertyValue);
         }
 
-        instanceProperties.setProperty("additionalProperties", mapPropertyValue);
+        instanceProperties.setProperty(OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, mapPropertyValue);
     }
 
     /**

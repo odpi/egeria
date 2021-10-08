@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -63,6 +63,18 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>platform-services-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -192,6 +204,18 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>api-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>analytics-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>catalog-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -199,6 +223,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>database-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>display-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -223,6 +253,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>topic-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -259,12 +295,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>analytics-modeling-spring</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -409,6 +439,12 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+        <!--dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency-->
+
     </dependencies>
 
     <build>
@@ -456,7 +492,18 @@
                                 <ignoredUnusedDeclaredDependency>
                                     org.springdoc:springdoc-openapi-ui:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.odpi.egeria:search-integrator-api:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
+                            <ignoredDependencies>
+                                <ignoreDependency>
+                                    javax.annotation:javax.annotation-api:*
+                                </ignoreDependency>
+                                <ignoreDependency>
+                                    jakarta.annotation:jakarta.annotation-api:*
+                                </ignoreDependency>
+                            </ignoredDependencies>
                         </configuration>
                     </execution>
                 </executions>
@@ -652,12 +699,6 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>analytics-modeling-spring</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
-                    <artifactId>information-view-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

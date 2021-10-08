@@ -21,6 +21,7 @@ public final class Constants {
     public static final String DEPLOYED_DB_SCHEMA_TYPE = "DeployedDatabaseSchema";
     public static final String DATABASE = "Database";
     public static final String TABULAR_COLUMN = "TabularColumn";
+    public static final String TABULAR_FILE_COLUMN = "TabularFileColumn";
     public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String DATA_FILE = "DataFile";
@@ -38,6 +39,9 @@ public final class Constants {
     public static final String COLLECTION = "Collection";
 
     public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
+
+    public static final Collection<String> ASSETS = Arrays.asList(RELATIONAL_TABLE, DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";

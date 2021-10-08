@@ -89,7 +89,9 @@ public class GlossaryAuthorViewTermRESTResource {
      *
      * @param serverName         local UI server name
      * @param userId             userid
-     * @param searchCriteria     String expression matching Term property values .
+     * @param searchCriteria     String expression matching Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the terms returned as they were at this time. null indicates at the current time.
      * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -107,13 +109,15 @@ public class GlossaryAuthorViewTermRESTResource {
     @GetMapping()
     public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                     @RequestParam(value = "exactValue", required = false, defaultValue = "false") Boolean exactValue,
+                                                     @RequestParam(value = "ignoreCase", required = false, defaultValue = "true") Boolean ignoreCase,
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                      @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, exactValue, ignoreCase, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -188,7 +192,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * The deletion of a term is only allowed if there is no term content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -198,7 +202,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param serverName local UI server name
      * @param userId     userid
      * @param guid       guid of the term to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     *
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -210,9 +214,9 @@ public class GlossaryAuthorViewTermRESTResource {
     @DeleteMapping(path = "/{guid}")
     public SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String serverName,
                                                        @PathVariable String userId,
-                                                       @PathVariable String guid,
-                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTerm(serverName, userId, guid, isPurge);
+                                                       @PathVariable String guid
+                                                      ) {
+        return restAPI.deleteTerm(serverName, userId, guid);
     }
 
     /**

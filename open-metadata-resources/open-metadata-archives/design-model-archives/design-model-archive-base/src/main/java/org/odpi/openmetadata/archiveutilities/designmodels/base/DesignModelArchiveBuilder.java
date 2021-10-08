@@ -51,7 +51,7 @@ public class DesignModelArchiveBuilder
     private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
-    private static final String ISA_RELATIONSHIP_NAME                    = "ISARelationship";
+    private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "IsATypeOfRelationship";
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
@@ -132,7 +132,17 @@ public class DesignModelArchiveBuilder
      * @param versionNumber version number of the archive.
      * @param versionName version name for the archive.
      */
-    protected void initialize(String archiveGUID, String archiveName, String archiveDescription, OpenMetadataArchiveType archiveType, String archiveRootName, String originatorName, String originatorLicense, Date creationDate, long versionNumber, String versionName) {
+    protected void initialize(String                  archiveGUID,
+                              String                  archiveName,
+                              String                  archiveDescription,
+                              OpenMetadataArchiveType archiveType,
+                              String                  archiveRootName,
+                              String                  originatorName,
+                              String                  originatorLicense,
+                              Date                    creationDate,
+                              long                    versionNumber,
+                              String                  versionName)
+    {
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
         dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
@@ -162,7 +172,8 @@ public class DesignModelArchiveBuilder
     /**
      * Default constructor
      */
-    public DesignModelArchiveBuilder() {
+    public DesignModelArchiveBuilder()
+    {
 
     }
 
@@ -329,8 +340,9 @@ public class DesignModelArchiveBuilder
                              String       displayName,
                              String       description)
     {
-        return addTerm(glossaryId,categoryIds,qualifiedName,displayName,description,null,false,false,false);
+        return addTerm(glossaryId, categoryIds, qualifiedName, displayName, description,null,false,false,false);
     }
+
     /**
      * Add a term and link it to the glossary and an arbitrary number of categories.
      *
@@ -353,16 +365,18 @@ public class DesignModelArchiveBuilder
                              String       examples,
                              boolean      isSpineObject,
                              boolean      isSpineAttribute,
-                             boolean      categoriesAsNames )
+                             boolean      categoriesAsNames)
     {
         final String methodName = "addTerm";
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+
         if (examples !=null)
         {
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EXAMPLES_PROPERTY, examples, methodName);
         }
+
         List<Classification> classifications = null;
 
         if (isSpineObject)
@@ -374,6 +388,7 @@ public class DesignModelArchiveBuilder
             classifications = new ArrayList<>();
             classifications.add(subjectAreaClassification);
         }
+
         if (isSpineAttribute)
         {
             Classification  subjectAreaClassification = archiveHelper.getClassification(SPINE_ATTRIBUTE_NAME,
@@ -383,6 +398,7 @@ public class DesignModelArchiveBuilder
             classifications = new ArrayList<>();
             classifications.add(subjectAreaClassification);
         }
+
         EntityDetail  termEntity = archiveHelper.getEntityDetail(GLOSSARY_TERM_TYPE_NAME,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
@@ -840,25 +856,27 @@ public class DesignModelArchiveBuilder
     }
 
     /**
-     * Add an isa relationship
+     * Add an is-a-type-of relationship
+     *
      * @param specialTermQName qualified name of the specialized term
      * @param generalizedTermQName qualified name of the generalized term
      */
-    protected void addISARelationship (String specialTermQName , String generalizedTermQName)
+    protected void addIsATypeOfRelationship(String specialTermQName , String generalizedTermQName)
     {
 
         String specializedTermId = idToGUIDMap.getGUID(specialTermQName);
         String generalizedTermId = idToGUIDMap.getGUID(generalizedTermQName);
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(specializedTermId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(ISA_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(generalizedTermId + "_to_" + specializedTermId),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(IS_A_TYPE_OF_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(specializedTermId + "_to_" + generalizedTermId ),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
     }
+
     protected void addHasARelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
@@ -873,6 +891,7 @@ public class DesignModelArchiveBuilder
                                                                      end1,
                                                                      end2));
     }
+
     protected void addRelatedTermRelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
@@ -888,8 +907,10 @@ public class DesignModelArchiveBuilder
                                                                      end2));
     }
 
+
     /**
      * Add Category hierarchy relationship
+     *
      * @param childCategoryName name of the child category
      * @param parentNames set of the names of the parent categories qualified names
      */

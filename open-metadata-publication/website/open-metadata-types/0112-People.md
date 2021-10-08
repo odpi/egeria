@@ -47,7 +47,11 @@ It also supports the ability to query a person's roles
 (see [personal roles](../../../open-metadata-implementation/access-services/community-profile/docs/concepts/personal-roles.md))
 and their peer network (see [peer network](../../../open-metadata-implementation/access-services/community-profile/docs/concepts/personal-roles.md))
 
-Return to [Area 1](Area-1-models.md).
+----
+
+* Return to [Area 1](Area-1-models.md).
+* Return to [Overview](.).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

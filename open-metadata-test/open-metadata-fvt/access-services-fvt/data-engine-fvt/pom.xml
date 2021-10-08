@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -61,6 +61,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>http-helper</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
         <!-- Integration Tests will depend on the assembly -->
@@ -126,6 +131,8 @@
                             <!--processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile-->
                             <arguments>
                                 <argument>java</argument>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <argument>${jacoco.argLine}</argument>
                                 <argument>-Dserver.port=${server.port}</argument>
                                 <argument>-Dloader.path=${fvt.distdir}/server/lib</argument>
                                 <argument>-Dspringdoc.api-docs.enabled=false</argument>
@@ -168,6 +175,7 @@
                                 <user>${user}</user>
                                 <retries>${retries}</retries>
                                 <delay>${delay}</delay>
+                                <connectorTypeArchivePath>${project.basedir}/src/test/resources/DataStoreConnectorTypes.json</connectorTypeArchivePath>
                             </defaults>
                             <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>

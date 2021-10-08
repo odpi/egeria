@@ -357,13 +357,13 @@ The result looks like this with the registration topic showing first, then the t
 
 ```json
 {
-    "class": "NameListResponse",
+    "class": "DedicatedTopicListResponse",
     "relatedHTTPCode": 200,
-    "names": [
-        "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.registration",
-        "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.types",
-        "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.instances"
-    ]
+    "dedicatedTopicList": {
+        "registrationTopicName": "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.registration",
+        "typesTopicName": "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.types",
+        "instancesTopicName": "egeria.omag.openmetadata.repositoryservices.cohort.cocoCohort.OMRSTopic.instances"
+    }
 }
 ```
 

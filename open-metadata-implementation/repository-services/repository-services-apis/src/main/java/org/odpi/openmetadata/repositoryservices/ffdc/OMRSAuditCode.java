@@ -207,25 +207,25 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
                                OMRSAuditLogRecordSeverity.ERROR,
-                               "The local repository's event mapper connector {0} has no connector to an event bus",
+                               "The local repository event mapper connector {0} has no connector to an event bus",
                                "The event mapper connector is unable to receive or send events",
                                "Verify the start up configuration to ensure there is an event bus configured."),
 
     EVENT_MAPPER_LISTENER_REGISTERED("OMRS-AUDIT-0023",
                                      OMRSAuditLogRecordSeverity.STARTUP,
-                                     "The local repository's event mapper connector {0} has registered with an event bus connector connected to topic {1}",
+                                     "The local repository event mapper connector {0} has registered with an event bus connector connected to topic {1}",
                                      "The event mapper connector is getting ready to receive or send events",
                                      "Verify that there are no errors associated with the event mapper."),
 
     EVENT_MAPPER_LISTENER_STARTED("OMRS-AUDIT-0024",
                                   OMRSAuditLogRecordSeverity.STARTUP,
-                                  "The local repository's event mapper connector {0} is ready to send and receive events",
+                                  "The local repository event mapper connector {0} is ready to send and receive events",
                                   "The event mapper connector is able to receive or send events",
                                   "Verify that events are flowing from the real repository into the open metadata repository cohort."),
 
     EVENT_MAPPER_LISTENER_DISCONNECTED("OMRS-AUDIT-0025",
                                        OMRSAuditLogRecordSeverity.SHUTDOWN,
-                                       "The local repository's event mapper connector {0} has disconnected the event bus connectors",
+                                       "The local repository event mapper connector {0} has disconnected the event bus connectors",
                                        "The event mapper connector is no longer able to receive or send events",
                                        "Verify that this is part of the server shutdown of the local repository."),
 
@@ -283,7 +283,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
                                 OMRSAuditLogRecordSeverity.EXCEPTION,
-                                "The connector to the local repository's event mapper failed with a {0} exception and the following error message: {1}",
+                                "The connector to the local repository event mapper failed with a {0} exception and the following error message: {1}",
                                 "The server is unable to start.",
                                 "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
 
@@ -369,6 +369,22 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                       "The Open Metadata Repository Services (OMRS) has processed {0} types and {1} instances from open metadata archive {2}",
                       "The local server has completed the processing of the open metadata archive.",
                       "Verify that the expected content has loaded into the local repository."),
+
+    NO_TYPE_DEF_PROCESSOR("OMRS-AUDIT-0054",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The Open Metadata Repository Services (OMRS) is not processing type definitions from the archive because it does not have a type processor",
+                      "The local server is not able to process the open metadata archive because it is not a cohort member.",
+                      "If the type definitions from the open metadata archive are needed by the open metadata ecosystem, then load the open metadata archive into an " +
+                              "OMAG Server that is a Cohort Member.  " +
+                              "Detail of the different types of servers are found in the admin guide."),
+
+    NO_INSTANCE_PROCESSOR("OMRS-AUDIT-0055",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The Open Metadata Repository Services (OMRS) is not processing instances from the archive because it does not have a local repository",
+                      "The local server is not able to process metadata instances from the open metadata archive because it does not have a local repository.",
+                      "If the instances from the open metadata archive are needed by the open metadata ecosystem, then load the open metadata archive into a Metadata Server " +
+                              "or a Repository Proxy that connects to a third party repository that supports this type of metadata.  " +
+                              "Detail of the different types of servers are found in the admin guide."),
 
     REGISTERED_WITH_COHORT("OMRS-AUDIT-0060",
                            OMRSAuditLogRecordSeverity.COHORT,
@@ -518,31 +534,6 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                     "configured, or that the jar file for the connector is not available in the " +
                                     "local server."),
 
-    CREATE_REGISTRY_FILE("OMRS-AUDIT-0115",
-                         OMRSAuditLogRecordSeverity.COHORT,
-                         "Creating new cohort registry store {0}",
-                         "The local server is creating a new cohort registry store. " +
-                                 "The local server should continue to operate correctly.",
-                         "Verify that the local server is connecting to the open metadata repository cohort for" +
-                                 "the first time."),
-
-    UNUSABLE_REGISTRY_FILE("OMRS-AUDIT-0116",
-                           OMRSAuditLogRecordSeverity.EXCEPTION,
-                           "Unable to write to cohort registry store {0}",
-                           "The local server can not write to the cohort registry store. " +
-                                   "This is a serious issue because the local server is not able to record its " +
-                                   "interaction with other servers in the cohort.",
-                           "Shutdown the local server and resolve the issue with the repository store."),
-
-    NULL_MEMBER_REGISTRATION("OMRS-AUDIT-0117",
-                             OMRSAuditLogRecordSeverity.ERROR,
-                             "Unable to read or write to cohort registry store {0} because registration information is null",
-                             "The local server can not manage a member registration in the cohort registry store because " +
-                                     "the registration information is null. " +
-                                     "This is a serious issue because the local server is not able to record its " +
-                                     "interaction with other servers in the cohort.",
-                             "Shutdown the local server and resolve the issue with the cohort registry."),
-
     MISSING_MEMBER_REGISTRATION("OMRS-AUDIT-0118",
                                 OMRSAuditLogRecordSeverity.ERROR,
                                 "Unable to process the {0} request for cohort {1} from cohort member {2} " +
@@ -553,49 +544,6 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                         "However, it may be the result of an earlier issue with the " +
                                         "local cohort registry store.",
                                 "Verify that there are no issues with writing to the cohort registry store."),
-
-    DUPLICATE_REGISTERED_MC_ID("OMRS-AUDIT-0119",
-                               OMRSAuditLogRecordSeverity.ACTION,
-                               "Metadata collection id {0} is being used by server {1} and server {2}",
-                               "The local server has detected a duplicate record in its cohort registry store.",
-                               "Verify that this is caused by the rename of a server."),
-
-    NULL_REGISTERED_MC_ID("OMRS-AUDIT-0120",
-                          OMRSAuditLogRecordSeverity.ACTION,
-                          "Server {0} has registered with a null metadata collection id",
-                          "The local server has detected an invalid record in its cohort registry store.",
-                          "Correct the configuration of the named server so that it has a valid metadata collection id."),
-
-    DUPLICATE_REGISTERED_SERVER_NAME("OMRS-AUDIT-0121",
-                                     OMRSAuditLogRecordSeverity.ACTION,
-                                     "Server name {0} is being used by metadata collection {1} and metadata collection {2}",
-                                     "The local server has identified a duplicate record in its cohort registry store.",
-                                     "This suggests that a server has been restarted with a different metadata collection id."),
-
-    NULL_REGISTERED_SERVER_NAME("OMRS-AUDIT-0122",
-                                OMRSAuditLogRecordSeverity.ACTION,
-                                "The server using metadata collection id {0} has registered with a null server name",
-                                "The local server has detected an suspicious record in its cohort registry store.",
-                                "Correct the configuration of the named server so that it has a valid server name."),
-
-
-    DUPLICATE_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0123",
-                                     OMRSAuditLogRecordSeverity.ACTION,
-                                     "Server name {0} with metadata collection id {1} is using the same server address of {2} as server name {3} with metadata collection id {4}",
-                                     "The local server has found a duplicate record in its cohort registry store.",
-                                     "This indicates that a server has been restarted with a different metadata collection id."),
-
-    NULL_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0124",
-                                OMRSAuditLogRecordSeverity.ACTION,
-                                "The server name {0} using metadata collection id {1} has registered with a null server address",
-                                "The local server has identified an suspicious record in its cohort registry store.",
-                                "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
-
-    NULL_REGISTERED_SERVER_CONNECTION("OMRS-AUDIT-0125",
-                                      OMRSAuditLogRecordSeverity.ACTION,
-                                      "The server name {0} using metadata collection id {1} has registered with a null server connection",
-                                      "The local server has found an suspicious record in its cohort registry store.",
-                                      "Correct the configuration of one of the named servers so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
 
     NULL_REGISTERED_MEMBER("OMRS-AUDIT-0126",
                            OMRSAuditLogRecordSeverity.ACTION,
@@ -690,7 +638,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     UNEXPECTED_EXCEPTION_FROM_REPOSITORY("OMRS-AUDIT-0136",
                                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                                         "A {0} exception was received from a remote repository with metadata collection id {1} during {2}.  The exception's message was {3}",
+                                         "A {0} exception was received from a remote repository with metadata collection id {1} during {2}.  The exception message was {3}",
                                          "The enterprise connector has received an unexpected exception from a remote repository. " +
                                   "This exception is saved and may be returned to the caller if the other repositories can not satisfy the caller's request.",
                                          "Investigate whether this exception is the result of an underlying issue in the remote repository."),
@@ -792,21 +740,24 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     NEW_TYPE_ADDED("OMRS-AUDIT-0301",
                    OMRSAuditLogRecordSeverity.TYPES,
                    "The local server has added a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",
-                   "The local server will be able to manage metadata instances of this type.",
-                   "No action required.  This message is for information only."),
+                   "The local server will be able to manage metadata instances of this type and version.",
+                   "Validate that this new type is expected and it is appropriate that the local repository supports it.  " +
+                           "Egeria supplied native repositories support all types, but other repositories and proxies to third party repositories may not."),
 
     NEW_TYPE_NOT_SUPPORTED("OMRS-AUDIT-0302",
                            OMRSAuditLogRecordSeverity.TYPES,
                            "The local server is unable to add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature",
                            "The local server will not be able to manage metadata instances of this type.",
-                           "No action needed.  This message is for information only."),
+                           "Validate that it is expected that this type is not supported by this repository.  " +
+                                   "Ensure that there is at least one repository in the cohort that does support this type if you need to " +
+                                   "store metadata of this type.  The Egeria supplied native repositories support all types."),
 
     TYPE_UPDATED("OMRS-AUDIT-0303",
                  OMRSAuditLogRecordSeverity.TYPES,
                  "The local server has updated an existing type called {0} with a unique identifier of {1} to version number of {2} using " +
                          "a patch from {3}",
                  "The local server will be able to manage metadata instances of this latest version of the type.",
-                 "No actions are required.  This message is for information only."),
+                 "No actions are required.  This message is for information only to record the level of type in use by the local repository."),
 
     TYPE_REMOVED("OMRS-AUDIT-0304",
                  OMRSAuditLogRecordSeverity.TYPES,
@@ -927,6 +878,47 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                   "This is a serious error since it may cause metadata to be corrupted if it is matched to the wrong instance.  " +
                              "First check the caller to ensure it is working as expected.  " +
                              "Then investigate the source of the type and any other errors."),
+
+    TYPE_ALREADY_KNOWN("OMRS-AUDIT-0318",
+                 OMRSAuditLogRecordSeverity.TYPES,
+                 "The local server has recognized a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",
+                 "The local server already has knowledge of the new type and so it is able to store metadata of this type.",
+                 "No action is needed since you have a repository that has embedded support for the type."),
+
+
+    NEW_TYPE_CACHED_FOR_ENTERPRISE("OMRS-AUDIT-0319",
+                       OMRSAuditLogRecordSeverity.TYPES,
+                       "The local server does not have a local repository and so a new type called {0} with a unique identifier of {1} and a version number of {2} from {3} is just cached for information",
+                       "The local server stores a copy of this type for use in enterprise repository queries - typically from Open Metadata Access Services (OMASs).",
+                       "Validate that there is at least once repository in the cohort that supports the storing of this type if you wish to manage metadata of this type."),
+
+    TYPE_UPDATE_SKIPPED("OMRS-AUDIT-0320",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                        "A patch to the {0} ({1}) type definition was ignored because it is to be applied to the {2} version of the type and the patch is for version {3}",
+                        "The level of support for this type in the local repository remains at the current level.  This means that metadata instances " +
+                                "that use the later version of the type can not be stored in this repository.",
+                        "Validate that types are loading correctly in the server since this may indicate that a patch has been missed." +
+                                "If the repository is not able to support the updating of types, or can not support the later versions of this type then this message is expected.  " +
+                                "If there was an issue in the type loading then reload the type archives in the correct order to apply the intermediate " +
+                                "patches."),
+
+    UNKNOWN_TYPE_UPDATE_SKIPPED("OMRS-AUDIT-0321",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                        "A patch to the {0} ({1}) type definition from {2} was ignored because the local repository does not support this type",
+                        "The type remains unsupported in this repository.",
+                        "No action is required since this type is out of scope for this repository."),
+
+    UPDATED_TYPE_CACHED_FOR_ENTERPRISE("OMRS-AUDIT-0322",
+                        OMRSAuditLogRecordSeverity.TYPES,
+                         "The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
+                         "The local server stores a copy of the updated type for use in enterprise repository queries - typically from Open Metadata Access Services (OMASs).",
+                         "Validate that there is at least once repository in the cohort that supports the storing of this version of the type if you wish to manage metadata of this type."),
+
+    SKIPPING_METADATA_COLLECTION("OMRS-AUDIT-0401",
+                                       OMRSAuditLogRecordSeverity.ACTION,
+                                       "Skipping call to repository {0} since it is not responding correctly.  Error received was {1} with message {2}The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
+                                       "The local server is processing a federated query to all members of the connected cohorts.  However one of the members is not responding correctly and so it has been skipped from the call. The remote server is probably not running, or has been incorrectly configured.",
+                                       "Validate the availability and configuration of the remote server.  It may be a temporary failure due to an outage in the network or the server itself.  However, if the remote server is not configured correctly, or has changed its metadata collection id, then this wil lbe a permanent error and this server will not be included in the federated query until it is fixed."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
                           OMRSAuditLogRecordSeverity.ERROR,

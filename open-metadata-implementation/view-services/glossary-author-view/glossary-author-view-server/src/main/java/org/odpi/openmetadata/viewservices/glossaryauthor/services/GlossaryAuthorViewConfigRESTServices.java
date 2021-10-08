@@ -73,6 +73,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Category property values .
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -92,6 +94,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             String userId,
             Date asOfTime,
             String searchCriteria,
+            boolean exactValue,
+            boolean ignoreCase,
             Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
@@ -121,7 +125,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Category> categories = clients.categories().find(userId, findRequest);
+            List<Category> categories = clients.categories().find(userId, findRequest, exactValue, ignoreCase);
             response.addAllResults(categories);
         }  catch (Exception exception) {
             response =  getResponseForException(exception, auditLog, className, methodName);
@@ -249,7 +253,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
      * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -259,7 +263,6 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param guid       guid of the category to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -271,8 +274,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteCategory";
@@ -285,12 +287,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            clients.categories().delete(userId, guid);
 
-            if (isPurge) {
-                clients.categories().purge(userId, guid);
-            } else {
-                clients.categories().delete(userId, guid);
-            }
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
@@ -356,7 +354,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
+            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest, false, true);
             response.addAllResults(categories);
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
@@ -384,7 +382,7 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
                 findRequest.setStartingFrom(startingFrom);
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-                List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
+                List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest, true, false);
                 response.addAllResults(terms);
             } catch (Exception exception) {
                 response = getResponseForException(exception, auditLog, className, methodName);

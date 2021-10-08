@@ -86,6 +86,7 @@ public class LocationResource
      * @param serverName name of calling server
      * @param userId             calling user
      * @param locationGUID       unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationProperties new properties for this element
      * @return void or
      * InvalidParameterException one of the parameters is invalid or
@@ -97,9 +98,10 @@ public class LocationResource
     public VoidResponse updateLocation(@PathVariable String             serverName,
                                        @PathVariable String             userId,
                                        @PathVariable String             locationGUID,
+                                       @RequestParam boolean            isMergeUpdate,
                                        @RequestBody  LocationProperties locationProperties)
     {
-        return restAPI.updateLocation(serverName, userId, locationGUID, locationProperties);
+        return restAPI.updateLocation(serverName, userId, locationGUID, isMergeUpdate, locationProperties);
     }
 
 

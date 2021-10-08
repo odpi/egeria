@@ -26,7 +26,6 @@ import java.util.Map;
 public class EngineConfigurationRefreshThread implements Runnable
 {
     private Map<String, GovernanceEngineHandler> engineHandlers;
-    private GovernanceEngineConfigurationClient  configurationClient;
     private GovernanceEngineEventClient          eventClient;
     private AuditLog                             auditLog;
     private String                               localServerUserId;
@@ -44,7 +43,6 @@ public class EngineConfigurationRefreshThread implements Runnable
      * needed to log errors if the metadata server is not available.
      *
      * @param engineHandlers list of governance engine handlers running locally mapped to their names
-     * @param configurationClient client that the listener is to be registered with
      * @param eventClient client for accessing the Governance Engine OMAS OutTopic
      * @param auditLog logging destination
      * @param localServerUserId userId for configuration requests
@@ -53,7 +51,6 @@ public class EngineConfigurationRefreshThread implements Runnable
      * @param accessServiceRootURL platform location for metadata server
      */
     public EngineConfigurationRefreshThread(Map<String, GovernanceEngineHandler> engineHandlers,
-                                            GovernanceEngineConfigurationClient  configurationClient,
                                             GovernanceEngineEventClient          eventClient,
                                             AuditLog                             auditLog,
                                             String                               localServerUserId,
@@ -61,8 +58,7 @@ public class EngineConfigurationRefreshThread implements Runnable
                                             String                               accessServiceServerName,
                                             String                               accessServiceRootURL)
     {
-        this.engineHandlers = new HashMap<>(engineHandlers);
-        this.configurationClient     = configurationClient;
+        this.engineHandlers          = new HashMap<>(engineHandlers);
         this.eventClient             = eventClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
@@ -83,17 +79,17 @@ public class EngineConfigurationRefreshThread implements Runnable
         boolean  listenerRegistered = false;
         List<GovernanceEngineHandler>  configToRetrieve;
 
-        if (engineHandlers != null)
+        while (keepTrying)
         {
-            configToRetrieve = new ArrayList<>(engineHandlers.values());
-        }
-        else
-        {
-            configToRetrieve = new ArrayList<>();
-        }
+            if (engineHandlers != null)
+            {
+                configToRetrieve = new ArrayList<>(engineHandlers.values());
+            }
+            else
+            {
+                configToRetrieve = new ArrayList<>();
+            }
 
-        while ((! listenerRegistered) && (configToRetrieve.size() != 0) && (keepTrying))
-        {
             while ((! listenerRegistered) && (keepTrying))
             {
                 try
@@ -116,7 +112,7 @@ public class EngineConfigurationRefreshThread implements Runnable
                                           error);
                     waitToRetry();
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     auditLog.logException(actionDescription,
                                           EngineHostServicesAuditCode.NO_CONFIGURATION_LISTENER.getMessageDefinition(localServerName,
@@ -146,12 +142,12 @@ public class EngineConfigurationRefreshThread implements Runnable
                         {
                             engineHandler.refreshConfig();
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
                             auditLog.logException(actionDescription,
                                                   EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(engineHandler.getGovernanceEngineName(),
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         error.getMessage()),
+                                                                                                                               error.getClass().getName(),
+                                                                                                                               error.getMessage()),
                                                   error.toString(),
                                                   error);
 
@@ -164,6 +160,8 @@ public class EngineConfigurationRefreshThread implements Runnable
 
                 waitToRetry();
             }
+
+            waitToRetry();
         }
     }
 

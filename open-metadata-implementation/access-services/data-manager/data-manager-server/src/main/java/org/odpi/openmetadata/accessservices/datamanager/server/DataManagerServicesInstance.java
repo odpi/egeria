@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.datamanager.converters.*;
+import org.odpi.openmetadata.accessservices.datamanager.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -25,6 +26,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
 
+    private ElementStubConverter<ElementStub>                                elementStubConverter;
     private OpenMetadataAPIGenericHandler<ElementStub>                       genericHandler;
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> dataManagerIntegratorHandler;
     private RelationalDataHandler<DatabaseElement,
@@ -36,6 +38,38 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private FilesAndFoldersHandler<FileSystemElement,
                                    FileFolderElement,
                                    DataFileElement>                          filesAndFoldersHandler;
+
+    private AssetHandler<TopicElement>                                       topicHandler;
+    private EventTypeHandler<EventTypeElement>                               eventTypeHandler;
+
+    private AssetHandler<APIElement>                                         apiHandler;
+    private SchemaTypeHandler<APISpecificationElement>                       apiSpecificationHandler;
+    private APIOperationHandler<APIOperationElement>                         apiOperationHandler;
+    private APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
+
+    private AssetHandler<FormElement>                                        formHandler;
+    private AssetHandler<ReportElement>                                      reportHandler;
+    private AssetHandler<QueryElement>                                       queryHandler;
+    private DisplayDataContainerHandler<DataContainerElement,
+                                        SchemaTypeElement>                   dataContainerHandler;
+
+
+    private SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
+    private SchemaAttributeHandler<SchemaAttributeElement,
+                                   SchemaTypeElement>                        schemaAttributeHandler;
+
+    private ConnectionHandler<ConnectionElement>       connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private EndpointHandler<EndpointElement>           endpointHandler;
+
+    private ValidValuesHandler<ValidValueSetElement,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean,
+                               OpenMetadataAPIDummyBean>                     validValuesHandler;
 
 
     /**
@@ -83,6 +117,8 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                            methodName);
 
         }
+
+        this.elementStubConverter = new ElementStubConverter<>(repositoryHelper, serviceName, serverName);
 
         this.genericHandler = new OpenMetadataAPIGenericHandler<>(new DataManagerOMASConverter<>(repositoryHelper, serviceName,serverName),
                                                                   ElementStub.class,
@@ -154,6 +190,260 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
+
+        this.topicHandler = new AssetHandler<>(new TopicConverter<>(repositoryHelper, serviceName,serverName),
+                                               TopicElement.class,
+                                               serviceName,
+                                               serverName,
+                                               invalidParameterHandler,
+                                               repositoryHandler,
+                                               repositoryHelper,
+                                               localServerUserId,
+                                               securityVerifier,
+                                               supportedZones,
+                                               defaultZones,
+                                               publishZones,
+                                               auditLog);
+
+        this.eventTypeHandler = new EventTypeHandler<>(new EventTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                       EventTypeElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
+
+        this.apiHandler = new AssetHandler<>(new APIConverter<>(repositoryHelper, serviceName,serverName),
+                                             APIElement.class,
+                                             serviceName,
+                                             serverName,
+                                             invalidParameterHandler,
+                                             repositoryHandler,
+                                             repositoryHelper,
+                                             localServerUserId,
+                                             securityVerifier,
+                                             supportedZones,
+                                             defaultZones,
+                                             publishZones,
+                                             auditLog);
+
+        this.apiSpecificationHandler = new SchemaTypeHandler<>(new APISpecificationConverter<>(repositoryHelper, serviceName,serverName),
+                                                               APISpecificationElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+
+        this.apiOperationHandler = new APIOperationHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
+                                                             APIOperationElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+        this.apiParameterListHandler = new APIParameterListHandler<>(new APIParameterListConverter<>(repositoryHelper, serviceName,serverName),
+                                                                     APIParameterListElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
+        this.formHandler = new AssetHandler<>(new FormConverter<>(repositoryHelper, serviceName,serverName),
+                                              FormElement.class,
+                                              serviceName,
+                                              serverName,
+                                              invalidParameterHandler,
+                                              repositoryHandler,
+                                              repositoryHelper,
+                                              localServerUserId,
+                                              securityVerifier,
+                                              supportedZones,
+                                              defaultZones,
+                                              publishZones,
+                                              auditLog);
+
+        this.reportHandler = new AssetHandler<>(new ReportConverter<>(repositoryHelper, serviceName,serverName),
+                                                ReportElement.class,
+                                                serviceName,
+                                                serverName,
+                                                invalidParameterHandler,
+                                                repositoryHandler,
+                                                repositoryHelper,
+                                                localServerUserId,
+                                                securityVerifier,
+                                                supportedZones,
+                                                defaultZones,
+                                                publishZones,
+                                                auditLog);
+
+        this.queryHandler = new AssetHandler<>(new QueryConverter<>(repositoryHelper, serviceName,serverName),
+                                               QueryElement.class,
+                                               serviceName,
+                                               serverName,
+                                               invalidParameterHandler,
+                                               repositoryHandler,
+                                               repositoryHelper,
+                                               localServerUserId,
+                                               securityVerifier,
+                                               supportedZones,
+                                               defaultZones,
+                                               publishZones,
+                                               auditLog);
+
+        this.dataContainerHandler = new DisplayDataContainerHandler<>(new DataContainerConverter<>(repositoryHelper, serviceName,serverName),
+                                                                      DataContainerElement.class,
+                                                                      new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                      SchemaTypeElement.class,
+                                                                      serviceName,
+                                                                      serverName,
+                                                                      invalidParameterHandler,
+                                                                      repositoryHandler,
+                                                                      repositoryHelper,
+                                                                      localServerUserId,
+                                                                      securityVerifier,
+                                                                      supportedZones,
+                                                                      defaultZones,
+                                                                      publishZones,
+                                                                      auditLog);
+
+        this.schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                        SchemaTypeElement.class,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
+
+        this.schemaAttributeHandler = new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                   SchemaAttributeElement.class,
+                                                                   new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                   SchemaTypeElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
+
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         ConnectionElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new ConnectorTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                               ConnectorTypeElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+        this.endpointHandler = new EndpointHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                                                     EndpointElement.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
+
+        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
+                                                           ValidValueSetElement.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                           OpenMetadataAPIDummyBean.class,
+                                                           serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper,
+                                                           localServerUserId,
+                                                           securityVerifier,
+                                                           supportedZones,
+                                                           defaultZones,
+                                                           publishZones,
+                                                           auditLog);
+    }
+
+
+    /**
+     * Return the element stub converter
+     *
+     * @return converter
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter()
+    {
+        return elementStubConverter;
     }
 
 
@@ -165,10 +455,9 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      */
     public OpenMetadataAPIGenericHandler<ElementStub> getGenericHandler()
     {
-        final String methodName = "getGenericHandler";
-
         return genericHandler;
     }
+
 
 
     /**
@@ -221,5 +510,268 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return filesAndFoldersHandler;
+    }
+
+
+    /**
+     * Return the handler for managing TopicElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<TopicElement> getTopicHandler() throws PropertyServerException
+    {
+        final String methodName = "getTopicHandler";
+
+        validateActiveRepository(methodName);
+
+        return topicHandler;
+    }
+
+
+    /**
+     * Return the handler for managing EventTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EventTypeHandler<EventTypeElement> getEventTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getEventTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return eventTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<APIElement> getAPIHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APISpecificationElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<APISpecificationElement> getAPISpecificationHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPISpecificationHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiSpecificationHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIOperationElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    APIOperationHandler<APIOperationElement> getAPIOperationHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIOperationHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiOperationHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIParameterListElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    APIParameterListHandler<APIParameterListElement> getAPIParameterListHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIParameterListHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiParameterListHandler;
+    }
+
+
+    /**
+     * Return the handler for managing FormElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<FormElement> getFormHandler() throws PropertyServerException
+    {
+        final String methodName = "getFormHandler";
+
+        validateActiveRepository(methodName);
+
+        return formHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ReportElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<ReportElement> getReportHandler() throws PropertyServerException
+    {
+        final String methodName = "getReportHandler";
+
+        validateActiveRepository(methodName);
+
+        return reportHandler;
+    }
+
+
+    /**
+     * Return the handler for managing QueryElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<QueryElement> getQueryHandler() throws PropertyServerException
+    {
+        final String methodName = "getQueryHandler";
+
+        validateActiveRepository(methodName);
+
+        return queryHandler;
+    }
+
+
+    /**
+     * Return the handler for managing DataContainerElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> getDisplayDataContainerHandler() throws PropertyServerException
+    {
+        final String methodName = "getDisplayDataContainerHandler";
+
+        validateActiveRepository(methodName);
+
+        return dataContainerHandler;
+    }
+
+
+    /**
+     * Return the handler for managing SchemaTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<SchemaTypeElement> getSchemaTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return schemaTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing SchemaAttributeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> getSchemaAttributeHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaAttributeHandler";
+
+        validateActiveRepository(methodName);
+
+        return schemaAttributeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ConnectionElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectionHandler<ConnectionElement> getConnectionHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectionHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectionHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ConnectorTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ConnectorTypeHandler<ConnectorTypeElement> getConnectorTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getConnectorTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return connectorTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing Endpoint objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EndpointHandler<EndpointElement> getEndpointHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return endpointHandler;
+    }
+
+
+    /**
+     * Return the handler for managing valid values.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ValidValuesHandler<ValidValueSetElement,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean,
+                              OpenMetadataAPIDummyBean> getValidValuesHandler() throws PropertyServerException
+    {
+        final String methodName = "getValidValuesHandler";
+
+        validateActiveRepository(methodName);
+
+        return validValuesHandler;
     }
 }

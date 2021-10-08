@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -217,6 +218,9 @@ public class SubjectAreaRESTServices
                                            OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
         }
         catch (Exception error)
@@ -275,6 +279,8 @@ public class SubjectAreaRESTServices
                                          childSubjectAreaGUID,
                                          childSubjectAreaGUIDParameterName,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
                                          null,
@@ -337,8 +343,11 @@ public class SubjectAreaRESTServices
                                              childSubjectAreaGUIDParameterName,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)
@@ -396,6 +405,8 @@ public class SubjectAreaRESTServices
                                          subjectAreaGUID,
                                          subjectAreaGUIDParameterName,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                         false,
+                                         false,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                          null,
@@ -458,8 +469,11 @@ public class SubjectAreaRESTServices
                                              subjectAreaGUIDParameterName,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                             false,
+                                             false,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                             null,
                                              methodName);
         }
         catch (Exception error)
@@ -505,6 +519,9 @@ public class SubjectAreaRESTServices
                                                               subjectAreaGUID,
                                                               subjectAreaGUIDParameterName,
                                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -644,6 +661,9 @@ public class SubjectAreaRESTServices
                                                                                   subjectAreaGUID,
                                                                                   subjectAreaGUIDParameterName,
                                                                                   OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
                                                                                   methodName);
             if (element != null)
             {
@@ -657,6 +677,7 @@ public class SubjectAreaRESTServices
                 subjectAreaDefinition.setNestedSubjectAreaGUIDs(subjectAreaHandler.getSubjectAreaChildrenGUIDs(userId,
                                                                                                                subjectAreaGUID,
                                                                                                                subjectAreaGUIDParameterName,
+                                                                                                               new Date(),
                                                                                                                methodName));
 
                 GovernanceDefinitionHandler<GovernanceDefinitionElement> definitionHandler    = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);

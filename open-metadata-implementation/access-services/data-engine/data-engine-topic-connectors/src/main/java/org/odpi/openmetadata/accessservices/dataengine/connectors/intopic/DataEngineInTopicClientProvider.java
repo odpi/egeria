@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class DataEngineInTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "8d9932c4-3cf6-4e5e-aee9-30f14a841981";
-    static final String  connectorTypeName = "Data Engine In Topic Client Connector";
-    static final String  connectorTypeDescription = "Connector supports sending events on the Data Engine input topic.";
+    static final String CONNECTOR_TYPE_GUID = "8d9932c4-3cf6-4e5e-aee9-30f14a841981";
+    static final String CONNECTOR_TYPE_NAME = "Data Engine In Topic Client Connector";
+    static final String CONNECTOR_TYPE_DESCRIPTION = "Connector supports sending events on the Data Engine input topic.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -32,10 +32,10 @@ public class DataEngineInTopicClientProvider extends ConnectorProviderBase
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setGUID(CONNECTOR_TYPE_GUID);
+        connectorType.setQualifiedName(CONNECTOR_TYPE_NAME);
+        connectorType.setDisplayName(CONNECTOR_TYPE_NAME);
+        connectorType.setDescription(CONNECTOR_TYPE_DESCRIPTION);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;

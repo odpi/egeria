@@ -45,7 +45,7 @@ understand the data assets they are working with.
 * **[0395 Supplementary Properties](0395-Supplementary-Properties.md)**
 
 
-Return to [Overview](README.md).
+Return to [Overview](.).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

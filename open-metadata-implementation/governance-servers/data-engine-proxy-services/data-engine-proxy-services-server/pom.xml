@@ -9,7 +9,7 @@
     <parent>
         <artifactId>data-engine-proxy-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,6 +32,7 @@
             <artifactId>data-engine-proxy-connector</artifactId>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-client</artifactId>
@@ -49,6 +50,7 @@
             <artifactId>admin-services-api</artifactId>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
@@ -64,10 +66,11 @@
             <artifactId>audit-log-framework</artifactId>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>compile</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
 
         <dependency>
@@ -79,7 +82,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-topic-connectors</artifactId>
         </dependency>
-
 
     </dependencies>
 

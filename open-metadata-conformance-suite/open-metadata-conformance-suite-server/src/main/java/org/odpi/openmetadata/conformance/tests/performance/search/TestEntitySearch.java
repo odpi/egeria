@@ -186,7 +186,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
             String operationDescription = "search an entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
             throw new Exception(msg, exc);
         }
 
@@ -261,7 +261,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getExactMatchRegex(exact));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -298,7 +298,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getStartsWithRegex(startsWith));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -335,7 +335,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getContainsRegex(contains));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -372,7 +372,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("searchCriteria", repositoryHelper.getEndsWithRegex(endsWith));
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -409,7 +409,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("searchCriteria", regex);
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -527,7 +527,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("matchProperties", oneProperty.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
         }
@@ -569,7 +569,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ALL");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -608,7 +608,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "ANY");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 
@@ -647,7 +647,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 parameters.put("typeGUID", entityDef.getGUID());
                 parameters.put("matchProperties", twoProperties.toString());
                 parameters.put("matchCriteria", "NONE");
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc);
                 throw new Exception(msg, exc);
             }
 

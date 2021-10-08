@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
@@ -13,7 +12,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -23,12 +21,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -50,7 +45,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineProcessHandler {
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final AssetHandler<Process> assetHandler;
@@ -65,22 +59,19 @@ public class DataEngineProcessHandler {
      * @param serviceName             name of this service
      * @param serverName              name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
      * @param registrationHandler     provides utilities for manipulating software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                    RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                    AssetHandler<Process> assetHandler, DataEngineRegistrationHandler registrationHandler,
-                                    DataEngineCommonHandler dataEngineCommonHandler) {
+                                    OMRSRepositoryHelper repositoryHelper, AssetHandler<Process> assetHandler,
+                                    DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.assetHandler = assetHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
@@ -148,7 +139,7 @@ public class DataEngineProcessHandler {
         }
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
+        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
                 updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
                 updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
                 buildProcessExtendedProperties(updatedProcess), methodName);
@@ -218,21 +209,11 @@ public class DataEngineProcessHandler {
     public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException {
-        final String methodName = "getPortsForProcess";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
-
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, PROCESS_PORT_TYPE_NAME);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, processGUID, PROCESS_TYPE_NAME,
-                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), 0, 0, methodName);
-
-        if (CollectionUtils.isEmpty(entities)) {
-            return new HashSet<>();
-        }
-
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).collect(Collectors.toSet());
+        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
+                PROCESS_TYPE_NAME);
+        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).
+                collect(Collectors.toSet());
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
@@ -312,15 +293,10 @@ public class DataEngineProcessHandler {
                                                                                                                            UserNotAuthorizedException,
                                                                                                                            FunctionNotSupportedException {
         final String methodName = "removeProcess";
-
-        if (deleteSemantic != DeleteSemantic.HARD) {
-            throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
-                    serverName), this.getClass().getName(), methodName);
-        }
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
+        assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
-        repositoryHandler.purgeEntity(userId, processGUID, PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, methodName);
     }
 }

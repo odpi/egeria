@@ -109,6 +109,9 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Category property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
+
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -128,6 +131,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             String userId,
             Date asOfTime,
             String searchCriteria,
+            boolean exactValue,
+            boolean ignoreCase,
             Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
@@ -158,7 +163,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingProperty(sequencingProperty);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
-            List<Category> categories = clients.categories().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
+            List<Category> categories = clients.categories().find(userId, findRequest, exactValue, ignoreCase, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(categories);
         }  catch (Exception exception) {
             response =  getResponseForException(exception, auditLog, className, methodName);
@@ -286,7 +291,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * The deletion of a category is only allowed if there is no category content (i.e. no categories or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
@@ -296,7 +301,6 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param serverName         name of the local view server.
      * @param userId             user identifier
      * @param guid       guid of the category to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -308,8 +312,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(
             String serverName,
             String userId,
-            String guid,
-            boolean isPurge
+            String guid
     ) {
 
         final String methodName = "deleteCategory";
@@ -322,12 +325,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            clients.categories().delete(userId, guid);
 
-            if (isPurge) {
-                clients.categories().purge(userId, guid);
-            } else {
-                clients.categories().delete(userId, guid);
-            }
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
@@ -380,6 +379,9 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the parent category
      * @param searchCriteria String expression matching child Category property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
+
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of child categories filtered by the search criteria if one is supplied.
@@ -390,7 +392,14 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName,
+                                                                    String userId,
+                                                                    String guid,
+                                                                    String searchCriteria,
+                                                                    boolean exactValue,
+                                                                    boolean ignoreCase,
+                                                                    Integer startingFrom,
+                                                                    Integer pageSize) {
 
         final String methodName = "getCategoryChildren";
 
@@ -412,7 +421,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSearchCriteria(searchCriteria);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
+            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest, exactValue, ignoreCase);
             response.addAllResults(categories);
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
@@ -428,6 +437,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
      * @param searchCriteria String expression to match the categorized Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of terms is categorized by this Category
@@ -438,7 +449,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, String searchCriteria, boolean exactValue, boolean ignoreCase, Integer startingFrom, Integer pageSize) {
             final String methodName = "getCategorizedTerms";
 
             RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);

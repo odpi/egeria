@@ -13,11 +13,13 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Manages the maintenance of port entities.
+ * Manages the maintenance of port entities. It does not currently support effectivity dates but probably
+ * should give that option.
  *
  * @param <B> class of bean for returning the port attributes
  */
@@ -69,7 +71,6 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
               publishZones,
               auditLog);
     }
-
 
 
     /**
@@ -164,6 +165,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       portGUID,
                                       portGUIDParameterName,
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      supportedZones,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
                                       null,
@@ -247,8 +251,12 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     portGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -289,6 +297,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   portGUID,
                                   portGUIDParameterName,
                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                   OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
                                   null,
@@ -334,8 +345,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       portGUIDParameterName,
                                       OpenMetadataAPIMapper.PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -377,6 +391,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   portTwoGUID,
                                   portTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
                                   null,
@@ -422,8 +439,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       portTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.PORT_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -464,6 +484,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                  false,
+                                  false,
+                                  supportedZones,
                                   OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                   null,
@@ -509,8 +532,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       schemaTypeGUIDParameterName,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
                                       OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      false,
+                                      false,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                      null,
                                       methodName);
     }
 
@@ -547,6 +573,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -585,6 +614,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              null,
                               methodName);
     }
 
@@ -624,8 +654,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         2,
+                                        false,
+                                        false,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -665,8 +698,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         1,
+                                        false,
+                                        false,
                                         startFrom,
                                         pageSize,
+                                        null,
                                         methodName);
     }
 
@@ -702,8 +738,11 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    null,
                                                    null,
                                                    2,
+                                                   false,
+                                                   false,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                   null,
                                                    methodName);
 
         if ((results == null) || (results.isEmpty()))
@@ -768,10 +807,12 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    null,
                                     methodName);
     }
 
@@ -801,6 +842,10 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           portGUID,
                                           portGUIDParameterName,
                                           OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          new Date(),
                                           methodName);
     }
 }

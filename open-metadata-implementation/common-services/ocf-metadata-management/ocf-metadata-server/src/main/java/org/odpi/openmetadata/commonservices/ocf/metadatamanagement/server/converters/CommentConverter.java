@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -56,7 +57,7 @@ public class CommentConverter<B> extends OCFConverter<B>
             /*
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            B returnBean = beanClass.newInstance();
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
             if (returnBean instanceof Comment)
             {
@@ -101,7 +102,7 @@ public class CommentConverter<B> extends OCFConverter<B>
                 super.handleUnexpectedBeanClass(beanClass.getName(), Comment.class.getName(), methodName);
             }
         }
-        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {
             super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }

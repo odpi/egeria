@@ -166,6 +166,39 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
         this.configureAccessService(serviceURLMarker, new HashMap<>());
     }
 
+    /**
+     * Disable a single access service.
+     *
+     * @param serviceURLMarker string indicating which access service it is disabling
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void disableAccessService(String  serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                        OMAGInvalidParameterException,
+                                                                        OMAGConfigurationErrorException
+    {
+        final String methodName    = "disableAccessService";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
 
     /**
      * Enable a single access service.
@@ -205,6 +238,60 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
 
 
     /**
+     * Enable a single access service without the In and Out topic.
+     *
+     * @param serviceURLMarker string indicating which access service it is configuring
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void configureAccessServiceNoTopics(String  serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                                OMAGInvalidParameterException,
+                                                                                OMAGConfigurationErrorException
+    {
+        this.configureAccessServiceNoTopics(serviceURLMarker, new HashMap<>());
+    }
+
+
+    /**
+     * Enable a single access service without the In and Out topic.
+     *
+     * @param serviceURLMarker string indicating which access service it is configuring
+     * @param accessServiceOptions property name/value pairs used to configure the access service
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void configureAccessServiceNoTopics(String              serviceURLMarker,
+                                               Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
+                                                                                                OMAGInvalidParameterException,
+                                                                                                OMAGConfigurationErrorException
+    {
+        final String methodName    = "configureAccessServiceNoTopics";
+        final String parameterName = "serviceURLMarker";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/{2}/no-topics";
+
+        try
+        {
+            invalidParameterHandler.validateName(serviceURLMarker, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        accessServiceOptions,
+                                        adminUserId,
+                                        serverName,
+                                        serviceURLMarker);
+    }
+
+
+    /**
      * Enable all access services that are registered into this server.   The configuration properties
      * for each access service can be changed from their default using setAccessServicesConfig operation.
      *
@@ -220,6 +307,33 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
     {
         final String methodName  = "configureAllAccessServices";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        accessServiceOptions,
+                                        adminUserId,
+                                        serverName);
+    }
+
+
+
+    /**
+     * Enable all access services that are registered into this server without the in and out topics activated.
+     * The configuration properties for each access service can be changed from their default using
+     * setAccessServicesConfig operation.
+     *
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void configureAllAccessServicesNoTopics(Map<String, Object> accessServiceOptions) throws OMAGNotAuthorizedException,
+                                                                                                    OMAGInvalidParameterException,
+                                                                                                    OMAGConfigurationErrorException
+    {
+        final String methodName  = "configureAllAccessServicesNoTopics";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/access-services/no-topics";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,

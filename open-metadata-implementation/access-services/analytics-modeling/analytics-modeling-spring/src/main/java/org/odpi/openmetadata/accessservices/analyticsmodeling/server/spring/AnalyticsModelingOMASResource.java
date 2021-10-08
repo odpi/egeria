@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableF
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,7 +90,6 @@ public class AnalyticsModelingOMASResource {
 	 * @param database	  data source id.
 	 * @param catalog	  of the db.
 	 * @param schema	  of the db.
-	 * @param request body.
 	 * @return Analytics Modeling response contains list of tables in the database schema.
 	 */
     @Operation(summary = "Get list of tables of a given database, catalog and schema")
@@ -99,8 +99,7 @@ public class AnalyticsModelingOMASResource {
             @PathVariable("userId") String userId,
 			@PathVariable("databaseGUID") String database,
 			@RequestParam(required = false) String catalog,
-			@RequestParam(required = true) String schema,
-			@RequestBody(required=false) Object request
+			@RequestParam(required = true) String schema
 			) 
 	{
 		return restAPI.getTables(serverName, userId, database, schema);
@@ -136,6 +135,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
 	 * @param artifact definition json.
 	 * @return errors or list of created assets.
 	 */
@@ -145,10 +145,11 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
-			@RequestBody(required=true) String artifact
+			@RequestParam(required=false) String serverCapabilityGUID,
+			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
-		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
+		return restAPI.createArtifact(serverName, userId, serverCapability, serverCapabilityGUID, artifact);
 	}
 
     /**
@@ -156,6 +157,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
 	 * @param artifact from json definition.
 	 * @return errors or list of created assets.
 	 */
@@ -165,9 +167,31 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=false) String serverCapabilityGUID,
 			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
-		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);
+		return restAPI.updateArtifact(serverName, userId, serverCapability, serverCapabilityGUID, artifact);
+	}
+    
+    /**
+	 * Delete assets in repository defined by artifact unique identifier.
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param serverCapabilityGUID where the artifact is stored.
+	 * @param identifier of the artifact in 3rd party system.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Delete assets that represent analytics artifact.")
+	@DeleteMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=false) String serverCapabilityGUID,
+			@RequestParam(required=true) String identifier)
+    {
+		return restAPI.deleteArtifact(serverName, userId, serverCapability, serverCapabilityGUID, identifier);
 	}
 }

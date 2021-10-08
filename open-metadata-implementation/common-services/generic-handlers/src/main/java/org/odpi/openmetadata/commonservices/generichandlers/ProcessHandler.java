@@ -12,13 +12,14 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * ProcessHandler provides the methods to create and maintain processes and their contents.
+ * It does not currently support effectivity dates - but probably should.
  */
 public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL, LINEAGE_MAPPING> extends ReferenceableHandler<PROCESS>
 {
@@ -189,11 +190,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
             typeName = suppliedTypeName;
         }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
+        invalidParameterHandler.validateTypeName(typeName,
+                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 serviceName,
+                                                 methodName,
+                                                 repositoryHelper);
 
         Map<String, Object> extendedProperties = suppliedExtendedProperties;
 
@@ -224,7 +225,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       technicalName,
                                                       technicalDescription,
                                                       additionalProperties,
-                                                      typeGUID,
                                                       typeName,
                                                       extendedProperties,
                                                       initialStatus,
@@ -408,9 +408,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                           processGUIDParameterName,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
                                           OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                          false,
+                                          false,
                                           supportedZones,
                                           processStatus,
                                           processStatusParameterName,
+                                          new Date(),
                                           methodName);
     }
 
@@ -559,6 +562,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                               null,
                                               null,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
     }
 
@@ -598,6 +604,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                           searchStringParameterName,
                                                           startFrom,
                                                           validatedPageSize,
+                                                          null,
                                                           methodName);
 
         return results;

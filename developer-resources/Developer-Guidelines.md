@@ -18,37 +18,30 @@ As such, these guidelines exist to remind us of these broader responsibilities.
 
 ## Java
 
-The minimum level required to build & run Egeria is Java 8. 
- The code is also buildable under Java 11, but is configured for Java 8 language level and bytecode. It is also runnable under Java 11. 
- 
- Non-LTS releases are not tested.
- 
- The Java distributions we are using include:
-  * Azul zulu - as provided by Azure Pipelines. 
-  * openjdk - from Ubuntu distributions 
-  * Adoptopenjdk openjdk (with hotspot)
-  * Adoptopenjdk openjdk (with J9)  
-  
- All automated builds are performed on Linux (Ubuntu) only using the Azul vm provided by Azure pipelines.
-  
- Most developers use MacOS, but Windows should work also.
+The minimum level required to build & run Egeria is Java 11. 
 
- Also you must ensure JAVA_HOME is set, and pointing to a JDK. If this is not done, an error such as `Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:3.1.1:jar (attach-javadocs) on project open-connector-framework: MavenReportException: Error while generating Javadoc: Unable to find javadoc command: The environment variable JAVA_HOME is not correctly set.` will be seen as the javadoc maven plugin depends on this value to work correctly.
- 
- Problems with any of these should be raised as issues.
+See [Java](languages/Java.md) for more information.
+
+## Operating System
+
+Most developers use MacOS, our official builds use Linux (Ubuntu/Centos/RHEL should all be fine). 
+
+The traditional Windows environment is not directly supported. It is recommended to use [WSL2](https://docs.microsoft.com/en-us/windows/wsl/) which offers a full Linux environment. 
 
 ## Maven
 
 [Apache Maven](tools/Maven.md) is used to control the builds.
 Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
 
-Note: Gradle is not currently supported. You will see build.gradle configuration files, but this is currently for prototyping only. A gradle build is neither supported nor working at this point. 
+## Gradle
+
+Gradle is not currently supported but is being developed. See [Gradle](tools/Gradle.md)
 
 ## Build warnings
 
 Build output should be checked for any warnings ie `[WARNING]` and these should be eliminated.
 
-For example the java compiler is set to use `-Xlint:all` and may report warnings about deprecated function, unsafe casts, unchecked conversions etc which should be addressed.
+For example the Java compiler is set to use `-Xlint:all` and may report warnings about deprecated function, unsafe casts, unchecked conversions etc which should be addressed.
 
 Other tools used in the build may also result in warnings which should also be addressed, whilst testcases should ensure output is captured to avoid such warnings appear in the build logs.
 
@@ -215,9 +208,6 @@ Many of our team use [JetBrains IntelliJ](tools/IntelliJ.md).
 
 In the case of problems the first problem determination step is to check you can build Egeria normally at the command line ie `mvn clean install` from the source 
 root. That will prove at least java, maven are correct . 
-
-In addition, importantly, this also will retrieve additional dependencies which are not available in public
-repositories are retrieved, otherwise you may see an error like `Cannot resolve com.ibm.gaiandb:gaian` or `Cannot resolve org.apache.derby:derby`.
 
 We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' earlier on this page) or the build will fail running javadoc. 
 

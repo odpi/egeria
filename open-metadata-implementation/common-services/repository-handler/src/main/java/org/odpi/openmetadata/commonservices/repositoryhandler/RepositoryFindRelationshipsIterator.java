@@ -8,9 +8,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,19 +24,22 @@ import java.util.List;
  */
 public class RepositoryFindRelationshipsIterator
 {
-    private RepositoryHandler     repositoryHandler;
-    private String                userId;
+    private RepositoryHandler    repositoryHandler;
+    private String               userId;
     private String               relationshipTypeGUID;
-    private int                   startingFrom;
-    private int                   requesterPageSize;
-    private String                methodName;
+    private int                  startingFrom;
+    private int                  requesterPageSize;
+    private String               methodName;
     private List<Relationship>   relationshipsCache = null;
     private List<String>         relationshipSubtypeGUIDs;
-    private SearchProperties      searchProperties;
-    private List<InstanceStatus>  limitResultsByStatus;
-    private Date                  asOfTime;
-    private String                sequencingProperty;
-    private SequencingOrder       sequencingOrder;
+    private SearchProperties     searchProperties;
+    private List<InstanceStatus> limitResultsByStatus;
+    private Date                 asOfTime;
+    private String               sequencingProperty;
+    private SequencingOrder      sequencingOrder;
+    private boolean              forDuplicateProcessing;
+    private Date                 effectiveTime;
+
 
     /**
      * Constructor takes the parameters used to call the repository handler.
@@ -56,6 +59,8 @@ public class RepositoryFindRelationshipsIterator
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom initial position in the stored list.
      * @param requesterPageSize maximum number of definitions to return on this call.
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      */
     public RepositoryFindRelationshipsIterator(RepositoryHandler     repositoryHandler,
@@ -69,6 +74,8 @@ public class RepositoryFindRelationshipsIterator
                                                SequencingOrder       sequencingOrder,
                                                int                   startingFrom,
                                                int                   requesterPageSize,
+                                               boolean               forDuplicateProcessing,
+                                               Date                  effectiveTime,
                                                String                methodName)
     {
         this.repositoryHandler        = repositoryHandler;
@@ -82,6 +89,8 @@ public class RepositoryFindRelationshipsIterator
         this.sequencingOrder          = sequencingOrder;
         this.startingFrom             = startingFrom;
         this.requesterPageSize        = requesterPageSize;
+        this.forDuplicateProcessing   = forDuplicateProcessing;
+        this.effectiveTime            = effectiveTime;
         this.methodName               = methodName;
     }
 
@@ -98,25 +107,33 @@ public class RepositoryFindRelationshipsIterator
     {
         if ((relationshipsCache == null) || (relationshipsCache.isEmpty()))
         {
-           relationshipsCache = repositoryHandler.findRelationships(userId,
-                                                                    relationshipTypeGUID,
-                                                                    relationshipSubtypeGUIDs,
-                                                                    searchProperties,
-                                                                    limitResultsByStatus,
-                                                                    asOfTime,
-                                                                    sequencingProperty,
-                                                                    sequencingOrder,
-                                                                    startingFrom,
-                                                                    requesterPageSize,
-                                                                    methodName);
+            relationshipsCache = new ArrayList<>();
 
-            if (relationshipsCache != null)
+            /*
+             * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
+             * This occurs if all elements returned from the repositories do not match the effectiveTime requested.
+             */
+            while ((relationshipsCache != null) && (relationshipsCache.isEmpty()))
             {
-                startingFrom = startingFrom + relationshipsCache.size();
+                relationshipsCache = repositoryHandler.findRelationships(userId,
+                                                                         relationshipTypeGUID,
+                                                                         relationshipSubtypeGUIDs,
+                                                                         searchProperties,
+                                                                         limitResultsByStatus,
+                                                                         asOfTime,
+                                                                         sequencingProperty,
+                                                                         sequencingOrder,
+                                                                         forDuplicateProcessing,
+                                                                         startingFrom,
+                                                                         requesterPageSize,
+                                                                         effectiveTime,
+                                                                         methodName);
+
+                startingFrom = startingFrom + requesterPageSize;
             }
         }
 
-        return relationshipsCache != null;
+        return (relationshipsCache != null);
     }
 
 

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
@@ -115,17 +116,25 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameterName, methodName);
 
-        repositoryHandler.validateEntityGUID(userId,
-                                             assetGUID,
-                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                             methodName,
-                                             assetGUIDParameterName);
+        Date effectiveTime = new Date();
 
-        repositoryHandler.validateEntityGUID(userId,
-                                             assetGUID,
-                                             OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                             methodName,
-                                             discoveryEngineGUIDParameterName);
+        repositoryHandler.getEntityByGUID(userId,
+                                          assetGUID,
+                                          assetGUIDParameterName,
+                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          false,
+                                          false,
+                                          effectiveTime,
+                                          methodName);
+
+        repositoryHandler.getEntityByGUID(userId,
+                                          discoveryEngineGUIDParameterName,
+                                          assetGUID,
+                                          OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          effectiveTime,
+                                          methodName);
 
         DiscoveryAnalysisReportBuilder builder = new DiscoveryAnalysisReportBuilder(qualifiedName,
                                                                                     displayName,
@@ -150,6 +159,8 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                             null,
                                                             null,
                                                             builder.getInstanceProperties(methodName),
+                                                            null,
+                                                            InstanceStatus.ACTIVE,
                                                             methodName);
 
         if (reportGUID != null)
@@ -238,8 +249,12 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                     discoveryReportGUIDParameterName,
                                     OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
                                     OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
+                                    new Date(),
                                     methodName);
     }
 
@@ -269,6 +284,10 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                      discoveryReportGUID,
                                      reportGUIDParameterName,
                                      OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                     false,
+                                     false,
+                                     supportedZones,
+                                     new Date(),
                                      methodName);
     }
 
@@ -307,6 +326,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                         OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                         startingFrom,
                                         maximumResults,
+                                        new Date(),
                                         methodName);
     }
 }

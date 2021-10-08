@@ -6,7 +6,7 @@
 Delete a Port Alias, with all the associated relationships
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-process_endpoints.postman_collection.json)
 
 ```
 DELETE {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/port-aliases

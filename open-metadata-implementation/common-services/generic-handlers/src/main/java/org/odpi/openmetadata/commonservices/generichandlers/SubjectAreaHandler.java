@@ -13,13 +13,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
 /**
  * SubjectAreaHandler provides the exchange of metadata about subject areas between the repository and
- * the OMAS.
+ * the OMAS.  There is no support for effectivity dating for this element
  */
 public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -231,8 +232,12 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     subjectAreaGUIDParameterName,
                                     OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                     OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    new Date(),
                                     methodName);
     }
 
@@ -264,6 +269,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                        null,
                                         methodName);
     }
 
@@ -296,6 +302,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                     false,
+                                                     false,
+                                                     supportedZones,
+                                                     null,
                                                      methodName);
 
         if (entity != null)
@@ -315,6 +325,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param subjectAreaGUID unique identifier for the subjectArea
      * @param subjectAreaGUIDParameter name of parameter supplying the subjectAreaGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of unique identifier of the parent subject area
@@ -326,6 +337,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public List<String> getSubjectAreaChildrenGUIDs(String userId,
                                                     String subjectAreaGUID,
                                                     String subjectAreaGUIDParameter,
+                                                    Date   effectiveTime,
                                                     String methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -337,8 +349,14 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                                                OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               false,
+                                                               supportedZones,
                                                                0,
                                                                0,
+                                                               effectiveTime,
                                                                methodName);
 
         List<String> results = new ArrayList<>();
@@ -387,10 +405,13 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                   supportedZones,
                                    null,
+                                   false,
+                                   false,
+                                   supportedZones,
                                    startFrom,
                                    pageSize,
+                                   new Date(),
                                    methodName);
     }
 
@@ -426,10 +447,13 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                                             supportedZones,
                                                              null,
+                                                             false,
+                                                             false,
+                                                             supportedZones,
                                                              startFrom,
                                                              pageSize,
+                                                             new Date(),
                                                              methodName);
 
         List<B> results = new ArrayList<>();

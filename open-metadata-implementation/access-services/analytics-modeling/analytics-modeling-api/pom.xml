@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>analytics-modeling</artifactId>
 		<groupId>org.odpi.egeria</groupId>
-		<version>2.11-SNAPSHOT</version>
+		<version>3.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -35,6 +35,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
+			<artifactId>open-connector-framework</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
 			<artifactId>audit-log-framework</artifactId>
 		</dependency>
 		<dependency>
@@ -54,6 +58,11 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-ut</artifactId>
+			<scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>

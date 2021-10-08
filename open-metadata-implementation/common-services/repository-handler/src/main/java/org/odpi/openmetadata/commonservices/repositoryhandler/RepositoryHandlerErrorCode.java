@@ -71,6 +71,15 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The property named {0} with value of {1} supplied on method {2} is not found in entity {3}",
             "The system does no process the request because there is a possibility that the caller is requesting changes to the wrong object.",
                            "Correct the value of the property passed on the request and retry."),
+    UNAVAILABLE_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-010",
+                        "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8}",
+                        "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
+                        "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),
+    NO_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-011",
+                        "A {0} entity with unique identifier {1} can not be retrieved by method {2} from service {3} for caller {4}",
+                        "The system is unable to format all or part of the response because the entity was not retrieved from the repository.",
+                        "Use knowledge of the request and the contents of the repositories to determine if the identifier is correct."),
+
     USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
             "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request because the user should not be making this request.",
@@ -128,7 +137,6 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",
             "The system is unable to process a request because multiple entities have been discovered and it is unsure which entity to use.",
             "Investigate why multiple entities exist.  Then retry the request once the issue is resolved."),
-
     NULL_ENTITY_RETURNED_FOR_CLASSIFICATION(404, "OMAG-REPOSITORY-HANDLER-404-011",
             "A null entity was returned to method {0} of server {1} during a request to add a classification of type {4} (guid {3}) to entity {2} with properties of: {5}",
             "The system is unable to process a request because it can not find the requested entity to update.",
@@ -138,6 +146,24 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
                    "The {0} relationship with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
                    "The system is unable to update information associated with the relationship because none of the connected open metadata repositories recognize the relationship's unique identifier.",
                    "The unique identifier of the relationship is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+    NOT_EFFECTIVE_ELEMENT(404, "OMAG-REPOSITORY-HANDLER-404-013",
+                          "The {0} element with unique identifier {1} is found for method {2} of access service {3} in open metadata server {4} however its effectivity dates are from: {5} to {6} and the requested effective date was {7}",
+                          "The system is unable to return the element because the element is not active at this time.",
+                          "The unique identifier of the element is supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the element are as expected. Once all errors have been resolved, and the time is right, retry the request."),
+
+    BROADER_EFFECTIVE_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-015",
+                                   "The {0} relationship with unique identifier {1} claims all effective dates which makes it broader than than the requested effective dates of {2} to {3}",
+                                   "The system is unable to process with the request because the requested effectivity dates are incompatible with the existing relationships.",
+                                   "The effectivity dates of the relationship are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the request and retrieved relationship are as expected. Once all errors have been resolved, retry the request."),
+    NARROWER_EFFECTIVE_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-016",
+                                   "The {0} relationship with unique identifier {1} has narrower effective dates of {2} to {3} than the requested effective dates of {4} to {5}",
+                                   "The system is unable to proceed because two relationships are attempting to occupying the same effectivity times.",
+                                   "The effectivity dates are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the relationship are as expected. If the command is to update the effectivity dates, rather than the relationship properties, use the specialist method for this purpose.  Once all errors have been resolved, and the time is right, retry the request."),
+    OVERLAPPING_EFFECTIVE_RELATIONSHIPS(404, "OMAG-REPOSITORY-HANDLER-404-017",
+                                         "The {0} relationship with unique identifier {1} has overlapping effective dates of {2} to {3} than the requested effective dates of {4} to {5}",
+                                         "The system is unable to continue processing with these incompatible values.",
+                                         "The effectivity dates are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the retrieved relationship are also correct.  If the command is to update the effectivity dates, rather than the relationship properties, use the specialist method for this purpose.  Once all errors have been resolved, and the time is right, retry the request."),
+
 
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +

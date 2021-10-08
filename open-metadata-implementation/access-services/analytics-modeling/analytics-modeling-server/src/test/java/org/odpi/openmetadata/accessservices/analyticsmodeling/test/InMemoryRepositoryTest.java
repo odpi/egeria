@@ -2,12 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test;
 
-import static org.testng.Assert.fail;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.List;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
@@ -18,6 +12,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNam
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -53,6 +48,12 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.fail;
+
 public class InMemoryRepositoryTest {
 
 	protected static final String USER_ID = "userId";
@@ -78,7 +79,7 @@ public class InMemoryRepositoryTest {
     final private String context = "Analytics Modeling OMAS test";
     
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         omEntityDao = new OMEntityDaoForTests(enterpriseConnector, Collections.emptyList(), auditLog);
         omEntityDao.setContext("JUnitTest");
         
@@ -86,7 +87,8 @@ public class InMemoryRepositoryTest {
         
         metadataCollection = repositoryConnector.getMetadataCollection();
         
-		repositoryHandler = new RepositoryHandler(auditLog, 
+		repositoryHandler = new RepositoryHandler(auditLog,
+				omrsRepositoryHelper,
 				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
 				metadataCollection,
 	            PAGE_SIZE);
@@ -139,7 +141,7 @@ public class InMemoryRepositoryTest {
         repositoryConnector.start();
         localRepositoryEventManager.start();
         localOMRSRepositoryConnector.start();
-        new OMRSArchiveManager(null, auditLog).setLocalRepository(localRepositoryContentManager, localRepositoryEventManager);
+        new OMRSArchiveManager(null, auditLog).setLocalRepository("testLocalMetadataCollectionId", localRepositoryContentManager, null);
 
         return localOMRSRepositoryConnector;
     }
@@ -275,6 +277,25 @@ public class InMemoryRepositoryTest {
      	}
    	
         return columnEntity;
+    }
+
+    protected void addGlossaryTerm(EntityDetail entity, String name, String description, String summary) throws Exception {
+
+    	String method = "addGlossaryTerm";
+
+    	String termQName = QualifiedNameUtils.buildQualifiedName(getEntityQName(entity), Constants.RELATIONAL_COLUMN, name);
+        InstanceProperties termProperties = new EntityPropertiesBuilder(context, method, null)
+                .withStringProperty(Constants.QUALIFIED_NAME, termQName)
+                .withStringProperty(Constants.DISPLAY_NAME, name)
+                .withStringProperty(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description)
+                .withStringProperty(OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME, summary)
+                .build();
+        EntityDetail termEntity = omEntityDao.addEntity(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+        		termQName,
+        		termProperties,
+                false);
+        
+    	omEntityDao.addRelationship(OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME, entity.getGUID(), termEntity.getGUID(), null);
     }
 
 	public void setColumnProperty(EntityDetail columnEntity, String propName, Boolean propValue ) throws Exception {

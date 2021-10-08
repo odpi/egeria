@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +90,9 @@ public class PersonalProfileRESTServices
                                                                                                OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                                                                requestBody.getProfileUserId(),
                                                                                                userParameterName,
+                                                                                               false,
+                                                                                               false,
+                                                                                               new Date(),
                                                                                                methodName);
 
 
@@ -108,6 +112,8 @@ public class PersonalProfileRESTServices
                                                                    requestBody.getAdditionalProperties(),
                                                                    OpenMetadataAPIMapper.PERSON_TYPE_NAME,
                                                                    extendedProperties,
+                                                                   null,
+                                                                   null,
                                                                    methodName);
 
                 if (userIdentity == null)
@@ -134,6 +140,8 @@ public class PersonalProfileRESTServices
                                                              userIdentity.getGUID(),
                                                              userParameterName,
                                                              OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                             false,
+                                                             false,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                              null,
@@ -207,6 +215,8 @@ public class PersonalProfileRESTServices
                                            OpenMetadataAPIMapper.PERSON_TYPE_NAME,
                                            extendedProperties,
                                            false,
+                                           null,
+                                           null,
                                            methodName);
             }
             else
@@ -308,7 +318,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getPersonalProfileForUser(userId, profileUserId, userParameterName, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileForUser(userId, profileUserId, userParameterName, null, methodName));
         }
         catch (Exception error)
         {
@@ -348,7 +358,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID, profileGUIDParameterName, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID, profileGUIDParameterName, null, methodName));
         }
         catch (Exception error)
         {
@@ -394,6 +404,7 @@ public class PersonalProfileRESTServices
             response.setPersonalProfile(handler.getPersonalProfileByUniqueName(userId,
                                                                                requestBody.getName(),
                                                                                nameParameterName,
+                                                                               null,
                                                                                methodName));
         }
         catch (Exception error)
@@ -440,7 +451,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
+            response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, null, methodName));
         }
         catch (Exception error)
         {

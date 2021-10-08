@@ -113,6 +113,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Glossary property values. If not specified then all glossaries are returned.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
@@ -130,6 +132,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String serverName,
                                                              String userId,
                                                              String searchCriteria,
+                                                             boolean exactValue,
+                                                             boolean ignoreCase,
                                                              Date asOfTime,
                                                              Integer startingFrom,
                                                              Integer pageSize,
@@ -143,7 +147,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.findGlossary(userId, findRequest);
+            response = handler.findGlossary(userId, findRequest, exactValue, ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -261,17 +265,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * The deletion of a glossary is only allowed if there is no glossary content (i.e. no terms or categories).
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
-     * is optional. Soft delete is the default.
+     * is optional.
      * <p>
      * A soft delete means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the glossary will not exist after the operation.
-     * when not successful the following Exceptions can occur
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to be deleted.
-     * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -279,10 +281,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String serverName, String userId, String guid) {
         final String methodName = "deleteGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -292,7 +293,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.deleteGlossary(userId, guid, isPurge);
+            response = handler.deleteGlossary(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -350,6 +351,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
      * @param searchCriteria String expression matching child Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime   the terms returned as they were at this time. null indicates at the current time.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param sequencingOrder the sequencing order for the results.
@@ -364,7 +367,17 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(String serverName, String userId, String guid, String searchCriteria, Date asOfTime, Integer startingFrom, Integer pageSize, String sequencingOrder,String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(String serverName,
+                                                             String userId,
+                                                             String guid,
+                                                             String searchCriteria,
+                                                             boolean exactValue,
+                                                             boolean ignoreCase,
+                                                             Date asOfTime,
+                                                             Integer startingFrom,
+                                                             Integer pageSize,
+                                                             String sequencingOrder,
+                                                             String sequencingProperty) {
         final String methodName = "getGlossaryTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -375,7 +388,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.getTerms(userId, guid, findRequest);
+            response = handler.getTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName),  findRequest, exactValue, ignoreCase);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {
@@ -394,6 +407,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the category to get terms
      * @param searchCriteria String expression matching child Term property values.
+     * @param exactValue a boolean, which when set means that only exact matches will be returned, otherwise matches that start with the search criteria will be returned.
+     * @param ignoreCase a boolean, which when set means that case will be ignored, if not set that case will be respected
      * @param asOfTime     the categories returned as they were at this time. null indicates at the current time.
      * @param onlyTop      when only the top categories (those categories without parents) are returned.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
@@ -409,7 +424,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(String serverName, String userId, String guid, String searchCriteria, Date asOfTime, Boolean onlyTop, Integer startingFrom, Integer pageSize, String sequencingOrder, String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(String serverName,
+                                                                      String userId,
+                                                                      String guid,
+                                                                      String searchCriteria,
+                                                                      boolean exactValue,
+                                                                      boolean ignoreCase,
+                                                                      Date asOfTime,
+                                                                      Boolean onlyTop,
+                                                                      Integer startingFrom, Integer pageSize, String sequencingOrder, String sequencingProperty) {
         final String methodName = "getCategories";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -420,7 +443,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
-            response = handler.getCategories(userId, guid, findRequest, onlyTop, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName));
+            response = handler.getCategories(userId, guid, findRequest, exactValue, ignoreCase, onlyTop, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName));
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

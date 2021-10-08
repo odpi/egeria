@@ -22,6 +22,8 @@ import java.util.Map;
 
 /**
  * PersonRoleHandler provides the exchange of metadata about roles between the repository and the OMAS.
+ * The PersonRole entity does not support effectivity dates - but appointments - ie links between person roles and actors
+ * do need effectivity dates
  *
  * @param <B> class that represents the role
  */
@@ -258,6 +260,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          roleGUID,
                                          roleGUIDParameterName,
                                          OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                         false,
+                                         false,
                                          supportedZones,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
@@ -307,6 +311,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                             appointmentGUID,
                                                                             appointmentGUIDParameterName,
                                                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                            null,
                                                                             methodName);
 
         if ((relationship != null) && (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
@@ -398,6 +403,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
      * @param position optional name of position
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -412,11 +419,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                               String teamGUID,
                               String teamGUIDParameterName,
                               String position,
+                              Date   effectiveFrom,
+                              Date   effectiveTo,
                               String methodName) throws InvalidParameterException,
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
     {
         PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getTeamLeadershipProperties(position, methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -427,10 +438,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  builder.getTeamLeadershipProperties(position, methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -445,6 +458,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param teamLeaderRoleGUIDParameterName parameter name supplying teamLeaderRoleGUID
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -458,6 +472,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String teamLeaderRoleGUIDParameterName,
                                  String teamGUID,
                                  String teamGUIDParameterName,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -473,9 +488,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -492,6 +510,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
      * @param position optional name of position
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -506,11 +526,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                String teamGUID,
                                String teamGUIDParameterName,
                                String position,
+                               Date   effectiveFrom,
+                               Date   effectiveTo,
                                String methodName) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
         PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
+
+        InstanceProperties relationshipProperties = builder.getTeamMembershipProperties(position, methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -521,10 +545,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  false,
+                                  false,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  builder.getTeamMembershipProperties(position, methodName),
+                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   methodName);
     }
 
@@ -539,6 +565,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param teamMemberRoleGUIDParameterName parameter name supplying teamMemberRoleGUID
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -552,6 +579,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String teamMemberRoleGUIDParameterName,
                                  String teamGUID,
                                  String teamGUIDParameterName,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
@@ -567,9 +595,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      false,
+                                      false,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -595,6 +626,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param extendedProperties  properties for a governance role subtype
      * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveFrom starting time for this element (null for all time)
+     * @param effectiveTo ending time for this element (null for all time)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -617,6 +650,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String              typeName,
                                  Map<String, Object> extendedProperties,
                                  boolean             isMergeUpdate,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -649,6 +684,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
+        roleBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -656,8 +695,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     roleGUIDParameterName,
                                     typeGUID,
                                     typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
                                     roleBuilder.getInstanceProperties(methodName),
                                     isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -691,6 +734,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                     null,
                                     null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
     }
 
@@ -704,6 +750,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -717,6 +764,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                    String searchStringParameterName,
                                    int    startFrom,
                                    int    pageSize,
+                                   Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -729,6 +777,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              effectiveTime,
                               methodName);
     }
 
@@ -742,6 +791,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -755,6 +805,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          String nameParameterName,
                                          int    startFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -773,10 +824,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -790,6 +843,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -803,6 +857,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            String nameParameterName,
                                            int    startFrom,
                                            int    pageSize,
+                                           Date   effectiveTime,
                                            String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -820,10 +875,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -837,6 +894,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -850,6 +908,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                           String nameParameterName,
                                           int    startFrom,
                                           int    pageSize,
+                                          Date   effectiveTime,
                                           String methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -867,10 +926,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     null,
                                     false,
+                                    false,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -883,6 +944,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param domainIdentifier domain of interest - 0 means all domains
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -895,6 +957,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                              int    domainIdentifier,
                                              int    startFrom,
                                              int    pageSize,
+                                             Date   effectiveTime,
                                              String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -907,10 +970,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
             return this.getBeansByType(userId,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                       supportedZones,
                                        null,
+                                       false,
+                                       false,
+                                       supportedZones,
                                        startFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
         }
 
@@ -922,10 +988,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        null,
                                        null,
                                        false,
+                                       false,
                                        supportedZones,
                                        null,
                                        startFrom,
                                        pageSize,
+                                       effectiveTime,
                                        methodName);
     }
 }

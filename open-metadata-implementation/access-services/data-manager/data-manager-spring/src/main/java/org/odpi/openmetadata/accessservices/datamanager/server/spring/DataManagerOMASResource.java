@@ -4,12 +4,11 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
 @Tag(name="Data Manager OMAS",
-        description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers.",
-        externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager"))
+     description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
+                         "such as database servers, event brokers, content managers and file systems.",
+     externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
+                                         url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
 public class DataManagerOMASResource
 {
@@ -107,7 +107,7 @@ public class DataManagerOMASResource
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
      *
      * @return unique identifier of the database manager's software server capability or
      * InvalidParameterException  the bean properties are invalid or
@@ -125,23 +125,111 @@ public class DataManagerOMASResource
 
 
     /**
+     * Create information about the API manager that manages APIs.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/api-managers")
+
+    public GUIDResponse createAPIManager(@PathVariable String                serverName,
+                                         @PathVariable String                userId,
+                                         @RequestBody  APIManagerRequestBody requestBody)
+    {
+        return restAPI.createAPIManagerInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about the event broker that manages topics.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/event-brokers")
+
+    public GUIDResponse createEventBroker(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @RequestBody  EventBrokerRequestBody requestBody)
+    {
+        return restAPI.createEventBrokerInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about the applications tha manage business processes and interactions with users.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/applications")
+
+    public GUIDResponse createApplication(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @RequestBody  ApplicationRequestBody requestBody)
+    {
+        return restAPI.createApplicationInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about a data processing engine such as a reporting engine.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the software server capability (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/data-processing-engines")
+
+    public GUIDResponse createDataProcessingEngine(@PathVariable String                          serverName,
+                                                   @PathVariable String                          userId,
+                                                   @RequestBody  DataProcessingEngineRequestBody requestBody)
+    {
+        return restAPI.createDataProcessingEngineInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
      * Retrieve the unique identifier of the software server capability representing a metadata source.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
-     * @param qualifiedName unique name of the integration daemon
+     * @param requestBody unique name of the integration daemon
      *
      * @return unique identifier of the integration daemon's software server capability or
      * InvalidParameterException  the bean properties are invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
      */
-    @GetMapping(path = "metadata-sources/by-name/{qualifiedName}")
+    @PostMapping(path = "metadata-sources/by-name")
 
-    public GUIDResponse  getMetadataSourceGUID(@PathVariable String serverName,
-                                               @PathVariable String userId,
-                                               @PathVariable String qualifiedName)
+    public GUIDResponse  getMetadataSourceGUID(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataSourceGUID(serverName, userId, qualifiedName);
+        return restAPI.getMetadataSourceGUID(serverName, userId, requestBody);
     }
 }

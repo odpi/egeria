@@ -106,20 +106,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a Term HasA Relationship. A relationship between a spine object and a spine attribute.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Hasa relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.hasA().purge(userId, guid);
-    }
-
-    /**
      * Restore a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * <p>
      * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -230,20 +216,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a RelatedTerm. A Related Term is a link between two similar Terms.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeRelatedTerm(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.relatedTerm().purge(userId, guid);
-    }
-
-    /**
      * Restore a related term relationship
      * <p>
      * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -335,20 +307,6 @@ public class RelationshipHandler {
      */
     public void deleteSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.synonym().delete(userId, guid);
-    }
-
-    /**
-     * Purge a synonym relationship. A link between glossary terms that have the same meaning.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Synonym relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.synonym().purge(userId, guid);
     }
 
     /**
@@ -447,20 +405,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a antonym relationship. A link between glossary terms that have the opposite meaning.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Antonym relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeAntonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.antonym().purge(userId, guid);
-    }
-
-    /**
      * Restore a Antonym relationship
      * <p>
      * Restore allows the deleted Antonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -552,20 +496,6 @@ public class RelationshipHandler {
      */
     public void deleteTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.translation().delete(userId, guid);
-    }
-
-    /**
-     * Purge a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Translation relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.translation().purge(userId, guid);
     }
 
     /**
@@ -663,20 +593,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a usedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the UsedInContext relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeUsedInContextRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.usedInContext().purge(userId, guid);
-    }
-
-    /**
      * Restore a Used in context relationship
      * <p>
      * Restore allows the deletedUsed in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -768,20 +684,6 @@ public class RelationshipHandler {
      */
     public void deletePreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.preferredTerm().delete(userId, guid);
-    }
-
-    /**
-     * Purge a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the PreferredTerm relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgePreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.preferredTerm().purge(userId, guid);
     }
 
     /**
@@ -879,20 +781,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the ValidValue relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeValidValueRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.validValue().purge(userId, guid);
-    }
-
-    /**
      * Restore a valid value relationship
      * <p>
      * Restore allows the deletedvalid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -984,20 +872,6 @@ public class RelationshipHandler {
      */
     public void deleteReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.replacementTerm().delete(userId, guid);
-    }
-
-    /**
-     * Purge a replacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the ReplacementTerm relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.replacementTerm().purge(userId, guid);
     }
 
     /**
@@ -1095,20 +969,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TypedBy relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.typedBy().purge(userId, guid);
-    }
-
-    /**
      * Restore a typed by relationship
      * <p>
      * Restore allows the deleted typed by relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -1203,20 +1063,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a isa relationship, which is link between a more general glossary term and a more specific definition.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Isa relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeIsaRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.isA().purge(userId, guid);
-    }
-
-    /**
      * Restore an is a relationship
      * <p>
      * Restore allows the deleted is a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -1244,8 +1090,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf createTermIsATypeOfRelationship(String userId, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().create(userId, isATypeOf);
+    public IsATypeOfDeprecated createIsATypeOfDeprecated(String userId, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().create(userId, isATypeOf);
     }
 
     /**
@@ -1258,8 +1104,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf getTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().getByGUID(userId, guid);
+    public IsATypeOfDeprecated getIsATypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().getByGUID(userId, guid);
     }
 
     /**
@@ -1274,8 +1120,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf updateTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().update(userId, guid, isATypeOf);
+    public IsATypeOfDeprecated updateIsATypeOfDeprecated(String userId, String guid, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().update(userId, guid, isATypeOf);
     }
 
     /**
@@ -1286,12 +1132,13 @@ public class RelationshipHandler {
      * @param guid      guid of the IsaTypeOf relationship
      * @param isATypeOf the IsaTypeOf relationship
      * @return IsaTypeOf replaced IsaTypeOf
+     *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf replaceTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().replace(userId, guid, isATypeOf);
+    public IsATypeOfDeprecated replaceIsATypeOfDeprecated(String userId, String guid, IsATypeOfDeprecated isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().replace(userId, guid, isATypeOf);
     }
 
     /**
@@ -1306,22 +1153,103 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public void deleteTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.isaTypeOf().delete(userId, guid);
+    public void deleteIsATypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isaTypeOfDeprecated().delete(userId, guid);
     }
 
     /**
-     * Purge a IsaTypeOf relationship, which is defines an inheritance relationship between two spine objects.
-     * A purge means that the relationship will not exist after the operation.
+     * Restore an is a type of deprecated relationship
+     * <p>
+     * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @deprecated
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the is a type of relationship to delete
+     * @return the restored is a type of relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOfDeprecated restoreIsaTypeOfDeprecated(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isaTypeOfDeprecated().restore(userId, guid);
+    }
+
+    /**
+     * Create a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     *
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return the createdIsATypeOf relationship
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf createIsATypeOf(String userId, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().create(userId, IsATypeOf);
+    }
+
+    /**
+     * Get a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the IsaTypeOf relationship to delete
+     * @param guid   guid of the IsATypeOf relationship to get
+     * @return IsATypeOf
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    Property server exception
      */
-    public void purgeTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.isaTypeOf().purge(userId, guid);
+    public IsATypeOf getIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().getByGUID(userId, guid);
+    }
+
+    /**
+     * Update a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the IsATypeOf relationship
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return IsATypeOf updatedIsATypeOf
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf updateIsATypeOf(String userId, String guid, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().update(userId, guid, IsATypeOf);
+    }
+
+    /**
+     * Replace anIsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * <p>
+     *
+     * @param userId    userId under which the request is performed
+     * @param guid      guid of the IsATypeOf relationship
+     * @param IsATypeOf the IsATypeOf relationship
+     * @return IsATypeOf replacedIsATypeOf
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public IsATypeOf replaceIsATypeOf(String userId, String guid, IsATypeOf IsATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().replace(userId, guid, IsATypeOf);
+    }
+
+    /**
+     * Delete a IsATypeOf relationship, which is defines an inheritance relationship between two spine objects.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the IsATypeOf relationship to delete
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
+     */
+    public void deleteIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaRelationship.isATypeOf().delete(userId, guid);
     }
 
     /**
@@ -1336,8 +1264,8 @@ public class RelationshipHandler {
      * @throws InvalidParameterException  one of the parameters is null or invalid
      * @throws PropertyServerException    Property server exception
      */
-    public IsATypeOf restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.isaTypeOf().restore(userId, guid);
+    public IsATypeOf restoreIsATypeOf(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaRelationship.isATypeOf().restore(userId, guid);
     }
 
     /**
@@ -1418,20 +1346,6 @@ public class RelationshipHandler {
     }
 
     /**
-     * Purge a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermCategorizationRelationship relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.termCategorization().purge(userId, guid);
-    }
-
-    /**
      * Restore a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * <p>
      * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
@@ -1447,24 +1361,7 @@ public class RelationshipHandler {
         return subjectAreaRelationship.termCategorization().restore(userId, guid);
     }
 
-    /**
-     * Create a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
-     * This method does not error if the relationship ends are not spine objects or spine attributes.
-     * Terms created using the Glossary author OMVS cannot be created without a glossary and there can only be one glossary associated with a
-     * Term. This method is to allow glossaries to be associated with Terms that have not been created via the Glossary Author OMVS or Subject Area OMAS or to recreate
-     * the TermAnchor relationship if it has been purged.
-     * <p>
-     *
-     * @param userId                 userId under which the request is performed
-     * @param termAnchorRelationship the TermAnchor relationship
-     * @return the created TermAnchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public TermAnchor createTermAnchorRelationship(String userId, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.termAnchor().create(userId, termAnchorRelationship);
-    }
+    // No modification of TermAnchor exists, because this is an anchoring relationship
 
     /**
      * Get a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
@@ -1479,101 +1376,7 @@ public class RelationshipHandler {
     public TermAnchor getTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().getByGUID(userId, guid);
     }
-
-    /**
-     * Update a Term Anchor Relationship.
-     * <p>
-     *
-     * @param userId                 userId under which the request is performed
-     * @param guid                   guid of the TermAnchorRelationship relationship
-     * @param termAnchorRelationship the TermAnchor relationship
-     * @return the updated TermAnchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public TermAnchor updateTermAnchorRelationship(String userId, String guid, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.termAnchor().replace(userId, guid, termAnchorRelationship);
-    }
-
-    /**
-     * Replace a Term Anchor Relationship.
-     * <p>
-     *
-     * @param userId                 userId under which the request is performed
-     * @param guid                   guid of the TermAnchorRelationship relationship
-     * @param termAnchorRelationship the TermAnchor relationship
-     * @return the updated TermAnchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public TermAnchor replaceTermAnchorRelationship(String userId, String guid, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.termAnchor().replace(userId, guid, termAnchorRelationship);
-    }
-
-    /**
-     * Delete a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
-     * that it is possible to undo the delete.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermAnchorRelationship relationship to delete
-     *               <p>
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void deleteTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.termAnchor().delete(userId, guid);
-    }
-
-    /**
-     * Purge a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the TermAnchorRelationship relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.termAnchor().purge(userId, guid);
-    }
-
-    /**
-     * Restore a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
-     * <p>
-     * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Term Anchor relationship to delete
-     * @return the restored Term Anchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public TermAnchor restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.termAnchor().restore(userId, guid);
-    }
-
-    /**
-     * Create a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
-     * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
-     * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS or to recreate
-     * the CategoryAnchor relationship if it has been purged.
-     *
-     * @param userId                     userId under which the request is performed
-     * @param categoryAnchorRelationship the category anchor relationship
-     * @return the created term categorization relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public CategoryAnchor createCategoryAnchorRelationship(String userId, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.categoryAnchor().create(userId, categoryAnchorRelationship);
-    }
-
+    // No modification of CategoryAnchor exists, because this is an anchoring relationship
     /**
      * Get a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
      *
@@ -1586,83 +1389,6 @@ public class RelationshipHandler {
      */
     public CategoryAnchor getCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().getByGUID(userId, guid);
-    }
-
-    /**
-     * Update a Category Anchor Relationship.
-     * <p>
-     *
-     * @param userId                     userId under which the request is performed
-     * @param guid                       guid of the CategoryAnchorRelationship
-     * @param categoryAnchorRelationship the category anchor relationship
-     * @return the updated category anchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public CategoryAnchor updateCategoryAnchorRelationship(String userId, String guid, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.categoryAnchor().update(userId, guid, categoryAnchorRelationship);
-    }
-
-    /**
-     * Replace a Category Anchor Relationship.
-     * <p>
-     *
-     * @param userId                     userId under which the request is performed
-     * @param guid                       guid of the CategoryAnchorRelationship
-     * @param categoryAnchorRelationship the category anchor relationship
-     * @return the replaced category anchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public CategoryAnchor replaceCategoryAnchorRelationship(String userId, String guid, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.categoryAnchor().replace(userId, guid, categoryAnchorRelationship);
-    }
-
-    /**
-     * Delete a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
-     * that it is possible to undo the delete.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
-     *               <p>
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void deleteCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.categoryAnchor().delete(userId, guid);
-    }
-
-    /**
-     * Purge a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.categoryAnchor().purge(userId, guid);
-    }
-
-    /**
-     * Restore a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
-     * <p>
-     * Restore allows the deleted Category Anchor relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Category Anchor relationship to delete
-     * @return the restored category anchor relationship
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public CategoryAnchor restoreCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaRelationship.categoryAnchor().restore(userId, guid);
     }
 
     /**
@@ -1740,21 +1466,6 @@ public class RelationshipHandler {
      */
     public void deleteProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.projectScope().delete(userId, guid);
-    }
-
-
-    /**
-     * Purge a ProjectScope relationship. A link between the project content and the project.
-     * A purge means that the relationship will not exist after the operation.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the ProjectScope relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        subjectAreaRelationship.projectScope().purge(userId, guid);
     }
 
     /**
@@ -1842,19 +1553,6 @@ public class RelationshipHandler {
      */
     public void deleteCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         subjectAreaRelationship.categoryHierarchyLink().delete(userId, guid);
-    }
-
-    /**
-     * Purge a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
-     *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the CategoryHierarchyLink relationship to delete
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid
-     * @throws PropertyServerException    Property server exception
-     */
-    public void purgeCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaRelationship.categoryHierarchyLink().purge(userId, guid);
     }
 
     /**

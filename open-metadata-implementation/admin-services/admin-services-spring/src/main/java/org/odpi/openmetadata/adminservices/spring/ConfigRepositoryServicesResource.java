@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicS
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.rest.CohortConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.ConnectionListResponse;
+import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.adminservices.rest.LocalRepositoryConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -25,6 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+
 
 @Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
@@ -154,7 +156,43 @@ public class ConfigRepositoryServicesResource
     {
         return adminAPI.addAuditLogDestination(userId, serverName, connection);
     }
-
+    /**
+     * Update an audit log destination that is identified with the supplied destination name with
+     * the supplied connection object.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connectionName name of the audit log destination connection to be updated
+     * @param connection connection object that defines the audit log destination
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PutMapping(path = "/audit-log-destinations/connection/{connectionName}")
+    public VoidResponse updateAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     connectionName,
+                                                  @RequestBody  Connection connection)
+    {
+        return adminAPI.updateAuditLogDestination(userId, serverName, connectionName, connection);
+    }
+    /**
+     * Delete an audit log destination that is identified with the supplied destination name
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connectionName name of the audit log destination connection to be deleted
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @DeleteMapping(path = "/audit-log-destinations/connection/{connectionName}")
+    public VoidResponse deleteAuditLogDestination(@PathVariable String     userId,
+                                                  @PathVariable String     serverName,
+                                                  @PathVariable String     connectionName)
+    {
+        return adminAPI.deleteAuditLogDestination(userId, serverName, connectionName);
+    }
 
     /**
      * Add a new open metadata archive to load at startup.
@@ -418,15 +456,37 @@ public class ConfigRepositoryServicesResource
      */
     @GetMapping(path = "/local-repository/metadata-collection-id")
 
-    public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String               userId,
-                                                     @PathVariable  String               serverName)
+    public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String userId,
+                                                     @PathVariable  String serverName)
     {
         return adminAPI.getLocalMetadataCollectionId(userId, serverName);
     }
 
 
     /**
-     * Enable registration of server to an open metadata repository cohort using the default topic structure (SINGLE_TOPIC).
+     * Set up the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @param metadataCollectionId        new identifier for the local repository's metadata collection
+     * @return void or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @PostMapping(path = "/local-repository/metadata-collection-id")
+
+    public VoidResponse setLocalMetadataCollectionId(@PathVariable String userId,
+                                                     @PathVariable String serverName,
+                                                     @RequestBody  String metadataCollectionId)
+    {
+        return adminAPI.setLocalMetadataCollectionId(userId, serverName, metadataCollectionId);
+    }
+
+
+    /**
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
      *
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
@@ -449,7 +509,7 @@ public class ConfigRepositoryServicesResource
                                               @PathVariable                   String               cohortName,
                                               @RequestBody(required = false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.addCohortRegistration(userId, serverName, cohortName, CohortTopicStructure.SINGLE_TOPIC, additionalProperties);
+        return adminAPI.addCohortRegistration(userId, serverName, cohortName, CohortTopicStructure.DEDICATED_TOPICS, additionalProperties);
     }
 
 
@@ -541,9 +601,9 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the cohort is not set up.
      */
     @GetMapping(path = "/cohorts/{cohortName}/dedicated-topic-names")
-    public NameListResponse getDedicatedCohortTopicNames(@PathVariable  String userId,
-                                                         @PathVariable  String serverName,
-                                                         @PathVariable  String cohortName)
+    public DedicatedTopicListResponse getDedicatedCohortTopicNames(@PathVariable  String userId,
+                                                                   @PathVariable  String serverName,
+                                                                   @PathVariable  String cohortName)
     {
         return adminAPI.getDedicatedCohortTopicNames(userId, serverName, cohortName);
     }

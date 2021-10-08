@@ -20,6 +20,33 @@ public enum IntegrationServiceDescription implements Serializable
                             "Asset Manager OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
+    API_INTEGRATOR_OMIS(4001,
+                        "API Integrator",
+                        "API Integrator OMIS",
+                        "api-integrator",
+                            "Exchange metadata with third party API Gateways.",
+                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/api-integrator/",
+                            "Data Manager OMAS",
+                            PermittedSynchronization.FROM_THIRD_PARTY),
+
+    TOPIC_INTEGRATOR_OMIS(4002,
+                            "Topic Integrator",
+                            "Topic Integrator OMIS",
+                            "topic-integrator",
+                            "Exchange metadata with third party event-based brokers.",
+                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/topic-integrator/",
+                            "Data Manager OMAS",
+                            PermittedSynchronization.FROM_THIRD_PARTY),
+
+    DISPLAY_INTEGRATOR_OMIS(4003,
+                          "Display Integrator",
+                          "Display Integrator OMIS",
+                          "display-integrator",
+                          "Exchange metadata with applications that display data to users.",
+                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/display-integrator/",
+                          "Data Manager OMAS",
+                          PermittedSynchronization.FROM_THIRD_PARTY),
+
     DATABASE_INTEGRATOR_OMIS     (4004,
                                   "Database Integrator",
                                   "Database Integrator OMIS",
@@ -64,6 +91,25 @@ public enum IntegrationServiceDescription implements Serializable
                                       "https://egeria.odpi.org/open-metadata-implementation/integration-services/security-integrator/",
                                       "Security Manager OMAS",
                                       PermittedSynchronization.TO_THIRD_PARTY),
+
+    ANALYTICS_INTEGRATOR_OMIS(4009,
+                            "Analytics Integrator",
+                            "Analytics Integrator OMIS",
+                            "analytics-integrator",
+                            "Exchange metadata with third party analytics tools.",
+                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/analytics-integrator/",
+                            "Analytics Modeling OMAS",
+                            PermittedSynchronization.BOTH_DIRECTIONS),
+
+
+    SEARCH_INTEGRATOR_OMIS(4010,
+            "Search Integrator",
+            "Search Integrator OMIS",
+            "search-integrator",
+            "Store metadata with a third party technology that is focused on search efficiency",
+            "https://egeria.odpi.org/open-metadata-implementation/integration-services/search-integrator/",
+            "Asset Catalog OMAS",
+            PermittedSynchronization.BOTH_DIRECTIONS)
     ;
 
     private static final long     serialVersionUID    = 1L;

@@ -11,12 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -54,18 +51,18 @@ class AssetCatalogOMASServiceTest {
     @Test
     @DisplayName("Asset Details")
     void testGetAssetDetails() throws PropertyServerException, InvalidParameterException {
-        AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
+        AssetCatalogResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetDetails(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        AssetDescription response = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
+        AssetCatalogBean response = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
         verifyAssetDescriptionResult(response);
     }
 
     @Test
     @DisplayName("Asset Universe")
     void testGetAssetUniverse() throws PropertyServerException, InvalidParameterException {
-        AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
+        AssetCatalogResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetUniverse(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        AssetDescription response = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
+        AssetCatalogBean response = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
         verifyAssetDescriptionResult(response);
     }
 
@@ -87,10 +84,10 @@ class AssetCatalogOMASServiceTest {
         verifyClassificationResponse(resultList);
     }
 
-    private AssetDescriptionResponse mockAssetDescriptionResponse() {
-        AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
+    private AssetCatalogResponse mockAssetDescriptionResponse() {
+        AssetCatalogResponse expectedResponse = new AssetCatalogResponse();
 
-        AssetDescription expectedDescription = new AssetDescription();
+        AssetCatalogBean expectedDescription = new AssetCatalogBean();
         expectedDescription.setGuid(assetId);
         Type type = mockType(typeDef);
         expectedDescription.setType(type);
@@ -99,7 +96,7 @@ class AssetCatalogOMASServiceTest {
         propertiesMap.put("displayName", "First Name");
         expectedDescription.setProperties(propertiesMap);
 
-        expectedResponse.setAssetDescription(expectedDescription);
+        expectedResponse.setAssetCatalogBean(expectedDescription);
         return expectedResponse;
     }
 
@@ -143,9 +140,9 @@ class AssetCatalogOMASServiceTest {
         return expectedResponse;
     }
 
-    private void verifyAssetDescriptionResult(AssetDescription assetDescription) {
-        assertEquals(assetDescription.getGuid(), assetId);
-        assertFalse(assetDescription.getProperties().isEmpty());
+    private void verifyAssetDescriptionResult(AssetCatalogBean assetCatalogBean) {
+        assertEquals(assetCatalogBean.getGuid(), assetId);
+        assertFalse(assetCatalogBean.getProperties().isEmpty());
     }
 
     private void verifyRelationshipResponse(List<Relationship> resultList) {

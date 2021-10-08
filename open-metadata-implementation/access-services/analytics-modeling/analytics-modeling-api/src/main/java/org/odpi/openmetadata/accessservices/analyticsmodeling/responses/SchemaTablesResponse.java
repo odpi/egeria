@@ -11,16 +11,25 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.responses;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables;
 
 public class SchemaTablesResponse extends AnalyticsModelingOMASAPIResponse {
 	
+	private List<ResponseContainerSchemaTables> data;
 	/**
 	 * Set list of tables of the schema.
 	 * @param tables to set.
 	 */
     public void setTableList(ResponseContainerSchemaTables tables) {
-        this.setData(Arrays.asList(tables));
+        data = Arrays.asList(tables);
+    }
+	/**
+	 * Get list of tables of the schema.
+	 * @return list of tables.
+	 */
+    public ResponseContainerSchemaTables getTableList() {
+        return (data == null || data.isEmpty()) ? null : (ResponseContainerSchemaTables)data.get(0);
     }
 }

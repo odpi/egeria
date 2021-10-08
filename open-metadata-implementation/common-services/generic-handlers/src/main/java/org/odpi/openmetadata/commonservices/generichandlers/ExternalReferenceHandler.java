@@ -11,6 +11,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +72,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects or null if none found
      * @throws InvalidParameterException  the parameters are invalid
@@ -79,6 +81,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      */
     public int countExternalReferences(String   userId,
                                        String   elementGUID,
+                                       Date     effectiveTime,
                                        String   methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -88,6 +91,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -102,6 +106,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -117,20 +122,29 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                           List<String> serviceSupportedZones,
                                           int          startingFrom,
                                           int          pageSize,
+                                          Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
+                                        null,
+                                        null,
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                         OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        false,
+                                        false,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
+                                        effectiveTime,
                                         methodName);
     }
 }

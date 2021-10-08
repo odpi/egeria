@@ -33,7 +33,7 @@ stages:
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
+              jdkVersionOption: '11'
               jdkArchitectureOption: 'x64'
               goals: 'install'
               options: >-
@@ -46,7 +46,7 @@ stages:
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
+              jdkVersionOption: '11'
               jdkArchitectureOption: 'x64'
               goals: 'sonar:sonar'
               options: >-

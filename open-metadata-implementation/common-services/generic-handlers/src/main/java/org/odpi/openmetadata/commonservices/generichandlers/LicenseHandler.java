@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +76,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
@@ -83,6 +85,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      */
     public int countLicenses(String   userId,
                              String   elementGUID,
+                             Date     effectiveTime,
                              String   methodName) throws InvalidParameterException,
                                                          PropertyServerException,
                                                          UserNotAuthorizedException
@@ -92,6 +95,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -105,6 +109,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of object being attached to
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of licenses or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -117,15 +122,23 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                 String       elementTypeName,
                                 int          startFrom,
                                 int          pageSize,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
-        return this.getLicenses(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startFrom, pageSize, methodName);
+        return this.getLicenses(userId,
+                                elementGUID,
+                                elementGUIDParameterName,
+                                elementTypeName,
+                                supportedZones, startFrom,
+                                pageSize,
+                                effectiveTime,
+                                methodName);
     }
 
     /**
-     * Return the Licenses attached to an anchor entity.
+     * Return the Licenses attached to an element.
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the license is attached to
@@ -134,6 +147,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of licenses or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -147,6 +161,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                 List<String> serviceSupportedZones,
                                 int          startFrom,
                                 int          pageSize,
+                                Date         effectiveTime,
                                 String       methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
@@ -160,6 +175,7 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    effectiveTime,
                                                                     methodName);
         if (relationships != null)
         {
@@ -181,7 +197,10 @@ public class LicenseHandler<B> extends ReferenceableHandler<B>
                                                                            OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
                                                                            null,
                                                                            null,
+                                                                           false,
+                                                                           false,
                                                                            serviceSupportedZones,
+                                                                           effectiveTime,
                                                                            methodName);
 
 

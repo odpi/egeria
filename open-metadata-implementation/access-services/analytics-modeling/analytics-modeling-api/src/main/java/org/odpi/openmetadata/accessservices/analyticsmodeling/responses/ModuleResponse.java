@@ -3,7 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.responses;
 
+
 import java.util.Arrays;
+import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
 
@@ -14,12 +16,22 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 
 public class ModuleResponse extends AnalyticsModelingOMASAPIResponse {
 
+	private List<ResponseContainerModule> data;
+
 	/**
 	 * Set module definition.
 	 * @param module definition.
 	 */
 	public void setModule(ResponseContainerModule module) {
-        this.setData(Arrays.asList(module));
+		data = Arrays.asList(module);
+    }
+
+	/**
+	 * Get module definition.
+	 * @return module definition.
+	 */
+	public ResponseContainerModule getModule() {
+		return (data == null || data.isEmpty()) ? null : data.get(0);
     }
 
 }
