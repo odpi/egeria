@@ -13,8 +13,7 @@ import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorErr
  * SearchIntegratorConnector is the base class for an integration connector that is managed by the
  * Search Integrator OMIS.
  */
-public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
-{
+public abstract class SearchIntegratorConnector extends IntegrationConnectorBase {
     private SearchIntegratorContext context = null;
 
 
@@ -33,8 +32,7 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
      *
      * @param context context for this connector's private use.
      */
-    public synchronized void setContext(SearchIntegratorContext context)
-    {
+    public synchronized void setContext(SearchIntegratorContext context) {
         this.context = context;
     }
 
@@ -43,26 +41,26 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
      *
      * @return context for this connector's private use.
      */
-    public synchronized SearchIntegratorContext getContext() throws ConnectorCheckedException
-    {
+    public synchronized SearchIntegratorContext getContext() throws ConnectorCheckedException {
         final String methodName = "getContext";
 
-        if (context != null)
-        {
+        if (context != null) {
             return this.context;
-        }
-        else
-        {
-            if (auditLog != null)
-            {
+        } else {
+            if (auditLog != null) {
                 auditLog.logMessage(methodName, SearchIntegratorAuditCode.NULL_CONTEXT.getMessageDefinition(connectorName));
             }
 
             throw new ConnectorCheckedException(SearchIntegratorErrorCode.NULL_CONTEXT.getMessageDefinition(connectorName),
-                                                this.getClass().getName(),
-                                                methodName);
+                    this.getClass().getName(),
+                    methodName);
         }
     }
 
-    public abstract void saveAsset(AssetCatalogEvent asset);
+    /**
+     * Save the events received from asset catalog to the Elasticsearch service
+     *
+     * @param assetCatalogEvent the event which contains the asset
+     */
+    public abstract void saveAsset(AssetCatalogEvent assetCatalogEvent);
 }

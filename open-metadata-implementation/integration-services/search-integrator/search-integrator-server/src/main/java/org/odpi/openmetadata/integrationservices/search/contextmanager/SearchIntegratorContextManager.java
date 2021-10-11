@@ -37,6 +37,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
     private AssetManagerClient assetManagerClient = null;
     private AssetCatalogEventClient assetCatalogEventClient;
     private AssetCatalogOutTopicEventListener eventListener;
+
     /**
      * Default constructor
      */
@@ -104,14 +105,11 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
         }
 
         AssetManagerRESTClient assetManagerRestClient;
-        if (localServerPassword == null)
-        {
+        if (localServerPassword == null) {
             assetManagerRestClient = new AssetManagerRESTClient(partnerOMASServerName,
                     partnerOMASPlatformRootURL,
                     auditLog);
-        }
-        else
-        {
+        } else {
             assetManagerRestClient = new AssetManagerRESTClient(partnerOMASServerName,
                     partnerOMASPlatformRootURL,
                     localServerUserId,
@@ -233,5 +231,4 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                     parameterName);
         }
     }
-
 }

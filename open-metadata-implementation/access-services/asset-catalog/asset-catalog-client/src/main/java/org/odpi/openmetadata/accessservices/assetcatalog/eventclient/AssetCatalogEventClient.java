@@ -26,10 +26,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 public class AssetCatalogEventClient {
     private static final String serviceName = "Asset Catalog OMAS";
 
-    private String serverName;               /* Initialized in constructor */
-    private String serverPlatformURLRoot;    /* Initialized in constructor */
-    private String callerId;                 /* Initialized in constructor */
-    private OCFRESTClient restClient;               /* Initialized in constructor */
+    private String serverName;
+    private String serverPlatformURLRoot;
+    private String callerId;
+    private OCFRESTClient restClient;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 

@@ -73,7 +73,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
 
         final String methodName = "start";
 
-        createElasticSearchService();
+        initializeElasticSearchClient();
 
         myContext = super.getContext();
 
@@ -108,7 +108,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
         super.disconnect();
     }
 
-    public void createElasticSearchService() {
+    public void initializeElasticSearchClient() {
         String[] urlParts = targetRootURL.split(":");
         String hostname = urlParts[0];
         int port = Integer.parseInt(urlParts[1]);
@@ -117,6 +117,11 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
 
     }
 
+    /**
+     * Save the events received from asset catalog to the Elasticsearch service
+     *
+     * @param assetCatalogEvent the event which contains the asset
+     */
     @Override
     public void saveAsset(AssetCatalogEvent assetCatalogEvent) {
         Asset asset = assetCatalogEvent.getAsset();
