@@ -28,6 +28,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrati
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -40,6 +41,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -48,6 +50,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -1718,5 +1721,45 @@ public class DataEngineRESTServices {
                                                                                                                            EntityNotDeletedException {
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         dataEngineCommonHandler.throwEntityNotDeletedException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, qualifiedName);
+    }
+
+    /**
+     * Performs a find for a DataEngine related object
+     *
+     * @param userId user id
+     * @param serverName server name
+     * @param findRequestBody contains find criteria
+     */
+    public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody){
+        String methodName = "find";
+
+        GUIDListResponse findResponse = new GUIDListResponse();
+
+        try {
+            if (isFindRequestBodyInvalid(userId, serverName, findRequestBody, methodName)){
+                return findResponse;
+            }
+
+            DataEngineFindHandler findHandler = instanceHandler.getFindHandler(userId, serverName, methodName);
+            findResponse = findHandler.find(findRequestBody, userId, methodName);
+
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(findResponse, e, methodName);
+        }
+
+        return findResponse;
+    }
+
+    private boolean isFindRequestBodyInvalid(String userId, String serverName, FindRequestBody findRequestBody, String methodName)
+            throws InvalidParameterException {
+        if (findRequestBody == null) {
+            restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            return true;
+        }
+        if (findRequestBody.getIdentifiers() == null) {
+            restExceptionHandler.handleMissingValue("identifiers", methodName);
+            return true;
+        }
+        return false;
     }
 }
