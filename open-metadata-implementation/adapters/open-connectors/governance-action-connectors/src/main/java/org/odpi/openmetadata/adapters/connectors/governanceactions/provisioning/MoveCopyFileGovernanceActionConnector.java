@@ -78,11 +78,12 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
          if (fileNamePattern != null)
          {
-             nextDestinationFileName = MessageFormat.format(fileNamePattern, sourceFile.getName(), fileIndex);
+             nextDestinationFileName = FilenameUtils.concat(destinationFolderName,
+                                                            MessageFormat.format(fileNamePattern, sourceFile.getName(), fileIndex));
          }
          else
          {
-             nextDestinationFileName = sourceFile.getName();
+             nextDestinationFileName = FilenameUtils.concat(destinationFolderName, sourceFile.getName());
          }
 
          if ((previousDestinationFileName != null) && (previousDestinationFileName.equals(nextDestinationFileName)))
@@ -99,7 +100,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
               * A new file name has been created so return it to try.
               */
              fileIndexMap.put(destinationFolderName, fileIndex);
-             return FilenameUtils.concat(destinationFolderName, nextDestinationFileName);
+             return nextDestinationFileName;
          }
     }
 
