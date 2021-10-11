@@ -74,9 +74,13 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "The system has issued a call to an open metadata access service input topic using event message broker",
             "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     ENTITY_NOT_DELETED(400, "OMAS-DATA-ENGINE-400-010",
-            "Enity with qualifiedName {0} was not deleted",
-            "The system is unable to cdelete the entity with the provided qualifiedName or guid.",
-            "Correct the code in the caller to provide the correct database qualified name.");
+            "Entity with qualifiedName {0} was not deleted",
+            "The system is unable to delete the entity with the provided qualifiedName or guid.",
+            "Correct the code in the caller to provide the correct database qualified name."),
+    METHOD_NOT_IMPLEMENTED(501, "OMAS-DATA-ENGINE-500-002",
+            "Method {0} is not implemented",
+            "The system performs no action as the method is not implemented.",
+            "No action suggested.");
 
     private static final long serialVersionUID = 1L;
 
