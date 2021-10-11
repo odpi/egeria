@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrati
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -16,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -421,5 +423,21 @@ public class DataEngineResource {
                                        @PathVariable("serverName") String serverName,
                                        @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteEndpoint(userId, serverName, requestBody);
+    }
+
+    /**
+     * Find assets
+     *
+     * @param serverName        name of server instance to call
+     * @param userId            the name of the calling user
+     * @param findRequestBody properties for the connection
+     *
+     * @return asset if found
+     */
+    @PostMapping(path = "/find")
+    public GUIDListResponse search(@PathVariable("userId") String userId,
+                                   @PathVariable("serverName") String serverName,
+                                   @RequestBody FindRequestBody findRequestBody){
+        return restAPI.find(userId, serverName, findRequestBody);
     }
 }

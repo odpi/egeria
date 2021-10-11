@@ -17,6 +17,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ *  Filter for security context of Spring security
+ *  It takes Authentication from request and put it into security context
+ */
 public class AuthFilter extends GenericFilterBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthFilter.class);
