@@ -407,7 +407,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
-        callVoidDeleteRESTCall(userId, DATABASE_DELETE_METHOD_NAME, DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
+        callVoidDeleteRESTCall(userId, DATABASE_DELETE_METHOD_NAME, DATABASE_URL_TEMPLATE, requestBody);
     }
 
     /**
@@ -419,7 +419,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
-        callVoidDeleteRESTCall(userId, DATABASE_SCHEMA_DELETE_METHOD_NAME, DATABASE_URL_TEMPLATE, requestBody);
+        callVoidDeleteRESTCall(userId, DATABASE_SCHEMA_DELETE_METHOD_NAME, DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
     }
 
     /**
