@@ -20,6 +20,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
+    implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 

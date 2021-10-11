@@ -53,6 +53,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>asset-catalog-topic-connector</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-api</artifactId>
         </dependency>
     </dependencies>
 

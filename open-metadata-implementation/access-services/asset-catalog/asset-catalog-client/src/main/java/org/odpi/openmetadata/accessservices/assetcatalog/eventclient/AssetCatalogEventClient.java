@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetcatalog;
+package org.odpi.openmetadata.accessservices.assetcatalog.eventclient;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.api.AssetCatalogEventListener;
 import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicClientConnector;
@@ -23,42 +23,39 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  * AssetCatalogEventClient provides the implementation to manage the interaction with the server to
  * set up a listener to support the receipt of inbound events from the Asset Catalog OMAS Out Topic.
  */
-public class AssetCatalogEventClient
-{
-    private static final String  serviceName = "Data Manager OMAS";
+public class AssetCatalogEventClient {
+    private static final String serviceName = "Asset Catalog OMAS";
 
-    private String        serverName;               /* Initialized in constructor */
-    private String        serverPlatformURLRoot;    /* Initialized in constructor */
-    private String        callerId;                 /* Initialized in constructor */
+    private String serverName;               /* Initialized in constructor */
+    private String serverPlatformURLRoot;    /* Initialized in constructor */
+    private String callerId;                 /* Initialized in constructor */
     private OCFRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private AssetCatalogOutTopicClientConnector configurationEventTopicConnector = null;
-    private AuditLog                           auditLog                         = null;
-
+    private AuditLog auditLog = null;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param callerId unique identifier of the caller
+     * @param callerId              unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
+     *                                   REST API calls.
      */
     public AssetCatalogEventClient(String serverName,
                                    String serverPlatformURLRoot,
-                                   String callerId) throws InvalidParameterException
-    {
+                                   String callerId) throws InvalidParameterException {
         final String methodName = "Constructor (no security)";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName            = serverName;
+        this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new OCFRESTClient(serverName, serverPlatformURLRoot);
-        this.callerId              = callerId;
+        this.restClient = new OCFRESTClient(serverName, serverPlatformURLRoot);
+        this.callerId = callerId;
     }
 
 
@@ -66,61 +63,58 @@ public class AssetCatalogEventClient
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param callerId unique identifier of the caller
+     * @param userId                caller's userId embedded in all HTTP requests
+     * @param password              caller's userId embedded in all HTTP requests
+     * @param callerId              unique identifier of the caller
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
+     *                                   REST API calls.
      */
     public AssetCatalogEventClient(String serverName,
                                    String serverPlatformURLRoot,
                                    String userId,
                                    String password,
-                                   String callerId) throws InvalidParameterException
-    {
+                                   String callerId) throws InvalidParameterException {
         final String methodName = "Constructor (with security)";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName            = serverName;
+        this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
-        this.callerId              = callerId;
+        this.restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.callerId = callerId;
     }
 
 
     /**
      * Create a new client that is to be used within an OMAG Server.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param restClient pre-initialized REST client
-     * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
-     * @param callerId unique identifier of the caller
+     * @param restClient            pre-initialized REST client
+     * @param maxPageSize           pre-initialized parameter limit
+     * @param auditLog              logging destination
+     * @param callerId              unique identifier of the caller
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public AssetCatalogEventClient(String        serverName,
-                                   String        serverPlatformURLRoot,
+    public AssetCatalogEventClient(String serverName,
+                                   String serverPlatformURLRoot,
                                    OCFRESTClient restClient,
-                                   int           maxPageSize,
-                                   AuditLog      auditLog,
-                                   String        callerId) throws InvalidParameterException
-    {
+                                   int maxPageSize,
+                                   AuditLog auditLog,
+                                   String callerId) throws InvalidParameterException {
         final String methodName = "Constructor (with REST Client)";
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
-        this.serverName            = serverName;
+        this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
-        this.auditLog              = auditLog;
-        this.callerId              = callerId;
+        this.restClient = restClient;
+        this.auditLog = auditLog;
+        this.callerId = callerId;
     }
-
 
 
     /**
@@ -128,8 +122,7 @@ public class AssetCatalogEventClient
      *
      * @return server name
      */
-    public String getConfigurationServerName()
-    {
+    public String getConfigurationServerName() {
         return serverName;
     }
 
@@ -138,27 +131,25 @@ public class AssetCatalogEventClient
      * Register a listener object that will be passed each of the events published by
      * the Asset Catalog OMAS.
      *
-     * @param userId calling user
+     * @param userId   calling user
      * @param listener listener object
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void registerListener(String                   userId,
+    public void registerListener(String userId,
                                  AssetCatalogEventListener listener) throws InvalidParameterException,
             ConnectionCheckedException,
             ConnectorCheckedException,
             PropertyServerException,
-            UserNotAuthorizedException
-    {
+            UserNotAuthorizedException {
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/topics/out-topic-connection/{2}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -171,10 +162,9 @@ public class AssetCatalogEventClient
 
         Connection topicConnection = restResult.getConnection();
         ConnectorBroker connectorBroker = new ConnectorBroker();
-        Connector connector       = connectorBroker.getConnector(topicConnection);
+        Connector connector = connectorBroker.getConnector(topicConnection);
 
-        if (connector == null)
-        {
+        if (connector == null) {
             throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(topicConnection.getQualifiedName(),
                     serviceName,
                     serverName,
@@ -182,14 +172,11 @@ public class AssetCatalogEventClient
                     this.getClass().getName(),
                     methodName);
         }
-        if (connector instanceof AssetCatalogOutTopicClientConnector)
-        {
-            configurationEventTopicConnector = (AssetCatalogOutTopicClientConnector)connector;
+        if (connector instanceof AssetCatalogOutTopicClientConnector) {
+            configurationEventTopicConnector = (AssetCatalogOutTopicClientConnector) connector;
             configurationEventTopicConnector.setAuditLog(auditLog);
             configurationEventTopicConnector.start();
-        }
-        else
-        {
+        } else {
             throw new ConnectorCheckedException(OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(topicConnection.getQualifiedName(),
                     serviceName,
                     serverName,

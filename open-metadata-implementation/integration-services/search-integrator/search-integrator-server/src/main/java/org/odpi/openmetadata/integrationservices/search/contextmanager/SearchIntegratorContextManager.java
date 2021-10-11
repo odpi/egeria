@@ -4,9 +4,8 @@
 package org.odpi.openmetadata.integrationservices.search.contextmanager;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogEventClient;
-import org.odpi.openmetadata.accessservices.assetcatalog.api.AssetCatalogEventListener;
-import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicEventListener;
+import org.odpi.openmetadata.integrationservices.search.client.AssetCatalogOutTopicEventListener;
+import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
@@ -37,8 +36,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
 
     private AssetManagerClient assetManagerClient = null;
     private AssetCatalogEventClient assetCatalogEventClient;
-
-
+    private AssetCatalogOutTopicEventListener eventListener;
     /**
      * Default constructor
      */
@@ -97,9 +95,10 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                 auditLog,
                 localServerUserId);
 
-        AssetCatalogEventListener eventThing = new AssetCatalogOutTopicEventListener();
+        eventListener = new AssetCatalogOutTopicEventListener();
+
         try {
-            assetCatalogEventClient.registerListener(localServerUserId, eventThing);
+            assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             e.printStackTrace();
         }
@@ -212,6 +211,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
+            eventListener.setSearchIntegratorConnector(serviceSpecificConnector);
             serviceSpecificConnector.setContext(new SearchIntegratorContext(localServerUserId,
                     metadataSourceGUID,
                     metadataSourceQualifiedName,

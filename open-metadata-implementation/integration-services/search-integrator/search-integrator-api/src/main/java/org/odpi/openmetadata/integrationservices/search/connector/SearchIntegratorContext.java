@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.search.connector;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogEventClient;
+import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
@@ -18,6 +18,7 @@ public class SearchIntegratorContext {
     private String integrationServiceName;
     private AuditLog auditLog;
     private AssetCatalogEventClient eventClient;
+
 
     /**
      * Create a new context for a connector.

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.search.connector;
 
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorAuditCode;
@@ -62,4 +63,6 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
                                                 methodName);
         }
     }
+
+    public abstract void saveAsset(AssetCatalogEvent asset);
 }

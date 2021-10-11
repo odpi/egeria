@@ -92,13 +92,10 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-catalog-topic-connector</artifactId>
+            <artifactId>search-integrator-client</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-catalog-api</artifactId>
-        </dependency>
+
     </dependencies>
 
 </project>

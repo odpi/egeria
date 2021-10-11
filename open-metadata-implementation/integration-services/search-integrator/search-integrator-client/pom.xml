@@ -48,6 +48,10 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>search-integrator-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-api</artifactId>
+        </dependency>
 
     </dependencies>
 

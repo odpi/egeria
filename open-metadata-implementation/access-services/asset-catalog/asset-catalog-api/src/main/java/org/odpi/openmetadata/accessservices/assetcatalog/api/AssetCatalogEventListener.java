@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.api;
 
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 
 /**
  * AssetCatalogEventListener is the interface that a client implements to
@@ -17,5 +17,7 @@ public interface AssetCatalogEventListener
      *
      * @param event event object - call getEventType to find out what type of event.
      */
-    void processEvent(EntityDetail event);
+    void processEvent(AssetCatalogEvent event);
+
+
 }
