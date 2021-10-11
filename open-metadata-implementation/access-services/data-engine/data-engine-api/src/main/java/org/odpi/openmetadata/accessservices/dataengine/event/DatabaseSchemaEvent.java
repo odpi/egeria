@@ -33,7 +33,7 @@ public class DatabaseSchemaEvent extends DataEngineEventHeader {
      * @return the database schema
      * -- SETTER --
      * Set up the database schema bean
-     * @param database the database schema
+     * @param databaseSchema the database schema
      */
     private DatabaseSchema databaseSchema;
 
