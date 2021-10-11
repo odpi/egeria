@@ -145,7 +145,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(relationalTable == null){
             relationalTable = getDefaultRelationalTable();
         }
-        dataEngineClient.upsertRelationalTable(userId, relationalTable, DATABASE_QUALIFIED_NAME);
+        dataEngineClient.upsertRelationalTable(userId, relationalTable, DATABASE_QUALIFIED_NAME, false);
         return relationalTable;
     }
 

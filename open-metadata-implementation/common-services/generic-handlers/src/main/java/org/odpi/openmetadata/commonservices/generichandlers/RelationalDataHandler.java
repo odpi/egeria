@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -1299,7 +1300,6 @@ public class RelationalDataHandler<DATABASE,
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         databaseSchemaHandler.verifyExternalSourceIdentity(userId,
@@ -1338,33 +1338,36 @@ public class RelationalDataHandler<DATABASE,
                                                                                   InstanceStatus.ACTIVE,
                                                                                   methodName);
 
-        /*
-         * This relationship links the database to the database schema.
-         */
-        databaseSchemaHandler.linkElementToElement(userId,
-                                                   databaseManagerGUID,
-                                                   databaseManagerName,
-                                                   databaseGUID,
-                                                   parentElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                   databaseSchemaGUID,
-                                                   createdElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                   false,
-                                                   false,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                   null,
-                                                   methodName);
-
-        if (vendorProperties != null)
+        if (StringUtils.isNotEmpty(databaseGUID))
         {
-            databaseHandler.setVendorProperties(userId,
-                                                databaseGUID,
-                                                vendorProperties,
-                                                methodName);
-        }
+            /*
+             * This relationship links the database to the database schema.
+             */
+            databaseSchemaHandler.linkElementToElement(userId,
+                                                       databaseManagerGUID,
+                                                       databaseManagerName,
+                                                       databaseGUID,
+                                                       parentElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                       databaseSchemaGUID,
+                                                       createdElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                       false,
+                                                       false,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       null,
+                                                       methodName);
 
+            if (vendorProperties != null)
+            {
+                databaseHandler.setVendorProperties(userId,
+                                                    databaseGUID,
+                                                    vendorProperties,
+                                                    methodName);
+            }
+
+        }
         return databaseSchemaGUID;
     }
 
@@ -1423,7 +1426,6 @@ public class RelationalDataHandler<DATABASE,
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         databaseSchemaHandler.verifyExternalSourceIdentity(userId,
@@ -1468,31 +1470,34 @@ public class RelationalDataHandler<DATABASE,
                                                                                   extendedProperties,
                                                                                   methodName);
 
-        /*
-         * This relationship links the database to the database schema.
-         */
-        databaseSchemaHandler.linkElementToElement(userId,
-                                                   databaseManagerGUID,
-                                                   databaseManagerName,
-                                                   databaseGUID,
-                                                   parentElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                   databaseSchemaGUID,
-                                                   createdElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                   false,
-                                                   false,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                   null,
-                                                   methodName);
-
-        if (vendorProperties != null)
+        if (StringUtils.isNotEmpty(databaseGUID))
         {
-            databaseHandler.setVendorProperties(userId,
-                                                databaseGUID,
-                                                vendorProperties,
-                                                methodName);
+            /*
+             * This relationship links the database to the database schema.
+             */
+            databaseSchemaHandler.linkElementToElement(userId,
+                                                       databaseManagerGUID,
+                                                       databaseManagerName,
+                                                       databaseGUID,
+                                                       parentElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                       databaseSchemaGUID,
+                                                       createdElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                       false,
+                                                       false,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       null,
+                                                       methodName);
+
+            if (vendorProperties != null)
+            {
+                databaseHandler.setVendorProperties(userId,
+                        databaseGUID,
+                        vendorProperties,
+                        methodName);
+            }
         }
 
         return databaseSchemaGUID;
@@ -1537,7 +1542,6 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         String databaseSchemaGUID = databaseSchemaHandler.addAssetFromTemplate(userId,
@@ -1554,24 +1558,27 @@ public class RelationalDataHandler<DATABASE,
                                                                                null,
                                                                                methodName);
 
-        /*
-         * This relationship links the database to the database schema.
-         */
-        databaseSchemaHandler.linkElementToElement(userId,
-                                                   databaseManagerGUID,
-                                                   databaseManagerName,
-                                                   databaseGUID,
-                                                   parentElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                                   databaseSchemaGUID,
-                                                   createdElementGUIDParameterName,
-                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                   false,
-                                                   false,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                   null,
-                                                   methodName);
+        if (StringUtils.isNotEmpty(databaseGUID))
+        {
+            /*
+             * This relationship links the database to the database schema.
+             */
+            databaseSchemaHandler.linkElementToElement(userId,
+                                                       databaseManagerGUID,
+                                                       databaseManagerName,
+                                                       databaseGUID,
+                                                       parentElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                       databaseSchemaGUID,
+                                                       createdElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                       false,
+                                                       false,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       null,
+                                                       methodName);
+        }
 
         return databaseSchemaGUID;
     }
