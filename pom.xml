@@ -149,28 +149,28 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.7.2</junit.platform.version>
-        <junit.jupiter.version>5.7.2</junit.jupiter.version>
+        <junit.jupiter.version>5.8.1</junit.jupiter.version>
+        <junit.platform.version>1.8.1</junit.platform.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
         <mockito.version>3.12.4</mockito.version>
         <testng.version>7.4.0</testng.version>
         <slf4j.version>1.7.32</slf4j.version>
-        <logback.version>1.2.5</logback.version>
-        <jackson.version>2.12.5</jackson.version>
+        <logback.version>1.2.6</logback.version>
+        <jackson.version>2.13.0</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.8.0</kafka.version>
-        <janus.version>0.5.3</janus.version>
-        <tomcat.version>9.0.52</tomcat.version>
-        <spring-boot.version>2.5.4</spring-boot.version>
-        <netty.version>4.1.67.Final</netty.version>
+        <kafka.version>3.0.0</kafka.version>
+        <tomcat.version>9.0.54</tomcat.version>
+        <netty.version>4.1.68.Final</netty.version>
+        <spring-boot.version>2.5.5</spring-boot.version>
+        <janus.version>0.6.0</janus.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
-        <gremlin.version>3.4.12</gremlin.version>
-        <spring-data.version>2.5.4</spring-data.version>
+        <gremlin.version>3.5.1</gremlin.version>
+        <spring-data.version>2.5.5</spring-data.version>
         <spring-security.version>5.5.2</spring-security.version>
         <springdoc.version>1.5.10</springdoc.version>
-        <spring.version>5.3.9</spring.version>
+        <spring.version>5.3.10</spring.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
 	    <commons-text.version>1.9</commons-text.version>
@@ -180,16 +180,17 @@
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
-        <jakarta.annotation.version>1.3.5</jakarta.annotation.version>
+        <jakarta-validation.version>3.0.0</jakarta-validation.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
+        <javax-annotation.version>1.3.2</javax-annotation.version>
         <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <avro.version>1.10.2</avro.version>
         <plexus.version>3.4.1</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene.version>8.4.1</lucene.version>
+        <lucene.version>8.10.0</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
-        <guava.version>30.1.1-jre</guava.version>
+        <guava.version>31.0.1-jre</guava.version>
         <tink.version>1.6.1</tink.version>
         <jsonld.version>0.13.3</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
@@ -197,17 +198,17 @@
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.13.0</oss.version>
-        <spotbugs-annotations.version>4.4.0</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.4.1</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.10.10</joda.version>
+        <joda.version>2.10.12</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <classgraph.version>4.8.115</classgraph.version>
-        <swagger.version>2.1.10</swagger.version>
+        <swagger.version>2.1.11</swagger.version>
+        <classgraph.version>4.8.121</classgraph.version>
         <snakeyaml.version>1.29</snakeyaml.version>
-        <groovy.version>3.0.8</groovy.version>
-        <micrometer-registry-prometheus.version>1.7.3</micrometer-registry-prometheus.version>
+        <groovy.version>3.0.9</groovy.version>
+        <micrometer-registry-prometheus.version>1.7.4</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.32</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
@@ -217,15 +218,16 @@
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-configuration2.version>2.7</commons-configuration2.version>
-        <lettuce.version>6.1.4.RELEASE</lettuce.version>
+        <lettuce.version>6.1.5.RELEASE</lettuce.version>
         <lombok.version>1.18.20</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-        <thrift.version>0.14.2</thrift.version>
-        <elasticsearch.version>7.7.0</elasticsearch.version>
+        <thrift.version>0.15.0</thrift.version>
+        <elasticsearch.version>7.14.2</elasticsearch.version>
+        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
         <maven-reports-plugin.version>3.1.2</maven-reports-plugin.version>
         <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -233,9 +235,9 @@
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-pmd.version>3.14.0</maven-pmd.version>
-        <owasp.version>6.3.1</owasp.version>
-        <spotbugs-maven.version>4.3.0</spotbugs-maven.version>
+        <owasp.version>6.3.2</owasp.version>
+        <maven-pmd.version>3.15.0</maven-pmd.version>
+        <spotbugs-maven.version>4.4.1</spotbugs-maven.version>
         <maven-download.version>1.6.7</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -394,6 +396,13 @@
             </dependency>
 
             <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <scope>compile</scope>
+                <version>${jakarta-validation.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${javax-jaxb-api.version}</version>
@@ -486,6 +495,13 @@
                         <artifactId>tomcat-annotations-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <scope>compile</scope>
+                <version>${javax-annotation.version}</version>
             </dependency>
 
             <dependency>
@@ -3126,6 +3142,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch-x-content</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore-nio</artifactId>
                 <version>${httpcore.version}</version>
@@ -3170,6 +3192,12 @@
                 <artifactId>elasticsearch-integration-connector</artifactId>
                 <version>${open-metadata.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
         </dependencies>
 

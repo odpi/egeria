@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
@@ -26,8 +27,11 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 
@@ -395,6 +399,17 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setEventType(DataEngineEventType.DELETE_ENDPOINT_EVENT);
 
         topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws FunctionNotSupportedException {
+        String methodName = "find";
+
+        throw new FunctionNotSupportedException(DataEngineErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName),
+                this.getClass().getName(), methodName);
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

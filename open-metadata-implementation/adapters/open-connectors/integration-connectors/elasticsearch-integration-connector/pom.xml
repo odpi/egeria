@@ -66,7 +66,6 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch-x-content</artifactId>
-            <version>${elasticsearch.version}</version>
         </dependency>
 
 
@@ -80,15 +79,11 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
                     <artifactId>lucene-queryparser</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-spatial-extras</artifactId>
+                    <groupId>org.lz4</groupId>
+                    <artifactId>lz4-java</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.carrotsearch</groupId>

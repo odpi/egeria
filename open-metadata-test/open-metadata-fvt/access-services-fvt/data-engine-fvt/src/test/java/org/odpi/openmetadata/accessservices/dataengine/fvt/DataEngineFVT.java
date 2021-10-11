@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.fvt;
 
 import org.odpi.openmetadata.accessservices.dataengine.ConnectionAndEndpointSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.DataStoreAndRelationalTableSetupService;
+import org.odpi.openmetadata.accessservices.dataengine.FindSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.LineageSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.PortSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.ProcessSetupService;
@@ -75,6 +76,7 @@ public class DataEngineFVT {
     protected final ProcessSetupService processSetupService = new ProcessSetupService();
     protected final PortSetupService portSetupService = new PortSetupService();
     protected final ConnectionAndEndpointSetupService connectionAndEndpointSetupService = new ConnectionAndEndpointSetupService();
+    protected final FindSetupService findSetupService = new FindSetupService();
 
     protected EntityDetail assertProcess(Process process, List<EntityDetail> processes) {
         assertNotNull(processes);
