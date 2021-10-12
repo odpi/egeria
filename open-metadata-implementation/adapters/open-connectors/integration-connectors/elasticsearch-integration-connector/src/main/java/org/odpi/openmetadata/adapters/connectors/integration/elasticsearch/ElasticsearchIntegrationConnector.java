@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -30,6 +31,8 @@ import java.util.Map;
  */
 public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector {
     private static final Logger log = LoggerFactory.getLogger(ElasticsearchIntegrationConnector.class);
+    private static final String INDEX_NAME = "indexName";
+    private static final String ASSETS_INDEX_NAME = "assets";
 
     private String targetRootURL = null;
     private String targetRootProtocol = null;
@@ -57,6 +60,9 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
         }
 
         Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        String configuredIndexName = (String) configurationProperties.get(INDEX_NAME);
+        this.indexName = Objects.requireNonNullElse(configuredIndexName, ASSETS_INDEX_NAME);
         this.objectMapper = new ObjectMapper();
     }
 
@@ -132,7 +138,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
             return;
         }
         log.debug("saving to elasticsearch {}", asset);
-        IndexRequest indexRequest = new IndexRequest("index-name");
+        IndexRequest indexRequest = new IndexRequest(indexName);
 
         try {
             String jsonAsset = objectMapper.writeValueAsString(asset);
