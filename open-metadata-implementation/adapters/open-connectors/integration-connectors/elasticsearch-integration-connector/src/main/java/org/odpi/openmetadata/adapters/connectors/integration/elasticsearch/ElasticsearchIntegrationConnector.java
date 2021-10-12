@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc.ElasticsearchIntegratorErrorCode.BAD_CONFIG;
+
 
 /**
  * ElasticsearchIntegrationConnector provides common methods for the connector in this module.
@@ -74,12 +76,12 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void start() throws ConnectorCheckedException {
+    public synchronized void start() throws ConnectorCheckedException {
         super.start();
 
         final String methodName = "start";
 
-        initializeElasticSearchClient();
+        initializeElasticSearchClient(methodName);
 
         myContext = super.getContext();
 
@@ -91,7 +93,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
-    public void refresh() throws ConnectorCheckedException {
+    public synchronized void refresh() throws ConnectorCheckedException {
         final String methodName = "refresh";
     }
 
@@ -102,7 +104,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
      * @throws ConnectorCheckedException something failed in the super class
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException {
+    public synchronized void disconnect() throws ConnectorCheckedException {
         final String methodName = "disconnect";
 
         log.debug("disconnecting");
@@ -114,10 +116,17 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
         super.disconnect();
     }
 
-    public void initializeElasticSearchClient() {
+    public void initializeElasticSearchClient(String callingMethodName) throws ConnectorCheckedException {
         String[] urlParts = targetRootURL.split(":");
         String hostname = urlParts[0];
-        int port = Integer.parseInt(urlParts[1]);
+        int port;
+        try {
+            port = Integer.parseInt(urlParts[1]);
+        } catch (NumberFormatException e) {
+            log.debug("received exception trying to determine port " + e.getMessage());
+            throw new ConnectorCheckedException(BAD_CONFIG.getMessageDefinition("port", "targetRootURL", callingMethodName, e.getMessage()), this.getClass().getName(),
+                    callingMethodName);
+        }
         client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost(hostname, port, targetRootProtocol)));
 
