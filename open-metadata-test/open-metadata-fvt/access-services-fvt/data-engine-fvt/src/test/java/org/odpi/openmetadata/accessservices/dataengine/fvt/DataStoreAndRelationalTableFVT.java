@@ -51,17 +51,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
         // assert Database
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
-        EntityDetail databaseAsEntityDetail = assertDatabase(database, databases);
-//
-//        // assert Deployed Database Schema
-//        List<EntityDetail> schemas = repositoryService
-//                .getRelatedEntities(databaseAsEntityDetail.getGUID(), DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP_GUID);
-//        assertNotNull(schemas);
-//        assertEquals(1, schemas.size());
-//
-//        EntityDetail deployedDatabaseSchemaAsEntityDetail = schemas.get(0);
-//        assertEquals(database.getQualifiedName() + ":schema",
-//                deployedDatabaseSchemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertDatabase(database, databases);
     }
 
     @ParameterizedTest
@@ -98,6 +88,59 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         database.setDatabaseImportedFrom("to-delete-database-imported-from");
         database.setNetworkAddress("to-delete-database-network-address");
         return database;
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void upsertDatabaseSchema(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
+                dataEngineClient, null, database.getQualifiedName(), false);
+
+        // assert DatabaseSchema
+        List<EntityDetail> databaseSchemas = repositoryService.findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                databaseSchema.getQualifiedName());
+        assertDatabaseSchema(databaseSchema, databaseSchemas);
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteDatabaseSchema(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
+                dataEngineClient, getDatabaseSchemaToDelete(), database.getQualifiedName(), false);
+
+        // assert DatabaseSchema
+        List<EntityDetail> databaseSchemas = repositoryService.findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                databaseSchema.getQualifiedName());
+        EntityDetail databaseSchemaAsEntityDetail = assertDatabaseSchema(databaseSchema, databaseSchemas);
+
+        // delete DatabaseSchema
+        dataStoreAndRelationalTableSetupService.deleteDatabaseSchema(userId, dataEngineClient, databaseSchema.getQualifiedName(),
+                databaseSchemaAsEntityDetail.getGUID());
+        List<EntityDetail> databaseSchemasAfterDelete = repositoryService
+                .findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID, databaseSchema.getQualifiedName());
+        assertNull(databaseSchemasAfterDelete);
+    }
+
+    private DatabaseSchema getDatabaseSchemaToDelete() {
+        DatabaseSchema databaseSchema = new DatabaseSchema();
+        databaseSchema.setQualifiedName("to-delete-database-schema-qualified-name");
+        databaseSchema.setDisplayName("to-delete-database-schema-display-name");
+        databaseSchema.setDescription("to-delete-database-schema-description");
+        return databaseSchema;
     }
 
     @ParameterizedTest
