@@ -110,6 +110,28 @@ public class GlossaryFVT {
         System.out.println("Get the glossary");
         String guid = glossary.getSystemAttributes().getGUID();
         Glossary gotGlossary = getGlossaryByGUID(guid);
+
+        try {
+            getTerms("bad", new FindRequest());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for terms for an unknown glossary guid.");
+        } catch (InvalidParameterException e) {
+            // expected
+        }
+        try {
+            getCategories("bad", new FindRequest(), false);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for children category for an unknown glossary guid.");
+        } catch (InvalidParameterException e) {
+            // expected
+        }
+        if (getTerms(guid, new FindRequest()).size() != 0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for terms for an unknown glossary guid.");
+        }
+
+        if (getCategories(guid, new FindRequest(), false).size() != 0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for children category for an unknown glossary guid.");
+        }
+
+
         System.out.println("Update the glossary");
         Glossary updatedGlossary = updateGlossary(guid, glossaryForUpdate);
         FVTUtils.validateNode(updatedGlossary);

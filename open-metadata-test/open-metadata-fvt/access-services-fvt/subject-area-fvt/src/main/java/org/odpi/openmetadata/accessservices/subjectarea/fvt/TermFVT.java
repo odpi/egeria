@@ -353,6 +353,18 @@ public class TermFVT {
         if (categoryFVT.getTerms(cat1.getSystemAttributes().getGUID()).size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected the category to have 1 term.");
         }
+        try {
+            categoryFVT.getTerms("bad");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for terms for an unknown category guid.");
+        } catch(InvalidParameterException e) {
+            // expected
+        }
+        try {
+            categoryFVT.getCategoryChildren("bad");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for category children for an unknown category guid.");
+        } catch(InvalidParameterException e) {
+            // expected
+        }
 
         suppliedCategories.add(cat2Summary);
         term4cats.setCategories(suppliedCategories);

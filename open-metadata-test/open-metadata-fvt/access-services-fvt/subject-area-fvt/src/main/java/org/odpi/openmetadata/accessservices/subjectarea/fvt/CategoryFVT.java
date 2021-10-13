@@ -107,6 +107,21 @@ public class CategoryFVT {
         FVTUtils.validateNode(category2);
 
         FindRequest findRequest = new FindRequest();
+
+        try {
+            getTerms("bad");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for terms for an unknown glossary guid.");
+        } catch(InvalidParameterException e) {
+            // expected
+        }
+        try {
+            getCategoryChildren("bad");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected an error when we look for children category for an unknown glossary guid.");
+        } catch(InvalidParameterException e) {
+            // expected
+        }
+
+
         List<Category> results = glossaryFVT.getCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories onlyTop true" + results.size());
