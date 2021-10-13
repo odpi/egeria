@@ -1307,10 +1307,12 @@ public class DataEngineRESTServices {
         String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
         file.setFileType(fileTypeName);
 
-        columns.forEach(column -> {
-            column.setTypeName(TABULAR_FILE_COLUMN_TYPE_NAME);
-            column.setTypeGuid(TABULAR_FILE_COLUMN_TYPE_GUID);
-        });
+        if(CollectionUtils.isNotEmpty(columns)) {
+            columns.forEach(column -> {
+                column.setTypeName(TABULAR_FILE_COLUMN_TYPE_NAME);
+                column.setTypeGuid(TABULAR_FILE_COLUMN_TYPE_GUID);
+            });
+        }
 
         String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, incomplete, schemaType,
                 columns, extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
