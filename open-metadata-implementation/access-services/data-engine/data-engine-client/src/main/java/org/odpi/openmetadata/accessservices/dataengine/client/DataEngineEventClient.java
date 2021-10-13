@@ -346,12 +346,13 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException, ConnectorCheckedException {
         DataFileEvent event = new DataFileEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.DATA_FILE_EVENT);
         event.setDataFile(dataFile);
+        event.setIncomplete(incomplete);
 
         topicConnector.sendEvent(event);
 

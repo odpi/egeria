@@ -373,7 +373,7 @@ public class DataEngineEventProcessor {
             DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
 
             dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
-                    dataFileEvent.getExternalSourceName());
+                    dataFileEvent.getIncomplete(), dataFileEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }

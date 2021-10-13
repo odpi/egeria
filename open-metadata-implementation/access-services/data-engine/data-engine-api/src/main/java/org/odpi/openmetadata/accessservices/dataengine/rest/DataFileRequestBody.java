@@ -27,4 +27,6 @@ public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
     @JsonProperty("file")
     private DataFile dataFile;
 
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }
