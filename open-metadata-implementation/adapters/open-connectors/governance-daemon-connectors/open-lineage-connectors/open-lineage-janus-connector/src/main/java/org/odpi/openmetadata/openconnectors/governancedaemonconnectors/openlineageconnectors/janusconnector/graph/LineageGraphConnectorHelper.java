@@ -154,7 +154,7 @@ public class LineageGraphConnectorHelper {
         if (ASSETS.contains(queriedVertex.label())) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             sourcesList = querySources(guid, LINEAGE_MAPPING);
-            if (CollectionUtils.isNotEmpty(sourcesList)) {
+            if (CollectionUtils.isNotEmpty(sourcesList) && !sourcesList.equals(Collections.singletonList(queriedVertex))) {
                 return Optional.of(getCondensedLineage(guid, g, getLineageVertices(sourcesList), SOURCE_CONDENSATION));
             }
         }
@@ -213,7 +213,7 @@ public class LineageGraphConnectorHelper {
         if (ASSETS.contains(label)) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
-            if (CollectionUtils.isNotEmpty(destinationsList)) {
+            if (CollectionUtils.isNotEmpty(destinationsList)  && !destinationsList.equals(Collections.singletonList(queriedVertex))) {
                 return Optional.of(getCondensedLineage(guid, g, getLineageVertices(destinationsList), DESTINATION_CONDENSATION));
             }
         }
@@ -321,36 +321,6 @@ public class LineageGraphConnectorHelper {
             log.error(GENERIC_QUERY_EXCEPTION, END_TO_END_HORIZONTAL_LINEAGE, guid, e.getMessage());
         }
         return endToEndGraph;
-    }
-
-    /**
-     * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
-     * The queried node can be a column or table.
-     *
-     * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
-     *
-     * @return a subgraph in an Open Lineage specific format
-     */
-    public Optional<LineageVerticesAndEdges> sourceAndDestination(String guid, boolean includeProcesses) {
-        Optional<LineageVerticesAndEdges> ultimateSourceResponse = ultimateSource(guid, includeProcesses);
-        Optional<LineageVerticesAndEdges> ultimateDestinationResponse = ultimateDestination(guid, includeProcesses);
-
-        if (ultimateSourceResponse.isPresent() && ultimateDestinationResponse.isPresent()) {
-            Set<LineageVertex> sourceAndDestinationVertices = Stream.concat(ultimateSourceResponse.get().getLineageVertices().stream(),
-                    ultimateDestinationResponse.get().getLineageVertices().stream()).collect(Collectors.toSet());
-
-            Set<LineageEdge> sourceAndDestinationEdges = Stream.concat(ultimateSourceResponse.get().getLineageEdges().stream(),
-                    ultimateDestinationResponse.get().getLineageEdges().stream()).collect(Collectors.toSet());
-
-            return Optional.of(new LineageVerticesAndEdges(sourceAndDestinationVertices, sourceAndDestinationEdges));
-        } else if (ultimateSourceResponse.isPresent()) {
-            return ultimateSourceResponse;
-        } else {
-            if (ultimateDestinationResponse.isPresent()) {
-                return ultimateDestinationResponse;
-            }
-        }
-        return Optional.empty();
     }
 
     /**
