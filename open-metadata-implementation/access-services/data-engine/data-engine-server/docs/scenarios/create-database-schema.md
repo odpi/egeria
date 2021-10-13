@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Create database
+# Create database schema
 
 Create a database schema, linking it to a given database, if any is provided. The database schema can also be marked as incomplete,
 which means that it is missing data to be completely described, like the database to which it is linked.

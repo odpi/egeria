@@ -310,7 +310,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DatabaseSchemaEvent event = new DatabaseSchemaEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DATABASE_EVENT);
+        event.setEventType(DataEngineEventType.DATABASE_SCHEMA_EVENT);
         event.setDatabaseSchema(databaseSchema);
         event.setDatabaseQualifiedName(databaseQualifiedName);
         event.setIncomplete(incomplete);
