@@ -171,7 +171,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
-                                                                      description,
+                                                                      summary,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -183,19 +183,19 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME,
-                                                                      description,
+                                                                      examples,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
-                                                                      description,
+                                                                      abbreviation,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      description,
+                                                                      usage,
                                                                       methodName);
 
         return properties;
@@ -249,7 +249,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
-                                                                      description,
+                                                                      scope,
                                                                       methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
