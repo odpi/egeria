@@ -177,7 +177,6 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>4.1.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
-        <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <jakarta-validation.version>3.0.0</jakarta-validation.version>
@@ -318,14 +317,6 @@
                  <scope>compile</scope>
                  <version>${jackson.version}</version>
              </dependency>
-
-
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <scope>compile</scope>
-                <version>${h2-database.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.apache.avro</groupId>
@@ -2724,12 +2715,6 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2792,18 +2777,6 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring-data.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-data.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
