@@ -97,6 +97,11 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
+                    <artifactId>graph-repository-connector</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>omrs-rest-repository-connector</artifactId>
                 </dependency>
 
