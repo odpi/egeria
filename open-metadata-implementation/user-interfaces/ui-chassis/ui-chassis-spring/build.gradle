@@ -13,7 +13,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-test'
     implementation 'org.springframework.security:spring-security-ldap'
     implementation 'io.jsonwebtoken:jjwt'
-    implementation 'com.h2database:h2'
     implementation 'io.lettuce:lettuce-core'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
