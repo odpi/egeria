@@ -181,7 +181,6 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-security:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-data-redis:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-actuator:${springbootVersion}")
-            implementation("org.springframework.data:spring-data-jpa:${springdataVersion}")
             implementation("org.springframework.security:spring-security-config:${springsecurityVersion}")
             implementation("org.springframework.security:spring-security-core:${springsecurityVersion}")
             implementation("org.springframework.security:spring-security-ldap:${springsecurityVersion}")
