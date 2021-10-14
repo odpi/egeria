@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("demoUserDetailsService")
@@ -22,6 +23,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public final User loadUserByUsername(String username) throws UsernameNotFoundException {
 
         final User user = demoUsers.getDemoUsers().get(username);
+
+        //encrypt the password
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+
         detailsChecker.check(user);
 
         return user;
