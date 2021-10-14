@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password = "";
 
-    @ElementCollection(targetClass=String.class,fetch = FetchType.EAGER)
     private List<String> roles;
 
     public Long getId() {

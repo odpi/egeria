@@ -2715,12 +2715,6 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2783,12 +2777,6 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring-data.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
