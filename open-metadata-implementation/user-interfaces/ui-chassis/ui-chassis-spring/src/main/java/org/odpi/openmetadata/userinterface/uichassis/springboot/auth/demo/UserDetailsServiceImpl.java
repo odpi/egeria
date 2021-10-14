@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service("dbUserDetailsService")
-@ConditionalOnProperty(value = "authentication.source", havingValue = "db")
+@Service("demoUserDetailsService")
+@ConditionalOnProperty(value = "authentication.source", havingValue = "demo")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();

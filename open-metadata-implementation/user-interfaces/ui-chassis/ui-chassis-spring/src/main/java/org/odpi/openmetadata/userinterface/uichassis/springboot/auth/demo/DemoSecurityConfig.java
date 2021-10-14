@@ -24,7 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class DemoSecurityConfig extends SecurityConfig {
 
     @Autowired
-    @Qualifier("dbUserDetailsService")
+    @Qualifier("demoUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Override
