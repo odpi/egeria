@@ -2438,6 +2438,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "8.1 Find entity - all props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform::/data\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"type\": \"Referenceable\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/find",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8.2 Find entity - required props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"identifiers\" : {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform::/data\"\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/find",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"find"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrati
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -26,9 +27,11 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -54,6 +57,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String FOLDER_URL_TEMPLATE = DATA_ENGINE_PATH + "folders";
     private static final String CONNECTION_URL_TEMPLATE = DATA_ENGINE_PATH + "connections";
     private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
+    private static final String FIND_URL_TEMPLATE = DATA_ENGINE_PATH + "find";
+
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
@@ -75,6 +80,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String FOLDER_DELETE_METHOD_NAME = "deleteFolder";
     private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
     private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
+    private static final String FIND_METHOD_NAME = "find";
 
     private final String serverPlatformRootURL;
     private String externalSourceName;
@@ -433,6 +439,16 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, ENDPOINT_DELETE_METHOD_NAME, ENDPOINT_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, FIND_METHOD_NAME);
+
+        return callGUIDListPostRESTCall(FIND_METHOD_NAME, serverPlatformRootURL + FIND_URL_TEMPLATE, findRequestBody, serverName, userId);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
