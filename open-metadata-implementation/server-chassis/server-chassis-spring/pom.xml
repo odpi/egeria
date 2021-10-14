@@ -487,9 +487,6 @@
                                     org.springframework.boot:spring-boot-starter-security:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
-                                    org.springframework.boot:spring-boot-starter-data-jpa:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
                                     org.springdoc:springdoc-openapi-ui:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
