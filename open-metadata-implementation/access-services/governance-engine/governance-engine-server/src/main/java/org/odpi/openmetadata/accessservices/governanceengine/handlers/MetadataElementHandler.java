@@ -563,6 +563,8 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         if ((gafPropertyConditions != null) && (! gafPropertyConditions.isEmpty()))
         {
+            List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition>
+                    omrsPropertyConditions = new ArrayList<>();
             for (PropertyCondition propertyCondition : gafPropertyConditions)
             {
                 if (propertyCondition != null)
@@ -574,8 +576,10 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     omrsPropertyCondition.setOperator(this.getPropertyComparisonOperator(propertyCondition.getOperator()));
                     omrsPropertyCondition.setValue(this.getInstancePropertyValue(propertyCondition.getValue()));
                     omrsPropertyCondition.setNestedConditions(this.getSearchProperties(propertyCondition.getNestedConditions()));
+                    omrsPropertyConditions.add(omrsPropertyCondition);
                 }
             }
+            return omrsPropertyConditions;
         }
 
         return null;
