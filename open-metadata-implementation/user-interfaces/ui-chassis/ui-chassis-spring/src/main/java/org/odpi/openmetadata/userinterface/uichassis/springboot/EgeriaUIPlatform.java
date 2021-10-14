@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClie
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.*;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo.DemoUsers;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo.UserDetailsServiceImpl;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayService;
 import org.slf4j.Logger;
@@ -28,7 +30,13 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @ComponentScan(basePackages = {"${scan.packages}"})
 @Configuration
-@EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayService.class})
+@EnableConfigurationProperties(
+        {
+                ComponentService.class,
+                LineageGraphDisplayService.class,
+                DemoUsers.class
+        }
+        )
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
