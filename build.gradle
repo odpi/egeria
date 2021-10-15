@@ -91,7 +91,7 @@ allprojects {
         springbootVersion = '2.5.5'
         httpcoreVersion = '4.4.14'
         jenaVersion = '4.1.0'
-        elasticsearchVersion = '7.14.2'
+        elasticsearchVersion = '7.15.0'
     }
 
     dependencies {
