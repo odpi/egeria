@@ -16,6 +16,10 @@ public class DemoUsers {
 
     private final Map<String, User> demoUsers  = new HashMap<>();;
 
+    public Map<String, User> getDemoUsers() {
+        return demoUsers;
+    }
+
     /**
      *
      * @param username the username
