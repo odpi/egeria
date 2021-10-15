@@ -104,14 +104,15 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRESTServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
+
     private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
     public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
     private static final String DEBUG_DELETE_MESSAGE = "Data Engine OMAS deleted entity with GUID {} and type {}";
-    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
 
     /**
@@ -1731,35 +1732,20 @@ public class DataEngineRESTServices {
      * @param findRequestBody contains find criteria
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody){
+
         String methodName = "find";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, findRequestBody);
 
         GUIDListResponse findResponse = new GUIDListResponse();
-
         try {
-            if (isFindRequestBodyInvalid(userId, serverName, findRequestBody, methodName)){
-                return findResponse;
-            }
-
             DataEngineFindHandler findHandler = instanceHandler.getFindHandler(userId, serverName, methodName);
             findResponse = findHandler.find(findRequestBody, userId, methodName);
-
         } catch (Exception e) {
             restExceptionHandler.captureExceptions(findResponse, e, methodName);
         }
 
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, findResponse);
         return findResponse;
     }
 
-    private boolean isFindRequestBodyInvalid(String userId, String serverName, FindRequestBody findRequestBody, String methodName)
-            throws InvalidParameterException {
-        if (findRequestBody == null) {
-            restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            return true;
-        }
-        if (findRequestBody.getIdentifiers() == null) {
-            restExceptionHandler.handleMissingValue("identifiers", methodName);
-            return true;
-        }
-        return false;
-    }
 }
