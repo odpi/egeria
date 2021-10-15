@@ -6,7 +6,7 @@
 ###  please override the passwords with your own in the following format
 ### 
 
-# default password fot all demo users. TO BE CHANGED
+# default password for all demo users. TO BE CHANGED
 demoUserPassword: secret
 
 egeria:
