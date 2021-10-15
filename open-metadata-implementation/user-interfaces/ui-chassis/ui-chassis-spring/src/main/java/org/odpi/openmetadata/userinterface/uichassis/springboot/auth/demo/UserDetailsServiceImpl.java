@@ -22,10 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public final User loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        final User user = demoUsers.getDemoUsers().get(username);
-
-        //encrypt the password
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        final User user = demoUsers.getUser(username);
 
         detailsChecker.check(user);
 
