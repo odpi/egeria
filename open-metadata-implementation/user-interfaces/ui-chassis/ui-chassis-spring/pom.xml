@@ -335,17 +335,13 @@
                 <artifactId>apache-rat-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/tools/**</exclude>
-                        <exclude>**/resources/public/**</exclude>
-                        <exclude>**/resources/**</exclude>
-                        <exclude>**/static/**</exclude>
                         <exclude>**/docs/**</exclude>
-                        <exclude>**/build/**</exclude>
-
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
+                        <exclude>**/**.yml</exclude>
+                        <exclude>**/**.json</exclude>
                     </excludes>
                 </configuration>
             </plugin>
