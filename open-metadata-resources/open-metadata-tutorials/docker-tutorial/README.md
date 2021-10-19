@@ -14,7 +14,7 @@ is started at port https 9443.
 
 This container can be incorporated into larger container orchestration environments or used standalone.
 This tutorial describes how to use it standalone.  The [Open Metadata Labs](../../open-metadata-labs)
-use this container with either the `docker-compose` or `Kubernetes`
+use this container with `Kubernetes`
 container services to create a complete open metadata solution.
 Link to [Hands-on Labs Infrastructure Guide](../lab-infrastructure-guide) to learn more.
 

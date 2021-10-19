@@ -17,7 +17,7 @@ The **Egeria Docker Image** is built daily and pushed to
 [DockerHub](https://hub.docker.com/r/odpi/egeria).  It contains an OMAG Server Platform.
 You can down load it an use it in your own container environments.
 
-The **Kubernetes Helm Charts** and **Docker compose scripts** make use of the
+The **Kubernetes Helm Charts** make use of the
 docker image to create a rich Egeria deployment used in the hands on labs.
 Their they are located in the [open-metadata-deployment](../../../open-metadata-resources/open-metadata-deployment) module
 and their use is described in [the setting up instructions](../../../open-metadata-resources/open-metadata-labs) of the hands on labs.

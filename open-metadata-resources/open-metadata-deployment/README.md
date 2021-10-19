@@ -12,18 +12,12 @@ repositories.
 ## Docker Images
 
 Docker images used by demos, deployments & most specifically a docker image for egeria itself which is automatically published as
-part of our build process, shared to Docker Hub, and is used by both our Kubernetes and Docker-compose samples.
+part of our build process, shared to Docker Hub, and is used by our Kubernetes charts.
 
 ## Kubernetes
 
 Helm charts to deploy egeria along with supporting infrastructure can now be found at https://github.com/odpi/egeria-charts .
 A K8s is being developed at https://github.com/odpi/egeria-k8s-operator .
-
-## Docker Compose
-
-Currently the focus is on Helm charts to facilitate deployment to Kubernetes clusters.
-
-The docker-compose environment is now deprecated & it is recommended to switch to using our Kubernetes examples instead.
 
 ----
 * Return to [open-metadata-resources](..)

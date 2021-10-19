@@ -11,7 +11,7 @@ These labs attempt to show a rich metadata environment in action,
 allowing you to experiment with different concepts and APIs.
 
 First, go to you Docker Desktop and shut down all of your docker containers that were started
-by docker-compose (your laptop will thank you for that.)
+earlier (your laptop will thank you for that.)
 
 Now go to the [Lab Infrastructure tutorial](../lab-infrastructure-guide)
 and follow the instructions for setting up the lab environment using Kubernetes.
