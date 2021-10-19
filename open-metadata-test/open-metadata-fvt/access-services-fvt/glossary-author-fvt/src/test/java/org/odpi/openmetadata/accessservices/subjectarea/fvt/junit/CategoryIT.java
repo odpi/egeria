@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
-import org.odpi.openmetadata.accessservices.subjectarea.fvt.CategoryFVT;
+import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.CategoryFVT;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

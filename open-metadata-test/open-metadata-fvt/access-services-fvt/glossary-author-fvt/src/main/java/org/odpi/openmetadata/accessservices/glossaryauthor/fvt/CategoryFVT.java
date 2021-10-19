@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * FVT resource to call subject area category client API
+ * FVT resource to call Glossary author category client API
  */
 public class CategoryFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for category sample";
