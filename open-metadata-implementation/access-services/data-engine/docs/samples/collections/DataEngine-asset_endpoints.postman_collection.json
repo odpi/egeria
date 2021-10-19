@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d9f79123-457f-41cc-b90f-d4b861e25a99",
+		"_postman_id": "6cbf38c5-605b-42c8-b0d3-4c9c026b03e4",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -102,7 +102,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\",\n        \"networkAddress\" : \"localhost\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
@@ -238,7 +238,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -304,7 +304,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2308,13 +2308,13 @@
 			"response": []
 		},
 		{
-			"name": "6.9 Delete connection",
+			"name": "6.9 Delete connection for names.csv",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedName\": \"Connection::ftp::localhost\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"raw": "{\n    \"qualifiedName\": \"CSVFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv Connection\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2341,13 +2341,79 @@
 			"response": []
 		},
 		{
-			"name": "6.10 Delete endpoint",
+			"name": "6.10 Delete connection for locations.csv",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedName\": \"Endpoint::ftp::localhost\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"raw": "{\n    \"qualifiedName\": \"DataFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv Connection\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/connections",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"connections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6.11 Delete endpoint for names.csv",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"CSVFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv Endpoint\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/endpoints",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"endpoints"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6.12 Delete endpoint for locations.csv",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"DataFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv Endpoint\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
