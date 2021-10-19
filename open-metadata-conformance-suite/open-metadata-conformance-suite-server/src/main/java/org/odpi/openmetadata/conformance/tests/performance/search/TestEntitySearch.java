@@ -124,7 +124,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                     null,
                     null,
                     null,
-                    SequencingOrder.GUID,
+                    null,
                     performanceWorkPad.getMaxSearchResults());
             long elapsedTime = (System.nanoTime() - start) / 1000000;
 
@@ -161,7 +161,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                         null,
                         null,
                         null,
-                        SequencingOrder.GUID,
+                        null,
                         performanceWorkPad.getMaxSearchResults());
                 elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
