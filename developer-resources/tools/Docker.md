@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Docker, docker-compose and DockerHub
+# Docker, and DockerHub
 
 **Docker** is a [simple container runtime and standard](https://www.docker.com/why-docker).
 Every day, the egeria build processing creates
@@ -28,9 +28,6 @@ The **Tags** tab shows the different releases that are available.
 The docker image needs a runtime to execute.  It can run in the cloud using **Docker Hub** or
 on your machine using the **Docker Desktop**. 
 The description below describes how to use the docker desktop.
-
-Docker Desktop supports running a docker image as a standalone container, or as part of group of containers
-started with **docker-compose**.
 
 Go to the [Docker website](https://www.docker.com/why-docker) and select
 the **Download Docker Desktop**.

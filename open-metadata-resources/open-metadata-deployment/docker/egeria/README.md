@@ -27,7 +27,7 @@ Specifically it contains the full [egeria assembly](https://github.com/odpi/eger
 ## Using this image as part of our Lab Tutorials
 
 This docker image is primarily intended to be used as part of a series of tutorials we offer to demonstrate and explain
-egeria. The environments documented there will allow you to get an example environment up and running in very little time on either docker-compose, or within a kubernetes cluster.
+egeria. The environments documented there will allow you to get an example environment up and running in very little time within a kubernetes cluster.
  
 * [Open Metadata Tutorials](https://egeria.odpi.org/open-metadata-resources/open-metadata-tutorials/)
 
@@ -101,7 +101,7 @@ By default any data you create whilst the docker image is running will get writt
 
 As of version 2.6 (or master as of 18 Dec 2020), Egeria saves all data when running to the 'data' directory. In the docker image this is at '/deployments/data'
 
-Similarly when using this image within docker-compose or kubernetes you should ensure persistent storage is mounted over this directory. Our docker-compose and k8s examples will do this as of 2.6
+Similarly when using this image within kubernetes you should ensure persistent storage is mounted over this directory. Our k8s examples will do this as of 2.6
 
 An example using docker:
 

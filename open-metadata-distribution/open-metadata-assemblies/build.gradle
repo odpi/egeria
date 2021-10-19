@@ -190,11 +190,6 @@ distributions {
                 exclude 'build.gradle'
                 fileMode = 0755
             }
-            into('docker-compose') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:compose').projectDir}")
-
-                fileMode = 0755
-            }
         }
     }
 }
