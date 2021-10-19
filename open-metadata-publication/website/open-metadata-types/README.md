@@ -496,6 +496,7 @@ The link takes you to the UML model and description page for the type.
 [IncidentOriginator](0470-Incident-Reporting.md)
 [IncidentReport](0470-Incident-Reporting.md)
 [IncidentReportStatus](0470-Incident-Reporting.md)
+[Incomplete](0790-Incomplete.md)
 [InformalTag](0150-Feedback.md)
 [InformationSupplyChain](0720-Information-Supply-Chains.md)
 [InformationSupplyChainComposition](0720-Information-Supply-Chains.md)

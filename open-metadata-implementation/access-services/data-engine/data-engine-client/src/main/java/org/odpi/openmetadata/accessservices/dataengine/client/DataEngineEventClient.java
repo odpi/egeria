@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -303,14 +305,36 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
+                                       boolean incomplete) throws InvalidParameterException, ConnectorCheckedException {
+        DatabaseSchemaEvent event = new DatabaseSchemaEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.DATABASE_SCHEMA_EVENT);
+        event.setDatabaseSchema(databaseSchema);
+        event.setDatabaseQualifiedName(databaseQualifiedName);
+        event.setIncomplete(incomplete);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
+                                        boolean incomplete)
             throws InvalidParameterException, ConnectorCheckedException {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
         event.setRelationalTable(relationalTable);
-        event.setDatabaseQualifiedName(databaseQualifiedName);
+        event.setIncomplete(incomplete);
+        event.setDatabaseSchemaQualifiedName(databaseSchemaQualifiedName);
 
         topicConnector.sendEvent(event);
 
@@ -342,6 +366,17 @@ public class DataEngineEventClient implements DataEngineClient {
     public void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
         event.setEventType(DataEngineEventType.DELETE_DATABASE_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDatabaseSchema(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setEventType(DataEngineEventType.DELETE_DATABASE_SCHEMA_EVENT);
 
         topicConnector.sendEvent(event);
     }

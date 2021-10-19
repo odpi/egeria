@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
@@ -27,6 +28,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIReq
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
@@ -81,6 +83,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
@@ -104,14 +107,26 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRESTServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
+
     private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
-    public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
-    public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
-    public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
+    private static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
+    private static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
+    private static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
     private static final String DEBUG_DELETE_MESSAGE = "Data Engine OMAS deleted entity with GUID {} and type {}";
-    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final String PROCESS_UPSERT = "Data Engine OMAS has created or updated a Process with qualified name {} and guid {}";
+    private static final String EXTERNAL_ENGINE_WAS_REGISTERED = "Data Engine OMAS has registered an external engine with qualified name {} and GUID {}";
+    private static final String PROCESS_HIERARCHY_ADDED_BETWEEN_CHILD_AND_PARENT_PROCESS = "Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}";
+    private static final String CHILD_PROCESS = "childProcess";
 
+    public static final String DATABASE_SCHEMA_PARAMETER_NAME = "databaseSchema";
+    public static final String DATABASE_PARAMETER_NAME = "database";
+    public static final String RELATIONAL_TABLE_PARAMETER_NAME = "relationalTable";
+    public static final String SCHEMA = "Schema";
+    public static final String SCHEMA_SUFFIX = "::schema";
+    public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
+
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
 
     /**
@@ -218,11 +233,11 @@ public class DataEngineRESTServices {
         DataEngineRegistrationHandler dataEngineRegistrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
         Optional<String> dataEngineGUID = Optional.ofNullable(guid);
-        if (!dataEngineGUID.isPresent()) {
+        if (dataEngineGUID.isEmpty()) {
             dataEngineGUID = Optional.ofNullable(dataEngineRegistrationHandler.getExternalDataEngine(userId, qualifiedName));
         }
 
-        if (!dataEngineGUID.isPresent()) {
+        if (dataEngineGUID.isEmpty()) {
             return;
         }
 
@@ -617,7 +632,7 @@ public class DataEngineRESTServices {
         Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortAliasEntity(userId, portAlias.getQualifiedName());
 
         String portAliasGUID;
-        if (!portEntity.isPresent()) {
+        if (portEntity.isEmpty()) {
             portAliasGUID = dataEnginePortHandler.createPortAlias(userId, portAlias, processGUID, externalSourceName);
         } else {
             portAliasGUID = portEntity.get().getGUID();
@@ -668,11 +683,11 @@ public class DataEngineRESTServices {
             processHandler.upsertProcessHierarchyRelationship(userId, parentProcess, childProcessGUID, externalSourceName);
         } else {
             throw new InvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND.getMessageDefinition(processHierarchy.getChildProcess()),
-                    this.getClass().getName(), methodName, "childProcess");
+                    this.getClass().getName(), methodName, CHILD_PROCESS);
         }
 
-        log.info("Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}",
-                processHierarchy.getChildProcess(), processHierarchy.getParentProcess());
+        log.info(PROCESS_HIERARCHY_ADDED_BETWEEN_CHILD_AND_PARENT_PROCESS, processHierarchy.getChildProcess(),
+                processHierarchy.getParentProcess());
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, childProcessGUID);
         return childProcessGUID;
@@ -704,7 +719,7 @@ public class DataEngineRESTServices {
 
         Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortImplementationEntity(userId, portImplementation.getQualifiedName());
         String portImplementationGUID;
-        if (!portEntity.isPresent()) {
+        if (portEntity.isEmpty()) {
             portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, processGUID, externalSourceName);
         } else {
             portImplementationGUID = portEntity.get().getGUID();
@@ -754,8 +769,7 @@ public class DataEngineRESTServices {
 
         String softwareServerCapabilityGUID = handler.upsertExternalDataEngine(userId, softwareServerCapability);
 
-        log.info("Data Engine OMAS has registered an external engine with qualified name {} and GUID {}",
-                softwareServerCapability.getQualifiedName(), softwareServerCapabilityGUID);
+        log.info(EXTERNAL_ENGINE_WAS_REGISTERED, softwareServerCapability.getQualifiedName(), softwareServerCapabilityGUID);
         return softwareServerCapabilityGUID;
     }
 
@@ -939,6 +953,73 @@ public class DataEngineRESTServices {
     }
 
     /**
+     * Create or update the Database Schema with corresponding related entities and classifications
+     *
+     * @param serverName                name of server instance to call
+     * @param userId                    the name of the calling user
+     * @param databaseSchemaRequestBody RequestBody properties of the database
+     *
+     * @return the unique identifier (guid) of the created database
+     */
+    public GUIDResponse upsertDatabaseSchema(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody) {
+        final String methodName = "upsertDatabaseSchema";
+
+        GUIDResponse response = new GUIDResponse();
+        try {
+            if (!isDatabaseSchemaRequestBodyValid(userId, serverName, databaseSchemaRequestBody, methodName)) {
+                return response;
+            }
+
+            String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(),
+                    databaseSchemaRequestBody.getIncomplete(), databaseSchemaRequestBody.getDatabaseSchema(),
+                    databaseSchemaRequestBody.getExternalSourceName());
+            response.setGUID(databaseGUID);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    /**
+     * Create or update the DatabaseSchema with corresponding relationship to the database, if provided and not virtual
+     *
+     * @param userId                the name of the calling user
+     * @param serverName            name of server instance to call
+     * @param databaseQualifiedName the database entity to which the database schema will be linked, if it exists
+     * @param incomplete             determines if the entity is virtual
+     * @param databaseSchema        the database schema values
+     * @param externalSourceName    the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created database schema
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, boolean incomplete,
+                                       DatabaseSchema databaseSchema, String externalSourceName) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
+
+        final String methodName = "upsertDatabaseSchema";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId,
+                serverName, methodName);
+
+        Optional<EntityDetail> databaseEntityOptional = getEntityDetails(serverName, userId, databaseQualifiedName, DATABASE_TYPE_NAME);
+        String databaseGUID = null;
+        if(databaseEntityOptional.isPresent()) {
+            databaseGUID = databaseEntityOptional.get().getGUID();
+        }
+
+        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete,
+                externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
+        return databaseSchemaGUID;
+    }
+
+    /**
      * Delete the Database with all the associated relational tables
      *
      * @param serverName  name of server instance to call
@@ -994,6 +1075,61 @@ public class DataEngineRESTServices {
     }
 
     /**
+     * Delete the DatabaseSchema with all the associated relational tables
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the database schema
+     *
+     * @return void response
+     */
+    public VoidResponse deleteDatabaseSchema(String userId, String serverName, DeleteRequestBody requestBody) {
+        final String methodName = "deleteDatabaseSchema";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteDatabaseSchema(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(),
+                    requestBody.getQualifiedName(), requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    /**
+     * Delete the DatabaseSchema with all the associated relational tables
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the database schema
+     * @param qualifiedName      the qualified name of the database schema
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
+    public void deleteDatabaseSchema(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                               DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+            EntityNotDeletedException, FunctionNotSupportedException {
+
+        final String methodName = "deleteDatabaseSchema";
+
+        DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+        String databaseSchemaGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, methodName);
+        relationalDataHandler.removeDatabaseSchema(userId, databaseSchemaGUID, externalSourceName, deleteSemantic);
+
+        log.debug(DEBUG_DELETE_MESSAGE, databaseSchemaGUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
+    }
+
+    /**
      * Create the Relational Table with Relational Columns and corresponding relationships
      *
      * @param serverName                 name of server instance to call
@@ -1008,10 +1144,13 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (!isRelationalTableRequestBodyValid(userId, serverName, relationalTableRequestBody, methodName)) return response;
+            if (isRelationalTableRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
+                return response;
+            }
 
-            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseQualifiedName(),
-                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName());
+            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseSchemaQualifiedName(),
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName(),
+                    relationalTableRequestBody.getIncomplete());
             response.setGUID(relationalTableGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1024,7 +1163,7 @@ public class DataEngineRESTServices {
      *
      * @param userId                the name of the calling user
      * @param serverName            name of server instance to call
-     * @param databaseQualifiedName the unique name of the database
+     * @param databaseSchemaQualifiedName the unique name of the database
      * @param relationalTable       the relational table values
      * @param externalSourceName    the unique name of the external source
      *
@@ -1034,17 +1173,17 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertRelationalTable(String userId, String serverName, String databaseQualifiedName, RelationalTable relationalTable,
-                                        String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                          PropertyServerException {
+    public String upsertRelationalTable(String userId, String serverName, String databaseSchemaQualifiedName, RelationalTable relationalTable,
+                                        String externalSourceName, boolean incomplete) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertRelationalTable";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
 
-        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
-                methodName);
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId,
+                serverName, methodName);
 
-        String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseQualifiedName, relationalTable,
-                externalSourceName);
+        String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseSchemaQualifiedName,
+                relationalTable, externalSourceName, incomplete);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
         return relationalTableGUID;
@@ -1517,7 +1656,7 @@ public class DataEngineRESTServices {
                 addProcessHierarchyRelationships(userId, serverName, process, processGUID, response, externalSourceName);
             }
 
-            log.info("Data Engine OMAS has created or updated a Process with qualified name {} and guid {}", qualifiedName, processGUID);
+            log.info(PROCESS_UPSERT, qualifiedName, processGUID);
             response.setGUID(processGUID);
         } catch (Exception error) {
             log.error(EXCEPTION_WHILE_CREATING_PROCESS, qualifiedName, error.toString());
@@ -1660,21 +1799,37 @@ public class DataEngineRESTServices {
         if (isRequestBodyInvalid(userId, serverName, databaseRequestBody, methodName)) return false;
 
         if (databaseRequestBody.getDatabase() == null) {
-            restExceptionHandler.handleMissingValue("database", methodName);
+            restExceptionHandler.handleMissingValue(DATABASE_PARAMETER_NAME, methodName);
             return false;
         }
         return true;
     }
 
-    private boolean isRelationalTableRequestBodyValid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
-                                                      String methodName) throws InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) return false;
+    private boolean isDatabaseSchemaRequestBodyValid(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
+                                                     String methodName) throws InvalidParameterException {
+        if (isRequestBodyInvalid(userId, serverName, databaseSchemaRequestBody, methodName)) {
+            return false;
+        }
 
-        if (StringUtils.isEmpty(relationalTableRequestBody.getDatabaseQualifiedName())) {
-            restExceptionHandler.handleMissingValue("databaseQualifiedName", methodName);
+        if (databaseSchemaRequestBody.getDatabaseSchema() == null) {
+            restExceptionHandler.handleMissingValue(DATABASE_SCHEMA_PARAMETER_NAME, methodName);
             return false;
         }
         return true;
+    }
+
+    private boolean isRelationalTableRequestBodyInvalid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
+                                                        String methodName) throws InvalidParameterException {
+         if(isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
+             return true;
+         }
+
+        if (relationalTableRequestBody.getRelationalTable() == null) {
+            restExceptionHandler.handleMissingValue(RELATIONAL_TABLE_PARAMETER_NAME, methodName);
+            return true;
+        }
+        return false;
+
     }
 
     private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
@@ -1684,7 +1839,7 @@ public class DataEngineRESTServices {
             return true;
         }
         if (StringUtils.isEmpty(requestBody.getExternalSourceName())) {
-            restExceptionHandler.handleMissingValue("externalSourceName", methodName);
+            restExceptionHandler.handleMissingValue(EXTERNAL_SOURCE_NAME_PARAMETER_NAME, methodName);
             return true;
         }
         return false;
@@ -1693,8 +1848,8 @@ public class DataEngineRESTServices {
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {
         if (schemaType == null) {
             schemaType = new SchemaType();
-            schemaType.setQualifiedName(file.getQualifiedName() + "::schema");
-            schemaType.setDisplayName("Schema");
+            schemaType.setQualifiedName(file.getQualifiedName() + SCHEMA_SUFFIX);
+            schemaType.setDisplayName(SCHEMA);
         }
         schemaType.setAttributeList(attributes);
         return schemaType;
