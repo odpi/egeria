@@ -40,16 +40,18 @@ public enum DataEngineEventType implements Serializable {
     DELETE_PORT_IMPLEMENTATION_EVENT        (9,  "DeletePortImplementationEvent",  "An event that deletes a port implementation."),
     DELETE_PORT_ALIAS_EVENT                 (10,  "DeletePortAliasesEvent",  "An event that deletes a port alias."),
     DATABASE_EVENT                          (11,  "DatabaseEvent",  "An event that create or update databases."),
-    RELATIONAL_TABLE_EVENT                  (12,  "RelationalTableEvent",  "An event that create or update relational tables."),
-    DATA_FILE_EVENT                         (13,  "DataFileEvent",  "An event that create or update data files."),
-    DELETE_DATABASE_EVENT                   (14,  "DeleteDatabaseEvent",  "An event that deletes a database."),
-    DELETE_RELATIONAL_TABLE_EVENT           (15,  "DeleteRelationalTableEvent",  "An event that deletes a relational table."),
-    DELETE_DATA_FILE_EVENT                  (16,  "DeleteDataFileEvent",  "An event that deletes a data file."),
-    DELETE_FOLDER_EVENT                     (17,  "DeleteFolderEvent",  "An event that deletes a folder."),
-    DELETE_CONNECTION_EVENT                 (18,  "DeleteConnectionEvent",  "An event that deletes a connection."),
-    DELETE_ENDPOINT_EVENT                   (19,  "DeleteEndpointEvent",  "An event that deletes an endpoint."),
-    PROCESS_EVENT                           (20,  "ProcessEvent",  "An event that create or update a process."),
-    DELETE_PROCESS_EVENT                    (21,   "DeleteProcessEvent",  "An event that deletes a process.");
+    DATABASE_SCHEMA_EVENT                   (12,  "DatabaseSchemaEvent",  "An event that create or update database schemas."),
+    RELATIONAL_TABLE_EVENT                  (13,  "RelationalTableEvent",  "An event that create or update relational tables."),
+    DATA_FILE_EVENT                         (14,  "DataFileEvent",  "An event that create or update data files."),
+    DELETE_DATABASE_EVENT                   (15,  "DeleteDatabaseEvent",  "An event that deletes a database."),
+    DELETE_DATABASE_SCHEMA_EVENT            (16,  "DeleteDatabaseSchemaEvent",  "An event that deletes a database schema."),
+    DELETE_RELATIONAL_TABLE_EVENT           (17,  "DeleteRelationalTableEvent",  "An event that deletes a relational table."),
+    DELETE_DATA_FILE_EVENT                  (18,  "DeleteDataFileEvent",  "An event that deletes a data file."),
+    DELETE_FOLDER_EVENT                     (19,  "DeleteFolderEvent",  "An event that deletes a folder."),
+    DELETE_CONNECTION_EVENT                 (20,  "DeleteConnectionEvent",  "An event that deletes a connection."),
+    DELETE_ENDPOINT_EVENT                   (21,  "DeleteEndpointEvent",  "An event that deletes an endpoint."),
+    PROCESS_EVENT                           (22,  "ProcessEvent",  "An event that create or update a process."),
+    DELETE_PROCESS_EVENT                    (23,  "DeleteProcessEvent",  "An event that deletes a process.");
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)

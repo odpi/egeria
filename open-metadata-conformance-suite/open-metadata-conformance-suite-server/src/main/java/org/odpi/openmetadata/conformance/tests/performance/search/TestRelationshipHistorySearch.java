@@ -126,7 +126,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                     null,
                     asOfTime,
                     null,
-                    SequencingOrder.GUID,
+                    null,
                     performanceWorkPad.getMaxSearchResults());
             long elapsedTime = (System.nanoTime() - start) / 1000000;
 
@@ -155,7 +155,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
                         null,
                         asOfTime,
                         null,
-                        SequencingOrder.GUID,
+                        null,
                         performanceWorkPad.getMaxSearchResults());
                 elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
