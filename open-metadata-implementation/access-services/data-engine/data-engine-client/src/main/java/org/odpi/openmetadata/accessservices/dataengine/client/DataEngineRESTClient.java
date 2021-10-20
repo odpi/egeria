@@ -385,8 +385,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                          PropertyServerException {
+    public String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATA_FILE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -394,6 +394,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DataFileRequestBody requestBody = new DataFileRequestBody();
         requestBody.setDataFile(dataFile);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
     }

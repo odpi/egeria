@@ -133,7 +133,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(dataFile == null){
             dataFile = getDefaultDataFile();
         }
-        dataEngineClient.upsertDataFile(userId, dataFile);
+        dataEngineClient.upsertDataFile(userId, dataFile, false);
         return dataFile;
     }
 
