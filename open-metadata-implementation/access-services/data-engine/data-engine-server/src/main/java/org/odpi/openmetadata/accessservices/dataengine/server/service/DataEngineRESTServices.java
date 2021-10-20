@@ -1265,7 +1265,8 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
+            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getIncomplete(),
+                    dataFileRequestBody.getExternalSourceName());
             response.setGUID(guid);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1287,9 +1288,8 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException {
+    public String upsertDataFile(String userId, String serverName, DataFile file, boolean incomplete,
+                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "upsertDataFile";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
@@ -1307,13 +1307,15 @@ public class DataEngineRESTServices {
         String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
         file.setFileType(fileTypeName);
 
-        columns.forEach(column -> {
-            column.setTypeName(TABULAR_FILE_COLUMN_TYPE_NAME);
-            column.setTypeGuid(TABULAR_FILE_COLUMN_TYPE_GUID);
-        });
+        if(CollectionUtils.isNotEmpty(columns)) {
+            columns.forEach(column -> {
+                column.setTypeName(TABULAR_FILE_COLUMN_TYPE_NAME);
+                column.setTypeGuid(TABULAR_FILE_COLUMN_TYPE_GUID);
+            });
+        }
 
-        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns, extendedProperties,
-                externalSourceGuid, externalSourceName, userId, methodName);
+        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, incomplete, schemaType,
+                columns, extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
         return guid;
     }
@@ -1886,35 +1888,20 @@ public class DataEngineRESTServices {
      * @param findRequestBody contains find criteria
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody){
+
         String methodName = "find";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, findRequestBody);
 
         GUIDListResponse findResponse = new GUIDListResponse();
-
         try {
-            if (isFindRequestBodyInvalid(userId, serverName, findRequestBody, methodName)){
-                return findResponse;
-            }
-
             DataEngineFindHandler findHandler = instanceHandler.getFindHandler(userId, serverName, methodName);
             findResponse = findHandler.find(findRequestBody, userId, methodName);
-
         } catch (Exception e) {
             restExceptionHandler.captureExceptions(findResponse, e, methodName);
         }
 
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, findResponse);
         return findResponse;
     }
 
-    private boolean isFindRequestBodyInvalid(String userId, String serverName, FindRequestBody findRequestBody, String methodName)
-            throws InvalidParameterException {
-        if (findRequestBody == null) {
-            restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            return true;
-        }
-        if (findRequestBody.getIdentifiers() == null) {
-            restExceptionHandler.handleMissingValue("identifiers", methodName);
-            return true;
-        }
-        return false;
-    }
 }
