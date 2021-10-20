@@ -1888,35 +1888,20 @@ public class DataEngineRESTServices {
      * @param findRequestBody contains find criteria
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody){
+
         String methodName = "find";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, findRequestBody);
 
         GUIDListResponse findResponse = new GUIDListResponse();
-
         try {
-            if (isFindRequestBodyInvalid(userId, serverName, findRequestBody, methodName)){
-                return findResponse;
-            }
-
             DataEngineFindHandler findHandler = instanceHandler.getFindHandler(userId, serverName, methodName);
             findResponse = findHandler.find(findRequestBody, userId, methodName);
-
         } catch (Exception e) {
             restExceptionHandler.captureExceptions(findResponse, e, methodName);
         }
 
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, findResponse);
         return findResponse;
     }
 
-    private boolean isFindRequestBodyInvalid(String userId, String serverName, FindRequestBody findRequestBody, String methodName)
-            throws InvalidParameterException {
-        if (findRequestBody == null) {
-            restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            return true;
-        }
-        if (findRequestBody.getIdentifiers() == null) {
-            restExceptionHandler.handleMissingValue("identifiers", methodName);
-            return true;
-        }
-        return false;
-    }
 }
