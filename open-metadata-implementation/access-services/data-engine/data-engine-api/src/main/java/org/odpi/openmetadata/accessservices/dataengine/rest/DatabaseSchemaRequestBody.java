@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,15 +22,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
+public class DatabaseSchemaRequestBody extends DataEngineOMASAPIRequestBody {
 
-    @JsonProperty("table")
-    private RelationalTable relationalTable;
-
-    private String databaseSchemaQualifiedName;
+    @JsonProperty("databaseSchema")
+    private DatabaseSchema databaseSchema;
 
     @JsonProperty("incomplete")
     private boolean incomplete;
+
+    @JsonProperty("databaseQualifiedName")
+    private String databaseQualifiedName;
 
 }
 
