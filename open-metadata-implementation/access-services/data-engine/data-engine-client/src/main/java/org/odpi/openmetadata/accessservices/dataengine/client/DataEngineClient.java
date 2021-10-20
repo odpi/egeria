@@ -328,10 +328,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException,
-                                                                   ConnectorCheckedException;
+    String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException,
+                                                                                       ConnectorCheckedException;
 
     /**
      * Delete the database
