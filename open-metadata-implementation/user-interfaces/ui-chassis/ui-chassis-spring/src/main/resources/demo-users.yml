@@ -6,7 +6,7 @@
 ###  please override the passwords with your own in the following format
 ### 
 
-# default password fot all demo users. TO BE CHANGED
+# default password for all demo users. TO BE CHANGED
 demoUserPassword: secret
 
 egeria:
@@ -106,6 +106,52 @@ egeria:
       name:  Robbie Records
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER
+    reggiemint:
+      username: reggiemint
+      name:  Reggie Mint
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    peterprofile:
+      username: peterprofile
+      name: Peter Profile
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    nancynoah:
+      username: nancynoah
+      name: Nancy Noah
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    sidneyseeker:
+      username: sidneyseeker
+      name: Sidney Seeker
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    tomtally:
+      username: tomtally
+      name: Tom Tally
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    juliestitched:
+      username: juliestitched
+      name: Julies Titched
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    angelacummings:
+      username: angelacummings
+      name: Angel Accumings
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    jukeskeeper:
+      username: jukeskeeper
+      name: Jukes Keeper
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    stewfaster:
+      username: stewfaster
+      name: Steward Faster
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+
 
 
 

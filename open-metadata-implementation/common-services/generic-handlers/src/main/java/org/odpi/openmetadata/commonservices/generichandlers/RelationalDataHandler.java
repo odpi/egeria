@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -1338,7 +1337,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                   InstanceStatus.ACTIVE,
                                                                                   methodName);
 
-        if (StringUtils.isNotEmpty(databaseGUID))
+        if (databaseGUID != null)
         {
             /*
              * This relationship links the database to the database schema.
@@ -1362,7 +1361,7 @@ public class RelationalDataHandler<DATABASE,
             if (vendorProperties != null)
             {
                 databaseHandler.setVendorProperties(userId,
-                                                    databaseGUID,
+                                                    databaseSchemaGUID,
                                                     vendorProperties,
                                                     methodName);
             }
@@ -1470,7 +1469,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                   extendedProperties,
                                                                                   methodName);
 
-        if (StringUtils.isNotEmpty(databaseGUID))
+        if (databaseGUID != null)
         {
             /*
              * This relationship links the database to the database schema.
@@ -1494,9 +1493,9 @@ public class RelationalDataHandler<DATABASE,
             if (vendorProperties != null)
             {
                 databaseHandler.setVendorProperties(userId,
-                        databaseGUID,
-                        vendorProperties,
-                        methodName);
+                                                    databaseSchemaGUID,
+                                                    vendorProperties,
+                                                    methodName);
             }
         }
 
@@ -1558,7 +1557,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                null,
                                                                                methodName);
 
-        if (StringUtils.isNotEmpty(databaseGUID))
+        if (databaseGUID != null)
         {
             /*
              * This relationship links the database to the database schema.

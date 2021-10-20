@@ -16,7 +16,6 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
-    implementation 'org.apache.commons:commons-lang3'
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
 }
