@@ -7,7 +7,8 @@ Create a data file, with the associated schema, columns, folder hierarchy and a 
 automatically, the columns according to the payload, the folder structure is based on the value of file.pathName and 
 the connection, which also includes an endpoint, is based on the value of optional fields file.protocol and
 file.networkAddress. A connector type is linked to the connection indicating which implementation the connection uses.
-By default the connector type is a OCF one and it's chosen based on the file type.
+By default the connector type is a OCF one and it's chosen based on the file type. The data file can also be marked as incomplete,
+which means that it is missing data to be completely described.
 
 A csv file can be created by changing the value of field file.type from "DataFile" into "CSVFile"
 
@@ -24,6 +25,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
         "type" : "DataFile", 
         "qualifiedName" : "(file)=DATAFILE.DAT",
         "displayName" : "dataFile.dat",
+        "incomplete" : false,
         "pathName" : "/home/files/dataFile.dat",
         "protocol" : "ftp",
         "networkAddress" : "localhost",

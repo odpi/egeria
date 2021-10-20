@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
@@ -70,13 +71,25 @@ public class DataEngineRESTClientTest {
     }
 
     @Test
+    public void upsertDatabaseSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RESTServerException {
+        GUIDResponse response = mockGUIDResponse();
+        DatabaseSchema databaseSchema = new DatabaseSchema();
+
+        when(connector.callPostRESTCall(eq("upsertDatabaseSchema"), eq(GUIDResponse.class), anyString(), any(), any()))
+                .thenReturn(response);
+        dataEngineRESTClient.upsertDatabaseSchema(USER_ID, databaseSchema, null, false);
+        assertEquals(GUID, response.getGUID());
+    }
+
+    @Test
     public void upsertRelationalTable() throws RESTServerException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GUIDResponse response = mockGUIDResponse();
         RelationalTable relationalTable = new RelationalTable();
 
         when(connector.callPostRESTCall(eq("upsertRelationalTable"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName");
+        dataEngineRESTClient.upsertRelationalTable(USER_ID, relationalTable, "databaseQualifiedName",
+                false);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -87,7 +100,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDataFile"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile);
+        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile, false);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -100,6 +113,18 @@ public class DataEngineRESTClientTest {
         dataEngineRESTClient.deleteDatabase(USER_ID, QUALIFIED_NAME, null);
 
         verify(connector, times(1)).callDeleteRESTCall(eq("deleteDatabase"), eq(VoidResponse.class), anyString(), any(), any());
+    }
+
+    @Test
+    public void deleteDatabaseSchema() throws RESTServerException, InvalidParameterException, PropertyServerException {
+        VoidResponse response = mockVoidResponse();
+
+        when(connector.callDeleteRESTCall(eq("deleteDatabaseSchema"), eq(VoidResponse.class), anyString(), any(), any()))
+                .thenReturn(response);
+        dataEngineRESTClient.deleteDatabaseSchema(USER_ID, QUALIFIED_NAME, null);
+
+        verify(connector, times(1)).callDeleteRESTCall(eq("deleteDatabaseSchema"),
+                eq(VoidResponse.class), anyString(), any(), any());
     }
 
     @Test

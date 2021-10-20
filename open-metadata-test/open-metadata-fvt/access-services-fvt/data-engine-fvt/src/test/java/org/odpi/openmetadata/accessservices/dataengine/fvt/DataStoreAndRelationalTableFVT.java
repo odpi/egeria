@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
@@ -50,17 +51,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
         // assert Database
         List<EntityDetail> databases = repositoryService.findEntityByPropertyValue(DATABASE_TYPE_GUID, database.getQualifiedName());
-        EntityDetail databaseAsEntityDetail = assertDatabase(database, databases);
-
-        // assert Deployed Database Schema
-        List<EntityDetail> schemas = repositoryService
-                .getRelatedEntities(databaseAsEntityDetail.getGUID(), DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP_GUID);
-        assertNotNull(schemas);
-        assertEquals(1, schemas.size());
-
-        EntityDetail deployedDatabaseSchemaAsEntityDetail = schemas.get(0);
-        assertEquals(database.getQualifiedName() + ":schema",
-                deployedDatabaseSchemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertDatabase(database, databases);
     }
 
     @ParameterizedTest
@@ -101,6 +92,59 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void upsertDatabaseSchema(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
+                dataEngineClient, null, database.getQualifiedName(), false);
+
+        // assert DatabaseSchema
+        List<EntityDetail> databaseSchemas = repositoryService.findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                databaseSchema.getQualifiedName());
+        assertDatabaseSchema(databaseSchema, databaseSchemas);
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
+    public void deleteDatabaseSchema(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
+            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, getDatabaseToDelete());
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId,
+                dataEngineClient, getDatabaseSchemaToDelete(), database.getQualifiedName(), false);
+
+        // assert DatabaseSchema
+        List<EntityDetail> databaseSchemas = repositoryService.findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                databaseSchema.getQualifiedName());
+        EntityDetail databaseSchemaAsEntityDetail = assertDatabaseSchema(databaseSchema, databaseSchemas);
+
+        // delete DatabaseSchema
+        dataStoreAndRelationalTableSetupService.deleteDatabaseSchema(userId, dataEngineClient, databaseSchema.getQualifiedName(),
+                databaseSchemaAsEntityDetail.getGUID());
+        List<EntityDetail> databaseSchemasAfterDelete = repositoryService
+                .findEntityByPropertyValue(DEPLOYED_DATABASE_SCHEMA_TYPE_GUID, databaseSchema.getQualifiedName());
+        assertNull(databaseSchemasAfterDelete);
+    }
+
+    private DatabaseSchema getDatabaseSchemaToDelete() {
+        DatabaseSchema databaseSchema = new DatabaseSchema();
+        databaseSchema.setQualifiedName("to-delete-database-schema-qualified-name");
+        databaseSchema.setDisplayName("to-delete-database-schema-display-name");
+        databaseSchema.setDescription("to-delete-database-schema-description");
+        return databaseSchema;
+    }
+
+    @ParameterizedTest
+    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void upsertRelationalTable(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
@@ -109,7 +153,10 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
 
         softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient, null);
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId, dataEngineClient,
+                null, database.getQualifiedName(), false);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient,
+                null, databaseSchema.getQualifiedName(), false);
 
         // assert Relational Table
         List<EntityDetail> relationalTables = repositoryService
@@ -123,7 +170,7 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
         assertEquals(1, relationalSchemas.size());
 
         EntityDetail relationalDbSchemaAsEntityDetail = relationalSchemas.get(0);
-        assertEquals("SchemaOf:" + database.getQualifiedName() + ":schema",
+        assertEquals("SchemaOf:" + databaseSchema.getQualifiedName(),
                 relationalDbSchemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
 
         // assert Relational Columns
@@ -148,9 +195,11 @@ public class DataStoreAndRelationalTableFVT extends DataEngineFVT {
             PropertyErrorException, TypeErrorException, PagingErrorException {
 
         softwareServerCapabilitySetupServer.createExternalDataEngine(userId, dataEngineClient, null);
-        dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService
-                .upsertRelationalTable(userId, dataEngineClient, getRelationalTableToDelete());
+        Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId, dataEngineClient,
+                null, database.getQualifiedName(), false);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId,
+                dataEngineClient, getRelationalTableToDelete(), databaseSchema.getQualifiedName(), false);
 
         // assert Relational Table
         List<EntityDetail> relationalTables = repositoryService
