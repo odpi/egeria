@@ -27,12 +27,16 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_NAME;
 
 /**
  * DataFileHandler manages DataFile objects from the property server. It runs server-side in the DataEngine OMAS
  * and creates DataFile entities with wire relationships through the OMRSRepositoryConnector.
  */
 public class DataEngineDataFileHandler {
+
+    private static final String FILE_GUID_PARAMETER_NAME   = "fileGUID";
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -89,8 +93,8 @@ public class DataEngineDataFileHandler {
      * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
-    public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, SchemaType schemaType,
-                                             List<Attribute> columns, Map<String, Object> extendedProperties,
+    public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, boolean incomplete,
+                                             SchemaType schemaType, List<Attribute> columns, Map<String, Object> extendedProperties,
                                              String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
@@ -114,6 +118,11 @@ public class DataEngineDataFileHandler {
 
         dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileGuid, fileTypeName,
                 file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
+
+        if (incomplete) {
+            fileHandler.setClassificationInRepository(userId, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
+                    INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, methodName);
+        }
 
         return fileGuid;
     }

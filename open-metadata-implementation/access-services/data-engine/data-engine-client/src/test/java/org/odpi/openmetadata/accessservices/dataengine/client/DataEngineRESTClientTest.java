@@ -100,7 +100,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDataFile"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile);
+        dataEngineRESTClient.upsertDataFile(USER_ID, dataFile, false);
         assertEquals(GUID, response.getGUID());
     }
 

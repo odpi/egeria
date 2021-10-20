@@ -907,8 +907,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME, DATA_FILE_TYPE_GUID,
-                dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME,
+                DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false, dataFileRequestBody.getDataFile().getSchema(),
                 dataFileRequestBody.getDataFile().getColumns(), getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
@@ -923,9 +923,10 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME,
-                CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
-                dataFileRequestBody.getDataFile().getColumns(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
+                CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false,
+                dataFileRequestBody.getDataFile().getSchema(), dataFileRequestBody.getDataFile().getColumns(),
+                getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER,
+                "upsertDataFile");
     }
 
     @Test
