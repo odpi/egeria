@@ -1,23 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db.domain;
+package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
 /**
  * Entity User used for in-memory mocked demos, in case the real authentication is missing.
  */
-@Entity
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private  String username;
@@ -30,7 +26,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password = "";
 
-    @ElementCollection(targetClass=String.class,fetch = FetchType.EAGER)
     private List<String> roles;
 
     public Long getId() {

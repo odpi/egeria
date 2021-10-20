@@ -74,13 +74,13 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                 if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
                 {
-                    if (metadataElementEvent.getEventType() != WatchdogEventType.NEW_ELEMENT)
+                    if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                     {
                         initiateProcess(newElementProcessName,
                                         null,
                                         actionTargets);
                     }
-                    else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
+                    else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                     {
                         ElementProperties previousElementProperties = null;
 
@@ -96,7 +96,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                         requestParameters,
                                         actionTargets);
                     }
-                    else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_ELEMENT)
+                    else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                     {
                         initiateProcess(deletedElementProcessName,
                                         null,
@@ -108,13 +108,13 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                         requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
 
-                        if (metadataElementEvent.getEventType() != WatchdogEventType.NEW_CLASSIFICATION)
+                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
                         {
                             initiateProcess(classifiedElementProcessName,
                                             requestParameters,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
                         {
                             ElementProperties previousElementProperties = null;
 
@@ -131,7 +131,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                             requestParameters,
                                             actionTargets);
                         }
-                        else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_CLASSIFICATION)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
                         {
                             initiateProcess(declassifiedElementProcessName,
                                             requestParameters,
