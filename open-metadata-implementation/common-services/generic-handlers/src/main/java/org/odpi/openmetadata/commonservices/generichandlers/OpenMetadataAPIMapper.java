@@ -900,6 +900,8 @@ public class OpenMetadataAPIMapper
 
     public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID        = "eab811ec-556a-45f1-9091-bc7ac8face0f";  /* from Area 2 */
     public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_NAME        = "DeployedDatabaseSchema";
+
+
     /* DataSet */
 
     public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_GUID       = "b827683c-2924-4df3-a92d-7be1888e23c0";  /* from Area 2 */
@@ -2463,4 +2465,7 @@ public class OpenMetadataAPIMapper
     public static final String LINEAGE_MAPPING_TYPE_GUID            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
     public static final String LINEAGE_MAPPING_TYPE_NAME            = "LineageMapping";
     /* End1 = Referenceable - sourceElement; End 2 = Referenceable - targetElement */
+
+    public static final String INCOMPLETE_CLASSIFICATION_TYPE_GUID = "078432fb-a889-4a51-8ebe-9797becea9f1";
+    public static final String INCOMPLETE_CLASSIFICATION_TYPE_NAME = "Incomplete";
 }
