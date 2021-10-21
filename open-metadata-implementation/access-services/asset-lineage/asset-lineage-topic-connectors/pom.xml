@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>access-services</artifactId>
+        <artifactId>asset-lineage</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
@@ -21,20 +21,34 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Asset Lineage OMAS</name>
+    <name>Asset Lineage OMAS Out Topic</name>
     <description>
-        The Asset Lineage (OMAS) builds graph context from OMRS instance events for storing and querying
-        horizontal, vertical and operational lineage.
+        Asset Lineage Topic Connector
     </description>
 
-    <artifactId>asset-lineage</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>asset-lineage-api</module>
-        <module>asset-lineage-client</module>
-        <module>asset-lineage-server</module>
-        <module>asset-lineage-spring</module>
-        <module>asset-lineage-topic-connectors</module>
-    </modules>
+    <artifactId>asset-lineage-topic-connectors</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-lineage-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

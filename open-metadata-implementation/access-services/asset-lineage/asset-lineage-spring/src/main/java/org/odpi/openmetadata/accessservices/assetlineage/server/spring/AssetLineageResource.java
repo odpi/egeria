@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageRestServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -105,4 +106,26 @@ public class AssetLineageResource {
                                             @PathVariable String entityType) {
         return restAPI.publishAssetContext(serverName, userId, entityType, guid);
     }
+
+    /**
+     * Return the connection object for the Asset Lineage's OMAS's out topic.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     * @param callerId unique identifier of the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}")
+
+    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String callerId)
+    {
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
+    }
+
 }
