@@ -47,13 +47,12 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
      * @param repositoryConnector                  connector for querying the cohort repositories
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
-     *
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector, AuditLog auditLog, String serverUserName) throws
-                                                                                                                  OMAGConfigurationErrorException {
+            OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
@@ -65,7 +64,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
 
             Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
             this.instance =
-                    new AssetLineageServicesInstance(repositoryConnector, supportedZones, lineageClassificationTypes, serverUserName, auditLog);
+                    new AssetLineageServicesInstance(repositoryConnector, supportedZones, lineageClassificationTypes,
+                            serverUserName, auditLog, accessServiceConfigurationProperties.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();

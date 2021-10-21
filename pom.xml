@@ -970,6 +970,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-topic-connectors</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-manager-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
