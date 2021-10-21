@@ -2634,6 +2634,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     private boolean isCaseSensitiveContainsRegex(String searchString)
     {
         return searchString != null
+                && searchString.length() > 2
                 && searchString.startsWith(".*")
                 && searchString.endsWith(".*")
                 && isCaseSensitiveExactMatchRegex(searchString.substring(2, searchString.length() - 2));
