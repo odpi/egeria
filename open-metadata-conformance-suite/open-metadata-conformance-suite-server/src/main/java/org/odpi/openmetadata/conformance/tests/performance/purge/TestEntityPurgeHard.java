@@ -7,10 +7,7 @@ import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWork
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -48,8 +45,13 @@ public class TestEntityPurgeHard extends TestEntityPurge
      */
     protected void run() throws Exception
     {
-        purgeEntities();
-        purgeEntityReferenceCopies();
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("purgeEntity")) {
+            purgeEntities();
+        }
+        if (!methodsToSkip.contains("purgeEntityReferenceCopy")) {
+            purgeEntityReferenceCopies();
+        }
         super.setSuccessMessage("Entity purge performance tests complete for: " + testTypeName);
     }
 

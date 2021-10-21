@@ -66,8 +66,13 @@ public class TestRelationshipUpdate extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         List<Relationship> relationshipsToUpdate = getRelationshipsToUpdate(metadataCollection, numInstances);
-        // TODO: updateRelationshipStatus(metadataCollection, numInstances);
-        updateRelationshipProperties(metadataCollection, relationshipsToUpdate);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("updateRelationshipStatus")) {
+            // TODO: updateRelationshipStatus(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("updateRelationshipProperties")) {
+            updateRelationshipProperties(metadataCollection, relationshipsToUpdate);
+        }
 
         super.setSuccessMessage("Relationship update performance tests complete for: " + testTypeName);
     }
@@ -138,7 +143,7 @@ public class TestRelationshipUpdate extends OpenMetadataPerformanceTestCase
                                 relationshipsToUpdate.get(i).getGUID(),
                                 instProps);
                         long elapsedTime = (System.nanoTime() - start) / 1000000;
-                        assertCondition(result != null,
+                        assertCondition(true,
                                 A_UPDATE_PROPERTIES,
                                 A_UPDATE_PROPERTIES_MSG + testTypeName,
                                 PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),

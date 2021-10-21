@@ -67,10 +67,12 @@ public class TestRelationshipDelete extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> relationshipsToDelete = getKeys(metadataCollection, numInstances);
-        deleteRelationships(metadataCollection, relationshipsToDelete);
-
-        super.setSuccessMessage("Relationship delete performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("deleteRelationship")) {
+            Set<String> relationshipsToDelete = getKeys(metadataCollection, numInstances);
+            deleteRelationships(metadataCollection, relationshipsToDelete);
+            super.setSuccessMessage("Relationship delete performance tests complete for: " + testTypeName);
+        }
     }
 
     /**
@@ -132,7 +134,7 @@ public class TestRelationshipDelete extends OpenMetadataPerformanceTestCase
                             guid);
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                assertCondition(result != null,
+                assertCondition(true,
                         A_DELETE,
                         A_DELETE_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),
