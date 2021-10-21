@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventListener;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageA
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
+public class OpenLineageInTopicListener extends AssetLineageEventListener {
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

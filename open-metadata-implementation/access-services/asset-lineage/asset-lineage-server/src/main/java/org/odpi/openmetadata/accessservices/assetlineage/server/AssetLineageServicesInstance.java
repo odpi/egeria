@@ -10,11 +10,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContex
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector.AssetLineageOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -42,13 +44,19 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
      * @param lineageClassificationTypes list of lineage classification supported
      * @param localServerUserId          userId used for server initiated actions
      * @param auditLog                   destination for audit log events.
+     * @param outTopicEventBusConnection the out topic connector
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
-                                        Set<String> lineageClassificationTypes, String localServerUserId, AuditLog auditLog) throws
-                                                                                                                             NewInstanceException {
-        super(description.getAccessServiceFullName(), repositoryConnector, auditLog, localServerUserId, repositoryConnector.getMaxPageSize());
+                                        Set<String> lineageClassificationTypes, String localServerUserId, AuditLog auditLog, Connection outTopicEventBusConnection) throws
+            NewInstanceException {
+
+
+        super(description.getAccessServiceFullName(), repositoryConnector, null, null, null, auditLog, localServerUserId,
+                repositoryConnector.getMaxPageSize(), null, null,
+                AssetLineageOutTopicClientProvider.class.getName(),
+                outTopicEventBusConnection);
 
         super.supportedZones = supportedZones;
 

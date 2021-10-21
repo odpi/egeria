@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
@@ -322,6 +323,26 @@ public class DataEngineEventProcessor {
     }
 
     /**
+     * Process a {@link DatabaseSchemaEvent} for creating a database schema
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDatabaseSchemaEvent(String dataEngineEvent) {
+        final String methodName = "processDatabaseSchemaEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DatabaseSchemaEvent databaseSchemaEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseSchemaEvent.class);
+
+            dataEngineRESTServices.upsertDatabaseSchema(databaseSchemaEvent.getUserId(), serverName,
+                    databaseSchemaEvent.getDatabaseQualifiedName(), databaseSchemaEvent.getIncomplete(),
+                    databaseSchemaEvent.getDatabaseSchema(), databaseSchemaEvent.getExternalSourceName());
+
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
      * Process a {@link RelationalTableEvent} for creating a relational table
      *
      * @param dataEngineEvent the event to be processed
@@ -333,8 +354,8 @@ public class DataEngineEventProcessor {
             RelationalTableEvent relationalTableEvent = OBJECT_MAPPER.readValue(dataEngineEvent, RelationalTableEvent.class);
 
             dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName,
-                    relationalTableEvent.getDatabaseQualifiedName(), relationalTableEvent.getRelationalTable(),
-                    relationalTableEvent.getExternalSourceName());
+                    relationalTableEvent.getDatabaseSchemaQualifiedName(), relationalTableEvent.getRelationalTable(),
+                    relationalTableEvent.getExternalSourceName(), relationalTableEvent.getIncomplete());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -352,7 +373,7 @@ public class DataEngineEventProcessor {
             DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
 
             dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
-                    dataFileEvent.getExternalSourceName());
+                    dataFileEvent.getIncomplete(), dataFileEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -370,6 +391,24 @@ public class DataEngineEventProcessor {
             DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteDatabase(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link DeleteEvent} for deleting a database schema
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDeleteDatabaseSchemaEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteDatabaseSchemaEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteDatabaseSchema(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);

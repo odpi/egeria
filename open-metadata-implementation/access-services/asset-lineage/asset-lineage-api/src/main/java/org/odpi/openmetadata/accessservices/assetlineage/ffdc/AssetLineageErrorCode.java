@@ -62,7 +62,13 @@ public enum AssetLineageErrorCode implements ExceptionMessageSet {
     CLASSIFICATION_MAPPING_ERROR(400, "OMAS-ASSET-LINEAGE-404-011 ",
             "The attempt to map a lineage entity and a classification failed for classification {0}",
             "The system was unable to perform the classification mapping request.",
-            "Correct the caller's code and retry the request.");
+            "Correct the caller's code and retry the request."),
+
+    NULL_LISTENER(500, "OMAS-ASSET-LINEAGE-500-001",
+                          "A null topic listener has been passed by user {0} on method {1}",
+                          "There is a coding error in the caller to the Asset Lineage OMAS.",
+                          "Correct the caller logic and retry the request.");
+
 
     private static final long serialVersionUID = 1L;
 

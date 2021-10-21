@@ -142,26 +142,6 @@ public class OpenLineageService {
     }
 
     /**
-     * @param userId           id of the user triggering the request
-     * @param guid             unique identifier if the asset
-     * @param includeProcesses if true includes processes in the response
-     * @return map of nodes and edges describing the ultimate sources and destinations of the asset
-     */
-    public Graph getSourceAndDestination(String userId,
-                                         String guid,
-                                         boolean includeProcesses) {
-        try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
-                    includeProcesses);
-            return processResponse(response,guid);
-        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error("Cannot get source and destination lineage for guid {}", guid);
-            throw new RuntimeException("source and destination lineage error ", e);
-        }
-
-    }
-
-    /**
      * @param response string returned from Open Lineage Services to be processed
      * @param guid the guid to process
      * @return map of nodes and edges describing the end to end flow

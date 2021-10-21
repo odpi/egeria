@@ -113,19 +113,6 @@ public class OpenLineageServiceTest {
     }
 
     @Test
-    @DisplayName("Source and Destination")
-    public void testSourceAndDestination() throws PropertyServerException, InvalidParameterException {
-        try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.SOURCE_AND_DESTINATION), eq(guid), eq(""), eq(true)))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
-        Graph response = openLineageService.getSourceAndDestination(USER_ID, guid, true);
-        checkResponse(response);
-    }
-
-    @Test
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {

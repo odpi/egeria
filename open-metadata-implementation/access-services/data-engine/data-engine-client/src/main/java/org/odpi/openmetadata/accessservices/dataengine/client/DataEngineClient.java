@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -275,10 +276,33 @@ public interface DataEngineClient {
                                                                    ConnectorCheckedException;
 
     /**
+     * Create or update the database schema entity
+     *
+     * @param userId                the name of the calling user
+     * @param databaseSchema        the database schema bean
+     * @param databaseQualifiedName the qualified name of the database, in case it is known
+     * @param incomplete            indicates whether the asset is incomplete or not
+     *
+     * @return unique identifier of database schema in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
+                                boolean incomplete) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException,
+                                                           ConnectorCheckedException;
+
+    /**
      * Create or update the relational table entity
      *
-     * @param userId          the name of the calling user
-     * @param relationalTable the relational table bean
+     * @param userId                      the name of the calling user
+     * @param relationalTable             the relational table bean
+     * @param databaseSchemaQualifiedName the qualified name of the database schema to which it will be related
+     * @param incomplete                  indicates whether the asset is incomplete or not
      *
      * @return unique identifier of the relational table in the repository
      *
@@ -287,7 +311,8 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
+    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
+                                 boolean incomplete)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException;
 
     /**
@@ -303,10 +328,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException,
-                                                                   ConnectorCheckedException;
+    String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException,
+                                                                                       ConnectorCheckedException;
 
     /**
      * Delete the database
@@ -324,6 +349,23 @@ public interface DataEngineClient {
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException,
                                                                                  ConnectorCheckedException;
+
+    /**
+     * Delete the database schema
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the database schema
+     * @param guid          the unique identifier of the database schema
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteDatabaseSchema(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       ConnectorCheckedException;
 
     /**
      * Delete the relational table
