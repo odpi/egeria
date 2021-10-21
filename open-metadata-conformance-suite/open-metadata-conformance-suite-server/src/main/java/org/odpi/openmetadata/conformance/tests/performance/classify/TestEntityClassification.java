@@ -147,7 +147,7 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                             instProps);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_CLASSIFY,
                             A_CLASSIFY_MSG + testTypeName,
                             PerformanceProfile.ENTITY_CLASSIFICATION.getProfileId(),

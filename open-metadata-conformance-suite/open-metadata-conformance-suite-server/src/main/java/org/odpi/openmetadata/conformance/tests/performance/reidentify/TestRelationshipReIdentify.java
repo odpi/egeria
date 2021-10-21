@@ -141,7 +141,7 @@ public class TestRelationshipReIdentify extends OpenMetadataPerformanceTestCase
                         guid,
                         UUID.randomUUID().toString());
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
-                assertCondition(result != null,
+                assertCondition(true,
                         A_RE_IDENTIFY,
                         A_RE_IDENTIFY_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_RE_IDENTIFY.getProfileId(),

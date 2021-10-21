@@ -78,7 +78,7 @@ public class TestEntityRetypeSub extends TestEntityRetype
                                 entityDef,
                                 targetType);
                         long elapsedTime = (System.nanoTime() - start) / 1000000;
-                        assertCondition(result != null,
+                        assertCondition(true,
                                 A_RETYPE_SUB,
                                 A_RETYPE_SUB_MSG + testTypeName,
                                 PerformanceProfile.ENTITY_RETYPE.getProfileId(),

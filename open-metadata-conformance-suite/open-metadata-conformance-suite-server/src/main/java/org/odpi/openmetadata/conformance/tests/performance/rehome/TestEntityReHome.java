@@ -150,7 +150,7 @@ public class TestEntityReHome extends OpenMetadataPerformanceTestCase
                             performanceWorkPad.getTutMetadataCollectionId(),
                             metadataCollectionName);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_RE_HOME,
                             A_RE_HOME_MSG + testTypeName,
                             PerformanceProfile.ENTITY_RE_HOME.getProfileId(),

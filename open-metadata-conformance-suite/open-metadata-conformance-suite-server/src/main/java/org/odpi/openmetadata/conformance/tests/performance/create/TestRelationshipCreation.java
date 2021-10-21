@@ -155,7 +155,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                     elapsedTime = (System.nanoTime() - start) / 1000000;
                     performanceWorkPad.incrementRelationshipsCreated(1);
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_ADD_RELATIONSHIP,
                             A_ADD_RELATIONSHIP_MSG + testTypeName,
                             PerformanceProfile.RELATIONSHIP_CREATION.getProfileId(),

@@ -138,7 +138,7 @@ public class TestRelationshipUpdate extends OpenMetadataPerformanceTestCase
                                 relationshipsToUpdate.get(i).getGUID(),
                                 instProps);
                         long elapsedTime = (System.nanoTime() - start) / 1000000;
-                        assertCondition(result != null,
+                        assertCondition(true,
                                 A_UPDATE_PROPERTIES,
                                 A_UPDATE_PROPERTIES_MSG + testTypeName,
                                 PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),

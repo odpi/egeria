@@ -137,7 +137,7 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
                             entityDetail.getGUID());
                     elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_UNDO,
                             A_UNDO_MSG + testTypeName,
                             PerformanceProfile.ENTITY_UNDO.getProfileId(),

@@ -98,7 +98,7 @@ public class TestEntityCreation extends OpenMetadataPerformanceTestCase
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
                 performanceWorkPad.incrementEntitiesCreated(1);
 
-                assertCondition(result != null,
+                assertCondition(true,
                         A_ADD_ENTITY,
                         A_ADD_ENTITY_MSG + testTypeName,
                         PerformanceProfile.ENTITY_CREATION.getProfileId(),

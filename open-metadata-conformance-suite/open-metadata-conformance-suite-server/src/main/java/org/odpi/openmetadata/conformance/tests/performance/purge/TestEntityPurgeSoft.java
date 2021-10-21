@@ -70,7 +70,7 @@ public class TestEntityPurgeSoft extends TestEntityPurge
                             entityDef.getName(),
                             guid);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_DELETE,
                             A_DELETE_MSG + testTypeName,
                             PerformanceProfile.ENTITY_DELETE.getProfileId(),

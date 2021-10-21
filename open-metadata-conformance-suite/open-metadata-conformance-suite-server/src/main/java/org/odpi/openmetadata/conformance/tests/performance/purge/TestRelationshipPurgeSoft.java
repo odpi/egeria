@@ -72,7 +72,7 @@ public class TestRelationshipPurgeSoft extends TestRelationshipPurge
                         guid);
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                assertCondition(result != null,
+                assertCondition(true,
                         A_DELETE,
                         A_DELETE_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),

@@ -120,7 +120,7 @@ public class TestRelationshipRestore extends OpenMetadataPerformanceTestCase
                         guid);
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                assertCondition(result != null,
+                assertCondition(true,
                         A_RESTORE,
                         A_RESTORE_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_RESTORE.getProfileId(),

@@ -189,7 +189,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
                             classificationDef.getName());
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_DECLASSIFY,
                             A_DECLASSIFY_MSG + testTypeName,
                             PerformanceProfile.ENTITY_DECLASSIFY.getProfileId(),

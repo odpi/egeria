@@ -147,7 +147,7 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
                             instProps);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_UPDATE_PROPERTIES,
                             A_UPDATE_PROPERTIES_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),

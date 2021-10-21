@@ -150,7 +150,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                             guid,
                             new InstanceProperties());
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_REMOVE_PROPERTIES,
                             A_REMOVE_PROPERTIES_MSG + testTypeName,
                             PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),
@@ -173,7 +173,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                             relationshipDef,
                             targetType);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_RETYPE_SUB,
                             A_RETYPE_SUB_MSG + testTypeName,
                             PerformanceProfile.RELATIONSHIP_RETYPE.getProfileId(),
@@ -197,7 +197,7 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
                             targetType,
                             relationshipDef);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_RETYPE_SUPER,
                             A_RETYPE_SUPER_MSG + testTypeName,
                             PerformanceProfile.RELATIONSHIP_RETYPE.getProfileId(),
