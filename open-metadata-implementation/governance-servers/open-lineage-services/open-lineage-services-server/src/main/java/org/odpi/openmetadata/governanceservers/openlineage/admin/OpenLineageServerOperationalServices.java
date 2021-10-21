@@ -4,16 +4,21 @@ package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetLineage;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventListener;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector.AssetLineageOutTopicClientConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.OLSBackgroundJob;
 import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
@@ -30,8 +35,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.scheduler.LineageGrap
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +61,7 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerInstance openLineageServerInstance;
     private OMRSAuditLog auditLog;
     private LineageGraph lineageGraphConnector;
-    private OpenMetadataTopicConnector inTopicConnector;
+    private AssetLineageOutTopicClientConnector inTopicConnector;
     private AssetLineage assetLineageClient;
     private List<JobConfiguration> backgroundJobs;
 
@@ -107,14 +110,18 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
-    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException {
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException,
+            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "initializeOLS";
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
-        Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
+        OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
+
+        Connection inTopicConnection = getAssetLineageOutTopicConnection(methodName, accessServiceConfig);
 
         this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
-        this.inTopicConnector = (OpenMetadataTopicConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR,
+        this.inTopicConnector = (AssetLineageOutTopicClientConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
@@ -131,6 +138,33 @@ public class OpenLineageServerOperationalServices {
                 openLineageHandler);
 
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
+    }
+
+    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws
+            InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, UserNotAuthorizedException {
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/topics/out-topic-connection/{2}";
+        OCFRESTClient restClient;
+        String serverName = accessServiceConfig.getServerName();
+        String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
+        String serverPassword = accessServiceConfig.getPassword();
+        String serverUserId = accessServiceConfig.getUser();
+        if (serverPassword == null) {
+            restClient = new OCFRESTClient(serverName, serverPlatformURLRoot);
+        } else {
+            restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword, auditLog);
+        }
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                serverPlatformURLRoot + urlTemplate,
+                serverName,
+                localServerUserId,
+                localServerUserId);
+
+        Connection inTopicConnection = null;
+        if (restResult != null) {
+            inTopicConnection = restResult.getConnection();
+        }
+        return inTopicConnection;
     }
 
     private void initializeAndStartBackgroundJobs() {
@@ -274,9 +308,9 @@ public class OpenLineageServerOperationalServices {
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
         assetLineageClient = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
         OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineageClient);
-        OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices,
+        AssetLineageEventListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices,
                 assetContextHandler, auditLog);
-        inTopicConnector.registerListener(openLineageInTopicListener);
+        inTopicConnector.registerListener(localServerUserId, openLineageInTopicListener);
         try {
             inTopicConnector.start();
         } catch (OCFCheckedExceptionBase e) {
@@ -411,7 +445,7 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     *  Triggers stop sequence on the background jobs implementations
+     * Triggers stop sequence on the background jobs implementations
      */
     private void stopBackgroundJob() {
         if (CollectionUtils.isNotEmpty(backgroundJobs)) {
