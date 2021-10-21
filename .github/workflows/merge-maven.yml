@@ -61,7 +61,7 @@ jobs:
       - name: Build with Maven (Publish snapshots to maven central + docker)
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
         # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
-        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
+        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=quay.io" "-Ddocker.images=core" clean deploy'
         # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
         # verify (close) the repository & release
         env:
