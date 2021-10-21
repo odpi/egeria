@@ -61,12 +61,12 @@ jobs:
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
         # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
         run: 'cd open-metadata-resources/open_metadata_deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
-          # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
-          # verify (close) the repository & release
-          env:
-            MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-            MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
+        # verify (close) the repository & release
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
       - name: Login to DockerHub (Docker Hub)
         uses: docker/login-action@v1
         with:
@@ -77,12 +77,12 @@ jobs:
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
         # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
         run: 'cd open-metadata-resources/open_metadata_deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
-          # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
-          # verify (close) the repository & release
-          env:
-            MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-            MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
+        # verify (close) the repository & release
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
       # --
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
