@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 public enum Scope {
-    SOURCE_AND_DESTINATION("source-and-destination"),
     END_TO_END("end-to-end"),
     ULTIMATE_SOURCE("ultimate-source"),
     ULTIMATE_DESTINATION("ultimate-destination"),

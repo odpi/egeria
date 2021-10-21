@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
@@ -312,6 +313,39 @@ public class DataEngineResource {
                                        @PathVariable("serverName") String serverName,
                                        @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteDatabase(userId, serverName, requestBody);
+    }
+
+    /**
+     * Create a Database Schema entity with all the a relationship to a database, if provided and not virtual
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/database-schemas")
+    public GUIDResponse upsertDatabaseSchema(@PathVariable("userId") String userId,
+                                             @PathVariable("serverName") String serverName,
+                                             @RequestBody DatabaseSchemaRequestBody requestBody) {
+        return restAPI.upsertDatabaseSchema(userId, serverName, requestBody);
+
+    }
+
+    /**
+     * Deletes the database schema
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/database-schemas")
+    public VoidResponse deleteDatabaseSchema(@PathVariable("userId") String userId,
+                                             @PathVariable("serverName") String serverName,
+                                             @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteDatabaseSchema(userId, serverName, requestBody);
     }
 
     /**

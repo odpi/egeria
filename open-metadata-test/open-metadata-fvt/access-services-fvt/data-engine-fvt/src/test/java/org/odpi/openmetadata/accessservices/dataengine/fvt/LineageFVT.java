@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -205,7 +206,11 @@ public class LineageFVT extends DataEngineFVT{
 
         Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
         DataFile dataFile = dataStoreAndRelationalTableSetupService.upsertDataFile(userId, dataEngineClient, null);
-        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient, null);
+
+        DatabaseSchema databaseSchema = dataStoreAndRelationalTableSetupService.upsertDatabaseSchema(userId, dataEngineClient,
+                null, database.getQualifiedName(), false);
+        RelationalTable relationalTable = dataStoreAndRelationalTableSetupService.upsertRelationalTable(userId, dataEngineClient,
+                null, databaseSchema.getQualifiedName(), false);
 
         List<LineageMapping> lineageMappings = new ArrayList<>();
         lineageMappings.add(lineageSetupService.createLineageMapping(dataFile.getQualifiedName(), process.getQualifiedName()));
