@@ -85,10 +85,13 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
         Set<String> keys = getEntityKeys(metadataCollection, numInstances);
 
         getRelationshipsForEntity(metadataCollection, keys);
-        getEntityNeighborhood(metadataCollection, keys);
-        Map<String, List<String>> results = getRelatedEntities(metadataCollection, keys);
-        if (results != null) {
-            getLinkingEntities(metadataCollection, results);
+        List<String> profilesToSkip = performanceWorkPad.getProfilesToSkip();
+        if (!profilesToSkip.contains(PerformanceProfile.GRAPH_QUERIES.getProfileName())) {
+            getEntityNeighborhood(metadataCollection, keys);
+            Map<String, List<String>> results = getRelatedEntities(metadataCollection, keys);
+            if (results != null) {
+                getLinkingEntities(metadataCollection, results);
+            }
         }
 
         super.setSuccessMessage("Graph history query performance tests complete for: " + testTypeName);
