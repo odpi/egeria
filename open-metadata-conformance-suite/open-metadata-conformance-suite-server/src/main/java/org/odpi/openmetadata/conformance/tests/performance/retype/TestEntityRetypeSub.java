@@ -47,8 +47,11 @@ public class TestEntityRetypeSub extends TestEntityRetype
     @Override
     protected void run() throws Exception
     {
-        reTypeEntitiesSub();
-        super.setSuccessMessage("Entity retype to subtype performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reTypeEntity")) {
+            reTypeEntitiesSub();
+            super.setSuccessMessage("Entity retype to subtype performance tests complete for: " + testTypeName);
+        }
     }
 
 

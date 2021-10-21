@@ -67,8 +67,13 @@ public class TestRelationshipRetrieval extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         Set<String> keysToRetrieve = getRelationshipKeys(metadataCollection, numInstances);
-        isRelationshipKnown(metadataCollection, keysToRetrieve);
-        getRelationship(metadataCollection, keysToRetrieve);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("isRelationshipKnown")) {
+            isRelationshipKnown(metadataCollection, keysToRetrieve);
+        }
+        if (!methodsToSkip.contains("getRelationship")) {
+            getRelationship(metadataCollection, keysToRetrieve);
+        }
 
         super.setSuccessMessage("Relationship retrieval performance tests complete for: " + testTypeName);
     }

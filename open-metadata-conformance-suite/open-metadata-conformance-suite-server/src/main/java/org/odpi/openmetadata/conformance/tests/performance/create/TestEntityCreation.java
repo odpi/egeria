@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -65,10 +66,19 @@ public class TestEntityCreation extends OpenMetadataPerformanceTestCase
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
         int numInstances = super.getInstancesPerType();
 
-        addEntities(metadataCollection, numInstances);
-        // TODO: addExternalEntities(metadataCollection, numInstances);
-        // TODO: addEntityProxy(metadataCollection, repositoryHelper, numInstances);
-        saveEntityReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("addEntity")) {
+            addEntities(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("addExternalEntity")) {
+            // TODO: addExternalEntities(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("addEntityProxy")) {
+            // TODO: addEntityProxy(metadataCollection, repositoryHelper, numInstances);
+        }
+        if (!methodsToSkip.contains("saveEntityReferenceCopy")) {
+            saveEntityReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        }
 
         super.setSuccessMessage("Entity creation performance tests complete for: " + testTypeName);
     }

@@ -69,9 +69,16 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
         int numInstances = super.getInstancesPerType();
 
-        addRelationships(metadataCollection, numInstances);
-        // TODO: addExternalRelationship(metadataCollection, numInstances);
-        saveRelationshipReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("addRelationship")) {
+            addRelationships(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("addExternalRelationship")) {
+            // TODO: addExternalRelationship(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("saveRelationshipReferenceCopy")) {
+            saveRelationshipReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        }
 
         super.setSuccessMessage("Relationship creation performance tests complete for: " + testTypeName);
     }

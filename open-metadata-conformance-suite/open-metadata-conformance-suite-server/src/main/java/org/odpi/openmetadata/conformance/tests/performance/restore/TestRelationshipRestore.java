@@ -62,10 +62,12 @@ public class TestRelationshipRestore extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> relationshipsToDelete = getKeys(metadataCollection, numInstances);
-        restoreRelationships(metadataCollection, relationshipsToDelete);
-
-        super.setSuccessMessage("Relationship restore performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("restoreRelationship")) {
+            Set<String> relationshipsToDelete = getKeys(metadataCollection, numInstances);
+            restoreRelationships(metadataCollection, relationshipsToDelete);
+            super.setSuccessMessage("Relationship restore performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

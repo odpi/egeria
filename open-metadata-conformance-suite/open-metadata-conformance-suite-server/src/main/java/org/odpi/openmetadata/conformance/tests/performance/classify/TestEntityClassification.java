@@ -75,9 +75,14 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
         int numInstances = super.getInstancesPerType();
 
-        classifyEntities(metadataCollection, repositoryHelper, numInstances);
-        // TODO: classifyEntities(metadataCollection, repositoryHelper, numInstances); // from external source
-        saveClassificationReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("classifyEntity")) {
+            classifyEntities(metadataCollection, repositoryHelper, numInstances);
+            // TODO: classifyEntities(metadataCollection, repositoryHelper, numInstances); // from external source
+        }
+        if (!methodsToSkip.contains("saveClassificationReferenceCopy")) {
+            saveClassificationReferenceCopies(metadataCollection, repositoryHelper, numInstances);
+        }
 
         super.setSuccessMessage("Entity classification performance tests complete for: " + testTypeName);
     }

@@ -66,8 +66,13 @@ public class TestEntityUpdate extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         List<EntityDetail> entitiesToUpdate = getEntitiesToUpdate(metadataCollection, numInstances);
-        // TODO: updateEntityStatus(metadataCollection, numInstances);
-        updateEntityProperties(metadataCollection, entitiesToUpdate);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("updateEntityStatus")) {
+            // TODO: updateEntityStatus(metadataCollection, numInstances);
+        }
+        if (!methodsToSkip.contains("updateEntityProperties")) {
+            updateEntityProperties(metadataCollection, entitiesToUpdate);
+        }
 
         super.setSuccessMessage("Entity update performance tests complete for: " + testTypeName);
     }

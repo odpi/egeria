@@ -358,12 +358,16 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
         // 18-19. Graph query instances
         for (EntityDef entityDef : entityDefs.values())
         {
-            // Note: we will skip (or not) the specific profiles within these test cases, so that we do not
-            // inadvertently ignore the getRelationshipsForEntity call (which shouldn't really be treated as a graph query)
-            TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
-            testGraphQueries.executeTest();
-            TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
-            testGraphHistoryQueries.executeTest();
+            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_QUERIES.getProfileName()))
+            {
+                TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
+                testGraphQueries.executeTest();
+            }
+            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileName()))
+            {
+                TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
+                testGraphHistoryQueries.executeTest();
+            }
         }
 
         // 20. Re-home entity instances

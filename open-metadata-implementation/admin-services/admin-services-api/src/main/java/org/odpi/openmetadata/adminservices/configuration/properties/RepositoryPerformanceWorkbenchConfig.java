@@ -30,6 +30,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
     private int      maxSearchResults = 10;
     private int      waitBetweenScenarios = 60;
     private List<String> profilesToSkip = Collections.emptyList();
+    private List<String> methodsToSkip  = Collections.emptyList();
 
 
     /**
@@ -56,6 +57,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
             maxSearchResults = template.getMaxSearchResults();
             waitBetweenScenarios = template.getWaitBetweenScenarios();
             profilesToSkip = template.getProfilesToSkip();
+            methodsToSkip  = template.getMethodsToSkip();
         }
     }
 
@@ -175,6 +177,28 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
 
 
     /**
+     * Return the methods (if any) that should be skipped during the performance test.
+     *
+     * @return list of the method names that should be skipped during testing
+     */
+    public List<String> getMethodsToSkip()
+    {
+        return methodsToSkip;
+    }
+
+
+    /**
+     * Set up the methods that should be skipped during the performance test.
+     *
+     * @param methodsToSkip list of method names that should be skipped during testing
+     */
+    public void setMethodsToSkip(List<String> methodsToSkip)
+    {
+        this.methodsToSkip = methodsToSkip;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -188,6 +212,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
                 "maxSearchResults='" + maxSearchResults + '\'' +
                 "waitBetweenScenarios='" + waitBetweenScenarios + '\'' +
                 "profilesToSkip=" + profilesToSkip +
+                "methodsToSkip=" + methodsToSkip +
                 '}';
     }
 
@@ -214,7 +239,8 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
                 && Objects.equals(getInstancesPerType(), that.getInstancesPerType())
                 && Objects.equals(getMaxSearchResults(), that.getMaxSearchResults())
                 && Objects.equals(getWaitBetweenScenarios(), that.getWaitBetweenScenarios())
-                && Objects.equals(getProfilesToSkip(), that.getProfilesToSkip());
+                && Objects.equals(getProfilesToSkip(), that.getProfilesToSkip())
+                && Objects.equals(getMethodsToSkip(), that.getMethodsToSkip());
     }
 
 
@@ -226,6 +252,6 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTutRepositoryServerName(), getInstancesPerType(), getMaxSearchResults(), getWaitBetweenScenarios(), getProfilesToSkip());
+        return Objects.hash(getTutRepositoryServerName(), getInstancesPerType(), getMaxSearchResults(), getWaitBetweenScenarios(), getProfilesToSkip(), getMethodsToSkip());
     }
 }

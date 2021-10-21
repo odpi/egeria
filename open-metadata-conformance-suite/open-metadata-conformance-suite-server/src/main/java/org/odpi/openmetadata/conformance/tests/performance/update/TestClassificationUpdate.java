@@ -68,10 +68,12 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
-        Set<String> keys = getEntityKeys(metadataCollection, repositoryHelper, numInstances);
-        updateEntityClassification(metadataCollection, keys);
-
-        super.setSuccessMessage("Classification update performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("updateEntityClassification")) {
+            Set<String> keys = getEntityKeys(metadataCollection, repositoryHelper, numInstances);
+            updateEntityClassification(metadataCollection, keys);
+            super.setSuccessMessage("Classification update performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

@@ -71,9 +71,11 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         Set<String> keys = getRelationshipKeys(metadataCollection, numInstances);
-        reTypeRelationships(metadataCollection, keys);
-
-        super.setSuccessMessage("Relationship retype performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reTypeRelationship")) {
+            reTypeRelationships(metadataCollection, keys);
+            super.setSuccessMessage("Relationship retype performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

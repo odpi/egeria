@@ -64,10 +64,12 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keys = getKeys(metadataCollection, numInstances);
-        deleteEntities(metadataCollection, keys);
-
-        super.setSuccessMessage("Entity delete performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("deleteEntity")) {
+            Set<String> keys = getKeys(metadataCollection, numInstances);
+            deleteEntities(metadataCollection, keys);
+            super.setSuccessMessage("Entity delete performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

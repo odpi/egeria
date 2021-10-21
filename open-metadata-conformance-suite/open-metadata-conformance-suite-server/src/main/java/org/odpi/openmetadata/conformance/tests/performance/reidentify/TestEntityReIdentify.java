@@ -64,10 +64,12 @@ public class TestEntityReIdentify extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keysToReIdentify = getEntityKeys(metadataCollection, numInstances);
-        reIdentifyEntities(metadataCollection, keysToReIdentify);
-
-        super.setSuccessMessage("Entity re-identify performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reIdentifyEntity")) {
+            Set<String> keysToReIdentify = getEntityKeys(metadataCollection, numInstances);
+            reIdentifyEntities(metadataCollection, keysToReIdentify);
+            super.setSuccessMessage("Entity re-identify performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

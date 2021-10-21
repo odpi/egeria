@@ -65,11 +65,13 @@ public class TestRelationshipReHome extends OpenMetadataPerformanceTestCase
         String metadataCollectionName = getRepositoryConnector().getMetadataCollectionName();
         int numInstances = super.getInstancesPerType();
 
-        // Only re-home half of the instances, so that we can test purging of the other half
-        Set<String> keysToReHome = getRelationshipKeys(metadataCollection, numInstances / 2);
-        reHomeRelationships(metadataCollection, metadataCollectionName, keysToReHome);
-
-        super.setSuccessMessage("Relationship re-home performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reHomeRelationship")) {
+            // Only re-home half of the instances, so that we can test purging of the other half
+            Set<String> keysToReHome = getRelationshipKeys(metadataCollection, numInstances / 2);
+            reHomeRelationships(metadataCollection, metadataCollectionName, keysToReHome);
+            super.setSuccessMessage("Relationship re-home performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

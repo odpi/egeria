@@ -68,9 +68,11 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        undoEntityUpdate(metadataCollection, numInstances);
-
-        super.setSuccessMessage("Entity undo performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("undoEntityUpdate")) {
+            undoEntityUpdate(metadataCollection, numInstances);
+            super.setSuccessMessage("Entity undo performance tests complete for: " + testTypeName);
+        }
     }
 
     /**

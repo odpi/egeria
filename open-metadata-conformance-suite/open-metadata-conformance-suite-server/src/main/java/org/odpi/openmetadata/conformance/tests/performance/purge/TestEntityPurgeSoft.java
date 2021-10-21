@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,8 +45,11 @@ public class TestEntityPurgeSoft extends TestEntityPurge
      */
     protected void run() throws Exception
     {
-        deleteEntities();
-        super.setSuccessMessage("Entity purge performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("purgeEntity")) {
+            deleteEntities();
+            super.setSuccessMessage("Entity purge performance tests complete for: " + testTypeName);
+        }
     }
 
 

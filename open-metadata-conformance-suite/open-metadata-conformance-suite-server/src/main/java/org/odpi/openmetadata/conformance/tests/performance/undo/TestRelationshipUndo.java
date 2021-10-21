@@ -68,9 +68,11 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        undoRelationshipUpdate(metadataCollection, numInstances);
-
-        super.setSuccessMessage("Relationship undo performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("undoRelationshipUpdate")) {
+            undoRelationshipUpdate(metadataCollection, numInstances);
+            super.setSuccessMessage("Relationship undo performance tests complete for: " + testTypeName);
+        }
     }
 
     /**
