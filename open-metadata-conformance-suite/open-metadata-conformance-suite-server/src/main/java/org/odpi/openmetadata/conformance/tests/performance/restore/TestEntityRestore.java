@@ -62,10 +62,12 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keys = getKeys(metadataCollection, numInstances);
-        restoreEntities(metadataCollection, keys);
-
-        super.setSuccessMessage("Entity restore performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("restoreEntity")) {
+            Set<String> keys = getKeys(metadataCollection, numInstances);
+            restoreEntities(metadataCollection, keys);
+            super.setSuccessMessage("Entity restore performance tests complete for: " + testTypeName);
+        }
     }
 
     /**
@@ -125,7 +127,7 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
                     EntityDetail result = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
                             guid);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_RESTORE,
                             A_RESTORE_MSG + testTypeName,
                             PerformanceProfile.ENTITY_RESTORE.getProfileId(),

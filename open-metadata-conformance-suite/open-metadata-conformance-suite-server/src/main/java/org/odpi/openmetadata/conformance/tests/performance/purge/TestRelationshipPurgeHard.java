@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,8 +47,13 @@ public class TestRelationshipPurgeHard extends TestRelationshipPurge
      */
     protected void run() throws Exception
     {
-        purgeRelationships();
-        purgeRelationshipReferenceCopies();
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("purgeRelationship")) {
+            purgeRelationships();
+        }
+        if (!methodsToSkip.contains("purgeRelationshipReferenceCopy")) {
+            purgeRelationshipReferenceCopies();
+        }
         super.setSuccessMessage("Relationship purge performance tests complete for: " + testTypeName);
     }
 

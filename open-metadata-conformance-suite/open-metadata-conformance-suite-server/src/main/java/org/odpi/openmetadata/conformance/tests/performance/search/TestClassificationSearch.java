@@ -78,7 +78,10 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
 
-        findEntitiesByClassification(metadataCollection, repositoryHelper);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("findEntitiesByClassification")) {
+            findEntitiesByClassification(metadataCollection, repositoryHelper);
+        }
 
         super.setSuccessMessage("Classification search performance tests complete for: " + testTypeName);
     }
