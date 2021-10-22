@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 /**
  * OpenLineageOperationalServices is responsible for controlling the startup and shutdown of
  * of the open lineage services.
@@ -142,8 +141,6 @@ public class OpenLineageServerOperationalServices {
 
     private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws InvalidParameterException {
 
-        final String actionDescription = "Retrieve topic Asset Lineage out topic connection";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/topics/out-topic-connection/{2}";
         OCFRESTClient restClient;
         String serverName = accessServiceConfig.getServerName();
         String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
@@ -156,18 +153,24 @@ public class OpenLineageServerOperationalServices {
         }
         ConnectionResponse restResult = null;
         do {
-            restResult = getConnection(methodName, actionDescription, urlTemplate, restClient, serverName, serverPlatformURLRoot, restResult);
+            restResult = getConnection(methodName, restClient, accessServiceConfig);
         } while (restResult == null);
         return restResult.getConnection();
     }
 
-    private ConnectionResponse getConnection(String methodName, String actionDescription, String urlTemplate, OCFRESTClient restClient, String serverName, String serverPlatformURLRoot, ConnectionResponse restResult) {
+    private ConnectionResponse getConnection(String methodName, OCFRESTClient restClient, OLSSimplifiedAccessServiceConfig accessServiceConfig) {
+        final String actionDescription = "Retrieve topic Asset Lineage out topic connection";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/topics/out-topic-connection/{2}";
+        String serverName = accessServiceConfig.getServerName();
+        String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
+        String serverUserId = accessServiceConfig.getUser();
+        ConnectionResponse restResult = null;
         try {
             restResult = restClient.callConnectionGetRESTCall(methodName,
                     serverPlatformURLRoot + urlTemplate,
                     serverName,
-                    localServerUserId,
-                    localServerUserId);
+                    serverUserId,
+                    serverUserId);
         } catch (InvalidParameterException | UserNotAuthorizedException | org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             logException(OpenLineageServerAuditCode.COULD_NOT_RETRIEVE_TOPIC_CONNECTOR, actionDescription, e);
         }
