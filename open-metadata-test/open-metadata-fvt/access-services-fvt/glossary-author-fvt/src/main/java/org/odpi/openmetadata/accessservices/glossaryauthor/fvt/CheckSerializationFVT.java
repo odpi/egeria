@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.glossaryauthor.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
+import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.glossarys.GlossaryAuthorViewGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
@@ -22,21 +22,21 @@ import java.util.List;
 
 public class CheckSerializationFVT {
     private final String userId;
-    private final SubjectAreaRelationshipClients subjectAreaRelationship;
-    private final SubjectAreaNodeClient<Term> subjectAreaTerm;
-    private final SubjectAreaNodeClient<Glossary> subjectAreaGlossary;
+    //private final SubjectAreaRelationshipClients subjectAreaRelationship;
+    //private final SubjectAreaNodeClient<Term> subjectAreaTerm;
+    //private final SubjectAreaNodeClient<Glossary> subjectAreaGlossary;
 
     public CheckSerializationFVT(String url, String serverName, String userId) throws InvalidParameterException {
         this.userId = userId;
 
-        SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        this.subjectAreaTerm = new SubjectAreaTermClient<>(client);
-        this.subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
-        this.subjectAreaRelationship = new SubjectAreaRelationship(client);
+        GlossaryAuthorViewGlossaryClient client = new GlossaryAuthorViewGlossaryClient(serverName, url);
+ //       this.subjectAreaTerm = new SubjectAreaTermClient<>(client);
+  //      this.subjectAreaGlossary = new GlossaryAuthorViewGlossaryClient(client);
+  //      this.subjectAreaRelationship = new SubjectAreaRelationship(client);
     }
 
     public static void main(String[] args) {
-        try {
+        /*try {
             String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1) {
@@ -45,10 +45,10 @@ public class CheckSerializationFVT {
             System.out.println("ERROR: " + e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
-        }
+        }*/
 
     }
-
+/*
     public static void runWith2Servers(String url) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
@@ -190,5 +190,5 @@ public class CheckSerializationFVT {
         synonym.getEnd1().setNodeGuid(oneTermGuid);
         synonym.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.synonym().create(userId, synonym);
-    }
+    }*/
 }
