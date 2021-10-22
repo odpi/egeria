@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -18,31 +21,31 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class RelationshipHandler {
 
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final RepositoryErrorHandler errorHandler;
-    private final String sourceName;
+    private final AssetHandler<AssetCatalogBean> assetHandler;
+    private final CommonHandler commonHandler;
 
-    private CommonHandler commonHandler;
+    private final String sourceName;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param sourceName           name of the component
+     * @param sourceName              name of the component
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param assetHandler            provides utilities for manipulating asset catalog objects using a generic handler
      * @param errorHandler            provides common validation routines for the other handler classes
      */
     public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                               OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+                               OMRSRepositoryHelper repositoryHelper, AssetHandler<AssetCatalogBean> assetHandler,
+                               RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
-        this.errorHandler = errorHandler;
-        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, this.errorHandler);
+        this.assetHandler = assetHandler;
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler);
     }
 
     /**
@@ -73,16 +76,12 @@ public class RelationshipHandler {
             relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
         }
 
-        Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
-                entity1GUID,
-                "",
-                entity2GUID,
-                relationshipTypeGUID,
-                relationshipType,
-                methodName);
+        Relationship relationshipBetweenEntities = assetHandler.getUniqueAttachmentLink(userId, entity1GUID,
+                Constants.GUID_PARAMETER, "", relationshipTypeGUID, relationshipType, entity2GUID,
+                "", null, methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
+            AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, sourceName, assetHandler.getServerName());
             return converter.convertRelationship(relationshipBetweenEntities);
         }
 

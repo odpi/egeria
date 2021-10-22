@@ -3,13 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.service;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.ExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -21,8 +24,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * The AssetCatalogService provides the server-side implementation of the Asset Catalog Open Metadata
@@ -37,7 +38,7 @@ public class AssetCatalogRESTService {
 
     private final AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private ExceptionHandler exceptionHandler = new ExceptionHandler();
+    private final ExceptionHandler exceptionHandler = new ExceptionHandler();
 
     /**
      * Fetch asset's header, classification and properties
@@ -147,43 +148,6 @@ public class AssetCatalogRESTService {
         return response;
     }
 
-    /**
-     * Return a sub-graph of relationships that connect two assets
-     *
-     * @param serverName     unique identifier for requested server.
-     * @param userId         the unique identifier for the user
-     * @param startAssetGUID the starting asset identifier of the query
-     * @param endAssetGUID   the ending asset identifier of the query
-     * @return a list of relationships that connects the assets
-     */
-    public RelationshipListResponse getLinkingRelationships(String serverName,
-                                                            String userId,
-                                                            String startAssetGUID,
-                                                            String endAssetGUID) {
-        String methodName = "getLinkingRelationships";
-        log.debug(CALLING_METHOD, methodName);
-
-        RelationshipListResponse response = new RelationshipListResponse();
-        try {
-
-            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setRelationships(assetCatalogHandler.getLinkingRelationshipsBetweenAssets(serverName,
-                    userId, startAssetGUID, endAssetGUID));
-        } catch (AssetCatalogException e) {
-            exceptionHandler.captureAssetCatalogExeption(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            restExceptionHandler.captureInvalidParameterException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
-            restExceptionHandler.capturePropertyServerException(response, e);
-        }
-
-        log.debug(METHOD_WITH_RESPONSE, methodName, response);
-
-        return response;
-    }
-
     public RelationshipListResponse getAssetRelationships(String serverName,
                                                           String userId,
                                                           String assetGUID,
@@ -199,69 +163,6 @@ public class AssetCatalogRESTService {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID,
                     assetTypeName, relationshipTypeName, startFrom, limit));
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            restExceptionHandler.captureInvalidParameterException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
-            restExceptionHandler.capturePropertyServerException(response, e);
-        }
-
-        log.debug(METHOD_WITH_RESPONSE, methodName, response);
-
-        return response;
-    }
-
-    public AssetCatalogListResponse getLinkingAssets(String serverName,
-                                                     String userId,
-                                                     String startAssetId,
-                                                     String endAssetId) {
-        String methodName = "getLinkingAssets";
-        log.debug(CALLING_METHOD, methodName);
-
-        AssetCatalogListResponse response = new AssetCatalogListResponse();
-        try {
-            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssetCatalogBeanList(assetCatalogHandler.getIntermediateAssets(userId, startAssetId, endAssetId));
-        } catch (AssetCatalogException e) {
-            exceptionHandler.captureAssetCatalogExeption(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            restExceptionHandler.captureInvalidParameterException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
-            restExceptionHandler.capturePropertyServerException(response, e);
-        }
-
-        log.debug(METHOD_WITH_RESPONSE, methodName, response);
-
-        return response;
-    }
-
-    /**
-     * Returns the sub-graph that represents the returned linked relationships.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return a list of assets that in neighborhood of the given asset
-     */
-    public AssetCatalogListResponse getAssetsFromNeighborhood(String serverName,
-                                                              String userId,
-                                                              String assetGUID,
-                                                              SearchParameters searchParameters) {
-        String methodName = "getAssetsFromNeighborhood";
-        log.debug(CALLING_METHOD, methodName);
-
-        AssetCatalogListResponse response = new AssetCatalogListResponse();
-        try {
-            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            List<AssetCatalogBean> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(userId, assetGUID, searchParameters);
-
-            response.setAssetCatalogBeanList(entitiesFromNeighborhood);
-        } catch (AssetCatalogException e) {
-            exceptionHandler.captureAssetCatalogExeption(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {

@@ -31,15 +31,15 @@ import java.util.List;
 public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger( AssetCatalogOMRSTopicListener.class );
-    private static final String ASSET_TYPE                         = "Asset";
+    private static final String ASSET_TYPE                        = "Asset";
 
-    private OMRSRepositoryHelper        repositoryHelper;
-    private OMRSRepositoryValidator     repositoryValidator;
-    private String                      serverName;
-    private List<String>                supportedZones;
-    private List<String>                supportedTypesForSearch;
-    private AssetCatalogSearchPublisher publisher;
-    private AssetCatalogConverter       converter;
+    private final OMRSRepositoryHelper                            repositoryHelper;
+    private final OMRSRepositoryValidator                         repositoryValidator;
+    private final String                                          serverName;
+    private final List<String>                                    supportedZones;
+    private final List<String>                                    supportedTypesForSearch;
+    private final AssetCatalogSearchPublisher                     publisher;
+    private final AssetCatalogConverter<AssetCatalogBean>         converter;
 
     public AssetCatalogOMRSTopicListener(String serviceName,
                                          AuditLog auditLog,
@@ -56,7 +56,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             this.supportedZones = supportedZones;
             this.repositoryHelper = repositoryHelper;
             this.repositoryValidator = repositoryValidator;
-            this.converter = new AssetCatalogConverter(serverName, repositoryHelper);
+            this.converter = new AssetCatalogConverter<>(repositoryHelper, serviceName, serverName);
             this.supportedTypesForSearch = supportedTypesForSearch;
     }
 

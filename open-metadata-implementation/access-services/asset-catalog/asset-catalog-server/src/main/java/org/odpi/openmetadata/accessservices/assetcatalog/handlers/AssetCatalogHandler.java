@@ -8,29 +8,26 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogE
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Connection;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -45,13 +42,95 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.API_ENDPOINT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.API_ENDPOINT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_LOCATION;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_LOCATION_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_SCHEMA_TYPE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ATTRIBUTE_FOR_SCHEMA_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.COMPLEX_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_CONNECTOR_TYPE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_CONNECTOR_TYPE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_ENDPOINT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_ENDPOINT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_TO_ASSET;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.CONNECTION_TO_ASSET_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATABASE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATA_CONTENT_FOR_DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATA_CONTENT_FOR_DATA_SET_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATA_FILE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DATA_STORE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DEPLOYED_API;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DEPLOYED_VIRTUAL_CONTAINER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DEPLOYED_VIRTUAL_CONTAINER_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.DISPLAY_NAME;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ENDPOINT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.FOLDER_HIERARCHY;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.FOLDER_HIERARCHY_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GLOSSARY_TERM_TYPE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_CLUSTER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_CLUSTER_MEMBER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_CLUSTER_MEMBER_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_LOCATION;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_LOCATION_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_NETWORK;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_NETWORK_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_OPERATING_PLATFORM;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.HOST_OPERATING_PLATFORM_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.IT_INFRASTRUCTURE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.LOCATION;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NAME;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NESTED_FILE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NESTED_FILE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NESTED_SCHEMA_ATTRIBUTE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NETWORK;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NETWORK_GATEWAY_LINK;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NETWORK_GATEWAY_LINK_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PORT_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PORT_SCHEMA_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.PROCESS_PORT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.QUALIFIED_NAME;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SCHEMA_ATTRIBUTE_TYPE;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SCHEMA_ATTRIBUTE_TYPE_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SCHEMA_ELEMENT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SEARCH_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SEARCH_STRING_PARAMETER_NAME;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SEMANTIC_ASSIGNMENT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SERVER_ENDPOINT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SERVER_ENDPOINT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER_DEPLOYMENT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER_DEPLOYMENT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER_PLATFORM;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_GUID;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.TYPE_SEQUENCING;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.VIRTUAL_CONTAINER;
 
 /**
  * Asset Catalog Handler supports the lookup of the assets from the repositories.
@@ -68,8 +147,9 @@ public class AssetCatalogHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
-    private final AssetCatalogConverter assetCatalogConverter;
-    private final List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private final AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter;
+    private final AssetHandler<AssetCatalogBean> assetHandler;
+    private final Map<String, String> defaultSearchTypes = new HashMap<>();
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
     private final List<String> supportedZones;
@@ -88,20 +168,25 @@ public class AssetCatalogHandler {
      */
     public AssetCatalogHandler(String serverUserName, String sourceName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                               AssetHandler<AssetCatalogBean> assetHandler, AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
                                RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
         this.serverUserName = serverUserName;
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.assetHandler = assetHandler;
+        this.assetCatalogConverter = assetCatalogConverter;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler);
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
             Collections.sort(supportedTypesForSearch);
         }
-        this.assetCatalogConverter = new AssetCatalogConverter(sourceName, repositoryHelper);
+        defaultSearchTypes.put(GLOSSARY_TERM, GLOSSARY_TERM_TYPE_GUID);
+        defaultSearchTypes.put(ASSET, ASSET_GUID);
+        defaultSearchTypes.put(SCHEMA_ELEMENT, SCHEMA_ELEMENT_GUID);
     }
 
     /**
@@ -147,12 +232,9 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
-        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
-                assetGUID,
-                assetTypeName,
-                null,
-                null,
-                methodName);
+        List<Relationship> relationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
+                assetTypeName, null, null, null,
+                0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
             return assetCatalogConverter.convertRelationships(relationshipsByType);
@@ -198,53 +280,6 @@ public class AssetCatalogHandler {
     }
 
     /**
-     * @param serverName     name of the local server
-     * @param userId         user identifier that issues the call
-     * @param startAssetGUID the  starting asset identifier
-     * @param endAssetGUID   the ending  asset identifier
-     * @return the linking relationship between the given assets
-     * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
-     * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
-     * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
-     * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
-     */
-    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets(String serverName,
-                                                                                                                           String userId,
-                                                                                                                           String startAssetGUID,
-                                                                                                                           String endAssetGUID)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-        String methodName = "getLinkingRelationshipsBetweenAssets";
-
-        initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
-
-        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
-        InstanceGraph linkingEntities = null;
-        try {
-            linkingEntities = metadataCollection.getLinkingEntities(userId,
-                    startAssetGUID,
-                    endAssetGUID,
-                    Collections.singletonList(InstanceStatus.ACTIVE),
-                    null);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
-                | FunctionNotSupportedException | RepositoryErrorException
-                | PropertyErrorException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, GUID_PARAMETER);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-
-        if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getRelationships())) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND.getMessageDefinition(methodName),
-                    this.getClass().getName(),
-                    methodName);
-        }
-
-        return assetCatalogConverter.convertRelationships(linkingEntities.getRelationships());
-    }
-
-    /**
      * @param userId               user identifier that issues the call
      * @param assetGUID            the asset identifier
      * @param assetTypeName        the asset type name
@@ -270,64 +305,15 @@ public class AssetCatalogHandler {
 
         String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipTypeName);
 
-        List<Relationship> pagedRelationshipsByType = repositoryHandler.getPagedRelationshipsByType(userId,
-                assetGUID,
-                assetTypeName,
-                relationshipTypeGUID,
-                relationshipTypeName,
-                from,
-                pageSize,
-                methodName);
+        List<Relationship> pagedRelationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
+                assetTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                from, pageSize, null, methodName);
 
         if (CollectionUtils.isNotEmpty(pagedRelationshipsByType)) {
             return assetCatalogConverter.convertRelationships(pagedRelationshipsByType);
         }
 
         return Collections.emptyList();
-    }
-
-    /**
-     * @param userId         user identifier that issues the call
-     * @param startAssetGUID the  starting asset identifier
-     * @param endAssetGUID   the ending  asset identifier
-     * @return a list of the entities that connects the given assets from the request
-     * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
-     * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
-     * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
-     * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
-     */
-    public List<AssetCatalogBean> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-
-        String methodName = "getIntermediateAssets";
-        initialValidationStartEndAssetGUID(userId, startAssetGUID, endAssetGUID, methodName);
-
-        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
-
-        InstanceGraph linkingEntities = null;
-        try {
-            linkingEntities = metadataCollection.getLinkingEntities(userId,
-                    startAssetGUID,
-                    endAssetGUID,
-                    Collections.singletonList(InstanceStatus.ACTIVE),
-                    null);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
-                | FunctionNotSupportedException
-                | PropertyErrorException | RepositoryErrorException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, GUID_PARAMETER);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-
-        if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getEntities())) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND.getMessageDefinition(methodName),
-                    this.getClass().getName(),
-                    methodName);
-        }
-
-        return getAssetCatalogBeansAfterValidation(methodName, linkingEntities.getEntities());
     }
 
     /**
@@ -383,7 +369,7 @@ public class AssetCatalogHandler {
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
-            InvalidParameterException, RepositoryErrorException {
+            InvalidParameterException, RepositoryErrorException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -391,14 +377,12 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        List<EntityDetail> result;
-        List<String> typesFilter;
+        Map<String, String> typesAndGUIDsFilter = defaultSearchTypes;
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
-            typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
-            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
-        } else {
-            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
+            typesAndGUIDsFilter = commonHandler.getTypesAndGUIDs(userId, searchParameters.getEntityTypes());
         }
+        List<EntityDetail> result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters,
+                typesAndGUIDsFilter, methodName);
 
         Set<Elements> searchResults = new HashSet<>();
 
@@ -410,7 +394,7 @@ public class AssetCatalogHandler {
                         supportedZones,
                         serverUserName,
                         methodName);
-                Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
+                    Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
                 searchResults.add(elements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
                 log.debug("This asset if a different zone: {}", entityDetail.getGUID());
@@ -540,22 +524,13 @@ public class AssetCatalogHandler {
         return entityByGUID;
     }
 
-    private void initialValidationStartEndAssetGUID(String userId, String startAssetGUID, String endAssetGUID, String methodName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startAssetGUID, "startAssetGUID", methodName);
-        invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
-    }
-
     private List<EntityDetail> collectSearchedEntitiesByType(String userId,
                                                              String searchCriteria,
                                                              SearchParameters searchParameters,
-                                                             List<String> types)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, PropertyErrorException,
-            TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
+                                                             Map<String, String> typesAndGUIDs,
+                                                             String methodName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
-
-        OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
         if(searchParameters.getExactMatch()) {
             searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, searchParameters.getCaseInsensitive());
@@ -564,8 +539,9 @@ public class AssetCatalogHandler {
             searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.getCaseInsensitive());
         }
 
-        for (String type : types) {
-            result.addAll(searchEntityByCriteria(userId, searchCriteria, type, searchParameters, metadataCollection));
+        for (Map.Entry<String, String> typeAndGUID : typesAndGUIDs.entrySet()) {
+            result.addAll(searchEntityByCriteria(userId, searchCriteria, typeAndGUID.getValue(), typeAndGUID.getKey(),
+                    searchParameters, methodName));
         }
         return result;
     }
@@ -587,14 +563,10 @@ public class AssetCatalogHandler {
         }
         Elements elements = assetCatalogConverter.buildAssetElements(glossaryTerm);
 
-        List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId,
-                glossaryTerm.getGUID(),
-                GLOSSARY_TERM,
-                SEMANTIC_ASSIGNMENT_GUID,
-                SEMANTIC_ASSIGNMENT,
-                0,
-                0,
-                method);
+        List<EntityDetail> schemas = assetHandler.getAttachedFilteredEntities(userId, glossaryTerm.getGUID(),
+                GUID_PARAMETER, GLOSSARY_TERM, SEMANTIC_ASSIGNMENT, SEMANTIC_ASSIGNMENT_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (CollectionUtils.isEmpty(schemas)) {
             return elements;
@@ -628,15 +600,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDeployedAPI";
 
-        List<EntityDetail> endpoints = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                DEPLOYED_API,
-                API_ENDPOINT_GUID,
-                API_ENDPOINT,
-                0,
-                0,
-                method);
+        List<EntityDetail> endpoints = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, DEPLOYED_API, API_ENDPOINT, API_ENDPOINT_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
         if (CollectionUtils.isEmpty(endpoints)) {
             return;
         }
@@ -677,26 +644,18 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForProcess";
 
-        List<EntityDetail> ports = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                PROCESS,
-                PROCESS_PORT_GUID,
-                PROCESS_PORT,
-                0,
-                0,
-                method);
+        List<EntityDetail> ports = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, PROCESS, PROCESS_PORT, PROCESS_PORT_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (CollectionUtils.isNotEmpty(ports)) {
             for (EntityDetail port : ports) {
                 assetCatalogConverter.addContextElement(assetCatalogItemElement, port);
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
-                    EntityDetail schemaType = repositoryHandler.getEntityForRelationshipType(userId,
-                            port.getGUID(),
-                            DATABASE,
-                            PORT_SCHEMA_GUID,
-                            PORT_SCHEMA,
-                            method);
+                    EntityDetail schemaType = assetHandler.getAttachedEntity(userId, port.getGUID(), GUID_PARAMETER,
+                            DATABASE, PORT_SCHEMA_GUID, PORT_SCHEMA, null, false,
+                            false, null, method);
 
                     if (schemaType != null) {
                         assetCatalogConverter.addElement(assetCatalogItemElement, schemaType);
@@ -730,15 +689,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDatabase";
 
-        List<EntityDetail> dataSets = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                DATABASE,
-                DATA_CONTENT_FOR_DATA_SET_GUID,
-                DATA_CONTENT_FOR_DATA_SET,
-                0,
-                0,
-                method);
+        List<EntityDetail> dataSets = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, DATABASE, DATA_CONTENT_FOR_DATA_SET, DATA_CONTENT_FOR_DATA_SET_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (dataSets != null && !dataSets.isEmpty()) {
             for (EntityDetail dataSet : dataSets) {
@@ -753,14 +707,9 @@ public class AssetCatalogHandler {
             UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDataSet";
 
-        EntityDetail schemaType = repositoryHandler.getEntityForRelationshipType(
-                userId,
-                dataSet.getGUID(),
-                DATA_SET,
-                ASSET_SCHEMA_TYPE_GUID,
-                ASSET_SCHEMA_TYPE,
-                method);
-
+        EntityDetail schemaType = assetHandler.getAttachedEntity(userId, dataSet.getGUID(), GUID_PARAMETER,
+                DATA_SET, ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE, null, false,
+                false, null, method);
 
         if (schemaType == null) {
             return;
@@ -780,15 +729,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForFileFolder";
 
-        List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                FILE_FOLDER,
-                CONNECTION_TO_ASSET_GUID,
-                CONNECTION_TO_ASSET,
-                0,
-                0,
-                method);
+        List<EntityDetail> connections = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, FILE_FOLDER, CONNECTION_TO_ASSET, CONNECTION_TO_ASSET_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
 
         if (CollectionUtils.isNotEmpty(connections)) {
@@ -797,9 +741,10 @@ public class AssetCatalogHandler {
         }
 
 
-        List<Relationship> parentFolderRelationships = repositoryHandler.getRelationshipsByType(userId,
-                entityDetail.getGUID(), entityDetail.getType().getTypeDefName(),
-                FOLDER_HIERARCHY_GUID, FOLDER_HIERARCHY, method);
+        List<Relationship> parentFolderRelationships = assetHandler.getAttachmentLinks(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, entityDetail.getType().getTypeDefName(), FOLDER_HIERARCHY_GUID,
+                FOLDER_HIERARCHY, null, 0, invalidParameterHandler.getMaxPagingSize(),
+                null, method);
 
         if (CollectionUtils.isEmpty(parentFolderRelationships)) {
             return;
@@ -838,15 +783,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDataFile";
 
-        List<EntityDetail> fileFolders = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                DATA_FILE,
-                NESTED_FILE_GUID,
-                NESTED_FILE,
-                0,
-                0,
-                method);
+        List<EntityDetail> fileFolders = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, DATA_FILE, NESTED_FILE, NESTED_FILE_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (CollectionUtils.isEmpty(fileFolders)) {
             return;
@@ -861,14 +801,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForSoftwareServerPlatform";
 
-        EntityDetail host = repositoryHandler.getEntityForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                entityDetail.getType().getTypeDefName(),
-                SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_GUID,
-                SOFTWARE_SERVER_PLATFORM_DEPLOYMENT,
-                method);
-
+        EntityDetail host = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
+                entityDetail.getType().getTypeDefName(), SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_GUID,
+                SOFTWARE_SERVER_PLATFORM_DEPLOYMENT, null, false, false,
+                null, method);
         if (host != null) {
             assetCatalogConverter.addElement(assetCatalogItemElement, host);
             getContextForHost(userId, host, assetCatalogItemElement);
@@ -881,26 +817,17 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForNetwork";
 
-        List<EntityDetail> networkGateways = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                NETWORK,
-                NETWORK_GATEWAY_LINK_GUID,
-                NETWORK_GATEWAY_LINK,
-                0,
-                0,
-                method);
+        List<EntityDetail> networkGateways = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, NETWORK, NETWORK_GATEWAY_LINK, NETWORK_GATEWAY_LINK_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
+
         networkGateways.forEach(networkGateway -> assetCatalogConverter.addElement(assetCatalogItemElement, networkGateway));
 
-        List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                NETWORK,
-                HOST_NETWORK_GUID,
-                HOST_NETWORK,
-                0,
-                0,
-                method);
+        List<EntityDetail> hosts = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, NETWORK, HOST_NETWORK, HOST_NETWORK_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (CollectionUtils.isNotEmpty(hosts)) {
             for (EntityDetail host : hosts) {
@@ -917,48 +844,36 @@ public class AssetCatalogHandler {
         String method = "getContextForHost";
         List<EntityDetail> hosts = null;
         if (entityDetail.getType().getTypeDefName().equals(VIRTUAL_CONTAINER)) {
-            hosts = repositoryHandler.getEntitiesForRelationshipType(userId,
-                    entityDetail.getGUID(),
-                    HOST,
-                    DEPLOYED_VIRTUAL_CONTAINER_GUID,
-                    DEPLOYED_VIRTUAL_CONTAINER,
-                    0,
-                    0,
-                    method);
+            hosts = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                    GUID_PARAMETER, HOST, DEPLOYED_VIRTUAL_CONTAINER, DEPLOYED_VIRTUAL_CONTAINER_GUID,
+                    0, null, null, 0, false,
+                    false, 0, method);
 
         } else if (entityDetail.getType().getTypeDefName().equals(HOST_CLUSTER)) {
-            hosts = repositoryHandler.getEntitiesForRelationshipType(
-                    userId,
-                    entityDetail.getGUID(),
-                    HOST,
-                    HOST_CLUSTER_MEMBER_GUID,
-                    HOST_CLUSTER_MEMBER,
-                    0,
-                    0,
-                    method);
+            hosts = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                    GUID_PARAMETER, HOST, HOST_CLUSTER_MEMBER, HOST_CLUSTER_MEMBER_GUID,
+                    0, null, null, 0, false,
+                    false, 0, method);
+
         }
         if (hosts != null) {
             hosts.forEach(host -> assetCatalogConverter.addElement(assetCatalogItemElement, host));
         }
 
-        EntityDetail operatingPlatform = repositoryHandler.getEntityForRelationshipType(userId,
-                entityDetail.getGUID(),
-                entityDetail.getType().getTypeDefName(),
-                HOST_OPERATING_PLATFORM_GUID,
-                HOST_OPERATING_PLATFORM,
-                method);
-
+        EntityDetail operatingPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
+                entityDetail.getType().getTypeDefName(), HOST_OPERATING_PLATFORM_GUID, HOST_OPERATING_PLATFORM,
+                null, false, false, null, method);
         assetCatalogConverter.addElement(assetCatalogItemElement, operatingPlatform);
 
-        List<EntityDetail> locations = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                HOST,
-                HOST_LOCATION_GUID,
-                HOST_LOCATION,
-                0,
-                0,
-                method);
+        processLocations(userId, entityDetail, assetCatalogItemElement, method);
+    }
+
+    private void processLocations(String userId, EntityDetail entityDetail, AssetCatalogItemElement assetCatalogItemElement,
+                                  String method) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        List<EntityDetail> locations = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, HOST, HOST_LOCATION, HOST_LOCATION_GUID, 0,
+                null, null, 0, false, false,
+                0, method);
         if (CollectionUtils.isNotEmpty(locations)) {
             for (EntityDetail location : locations) {
                 assetCatalogConverter.addElement(assetCatalogItemElement, location);
@@ -973,15 +888,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForLocation";
 
-        List<EntityDetail> assetLocations = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                location.getGUID(),
-                LOCATION,
-                ASSET_LOCATION_GUID,
-                ASSET_LOCATION,
-                0,
-                0,
-                method);
+        List<EntityDetail> assetLocations = assetHandler.getAttachedFilteredEntities(userId, location.getGUID(),
+                GUID_PARAMETER, LOCATION, ASSET_LOCATION, ASSET_LOCATION_GUID,
+                0, null, null, 0, false,
+                false, 0, method);
 
         if (CollectionUtils.isNotEmpty(assetLocations)) {
             for (EntityDetail assetLocation : assetLocations) {
@@ -990,23 +900,7 @@ public class AssetCatalogHandler {
             }
         }
 
-        List<EntityDetail> nestedLocations = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                location.getGUID(),
-                LOCATION,
-                NESTED_LOCATION_GUID,
-                NESTED_LOCATION,
-                0,
-                0,
-                method);
-
-
-        if (CollectionUtils.isNotEmpty(nestedLocations)) {
-            for (EntityDetail nestedLocation : nestedLocations) {
-                assetCatalogConverter.addElement(assetCatalogItemElement, nestedLocation);
-                getContextForLocation(userId, assetCatalogItemElement, nestedLocation);
-            }
-        }
+        processLocations(userId, location, assetCatalogItemElement, method);
     }
 
     private void getContextForSoftwareServer(String userId,
@@ -1016,28 +910,18 @@ public class AssetCatalogHandler {
         String method = "getContextForSoftwareServer";
         Element parentElement = null;
 
-        EntityDetail softwareServerPlatform = repositoryHandler.getEntityForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                SOFTWARE_SERVER,
-                SOFTWARE_SERVER_DEPLOYMENT_GUID,
-                SOFTWARE_SERVER_DEPLOYMENT,
-                method);
-
+        EntityDetail softwareServerPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, SOFTWARE_SERVER, SOFTWARE_SERVER_DEPLOYMENT_GUID, SOFTWARE_SERVER_DEPLOYMENT,
+                null, false, false, null, method);
         if (softwareServerPlatform != null) {
             parentElement = assetCatalogConverter.getLastNode(assetCatalogItemElement);
             assetCatalogConverter.addElement(assetCatalogItemElement, softwareServerPlatform);
             getContextForSoftwareServerPlatform(userId, softwareServerPlatform, assetCatalogItemElement);
         }
 
-        EntityDetail endpoint = repositoryHandler.getEntityForRelationshipType(
-                userId,
-                entityDetail.getGUID(),
-                SOFTWARE_SERVER,
-                SERVER_ENDPOINT_GUID,
-                SERVER_ENDPOINT,
-                method);
-
+        EntityDetail endpoint = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
+                GUID_PARAMETER, SOFTWARE_SERVER, SERVER_ENDPOINT_GUID, SERVER_ENDPOINT,
+                null, false, false, null, method);
         if (endpoint != null) {
             if (parentElement != null) {
                 assetCatalogConverter.addChildElement(parentElement, assetCatalogConverter.buildAssetElements(endpoint));
@@ -1055,16 +939,10 @@ public class AssetCatalogHandler {
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "getConnectionContext";
 
-        List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                endpoint.getGUID(),
-                ENDPOINT,
-                CONNECTION_ENDPOINT_GUID,
-                CONNECTION_ENDPOINT,
-                0,
-                0,
-                methodName);
-
+        List<EntityDetail> connections = assetHandler.getAttachedFilteredEntities(userId, endpoint.getGUID(),
+                GUID_PARAMETER, ENDPOINT, CONNECTION_ENDPOINT, CONNECTION_ENDPOINT_GUID,
+                0, null, null, 0, false,
+                false, 0, methodName);
         if (CollectionUtils.isEmpty(connections)) {
             return;
         }
@@ -1073,26 +951,16 @@ public class AssetCatalogHandler {
             assetCatalogConverter.addElement(assetCatalogItemElement, connection);
 
             List<EntityDetail> elements = new ArrayList<>();
-            EntityDetail connectorType = repositoryHandler.getEntityForRelationshipType(
-                    userId,
-                    connection.getGUID(),
-                    CONNECTION,
-                    CONNECTION_CONNECTOR_TYPE_GUID,
-                    CONNECTION_CONNECTOR_TYPE,
-                    methodName);
-
+            EntityDetail connectorType = assetHandler.getAttachedEntity(userId, connection.getGUID(),
+                    GUID_PARAMETER, CONNECTION, CONNECTION_CONNECTOR_TYPE_GUID, CONNECTION_CONNECTOR_TYPE,
+                    null, false, false, null, methodName);
             if (connectorType != null) {
                 elements.add(connectorType);
             }
 
-            EntityDetail asset = repositoryHandler.getEntityForRelationshipType(
-                    userId,
-                    connection.getGUID(),
-                    CONNECTION,
-                    CONNECTION_TO_ASSET_GUID,
-                    CONNECTION_TO_ASSET,
-                    methodName);
-
+            EntityDetail asset = assetHandler.getAttachedEntity(userId, connection.getGUID(),
+                    GUID_PARAMETER, CONNECTION, CONNECTION_TO_ASSET_GUID, CONNECTION_TO_ASSET,
+                    null, false, false, null, methodName);
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getClassifications()),
@@ -1110,26 +978,16 @@ public class AssetCatalogHandler {
 
         String method = "findAsset";
         for (EntityDetail entityDetail : entitiesByType) {
-            List<EntityDetail> schemaAttributes = repositoryHandler.getEntitiesForRelationshipType(
-                    userId,
-                    entityDetail.getGUID(),
-                    SCHEMA_ATTRIBUTE,
-                    ATTRIBUTE_FOR_SCHEMA_GUID,
-                    ATTRIBUTE_FOR_SCHEMA,
-                    0,
-                    0,
-                    method);
+            List<EntityDetail> schemaAttributes = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                    GUID_PARAMETER, SCHEMA_ATTRIBUTE, ATTRIBUTE_FOR_SCHEMA, ATTRIBUTE_FOR_SCHEMA_GUID,
+                    0, null, null, 0, false,
+                    false, 0, method);
 
             if (CollectionUtils.isEmpty(schemaAttributes)) {
-                schemaAttributes = repositoryHandler.getEntitiesForRelationshipType(
-                        userId,
-                        entityDetail.getGUID(),
-                        SCHEMA_ATTRIBUTE,
-                        NESTED_SCHEMA_ATTRIBUTE_GUID,
-                        NESTED_SCHEMA_ATTRIBUTE,
-                        0,
-                        0,
-                        method);
+                schemaAttributes = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                        GUID_PARAMETER, SCHEMA_ATTRIBUTE, NESTED_SCHEMA_ATTRIBUTE, NESTED_SCHEMA_ATTRIBUTE_GUID,
+                        0, null, null, 0, false,
+                        false, 0, method);
                 if (CollectionUtils.isEmpty(schemaAttributes)) {
                     continue;
                 }
@@ -1156,15 +1014,10 @@ public class AssetCatalogHandler {
 
     private void processPrimitiveSchema(String userId, AssetCatalogItemElement assetCatalogItemElement, String method, EntityDetail schemaAttribute)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                schemaAttribute.getGUID(),
-                schemaAttribute.getType().getTypeDefName(),
-                SCHEMA_ATTRIBUTE_TYPE_GUID,
-                SCHEMA_ATTRIBUTE_TYPE,
-                0,
-                0,
-                method);
+        List<EntityDetail> schemaAttributeTypeEntities = assetHandler.getAttachedFilteredEntities(userId, schemaAttribute.getGUID(),
+                GUID_PARAMETER, schemaAttribute.getType().getTypeDefName(), SCHEMA_ATTRIBUTE_TYPE,
+                SCHEMA_ATTRIBUTE_TYPE_GUID, 0, null, null, 0,
+                false, false, 0, method);
 
         if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
             schemaAttributeTypeEntities.forEach(schemaAttributeTypeEntity -> assetCatalogConverter.addElement(assetCatalogItemElement, schemaAttributeTypeEntity));
@@ -1196,15 +1049,10 @@ public class AssetCatalogHandler {
         if (isComplexSchemaType.isPresent()) {
             setAssetDetails(userId, assetCatalogItemElement, entityDetail);
         } else {
-            List<EntityDetail> attributeForSchemas = repositoryHandler.getEntitiesForRelationshipType(
-                    userId,
-                    entityDetail.getGUID(),
-                    entityDetail.getType().getTypeDefName(),
-                    ATTRIBUTE_FOR_SCHEMA_GUID,
-                    ATTRIBUTE_FOR_SCHEMA,
-                    0,
-                    0,
-                    method);
+            List<EntityDetail> attributeForSchemas = assetHandler.getAttachedFilteredEntities(userId, entityDetail.getGUID(),
+                    GUID_PARAMETER, entityDetail.getType().getTypeDefName(), ATTRIBUTE_FOR_SCHEMA,
+                    ATTRIBUTE_FOR_SCHEMA_GUID, 0, null, null, 0,
+                    false, false, 0, method);
             if (CollectionUtils.isEmpty(attributeForSchemas)) {
                 return;
             }
@@ -1216,15 +1064,10 @@ public class AssetCatalogHandler {
                     setAssetDetails(userId, assetCatalogItemElement, attributeForSchema);
                     return;
                 } else {
-                    List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
-                            userId,
-                            attributeForSchema.getGUID(),
-                            attributeForSchema.getType().getTypeDefName(),
-                            SCHEMA_ATTRIBUTE_TYPE_GUID,
-                            SCHEMA_ATTRIBUTE_TYPE,
-                            0,
-                            0,
-                            method);
+                    List<EntityDetail> schemaAttributeTypeEntities = assetHandler.getAttachedFilteredEntities(userId,
+                            attributeForSchema.getGUID(), GUID_PARAMETER, attributeForSchema.getType().getTypeDefName(),
+                            SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE_GUID, 0, null,
+                            null, 0, false, false, 0, method);
 
                     for (EntityDetail schema : schemaAttributeTypeEntities) {
                         assetCatalogConverter.addElement(assetCatalogItemElement, schema);
@@ -1241,13 +1084,9 @@ public class AssetCatalogHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "setAssetDetails";
 
-        EntityDetail dataSet = repositoryHandler.getEntityForRelationshipType(userId,
-                entity.getGUID(),
-                entity.getType().getTypeDefName(),
-                ASSET_SCHEMA_TYPE_GUID,
-                ASSET_SCHEMA_TYPE,
-                methodName);
-
+        EntityDetail dataSet = assetHandler.getAttachedEntity(userId, entity.getGUID(),
+                GUID_PARAMETER, entity.getType().getTypeDefName(), ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE,
+                null, false, false, null, methodName);
         if (dataSet == null) {
             return;
         }
@@ -1282,12 +1121,10 @@ public class AssetCatalogHandler {
         if (dataSet == null) return;
 
         String methodName = "getAsset";
-        List<Relationship> assetToDataSetRelationships = repositoryHandler.getRelationshipsByType(userId,
-                dataSet.getGUID(),
-                dataSet.getType().getTypeDefName(),
-                DATA_CONTENT_FOR_DATA_SET_GUID,
-                DATA_CONTENT_FOR_DATA_SET,
-                methodName);
+        List<Relationship> assetToDataSetRelationships = assetHandler.getAttachmentLinks(userId, dataSet.getGUID(),
+                GUID_PARAMETER, dataSet.getType().getTypeDefName(), DATA_CONTENT_FOR_DATA_SET_GUID,
+                DATA_CONTENT_FOR_DATA_SET, null, 0, invalidParameterHandler.getMaxPagingSize(),
+                null, methodName);
 
         if (CollectionUtils.isEmpty(assetToDataSetRelationships)) {
             return;
@@ -1321,7 +1158,7 @@ public class AssetCatalogHandler {
     private void setConnections(String userId,
                                 AssetCatalogItemElement assetCatalogItemElement,
                                 EntityDetail asset)
-            throws UserNotAuthorizedException, PropertyServerException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         List<Connection> connections = getConnections(userId, asset.getGUID());
         assetCatalogItemElement.setConnections(connections);
     }
@@ -1337,19 +1174,12 @@ public class AssetCatalogHandler {
     }
 
     private List<Connection> getConnections(String userId, String dataSetGuid)
-            throws UserNotAuthorizedException, PropertyServerException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "getConnections";
-        List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
-                userId,
-                dataSetGuid,
-                CONNECTION,
-                CONNECTION_TO_ASSET_GUID,
-                CONNECTION_TO_ASSET,
-                0,
-                0,
-                methodName);
-
-
+        List<EntityDetail> connections = assetHandler.getAttachedFilteredEntities(userId,
+                dataSetGuid, GUID_PARAMETER, CONNECTION,
+                CONNECTION_TO_ASSET, CONNECTION_TO_ASSET_GUID, 0, null,
+                null, 0, false, false, 0, methodName);
         if (CollectionUtils.isNotEmpty(connections)) {
             List<Connection> connectionList = new ArrayList<>();
 
@@ -1385,35 +1215,21 @@ public class AssetCatalogHandler {
     private List<EntityDetail> searchEntityByCriteria(String userId,
                                                       String searchCriteria,
                                                       String entityTypeGUID,
-                                                      SearchParameters searchParameters, OMRSMetadataCollection metadataCollection)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
+                                                      String entityTypeName,
+                                                      SearchParameters searchParameters,
+                                                      String methodName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        InstanceProperties matchProperties = new InstanceProperties();
-        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(searchCriteria);
-        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
-
+        String propertyName = NAME;
         if (commonHandler.hasDisplayName(userId, entityTypeGUID)) {
-            matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
-        } else {
-            matchProperties.setProperty(NAME, primitivePropertyValue);
+            propertyName = DISPLAY_NAME;
         }
-        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByProperty(userId,
-                entityTypeGUID,
-                matchProperties,
-                MatchCriteria.ANY,
-                searchParameters.getFrom(),
-                Collections.singletonList(InstanceStatus.ACTIVE),
-                searchParameters.getLimitResultsByClassification(),
-                null,
-                searchParameters.getSequencingProperty(),
-                searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
-                searchParameters.getPageSize());
+
+        SequencingOrder sequencingOrder = searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder();
+        List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByProperty(userId, searchCriteria,
+                SEARCH_STRING_PARAMETER_NAME, entityTypeGUID, entityTypeName, Collections.singletonList(propertyName),
+                searchParameters.getExactMatch(), false, false, supportedZones,
+                sequencingOrder.getName(), searchParameters.getFrom(), searchParameters.getPageSize(), null, methodName);
 
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;

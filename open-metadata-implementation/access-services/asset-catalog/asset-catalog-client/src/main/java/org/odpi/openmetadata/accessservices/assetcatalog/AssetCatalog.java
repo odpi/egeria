@@ -3,10 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
@@ -36,9 +35,6 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private static final String ASSET_UNIVERSE = "/asset-universe/{2}?assetType={3}";
     private static final String ASSET_RELATIONSHIPS = "/asset-relationships/{2}?assetType={3}&relationshipType={4}&from={5}&pageSize={6}";
     private static final String ASSET_CLASSIFICATIONS = "/asset-classifications/{2}?assetType={3}&classificationName={4}";
-    private static final String LINKING_ASSET = "/linking-assets/from/{2}/to/{3}";
-    private static final String LINKING_RELATIONSHIPS = "/linking-assets-relationships/from/{2}/to/{3}";
-    private static final String ASSETS_FROM_NEIGHBORHOOD = "/assets-from-neighborhood/{2}";
     private static final String SEARCH = "/search?searchCriteria={2}";
     private static final String ASSET_CONTEXT = "/asset-context/{2}?assetType={3}";
     private static final String RELATIONSHIP_BETWEEN_ENTITIES = "/relationship-between-entities/{2}/{3}?relationshipType={4}";
@@ -50,8 +46,8 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private static final String SEARCH_PARAMETERS = "searchParameters";
 
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Create a new AssetCatalog client.
@@ -151,66 +147,6 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
 
         detectExceptions(classificationListResponse);
         return classificationListResponse;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AssetCatalogListResponse getLinkingAssets(String userId,
-                                                     String startAssetGUID,
-                                                     String endAssetGUID)
-            throws InvalidParameterException, PropertyServerException {
-        String methodName = "getLinkingAssets";
-
-        validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
-
-        AssetCatalogListResponse response = callGetRESTCall(methodName, AssetCatalogListResponse.class,
-                serverPlatformURLRoot + BASE_PATH + LINKING_ASSET, serverName,
-                userId, startAssetGUID, endAssetGUID);
-
-        detectExceptions(response);
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public RelationshipListResponse getLinkingRelationships(String userId,
-                                                            String startAssetGUID,
-                                                            String endAssetGUID)
-            throws InvalidParameterException, PropertyServerException {
-        String methodName = "getLinkingRelationships";
-
-        validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
-
-        RelationshipListResponse response = callGetRESTCall(methodName, RelationshipListResponse.class,
-                serverPlatformURLRoot + BASE_PATH + LINKING_RELATIONSHIPS, serverName,
-                userId, startAssetGUID, endAssetGUID);
-        detectExceptions(response);
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AssetCatalogListResponse getAssetsFromNeighborhood(String userId,
-                                                              String assetGUID,
-                                                              SearchParameters searchParameters)
-            throws InvalidParameterException, PropertyServerException {
-        String methodName = "getAssetsFromNeighborhood";
-
-        validateSearchParams(userId, assetGUID, searchParameters, methodName);
-
-        AssetCatalogListResponse response = callPostRESTCall(methodName, AssetCatalogListResponse.class,
-                serverPlatformURLRoot + BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, searchParameters, serverName, userId, assetGUID);
-
-        detectExceptions(response);
-
-        return response;
     }
 
     /**
