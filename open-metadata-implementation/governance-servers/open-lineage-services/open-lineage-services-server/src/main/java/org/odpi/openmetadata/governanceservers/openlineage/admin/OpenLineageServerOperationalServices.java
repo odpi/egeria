@@ -157,8 +157,8 @@ public class OpenLineageServerOperationalServices {
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
                 serverPlatformURLRoot + urlTemplate,
                 serverName,
-                localServerUserId,
-                localServerUserId);
+                serverUserId,
+                serverUserId);
 
         Connection inTopicConnection = null;
         if (restResult != null) {
