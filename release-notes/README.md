@@ -24,14 +24,18 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 3.2](release-notes-3-3.md) - November 2021
+  * Open Metadata Type changes
+  * New hand-on lab introducing Lineage management
+
+## Older Releases
+
 * [Release 3.2](release-notes-3-2.md) - October 2021
   * Open Metadata Type changes
   * New beta documentation site
   * Deprecations
   * Dependency Updates
   * Bug Fixes
-  
-## Older Releases
 
 * [Release 3.1](release-notes-3-1.md) - September 2021
   * Open Metadata Type changes

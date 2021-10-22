@@ -16,14 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout source
-      # Prep for docker builds which are currently done as part of the maven build
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
         # Only for a merge
         if: ${{ github.event_name == 'push' && github.repository == 'odpi/egeria' }}
       - name: Set up JDK 11
@@ -43,7 +35,7 @@ jobs:
       - name: Build with Maven (Publish snapshots to maven central + docker)
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
         # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
-        run: 'mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
+        run: 'mvn -B -DuseMavenCentral clean deploy'
         # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to 
         # verify (close) the repository & release
         env:
@@ -56,6 +48,42 @@ jobs:
         run: mvn -B clean verify
       # --
       # TODO - Publish docker images
+      # Prep for docker builds which are currently done as part of the maven build
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to container registry (Quay.io)
+        uses: docker/login-action@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ACCESS_TOKEN }}
+      # Build and publish - but only for master
+      - name: Build with Maven (Publish snapshots to maven central + docker)
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
+        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=quay.io" "-Ddocker.images=core" clean deploy'
+        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
+        # verify (close) the repository & release
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+      - name: Login to container registry (Docker Hub)
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      # Build and publish - but only for master
+      - name: Build with Maven (Publish snapshots to maven central + docker)
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
+        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
+        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
+        # verify (close) the repository & release
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
       # --
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies

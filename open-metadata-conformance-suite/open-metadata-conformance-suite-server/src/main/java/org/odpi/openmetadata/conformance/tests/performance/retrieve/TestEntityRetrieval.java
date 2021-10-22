@@ -70,9 +70,16 @@ public class TestEntityRetrieval extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         Set<String> keysToRetrieve = getEntityKeys(metadataCollection, numInstances);
-        isEntityKnown(metadataCollection, keysToRetrieve);
-        getEntitySummary(metadataCollection, keysToRetrieve);
-        getEntityDetail(metadataCollection, keysToRetrieve);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("isEntityKnown")) {
+            isEntityKnown(metadataCollection, keysToRetrieve);
+        }
+        if (!methodsToSkip.contains("getEntitySummary")) {
+            getEntitySummary(metadataCollection, keysToRetrieve);
+        }
+        if (!methodsToSkip.contains("getEntityDetail")) {
+            getEntityDetail(metadataCollection, keysToRetrieve);
+        }
 
         super.setSuccessMessage("Entity retrieval performance tests complete for: " + testTypeName);
     }
