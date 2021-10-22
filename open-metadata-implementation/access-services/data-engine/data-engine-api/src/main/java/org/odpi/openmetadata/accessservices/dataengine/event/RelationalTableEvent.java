@@ -38,15 +38,28 @@ public class RelationalTableEvent extends DataEngineEventHeader {
      */
     @JsonProperty("table")
     private RelationalTable relationalTable;
+
     /**
-     * The qualified name of the database
+     * The qualified name of the database schema
      * -- GETTER --
-     * Return the database qualified name
+     * Return the database schema qualified name
      *
-     * @return String - qualified name of the database
+     * @return String - qualified name of the database schema
      * -- SETTER --
-     * Set up the qualified name of the database
-     * @param databaseQualifiedName of the database
+     * Set up the qualified name of the database schema
+     * @param databaseSchemaQualifiedName of the database schema
      */
-    private String databaseQualifiedName;
+    private String databaseSchemaQualifiedName;
+
+    /**
+     * Determines if the relational table is an incomplete asset
+     * -- GETTER --
+     * Return if the relational table is incomplete
+     *
+     * @return boolean - if the relational table is incomplete
+     * -- SETTER --
+     * Sets if the relational table is incomplete or not
+     * @param incomplete determines if the relational table is an incomplete asset
+     */
+    private boolean incomplete;
 }

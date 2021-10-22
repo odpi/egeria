@@ -169,7 +169,7 @@
         <gremlin.version>3.5.1</gremlin.version>
         <spring-data.version>2.5.5</spring-data.version>
         <spring-security.version>5.5.2</spring-security.version>
-        <springdoc.version>1.5.10</springdoc.version>
+        <springdoc.version>1.5.12</springdoc.version>
         <spring.version>5.3.10</spring.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
@@ -177,7 +177,6 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>4.1.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
-        <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <jakarta-validation.version>3.0.0</jakarta-validation.version>
@@ -205,7 +204,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
         <swagger.version>2.1.11</swagger.version>
-        <classgraph.version>4.8.121</classgraph.version>
+        <classgraph.version>4.8.128</classgraph.version>
         <snakeyaml.version>1.29</snakeyaml.version>
         <groovy.version>3.0.9</groovy.version>
         <micrometer-registry-prometheus.version>1.7.4</micrometer-registry-prometheus.version>
@@ -318,14 +317,6 @@
                  <scope>compile</scope>
                  <version>${jackson.version}</version>
              </dependency>
-
-
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <scope>compile</scope>
-                <version>${h2-database.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.apache.avro</groupId>
@@ -975,6 +966,13 @@
                 <artifactId>asset-lineage-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-topic-connectors</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
@@ -2724,12 +2722,6 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2792,18 +2784,6 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring-data.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-data.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
             </dependency>
 
             <dependency>

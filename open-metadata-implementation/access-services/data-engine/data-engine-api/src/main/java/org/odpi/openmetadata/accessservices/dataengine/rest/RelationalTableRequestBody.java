@@ -27,7 +27,10 @@ public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
     @JsonProperty("table")
     private RelationalTable relationalTable;
 
-    private String databaseQualifiedName;
+    private String databaseSchemaQualifiedName;
+
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 
 }
 

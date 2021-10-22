@@ -88,20 +88,6 @@ public class OpenLineageController {
     }
 
     /**
-     *
-     * @param guid unique identifier of the asset
-     * @param includeProcesses if true Process nodes will be included
-     * @return graph of nodes and edges describing the ultimate source and destination of the asset
-     */
-    @GetMapping( value = "/entities/{guid}/source-and-destination")
-    public Graph sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
-        Graph exportedGraph;
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getSourceAndDestination(userId, guid, includeProcesses);
-        return exportedGraph;
-    }
-
-    /**
      * @param guid of the Entity to be retrieved
      * @return the entity details
      */
