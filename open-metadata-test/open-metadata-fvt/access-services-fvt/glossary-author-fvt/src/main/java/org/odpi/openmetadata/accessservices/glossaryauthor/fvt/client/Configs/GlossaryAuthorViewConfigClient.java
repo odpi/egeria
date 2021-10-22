@@ -9,10 +9,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.GlossaryAuthorViewRestClient;
 
-import static org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.AbstractGlossaryAuthor.GLOSSARY_AUTHOR_BASE_URL;
+import static org.odpi.openmetadata.accessservices.glossaryauthor.fvt.FVTConstants.GLOSSARY_AUTHOR_BASE_URL;
+
 
 public class GlossaryAuthorViewConfigClient implements GlossaryAuthorViewConfig, ResponseParameterization<Config> {
-
+ //   public static final String GLOSSARY_AUTHOR_BASE_URL = "/servers/%s/open-metadata/view-services/glossary-author/users/%s/";
     private static final String BASE_URL = GLOSSARY_AUTHOR_BASE_URL + "configs";
     protected final GlossaryAuthorViewRestClient client;
 
