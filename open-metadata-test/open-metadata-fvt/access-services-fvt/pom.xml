@@ -53,6 +53,9 @@
                                 <ignoredUnusedDeclaredDependency>
                                     org.odpi.egeria:graph-repository-connector:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.apache.commons:commons-lang3:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
