@@ -822,9 +822,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Optional<LineageVerticesAndEdges> lineageVerticesAndEdges = Optional.empty();
 
         switch (scope) {
-            case SOURCE_AND_DESTINATION:
-                lineageVerticesAndEdges = helper.sourceAndDestination(guid, includeProcesses);
-                break;
             case END_TO_END:
                 lineageVerticesAndEdges = helper.endToEnd(guid, includeProcesses);
                 break;

@@ -65,11 +65,13 @@ public class TestEntityReHome extends OpenMetadataPerformanceTestCase
         String metadataCollectionName = getRepositoryConnector().getMetadataCollectionName();
         int numInstances = super.getInstancesPerType();
 
-        // Only re-home half of the instances, so that we can test purging of the other half
-        Set<String> keysToReHome = getEntityKeys(metadataCollection, numInstances / 2);
-        reHomeEntities(metadataCollection, metadataCollectionName, keysToReHome);
-
-        super.setSuccessMessage("Entity re-home performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reHomeEntity")) {
+            // Only re-home half of the instances, so that we can test purging of the other half
+            Set<String> keysToReHome = getEntityKeys(metadataCollection, numInstances / 2);
+            reHomeEntities(metadataCollection, metadataCollectionName, keysToReHome);
+            super.setSuccessMessage("Entity re-home performance tests complete for: " + testTypeName);
+        }
     }
 
     /**
@@ -150,7 +152,7 @@ public class TestEntityReHome extends OpenMetadataPerformanceTestCase
                             performanceWorkPad.getTutMetadataCollectionId(),
                             metadataCollectionName);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_RE_HOME,
                             A_RE_HOME_MSG + testTypeName,
                             PerformanceProfile.ENTITY_RE_HOME.getProfileId(),

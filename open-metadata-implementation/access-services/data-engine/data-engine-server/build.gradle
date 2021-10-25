@@ -16,6 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation 'org.slf4j:slf4j-api'
+    implementation 'org.codehaus.plexus:plexus-utils'
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
