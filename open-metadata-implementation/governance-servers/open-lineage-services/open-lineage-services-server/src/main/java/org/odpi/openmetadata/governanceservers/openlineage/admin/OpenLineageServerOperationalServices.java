@@ -51,6 +51,7 @@ public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
 
     private static final String EMPTY_STRING = "";
+    private static final int RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT = 60_000;
 
     private final String localServerName;
     private final String localServerUserId;
@@ -110,7 +111,7 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
-    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException {
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException, InterruptedException {
         final String methodName = "initializeOLS";
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
@@ -139,7 +140,7 @@ public class OpenLineageServerOperationalServices {
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
-    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws InvalidParameterException {
+    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws InvalidParameterException, InterruptedException {
 
         OCFRESTClient restClient;
         String serverName = accessServiceConfig.getServerName();
@@ -154,6 +155,7 @@ public class OpenLineageServerOperationalServices {
         ConnectionResponse restResult = null;
         do {
             restResult = getConnection(methodName, restClient, accessServiceConfig);
+            Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
         } while (restResult == null);
         return restResult.getConnection();
     }
