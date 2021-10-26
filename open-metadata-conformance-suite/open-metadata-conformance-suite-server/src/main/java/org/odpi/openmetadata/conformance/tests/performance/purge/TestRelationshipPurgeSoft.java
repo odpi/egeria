@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,8 +46,11 @@ public class TestRelationshipPurgeSoft extends TestRelationshipPurge
     @Override
     protected void run() throws Exception
     {
-        deleteRelationships();
-        super.setSuccessMessage("Relationship purge (soft) performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("purgeRelationship")) {
+            deleteRelationships();
+            super.setSuccessMessage("Relationship purge (soft) performance tests complete for: " + testTypeName);
+        }
     }
 
 
@@ -72,7 +76,7 @@ public class TestRelationshipPurgeSoft extends TestRelationshipPurge
                         guid);
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                assertCondition(result != null,
+                assertCondition(true,
                         A_DELETE,
                         A_DELETE_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),
