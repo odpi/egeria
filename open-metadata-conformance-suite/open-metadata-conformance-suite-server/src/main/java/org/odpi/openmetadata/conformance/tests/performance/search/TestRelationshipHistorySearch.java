@@ -96,9 +96,16 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
 
-        findRelationships(metadataCollection);
-        findRelationshipsByPropertyValue(metadataCollection, repositoryHelper);
-        findRelationshipsByProperty(metadataCollection, repositoryHelper);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("findRelationships")) {
+            findRelationships(metadataCollection);
+        }
+        if (!methodsToSkip.contains("findRelationshipsByPropertyValue")) {
+            findRelationshipsByPropertyValue(metadataCollection, repositoryHelper);
+        }
+        if (!methodsToSkip.contains("findRelationshipsByProperty")) {
+            findRelationshipsByProperty(metadataCollection, repositoryHelper);
+        }
 
         super.setSuccessMessage("Relationship historical search performance tests complete for: " + testTypeName);
     }

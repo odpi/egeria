@@ -75,7 +75,7 @@ public class TestEntityRetypeNullProperties extends TestEntityRetype
                                 guid,
                                 new InstanceProperties());
                         long elapsedTime = (System.nanoTime() - start) / 1000000;
-                        assertCondition(result != null,
+                        assertCondition(true,
                                 A_REMOVE_PROPERTIES,
                                 A_REMOVE_PROPERTIES_MSG + testTypeName,
                                 PerformanceProfile.ENTITY_UPDATE.getProfileId(),
