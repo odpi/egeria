@@ -172,14 +172,10 @@
                 <executions>
                     <execution>
                         <configuration>
-<!--                            <skipAssembly>true</skipAssembly>-->
-<!--                            <descriptorRefs>-->
-<!--                                <descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--                            </descriptorRefs>-->
                             <descriptors>
                                 <descriptor>src/main/assembly/assembly.xml</descriptor>
                             </descriptors>
-                            <appendAssemblyId>false</appendAssemblyId>
+                            <appendAssemblyId>true</appendAssemblyId>
                         </configuration>
                         <id>make-assembly</id>
                         <!-- bind to the packaging phase -->
@@ -187,7 +183,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-
                     </execution>
                 </executions>
             </plugin>
