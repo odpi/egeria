@@ -99,15 +99,32 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Initialize Open lineage Services";
 
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
-        if (openLineageServerConfig == null)
-            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.NO_CONFIG_DOC, methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
-
+        if (openLineageServerConfig == null) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.NO_CONFIG_DOC, localServerName,methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
+        }
+        validateAccessServiceConfig(openLineageServerConfig.getAccessServiceConfig(), methodName);
         try {
             initializeOLS(openLineageServerConfig);
         } catch (OMAGConfigurationErrorException e) {
             throw e;
         } catch (Exception e) {
             exceptionToOMAGConfigurationError(e, OpenLineageServerErrorCode.ERROR_INITIALIZING_OLS, methodName, OpenLineageServerAuditCode.ERROR_INITIALIZING_OLS, actionDescription);
+        }
+    }
+
+    private void validateAccessServiceConfig(OLSSimplifiedAccessServiceConfig accessServiceConfig, String methodName) throws OMAGConfigurationErrorException {
+        String actionDescription = "Verify the access service configuration";
+        if (accessServiceConfig.getServerName() == null || accessServiceConfig.getServerName().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "serverName",methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
+        }
+        if (accessServiceConfig.getServerPlatformUrlRoot() == null || accessServiceConfig.getServerPlatformUrlRoot().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "serverPlatformUrlRoot", methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
+        }
+        if (accessServiceConfig.getUser() == null || accessServiceConfig.getUser().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "user", methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
         }
     }
 
@@ -343,8 +360,10 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription The action that was taking place when the error occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String errorDetails, String methodName,
+                                                      OpenLineageServerAuditCode auditCode, String actionDescription)
+            throws OMAGConfigurationErrorException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(errorDetails);
         OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,

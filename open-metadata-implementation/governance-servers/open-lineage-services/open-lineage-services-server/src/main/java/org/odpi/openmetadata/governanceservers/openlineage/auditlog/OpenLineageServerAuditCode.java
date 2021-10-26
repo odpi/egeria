@@ -127,6 +127,11 @@ public enum OpenLineageServerAuditCode {
             "The Open Lineage Services server encountered an error and could not retrieve the in topic connection.",
             "An unexpected error occurred while initializing the Open Lineage Services. The server will try to retrieve the configuration again.",
             "Make sure the Asset Lineage out topic is available at the configured location"),
+
+    BAD_ACCESS_SERVICE_CONFIG("OPEN-LINEAGE-SERVICES-0022", OMRSAuditLogRecordSeverity.ERROR,
+            "The Open Lineage Services encountered an error while verifying the access service configuration",
+            "The configuration for the access services is not valid.",
+            "Make sure the access service configuration is correct."),
     ;
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerAuditCode.class);
