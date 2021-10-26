@@ -68,10 +68,8 @@
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
                 <include>org.odpi.egeria:kafka-integration-connector:*</include>
                 <include>org.odpi.egeria:openapi-integration-connector:*</include>
-                <include>org.odpi.egeria:graph-repository-connector:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:inmemory-repository-connector:*</include>
-                <include>org.odpi.egeria:graph-repository-connector:*</include>
                 <include>org.odpi.egeria:kafka-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:omrs-rest-repository-connector:*</include>
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
@@ -94,6 +92,20 @@
                     <!-- Not needed, as the build process for each connector does not put this into the main jar artifact -->
                     <!--exclude>*jar-with-dependencies.jar</exclude-->
                 </excludes>
+            </binaries>
+        </moduleSet>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <!-- Get graph-repository-connector jar-with-dependencies  -->
+            <includes>
+                <include>org.odpi.egeria:graph-repository-connector:*</include>
+            </includes>
+            <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+                <outputDirectory>./server/lib</outputDirectory>
+                <unpack>false</unpack>
+                <includeDependencies>false</includeDependencies>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
             </binaries>
         </moduleSet>
         <!-- Utilities -->
