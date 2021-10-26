@@ -14,8 +14,8 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client'
-    implementation 'org.elasticsearch:elasticsearch'
+    compileOnly 'org.elasticsearch.client:elasticsearch-rest-high-level-client'
+    compileOnly 'org.elasticsearch:elasticsearch'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.slf4j:slf4j-api'
 }
