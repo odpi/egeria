@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
@@ -90,6 +89,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TRANSLATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROCESS_NODES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
@@ -143,11 +143,10 @@ public class LineageGraphConnectorHelper {
      * directly used
      *
      * @param guid             queried entity
-     * @param includeProcesses include processes
      *
      * @return graph in an Open Lineage specific format
      */
-    public Optional<LineageVerticesAndEdges> ultimateSource(String guid, boolean includeProcesses) {
+    public Optional<LineageVerticesAndEdges> ultimateSource(String guid) {
         Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         List<Vertex> sourcesList;
@@ -201,11 +200,10 @@ public class LineageGraphConnectorHelper {
      * directly used
      *
      * @param guid             queried entity
-     * @param includeProcesses include processes
      *
      * @return graph in an Open Lineage specific format
      */
-    public Optional<LineageVerticesAndEdges> ultimateDestination(String guid, boolean includeProcesses) {
+    public Optional<LineageVerticesAndEdges> ultimateDestination(String guid) {
         Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         List<Vertex> destinationsList;
@@ -679,7 +677,7 @@ public class LineageGraphConnectorHelper {
     private void condenseProcesses(boolean includeProcesses, Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
         if (!includeProcesses) {
             Set<LineageVertex> verticesToRemove = lineageVertices.stream()
-                    .filter(this::isSubProcess)
+                    .filter(this::isProcessOrSubprocessNode)
                     .collect(Collectors.toSet());
             Set<String> verticesToRemoveIDs = verticesToRemove.stream().map(LineageVertex::getNodeID).collect(Collectors.toSet());
             Set<LineageEdge> edgesToRemove = lineageEdges.stream().filter(edge ->
@@ -708,8 +706,8 @@ public class LineageGraphConnectorHelper {
         return edgesToReplaceProcesses;
     }
 
-    private boolean isSubProcess(LineageVertex vertex) {
-        return vertex.getNodeType().equalsIgnoreCase(NODE_LABEL_SUB_PROCESS);
+    private boolean isProcessOrSubprocessNode(LineageVertex vertex) {
+        return PROCESS_NODES.stream().anyMatch(vertex.getNodeType()::equalsIgnoreCase);
     }
 
     private boolean isInVertexesToRemove(Set<String> verticesToRemoveNames, LineageEdge edge) {

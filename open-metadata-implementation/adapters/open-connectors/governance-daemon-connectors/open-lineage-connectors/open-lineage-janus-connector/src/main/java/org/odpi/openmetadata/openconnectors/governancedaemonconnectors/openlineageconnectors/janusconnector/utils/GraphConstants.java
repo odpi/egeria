@@ -6,8 +6,10 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class GraphConstants {
@@ -63,6 +65,7 @@ public class GraphConstants {
     public static final String NODE_LABEL_CONDENSED = "condensedNode";
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
+    public static final List<String> PROCESS_NODES = Arrays.asList(NODE_LABEL_PROCESS, NODE_LABEL_SUB_PROCESS);
 
     // GLOSSARY TERM RELATED EDGE LABELS
     public static final String EDGE_LABEL_SEMANTIC_ASSIGNMENT = "SemanticAssignment";
