@@ -61,7 +61,6 @@ public class GraphConstants {
     public static final String SOURCE_CONDENSATION = "source";
     public static final String DESTINATION_CONDENSATION = "destination";
 
-    public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";
     public static final String NODE_LABEL_CONDENSED = "condensedNode";
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_SUB_PROCESS = "subProcess";

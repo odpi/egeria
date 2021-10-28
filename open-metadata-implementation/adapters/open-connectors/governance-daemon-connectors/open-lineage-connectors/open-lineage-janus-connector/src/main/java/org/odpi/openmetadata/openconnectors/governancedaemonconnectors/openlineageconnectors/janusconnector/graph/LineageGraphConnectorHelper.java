@@ -505,6 +505,8 @@ public class LineageGraphConnectorHelper {
     private LineageVertex getCondensedVertex(String condensationType) {
         LineageVertex condensedVertex = new LineageVertex(getCondensedNodeId(condensationType), NODE_LABEL_CONDENSED);
         condensedVertex.setDisplayName(CONDENSED_NODE_DISPLAY_NAME);
+        condensedVertex.setQualifiedName("");
+        condensedVertex.setGuid("");
         return condensedVertex;
     }
 
