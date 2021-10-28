@@ -64,7 +64,13 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-manager-api</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-client</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-manager-client</artifactId>
@@ -79,11 +85,16 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-client</artifactId>
+        </dependency>
+
 
     </dependencies>
 

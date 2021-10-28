@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project.  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>search-integrator</artifactId>
+        <artifactId>asset-catalog</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
@@ -20,12 +18,12 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Search Integrator OMIS Client</name>
+    <name>Asset Catalog OMAS Topic Connectors</name>
     <description>
-        Provides a Java client for the Search Integrator OMIS.
+        Connector library for the Asset Catalog Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>search-integrator-client</artifactId>
+    <artifactId>asset-catalog-topic-connector</artifactId>
 
     <dependencies>
 
@@ -41,18 +39,18 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>search-integrator-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
