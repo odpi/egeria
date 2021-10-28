@@ -102,6 +102,7 @@ allprojects {
             implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
+            implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.google.crypto.tink:tink:1.6.1")
