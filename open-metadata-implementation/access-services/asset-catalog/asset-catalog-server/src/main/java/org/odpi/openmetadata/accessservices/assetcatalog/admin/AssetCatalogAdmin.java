@@ -60,7 +60,9 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
             List<String> supportedTypesForSearch = getSupportedTypesForSearchOption(accessServiceConfigurationProperties);
 
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverUserName,
-                    accessServiceConfigurationProperties.getAccessServiceName(), supportedTypesForSearch);
+                    accessServiceConfigurationProperties.getAccessServiceName(), supportedTypesForSearch,
+                    accessServiceConfigurationProperties.getAccessServiceInTopic(),
+                    accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
 
             boolean indexingEnabled = this.isIndexingEnabled(accessServiceConfigurationProperties);
